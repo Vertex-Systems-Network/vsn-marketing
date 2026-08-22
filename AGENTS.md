@@ -17,11 +17,12 @@ The repository is the memory. Before changing anything, every agent MUST read, i
 Then run:
 
 ```bash
+python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_state.py status
 ```
 
-No implementation work may begin if validation fails. Reconcile state first.
+`recover` compares the machine ledger with the working tree and exposes continuity drift. No implementation work may begin if validation fails. Reconcile state first.
 
 ## Execution rules
 
@@ -34,6 +35,7 @@ No implementation work may begin if validation fails. Reconcile state first.
 - AI may propose and plan; deterministic policy engines control consent, suppression, permissions, quotas, approvals, billing, security, and delivery eligibility.
 - Secrets must never be committed or exposed to an AI prompt when a credential reference can be used instead.
 - Every meaningful work session must leave a checkpoint before stopping.
+- `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md` are cryptographically coupled by a state fingerprint. Never edit one without synchronizing the other.
 
 ## Interruption / context-limit protocol
 
@@ -44,24 +46,28 @@ If execution is interrupted, context is nearly full, tooling fails, or the agent
 3. Run the relevant tests that are still possible.
 4. Update `.ai/state/TEST-STATE.yaml`.
 5. Update the active task status and remaining acceptance criteria.
-6. Write `.ai/state/LAST-CHECKPOINT.md` with exact completed work, incomplete work, modified files, blockers, test results, and the exact next action.
-7. Update `.ai/state/CURRENT-STATE.yaml` atomically with the checkpoint.
+6. Run `python tools/ai_state.py checkpoint --summary "..." --tests "..." --next "..."` so state/checkpoint stay synchronized.
+7. Run `python tools/ai_state.py validate` before handing off.
 
 The next agent must resume from that exact next action.
 
 ## Recovery when state and code disagree
 
-Code, Git history, tests, and migrations are evidence; the state files are the execution ledger. If they disagree, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests, repair the ledger, validate it, then continue.
+Code, Git history, tests, and migrations are evidence; the state files are the execution ledger. Run `python tools/ai_state.py recover`. If they disagree, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests, repair the ledger, checkpoint it, validate it, then continue.
 
 ## Completion protocol
 
-Before completing a task:
+Do not manually flip several task/state files independently. First ensure every active-task acceptance criterion is true and required tests pass, then use the guarded transition command:
 
 ```bash
-python tools/ai_state.py validate
+python tools/ai_state.py transition \
+  --complete TASK-XXXX \
+  --next TASK-YYYY \
+  --evidence "why completion is proven" \
+  --tests "exact test evidence"
 ```
 
-All task acceptance criteria must be true and required test state must be passing. Update the task, checkpoint, state, and task registry in the same change set as the implementation.
+The transition command rejects false acceptance criteria or incomplete dependencies, updates task/index/roadmap/state/checkpoint together, recalculates progress, validates the result, and rolls back on validation failure.
 
 ## Product safety baseline
 

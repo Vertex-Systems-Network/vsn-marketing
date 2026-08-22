@@ -15,5 +15,5 @@
     {"id": "AC-5", "text": "PHASE-01 task breakdown is created before PHASE-01 starts", "done": false}
   ],
   "required_tests": ["python tools/ai_state.py validate"],
-  "exact_next_action": "Do not begin until TASK-0001 is completed."
+  "exact_next_action": "Verify runtime and deployment constraints, compare the initial backend/frontend/database/queue/test stack, and draft the stack ADR before scaffolding application code."
 }

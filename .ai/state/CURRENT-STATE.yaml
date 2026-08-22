@@ -18,9 +18,11 @@
     "calculation": "No PHASE-00 task is complete until the continuity workflow has passed on the default branch."
   },
   "quality": {
-    "continuity_validation": "not_run_on_default_branch",
+    "continuity_validation": "passed_on_pull_request_not_default_branch",
     "application_test_status": "not_started"
   },
-  "blockers": [],
-  "exact_next_action": "Merge the bootstrap PR, inspect the AI Continuity Guard run on main, and only after a green run mark TASK-0001 completed and advance the active task to TASK-0002."
+  "blockers": [
+    "PR #2 requires approval from a reviewer other than the last pusher before repository rules allow merge."
+  ],
+  "exact_next_action": "Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
 }

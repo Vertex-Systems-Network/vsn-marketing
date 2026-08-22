@@ -5,8 +5,14 @@
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
-      "status": "not_run",
-      "notes": "Awaiting first default-branch GitHub Actions execution."
+      "status": "passing",
+      "notes": "PR #2 governance workflow passed on the pull-request branch; required default-branch execution remains pending until merge."
+    },
+    {
+      "name": "ai-continuity-recovery-and-transition-simulation",
+      "command": "local isolated simulation of validate/recover/transition/fingerprint drift",
+      "status": "passing",
+      "notes": "Verified transition rejects false acceptance criteria, succeeds when criteria/dependencies are valid, recalculates progress, and fingerprint validation detects stale checkpoints."
     }
   ],
   "application_tests": {

@@ -14,8 +14,11 @@
     {"id": "AC-4", "text": "Interruption and reconciliation protocols exist", "done": true},
     {"id": "AC-5", "text": "State validator/CLI exists", "done": true},
     {"id": "AC-6", "text": "GitHub Actions continuity workflow exists", "done": true},
-    {"id": "AC-7", "text": "AI Continuity Guard passes on the default branch", "done": false}
+    {"id": "AC-7", "text": "AI Continuity Guard passes on the default branch", "done": false},
+    {"id": "AC-8", "text": "State/checkpoint fingerprint drift is machine-detected", "done": true},
+    {"id": "AC-9", "text": "Guarded task transition rejects incomplete criteria or dependencies", "done": true},
+    {"id": "AC-10", "text": "Recovery command reports ledger/worktree drift after interruption", "done": true}
   ],
-  "required_tests": ["python tools/ai_state.py validate"],
-  "exact_next_action": "Merge the bootstrap PR, inspect the AI Continuity Guard run on main, and only after a green run mark AC-7 true and advance to TASK-0002."
+  "required_tests": ["python tools/ai_state.py validate", "python tools/ai_state.py recover"],
+  "exact_next_action": "Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
 }

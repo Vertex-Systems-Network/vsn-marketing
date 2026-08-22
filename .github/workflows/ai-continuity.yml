@@ -31,8 +31,13 @@ jobs:
       - name: Validate repository AI state
         run: python tools/ai_state.py validate
 
+      - name: Validate hash-chained execution journal
+        run: python tools/ai_journal.py validate
+
       - name: Show deterministic handoff
-        run: python tools/ai_state.py status
+        run: |
+          python tools/ai_state.py status
+          python tools/ai_journal.py status
 
       - name: Require ledger update for product changes (PR)
         if: github.event_name == 'pull_request'

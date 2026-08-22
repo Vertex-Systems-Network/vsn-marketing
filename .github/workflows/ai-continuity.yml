@@ -14,7 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-ai-ledger:
+  governance:
+    name: governance
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -17,8 +17,15 @@
     {"id": "AC-7", "text": "AI Continuity Guard passes on the default branch", "done": false},
     {"id": "AC-8", "text": "State/checkpoint fingerprint drift is machine-detected", "done": true},
     {"id": "AC-9", "text": "Guarded task transition rejects incomplete criteria or dependencies", "done": true},
-    {"id": "AC-10", "text": "Recovery command reports ledger/worktree drift after interruption", "done": true}
+    {"id": "AC-10", "text": "Recovery command reports ledger/worktree drift after interruption", "done": true},
+    {"id": "AC-11", "text": "Append-only hash-chained execution journal detects tampering and stale state", "done": true},
+    {"id": "AC-12", "text": "Continuity integrity tests run inside the required governance check", "done": true}
   ],
-  "required_tests": ["python tools/ai_state.py validate", "python tools/ai_state.py recover"],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "python tools/ai_state.py recover",
+    "python tools/ai_journal.py validate",
+    "python tools/test_ai_continuity.py"
+  ],
   "exact_next_action": "Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
 }

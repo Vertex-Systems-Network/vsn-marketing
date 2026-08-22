@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -12,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 STATE_PATH = ROOT / ".ai" / "state" / "CURRENT-STATE.yaml"
 JOURNAL_PATH = ROOT / ".ai" / "state" / "EXECUTION-JOURNAL.jsonl"
+JOURNAL_RELATIVE_PATH = ".ai/state/EXECUTION-JOURNAL.jsonl"
 
 ALLOWED_TYPES = {
     "bootstrap_sync",
@@ -46,6 +48,10 @@ def state_fingerprint(state: dict) -> str:
     return canonical_hash(payload)
 
 
+def nonempty_lines(text: str) -> list[str]:
+    return [line for line in text.splitlines() if line.strip()]
+
+
 def read_events() -> list[dict]:
     if not JOURNAL_PATH.exists():
         raise ValueError("missing .ai/state/EXECUTION-JOURNAL.jsonl")
@@ -59,6 +65,48 @@ def read_events() -> list[dict]:
             raise ValueError(f"journal line {line_no} is invalid JSON: {exc}") from exc
         events.append(event)
     return events
+
+
+def validate_append_only_lines(base_lines: list[str], current_lines: list[str]) -> list[str]:
+    if len(current_lines) < len(base_lines):
+        return [
+            f"execution journal was truncated: base has {len(base_lines)} event line(s), "
+            f"current has {len(current_lines)}"
+        ]
+    for index, old_line in enumerate(base_lines):
+        if current_lines[index] != old_line:
+            return [
+                f"execution journal history was rewritten at line {index + 1}; "
+                "existing event bytes are immutable and only new lines may be appended"
+            ]
+    return []
+
+
+def verify_append_only(base: str) -> list[str]:
+    verify = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{base}^{{commit}}"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if verify.returncode != 0:
+        return [f"cannot verify journal base commit {base!r}: {verify.stderr.strip()}"]
+
+    proc = subprocess.run(
+        ["git", "show", f"{base}:{JOURNAL_RELATIVE_PATH}"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if proc.returncode != 0:
+        # The bootstrap PR legitimately introduces the journal for the first time.
+        return []
+
+    base_lines = nonempty_lines(proc.stdout)
+    current_lines = nonempty_lines(JOURNAL_PATH.read_text(encoding="utf-8"))
+    return validate_append_only_lines(base_lines, current_lines)
 
 
 def validate() -> list[str]:
@@ -151,6 +199,8 @@ def main() -> int:
     rec = sub.add_parser("record")
     rec.add_argument("--type", required=True, choices=sorted(ALLOWED_TYPES))
     rec.add_argument("--summary", required=True)
+    append = sub.add_parser("verify-append-only")
+    append.add_argument("--base", required=True)
     args = parser.parse_args()
 
     try:
@@ -179,6 +229,15 @@ def main() -> int:
                 for error in errors:
                     print(f"- {error}", file=sys.stderr)
                 return 1
+            return 0
+        if args.command == "verify-append-only":
+            errors = verify_append_only(args.base)
+            if errors:
+                print("AI execution journal append-only check FAILED:", file=sys.stderr)
+                for error in errors:
+                    print(f"- {error}", file=sys.stderr)
+                return 1
+            print("AI execution journal append-only check PASSED")
             return 0
     except (KeyError, ValueError, TypeError, FileNotFoundError, json.JSONDecodeError) as exc:
         print(f"AI journal error: {exc}", file=sys.stderr)

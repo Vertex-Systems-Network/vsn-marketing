@@ -2,33 +2,9 @@
   "schema_version": 1,
   "updated_for_task": "TASK-0001",
   "suites": [
-    {
-      "name": "ai-continuity-validation",
-      "command": "python tools/ai_state.py validate",
-      "status": "passing",
-      "notes": "PR #2 governance workflow run #6 passed on the pull-request branch; required default-branch execution remains pending until merge."
-    },
-    {
-      "name": "ai-continuity-recovery-and-transition-simulation",
-      "command": "local isolated simulation of validate/recover/transition/fingerprint drift",
-      "status": "passing",
-      "notes": "Verified transition rejects false acceptance criteria, succeeds when criteria/dependencies are valid, recalculates progress, and fingerprint validation detects stale checkpoints."
-    },
-    {
-      "name": "ai-execution-journal-validation",
-      "command": "python tools/ai_journal.py validate",
-      "status": "passing",
-      "notes": "PR #2 governance run #6 validated sequence, previous-hash linkage, event hashes, active-task binding, and current-state fingerprint binding."
-    },
-    {
-      "name": "ai-continuity-integrity-tests",
-      "command": "python tools/test_ai_continuity.py",
-      "status": "passing",
-      "notes": "Five zero-dependency tests passed in PR #2 governance run #6: valid chain, tamper detection, stale-state detection, active-task mismatch detection, and repository journal validation."
-    }
+    {"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"PR #2 governance workflow passes on the pull-request branch; required default-branch execution remains pending until merge."},
+    {"name":"ai-continuity-recovery-and-transition-simulation","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Covers transition guards, fingerprint drift, journal hash/state/task integrity, valid append, history rewrite rejection and truncation rejection."},
+    {"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Covers deterministic manifests, checksum/source-order verification, stale-context detection and full context-pack content assembly."}
   ],
-  "application_tests": {
-    "status": "not_started",
-    "reason": "Application stack has not yet been scaffolded because TASK-0002 is dependency-blocked until TASK-0001 completes."
-  }
+  "application_tests": {"status":"not_started","reason":"Application stack has not yet been scaffolded; TASK-0002 remains dependency-blocked until TASK-0001 is certified on main."}
 }

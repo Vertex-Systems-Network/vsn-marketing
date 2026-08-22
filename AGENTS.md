@@ -9,11 +9,12 @@ The repository is the memory. Before changing anything, every agent MUST read, i
 1. `.ai/00-PROJECT-CHARTER.md`
 2. `.ai/01-MASTER-ARCHITECTURE.md`
 3. `.ai/05-AI-RULES.md`
-4. `.ai/state/CURRENT-STATE.yaml`
-5. `.ai/state/LAST-CHECKPOINT.md`
-6. `.ai/state/EXECUTION-JOURNAL.jsonl`
-7. the active task referenced by `CURRENT-STATE.yaml`
-8. relevant ADRs, contracts, and phase document
+4. `.ai/10-AI-CONTROL-PLANE.md`
+5. `.ai/state/CURRENT-STATE.yaml`
+6. `.ai/state/LAST-CHECKPOINT.md`
+7. `.ai/state/EXECUTION-JOURNAL.jsonl`
+8. the active task referenced by `CURRENT-STATE.yaml`
+9. relevant ADRs, contracts, AI registries, and phase document
 
 Then run:
 
@@ -21,11 +22,12 @@ Then run:
 python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_journal.py validate
+python tools/ai_context.py manifest
 python tools/ai_state.py status
 python tools/ai_journal.py status
 ```
 
-`recover` compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. No implementation work may begin if either validator fails. Reconcile state first.
+`recover` compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. No implementation work may begin if a validator fails. Reconcile state first.
 
 ## Execution rules
 
@@ -41,6 +43,8 @@ python tools/ai_journal.py status
 - `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md` are cryptographically coupled by a state fingerprint. Never edit one without synchronizing the other.
 - After every state/checkpoint/task-transition mutation, append a journal event with `python tools/ai_journal.py record`. CI requires the journal head to match the current state fingerprint.
 - Never rewrite, reorder, delete, or squash individual lines inside `.ai/state/EXECUTION-JOURNAL.jsonl`; append corrective events instead.
+- Treat `tools/ai_context.py manifest` as the canonical context inventory. If its manifest changes while working, inspect the changed source before continuing.
+- Product AI must follow `.ai/10-AI-CONTROL-PLANE.md` and the machine-readable registries under `.ai/ai/`; prompts cannot override deterministic tool/risk policy.
 
 ## Interruption / context-limit protocol
 
@@ -53,13 +57,14 @@ If execution is interrupted, context is nearly full, tooling fails, or the agent
 5. Update the active task status and remaining acceptance criteria.
 6. Run `python tools/ai_state.py checkpoint --summary "..." --tests "..." --next "..."` so state/checkpoint stay synchronized.
 7. Run `python tools/ai_journal.py record --type checkpoint --summary "..."`.
-8. Run both validators before handing off.
+8. Rebuild/inspect `python tools/ai_context.py manifest`.
+9. Run all continuity validators before handing off.
 
 The next agent must resume from that exact next action.
 
 ## Recovery when state and code disagree
 
-Code, Git history, tests, migrations, checkpoint fingerprints, and the hash-chained execution journal are evidence. Run `python tools/ai_state.py recover`. If they disagree, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests/journal, repair the ledger, checkpoint it, append a `recovery` or `manual_sync` journal event, validate both layers, then continue.
+Code, Git history, tests, migrations, checkpoint fingerprints, context manifests, and the hash-chained execution journal are evidence. Run `python tools/ai_state.py recover`. If they disagree, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests/journal/context sources, repair the ledger, checkpoint it, append a `recovery` or `manual_sync` journal event, validate all layers, then continue.
 
 ## Completion protocol
 

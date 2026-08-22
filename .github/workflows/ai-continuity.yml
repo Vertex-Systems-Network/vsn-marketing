@@ -37,6 +37,12 @@ jobs:
       - name: Test AI continuity integrity guards
         run: python tools/test_ai_continuity.py
 
+      - name: Test deterministic AI context packs
+        run: python tools/test_ai_context.py
+
+      - name: Compile deterministic AI context manifest
+        run: python tools/ai_context.py manifest > /tmp/vsn-ai-context-manifest.json
+
       - name: Require append-only journal history (PR)
         if: github.event_name == 'pull_request'
         run: python tools/ai_journal.py verify-append-only --base "${{ github.event.pull_request.base.sha }}"

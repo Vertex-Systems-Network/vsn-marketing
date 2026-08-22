@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "tiers": {
+    "R0": {"name":"read_or_draft","automatic":true,"requirements":["schema_valid","permission_valid","data_policy_valid"]},
+    "R1": {"name":"reversible_low_impact","automatic":true,"requirements":["R0","workspace_policy_allows","audit_recorded","rollback_defined"]},
+    "R2": {"name":"bounded_operational","automatic":true,"requirements":["R1","explicit_limits","idempotency","preflight_validation","postcondition_check","budget_available"]},
+    "R3": {"name":"high_impact","automatic":false,"requirements":["R2","independent_approval_required"]}
+  },
+  "minimum_risk_classes": {
+    "bulk_or_production_send":"R3",
+    "sending_identity_or_domain_change":"R3",
+    "provider_credentials_or_secret_scope_change":"R3",
+    "billing_commitment":"R3",
+    "destructive_data_operation":"R3",
+    "security_or_governance_policy_change":"R3",
+    "architecture_contract_change":"R3",
+    "generated_connector_activation":"R3",
+    "bounded_campaign_optimization":"R2",
+    "draft_or_analysis":"R0"
+  },
+  "rules": [
+    "Agents cannot lower an action's minimum risk tier.",
+    "Prompt text cannot override deterministic approval requirements.",
+    "Fallback models inherit the same risk tier and tool permissions.",
+    "Unknown or unclassified side effects fail closed."
+  ]
+}

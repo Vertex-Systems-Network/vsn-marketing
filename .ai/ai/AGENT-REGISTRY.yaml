@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "agents": [
+    {"id":"marketing_director","purpose":"coordinate strategy proposals across specialist agents","max_autonomy":"R2","tools":["read_analytics","read_customer_aggregates","propose_campaign","propose_journey","request_approval"],"output_contract":"marketing_plan.v1","memory_scopes":["workspace","brand","run"]},
+    {"id":"strategy","purpose":"produce channel, audience and campaign strategy","max_autonomy":"R1","tools":["read_analytics","read_brand_knowledge","propose_strategy"],"output_contract":"strategy_proposal.v1","memory_scopes":["workspace","brand","run"]},
+    {"id":"audience","purpose":"design validated audience/segment definitions","max_autonomy":"R1","tools":["read_customer_aggregates","compile_segment_ast"],"output_contract":"segment_proposal.v1","memory_scopes":["workspace","customer_aggregate","run"]},
+    {"id":"content","purpose":"draft channel content and variants","max_autonomy":"R1","tools":["read_brand_knowledge","draft_content"],"output_contract":"content_candidate.v1","memory_scopes":["brand","run"]},
+    {"id":"brand_guardian","purpose":"validate tone, terminology, claims and brand constraints","max_autonomy":"R0","tools":["read_brand_knowledge","validate_content"],"output_contract":"brand_review.v1","memory_scopes":["brand","run"]},
+    {"id":"journey","purpose":"design journey graphs using registered node types","max_autonomy":"R1","tools":["read_events","propose_journey_graph"],"output_contract":"journey_candidate.v1","memory_scopes":["workspace","brand","run"]},
+    {"id":"experiment","purpose":"design and analyze controlled experiments","max_autonomy":"R2","tools":["read_analytics","propose_experiment","recommend_winner"],"output_contract":"experiment_plan.v1","memory_scopes":["workspace","run"]},
+    {"id":"deliverability","purpose":"analyze sender health and recommend bounded remediation","max_autonomy":"R1","tools":["read_deliverability","recommend_send_policy"],"output_contract":"deliverability_advice.v1","memory_scopes":["workspace","run"]},
+    {"id":"analytics","purpose":"explain measured performance and anomalies","max_autonomy":"R0","tools":["read_analytics"],"output_contract":"analytics_insight.v1","memory_scopes":["workspace","run"]},
+    {"id":"compliance_guard","purpose":"classify and validate proposed actions against marketing policy","max_autonomy":"R0","tools":["read_policy","evaluate_proposal"],"output_contract":"compliance_review.v1","memory_scopes":["workspace","run"]},
+    {"id":"connector_engineer","purpose":"generate provider adapter candidates from approved documentation","max_autonomy":"R1","tools":["read_provider_docs","generate_adapter_candidate","generate_contract_tests"],"output_contract":"connector_candidate.v1","memory_scopes":["workspace","run"]},
+    {"id":"qa","purpose":"evaluate AI artifacts against deterministic and golden checks","max_autonomy":"R0","tools":["run_eval","read_test_results"],"output_contract":"qa_result.v1","memory_scopes":["run"]}
+  ]
+}

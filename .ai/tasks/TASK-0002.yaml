@@ -4,7 +4,7 @@
   "phase": "PHASE-00",
   "module": "Core",
   "title": "Lock initial application stack and bootstrap architecture",
-  "status": "ready",
+  "status": "planned",
   "objective": "Inspect runtime/deployment requirements, choose the initial implementation stack without violating the modular-monolith architecture, record the decision in an approved ADR, and define the exact bootstrap structure for PHASE-01.",
   "dependencies": ["TASK-0001"],
   "acceptance_criteria": [
@@ -15,5 +15,5 @@
     {"id": "AC-5", "text": "PHASE-01 task breakdown is created before PHASE-01 starts", "done": false}
   ],
   "required_tests": ["python tools/ai_state.py validate"],
-  "exact_next_action": "Review repository/deployment constraints and create the stack decision ADR; do not scaffold application code before the ADR is accepted."
+  "exact_next_action": "Do not begin until TASK-0001 is completed."
 }

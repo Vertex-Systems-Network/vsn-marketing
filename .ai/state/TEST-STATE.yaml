@@ -5,8 +5,8 @@
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
-      "status": "expected_passing",
-      "notes": "Executed by GitHub Actions on the bootstrap PR."
+      "status": "not_run",
+      "notes": "Awaiting first default-branch GitHub Actions execution."
     }
   ],
   "application_tests": {

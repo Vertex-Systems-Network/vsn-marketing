@@ -6,7 +6,7 @@
       "phase": "PHASE-00",
       "title": "Install AI continuity control plane",
       "weight": 40,
-      "status": "completed",
+      "status": "in_progress",
       "dependencies": []
     },
     {
@@ -14,7 +14,7 @@
       "phase": "PHASE-00",
       "title": "Lock initial application stack and bootstrap architecture",
       "weight": 60,
-      "status": "ready",
+      "status": "planned",
       "dependencies": ["TASK-0001"]
     }
   ]

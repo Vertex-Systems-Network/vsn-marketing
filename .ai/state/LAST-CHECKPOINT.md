@@ -2,23 +2,23 @@
 
 ## State
 
-- Completed task: `TASK-0001`
-- Active task: `TASK-0002` (`ready`)
+- Active task: `TASK-0001` (`in_progress`)
+- Next task: `TASK-0002` (`planned`, dependency not yet complete)
 - Current phase: `PHASE-00`
 
-## Completed
+## Completed / observed
 
-- Added repository-wide agent boot/resume contract.
-- Added project charter, master architecture, module registry, integration/security/coding/testing/DoD rules.
-- Added machine-readable task registry/current state/test state.
-- Added interruption/recovery protocol and ADR mechanism.
-- Added continuity validator/CLI and GitHub Actions enforcement.
+- Repository-wide agent boot/resume contract is implemented.
+- Architecture, module registry, integration/security/coding/testing/DoD rules are implemented.
+- Machine-readable task registry/current state/test state are implemented.
+- Interruption/recovery protocol and ADR mechanism are implemented.
+- Continuity validator/CLI and GitHub Actions workflow are committed on the bootstrap branch.
+- PR #2 is open and mergeable.
 
-## Not started
+## Verification state
 
-- No application framework or product feature code has been scaffolded.
-- Initial backend/frontend/database/queue stack has not been locked by ADR.
+The new workflow has not yet executed on the default branch. The bootstrap is intentionally not marked complete until that run is green.
 
 ## Exact next action
 
-Run continuity validation, read `TASK-0002`, inspect deployment/runtime constraints, then create the stack decision ADR. Do not scaffold application code until that decision is recorded.
+Merge PR #2, inspect the `AI Continuity Guard` workflow on `main`, fix any failure if necessary, then mark `TASK-0001` complete and advance to `TASK-0002` only after green verification.

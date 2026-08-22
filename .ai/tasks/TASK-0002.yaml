@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0002",
+  "phase": "PHASE-00",
+  "module": "Core",
+  "title": "Lock initial application stack and bootstrap architecture",
+  "status": "ready",
+  "objective": "Inspect runtime/deployment requirements, choose the initial implementation stack without violating the modular-monolith architecture, record the decision in an approved ADR, and define the exact bootstrap structure for PHASE-01.",
+  "dependencies": ["TASK-0001"],
+  "acceptance_criteria": [
+    {"id": "AC-1", "text": "Runtime and deployment constraints are documented", "done": false},
+    {"id": "AC-2", "text": "Backend/frontend/database/queue/testing choices are compared", "done": false},
+    {"id": "AC-3", "text": "Initial stack is recorded in an ADR", "done": false},
+    {"id": "AC-4", "text": "Module/bootstrap folder structure is defined", "done": false},
+    {"id": "AC-5", "text": "PHASE-01 task breakdown is created before PHASE-01 starts", "done": false}
+  ],
+  "required_tests": ["python tools/ai_state.py validate"],
+  "exact_next_action": "Review repository/deployment constraints and create the stack decision ADR; do not scaffold application code before the ADR is accepted."
+}

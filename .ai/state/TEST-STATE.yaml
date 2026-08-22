@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "updated_for_task": "TASK-0001",
+  "suites": [
+    {
+      "name": "ai-continuity-validation",
+      "command": "python tools/ai_state.py validate",
+      "status": "expected_passing",
+      "notes": "Executed by GitHub Actions on the bootstrap PR."
+    }
+  ],
+  "application_tests": {
+    "status": "not_started",
+    "reason": "Application stack has not yet been scaffolded."
+  }
+}

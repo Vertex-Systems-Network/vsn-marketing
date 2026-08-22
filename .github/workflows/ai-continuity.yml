@@ -1,0 +1,42 @@
+name: AI Continuity Guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-continuity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-ai-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Validate repository AI state
+        run: python tools/ai_state.py validate
+
+      - name: Show deterministic handoff
+        run: python tools/ai_state.py status
+
+      - name: Require ledger update for product changes (PR)
+        if: github.event_name == 'pull_request'
+        run: python tools/ai_state.py verify-change-set --base "${{ github.event.pull_request.base.sha }}" --head "${{ github.sha }}"
+
+      - name: Require ledger update for product changes (push)
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        run: python tools/ai_state.py verify-change-set --base "${{ github.event.before }}" --head "${{ github.sha }}"

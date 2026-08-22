@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "capability_namespace": [
+    "email.send.transactional",
+    "email.send.marketing",
+    "email.send.batch",
+    "email.schedule.remote",
+    "email.attachments",
+    "email.tags",
+    "template.remote.create",
+    "template.remote.update",
+    "template.remote.delete",
+    "template.remote.sync",
+    "domain.remote.verify",
+    "suppression.remote.read",
+    "suppression.remote.write",
+    "webhook.delivered",
+    "webhook.bounced",
+    "webhook.complained",
+    "webhook.opened",
+    "webhook.clicked",
+    "webhook.unsubscribed",
+    "quota.remote.read",
+    "mailbox.read",
+    "mailbox.send_user_message",
+    "mailbox.reply"
+  ],
+  "rule": "A connector advertises only capabilities proven by its implementation and contract tests. Unknown is not treated as supported."
+}

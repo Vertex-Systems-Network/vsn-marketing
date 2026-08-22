@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0001",
+  "phase": "PHASE-00",
+  "module": "Core",
+  "title": "Install AI continuity control plane",
+  "status": "completed",
+  "objective": "Create repository-native memory, governance, task state, checkpoints, recovery rules, validation, and CI enforcement so development can resume across AI sessions without chat-memory dependency.",
+  "dependencies": [],
+  "acceptance_criteria": [
+    {"id": "AC-1", "text": "Root agent entry instructions exist", "done": true},
+    {"id": "AC-2", "text": "Architecture/governance/security/testing documents exist", "done": true},
+    {"id": "AC-3", "text": "Machine-readable current state and task registry exist", "done": true},
+    {"id": "AC-4", "text": "Interruption and reconciliation protocols exist", "done": true},
+    {"id": "AC-5", "text": "State validator/CLI exists", "done": true},
+    {"id": "AC-6", "text": "GitHub Actions validates state and change-set drift", "done": true}
+  ],
+  "required_tests": ["python tools/ai_state.py validate"],
+  "notes": "Completed by the AI continuity bootstrap PR."
+}

@@ -34,6 +34,9 @@ jobs:
       - name: Validate hash-chained execution journal
         run: python tools/ai_journal.py validate
 
+      - name: Test AI continuity integrity guards
+        run: python tools/test_ai_continuity.py
+
       - name: Show deterministic handoff
         run: |
           python tools/ai_state.py status

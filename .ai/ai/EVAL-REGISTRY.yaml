@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "suites": [
+    {"id":"marketing_director_plan","status":"planned","promotion_gate":true},
+    {"id":"strategy_proposal","status":"planned","promotion_gate":true},
+    {"id":"segment_ast","status":"planned","promotion_gate":true},
+    {"id":"brand_content","status":"planned","promotion_gate":true},
+    {"id":"brand_guard","status":"planned","promotion_gate":true},
+    {"id":"journey_graph","status":"planned","promotion_gate":true},
+    {"id":"experiment_design","status":"planned","promotion_gate":true},
+    {"id":"deliverability","status":"planned","promotion_gate":true},
+    {"id":"analytics_explanation","status":"planned","promotion_gate":true},
+    {"id":"connector_generation","status":"planned","promotion_gate":true}
+  ],
+  "promotion_rule": "A prompt/model/routing candidate cannot become active until every required promotion-gate suite for that candidate passes against its pinned dataset/version."
+}

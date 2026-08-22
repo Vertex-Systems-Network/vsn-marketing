@@ -22,44 +22,37 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-
       - name: Validate repository AI state
         run: python tools/ai_state.py validate
-
       - name: Validate hash-chained execution journal
         run: python tools/ai_journal.py validate
-
+      - name: Validate AI policy registries
+        run: python tools/ai_policy.py
       - name: Test AI continuity integrity guards
         run: python tools/test_ai_continuity.py
-
       - name: Test deterministic AI context packs
         run: python tools/test_ai_context.py
-
+      - name: Test AI policy negative guards
+        run: python tools/test_ai_policy.py
       - name: Compile deterministic AI context manifest
         run: python tools/ai_context.py manifest > /tmp/vsn-ai-context-manifest.json
-
       - name: Require append-only journal history (PR)
         if: github.event_name == 'pull_request'
         run: python tools/ai_journal.py verify-append-only --base "${{ github.event.pull_request.base.sha }}"
-
       - name: Require append-only journal history (push)
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
         run: python tools/ai_journal.py verify-append-only --base "${{ github.event.before }}"
-
       - name: Show deterministic handoff
         run: |
           python tools/ai_state.py status
           python tools/ai_journal.py status
-
       - name: Require ledger update for product changes (PR)
         if: github.event_name == 'pull_request'
         run: python tools/ai_state.py verify-change-set --base "${{ github.event.pull_request.base.sha }}" --head "${{ github.sha }}"
-
       - name: Require ledger update for product changes (push)
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
         run: python tools/ai_state.py verify-change-set --base "${{ github.event.before }}" --head "${{ github.sha }}"

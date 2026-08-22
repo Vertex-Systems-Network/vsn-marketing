@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
-  "updated_for_task": "TASK-0001",
-  "suites": [
-    {"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"PR #2 governance workflow passes on the pull-request branch; required default-branch execution remains pending until merge."},
-    {"name":"ai-continuity-recovery-and-transition-simulation","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Covers transition guards, fingerprint drift, journal hash/state/task integrity, valid append, history rewrite rejection and truncation rejection."},
-    {"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Covers deterministic manifests, checksum/source-order verification, stale-context detection and full context-pack content assembly."}
+  "schema_version":1,
+  "updated_for_task":"TASK-0001",
+  "suites":[
+    {"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"PR #2 governance passes on the pull-request branch; default-branch execution remains pending until merge."},
+    {"name":"ai-continuity-integrity","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Covers transition/fingerprint/journal/append-only guards."},
+    {"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Covers deterministic context, checksum/source drift and full pack assembly."},
+    {"name":"ai-policy-registry-integrity","command":"python tools/ai_policy.py && python tools/test_ai_policy.py","status":"passing","notes":"Validates agent-tool-risk-memory relationships, prompt-eval references, model capabilities, observability requirements and six negative policy cases."}
   ],
-  "application_tests": {"status":"not_started","reason":"Application stack has not yet been scaffolded; TASK-0002 remains dependency-blocked until TASK-0001 is certified on main."}
+  "application_tests":{"status":"not_started","reason":"Application stack has not yet been scaffolded; TASK-0002 remains dependency-blocked until TASK-0001 is certified on main."}
 }

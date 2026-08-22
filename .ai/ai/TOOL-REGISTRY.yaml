@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "tools": [
+    {"id":"read_analytics","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"read_customer_aggregates","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"propose_campaign","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"propose_journey","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"request_approval","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"read_brand_knowledge","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"propose_strategy","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"compile_segment_ast","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"draft_content","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"validate_content","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"read_events","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"propose_journey_graph","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"propose_experiment","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"recommend_winner","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"read_deliverability","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"recommend_send_policy","effect":"proposal","min_risk":"R0","idempotency_required":false},
+    {"id":"read_policy","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"evaluate_proposal","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"read_provider_docs","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"generate_adapter_candidate","effect":"reversible_write","min_risk":"R1","idempotency_required":true},
+    {"id":"generate_contract_tests","effect":"reversible_write","min_risk":"R1","idempotency_required":true},
+    {"id":"run_eval","effect":"read","min_risk":"R0","idempotency_required":false},
+    {"id":"read_test_results","effect":"read","min_risk":"R0","idempotency_required":false}
+  ],
+  "execution_rule": "Runtime tool instances may add stricter risk/approval requirements but may never weaken this registry."
+}

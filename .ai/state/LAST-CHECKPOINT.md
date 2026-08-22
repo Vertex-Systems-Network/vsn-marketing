@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-08-22T23:38:00+00:00`
+- Timestamp: `2026-08-22T23:45:00+00:00`
 - Active task: `TASK-0001`
 - Next task: `TASK-0002`
 - Current phase: `PHASE-00`
@@ -11,19 +11,18 @@
 
 ## Completed / observed this session
 
-- Latest PR #2 governance run passed state validation, hash-chained journal validation, integrity tests, append-only history enforcement, deterministic handoff, and product-change ledger synchronization.
-- Added canonical product-AI control-plane architecture covering model routing, typed tools, memory scopes, context packs, prompt versioning, evaluation gates, observability, budgets, fallbacks, circuit breakers, and bounded self-improvement.
-- Added machine-readable agent, autonomy, model-capability and prompt registries so future implementation is capability-driven rather than vendor/prompt hardcoded.
-- Added `tools/ai_context.py` to compile the active repository state into a deterministic ordered SHA-256 context manifest or full context pack.
-- Added context-pack integrity tests for deterministic builds, source/checksum drift detection and full-content assembly.
-- Independent review remains the only merge blocker; repository auto-merge is not enabled, so GitHub rejected enabling it through the API.
+- Added the canonical AI-native control-plane specification and deterministic repository context-pack compiler.
+- Added machine-readable agent, autonomy, model capability, prompt, tool, evaluation, memory and observability registries.
+- Added `tools/ai_policy.py` so agent-tool permissions, autonomy ceilings, high-risk R3 invariants, memory scopes, prompt/eval references, model capability keys and observability fields cannot drift silently.
+- Added positive/negative policy tests and context-pack drift tests; CI now runs both validators and both test suites.
+- Repository auto-merge is unavailable; GitHub rejected enabling it. Independent review remains the merge gate.
 
 ## Tests
 
-- PR #2 governance run #10: PASS before this checkpoint update.
-- `python tools/test_ai_continuity.py`: PASS, including append-only history guards.
-- `python tools/test_ai_context.py`: PASS in isolated fixture simulation.
-- `python tools/ai_context.py` source: Python compile PASS.
+- Prior PR #2 governance run #10: PASS.
+- `tools/ai_context.py`, `tools/ai_policy.py`, `tools/test_ai_context.py`, `tools/test_ai_policy.py`: Python compile PASS before commit.
+- Isolated context tests: PASS.
+- Policy tests cover repository validity plus unknown tool, autonomy/tool risk mismatch, missing eval, R3 auto-execution, unknown memory scope and duplicate tool rejection.
 - Application tests: not started because product scaffolding is intentionally blocked until TASK-0002.
 
 ## Blockers

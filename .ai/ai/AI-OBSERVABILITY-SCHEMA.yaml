@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "required_trace_fields": ["trace_id","workspace_id","agent_id","task_class","prompt_id","prompt_version","requested_capabilities","selected_route","input_schema_version","output_schema_version","context_manifest_sha256","risk_tier","tool_calls","policy_decisions","started_at","finished_at","latency_ms","status"],
+  "conditional_fields": {
+    "usage_telemetry":"when provider exposes normalized usage",
+    "cost":"when calculable",
+    "fallback_path":"when a fallback is attempted",
+    "evaluation_refs":"when execution is part of an eval/canary"
+  },
+  "privacy_rule":"Trace payloads store references/hashes for sensitive context where possible and follow workspace retention/data policy."
+}

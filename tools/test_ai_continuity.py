@@ -90,6 +90,23 @@ class JournalIntegrityTests(unittest.TestCase):
         errors = self.module.validate()
         self.assertTrue(any("does not match active task" in error for error in errors), errors)
 
+    def test_append_only_accepts_exact_prefix_plus_new_events(self):
+        base = ['{"seq":1}', '{"seq":2}']
+        current = base + ['{"seq":3}']
+        self.assertEqual([], self.module.validate_append_only_lines(base, current))
+
+    def test_append_only_rejects_rewritten_history(self):
+        base = ['{"seq":1}', '{"seq":2}']
+        current = ['{"seq":1}', '{"seq":2,"rewritten":true}', '{"seq":3}']
+        errors = self.module.validate_append_only_lines(base, current)
+        self.assertTrue(any("rewritten" in error for error in errors), errors)
+
+    def test_append_only_rejects_truncation(self):
+        base = ['{"seq":1}', '{"seq":2}']
+        current = ['{"seq":1}']
+        errors = self.module.validate_append_only_lines(base, current)
+        self.assertTrue(any("truncated" in error for error in errors), errors)
+
 
 class RepositoryContinuityTests(unittest.TestCase):
     def test_repository_journal_validator_passes(self):

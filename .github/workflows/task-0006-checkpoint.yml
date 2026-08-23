@@ -1,0 +1,41 @@
+name: TASK-0006 transactional checkpoint
+
+on:
+  push:
+    branches: [task-0006-canonical-events]
+
+permissions:
+  contents: write
+
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout task branch
+        uses: actions/checkout@v7
+        with:
+          ref: task-0006-canonical-events
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Recover and validate continuity
+        run: |
+          python tools/ai_txn.py recover
+          python tools/ai_txn.py validate
+      - name: Record TASK-0006 start checkpoint transactionally
+        run: >-
+          python tools/ai_txn.py checkpoint
+          --summary "Started TASK-0006 implementation from exact main HEAD 20d8d437dab8a4430c3ee418b46a30fc08004c38 after governance-main PASS run 32638878905. Scope is limited to canonical events, typed outbox publication, audit persistence, deterministic idempotency/retry/dead-letter semantics, and durable replay integration coverage."
+          --tests "Pre-implementation exact-head governance-main PASS: GitHub Actions run 32638878905. TASK-0006 implementation tests are pending."
+          --next "Implement the TASK-0006 canonical event envelope, typed outbox publication, AuditEvent persistence, deterministic idempotency/retry/dead-letter semantics, and durable replay integration tests; then certify the required suites on GitHub-hosted CI."
+      - name: Remove one-shot workflow and commit checkpoint
+        shell: bash
+        run: |
+          rm .github/workflows/task-0006-checkpoint.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: checkpoint TASK-0006 start"
+          git push origin HEAD:task-0006-canonical-events

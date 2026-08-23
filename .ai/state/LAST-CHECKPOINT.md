@@ -2,20 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T12:52:47+00:00`
-- Active task: `TASK-0006`
-- Next task: `TASK-0007`
+- Timestamp: `2026-08-23T12:58:58+00:00`
+- Active task: `TASK-0007`
+- Next task: `none`
 - Current phase: `PHASE-01`
 - Execution status: `ready`
-- State fingerprint: `66ec5628e685a79dc06b3fafef4d5abafb4867e0f3670567c95d15def2b2626b`
+- State fingerprint: `27916bf80416e88e796d76fa5bf118a618f9be5bc602c78ab6790ab68d715c77`
 
 ## Completed / observed this session
 
-Implemented TASK-0006 candidate on branch task-0006-canonical-events: versioned canonical event envelope and typed outbox listener; AuditEvent persistence; database-backed duplicate-safe idempotency; bounded outbox retry with terminal dead-letter state and explicit replay; unit/integration acceptance coverage and canonical event versioning documentation.
+Completed `TASK-0006` and activated `TASK-0007`.
+
+Transition evidence: TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315 passed AI Continuity Guard run 32640770685 and Application Foundation CI run 32640770631, including PHP 8.3 backend, PHP 8.5 backend/frontend build, and PostgreSQL 18 + Redis 8 integration. This transition run 32640928793 re-ran the required integration suite warning-clean before mutation.
 
 ## Tests
 
-Pre-implementation exact main HEAD governance-main PASS run 32638878905. TASK-0006 candidate tests are committed but GitHub-hosted application/integration certification is pending.
+PASS: python tools/ai_txn.py validate; PASS: php artisan test --testsuite=Integration --fail-on-warning --display-warnings; PASS: Application Foundation CI 32640770631; PASS: AI Continuity Guard 32640770685.
 
 ## Blockers
 
@@ -23,4 +25,4 @@ Pre-implementation exact main HEAD governance-main PASS run 32638878905. TASK-00
 
 ## Exact next action
 
-Run GitHub-hosted Application Foundation CI and AI Continuity Guard for the TASK-0006 candidate; fix any failures without changing acceptance criteria, then complete TASK-0006 only after all five criteria have exact-head evidence.
+Add the full application CI matrix and baseline observability, then certify PHASE-01 with backend, frontend, e2e, architecture, and continuity gates green.

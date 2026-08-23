@@ -4,7 +4,7 @@
   "phase": "PHASE-01",
   "module": "Events",
   "title": "Establish canonical events, audit, idempotency, and async execution foundation",
-  "status": "ready",
+  "status": "completed",
   "objective": "Create the canonical event envelope, durable outbox dispatcher, audit event model, retry/dead-letter policy, and idempotent asynchronous execution primitives required by later product modules.",
   "dependencies": [
     "TASK-0005"
@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "Canonical event envelope and versioning rules are implemented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Transactional outbox dispatcher publishes typed events safely",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "AuditEvent persistence captures state-changing execution evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Idempotency, retries, and terminal/dead-letter failure semantics are deterministic",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Integration tests prove durable replay and duplicate-safe execution",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

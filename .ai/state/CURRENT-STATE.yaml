@@ -19,7 +19,7 @@
   },
   "quality": {
     "continuity_validation": "passed_on_default_branch",
-    "application_test_status": "task_0005_ci_passed"
+    "application_test_status": "task_0006_ci_passed"
   },
   "blockers": [],
   "exact_next_action": "Add the full application CI matrix and baseline observability, then certify PHASE-01 with backend, frontend, e2e, architecture, and continuity gates green."

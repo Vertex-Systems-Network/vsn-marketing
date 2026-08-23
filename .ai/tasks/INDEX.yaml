@@ -104,7 +104,7 @@
       "phase": "PHASE-02",
       "title": "Persist canonical customer events and contact timelines",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0010"
       ]
@@ -114,7 +114,7 @@
       "phase": "PHASE-02",
       "title": "Certify PHASE-02 customer data core and isolation gates",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0011"
       ]

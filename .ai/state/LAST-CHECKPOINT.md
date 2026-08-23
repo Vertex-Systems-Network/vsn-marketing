@@ -2,20 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T22:17:25+00:00`
-- Active task: `TASK-0011`
-- Next task: `TASK-0012`
+- Timestamp: `2026-08-23T22:42:33+00:00`
+- Active task: `TASK-0012`
+- Next task: `none`
 - Current phase: `PHASE-02`
-- Execution status: `in_progress`
-- State fingerprint: `c55df0e84617b7a9b19be5c78202b1d07f8eb94ab8f8443b703d6dcd384f3e21`
+- Execution status: `ready`
+- State fingerprint: `7001c87037ca4e0b0cf59b7d0b18a55059920facfc91007440243e54e5770a4c`
 
 ## Completed / observed this session
 
-Started TASK-0011 implementation from certified main 332bbf7f459a8c97a54f071d3ca2918a67ee09c7. Scope is limited to canonical customer Event/EventType persistence bound to the TASK-0006 canonical event envelope, duplicate-safe internal event identity, tenant-safe contact subject linkage/timelines, and PostgreSQL durability/isolation coverage. No provider adapter or TASK-0012 certification work is included.
+Completed `TASK-0011` and activated `TASK-0012`.
+
+Transition evidence: Exact product head de78747f20b4738434fb1a11152a3734141e0928 passed AI Continuity Guard run 32670383037 and Application Foundation CI run 32670383081. AC-1 through AC-5 are supported by durable EventType/customer Event persistence bound to the TASK-0006 canonical envelope, composite workspace/brand/contact/contact-identity isolation, duplicate-safe internal canonical event identity with external provider IDs retained only as provenance, deterministic occurred/received contact timelines, transactional audit recording, and PostgreSQL direct-FK isolation coverage. No provider adapters or TASK-0012 certification implementation is included.
 
 ## Tests
 
-Preflight: governance-main run 32670012288 PASS on merged TASK-0010 commit 332bbf7f459a8c97a54f071d3ca2918a67ee09c7; accepted-state head e55c7b6aeba1a1d4fa235b5e96533a779b340500 passed AI Continuity Guard 32669890652 and Application Foundation CI 32669890672. TASK-0011 product tests are pending on this branch.
+python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32670383037 PASS; hosted Application Foundation CI 32670383081 PASS (php-floor, integration, e2e, foundation).
 
 ## Blockers
 
@@ -23,4 +25,4 @@ Preflight: governance-main run 32670012288 PASS on merged TASK-0010 commit 332bb
 
 ## Exact next action
 
-Bind canonical customer Event/EventType persistence to the existing TASK-0006 event envelope, then add duplicate-safe contact timeline queries and tenant-isolation coverage.
+Run the complete PHASE-02 customer-data acceptance matrix, close any isolation or invariant gaps, then record exact-head completion evidence before advancing the roadmap.

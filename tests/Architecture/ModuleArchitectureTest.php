@@ -1,10 +1,17 @@
 <?php
 
+function architectureAppPath(string $path = ''): string
+{
+    $appPath = dirname(__DIR__, 2).DIRECTORY_SEPARATOR.'app';
+
+    return $path === '' ? $appPath : $appPath.DIRECTORY_SEPARATOR.$path;
+}
+
 function modulePhpFiles(): array
 {
     $files = [];
     $iterator = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator(app_path('Modules'), FilesystemIterator::SKIP_DOTS),
+        new RecursiveDirectoryIterator(architectureAppPath('Modules'), FilesystemIterator::SKIP_DOTS),
     );
 
     foreach ($iterator as $file) {
@@ -26,7 +33,7 @@ test('module namespaces follow the filesystem boundary', function () {
         preg_match('/namespace\s+([^;]+);/', (string) $source, $matches);
         expect($matches[1] ?? null)->not->toBeNull();
 
-        $relativeDirectory = dirname(str_replace(app_path().DIRECTORY_SEPARATOR, '', $path));
+        $relativeDirectory = dirname(str_replace(architectureAppPath().DIRECTORY_SEPARATOR, '', $path));
         $expected = 'App\\'.str_replace(DIRECTORY_SEPARATOR, '\\', $relativeDirectory);
         expect($matches[1])->toBe($expected);
     }

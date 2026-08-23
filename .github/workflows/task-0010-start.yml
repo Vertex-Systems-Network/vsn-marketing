@@ -1,0 +1,87 @@
+name: TASK-0010 Start
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/task-0010-start.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  start:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'task-0010-consent-evidence'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Mark TASK-0010 in progress
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0010.yaml')
+          index_path = Path('.ai/tasks/INDEX.yaml')
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+
+          if state['execution']['active_task'] != 'TASK-0010' or task['status'] != 'ready':
+              raise SystemExit('TASK-0010 is not the ready active task; refusing to mutate canonical state')
+
+          task['status'] = 'in_progress'
+          for row in index['tasks']:
+              if row['id'] == 'TASK-0010':
+                  row['status'] = 'in_progress'
+                  break
+          else:
+              raise SystemExit('TASK-0010 missing from task index')
+
+          state['execution']['status'] = 'in_progress'
+          state['blockers'] = []
+
+          for path, payload in ((task_path, task), (index_path, index), (state_path, state)):
+              path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+      - name: Generate synchronized checkpoint
+        run: |
+          python tools/ai_state.py checkpoint \
+            --summary "Started TASK-0010 implementation from certified main cd418b348999f74d3351df487a9391c85dc9337d. Scope is limited to canonical append-oriented ConsentRecord evidence, deterministic workspace-scoped effective-consent queries, auditable state changes, and PostgreSQL evidence/isolation coverage. No PHASE-05 suppression/deliverability policy is included." \
+            --next "Implement append-only ConsentRecord evidence and effective-consent queries over the canonical contact identity, preserving provenance and failing closed across tenant boundaries." \
+            --tests "Preflight: governance-main run 32668224938 PASS on merged TASK-0009 commit cd418b348999f74d3351df487a9391c85dc9337d; accepted-state head 61bde438f1a60cf1e87b50c5c95f9e3c95f73f0c passed AI Continuity Guard 32668098232 and Application Foundation CI 32668098363. TASK-0010 product tests are pending on this branch."
+
+      - name: Append task-start journal event
+        run: |
+          python tools/ai_journal.py record \
+            --type task_started \
+            --summary "Started TASK-0010 implementation from certified main cd418b348999f74d3351df487a9391c85dc9337d: append-oriented ConsentRecord evidence, deterministic tenant-safe effective-consent queries, auditable mutations, and PostgreSQL evidence/isolation coverage. No suppression/deliverability policy is included."
+
+      - name: Validate synchronized continuity state
+        run: |
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/ai_txn.py validate
+
+      - name: Commit canonical task start
+        run: |
+          rm .github/workflows/task-0010-start.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai .github/workflows/task-0010-start.yml
+          git commit -m 'chore: start TASK-0010 consent evidence'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

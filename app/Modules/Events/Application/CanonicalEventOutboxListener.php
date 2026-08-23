@@ -27,6 +27,10 @@ final readonly class CanonicalEventOutboxListener
             throw new RuntimeException('Canonical event envelope does not match its durable outbox identity.');
         }
 
+        if ((int) ($message->headers['schema_version'] ?? 0) !== $event->schemaVersion) {
+            throw new RuntimeException('Canonical event outbox header and envelope schema versions disagree.');
+        }
+
         $this->events->dispatch(new CanonicalEventPublished($event));
     }
 }

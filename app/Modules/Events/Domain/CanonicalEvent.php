@@ -70,19 +70,25 @@ final readonly class CanonicalEvent
 
     public static function fromArray(array $data): self
     {
+        foreach (['event_id', 'event_type', 'occurred_at', 'received_at', 'workspace_id', 'subjects', 'source', 'schema_version', 'payload', 'source_metadata'] as $required) {
+            if (! array_key_exists($required, $data)) {
+                throw new InvalidArgumentException("Canonical event envelope is missing required field: {$required}");
+            }
+        }
+
         return new self(
-            eventId: (string) ($data['event_id'] ?? ''),
-            eventType: (string) ($data['event_type'] ?? ''),
-            occurredAt: new DateTimeImmutable((string) ($data['occurred_at'] ?? '')),
-            receivedAt: new DateTimeImmutable((string) ($data['received_at'] ?? '')),
-            workspaceId: (string) ($data['workspace_id'] ?? ''),
+            eventId: (string) $data['event_id'],
+            eventType: (string) $data['event_type'],
+            occurredAt: new DateTimeImmutable((string) $data['occurred_at']),
+            receivedAt: new DateTimeImmutable((string) $data['received_at']),
+            workspaceId: (string) $data['workspace_id'],
             brandId: isset($data['brand_id']) ? (string) $data['brand_id'] : null,
-            subjects: is_array($data['subjects'] ?? null) ? $data['subjects'] : [],
-            source: (string) ($data['source'] ?? ''),
+            subjects: is_array($data['subjects']) ? $data['subjects'] : [],
+            source: (string) $data['source'],
             sourceEventId: isset($data['source_event_id']) ? (string) $data['source_event_id'] : null,
-            schemaVersion: (int) ($data['schema_version'] ?? 0),
-            payload: is_array($data['payload'] ?? null) ? $data['payload'] : [],
-            sourceMetadata: is_array($data['source_metadata'] ?? null) ? $data['source_metadata'] : [],
+            schemaVersion: (int) $data['schema_version'],
+            payload: is_array($data['payload']) ? $data['payload'] : [],
+            sourceMetadata: is_array($data['source_metadata']) ? $data['source_metadata'] : [],
         );
     }
 

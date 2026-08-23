@@ -45,17 +45,6 @@ final readonly class IdempotentExecutor
             }
 
             $this->idempotency->complete($workspaceId, $scope, $key, $result);
-            $this->audit->record(
-                workspaceId: $workspaceId,
-                action: self::AUDIT_COMPLETED,
-                evidence: ['scope' => $scope, 'idempotency_key' => $key],
-                actorId: $actorId,
-                subjectType: 'idempotency',
-                subjectId: "{$scope}:{$key}",
-                correlationId: $correlationId,
-            );
-
-            return $result;
         } catch (Throwable $exception) {
             $this->idempotency->fail($workspaceId, $scope, $key, $exception->getMessage());
             $this->audit->record(
@@ -70,5 +59,17 @@ final readonly class IdempotentExecutor
 
             throw $exception;
         }
+
+        $this->audit->record(
+            workspaceId: $workspaceId,
+            action: self::AUDIT_COMPLETED,
+            evidence: ['scope' => $scope, 'idempotency_key' => $key],
+            actorId: $actorId,
+            subjectType: 'idempotency',
+            subjectId: "{$scope}:{$key}",
+            correlationId: $correlationId,
+        );
+
+        return $result;
     }
 }

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('workspace_id')->index();
             $table->uuid('brand_id')->nullable()->index();
-            $table->uuid('actor_id')->nullable()->index();
+            $table->string('actor_id', 191)->nullable()->index();
             $table->string('action', 191)->index();
             $table->string('subject_type', 120)->nullable();
             $table->string('subject_id', 191)->nullable();
             $table->json('evidence');
-            $table->uuid('correlation_id')->nullable()->index();
+            $table->string('correlation_id', 191)->nullable()->index();
             $table->timestampTz('occurred_at');
             $table->timestampTz('created_at');
 

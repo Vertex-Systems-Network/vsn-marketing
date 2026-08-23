@@ -43,6 +43,8 @@ jobs:
           php artisan key:generate --ansi
       - name: Validate Docker Compose contract
         run: docker compose config --quiet
+      - name: Build developer PHP image
+        run: docker build --tag vsn-marketing-foundation:test --file docker/app/Dockerfile .
       - name: Run backend tests
         run: php artisan test
       - name: Typecheck frontend

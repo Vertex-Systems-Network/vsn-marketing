@@ -1,15 +1,40 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0004",
+  "updated_for_task": "TASK-0005",
   "suites": [
-    {"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"TASK-0003 bootstrap candidate b0c337c6dd97592edb305d3070c4a3c4698b4fc0 passed AI Continuity Guard run 32630999842; the task-transition head must re-certify before merge."},
-    {"name":"ai-transaction-integrity","command":"python tools/ai_txn.py validate && python tools/test_ai_txn.py","status":"passing","notes":"Crash-recoverable continuity transaction regression coverage remains green under the hosted governance guard."},
-    {"name":"ai-continuity-integrity","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Transition, fingerprint, journal, append-only and product-change ledger guards are green."},
-    {"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Deterministic context, checksum/source drift and full pack assembly remain green."},
-    {"name":"ai-policy-registry-integrity","command":"python tools/ai_policy.py && python tools/test_ai_policy.py","status":"passing","notes":"Agent/tool/risk/memory relationships, prompt/eval references, model capabilities, observability requirements and negative policy cases remain green."}
+    {
+      "name": "ai-continuity-validation",
+      "command": "python tools/ai_state.py validate",
+      "status": "passing",
+      "notes": "AI Continuity Guard run 32634314369 passed on exact TASK-0004 product certification head 964ece870eb6c62484d3ac18530b5fe94064347f; TASK-0005 activates from this certified baseline."
+    },
+    {
+      "name": "ai-transaction-integrity",
+      "command": "python tools/ai_txn.py validate && python tools/test_ai_txn.py",
+      "status": "passing",
+      "notes": "Crash-recoverable continuity transaction regression coverage remains green under the hosted governance guard."
+    },
+    {
+      "name": "ai-continuity-integrity",
+      "command": "python tools/test_ai_continuity.py",
+      "status": "passing",
+      "notes": "Transition, fingerprint, journal, append-only and product-change ledger guards are green."
+    },
+    {
+      "name": "ai-context-pack-integrity",
+      "command": "python tools/test_ai_context.py",
+      "status": "passing",
+      "notes": "Deterministic context, checksum/source drift and full pack assembly remain green."
+    },
+    {
+      "name": "ai-policy-registry-integrity",
+      "command": "python tools/ai_policy.py && python tools/test_ai_policy.py",
+      "status": "passing",
+      "notes": "Agent/tool/risk/memory relationships, prompt/eval references, model capabilities, observability requirements and negative policy cases remain green."
+    }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "Application Foundation CI run 32630999852 passed committed Composer/npm lock installs, PHP 8.3 and PHP 8.5 backend tests (3 tests, 26 assertions), Docker Compose validation, the developer PHP image build, TypeScript strict typecheck, and the Vite production build on bootstrap candidate b0c337c6dd97592edb305d3070c4a3c4698b4fc0."
+    "reason": "Application Foundation CI run 32634314365 passed exact product head 964ece870eb6c62484d3ac18530b5fe94064347f: locked Composer/npm installs, PHP 8.3/8.5 backend tests, Docker Compose validation and developer image build, TypeScript/Vite gates, plus PostgreSQL 18 + Redis 8 integration coverage (4 tests / 25 assertions) under --fail-on-warning, including durable publish failure and successful later retry."
   }
 }

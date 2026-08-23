@@ -2,33 +2,27 @@
 
 ## State
 
-- Timestamp: `2026-08-23T10:02:00+00:00`
-- Active task: `TASK-0004`
-- Next task: `TASK-0005`
+- Timestamp: `2026-08-23T11:17:11+00:00`
+- Active task: `TASK-0005`
+- Next task: `TASK-0006`
 - Current phase: `PHASE-01`
-- Execution status: `in_progress`
-- State fingerprint: `e3a3c951c4744fa9ecc56ecbd83f99db400c0357d8964a14bdff86db1a2462be`
+- Execution status: `ready`
+- State fingerprint: `2c0e1f1a6f13b0bd8e803fb3bb26e9e8da8e4777023456045eb32d695ad492ec`
 
 ## Completed / observed this session
 
-- PR #10 merged to `main` as `b0fcb2bd07d02a305b03bb443bc919307af47c3f`.
-- Issue #6 records `AI_CONTINUITY_MAIN PASS` for that exact merge commit from workflow run `32631894994`.
-- No open pull requests exist; Issue #6 remains the only open issue and is intentionally retained as governance evidence.
-- TASK-0004 implementation started from the certified main tree.
-- PostgreSQL/Redis runtime defaults, Horizon supervision, S3-compatible object storage, a transactional outbox, worker/scheduler policy, and service-backed integration CI are being introduced behind Core contracts.
-- `laravel/horizon` and the S3 Flysystem adapter require a governed Composer lockfile refresh before TASK-0004 can complete.
+Completed `TASK-0004` and activated `TASK-0005`.
+
+Transition evidence: Application Foundation CI run 32634314365 passed on exact product head 964ece870eb6c62484d3ac18530b5fe94064347f: PHP 8.3/8.5, Docker Compose/image, TypeScript/Vite, and PostgreSQL 18 + Redis 8 Integration (4 tests / 25 assertions) under fail-on-warning, including durable publish failure and later retry. AI Continuity Guard run 32634314369 passed on the same exact head.
 
 ## Tests
 
-- Default-branch governance for `b0fcb2bd07d02a305b03bb443bc919307af47c3f`: PASS (`governance-main`, run `32631894994`).
-- TASK-0003 application foundation: previously PASS on the identical merged tree.
-- TASK-0004 hosted dependency resolution and integration suites: pending.
-- Final TASK-0004 acceptance certification: pending.
+AI Continuity Guard 32634314369 PASS; Application Foundation CI 32634314365 PASS; PostgreSQL 18 + Redis 8 Integration 4/4 tests and 25 assertions with fail-on-warning; PHP 8.3 floor PASS; PHP 8.5 foundation PASS; Docker Compose/image PASS; TypeScript/Vite PASS.
 
 ## Blockers
 
-- None. Dependency lockfile generation is an expected bootstrap step, not a blocker.
+- None
 
 ## Exact next action
 
-Run TASK-0004 dependency bootstrap and infrastructure integration CI; fix PostgreSQL/Redis/Horizon/S3/outbox failures, then certify acceptance criteria before TASK-0005.
+Implement authentication and Organization → Workspace → Brand tenancy first, then layer canonical workspace RBAC and tenant-isolation tests over the same context boundary.

@@ -34,7 +34,7 @@
       "phase": "PHASE-01",
       "title": "Establish persistence, queue, cache, and object-storage infrastructure",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0003"
       ]
@@ -44,7 +44,7 @@
       "phase": "PHASE-01",
       "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
       "weight": 25,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0004"
       ]

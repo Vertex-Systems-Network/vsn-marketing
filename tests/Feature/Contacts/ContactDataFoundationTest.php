@@ -183,7 +183,7 @@ it('enforces workspace identity uniqueness while allowing the same normalized id
         $second->id,
         ContactIdentityType::Email,
         'unique@example.com',
-    ))->toThrow(\InvalidArgumentException::class, 'Contact identity already exists in this workspace.');
+    ))->toThrow(InvalidArgumentException::class, 'Contact identity already exists in this workspace.');
 
     $outsideIdentity = app(AddContactIdentity::class)->handle(
         $outside['context'],

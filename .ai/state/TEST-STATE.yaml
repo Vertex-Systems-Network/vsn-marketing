@@ -1,40 +1,46 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0008",
+  "updated_for_task": "TASK-0009",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32656319987 passed exact TASK-0007 product head 350351d33b7a184e1730dc5880f9501e7451d183, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard."
+      "notes": "AI Continuity Guard run 32666855032 passed exact TASK-0008 certified product head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard."
     },
     {
-      "name": "ai-transaction-integrity",
-      "command": "python tools/ai_txn.py validate && python tools/test_ai_txn.py",
+      "name": "backend-tests",
+      "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK-0007 terminal completion used the crash-recoverable transaction wrapper after the exact product head was fully certified; terminal no-successor state is validated explicitly."
+      "notes": "Application Foundation CI run 32666855014 passed backend tests on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including the PHP 8.3 compatibility-floor job."
     },
     {
-      "name": "ai-continuity-integrity",
-      "command": "python tools/test_ai_continuity.py",
+      "name": "postgresql-integration",
+      "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Continuity integrity tests passed before terminal completion and are re-run after the transition in this GitHub-hosted reconciliation job."
+      "notes": "Application Foundation CI run 32666855014 integration job passed on PostgreSQL 18 and Redis 8, including canonical contact lifecycle, audit evidence, and cross-workspace rejection coverage."
     },
     {
-      "name": "ai-context-pack-integrity",
-      "command": "python tools/test_ai_context.py",
+      "name": "php-static-analysis",
+      "command": "composer analyse",
       "status": "passing",
-      "notes": "Deterministic context pack integrity remains green during TASK-0007 terminal completion reconciliation."
+      "notes": "Application Foundation CI run 32666855014 foundation job passed Larastan on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
     },
     {
-      "name": "ai-policy-registry-integrity",
-      "command": "python tools/ai_policy.py && python tools/test_ai_policy.py",
+      "name": "php-formatting",
+      "command": "composer lint:check",
       "status": "passing",
-      "notes": "AI policy registry and negative guard tests remain green during TASK-0007 terminal completion reconciliation."
+      "notes": "Application Foundation CI run 32666855014 foundation job passed pinned Pint formatting on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
+    },
+    {
+      "name": "critical-e2e",
+      "command": "npm run test:e2e",
+      "status": "passing",
+      "notes": "Application Foundation CI run 32666855014 e2e job passed the critical Playwright smoke on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
     }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "PHASE-02 planning baseline passed Application Foundation CI run 32660764038 on exact plan head 6124bc8bf15af52a5cec93fd4e27ad367d750af0; TASK-0008 has not changed product code yet."
+    "reason": "TASK-0008 exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed Application Foundation CI run 32666855014: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
   }
 }

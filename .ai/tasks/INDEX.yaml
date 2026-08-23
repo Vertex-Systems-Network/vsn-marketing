@@ -74,7 +74,7 @@
       "phase": "PHASE-02",
       "title": "Establish canonical contact, identity, and company data foundation",
       "weight": 25,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0007"
       ]
@@ -84,7 +84,7 @@
       "phase": "PHASE-02",
       "title": "Implement lists, tags, and deterministic contact membership",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0008"
       ]

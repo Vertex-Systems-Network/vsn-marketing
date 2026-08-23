@@ -2,22 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T19:24:06+00:00`
-- Active task: `TASK-0008`
-- Next task: `TASK-0009`
+- Timestamp: `2026-08-23T21:18:59+00:00`
+- Active task: `TASK-0009`
+- Next task: `TASK-0010`
 - Current phase: `PHASE-02`
 - Execution status: `ready`
-- State fingerprint: `0b12ba4f68b60a20122094773e5edc1db57e8bf64ebe94ed7ed1b5fb17aba54b`
+- State fingerprint: `16dce3a693514884846a213e40294dd32ec43d8426d4c2820b8585edb5b1edca`
 
 ## Completed / observed this session
 
-Completed `TASK-0007` and activated `TASK-0008`.
+Completed `TASK-0008` and activated `TASK-0009`.
 
-Transition evidence: PHASE-02 task chain TASK-0008 through TASK-0012 is merged on main at ed5fc609ecfb1ee2e92ef41c918eb1d8e693aeca; governance-main run 32660988654 is green. Planning PR #16 exact head 6124bc8bf15af52a5cec93fd4e27ad367d750af0 passed AI Continuity Guard 32660764046 and Application Foundation CI 32660764038.
+Transition evidence: Exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed AI Continuity Guard run 32666855032 and Application Foundation CI run 32666855014. AC-1 through AC-5 are supported by canonical Contact/ContactIdentity/Company persistence, fail-closed workspace and brand isolation, deterministic identity normalization and provider-reference semantics, auditable state-changing actions, and PostgreSQL lifecycle/security integration coverage.
 
 ## Tests
 
-AI Continuity Guard 32660764046 PASS; Application Foundation CI 32660764038 PASS including PHP 8.3, PostgreSQL 18 + Redis 8 integration, Playwright, backend, architecture, Larastan, Pint, TypeScript, Vitest, and production build; governance-main 32660988654 PASS on merged plan.
+python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32666855032 PASS; hosted Application Foundation CI 32666855014 PASS (php-floor, integration, e2e, foundation).
 
 ## Blockers
 
@@ -25,4 +25,4 @@ AI Continuity Guard 32660764046 PASS; Application Foundation CI 32660764038 PASS
 
 ## Exact next action
 
-Create the Contacts module around canonical Contact, ContactIdentity, and Company models first; enforce workspace isolation and provider-neutral identity rules before adding lists or consent behavior.
+Add canonical List and Tag persistence over the accepted contact foundation, then implement idempotent workspace-scoped membership operations with audit and isolation tests.

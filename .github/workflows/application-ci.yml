@@ -1,0 +1,91 @@
+name: Application Foundation CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: application-foundation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          coverage: none
+      - name: Set up Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Validate Composer manifest
+        run: composer validate --strict --no-check-lock
+      - name: Resolve PHP dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-interaction --prefer-dist --no-progress
+          else
+            composer update --no-interaction --prefer-dist --no-progress
+          fi
+      - name: Resolve frontend dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+      - name: Run backend tests
+        run: php artisan test
+      - name: Typecheck frontend
+        run: npm run typecheck
+      - name: Build frontend
+        run: npm run build
+      - name: Require generated lockfiles
+        run: test -f composer.lock && test -f package-lock.json
+      - name: Upload generated lockfiles
+        uses: actions/upload-artifact@v6
+        with:
+          name: task-0003-lockfiles
+          path: |
+            composer.lock
+            package-lock.json
+          retention-days: 1
+
+  php-floor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up PHP 8.3 compatibility floor
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          coverage: none
+      - name: Resolve PHP dependencies at compatibility floor
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-interaction --prefer-dist --no-progress
+          else
+            composer update --no-interaction --prefer-dist --no-progress
+          fi
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+      - name: Run backend tests on PHP 8.3
+        run: php artisan test

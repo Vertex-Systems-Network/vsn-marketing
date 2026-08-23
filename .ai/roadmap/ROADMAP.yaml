@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "phases": [
+    {"id":"PHASE-00","weight":4,"status":"in_progress"},
+    {"id":"PHASE-01","weight":7,"status":"planned"},
+    {"id":"PHASE-02","weight":7,"status":"planned"},
+    {"id":"PHASE-03","weight":7,"status":"planned"},
+    {"id":"PHASE-04","weight":7,"status":"planned"},
+    {"id":"PHASE-05","weight":6,"status":"planned"},
+    {"id":"PHASE-06","weight":6,"status":"planned"},
+    {"id":"PHASE-07","weight":7,"status":"planned"},
+    {"id":"PHASE-08","weight":5,"status":"planned"},
+    {"id":"PHASE-09","weight":7,"status":"planned"},
+    {"id":"PHASE-10","weight":8,"status":"planned"},
+    {"id":"PHASE-11","weight":5,"status":"planned"},
+    {"id":"PHASE-12","weight":6,"status":"planned"},
+    {"id":"PHASE-13","weight":5,"status":"planned"},
+    {"id":"PHASE-14","weight":5,"status":"planned"},
+    {"id":"PHASE-15","weight":4,"status":"planned"},
+    {"id":"PHASE-16","weight":4,"status":"planned"}
+  ]
+}

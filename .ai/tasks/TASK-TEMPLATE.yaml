@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "TASK-XXXX",
+  "phase": "PHASE-XX",
+  "module": "Canonical module name",
+  "title": "Short task title",
+  "status": "planned",
+  "objective": "One testable objective.",
+  "dependencies": [],
+  "acceptance_criteria": [
+    {"id": "AC-1", "text": "Observable condition", "done": false}
+  ],
+  "required_tests": [],
+  "exact_next_action": "First concrete action when task becomes active."
+}

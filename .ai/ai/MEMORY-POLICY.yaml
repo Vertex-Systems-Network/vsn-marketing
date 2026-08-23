@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scopes": {
+    "repository":{"cross_workspace":false,"contains_secrets":false,"persistence":"git","purpose":"development continuity and architecture"},
+    "workspace":{"cross_workspace":false,"contains_secrets":false,"persistence":"database","purpose":"workspace configuration and knowledge"},
+    "brand":{"cross_workspace":false,"contains_secrets":false,"persistence":"database","purpose":"brand knowledge and constraints"},
+    "customer":{"cross_workspace":false,"contains_secrets":false,"persistence":"database","purpose":"consented customer profile/events"},
+    "customer_aggregate":{"cross_workspace":false,"contains_secrets":false,"persistence":"analytics","purpose":"aggregated audience/analytics context"},
+    "run":{"cross_workspace":false,"contains_secrets":false,"persistence":"bounded","purpose":"one execution scratch state"}
+  },
+  "rules": [
+    "Secrets are referenced by credential IDs and resolved outside model context.",
+    "Customer context must be purpose-scoped and minimized.",
+    "Cross-workspace retrieval is forbidden unless a separately authorized aggregate explicitly allows it.",
+    "Run memory expires according to workflow retention policy and is not silently promoted to durable memory.",
+    "Learned artifacts require evaluation before durable promotion."
+  ]
+}

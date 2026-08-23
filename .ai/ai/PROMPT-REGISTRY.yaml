@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "immutability":"Published prompt versions are immutable; create a new version to change behavior.",
+    "promotion":"Alias promotion requires the declared evaluation suite to pass.",
+    "execution_record":"Every run records prompt id and exact version.",
+    "rollback":"Aliases can roll back to a previously evaluated version."
+  },
+  "prompts": [
+    {"id":"marketing_director.plan","current_version":null,"status":"planned","required_eval_suite":"marketing_director_plan"},
+    {"id":"strategy.propose","current_version":null,"status":"planned","required_eval_suite":"strategy_proposal"},
+    {"id":"audience.segment","current_version":null,"status":"planned","required_eval_suite":"segment_ast"},
+    {"id":"content.generate","current_version":null,"status":"planned","required_eval_suite":"brand_content"},
+    {"id":"brand_guardian.review","current_version":null,"status":"planned","required_eval_suite":"brand_guard"},
+    {"id":"journey.design","current_version":null,"status":"planned","required_eval_suite":"journey_graph"},
+    {"id":"experiment.design","current_version":null,"status":"planned","required_eval_suite":"experiment_design"},
+    {"id":"deliverability.advise","current_version":null,"status":"planned","required_eval_suite":"deliverability"},
+    {"id":"analytics.explain","current_version":null,"status":"planned","required_eval_suite":"analytics_explanation"},
+    {"id":"connector_engineer.plan","current_version":null,"status":"planned","required_eval_suite":"connector_generation"}
+  ]
+}

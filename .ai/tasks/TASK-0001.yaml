@@ -1,0 +1,28 @@
+{
+  "schema_version":1,
+  "id":"TASK-0001",
+  "phase":"PHASE-00",
+  "module":"Core",
+  "title":"Install AI continuity control plane",
+  "status":"in_progress",
+  "objective":"Create repository-native memory, governance, task state, checkpoints, recovery rules, validation, and CI enforcement so development can resume across AI sessions without chat-memory dependency.",
+  "dependencies":[],
+  "acceptance_criteria":[
+    {"id":"AC-1","text":"Root agent entry instructions exist","done":true},
+    {"id":"AC-2","text":"Architecture/governance/security/testing documents exist","done":true},
+    {"id":"AC-3","text":"Machine-readable current state and task registry exist","done":true},
+    {"id":"AC-4","text":"Interruption and reconciliation protocols exist","done":true},
+    {"id":"AC-5","text":"State validator/CLI exists","done":true},
+    {"id":"AC-6","text":"GitHub Actions continuity workflow exists","done":true},
+    {"id":"AC-7","text":"AI Continuity Guard passes on the default branch","done":false},
+    {"id":"AC-8","text":"State/checkpoint fingerprint drift is machine-detected","done":true},
+    {"id":"AC-9","text":"Guarded task transition rejects incomplete criteria or dependencies","done":true},
+    {"id":"AC-10","text":"Recovery command reports ledger/worktree drift after interruption","done":true},
+    {"id":"AC-11","text":"Canonical AI gateway, autonomy, agent, model capability and prompt registries exist","done":true},
+    {"id":"AC-12","text":"Deterministic repository context-pack compiler and drift tests exist","done":true},
+    {"id":"AC-13","text":"AI tool, memory, evaluation and observability registries are machine-validated with negative tests","done":true},
+    {"id":"AC-14","text":"Checkpoint and task-transition mutations are single-writer, crash-recoverable transactions that keep state/checkpoint/journal synchronized","done":true}
+  ],
+  "required_tests":["python tools/ai_txn.py validate","python tools/test_ai_txn.py","python tools/ai_state.py validate","python tools/ai_journal.py validate","python tools/ai_policy.py","python tools/test_ai_continuity.py","python tools/test_ai_context.py","python tools/test_ai_policy.py"],
+  "exact_next_action":"Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
+}

@@ -1,0 +1,86 @@
+name: TASK-0006 accepted quality-state reconciliation
+
+on:
+  push:
+    branches: [task-0006-canonical-events]
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact task branch
+        uses: actions/checkout@v7
+        with:
+          ref: task-0006-canonical-events
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Validate pre-reconciliation continuity
+        run: |
+          python tools/ai_txn.py recover
+          python tools/ai_txn.py validate
+      - name: Reconcile accepted TASK-0006 test evidence transactionally
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          sys.path.insert(0, str(Path('tools').resolve()))
+          from ai_txn import TxnCoordinator, ROOT, run_tool, validate_integrity
+
+          state_path = ROOT / '.ai/state/CURRENT-STATE.yaml'
+          test_path = ROOT / '.ai/state/TEST-STATE.yaml'
+          checkpoint_path = ROOT / '.ai/state/LAST-CHECKPOINT.md'
+          journal_path = ROOT / '.ai/state/EXECUTION-JOURNAL.jsonl'
+          coordinator = TxnCoordinator(ROOT)
+          coordinator.begin('task_0006_quality_sync', [state_path, test_path, checkpoint_path, journal_path])
+          try:
+              state = json.loads(state_path.read_text(encoding='utf-8'))
+              if state['execution']['last_completed_task'] != 'TASK-0006' or state['execution']['active_task'] != 'TASK-0007':
+                  raise RuntimeError('Refusing quality sync because TASK-0006 -> TASK-0007 transition is not canonical.')
+              state['quality']['application_test_status'] = 'task_0006_ci_passed'
+              state_path.write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
+
+              test_state = json.loads(test_path.read_text(encoding='utf-8'))
+              test_state['updated_for_task'] = 'TASK-0006'
+              for suite in test_state.get('suites', []):
+                  if suite.get('name') == 'ai-continuity-validation':
+                      suite['notes'] = 'AI Continuity Guard run 32640770685 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315; transactional acceptance run 32640928793 then revalidated continuity before and after TASK-0006 -> TASK-0007.'
+                  elif suite.get('name') == 'ai-transaction-integrity':
+                      suite['notes'] = 'Transactional acceptance run 32640928793 completed recover, pre-transition validation, atomic TASK-0006 -> TASK-0007 transition, journal update, and post-transition validation successfully.'
+                  elif suite.get('name') == 'ai-continuity-integrity':
+                      suite['notes'] = 'AI Continuity Guard run 32640770685 passed transition, fingerprint, append-only journal, and product-change ledger checks on exact TASK-0006 product head.'
+              test_state['application_tests'] = {
+                  'status': 'passing',
+                  'reason': 'Application Foundation CI run 32640770631 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315: PHP 8.3 backend, PHP 8.5 foundation/backend, Docker Compose and developer image, TypeScript typecheck, Vite production build, and PostgreSQL 18 + Redis 8 integration. Acceptance run 32640928793 re-ran the required integration suite warning-clean: 8 tests / 66 assertions.'
+              }
+              test_path.write_text(json.dumps(test_state, indent=2) + '\n', encoding='utf-8')
+
+              summary = 'Reconciled accepted TASK-0006 hosted CI evidence into CURRENT-STATE quality and TEST-STATE after the successful TASK-0006 -> TASK-0007 transition; no product code, acceptance criteria, or roadmap semantics changed.'
+              tests = 'PASS: Application Foundation CI 32640770631; PASS: AI Continuity Guard 32640770685; PASS: transactional acceptance run 32640928793 with warning-clean PostgreSQL 18 + Redis 8 Integration 8/8 tests and 66 assertions.'
+              next_action = 'Add the full application CI matrix and baseline observability, then certify PHASE-01 with backend, frontend, e2e, architecture, and continuity gates green.'
+              run_tool(['tools/ai_state.py', 'checkpoint', '--summary', summary, '--tests', tests, '--next', next_action])
+              run_tool(['tools/ai_journal.py', 'record', '--type', 'checkpoint', '--summary', summary])
+              validate_integrity()
+          except BaseException:
+              coordinator.restore_pending(force=True)
+              raise
+          coordinator.commit()
+          PY
+      - name: Validate post-reconciliation continuity
+        run: python tools/ai_txn.py validate
+      - name: Remove one-shot workflow and commit reconciled state
+        shell: bash
+        run: |
+          rm .github/workflows/task-0006-quality-reconcile.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: reconcile TASK-0006 acceptance evidence"
+          git push origin HEAD:task-0006-canonical-events

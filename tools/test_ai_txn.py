@@ -84,6 +84,80 @@ class TransactionCoordinatorTests(unittest.TestCase):
         self.assertFalse(self.txn.staging_dir.exists())
         self.assertFalse(self.txn.lock_path.exists())
 
+    def test_recovery_rejects_manifest_missing_backups_without_destroying_evidence(self):
+        self.txn.begin("test", [self.a])
+        self.a.write_text("broken-a", encoding="utf-8")
+        manifest = json.loads(self.txn.manifest_path.read_text(encoding="utf-8"))
+        manifest.pop("backups")
+        self.txn.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        self._mark_owner_dead()
+        with self.assertRaises(self.module.TransactionError):
+            self.txn.restore_pending()
+        self.assertTrue(self.txn.txn_dir.exists())
+        self.assertEqual("broken-a", self.a.read_text(encoding="utf-8"))
+
+    def test_recovery_rejects_manifest_path_traversal_before_any_write(self):
+        outside = self.root.parent / f"{self.root.name}-outside.txt"
+        try:
+            self.txn.begin("test", [self.a, self.b])
+            self.a.write_text("broken-a", encoding="utf-8")
+            self.b.write_text("broken-b", encoding="utf-8")
+            manifest = json.loads(self.txn.manifest_path.read_text(encoding="utf-8"))
+            manifest["backups"][0]["path"] = f"../{self.root.name}-outside.txt"
+            self.txn.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            self._mark_owner_dead()
+            with self.assertRaises(self.module.TransactionError):
+                self.txn.restore_pending()
+            self.assertFalse(outside.exists())
+            self.assertEqual("broken-a", self.a.read_text(encoding="utf-8"))
+            self.assertEqual("broken-b", self.b.read_text(encoding="utf-8"))
+            self.assertTrue(self.txn.txn_dir.exists())
+        finally:
+            outside.unlink(missing_ok=True)
+
+    def test_recovery_rejects_unexpected_backup_filename(self):
+        self.txn.begin("test", [self.a])
+        manifest = json.loads(self.txn.manifest_path.read_text(encoding="utf-8"))
+        manifest["backups"][0]["backup"] = "../foreign.bak"
+        self.txn.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        self._mark_owner_dead()
+        with self.assertRaises(self.module.TransactionError):
+            self.txn.restore_pending()
+        self.assertTrue(self.txn.txn_dir.exists())
+
+    def test_recovery_rejects_corrupted_backup_checksum_before_any_write(self):
+        self.txn.begin("test", [self.a, self.b])
+        self.a.write_text("broken-a", encoding="utf-8")
+        self.b.write_text("broken-b", encoding="utf-8")
+        (self.txn.txn_dir / "001.bak").write_text("tampered-backup", encoding="utf-8")
+        self._mark_owner_dead()
+        with self.assertRaises(self.module.TransactionError):
+            self.txn.restore_pending()
+        self.assertEqual("broken-a", self.a.read_text(encoding="utf-8"))
+        self.assertEqual("broken-b", self.b.read_text(encoding="utf-8"))
+        self.assertTrue(self.txn.txn_dir.exists())
+
+    def test_recovery_rejects_drive_like_manifest_path(self):
+        self.txn.begin("test", [self.a])
+        manifest = json.loads(self.txn.manifest_path.read_text(encoding="utf-8"))
+        manifest["backups"][0]["path"] = "C:/outside.txt"
+        self.txn.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        self._mark_owner_dead()
+        with self.assertRaises(self.module.TransactionError):
+            self.txn.restore_pending()
+        self.assertTrue(self.txn.txn_dir.exists())
+
+    def test_recovery_rejects_symlink_transaction_artifact(self):
+        real = self.root / "foreign-txn"
+        real.mkdir()
+        try:
+            self.txn.txn_dir.symlink_to(real, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlinks unavailable on this platform")
+        with self.assertRaises(self.module.TransactionError):
+            self.txn.restore_pending()
+        self.assertTrue(real.exists())
+
     def test_begin_never_deletes_preexisting_pending_backup_set(self):
         self.txn.txn_dir.mkdir()
         sentinel = self.txn.txn_dir / "sentinel.bak"

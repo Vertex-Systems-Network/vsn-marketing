@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-08-23T00:48:00+00:00`
+- Timestamp: `2026-08-23T01:02:00+00:00`
 - Active task: `TASK-0001`
 - Next task: `TASK-0002`
 - Current phase: `PHASE-00`
@@ -11,21 +11,23 @@
 
 ## Completed / observed this session
 
-- Exact-head PR #2 governance run #13 passed before this second transactional hardening pass.
-- A protected merge attempt against certified head `79c27dee7e0fdee7ab03b6ecea62203160dec7d9` was correctly rejected by GitHub because independent approval from someone other than the last pusher is still required.
-- A second adversarial audit found a startup crash window inside `TxnCoordinator.begin()`: a process could die after backup preparation started but before `manifest.json` became recoverable.
-- Hardened transaction preparation with a separate staging directory, fsync-backed backup/manifest writes, and atomic staging promotion so target mutations never begin from a partially prepared recovery set.
-- Fixed another recovery-evidence hazard: beginning a new transaction can no longer delete a pre-existing pending backup set when the lock is absent/stale.
-- Added fail-closed handling for ambiguous prepared+committed transaction artifacts and support for Git worktree `.git` files.
-- Verified from Python's official documentation that `os.kill(pid, 0)` is unsafe as a Windows liveness probe because non-console signals map to `TerminateProcess`; Windows PID checks now use read-only `OpenProcess` instead.
-- Independent review remains the external merge gate; `TASK-0002` remains intentionally dependency-blocked.
+- Exact-head PR #2 governance run #13 passed all continuity, transaction, journal, policy, context and drift gates before the current hardening sequence.
+- A protected merge attempt was correctly rejected by GitHub because the repository still requires independent approval from someone other than the last pusher.
+- The second adversarial pass hardened transaction startup with atomic staging promotion, fsync-backed preparation, preservation of pre-existing recovery evidence, Git worktree support and a non-destructive Windows PID liveness probe.
+- A follow-up recovery-security pass found that syntactically valid but malicious/corrupt transaction manifests could otherwise destroy recovery evidence or attempt unsafe paths.
+- Recovery now validates manifest schema, canonical repository-relative paths, drive/path traversal boundaries, unique targets, exact backup filenames, boolean existence flags, and safe non-symlink artifacts before any target mutation.
+- Every pre-mutation backup is SHA-256 bound into the transaction manifest; all backup checksums are verified before the first recovery write, so corruption fails closed without partial restoration.
+- Successful commit now fsyncs post-mutation ledger targets before deleting rollback evidence, reducing the durability gap between logical success and backup cleanup.
+- Focused transaction suite passes 19/19 locally; Python compilation passes. Hosted exact-head governance must still certify the final commit.
+- `TASK-0002` remains intentionally dependency-blocked.
 
 ## Tests
 
 - Previous exact-head PR #2 governance run #13: PASS.
+- PR #2 governance run #14 started on the preceding hardening head; it is not treated as certification for this final security pass.
 - `python -m py_compile tools/ai_txn.py tools/test_ai_txn.py`: PASS locally.
-- Focused transactional continuity regression suite: 13/13 PASS locally.
-- New exact-head GitHub-hosted governance certification: pending until this commit is pushed.
+- `python tools/test_ai_txn.py`: 19/19 PASS locally.
+- Final exact-head GitHub-hosted governance certification: pending until this hardening commit is pushed.
 - Application tests: not started because product scaffolding is intentionally blocked until TASK-0002.
 
 ## Blockers

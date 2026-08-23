@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -122,6 +123,23 @@ class TxnCoordinator:
     def _write_text_durable(cls, path: Path, text: str) -> None:
         cls._write_bytes_durable(path, text.encode("utf-8"))
 
+    @staticmethod
+    def _sha256_bytes(data: bytes) -> str:
+        return hashlib.sha256(data).hexdigest()
+
+    @classmethod
+    def _fsync_file(cls, path: Path) -> None:
+        try:
+            with path.open("rb") as handle:
+                os.fsync(handle.fileno())
+        except OSError as exc:
+            raise TransactionError(f"cannot fsync continuity target: {path}") from exc
+        cls._fsync_dir(path.parent)
+
+    @staticmethod
+    def _artifact_present(path: Path) -> bool:
+        return path.exists() or path.is_symlink()
+
     def _read_lock(self) -> dict:
         try:
             return json.loads(self.lock_path.read_text(encoding="utf-8"))
@@ -133,11 +151,85 @@ class TxnCoordinator:
         raw = str(lock.get("pid", ""))
         return int(raw) if raw.lstrip("-").isdigit() else -1
 
+    def _validate_recovery_manifest(self, manifest: object) -> list[dict]:
+        if not isinstance(manifest, dict):
+            raise TransactionError("transaction manifest must be a JSON object")
+        if manifest.get("schema_version") != 1:
+            raise TransactionError("transaction manifest has unsupported schema_version")
+        if not isinstance(manifest.get("operation"), str) or not manifest["operation"].strip():
+            raise TransactionError("transaction manifest is missing a valid operation")
+        if not isinstance(manifest.get("pid"), int) or manifest["pid"] <= 0:
+            raise TransactionError("transaction manifest is missing a valid pid")
+        if not isinstance(manifest.get("started_at"), str) or not manifest["started_at"].strip():
+            raise TransactionError("transaction manifest is missing started_at")
+
+        backups = manifest.get("backups")
+        if not isinstance(backups, list) or not backups:
+            raise TransactionError("transaction manifest must contain a non-empty backups list")
+        if len(backups) > 100:
+            raise TransactionError("transaction manifest backup count exceeds safety limit")
+
+        validated: list[dict] = []
+        seen_paths: set[str] = set()
+        root_resolved = self.root.resolve()
+        for index, item in enumerate(backups):
+            if not isinstance(item, dict):
+                raise TransactionError(f"transaction manifest backup {index} must be an object")
+            rel = item.get("path")
+            backup_name = item.get("backup")
+            existed = item.get("existed")
+            expected_backup = f"{index:03d}.bak"
+            if not isinstance(rel, str) or not rel or "\\" in rel or "\x00" in rel:
+                raise TransactionError(f"transaction manifest backup {index} has invalid path")
+            pure = PurePosixPath(rel)
+            if pure.is_absolute() or not pure.parts or any(part in {"", ".", ".."} for part in pure.parts):
+                raise TransactionError(f"transaction manifest backup {index} escapes repository path rules")
+            if ":" in pure.parts[0]:
+                raise TransactionError(f"transaction manifest backup {index} contains a drive-like path")
+            if pure.as_posix() != rel:
+                raise TransactionError(f"transaction manifest backup {index} path is not canonical")
+            if rel in seen_paths:
+                raise TransactionError(f"transaction manifest contains duplicate target path: {rel}")
+            seen_paths.add(rel)
+            if backup_name != expected_backup:
+                raise TransactionError(f"transaction manifest backup {index} has unexpected backup filename")
+            if type(existed) is not bool:
+                raise TransactionError(f"transaction manifest backup {index} has invalid existed flag")
+
+            target = self.root.joinpath(*pure.parts)
+            try:
+                resolved_target = target.resolve(strict=False)
+            except OSError as exc:
+                raise TransactionError(f"cannot resolve recovery target safely: {rel}") from exc
+            if resolved_target != root_resolved and root_resolved not in resolved_target.parents:
+                raise TransactionError(f"transaction manifest target escapes repository root: {rel}")
+            if target.is_symlink():
+                raise TransactionError(f"refusing recovery through symlink target: {rel}")
+
+            backup = self.txn_dir / expected_backup
+            expected_sha = item.get("sha256")
+            if existed:
+                if not isinstance(expected_sha, str) or len(expected_sha) != 64 or any(ch not in "0123456789abcdef" for ch in expected_sha):
+                    raise TransactionError("transaction manifest backup {index} has invalid sha256")
+                if not backup.is_file() or backup.is_symlink():
+                    raise TransactionError(" required recovery backup is missing or unsafe: {expected_backup}")
+                data = backup.read_bytes()
+                if self._sha256_bytes(data) != expected_sha:
+                    raise TransactionError(" recovery backup checksum mismatch: {expected_backup}")
+            else:
+                if expected_sha is not None:
+                    raise TransactionError(f"transaction manifest backup {index} must not hash a non-existent target")
+                if backup.exists() or backup.is_symlink():
+                    raise TransactionError(f"unexpected recovery backup exists for new target: {expected_backup}")
+                data = None
+            validated.append({"path": rel, "target": target, "backup": backup, "existed": existed, "data": data})
+        return validated
+
     def _assert_no_pending_artifacts(self) -> None:
         pending = []
-        if self.txn_dir.exists():
+        if self._artifact_present(self.txn_dir):
             pending.append(self.txn_dir.name)
-        if self.staging_dir.exists():
+        if self._artifact_present(self.staging_dir):
             pending.append(self.staging_dir.name)
         if pending:
             raise TransactionError(
@@ -181,9 +273,18 @@ class TxnCoordinator:
                 rel = str(path.relative_to(self.root)).replace("\\", "/")
                 backup = self.staging_dir / f"{index:03d}.bak"
                 existed = path.exists()
+                data = None
                 if existed:
-                    self._write_bytes_durable(backup, path.read_bytes())
-                backups.append({"path": rel, "backup": backup.name, "existed": existed})
+                    if path.is_symlink():
+                        raise TransactionError(f"refusing to transact symlink target: {rel}")
+                    data = path.read_bytes()
+                    self._write_bytes_durable(backup, data)
+                backups.append({
+                    "path": rel,
+                    "backup": backup.name,
+                    "existed": existed,
+                    "sha256": self._sha256_bytes(data) if data is not None else None,
+                })
             manifest = {
                 "schema_version": 1,
                 "operation": operation,
@@ -214,17 +315,36 @@ class TxnCoordinator:
             pass
 
     def commit(self) -> None:
+        if self.staging_dir.is_symlink() or self.txn_dir.is_symlink() or self.lock_path.is_symlink():
+            raise TransactionError("unsafe symlink detected in continuity transaction artifacts")
         if self.staging_dir.exists():
             raise TransactionError("staging continuity transaction artifact exists during commit")
         if self.txn_dir.exists():
+            try:
+                manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+            except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+                raise TransactionError("cannot validate transaction manifest before commit") from exc
+            validated_backups = self._validate_recovery_manifest(manifest)
+            # Make the successful post-mutation ledger durable before deleting the
+            # only rollback material. A power/process interruption before this point
+            # therefore retains the recoverable backup set.
+            for item in validated_backups:
+                target = item["target"]
+                if target.exists():
+                    if target.is_symlink() or not target.is_file():
+                        raise TransactionError(f"unsafe continuity target at commit: {item['path']}")
+                    self._fsync_file(target)
             shutil.rmtree(self.txn_dir)
             self._fsync_dir(self.git_dir)
         self._remove_lock()
 
     def restore_pending(self, *, force: bool = False) -> bool:
-        has_txn = self.txn_dir.exists()
-        has_staging = self.staging_dir.exists()
-        has_lock = self.lock_path.exists()
+        has_txn = self._artifact_present(self.txn_dir)
+        has_staging = self._artifact_present(self.staging_dir)
+        has_lock = self._artifact_present(self.lock_path)
+
+        if self.txn_dir.is_symlink() or self.staging_dir.is_symlink() or self.lock_path.is_symlink():
+            raise TransactionError("unsafe symlink detected in continuity transaction artifacts; refusing recovery")
 
         if has_txn and has_staging:
             raise TransactionError(
@@ -257,13 +377,126 @@ class TxnCoordinator:
                 "committed transaction backup set is missing a valid manifest; "
                 "refusing destructive recovery"
             ) from exc
+        validated_backups = self._validate_recovery_manifest(manifest)
 
-        for item in manifest.get("backups", []):
-            target = self.root / item["path"]
-            backup = self.txn_dir / item["backup"]
-            if item.get("existed"):
+        for item in validated_backups:
+            target = item["target"]
+            backup = item["backup"]
+            if item["existed"]:
                 target.parent.mkdir(parents=True, exist_ok=True)
-                self._write_bytes_durable(target, backup.read_bytes())
+                self._write_bytes_durable(target, item["data"])
             elif target.exists():
                 if target.is_dir():
-                    raise TransactionErrop€¡˜‰…¹¹½ÐÉ•µ½Ù”É•…Ñ•‘¥É•Ñ½Éä‘ÕÉ¥¹œÉ•½Ù•Éäèí¥Ñ•µlÁ…Ñ uôˆ¤(€€€€€€€€€€€€€€€Ñ…É•Ð¹Õ¹±¥¹¬ ¤(€€€€€€€€€€€€€€€Í•±˜¹}™Íå¹}‘¥È¡Ñ…É•Ð¹Á…É•¹Ð¤(€€€€€€€Í¡ÕÑ¥°¹ÉµÑÉ•”¡Í•±˜¹Ñá¹}‘¥È¤(€€€€€€€Í•±˜¹}™Íå¹}‘¥È¡Í•±˜¹¥Ñ}‘¥È¤(€€€€€€€Í•±˜¹}É•µ½Ù•}±½¬ ¤(€€€€€€€É•ÑÕÉ¸QÉÕ”((€€€‘•˜…ÍÍ•ÉÑ}±•…¸¡Í•±˜¤€´ø9½¹”è(€€€€€€€¥˜Í•±˜¹Ñá¹}‘¥È¹•á¥ÍÑÌ ¤½ÈÍ•±˜¹ÍÑ…¥¹}‘¥È¹•á¥ÍÑÌ ¤½ÈÍ•±˜¹±½­}Á…Ñ ¹•á¥ÍÑÌ ¤è(€€€€€€€€€€€É…¥Í”QÉ…¹Í…Ñ¥½¹ÉÉ½È ‰Á•¹‘¥¹œ½ÍÑ…±”½¹Ñ¥¹Õ¥ÑäÑÉ…¹Í…Ñ¥½¸‘•Ñ•Ñ•ìÉÕ¸ÁåÑ¡½¸Ñ½½±Ì½…¥}Ñá¸¹ÁäÉ•½Ù•É€ˆ¤(()‘•˜ÉÕ¹}Ñ½½°¡…ÉÌè±¥ÍÑmÍÑÉt¤€´ø9½¹”è(€€€ÁÉ½Œ€ôÍÕ‰ÁÉ½•ÍÌ¹ÉÕ¸¡mÍåÌ¹•á•ÕÑ…‰±”°€©…ÉÍt°ÝõI==P°Ñ•áÐõQÉÕ”°ÍÑ‘½ÕÐõÍÕ‰ÁÉ½•ÍÌ¹A%A°ÍÑ‘•ÉÈõÍÕ‰ÁÉ½•ÍÌ¹MQ=UP¤(€€€¥˜ÁÉ½Œ¹ÍÑ‘½ÕÐè(€€€€€€€ÁÉ¥¹Ð¡ÁÉ½Œ¹ÍÑ‘½ÕÐ°•¹ôˆˆ¤(€€€¥˜ÁÉ½Œ¹É•ÑÕÉ¹½‘”€„ô€Àè(€€€€€€€É…¥Í”QÉ…¹Í…Ñ¥½¹ÉÉ½È¡˜‰½µµ…¹™…¥±•€¡íÁÉ½Œ¹É•ÑÕÉ¹½‘•ô¤èìœ€œ¹©½¥¸¡…ÉÌ¥ôˆ¤(()‘•˜Ù…±¥‘…Ñ•}¥¹Ñ•É¥Ñä ¤€´ø9½¹”è(€€€ÉÕ¹}Ñ½½°¡l‰Ñ½½±Ì½…¥}ÍÑ…Ñ”¹Áäˆ°€‰Ù…±¥‘…Ñ”‰t¤(€€€ÉÕ¹}Ñ½½°¡l‰Ñ½½±Ì½…¥}©½ÕÉ¹…°¹Áäˆ°€‰Ù…±¥‘…Ñ”‰t¤(€€€ÉÕ¹}Ñ½½°¡l‰Ñ½½±Ì½…¥}½¹Ñ•áÐ¹Áäˆ°€‰µ…¹¥™•ÍÐ‰t¤(()‘•˜Ñ…Í­}Á…Ñ ¡Ñ…Í­}¥èÍÑÈ¤€´øA…Ñ è(€€€É•ÑÕÉ¸I==P€¼€ˆ¹…¤ˆ€¼€‰Ñ…Í­Ìˆ€¼˜‰íÑ…Í­}¥‘ô¹å…µ°ˆ(()‘•˜¡•­Á½¥¹Ð¡…ÉÌ¤€´ø9½¹”è(€€€½½É‘¥¹…Ñ½È€ôQá¹½½É‘¥¹…Ñ½È¡I==P¤(€€€Á…Ñ¡Ì€ôl(€€€€€€€I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½UII9PµMQQ¹å…µ°ˆ°(€€€€€€€I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½1MPµ!-A=%9P¹µˆ°(€€€€€€€I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½aUQ%=8µ)=UI90¹©Í½¹°ˆ°(€€€t(€€€½½É‘¥¹…Ñ½È¹‰•¥¸ ‰¡•­Á½¥¹Ðˆ°Á…Ñ¡Ì¤(€€€ÑÉäè(€€€€€€€ÉÕ¹}Ñ½½°¡l‰Ñ½½±Ì½…¥}ÍÑ…Ñ”¹Áäˆ°€‰¡•­Á½¥¹Ðˆ°€ˆ´µÍÕµµ…Éäˆ°…ÉÌ¹ÍÕµµ…Éä°€ˆ´µÑ•ÍÑÌˆ°…ÉÌ¹Ñ•ÍÑÌ°€ˆ´µ¹•áÐˆ°…ÉÌ¹¹•áÑ}…Ñ¥½¹t¤(€€€€€€€ÉÕ¹}Ñ½½°¡l‰Ñ½½±Ì½…¥}©½ÕÉ¹…°¹Áäˆ°€‰É•½Éˆ°€ˆ´µÑåÁ”ˆ°€‰¡•­Á½¥¹Ðˆ°€ˆ´µÍÕµµ…Éäˆ°…ÉÌ¹ÍÕµµ…Éåt¤(€€€€€€€Ù…±¥‘…Ñ•}¥¹Ñ•É¥Ñä ¤(€€€•á•ÁÐ	…Í•á•ÁÑ¥½¸è(€€€€€€€½½É‘¥¹…Ñ½È¹É•ÍÑ½É•}Á•¹‘¥¹œ¡™½É”õQÉÕ”¤(€€€€€€€É…¥Í”(€€€½½É‘¥¹…Ñ½È¹½µµ¥Ð ¤(()‘•˜ÑÉ…¹Í¥Ñ¥½¸¡…ÉÌ¤€´ø9½¹”è(€€€½½É‘¥¹…Ñ½È€ôQá¹½½É‘¥¹…Ñ½È¡I==P¤(€€€Á…Ñ¡Ì€ôl(€€€€€€€Ñ…Í­}Á…Ñ ¡…ÉÌ¹½µÁ±•Ñ”¤°Ñ…Í­}Á…Ñ ¡…ÉÌ¹¹•áÑ}Ñ…Í¬¤°(€€€€€€€I==P€¼€ˆ¹…¤½Ñ…Í­Ì½%9`¹å…µ°ˆ°I==P€¼€ˆ¹…¤½É½…‘µ…À½I=5@¹å…µ°ˆ°(€€€€€€€I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½UII9PµMQQ¹å…µ°ˆ°I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½1MPµ!-A=%9P¹µˆ°(€€€€€€€I==P€¼€ˆ¹…¤½ÍÑ…Ñ”½aUQ%=8µ)=UI90¹©Í½¹°ˆ°(€€€t(€€€½½É‘¥¹…Ñ½È¹‰•¥¸ ‰Ñ…Í­}ÑÉ…¹Í¥Ñ¥½¸ˆ°Á…Ñ¡Ì¤(€€€ÑÉäè(€€€€€€€½µµ…¹€ôl(€€€€€€€€€€€€‰Ñ½½±Ì½…¥}ÍÑ…Ñ”¹Áäˆ°€‰ÑÉ…¹Í¥Ñ¥½¸ˆ°€ˆ´µ½µÁ±•Ñ”ˆ°…ÉÌ¹½µÁ±•Ñ”°€ˆ´µ¹•áÐˆ°…ÉÌ¹¹•áÑ}Ñ…Í¬°(€€€€€€€€€€€€ˆ´µ•Ù¥‘•¹”ˆ°…ÉÌ¹•Ù¥‘•¹”°€ˆ´µÑ•ÍÑÌˆ°…ÉÌ¹Ñ•ÍÑÌ°(€€€€€€€t(€€€€€€€¥˜…ÉÌ¹‘Éå}ÉÕ¸è(€€€€€€€€€€€½µµ…¹¹…ÁÁ•¹ ˆ´µ‘ÉäµÉÕ¸ˆ¤(€€€€€€€ÉÕ¹}Ñ½½°¡½µµ…¹¤(€€€€€€€¥˜¹½Ð…ÉÌ¹‘Éå}ÉÕ¸è(€€€€€€€€€€€ÉÕ¹}Ñ½½°¡l(€€€€€€€€€€€€€€€€‰Ñ½½±Ì½…¥}©½ÕÉ¹…°¹Áäˆ°€‰É•½Éˆ°€ˆ´µÑåÁ”ˆ°€‰Ñ…Í­}ÑÉ…¹Í¥Ñ¥½¸ˆ°(€€€€€€€€€€€€€€€€ˆ´µÍÕµµ…Éäˆ°˜‰í…ÉÌ¹½µÁ±•Ñ•ô½µÁ±•Ñ•ìí…ÉÌ¹¹•áÑ}Ñ…Í­ô…Ñ¥Ù…Ñ•¸í…ÉÌ¹•Ù¥‘•¹•ôˆ°(€€€€€€€€€€€t¤(€€€€€€€€€€€Ù…±¥‘…Ñ•}¥¹Ñ•É¥Ñä ¤(€€€•á•ÁÐ	…Í•á•ÁÑ¥½¸è(€€€€€€€½½É‘¥¹…Ñ½È¹É•ÍÑ½É•}Á•¹‘¥¹œ¡™½É”õQÉÕ”¤(€€€€€€€É…¥Í”(€€€½½É‘¥¹…Ñ½È¹½µµ¥Ð ¤(()‘•˜É•½Ù•È¡™½É”è‰½½°¤€´ø9½¹”è(€€€½½É‘¥¹…Ñ½È€ôQá¹½½É‘¥¹…Ñ½È¡I==P¤(€€€É•ÍÑ½É•€ô½½É‘¥¹…Ñ½È¹É•ÍÑ½É•}Á•¹‘¥¹œ¡™½É”õ™½É”¤(€€€ÁÉ¥¹Ð ‰I•½Ù•É•¥¹Ñ•ÉÉÕÁÑ•½¹Ñ¥¹Õ¥ÑäÑÉ…¹Í…Ñ¥½¸¸ˆ¥˜É•ÍÑ½É••±Í”€‰9¼¥¹Ñ•ÉÉÕÁÑ•½¹Ñ¥¹Õ¥ÑäÑÉ…¹Í…Ñ¥½¸™½Õ¹¸ˆ¤(€€€Ù…±¥‘…Ñ•}¥¹Ñ•É¥Ñä ¤(()‘•˜µ…¥¸ ¤€´ø¥¹Ðè(€€€Á…ÉÍ•È€ô…ÉÁ…ÉÍ”¹ÉÕµ•¹ÑA…ÉÍ•È¡‘•ÍÉ¥ÁÑ¥½¸ô‰YM85…É­•Ñ¥¹œÑÉ…¹Í…Ñ¥½¹…°½¹Ñ¥¹Õ¥ÑäµÕÑ…Ñ¥½¹Ìˆ¤(€€€ÍÕˆ€ôÁ…ÉÍ•È¹…‘‘}ÍÕ‰Á…ÉÍ•ÉÌ¡‘•ÍÐô‰½µµ…¹ˆ°É•ÅÕ¥É•õQÉÕ”¤(€€€ÍÕˆ¹…‘‘}Á…ÉÍ•È ‰Ù…±¥‘…Ñ”ˆ¤(€€€É•Œ€ôÍÕˆ¹…‘‘}Á…ÉÍ•È ‰É•½Ù•Èˆ¤ìÉ•Œ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ™½É”ˆ°…Ñ¥½¸ô‰ÍÑ½É•}ÑÉÕ”ˆ¤(€€€À€ôÍÕˆ¹…‘‘}Á…ÉÍ•È ‰¡•­Á½¥¹Ðˆ¤(€€€À¹…‘‘}…ÉÕµ•¹Ð ˆ´µÍÕµµ…Éäˆ°É•ÅÕ¥É•õQÉÕ”¤ìÀ¹…‘‘}…ÉÕµ•¹Ð ˆ´µÑ•ÍÑÌˆ°É•ÅÕ¥É•õQÉÕ”¤ìÀ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ¹•áÐˆ°‘•ÍÐô‰¹•áÑ}…Ñ¥½¸ˆ°É•ÅÕ¥É•õQÉÕ”¤(€€€ÑÈ€ôÍÕˆ¹…‘‘}Á…ÉÍ•È ‰ÑÉ…¹Í¥Ñ¥½¸ˆ¤(€€€ÑÈ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ½µÁ±•Ñ”ˆ°É•ÅÕ¥É•õQÉÕ”¤ìÑÈ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ¹•áÐˆ°‘•ÍÐô‰¹•áÑ}Ñ…Í¬ˆ°É•ÅÕ¥É•õQÉÕ”¤(€€€ÑÈ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ•Ù¥‘•¹”ˆ°É•ÅÕ¥É•õQÉÕ”¤ìÑÈ¹…‘‘}…ÉÕµ•¹Ð ˆ´µÑ•ÍÑÌˆ°É•ÅÕ¥É•õQÉÕ”¤ìÑÈ¹…‘‘}…ÉÕµ•¹Ð ˆ´µ‘ÉäµÉÕ¸ˆ°…Ñ¥½¸ô‰ÍÑ½É•}ÑÉÕ”ˆ¤(€€€…ÉÌ€ôÁ…ÉÍ•È¹Á…ÉÍ•}…ÉÌ ¤(€€€ÑÉäè(€€€€€€€¥˜…ÉÌ¹½µµ…¹€ôô€‰Ù…±¥‘…Ñ”ˆè(€€€€€€€€€€€Qá¹½½É‘¥¹…Ñ½È¡I==P¤¹…ÍÍ•ÉÑ}±•…¸ ¤ìÙ…±¥‘…Ñ•}¥¹Ñ•É¥Ñä ¤ìÁÉ¥¹Ð ‰QÉ…¹Í…Ñ¥½¹…°½¹Ñ¥¹Õ¥ÑäÍÑ…Ñ”¥Ì±•…¸¸ˆ¤ìÉ•ÑÕÉ¸€À(€€€€€€€¥˜…ÉÌ¹½µµ…¹€ôô€‰É•½Ù•Èˆè(€€€€€€€€€€€É•½Ù•È¡…ÉÌ¹™½É”¤ìÉ•ÑÕÉ¸€À(€€€€€€€¥˜…ÉÌ¹½µµ…¹€ôô€‰¡•­Á½¥¹Ðˆè(€€€€€€€€€€€¡•­Á½¥¹Ð¡…ÉÌ¤ìÉ•ÑÕÉ¸€À(€€€€€€€¥˜…ÉÌ¹½µµ…¹€ôô€‰ÑÉ…¹Í¥Ñ¥½¸ˆè(€€€€€€€€€€€ÑÉ…¹Í¥Ñ¥½¸¡…ÉÌ¤ìÉ•ÑÕÉ¸€À(€€€•á•ÁÐ€¡QÉ…¹Í…Ñ¥½¹ÉÉ½È°=MÉÉ½È°Y…±Õ•ÉÉ½È°©Í½¸¹)M=9•½‘•ÉÉ½È¤…Ì•áŒè(€€€€€€€ÁÉ¥¹Ð¡˜‰$½¹Ñ¥¹Õ¥ÑäÑÉ…¹Í…Ñ¥½¸•ÉÉ½Èèí•áôˆ°™¥±”õÍåÌ¹ÍÑ‘•ÉÈ¤(€€€€€€€É•ÑÕÉ¸€Ä(€€€É•ÑÕÉ¸€È(()¥˜}}¹…µ•}|€ôô€‰}}µ…¥¹}|ˆè(€€€É…¥Í”MåÍÑ•µá¥Ð¡µ…¥¸ ¤¤
+                    raise TransactionError(f"cannot remove created directory during recovery: {item['path']}")
+                target.unlink()
+                self._fsync_dir(target.parent)
+        shutil.rmtree(self.txn_dir)
+        self._fsync_dir(self.git_dir)
+        self._remove_lock()
+        return True
+
+    def assert_clean(self) -> None:
+        if self._artifact_present(self.txn_dir) or self._artifact_present(self.staging_dir) or self._artifact_present(self.lock_path):
+            raise TransactionError("pending/stale continuity transaction detected; run `python tools/ai_txn.py recover`")
+
+
+def run_tool(args: list[str]) -> None:
+    proc = subprocess.run([sys.executable, *args], cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if proc.stdout:
+        print(proc.stdout, end="")
+    if proc.returncode != 0:
+        raise TransactionError(f"command failed ({proc.returncode}): {' '.join(args)}")
+
+
+def validate_integrity() -> None:
+    run_tool(["tools/ai_state.py", "validate"])
+    run_tool(["tools/ai_journal.py", "validate"])
+    run_tool(["tools/ai_context.py", "manifest"])
+
+
+def task_path(task_id: str) -> Path:
+    return ROOT / ".ai" / "tasks" / f"{task_id}.yaml"
+
+
+def checkpoint(args) -> None:
+    coordinator = TxnCoordinator(ROOT)
+    paths = [
+        ROOT / ".ai/state/CURRENT-STATE.yaml",
+        ROOT / ".ai/state/LAST-CHECKPOINT.md",
+        ROOT / ".ai/state/EXECUTION-JOURNAL.jsonl",
+    ]
+    coordinator.begin("checkpoint", paths)
+    try:
+        run_tool(["tools/ai_state.py", "checkpoint", "--summary", args.summary, "--tests", args.tests, "--next", args.next_action])
+        run_tool(["tools/ai_journal.py", "record", "--type", "checkpoint", "--summary", args.summary])
+        validate_integrity()
+    except BaseException:
+        coordinator.restore_pending(force=True)
+        raise
+    coordinator.commit()
+
+
+def transition(args) -> None:
+    coordinator = TxnCoordinator(ROOT)
+    paths = [
+        task_path(args.complete), task_path(args.next_task),
+        ROOT / ".ai/tasks/INDEX.yaml", ROOT / ".ai/roadmap/ROADMAP.yaml",
+        ROOT / ".ai/state/CURRENT-STATE.yaml", ROOT / ".ai/state/LAST-CHECKPOINT.md",
+        ROOT / ".ai/state/EXECUTION-JOURNAL.jsonl",
+    ]
+    coordinator.begin("task_transition", paths)
+    try:
+        command = [
+            "tools/ai_state.py", "transition", "--complete", args.complete, "--next", args.next_task,
+            "--evidence", args.evidence, "--tests", args.tests,
+        ]
+        if args.dry_run:
+            command.append("--dry-run")
+        run_tool(command)
+        if not args.dry_run:
+            run_tool([
+                "tools/ai_journal.py", "record", "--type", "task_transition",
+                "--summary", f"{args.complete} completed; {args.next_task} activated. {args.evidence}",
+            ])
+            validate_integrity()
+    except BaseException:
+        coordinator.restore_pending(force=True)
+        raise
+    coordinator.commit()
+
+
+def recover(force: bool) -> None:
+    coordinator = TxnCoordinator(ROOT)
+    restored = coordinator.restore_pending(force=force)
+    print("Recovered interrupted continuity transaction." if restored else "No interrupted continuity transaction found.")
+    validate_integrity()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="VSN Marketing transactional continuity mutations")
+    sub = parser.add_subparsers(dest="command", required=True)
+    sub.add_parser("validate")
+    rec = sub.add_parser("recover"); rec.add_argument("--force", action="store_true")
+    cp = sub.add_parser("checkpoint")
+    cp.add_argument("--summary", required=True); cp.add_argument("--tests", required=True); cp.add_argument("--next", dest="next_action", required=True)
+    tr = sub.add_parser("transition")
+    tr.add_argument("--complete", required=True); tr.add_argument("--next", dest="next_task", required=True)
+    tr.add_argument("--evidence", required=True); tr.add_argument("--tests", required=True); tr.add_argument("--dry-run", action="store_true")
+    args = parser.parse_args()
+    try:
+        if args.command == "validate":
+            TxnCoordinator(ROOT).assert_clean(); validate_integrity(); print("Transactional continuity state is clean."); return 0
+        if args.command == "recover":
+            recover(args.force); return 0
+        if args.command == "checkpoint":
+            checkpoint(args); return 0
+        if args.command == "transition":
+            transition(args); return 0
+    except (TransactionError, OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"AI continuity transaction error: {exc}", file=sys.stderr)
+        return 1
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

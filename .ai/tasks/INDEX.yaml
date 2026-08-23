@@ -94,7 +94,7 @@
       "phase": "PHASE-02",
       "title": "Implement append-oriented consent evidence and eligibility queries",
       "weight": 25,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0009"
       ]

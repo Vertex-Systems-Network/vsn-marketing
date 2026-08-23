@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Consent",
   "title": "Implement append-oriented consent evidence and eligibility queries",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement canonical ConsentRecord history as append-oriented evidence and expose deterministic tenant-safe effective-consent queries without pulling PHASE-05 suppression/deliverability policy forward.",
   "dependencies": [
     "TASK-0009"

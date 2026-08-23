@@ -5,8 +5,10 @@ on:
   push:
     branches: [main]
 
+# TASK-0003 bootstrap only: this temporary write permission is removed after the
+# generated dependency lockfiles are committed to the feature branch.
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: application-foundation-${{ github.workflow }}-${{ github.ref }}
@@ -64,6 +66,20 @@ jobs:
             composer.lock
             package-lock.json
           retention-days: 1
+      - name: Materialize lockfiles on TASK-0003 branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add composer.lock package-lock.json
+          if git diff --cached --quiet; then
+            echo "Lockfiles already committed."
+            exit 0
+          fi
+          git commit -m "chore: lock TASK-0003 dependencies"
+          git push origin "HEAD:${HEAD_BRANCH}"
 
   php-floor:
     runs-on: ubuntu-latest

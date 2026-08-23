@@ -2,20 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T19:54:24+00:00`
-- Active task: `TASK-0008`
-- Next task: `TASK-0009`
+- Timestamp: `2026-08-23T21:18:59+00:00`
+- Active task: `TASK-0009`
+- Next task: `TASK-0010`
 - Current phase: `PHASE-02`
-- Execution status: `in_progress`
-- State fingerprint: `2fd76db503ce245a93f8947e00b1718ba20a2bcd0dee18915f8208046d0e1fc9`
+- Execution status: `ready`
+- State fingerprint: `16dce3a693514884846a213e40294dd32ec43d8426d4c2820b8585edb5b1edca`
 
 ## Completed / observed this session
 
-Started TASK-0008 implementation from certified main 6d4fa98df4fa420d57cfa54a99dd31c1205ed362. Scope is limited to canonical Contact, ContactIdentity, and Company persistence/contracts, workspace and brand isolation, deterministic identity normalization, auditable state-changing actions, and PostgreSQL integration/security coverage. No TASK-0009 work is included.
+Completed `TASK-0008` and activated `TASK-0009`.
+
+Transition evidence: Exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed AI Continuity Guard run 32666855032 and Application Foundation CI run 32666855014. AC-1 through AC-5 are supported by canonical Contact/ContactIdentity/Company persistence, fail-closed workspace and brand isolation, deterministic identity normalization and provider-reference semantics, auditable state-changing actions, and PostgreSQL lifecycle/security integration coverage.
 
 ## Tests
 
-Preflight: governance-main run 32661316738 PASS on merged activation commit 6d4fa98df4fa420d57cfa54a99dd31c1205ed362; activation head 75674391360e759ac7768ec08e11a94a9ffd13a7 passed AI Continuity Guard 32661176322 and Application Foundation CI 32661176448. TASK-0008 product tests are pending on this branch.
+python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32666855032 PASS; hosted Application Foundation CI 32666855014 PASS (php-floor, integration, e2e, foundation).
 
 ## Blockers
 
@@ -23,4 +25,4 @@ Preflight: governance-main run 32661316738 PASS on merged activation commit 6d4f
 
 ## Exact next action
 
-Create the Contacts module around canonical Contact, ContactIdentity, and Company models first; enforce workspace isolation and provider-neutral identity rules before adding lists or consent behavior.
+Add canonical List and Tag persistence over the accepted contact foundation, then implement idempotent workspace-scoped membership operations with audit and isolation tests.

@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Consent",
   "title": "Implement append-oriented consent evidence and eligibility queries",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Implement canonical ConsentRecord history as append-oriented evidence and expose deterministic tenant-safe effective-consent queries without pulling PHASE-05 suppression/deliverability policy forward.",
   "dependencies": [
     "TASK-0009"
@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "ConsentRecord persistence captures immutable evidence with contact, workspace, channel/purpose, source, decision, and occurrence metadata",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Consent history is append-oriented; prior evidence cannot be silently overwritten or deleted by normal application flows",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Effective-consent queries are deterministic, workspace-scoped, and fail closed when evidence is absent or ambiguous",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Consent-changing actions are audited and no AI/application path can bypass the canonical consent contract",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Integration/security tests prove evidence preservation, deterministic eligibility, and cross-workspace denial without implementing suppression policy",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

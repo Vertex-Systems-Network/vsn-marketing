@@ -1,0 +1,87 @@
+name: TASK-0012 Start
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/task-0012-start.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  start:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'task-0012-phase-02-certification'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Mark TASK-0012 in progress
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0012.yaml')
+          index_path = Path('.ai/tasks/INDEX.yaml')
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+
+          if state['execution']['active_task'] != 'TASK-0012' or task['status'] != 'ready':
+              raise SystemExit('TASK-0012 is not the ready active task; refusing to mutate canonical state')
+
+          task['status'] = 'in_progress'
+          for row in index['tasks']:
+              if row['id'] == 'TASK-0012':
+                  row['status'] = 'in_progress'
+                  break
+          else:
+              raise SystemExit('TASK-0012 missing from task index')
+
+          state['execution']['status'] = 'in_progress'
+          state['blockers'] = []
+
+          for path, payload in ((task_path, task), (index_path, index), (state_path, state)):
+              path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+      - name: Generate synchronized checkpoint
+        run: |
+          python tools/ai_state.py checkpoint \
+            --summary "Started TASK-0012 certification from certified main 513ad78f1f66e04a0938c36341f344051e6f1e1f. Scope is limited to complete PHASE-02 customer-data integration/isolation/invariant acceptance evidence and hosted CI continuity. No PHASE-03+ implementation is included." \
+            --next "Run the complete PHASE-02 customer-data acceptance matrix, close any isolation or invariant gaps, then record exact-head completion evidence before advancing the roadmap." \
+            --tests "Preflight: governance-main run 32672073102 PASS on merged TASK-0011 commit 513ad78f1f66e04a0938c36341f344051e6f1e1f; accepted-state head a30ba20d1f03ed1b13c776deb327b0b4f33a4db7 passed AI Continuity Guard 32671463140 and Application Foundation CI 32671463127. TASK-0012 certification tests are pending on this branch."
+
+      - name: Append task-start journal event
+        run: |
+          python tools/ai_journal.py record \
+            --type task_started \
+            --summary "Started TASK-0012 certification from certified main 513ad78f1f66e04a0938c36341f344051e6f1e1f: integrated PHASE-02 Contact/Identity/Company/List/Tag/Consent/Event/EventType PostgreSQL acceptance, complete cross-workspace fail-closed coverage, provider-neutral identity, append-oriented consent, canonical-event invariants, and full hosted CI continuity. No PHASE-03+ implementation is included."
+
+      - name: Validate synchronized continuity state
+        run: |
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/ai_txn.py validate
+
+      - name: Commit canonical task start
+        run: |
+          rm .github/workflows/task-0012-start.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai .github/workflows/task-0012-start.yml
+          git commit -m 'chore: start TASK-0012 phase certification'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

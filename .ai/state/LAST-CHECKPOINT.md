@@ -2,35 +2,26 @@
 
 ## State
 
-- Timestamp: `2026-08-23T09:30:00+00:00`
+- Timestamp: `2026-08-23T09:44:00+00:00`
 - Active task: `TASK-0004`
 - Next task: `TASK-0005`
 - Current phase: `PHASE-01`
-- Execution status: `ready`
-- State fingerprint: `1ec52e1a3ba34b596546aa5756c075a8c2f0d3b5711b727418f854c66a6bd28d`
+- Execution status: `in_progress`
+- State fingerprint: `6422f7a9c4ac576963d083670743b47f9ea5ce1c60f6582b230421a44781bdf8`
 
 ## Completed / observed this session
 
-- TASK-0003 acceptance criteria are satisfied on bootstrap candidate `b0c337c6dd97592edb305d3070c4a3c4698b4fc0`.
-- Application Foundation CI run `32630999852` passed committed Composer/npm lock installs, PHP 8.3 compatibility-floor tests, PHP 8.5 tests, Docker Compose validation, a real developer PHP image build, TypeScript strict typecheck, and the Vite production build.
-- Backend bootstrap coverage is 3 tests / 26 assertions, including health, bounded runtime status, and the provider-neutral Core architecture boundary.
-- AI Continuity Guard run `32630999842` passed on the same bootstrap candidate.
-- `composer.lock` and `package-lock.json` are committed; final CI is read-only and uses `composer install` plus `npm ci`.
-- The developer PHP image was corrected to install the PHP build toolchain and the `redis` extension required by `REDIS_CLIENT=phpredis`.
-- Issue #6 remains intentionally open as the durable default-branch governance ledger; no actionable GitHub Issue is pending.
-- TASK-0004 is ready and remains dependency-gated behind this transition head's final hosted certification and merge.
+- PR #10 merged to `main` as `b0fcb2bd07d02a305b03bb443bc919307af47c3f`.
+- Default-branch AI continuity governance passed for the merge as run `32631894994`; issue #6 contains the PASS evidence.
+- TASK-0004 implementation is now active from that certified default-branch baseline.
+- Scope is fixed to PostgreSQL 18 persistence, Redis queue/cache/locks with Horizon, S3-compatible object storage, a durable transactional outbox, and documented worker/scheduler/retry/failure behavior.
+- No actionable GitHub Issue is pending; issue #6 remains intentionally open as the governance evidence ledger.
 
 ## Tests
 
-- `python tools/ai_state.py validate` / AI Continuity Guard run `32630999842`: PASS on bootstrap candidate.
-- Application Foundation CI run `32630999852`: PASS.
-- PHP 8.3 compatibility-floor `php artisan test`: PASS.
-- PHP 8.5 `php artisan test`: PASS — 3 tests / 26 assertions.
-- `docker compose config --quiet`: PASS.
-- Developer PHP Docker image build: PASS.
-- `npm run typecheck`: PASS.
-- `npm run build`: PASS.
-- Task-transition head: pending final hosted re-certification before merge.
+- `AI_CONTINUITY_MAIN` on `b0fcb2bd07d02a305b03bb443bc919307af47c3f`: PASS, run `32631894994`.
+- TASK-0003 final PR-head Application Foundation CI: PASS.
+- TASK-0004 integration tests: pending implementation.
 
 ## Blockers
 
@@ -38,4 +29,4 @@
 
 ## Exact next action
 
-Configure PostgreSQL, Redis/Horizon, S3-compatible storage, and the transactional outbox behind explicit infrastructure contracts with integration coverage.
+Implement and certify PostgreSQL 18 persistence, Redis/Horizon queue-cache-lock infrastructure, S3-compatible object storage, and the durable transactional outbox with integration coverage.

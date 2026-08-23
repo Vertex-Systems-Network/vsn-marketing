@@ -4,7 +4,7 @@
   "phase": "PHASE-01",
   "module": "Core",
   "title": "Establish persistence, queue, cache, and object-storage infrastructure",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Wire the locked PostgreSQL, Redis, queue, cache, object-storage, and durable outbox infrastructure behind framework/domain abstractions and prove it with integration tests.",
   "dependencies": ["TASK-0003"],
   "acceptance_criteria": [
@@ -18,5 +18,5 @@
     "python tools/ai_state.py validate",
     "php artisan test --testsuite=Integration"
   ],
-  "exact_next_action": "Configure PostgreSQL, Redis/Horizon, S3-compatible storage, and the transactional outbox behind explicit infrastructure contracts with integration coverage."
+  "exact_next_action": "Implement and certify PostgreSQL 18 persistence, Redis/Horizon queue-cache-lock infrastructure, S3-compatible object storage, and the durable transactional outbox with integration coverage."
 }

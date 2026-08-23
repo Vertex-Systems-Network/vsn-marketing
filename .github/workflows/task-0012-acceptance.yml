@@ -1,0 +1,218 @@
+name: TASK-0012 Terminal Acceptance
+
+on:
+  push:
+    branches:
+      - task-0012-phase-02-certification
+
+permissions:
+  contents: write
+
+jobs:
+  accept:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v7
+        with:
+          ref: task-0012-phase-02-certification
+          fetch-depth: 0
+
+      - name: Require certified parent and staging-only change
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "51b856c117b51d19e3dbabcc02379b1537d69ad9"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/task-0012-acceptance.yml"
+
+      - name: Require TASK-0012-only certified product scope
+        shell: python
+        run: |
+          import subprocess
+          allowed_prefixes = ('.ai/', 'tests/')
+          output = subprocess.check_output([
+              'git', 'diff', '--name-only',
+              '513ad78f1f66e04a0938c36341f344051e6f1e1f',
+              '51b856c117b51d19e3dbabcc02379b1537d69ad9',
+          ], text=True)
+          paths = [line.strip() for line in output.splitlines() if line.strip()]
+          assert paths, 'certified TASK-0012 range must not be empty'
+          unexpected = [path for path in paths if not path.startswith(allowed_prefixes)]
+          assert not unexpected, f'future/production implementation detected in TASK-0012 range: {unexpected}'
+          assert 'tests/Integration/Phase02CustomerDataCertificationTest.php' in paths
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Validate clean canonical state before acceptance
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+
+      - name: Record exact TASK-0012 acceptance evidence
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0012.yaml')
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          expected = {
+              'AC-1': 'Integrated Contact, ContactIdentity, Company, List, Tag, ConsentRecord, Event, and EventType workflows pass PostgreSQL-backed acceptance tests',
+              'AC-2': 'Cross-workspace read/write/reference/membership/consent/event paths fail closed across the complete PHASE-02 data core',
+              'AC-3': 'Provider-neutral identity, append-oriented consent evidence, and canonical-event invariants are enforced by automated regression tests',
+              'AC-4': 'Backend, architecture, static-analysis, formatting, frontend, Playwright, and AI continuity gates are green on the exact acceptance head',
+              'AC-5': 'PHASE-02 completion evidence is recorded without pulling PHASE-03+ implementation forward',
+          }
+          assert task['id'] == 'TASK-0012'
+          assert task['status'] == 'in_progress'
+          assert {item['id']: item['text'] for item in task['acceptance_criteria']} == expected
+          assert all(item['done'] is False for item in task['acceptance_criteria'])
+          for item in task['acceptance_criteria']:
+              item['done'] = True
+          task_path.write_text(json.dumps(task, indent=2) + '\n', encoding='utf-8')
+
+          test_state = {
+              'schema_version': 1,
+              'updated_for_task': 'TASK-0012',
+              'suites': [
+                  {
+                      'name': 'ai-continuity-validation',
+                      'command': 'python tools/ai_state.py validate',
+                      'status': 'passing',
+                      'notes': 'AI Continuity Guard run 32672928382 passed exact TASK-0012 certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9, including transactional state, journal integrity, policy registries, deterministic context, append-only history, and product-change ledger guard.'
+                  },
+                  {
+                      'name': 'backend-tests',
+                      'command': 'php artisan test',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed backend tests on exact TASK-0012 certified head; PHP 8.3 compatibility job 97276441360 also passed.'
+                  },
+                  {
+                      'name': 'postgresql-integration',
+                      'command': 'php artisan test --testsuite=Integration',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 integration job 97276441338 passed on PostgreSQL 18 and Redis 8 with 24 tests / 157 assertions. Phase02CustomerDataCertificationTest passed the complete Contact/Identity/Company/List/Tag/Consent/Event/EventType lifecycle and complete application-level cross-workspace fail-closed case; append-only consent and direct composite-FK isolation regressions also passed without ineffective-import PHP warnings.'
+                  },
+                  {
+                      'name': 'php-static-analysis',
+                      'command': 'composer analyse',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed Larastan/static analysis on exact TASK-0012 certified head.'
+                  },
+                  {
+                      'name': 'php-formatting',
+                      'command': 'composer lint:check',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed pinned Pint formatting on exact TASK-0012 certified head after the repository-authoritative formatter/runtime-warning reconciliation.'
+                  },
+                  {
+                      'name': 'frontend-typecheck',
+                      'command': 'npm run typecheck',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed TypeScript typecheck on exact TASK-0012 certified head.'
+                  },
+                  {
+                      'name': 'frontend-unit-tests',
+                      'command': 'npm run test',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed Vitest frontend unit tests on exact TASK-0012 certified head.'
+                  },
+                  {
+                      'name': 'frontend-build',
+                      'command': 'npm run build',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 foundation job 97276441392 passed the production frontend build on exact TASK-0012 certified head.'
+                  },
+                  {
+                      'name': 'critical-e2e',
+                      'command': 'npm run test:e2e',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32672928375 e2e job 97276441406 passed the critical Playwright smoke on exact TASK-0012 certified head.'
+                  }
+              ],
+              'application_tests': {
+                  'status': 'passing',
+                  'reason': 'TASK-0012 exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard 32672928382 and Application Foundation CI 32672928375: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded.'
+              }
+          }
+          Path('.ai/state/TEST-STATE.yaml').write_text(json.dumps(test_state, indent=2) + '\n', encoding='utf-8')
+
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+          assert state['execution']['active_task'] == 'TASK-0012'
+          assert state['execution']['status'] == 'in_progress'
+          assert state['execution']['next_task'] is None
+          assert state['blockers'] == []
+          state['quality']['continuity_validation'] = 'task_0012_pr_head_passed'
+          state['quality']['application_test_status'] = 'task_0012_ci_passed'
+          state_path.write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
+
+      - name: Validate acceptance inputs
+        run: python tools/ai_state.py validate
+
+      - name: Dry-run terminal completion
+        run: >-
+          python tools/ai_txn.py transition
+          --complete TASK-0012
+          --evidence "Exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard run 32672928382 and Application Foundation CI run 32672928375. AC-1 through AC-5 are supported by the PostgreSQL-backed Phase02CustomerDataCertificationTest plus module integration/security regressions, complete cross-workspace fail-closed application and composite-FK coverage, provider-neutral canonical identity with external references retained only as provenance, append-only consent evidence, canonical-event retry semantics, and full hosted backend/architecture/static/format/frontend/E2E gates. The certified PR range contains only .ai continuity state and tests; no PHASE-03 provider implementation was introduced."
+          --tests "python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e; hosted AI Continuity Guard 32672928382 PASS; hosted Application Foundation CI 32672928375 PASS."
+          --dry-run
+
+      - name: Terminal-complete TASK-0012 transactionally
+        run: >-
+          python tools/ai_txn.py transition
+          --complete TASK-0012
+          --evidence "Exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard run 32672928382 and Application Foundation CI run 32672928375. AC-1 through AC-5 are supported by the PostgreSQL-backed Phase02CustomerDataCertificationTest plus module integration/security regressions, complete cross-workspace fail-closed application and composite-FK coverage, provider-neutral canonical identity with external references retained only as provenance, append-only consent evidence, canonical-event retry semantics, and full hosted backend/architecture/static/format/frontend/E2E gates. The certified PR range contains only .ai continuity state and tests; no PHASE-03 provider implementation was introduced."
+          --tests "python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e; hosted AI Continuity Guard 32672928382 PASS; hosted Application Foundation CI 32672928375 PASS."
+
+      - name: Validate final canonical terminal state
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+
+      - name: Require PHASE-02 completion and explicit reconciliation boundary
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          state = json.loads(Path('.ai/state/CURRENT-STATE.yaml').read_text(encoding='utf-8'))
+          task = json.loads(Path('.ai/tasks/TASK-0012.yaml').read_text(encoding='utf-8'))
+          index = json.loads(Path('.ai/tasks/INDEX.yaml').read_text(encoding='utf-8'))
+          roadmap = json.loads(Path('.ai/roadmap/ROADMAP.yaml').read_text(encoding='utf-8'))
+
+          assert task['status'] == 'completed'
+          assert all(item['done'] is True for item in task['acceptance_criteria'])
+          assert all(row['status'] == 'completed' for row in index['tasks'])
+          assert next(row for row in roadmap['phases'] if row['id'] == 'PHASE-02')['status'] == 'completed'
+          assert state['execution']['status'] == 'needs_reconciliation'
+          assert state['execution']['current_phase'] == 'PHASE-02'
+          assert state['execution']['active_task'] == 'TASK-0012'
+          assert state['execution']['last_completed_task'] == 'TASK-0012'
+          assert state['execution']['next_task'] is None
+          assert state['blockers'] == ['No successor task is registered after TASK-0012; explicit roadmap staging is required before further implementation.']
+          assert state['exact_next_action'] == 'Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work.'
+
+      - name: Commit accepted terminal canonical state and remove driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/task-0012-acceptance.yml
+          git add \
+            .ai/tasks/TASK-0012.yaml \
+            .ai/tasks/INDEX.yaml \
+            .ai/roadmap/ROADMAP.yaml \
+            .ai/state/CURRENT-STATE.yaml \
+            .ai/state/TEST-STATE.yaml \
+            .ai/state/LAST-CHECKPOINT.md \
+            .ai/state/EXECUTION-JOURNAL.jsonl
+          git diff --cached --check
+          git commit -m "chore: accept TASK-0012 and complete PHASE-02"
+          git push origin HEAD:task-0012-phase-02-certification

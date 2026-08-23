@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0011",
+  "phase": "PHASE-02",
+  "module": "Events",
+  "title": "Persist canonical customer events and contact timelines",
+  "status": "planned",
+  "objective": "Persist tenant-safe canonical customer Event/EventType records using the TASK-0006 event envelope and expose duplicate-safe contact timeline queries without introducing provider adapters.",
+  "dependencies": [
+    "TASK-0010"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical Event and EventType persistence uses the versioned event envelope established by TASK-0006",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Customer events retain workspace and brand scope where applicable and reference canonical contact/identity subjects safely",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Event ingestion is duplicate-safe by canonical event identity and does not trust provider event names or external IDs as domain identity",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Tenant-safe contact timeline queries preserve canonical occurred/received ordering and do not expose cross-workspace events",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Integration tests prove durable canonical event persistence, duplicate handling, subject linkage, and cross-workspace isolation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check"
+  ],
+  "exact_next_action": "Bind canonical customer Event/EventType persistence to the existing TASK-0006 event envelope, then add duplicate-safe contact timeline queries and tenant-isolation coverage."
+}

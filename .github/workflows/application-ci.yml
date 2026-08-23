@@ -46,7 +46,7 @@ jobs:
       - name: Build developer PHP image
         run: docker build --tag vsn-marketing-foundation:test --file docker/app/Dockerfile .
       - name: Run backend tests
-        run: php artisan test
+        run: php artisan test --fail-on-warning --display-warnings
       - name: Typecheck frontend
         run: npm run typecheck
       - name: Build frontend
@@ -74,7 +74,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate --ansi
       - name: Run backend tests on PHP 8.3
-        run: php artisan test
+        run: php artisan test --fail-on-warning --display-warnings
 
   integration:
     runs-on: ubuntu-latest
@@ -143,4 +143,4 @@ jobs:
       - name: Install locked PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: Run infrastructure integration suite
-        run: php artisan test --testsuite=Integration
+        run: php artisan test --testsuite=Integration --fail-on-warning --display-warnings

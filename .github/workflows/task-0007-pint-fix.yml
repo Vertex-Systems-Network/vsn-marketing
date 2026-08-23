@@ -1,0 +1,46 @@
+name: TASK-0007 Pint Autofix
+
+on:
+  push:
+    branches:
+      - task-0007-ci-observability
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out exact branch
+        uses: actions/checkout@v7
+        with:
+          ref: task-0007-ci-observability
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install locked dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Apply repository Pint rules
+        run: vendor/bin/pint --parallel
+
+      - name: Remove one-shot formatter and commit exact result
+        run: |
+          rm .github/workflows/task-0007-pint-fix.yml
+          git add -A
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --cached --quiet; then
+            echo "Pint produced no changes."
+            exit 1
+          fi
+          git commit -m "style: apply Pint formatting"
+          git push origin HEAD:task-0007-ci-observability

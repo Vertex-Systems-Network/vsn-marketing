@@ -79,8 +79,8 @@ function customerEventIntegrationEnvelope(
     return new CanonicalEvent(
         eventId: $eventId,
         eventType: $eventType,
-        occurredAt: new \DateTimeImmutable('2026-08-20T10:00:00+00:00'),
-        receivedAt: new \DateTimeImmutable('2026-08-20T10:01:00+00:00'),
+        occurredAt: new DateTimeImmutable('2026-08-20T10:00:00+00:00'),
+        receivedAt: new DateTimeImmutable('2026-08-20T10:01:00+00:00'),
         workspaceId: $fixture['workspace_id'],
         brandId: $fixture['brand_id'],
         subjects: $subjects,

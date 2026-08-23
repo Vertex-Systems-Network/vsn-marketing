@@ -15,5 +15,8 @@ interface OutboxRepository
 
     public function markPublished(string $id): void;
 
-    public function markAttemptFailed(string $id, string $error): void;
+    /** @param list<int> $backoffSeconds */
+    public function markAttemptFailed(string $id, string $error, int $maxAttempts, array $backoffSeconds): void;
+
+    public function replayDeadLetter(string $id): bool;
 }

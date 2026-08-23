@@ -1,24 +1,24 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0005",
+  "updated_for_task": "TASK-0006",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "Default-branch governance is green on TASK-0004 merge 7e2247e7f67f2b86b3abde0f42815e91ef97aef9; TASK-0005 branch must re-certify after implementation changes."
+      "notes": "AI Continuity Guard run 32640770685 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315; transactional acceptance run 32640928793 then revalidated continuity before and after TASK-0006 -> TASK-0007."
     },
     {
       "name": "ai-transaction-integrity",
       "command": "python tools/ai_txn.py validate && python tools/test_ai_txn.py",
       "status": "passing",
-      "notes": "Crash-recoverable continuity transaction regression coverage remains green under the hosted governance guard."
+      "notes": "Transactional acceptance run 32640928793 completed recover, pre-transition validation, atomic TASK-0006 -> TASK-0007 transition, journal update, and post-transition validation successfully."
     },
     {
       "name": "ai-continuity-integrity",
       "command": "python tools/test_ai_continuity.py",
       "status": "passing",
-      "notes": "Transition, fingerprint, journal, append-only and product-change ledger guards remain green on the certified baseline."
+      "notes": "AI Continuity Guard run 32640770685 passed transition, fingerprint, append-only journal, and product-change ledger checks on exact TASK-0006 product head."
     },
     {
       "name": "ai-context-pack-integrity",
@@ -35,6 +35,6 @@
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "Application Foundation CI run 32637746729 passed exact TASK-0005 implementation head 00373a68fcb92d736dcd99162d7a6b3d60c50c9a: PHP 8.3 backend suite (13 passed / 137 assertions, including all 6 identity/tenancy/RBAC security tests), PHP 8.5 foundation, Docker Compose/image, TypeScript/Vite, and PostgreSQL 18 + Redis 8 integration. AI Continuity Guard run 32637746855 passed on the same exact head."
+    "reason": "Application Foundation CI run 32640770631 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315: PHP 8.3 backend, PHP 8.5 foundation/backend, Docker Compose and developer image, TypeScript typecheck, Vite production build, and PostgreSQL 18 + Redis 8 integration. Acceptance run 32640928793 re-ran the required integration suite warning-clean: 8 tests / 66 assertions."
   }
 }

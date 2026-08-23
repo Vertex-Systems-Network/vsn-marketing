@@ -2,6 +2,7 @@
 
 use App\Modules\Core\Application\Messaging\OutboxRecorder;
 use App\Modules\Core\Application\Messaging\PublishOutboxMessage;
+use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Core\Domain\Contracts\DistributedLock;
 use App\Modules\Core\Domain\Contracts\OutboxRepository;
 use App\Modules\Core\Domain\Contracts\OutboxTransport;
@@ -28,6 +29,8 @@ it('runs migrations against PostgreSQL 18', function () {
 
     expect($version)->toStartWith('18.')
         ->and(DB::getSchemaBuilder()->hasTable('outbox_messages'))->toBeTrue()
+        ->and(DB::getSchemaBuilder()->hasTable('audit_events'))->toBeTrue()
+        ->and(DB::getSchemaBuilder()->hasTable('idempotency_keys'))->toBeTrue()
         ->and(DB::getSchemaBuilder()->hasTable('failed_jobs'))->toBeTrue();
 });
 
@@ -96,7 +99,12 @@ it('persists publish failures and succeeds on a later retry', function () {
 
     expect((int) $failed->attempts)->toBe(1)
         ->and($failed->last_error)->toBe('transport unavailable')
-        ->and($failed->published_at)->toBeNull();
+        ->and($failed->published_at)->toBeNull()
+        ->and($failed->dead_lettered_at)->toBeNull();
+
+    DB::table('outbox_messages')->where('id', $id)->update([
+        'available_at' => app(Clock::class)->now()->modify('-1 second'),
+    ]);
 
     $successfulTransport = new class implements OutboxTransport {
         public int $published = 0;

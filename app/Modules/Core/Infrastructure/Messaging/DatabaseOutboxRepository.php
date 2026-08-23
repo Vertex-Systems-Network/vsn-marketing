@@ -29,6 +29,7 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
             'occurred_at' => $message->occurredAt,
             'available_at' => $message->availableAt,
             'published_at' => null,
+            'dead_lettered_at' => null,
             'attempts' => 0,
             'last_error' => null,
             'created_at' => $message->occurredAt,
@@ -42,6 +43,8 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
             ->table('outbox_messages')
             ->where('id', $id)
             ->whereNull('published_at')
+            ->whereNull('dead_lettered_at')
+            ->where('available_at', '<=', $this->clock->now())
             ->first();
 
         return $row === null ? null : $this->hydrate($row);
@@ -52,6 +55,7 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
         return $this->database->connection()
             ->table('outbox_messages')
             ->whereNull('published_at')
+            ->whereNull('dead_lettered_at')
             ->where('available_at', '<=', $this->clock->now())
             ->orderBy('occurred_at')
             ->limit($limit)
@@ -68,6 +72,7 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
             ->table('outbox_messages')
             ->where('id', $id)
             ->whereNull('published_at')
+            ->whereNull('dead_lettered_at')
             ->update([
                 'published_at' => $now,
                 'last_error' => null,
@@ -75,16 +80,54 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
             ]);
     }
 
-    public function markAttemptFailed(string $id, string $error): void
+    public function markAttemptFailed(string $id, string $error, int $maxAttempts, array $backoffSeconds): void
     {
-        $this->database->connection()
+        $this->database->connection()->transaction(function () use ($id, $error, $maxAttempts, $backoffSeconds): void {
+            $query = $this->database->connection()
+                ->table('outbox_messages')
+                ->where('id', $id)
+                ->whereNull('published_at')
+                ->whereNull('dead_lettered_at');
+            $row = $query->lockForUpdate()->first();
+
+            if ($row === null) {
+                return;
+            }
+
+            $now = $this->clock->now();
+            $attempts = (int) $row->attempts + 1;
+            $terminal = $attempts >= max(1, $maxAttempts);
+            $delayIndex = max(0, min($attempts - 1, count($backoffSeconds) - 1));
+            $delay = $terminal || $backoffSeconds === [] ? 0 : max(0, (int) $backoffSeconds[$delayIndex]);
+            $availableAt = $delay === 0 ? $now : ($now->modify("+{$delay} seconds") ?: $now);
+
+            $query->update([
+                'attempts' => $attempts,
+                'last_error' => mb_substr($error, 0, 2000),
+                'available_at' => $availableAt,
+                'dead_lettered_at' => $terminal ? $now : null,
+                'updated_at' => $now,
+            ]);
+        });
+    }
+
+    public function replayDeadLetter(string $id): bool
+    {
+        $now = $this->clock->now();
+        $updated = $this->database->connection()
             ->table('outbox_messages')
             ->where('id', $id)
             ->whereNull('published_at')
-            ->increment('attempts', 1, [
-                'last_error' => mb_substr($error, 0, 2000),
-                'updated_at' => $this->clock->now(),
+            ->whereNotNull('dead_lettered_at')
+            ->update([
+                'attempts' => 0,
+                'last_error' => null,
+                'available_at' => $now,
+                'dead_lettered_at' => null,
+                'updated_at' => $now,
             ]);
+
+        return $updated === 1;
     }
 
     /**

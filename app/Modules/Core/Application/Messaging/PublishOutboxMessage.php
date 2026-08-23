@@ -19,9 +19,14 @@ final class PublishOutboxMessage implements ShouldBeUnique, ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public int $tries = 5;
+    public const int MAX_ATTEMPTS = 5;
 
-    public int $maxExceptions = 5;
+    /** @var list<int> */
+    public const array BACKOFF_SECONDS = [5, 30, 120, 300];
+
+    public int $tries = self::MAX_ATTEMPTS;
+
+    public int $maxExceptions = self::MAX_ATTEMPTS;
 
     public int $timeout = 60;
 
@@ -39,7 +44,7 @@ final class PublishOutboxMessage implements ShouldBeUnique, ShouldQueue
     /** @return list<int> */
     public function backoff(): array
     {
-        return [5, 30, 120, 300];
+        return self::BACKOFF_SECONDS;
     }
 
     public function handle(OutboxRepository $outbox, OutboxTransport $transport): void
@@ -54,7 +59,12 @@ final class PublishOutboxMessage implements ShouldBeUnique, ShouldQueue
             $transport->publish($message);
             $outbox->markPublished($message->id);
         } catch (Throwable $exception) {
-            $outbox->markAttemptFailed($message->id, $exception->getMessage());
+            $outbox->markAttemptFailed(
+                $message->id,
+                $exception->getMessage(),
+                self::MAX_ATTEMPTS,
+                self::BACKOFF_SECONDS,
+            );
 
             throw $exception;
         }

@@ -6,7 +6,6 @@ use App\Modules\Core\Application\Messaging\PublishOutboxMessage;
 use App\Modules\Core\Domain\Contracts\DistributedLock;
 use App\Modules\Core\Domain\Contracts\OutboxRepository;
 use App\Modules\Core\Domain\Contracts\OutboxTransport;
-use Closure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

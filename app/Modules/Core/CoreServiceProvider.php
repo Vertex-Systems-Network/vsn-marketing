@@ -4,6 +4,7 @@ namespace App\Modules\Core;
 
 use App\Modules\Core\Application\Messaging\DispatchPendingOutbox;
 use App\Modules\Core\Application\Messaging\ReplayDeadLetteredOutbox;
+use App\Modules\Core\Application\Observability\MetricsRegistry;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Core\Domain\Contracts\DistributedLock;
 use App\Modules\Core\Domain\Contracts\IdempotencyRepository;
@@ -18,6 +19,7 @@ use App\Modules\Core\Infrastructure\Messaging\DatabaseOutboxRepository;
 use App\Modules\Core\Infrastructure\Messaging\LaravelEventOutboxTransport;
 use App\Modules\Core\Infrastructure\Storage\LaravelObjectStore;
 use App\Modules\Core\Infrastructure\Time\SystemClock;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,10 @@ final class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(IdempotencyRepository::class, DatabaseIdempotencyRepository::class);
         $this->app->singleton(OutboxRepository::class, DatabaseOutboxRepository::class);
         $this->app->singleton(OutboxTransport::class, LaravelEventOutboxTransport::class);
+
+        $this->app->singleton(MetricsRegistry::class, function ($app): MetricsRegistry {
+            return new MetricsRegistry($app->make(CacheManager::class)->store());
+        });
 
         $this->app->singleton(ObjectStore::class, function ($app): ObjectStore {
             return new LaravelObjectStore(

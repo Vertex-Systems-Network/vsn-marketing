@@ -12,8 +12,7 @@ final readonly class HealthStatus
     public function __construct(
         private DatabaseManager $database,
         private CacheManager $cache,
-    ) {
-    }
+    ) {}
 
     /** @return array{status:string,checks:array{database:string,cache:string}} */
     public function readiness(): array

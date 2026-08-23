@@ -9,9 +9,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 
 final readonly class LaravelEventOutboxTransport implements OutboxTransport
 {
-    public function __construct(private Dispatcher $events)
-    {
-    }
+    public function __construct(private Dispatcher $events) {}
 
     public function publish(OutboxMessage $message): void
     {

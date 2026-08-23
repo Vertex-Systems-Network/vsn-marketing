@@ -9,6 +9,6 @@ final class IdentityServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->scoped(TenantContextStore::class, fn (): TenantContextStore => new TenantContextStore());
+        $this->app->scoped(TenantContextStore::class, fn (): TenantContextStore => new TenantContextStore);
     }
 }

@@ -11,8 +11,7 @@ final class LaravelObjectStore implements ObjectStore
     public function __construct(
         private readonly FilesystemManager $filesystems,
         private readonly string $disk,
-    ) {
-    }
+    ) {}
 
     public function put(string $path, string $contents, array $options = []): void
     {

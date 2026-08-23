@@ -14,8 +14,7 @@ final readonly class DatabaseIdempotencyRepository implements IdempotencyReposit
     public function __construct(
         private DatabaseManager $database,
         private Clock $clock,
-    ) {
-    }
+    ) {}
 
     public function claim(string $workspaceId, string $scope, string $key): IdempotencyClaim
     {

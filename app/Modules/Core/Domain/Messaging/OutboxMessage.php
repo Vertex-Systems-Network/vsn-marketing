@@ -15,6 +15,5 @@ final readonly class OutboxMessage
         public array $headers,
         public DateTimeImmutable $occurredAt,
         public DateTimeImmutable $availableAt,
-    ) {
-    }
+    ) {}
 }

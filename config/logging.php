@@ -1,6 +1,7 @@
 <?php
 
 use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 
 return [
@@ -22,6 +23,6 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'formatter' => JsonFormatter::class,
         ],
-        'null' => ['driver' => 'monolog', 'handler' => Monolog\Handler\NullHandler::class],
+        'null' => ['driver' => 'monolog', 'handler' => NullHandler::class],
     ],
 ];

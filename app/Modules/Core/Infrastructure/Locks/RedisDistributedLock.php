@@ -11,9 +11,7 @@ use LogicException;
 
 final class RedisDistributedLock implements DistributedLock
 {
-    public function __construct(private readonly CacheFactory $cache)
-    {
-    }
+    public function __construct(private readonly CacheFactory $cache) {}
 
     public function run(string $name, int $seconds, Closure $criticalSection): bool
     {

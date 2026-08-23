@@ -8,9 +8,7 @@ use Illuminate\Database\DatabaseManager;
 
 final readonly class DatabaseAuditEventRepository implements AuditEventRepository
 {
-    public function __construct(private DatabaseManager $database)
-    {
-    }
+    public function __construct(private DatabaseManager $database) {}
 
     public function store(AuditEvent $event): void
     {

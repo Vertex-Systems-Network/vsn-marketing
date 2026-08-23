@@ -8,9 +8,7 @@ final class MetricsRegistry
 {
     private const PREFIX = 'vsn:observability:http:';
 
-    public function __construct(private readonly Repository $cache)
-    {
-    }
+    public function __construct(private readonly Repository $cache) {}
 
     public function recordHttpRequest(int $statusCode, int $durationMicroseconds): void
     {

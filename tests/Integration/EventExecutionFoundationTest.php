@@ -116,10 +116,9 @@ it('executes duplicate idempotency keys once and deterministically retries faile
 });
 
 it('dead letters terminal outbox failures and replays them without losing the durable message', function () {
-    $clock = new class(new DateTimeImmutable('2026-08-23T12:00:00+00:00')) implements Clock {
-        public function __construct(public DateTimeImmutable $current)
-        {
-        }
+    $clock = new class(new DateTimeImmutable('2026-08-23T12:00:00+00:00')) implements Clock
+    {
+        public function __construct(public DateTimeImmutable $current) {}
 
         public function now(): DateTimeImmutable
         {
@@ -143,7 +142,8 @@ it('dead letters terminal outbox failures and replays them without losing the du
         payload: ['reason' => 'transport'],
     );
     $outbox = app(OutboxRepository::class);
-    $failingTransport = new class implements OutboxTransport {
+    $failingTransport = new class implements OutboxTransport
+    {
         public function publish(OutboxMessage $message): void
         {
             throw new RuntimeException('transport unavailable');

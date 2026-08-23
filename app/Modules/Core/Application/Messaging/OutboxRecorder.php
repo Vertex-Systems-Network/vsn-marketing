@@ -14,8 +14,7 @@ final readonly class OutboxRecorder
         private Clock $clock,
         private IdentifierGenerator $identifiers,
         private OutboxRepository $outbox,
-    ) {
-    }
+    ) {}
 
     public function record(
         string $topic,

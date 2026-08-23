@@ -6,7 +6,5 @@ use App\Modules\Events\Domain\CanonicalEvent;
 
 final readonly class CanonicalEventPublished
 {
-    public function __construct(public CanonicalEvent $event)
-    {
-    }
+    public function __construct(public CanonicalEvent $event) {}
 }

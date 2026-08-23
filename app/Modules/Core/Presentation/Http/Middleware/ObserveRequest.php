@@ -14,9 +14,7 @@ final readonly class ObserveRequest
 {
     private const CORRELATION_HEADER = 'X-Correlation-ID';
 
-    public function __construct(private MetricsRegistry $metrics)
-    {
-    }
+    public function __construct(private MetricsRegistry $metrics) {}
 
     public function handle(Request $request, Closure $next): Response
     {

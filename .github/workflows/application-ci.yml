@@ -5,10 +5,8 @@ on:
   push:
     branches: [main]
 
-# TASK-0003 bootstrap only: this temporary write permission is removed after the
-# generated dependency lockfiles are committed to the feature branch.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: application-foundation-${{ github.workflow }}-${{ github.ref }}
@@ -32,56 +30,25 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-      - name: Validate Composer manifest
-        run: composer validate --strict --no-check-lock
-      - name: Resolve PHP dependencies
-        run: |
-          if [ -f composer.lock ]; then
-            composer install --no-interaction --prefer-dist --no-progress
-          else
-            composer update --no-interaction --prefer-dist --no-progress
-          fi
-      - name: Resolve frontend dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-audit --no-fund
-          else
-            npm install --no-audit --no-fund
-          fi
+          cache: npm
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
       - name: Prepare application environment
         run: |
           cp .env.example .env
           php artisan key:generate --ansi
+      - name: Validate Docker Compose contract
+        run: docker compose config --quiet
       - name: Run backend tests
         run: php artisan test
       - name: Typecheck frontend
         run: npm run typecheck
       - name: Build frontend
         run: npm run build
-      - name: Require generated lockfiles
-        run: test -f composer.lock && test -f package-lock.json
-      - name: Upload generated lockfiles
-        uses: actions/upload-artifact@v6
-        with:
-          name: task-0003-lockfiles
-          path: |
-            composer.lock
-            package-lock.json
-          retention-days: 1
-      - name: Materialize lockfiles on TASK-0003 branch
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          HEAD_BRANCH: ${{ github.head_ref }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add composer.lock package-lock.json
-          if git diff --cached --quiet; then
-            echo "Lockfiles already committed."
-            exit 0
-          fi
-          git commit -m "chore: lock TASK-0003 dependencies"
-          git push origin "HEAD:${HEAD_BRANCH}"
 
   php-floor:
     runs-on: ubuntu-latest
@@ -96,13 +63,10 @@ jobs:
           tools: composer:v2
           extensions: mbstring, pdo_sqlite, pdo_pgsql
           coverage: none
-      - name: Resolve PHP dependencies at compatibility floor
-        run: |
-          if [ -f composer.lock ]; then
-            composer install --no-interaction --prefer-dist --no-progress
-          else
-            composer update --no-interaction --prefer-dist --no-progress
-          fi
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+      - name: Install locked PHP dependencies at compatibility floor
+        run: composer install --no-interaction --prefer-dist --no-progress
       - name: Prepare application environment
         run: |
           cp .env.example .env

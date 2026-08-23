@@ -94,7 +94,7 @@
       "phase": "PHASE-02",
       "title": "Implement append-oriented consent evidence and eligibility queries",
       "weight": 25,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0009"
       ]
@@ -104,7 +104,7 @@
       "phase": "PHASE-02",
       "title": "Persist canonical customer events and contact timelines",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0010"
       ]

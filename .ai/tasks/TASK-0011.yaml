@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Events",
   "title": "Persist canonical customer events and contact timelines",
-  "status": "planned",
+  "status": "ready",
   "objective": "Persist tenant-safe canonical customer Event/EventType records using the TASK-0006 event envelope and expose duplicate-safe contact timeline queries without introducing provider adapters.",
   "dependencies": [
     "TASK-0010"

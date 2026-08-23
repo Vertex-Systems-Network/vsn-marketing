@@ -2,22 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T21:36:51+00:00`
-- Active task: `TASK-0010`
-- Next task: `TASK-0011`
+- Timestamp: `2026-08-23T22:10:44+00:00`
+- Active task: `TASK-0011`
+- Next task: `TASK-0012`
 - Current phase: `PHASE-02`
 - Execution status: `ready`
-- State fingerprint: `9b435f658533995d920138240f6e6ed90dfe8784a348d8d136a40ba52259fce0`
+- State fingerprint: `ac1b85c4223f5f14e44af0c23d38b5fb4764109dd0e6c5323fb922e80683e248`
 
 ## Completed / observed this session
 
-Completed `TASK-0009` and activated `TASK-0010`.
+Completed `TASK-0010` and activated `TASK-0011`.
 
-Transition evidence: Exact product head 4f6a65c2475df1d201518b7e0c4028e82509951e passed AI Continuity Guard run 32667911144 and Application Foundation CI run 32667911159. AC-1 through AC-5 are supported by canonical ContactList and Tag persistence, composite workspace isolation across lists/tags/contacts, retry-safe add/remove membership and assign/unassign tag operations, audit events emitted only for real state changes, and PostgreSQL lifecycle/security coverage. No PHASE-08 segment evaluation or TASK-0010 consent implementation is included.
+Transition evidence: Exact product head 60a0b5cb7ea279898dfd861bf11ec3d43324501c passed AI Continuity Guard run 32669521904 and Application Foundation CI run 32669521928. AC-1 through AC-5 are supported by canonical workspace/contact ConsentRecord evidence with normalized channel/purpose/source and explicit decision/occurrence metadata, append-only repository contracts plus PostgreSQL mutation rejection, deterministic missing/ambiguous fail-closed effective-consent queries, transactional audit recording, and PostgreSQL lifecycle/security coverage. No PHASE-05 suppression/deliverability policy is included.
 
 ## Tests
 
-python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32667911144 PASS; hosted Application Foundation CI 32667911159 PASS (php-floor, integration, e2e, foundation).
+python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32669521904 PASS; hosted Application Foundation CI 32669521928 PASS (php-floor, integration, e2e, foundation).
 
 ## Blockers
 
@@ -25,4 +25,4 @@ python tools/ai_state.py validate; php artisan test; php artisan test --testsuit
 
 ## Exact next action
 
-Implement append-only ConsentRecord evidence and effective-consent queries over the canonical contact identity, preserving provenance and failing closed across tenant boundaries.
+Bind canonical customer Event/EventType persistence to the existing TASK-0006 event envelope, then add duplicate-safe contact timeline queries and tenant-isolation coverage.

@@ -6,23 +6,21 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-00",
-    "active_task": "TASK-0001",
-    "last_completed_task": null,
-    "next_task": "TASK-0002"
+    "active_task": "TASK-0002",
+    "last_completed_task": "TASK-0001",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 0.0,
-    "phase_percent": 0.0,
-    "calculation": "No PHASE-00 task is complete until the continuity workflow has passed on the default branch."
+    "roadmap_percent": 1.6,
+    "phase_percent": 40.0,
+    "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "passed_on_pull_request_not_default_branch",
+    "continuity_validation": "passed_on_default_branch",
     "application_test_status": "not_started"
   },
-  "blockers": [
-    "PR #2 requires approval from a reviewer other than the last pusher before repository rules allow merge."
-  ],
-  "exact_next_action": "Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
+  "blockers": [],
+  "exact_next_action": "Verify runtime and deployment constraints, compare the initial backend/frontend/database/queue/test stack, and draft the stack ADR before scaffolding application code."
 }

@@ -26,12 +26,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Validate transactional continuity state
+        run: python tools/ai_txn.py validate
       - name: Validate repository AI state
         run: python tools/ai_state.py validate
       - name: Validate hash-chained execution journal
         run: python tools/ai_journal.py validate
       - name: Validate AI policy registries
         run: python tools/ai_policy.py
+      - name: Test transactional continuity recovery
+        run: python tools/test_ai_txn.py
       - name: Test AI continuity integrity guards
         run: python tools/test_ai_continuity.py
       - name: Test deterministic AI context packs

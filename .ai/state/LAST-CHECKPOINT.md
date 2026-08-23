@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-08-22T23:45:00+00:00`
+- Timestamp: `2026-08-23T00:31:00+00:00`
 - Active task: `TASK-0001`
 - Next task: `TASK-0002`
 - Current phase: `PHASE-00`
@@ -11,19 +11,19 @@
 
 ## Completed / observed this session
 
-- Added the canonical AI-native control-plane specification and deterministic repository context-pack compiler.
-- Added machine-readable agent, autonomy, model capability, prompt, tool, evaluation, memory and observability registries.
-- Added `tools/ai_policy.py` so agent-tool permissions, autonomy ceilings, high-risk R3 invariants, memory scopes, prompt/eval references, model capability keys and observability fields cannot drift silently.
-- Added positive/negative policy tests and context-pack drift tests; CI now runs both validators and both test suites.
-- Repository auto-merge is unavailable; GitHub rejected enabling it. Independent review remains the merge gate.
+- Exact-head PR #2 governance run #12 passed all existing state, journal, policy, context, append-only and drift checks.
+- A read-only adversarial pre-merge audit found one real crash-consistency gap: state/checkpoint transitions and journal recording were two separate commands.
+- Added `tools/ai_txn.py`, which provides a single-writer lock, durable pre-mutation backups under `.git`, immediate rollback on normal failures, stale/interrupted transaction recovery, and synchronized journal recording for checkpoints/transitions.
+- Added six isolated transaction tests covering interrupted rollback, concurrent mutation rejection, stale-lock detection, partial file cleanup, successful commit cleanup and clean-repository state.
+- Updated agent/Claude instructions and CI so normal state mutations use the transactional wrapper rather than split low-level commands.
+- Independent review remains the external merge gate; TASK-0002 remains intentionally dependency-blocked.
 
 ## Tests
 
-- Prior PR #2 governance run #10: PASS.
-- `tools/ai_context.py`, `tools/ai_policy.py`, `tools/test_ai_context.py`, `tools/test_ai_policy.py`: Python compile PASS before commit.
-- Isolated context tests: PASS.
-- Policy tests cover repository validity plus unknown tool, autonomy/tool risk mismatch, missing eval, R3 auto-execution, unknown memory scope and duplicate tool rejection.
-- Application tests: not started because product scaffolding is intentionally blocked until TASK-0002.
+- Exact-head governance run #12 before transactional hardening: PASS.
+- `tools/ai_txn.py` and `tools/test_ai_txn.py`: Python compile PASS.
+- Isolated transactional continuity tests: 6/6 PASS.
+- Existing application tests: not started because product scaffolding is intentionally blocked until TASK-0002.
 
 ## Blockers
 

@@ -20,8 +20,9 @@
     {"id":"AC-10","text":"Recovery command reports ledger/worktree drift after interruption","done":true},
     {"id":"AC-11","text":"Canonical AI gateway, autonomy, agent, model capability and prompt registries exist","done":true},
     {"id":"AC-12","text":"Deterministic repository context-pack compiler and drift tests exist","done":true},
-    {"id":"AC-13","text":"AI tool, memory, evaluation and observability registries are machine-validated with negative tests","done":true}
+    {"id":"AC-13","text":"AI tool, memory, evaluation and observability registries are machine-validated with negative tests","done":true},
+    {"id":"AC-14","text":"Checkpoint and task-transition mutations are single-writer, crash-recoverable transactions that keep state/checkpoint/journal synchronized","done":true}
   ],
-  "required_tests":["python tools/ai_state.py validate","python tools/ai_journal.py validate","python tools/ai_policy.py","python tools/test_ai_continuity.py","python tools/test_ai_context.py","python tools/test_ai_policy.py"],
+  "required_tests":["python tools/ai_txn.py validate","python tools/test_ai_txn.py","python tools/ai_state.py validate","python tools/ai_journal.py validate","python tools/ai_policy.py","python tools/test_ai_continuity.py","python tools/test_ai_context.py","python tools/test_ai_policy.py"],
   "exact_next_action":"Obtain independent approval for PR #2, merge it, verify the governance workflow on main, then mark TASK-0001 complete and transition to TASK-0002."
 }

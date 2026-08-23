@@ -19,15 +19,18 @@ The repository is the memory. Before changing anything, every agent MUST read, i
 Then run:
 
 ```bash
+python tools/ai_txn.py recover
+python tools/ai_txn.py validate
 python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_journal.py validate
+python tools/ai_policy.py
 python tools/ai_context.py manifest
 python tools/ai_state.py status
 python tools/ai_journal.py status
 ```
 
-`recover` compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. No implementation work may begin if a validator fails. Reconcile state first.
+`ai_txn.py recover` rolls back an interrupted continuity mutation before any new work begins. `ai_state.py recover` then compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. No implementation work may begin if a validator fails. Reconcile state first.
 
 ## Execution rules
 
@@ -41,7 +44,8 @@ python tools/ai_journal.py status
 - Secrets must never be committed or exposed to an AI prompt when a credential reference can be used instead.
 - Every meaningful work session must leave a checkpoint before stopping.
 - `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md` are cryptographically coupled by a state fingerprint. Never edit one without synchronizing the other.
-- After every state/checkpoint/task-transition mutation, append a journal event with `python tools/ai_journal.py record`. CI requires the journal head to match the current state fingerprint.
+- State/checkpoint/task-transition mutations MUST go through `tools/ai_txn.py`; direct mutation commands in `ai_state.py` / `ai_journal.py` are low-level implementation primitives, not the normal agent interface.
+- The transactional wrapper creates a single-writer lock and durable worktree-local backups under `.git`, rolls back interrupted mutations on the next recovery, and records the journal event in the same guarded operation.
 - Never rewrite, reorder, delete, or squash individual lines inside `.ai/state/EXECUTION-JOURNAL.jsonl`; append corrective events instead.
 - Treat `tools/ai_context.py manifest` as the canonical context inventory. If its manifest changes while working, inspect the changed source before continuing.
 - Product AI must follow `.ai/10-AI-CONTROL-PLANE.md` and the machine-readable registries under `.ai/ai/`; prompts cannot override deterministic tool/risk policy.
@@ -54,35 +58,30 @@ If execution is interrupted, context is nearly full, tooling fails, or the agent
 2. Preserve working code; do not fabricate completion.
 3. Run the relevant tests that are still possible.
 4. Update `.ai/state/TEST-STATE.yaml`.
-5. Update the active task status and remaining acceptance criteria.
-6. Run `python tools/ai_state.py checkpoint --summary "..." --tests "..." --next "..."` so state/checkpoint stay synchronized.
-7. Run `python tools/ai_journal.py record --type checkpoint --summary "..."`.
-8. Rebuild/inspect `python tools/ai_context.py manifest`.
-9. Run all continuity validators before handing off.
+5. Update the active task status and remaining acceptance criteria when required by the active task.
+6. Run `python tools/ai_txn.py checkpoint --summary "..." --tests "..." --next "..."`; it updates state/checkpoint and appends the journal event as one guarded transaction.
+7. Rebuild/inspect `python tools/ai_context.py manifest`.
+8. Run all continuity validators before handing off.
 
 The next agent must resume from that exact next action.
 
 ## Recovery when state and code disagree
 
-Code, Git history, tests, migrations, checkpoint fingerprints, context manifests, and the hash-chained execution journal are evidence. Run `python tools/ai_state.py recover`. If they disagree, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests/journal/context sources, repair the ledger, checkpoint it, append a `recovery` or `manual_sync` journal event, validate all layers, then continue.
+Code, Git history, tests, migrations, checkpoint fingerprints, context manifests, and the hash-chained execution journal are evidence. Always run `python tools/ai_txn.py recover` before normal ledger recovery. If the transactional wrapper finds an interrupted mutation, it restores the pre-mutation snapshots before validation. Then run `python tools/ai_state.py recover`. If evidence still disagrees, do not guess. Set project execution status to `needs_reconciliation`, record the mismatch in `BLOCKERS.md`, inspect Git history/diff/tests/journal/context sources, repair the ledger through a transactional checkpoint, validate all layers, then continue.
 
 ## Completion protocol
 
-Do not manually flip several task/state files independently. First ensure every active-task acceptance criterion is true and required tests pass, then use the guarded transition command:
+Do not manually flip several task/state files independently. First ensure every active-task acceptance criterion is true and required tests pass, then use the transactional guarded transition command:
 
 ```bash
-python tools/ai_state.py transition \
+python tools/ai_txn.py transition \
   --complete TASK-XXXX \
   --next TASK-YYYY \
   --evidence "why completion is proven" \
   --tests "exact test evidence"
-
-python tools/ai_journal.py record \
-  --type task_transition \
-  --summary "TASK-XXXX completed; TASK-YYYY activated with verified evidence."
 ```
 
-The transition command rejects false acceptance criteria or incomplete dependencies, updates task/index/roadmap/state/checkpoint together, recalculates progress, validates the result, and rolls back on validation failure. The journal then commits the new state fingerprint into a tamper-evident history chain.
+The transactional transition snapshots all mutated ledger files, acquires a single-writer lock, invokes the deterministic state transition, appends the matching journal event, validates state/journal/context integrity, and removes backups only after success. A normal failure rolls back immediately; a process interruption leaves durable `.git` recovery material for the next `ai_txn.py recover` invocation.
 
 ## Product safety baseline
 

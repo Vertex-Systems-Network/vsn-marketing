@@ -1,46 +1,46 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0009",
+  "updated_for_task": "TASK-0010",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32666855032 passed exact TASK-0008 certified product head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard."
+      "notes": "AI Continuity Guard run 32667911144 passed exact TASK-0009 product head 4f6a65c2475df1d201518b7e0c4028e82509951e, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32666855014 passed backend tests on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including the PHP 8.3 compatibility-floor job."
+      "notes": "Application Foundation CI run 32667911159 passed backend tests on exact TASK-0009 head 4f6a65c2475df1d201518b7e0c4028e82509951e, including the PHP 8.3 compatibility-floor job and retry-safe list/tag feature coverage."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Application Foundation CI run 32666855014 integration job passed on PostgreSQL 18 and Redis 8, including canonical contact lifecycle, audit evidence, and cross-workspace rejection coverage."
+      "notes": "Application Foundation CI run 32667911159 integration job passed on PostgreSQL 18 and Redis 8, including list/tag lifecycle, duplicate-safe membership/tag operations, audit evidence, and composite-FK cross-workspace rejection coverage."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Application Foundation CI run 32666855014 foundation job passed Larastan on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
+      "notes": "Application Foundation CI run 32667911159 foundation job passed Larastan on exact TASK-0009 head 4f6a65c2475df1d201518b7e0c4028e82509951e."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Application Foundation CI run 32666855014 foundation job passed pinned Pint formatting on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
+      "notes": "Application Foundation CI run 32667911159 foundation job passed pinned Pint formatting on exact TASK-0009 head 4f6a65c2475df1d201518b7e0c4028e82509951e."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Application Foundation CI run 32666855014 e2e job passed the critical Playwright smoke on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582."
+      "notes": "Application Foundation CI run 32667911159 e2e job passed the critical Playwright smoke on exact TASK-0009 head 4f6a65c2475df1d201518b7e0c4028e82509951e."
     }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "TASK-0008 exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed Application Foundation CI run 32666855014: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
+    "reason": "TASK-0009 exact product head 4f6a65c2475df1d201518b7e0c4028e82509951e passed Application Foundation CI run 32667911159: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
   }
 }

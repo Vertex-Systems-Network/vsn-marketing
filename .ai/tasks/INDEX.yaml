@@ -84,7 +84,7 @@
       "phase": "PHASE-02",
       "title": "Implement lists, tags, and deterministic contact membership",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0008"
       ]
@@ -94,7 +94,7 @@
       "phase": "PHASE-02",
       "title": "Implement append-oriented consent evidence and eligibility queries",
       "weight": 25,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0009"
       ]

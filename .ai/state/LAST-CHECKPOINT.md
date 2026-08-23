@@ -2,20 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-08-23T21:30:12+00:00`
-- Active task: `TASK-0009`
-- Next task: `TASK-0010`
+- Timestamp: `2026-08-23T21:36:51+00:00`
+- Active task: `TASK-0010`
+- Next task: `TASK-0011`
 - Current phase: `PHASE-02`
-- Execution status: `in_progress`
-- State fingerprint: `7e1518e3df56ca730bfcb0ffc3794f554eb0b5bf1b48290510d93c38fc350633`
+- Execution status: `ready`
+- State fingerprint: `9b435f658533995d920138240f6e6ed90dfe8784a348d8d136a40ba52259fce0`
 
 ## Completed / observed this session
 
-Started TASK-0009 implementation from certified main 259c8a13bb98c4bb292f8f0558f26ac45eeb5429. Scope is limited to canonical workspace-scoped List and Tag persistence, deterministic retry-safe contact membership and tag assignment, auditable state changes, and PostgreSQL tenant-isolation coverage. No TASK-0010 consent work or PHASE-08 segmentation is included.
+Completed `TASK-0009` and activated `TASK-0010`.
+
+Transition evidence: Exact product head 4f6a65c2475df1d201518b7e0c4028e82509951e passed AI Continuity Guard run 32667911144 and Application Foundation CI run 32667911159. AC-1 through AC-5 are supported by canonical ContactList and Tag persistence, composite workspace isolation across lists/tags/contacts, retry-safe add/remove membership and assign/unassign tag operations, audit events emitted only for real state changes, and PostgreSQL lifecycle/security coverage. No PHASE-08 segment evaluation or TASK-0010 consent implementation is included.
 
 ## Tests
 
-Preflight: governance-main run 32667328624 PASS on merged TASK-0008 commit 259c8a13bb98c4bb292f8f0558f26ac45eeb5429; accepted-state head 7283c58ec7ae8cf17516964c37badecc387489df passed AI Continuity Guard 32667184737 and Application Foundation CI 32667184744. TASK-0009 product tests are pending on this branch.
+python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32667911144 PASS; hosted Application Foundation CI 32667911159 PASS (php-floor, integration, e2e, foundation).
 
 ## Blockers
 
@@ -23,4 +25,4 @@ Preflight: governance-main run 32667328624 PASS on merged TASK-0008 commit 259c8
 
 ## Exact next action
 
-Add canonical List and Tag persistence over the accepted contact foundation, then implement idempotent workspace-scoped membership operations with audit and isolation tests.
+Implement append-only ConsentRecord evidence and effective-consent queries over the canonical contact identity, preserving provenance and failing closed across tenant boundaries.

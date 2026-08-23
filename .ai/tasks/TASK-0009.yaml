@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Contacts",
   "title": "Implement lists, tags, and deterministic contact membership",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Add canonical workspace-scoped List and Tag data plus deterministic contact membership operations without pulling segmentation or provider synchronization into PHASE-02.",
   "dependencies": [
     "TASK-0008"
@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "Canonical List and Tag models and persistence exist within the customer data core",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "List, tag, contact, and membership relationships are workspace-scoped and reject cross-workspace references",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Add/remove membership and tag-assignment operations are deterministic and retry-safe",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Membership state changes are auditable and do not implement PHASE-08 segment evaluation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Integration tests cover list/tag lifecycle, duplicate-safe membership changes, and tenant isolation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

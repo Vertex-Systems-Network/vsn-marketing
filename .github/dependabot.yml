@@ -1,25 +1,31 @@
 version: 2
 
-# Keep this file aligned with dependencies that actually exist on the default branch.
-# Add npm/composer/docker ecosystems only after their manifests are introduced by a
-# governed stack/bootstrap task; declaring nonexistent ecosystems creates noisy,
-# misleading Dependabot jobs.
+# Declare only ecosystems that exist on the default branch.
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-
-    schedule:
+    schedule: &weekly
       interval: "weekly"
       day: "friday"
       time: "09:00"
       timezone: "Asia/Karachi"
-
-    # Delay routine version updates briefly while leaving security updates unaffected.
-    cooldown:
+    cooldown: &cooldown
       default-days: 7
-
     open-pull-requests-limit: 5
-
-    commit-message:
+    commit-message: &commit_message
       prefix: "chore"
       include: "scope"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule: *weekly
+    cooldown: *cooldown
+    open-pull-requests-limit: 5
+    commit-message: *commit_message
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule: *weekly
+    cooldown: *cooldown
+    open-pull-requests-limit: 5
+    commit-message: *commit_message

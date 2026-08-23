@@ -1,0 +1,68 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    working_dir: /workspace
+    command: sh -lc "composer install --no-interaction --prefer-dist && php artisan serve --host=0.0.0.0 --port=8000"
+    env_file: .env
+    volumes:
+      - .:/workspace
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  vite:
+    image: node:24-bookworm-slim
+    working_dir: /workspace
+    command: sh -lc "npm install --no-audit --no-fund && npm run dev -- --host=0.0.0.0"
+    volumes:
+      - .:/workspace
+    ports:
+      - "5173:5173"
+
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-vsn_marketing}
+      POSTGRES_USER: ${DB_USERNAME:-vsn}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vsn}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-vsn} -d ${DB_DATABASE:-vsn_marketing}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-vsn}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-vsn-development-secret}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+volumes:
+  postgres-data:
+  minio-data:

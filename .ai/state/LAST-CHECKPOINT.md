@@ -2,31 +2,40 @@
 
 ## State
 
-- Timestamp: `2026-08-23T08:37:00+00:00`
-- Active task: `TASK-0003`
-- Next task: `TASK-0004`
+- Timestamp: `2026-08-23T09:30:00+00:00`
+- Active task: `TASK-0004`
+- Next task: `TASK-0005`
 - Current phase: `PHASE-01`
 - Execution status: `ready`
-- State fingerprint: `3c2191e2aeed5fbd52181317b340ec99379f6fed1b6dbe20a5d00b749b07feaa`
+- State fingerprint: `1ec52e1a3ba34b596546aa5756c075a8c2f0d3b5711b727418f854c66a6bd28d`
 
 ## Completed / observed this session
 
-- Accepted `ADR-0001` and locked the initial Laravel 13 + React/Inertia modular-monolith application stack.
-- Completed `TASK-0002` and activated `TASK-0003`.
-- Registered the complete PHASE-01 task chain `TASK-0003` through `TASK-0007` before PHASE-01 implementation begins.
-- Previous certified `main` commit `219240c3080e85f5080f6991bd3dde164b651aa7` has `governance-main = success` from run `32628551428`.
+- TASK-0003 acceptance criteria are satisfied on bootstrap candidate `b0c337c6dd97592edb305d3070c4a3c4698b4fc0`.
+- Application Foundation CI run `32630999852` passed committed Composer/npm lock installs, PHP 8.3 compatibility-floor tests, PHP 8.5 tests, Docker Compose validation, a real developer PHP image build, TypeScript strict typecheck, and the Vite production build.
+- Backend bootstrap coverage is 3 tests / 26 assertions, including health, bounded runtime status, and the provider-neutral Core architecture boundary.
+- AI Continuity Guard run `32630999842` passed on the same bootstrap candidate.
+- `composer.lock` and `package-lock.json` are committed; final CI is read-only and uses `composer install` plus `npm ci`.
+- The developer PHP image was corrected to install the PHP build toolchain and the `redis` extension required by `REDIS_CLIENT=phpredis`.
+- Issue #6 remains intentionally open as the durable default-branch governance ledger; no actionable GitHub Issue is pending.
+- TASK-0004 is ready and remains dependency-gated behind this transition head's final hosted certification and merge.
 
 ## Tests
 
-- AI Continuity Guard on previous `main` (`219240c3080e85f5080f6991bd3dde164b651aa7`): PASS, run `32628551428`.
-- Stack/runtime compatibility checked against current official Laravel, React, Node.js, PostgreSQL, and Redis documentation before ADR acceptance.
-- Application tests: not started by design; `TASK-0003` creates the first runnable application/test/typecheck/build baseline.
-- This transition must pass the repository AI Continuity Guard before merge.
+- `python tools/ai_state.py validate` / AI Continuity Guard run `32630999842`: PASS on bootstrap candidate.
+- Application Foundation CI run `32630999852`: PASS.
+- PHP 8.3 compatibility-floor `php artisan test`: PASS.
+- PHP 8.5 `php artisan test`: PASS — 3 tests / 26 assertions.
+- `docker compose config --quiet`: PASS.
+- Developer PHP Docker image build: PASS.
+- `npm run typecheck`: PASS.
+- `npm run build`: PASS.
+- Task-transition head: pending final hosted re-certification before merge.
 
 ## Blockers
 
-- None
+- None.
 
 ## Exact next action
 
-Scaffold Laravel 13 using the locked React/Inertia stack, preserve the repository governance files, then add the minimal module skeleton, environment contract, and green boot/build tests.
+Configure PostgreSQL, Redis/Horizon, S3-compatible storage, and the transactional outbox behind explicit infrastructure contracts with integration coverage.

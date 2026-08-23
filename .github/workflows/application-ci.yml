@@ -1,0 +1,77 @@
+name: Application Foundation CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: application-foundation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          coverage: none
+      - name: Set up Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+      - name: Validate Docker Compose contract
+        run: docker compose config --quiet
+      - name: Build developer PHP image
+        run: docker build --tag vsn-marketing-foundation:test --file docker/app/Dockerfile .
+      - name: Run backend tests
+        run: php artisan test
+      - name: Typecheck frontend
+        run: npm run typecheck
+      - name: Build frontend
+        run: npm run build
+
+  php-floor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Set up PHP 8.3 compatibility floor
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          coverage: none
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+      - name: Install locked PHP dependencies at compatibility floor
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+      - name: Run backend tests on PHP 8.3
+        run: php artisan test

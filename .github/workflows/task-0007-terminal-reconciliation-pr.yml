@@ -1,0 +1,82 @@
+name: TASK-0007 Terminal Reconciliation PR Driver
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: github.actor != 'github-actions[bot]' && github.head_ref == 'task-0007-ci-observability'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout live task branch
+        uses: actions/checkout@v7
+        with:
+          ref: task-0007-ci-observability
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Execute guarded reconciliation steps
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          workflow = Path('.github/workflows/task-0007-terminal-reconciliation.yml')
+          lines = workflow.read_text(encoding='utf-8').splitlines()
+          steps = []
+          current_name = None
+          index = 0
+          while index < len(lines):
+              line = lines[index]
+              stripped = line.strip()
+              if stripped.startswith('- name: '):
+                  current_name = stripped[len('- name: '):]
+              if line == '        run: |':
+                  block = []
+                  index += 1
+                  while index < len(lines):
+                      candidate = lines[index]
+                      if candidate.startswith('          ') or candidate == '':
+                          block.append(candidate[10:] if candidate.startswith('          ') else '')
+                          index += 1
+                          continue
+                      break
+                  if current_name != 'Commit reconciled canonical acceptance state':
+                      steps.append((current_name or 'unnamed', '\n'.join(block)))
+                  continue
+              index += 1
+
+          expected = [
+              'Add guarded terminal transition support',
+              'Validate patched control plane before completion',
+              'Apply transactional TASK-0007 terminal completion',
+              'Record TASK-0007 machine-readable test evidence',
+              'Validate final terminal state and continuity integrity',
+          ]
+          names = [name for name, _ in steps]
+          if names != expected:
+              raise SystemExit(f'unexpected reconciliation step set: {names!r}')
+
+          for name, script in steps:
+              print(f'::group::{name}')
+              subprocess.run(script, shell=True, executable='/bin/bash', check=True)
+              print('::endgroup::')
+          PY
+
+      - name: Commit reconciled canonical state and remove drivers
+        run: |
+          rm .github/workflows/task-0007-terminal-reconciliation.yml
+          rm .github/workflows/task-0007-terminal-reconciliation-pr.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: reconcile terminal TASK-0007 completion"
+          git push origin HEAD:task-0007-ci-observability

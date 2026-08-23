@@ -11,10 +11,8 @@ vi.mock('@inertiajs/react', () => ({
 test('renders the phase-one foundation message', () => {
     render(<Welcome />);
 
-    expect(
-        screen.getByRole('heading', {
-            name: 'Provider-agnostic marketing infrastructure, built on deterministic guardrails.',
-        }),
-    ).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(
+        'Provider-agnostic marketing infrastructure, built on deterministic guardrails.',
+    );
     expect(screen.getByText(/PHASE-01 foundation runtime is active/)).toBeTruthy();
 });

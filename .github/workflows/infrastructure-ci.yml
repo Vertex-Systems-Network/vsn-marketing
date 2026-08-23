@@ -5,10 +5,8 @@ on:
   push:
     branches: [main]
 
-# TASK-0004 bootstrap only: write access is removed immediately after Composer
-# materializes the Horizon/S3 lockfile on this same-repository feature branch.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: infrastructure-${{ github.workflow }}-${{ github.ref }}
@@ -81,10 +79,10 @@ jobs:
           tools: composer:v2
           extensions: mbstring, pdo_pgsql, posix, redis
           coverage: none
-      - name: Resolve TASK-0004 PHP dependencies
-        run: composer update laravel/horizon league/flysystem-aws-s3-v3 --with-all-dependencies --no-interaction --prefer-dist --no-progress
-      - name: Validate resolved Composer graph
+      - name: Validate locked Composer graph
         run: composer validate --strict
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
       - name: Start S3-compatible MinIO
         run: |
           docker run -d --name vsn-minio -p 9000:9000 \
@@ -101,19 +99,3 @@ jobs:
             minio/mc:latest mb --ignore-existing "local/${AWS_BUCKET}"
       - name: Run infrastructure integration tests
         run: php artisan test --testsuite=Integration
-      - name: Require generated lockfile
-        run: test -f composer.lock
-      - name: Materialize TASK-0004 Composer lockfile
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          HEAD_BRANCH: ${{ github.head_ref }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add composer.lock
-          if git diff --cached --quiet; then
-            echo "Composer lockfile already matches TASK-0004."
-            exit 0
-          fi
-          git commit -m "chore: lock TASK-0004 PHP dependencies"
-          git push origin "HEAD:${HEAD_BRANCH}"

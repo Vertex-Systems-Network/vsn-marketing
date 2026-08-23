@@ -1,8 +1,6 @@
 <?php
 
 use App\Modules\Events\Domain\CanonicalEvent;
-use DateTimeImmutable;
-use InvalidArgumentException;
 
 it('round trips the versioned canonical event envelope without changing identity', function () {
     $event = new CanonicalEvent(

@@ -1,0 +1,87 @@
+name: TASK-0008 Start
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/task-0008-start.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  start:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'task-0008-contact-data-foundation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Mark TASK-0008 in progress
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0008.yaml')
+          index_path = Path('.ai/tasks/INDEX.yaml')
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+
+          if state['execution']['active_task'] != 'TASK-0008' or task['status'] != 'ready':
+              raise SystemExit('TASK-0008 is not the ready active task; refusing to mutate canonical state')
+
+          task['status'] = 'in_progress'
+          for row in index['tasks']:
+              if row['id'] == 'TASK-0008':
+                  row['status'] = 'in_progress'
+                  break
+          else:
+              raise SystemExit('TASK-0008 missing from task index')
+
+          state['execution']['status'] = 'in_progress'
+          state['blockers'] = []
+
+          for path, payload in ((task_path, task), (index_path, index), (state_path, state)):
+              path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+      - name: Generate synchronized checkpoint
+        run: |
+          python tools/ai_state.py checkpoint \
+            --summary "Started TASK-0008 implementation from certified main 6d4fa98df4fa420d57cfa54a99dd31c1205ed362. Scope is limited to canonical Contact, ContactIdentity, and Company persistence/contracts, workspace and brand isolation, deterministic identity normalization, auditable state-changing actions, and PostgreSQL integration/security coverage. No TASK-0009 work is included." \
+            --next "Create the Contacts module around canonical Contact, ContactIdentity, and Company models first; enforce workspace isolation and provider-neutral identity rules before adding lists or consent behavior." \
+            --tests "Preflight: governance-main run 32661316738 PASS on merged activation commit 6d4fa98df4fa420d57cfa54a99dd31c1205ed362; activation head 75674391360e759ac7768ec08e11a94a9ffd13a7 passed AI Continuity Guard 32661176322 and Application Foundation CI 32661176448. TASK-0008 product tests are pending on this branch."
+
+      - name: Append task-start journal event
+        run: |
+          python tools/ai_journal.py record \
+            --type task_started \
+            --summary "Started TASK-0008 implementation from certified main 6d4fa98df4fa420d57cfa54a99dd31c1205ed362: canonical Contact, ContactIdentity, and Company foundation with workspace/brand isolation, deterministic identity normalization, auditable application actions, and PostgreSQL integration/security coverage. No TASK-0009 work is included."
+
+      - name: Validate synchronized continuity state
+        run: |
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/ai_txn.py validate
+
+      - name: Commit canonical task start
+        run: |
+          rm .github/workflows/task-0008-start.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai .github/workflows/task-0008-start.yml
+          git commit -m 'chore: start TASK-0008 contact data foundation'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

@@ -32,7 +32,11 @@ Application modules depend on canonical interfaces. Provider adapters depend on 
 
 ## Target stack policy
 
-The exact application stack is not silently assumed in this bootstrap. TASK-0002 locks the first implementation stack through ADR after repository/runtime requirements are verified. Current architectural preference is a modular monolith, relational primary store, durable queue, object storage, event outbox, and independently scalable workers.
+The initial implementation stack is locked by `.ai/adr/ADR-0001-initial-application-stack.md`.
+
+Baseline: Laravel 13 modular monolith; PHP 8.3 compatibility floor with PHP 8.5 as the reference production runtime; React 19 + TypeScript + Inertia 3; Node.js 24 LTS; PostgreSQL 18; Redis 8.x; S3-compatible object storage; durable PostgreSQL outbox; Laravel Queue/Horizon; Reverb/SSE where realtime is required; Pest 4/PHPUnit 12, Vitest and Playwright for testing.
+
+This stack does not weaken the permanent provider-neutral rule. First-party presentation transport, queue drivers, database drivers and external provider SDKs remain replaceable infrastructure behind canonical module contracts. New microservices, ClickHouse, OpenSearch, Octane, Kubernetes or a dedicated vector database require measured need and a later ADR.
 
 ## AI architecture
 

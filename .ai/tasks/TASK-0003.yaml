@@ -4,17 +4,15 @@
   "phase": "PHASE-01",
   "module": "Core",
   "title": "Bootstrap Laravel application shell and developer runtime",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Create the first runnable Laravel 13 application shell using ADR-0001 without weakening repository governance, then establish the reproducible developer runtime and minimum module-boundary skeleton.",
-  "dependencies": [
-    "TASK-0002"
-  ],
+  "dependencies": ["TASK-0002"],
   "acceptance_criteria": [
-    {"id":"AC-1","text":"Laravel 13 application boots on the locked PHP runtime policy","done":false},
-    {"id":"AC-2","text":"Official React 19 + TypeScript + Inertia 3 bootstrap is installed with TypeScript strict mode","done":false},
-    {"id":"AC-3","text":"Docker Compose / Sail development services and environment contract are defined","done":false},
-    {"id":"AC-4","text":"Minimal Core module skeleton and architecture boundary test exist","done":false},
-    {"id":"AC-5","text":"Health test, backend test suite, frontend typecheck, frontend build, and AI continuity guard are green","done":false}
+    {"id":"AC-1","text":"Laravel 13 application boots on the locked PHP runtime policy","done":true},
+    {"id":"AC-2","text":"Official React 19 + TypeScript + Inertia 3 bootstrap is installed with TypeScript strict mode","done":true},
+    {"id":"AC-3","text":"Docker Compose / Sail development services and environment contract are defined","done":true},
+    {"id":"AC-4","text":"Minimal Core module skeleton and architecture boundary test exist","done":true},
+    {"id":"AC-5","text":"Health test, backend test suite, frontend typecheck, frontend build, and AI continuity guard are green","done":true}
   ],
   "required_tests": [
     "python tools/ai_state.py validate",
@@ -22,5 +20,5 @@
     "npm run typecheck",
     "npm run build"
   ],
-  "exact_next_action": "Scaffold Laravel 13 using the locked React/Inertia stack, preserve the repository governance files, then add the minimal module skeleton, environment contract, and green boot/build tests."
+  "exact_next_action": "Completed. Continue with TASK-0004 infrastructure foundation."
 }

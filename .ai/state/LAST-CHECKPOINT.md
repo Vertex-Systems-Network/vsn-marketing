@@ -2,33 +2,40 @@
 
 ## State
 
-- Timestamp: `2026-08-23T09:08:00+00:00`
-- Active task: `TASK-0003`
-- Next task: `TASK-0004`
+- Timestamp: `2026-08-23T09:30:00+00:00`
+- Active task: `TASK-0004`
+- Next task: `TASK-0005`
 - Current phase: `PHASE-01`
-- Execution status: `in_progress`
-- State fingerprint: `e68ac025dcc1ddd776709cd097c71957446964ec9fc17e76d2c96d5e6401c3cf`
+- Execution status: `ready`
+- State fingerprint: `1ec52e1a3ba34b596546aa5756c075a8c2f0d3b5711b727418f854c66a6bd28d`
 
 ## Completed / observed this session
 
-- TASK-0003 implementation started on the certified PHASE-01 baseline.
-- The bootstrap uses Laravel 13, React 19, TypeScript strict mode and Inertia 3 per ADR-0001.
-- A reproducible Docker Compose developer runtime, Core module boundary skeleton, health/runtime tests, and hosted application CI are being introduced.
-- Composer/npm lockfiles will be generated from the hosted bootstrap job and committed before TASK-0003 can complete.
-- Issue #6 is intentionally retained as the machine-readable default-branch governance ledger; it is not an actionable defect.
+- TASK-0003 acceptance criteria are satisfied on bootstrap candidate `b0c337c6dd97592edb305d3070c4a3c4698b4fc0`.
+- Application Foundation CI run `32630999852` passed committed Composer/npm lock installs, PHP 8.3 compatibility-floor tests, PHP 8.5 tests, Docker Compose validation, a real developer PHP image build, TypeScript strict typecheck, and the Vite production build.
+- Backend bootstrap coverage is 3 tests / 26 assertions, including health, bounded runtime status, and the provider-neutral Core architecture boundary.
+- AI Continuity Guard run `32630999842` passed on the same bootstrap candidate.
+- `composer.lock` and `package-lock.json` are committed; final CI is read-only and uses `composer install` plus `npm ci`.
+- The developer PHP image was corrected to install the PHP build toolchain and the `redis` extension required by `REDIS_CLIENT=phpredis`.
+- Issue #6 remains intentionally open as the durable default-branch governance ledger; no actionable GitHub Issue is pending.
+- TASK-0004 is ready and remains dependency-gated behind this transition head's final hosted certification and merge.
 
 ## Tests
 
-- AI continuity on current `main` (`8102069c378f31314b0aec4e7691dd8048aba0b4`): PASS via `governance-main` run `32629029646`.
-- TASK-0003 application CI: pending on the bootstrap branch.
-- `php artisan test`: pending hosted dependency installation.
-- `npm run typecheck`: pending hosted dependency installation.
-- `npm run build`: pending hosted dependency installation.
+- `python tools/ai_state.py validate` / AI Continuity Guard run `32630999842`: PASS on bootstrap candidate.
+- Application Foundation CI run `32630999852`: PASS.
+- PHP 8.3 compatibility-floor `php artisan test`: PASS.
+- PHP 8.5 `php artisan test`: PASS — 3 tests / 26 assertions.
+- `docker compose config --quiet`: PASS.
+- Developer PHP Docker image build: PASS.
+- `npm run typecheck`: PASS.
+- `npm run build`: PASS.
+- Task-transition head: pending final hosted re-certification before merge.
 
 ## Blockers
 
-- None. Hosted application CI and generated lockfiles are the next verification step.
+- None.
 
 ## Exact next action
 
-Run hosted application CI for the Laravel/Inertia bootstrap, capture and commit generated dependency lockfiles, fix any boot/type/build failures, then certify TASK-0003 before transitioning to TASK-0004.
+Configure PostgreSQL, Redis/Horizon, S3-compatible storage, and the transactional outbox behind explicit infrastructure contracts with integration coverage.

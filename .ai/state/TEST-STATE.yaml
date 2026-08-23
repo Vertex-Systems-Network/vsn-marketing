@@ -1,1 +1,15 @@
-{"schema_version":1,"updated_for_task":"TASK-0003","suites":[{"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"Default-branch continuity is certified; main commit 219240c3080e85f5080f6991bd3dde164b651aa7 has governance-main success from run 32628551428."},{"name":"ai-transaction-integrity","command":"python tools/ai_txn.py validate && python tools/test_ai_txn.py","status":"passing","notes":"Crash-recoverable continuity transaction regression coverage remains required and green on the certified default branch."},{"name":"ai-continuity-integrity","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Covers transition, fingerprint, journal, and append-only guards."},{"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Covers deterministic context, checksum/source drift, and full pack assembly."},{"name":"ai-policy-registry-integrity","command":"python tools/ai_policy.py && python tools/test_ai_policy.py","status":"passing","notes":"Validates agent/tool/risk/memory relationships, prompt/eval references, model capabilities, observability requirements, and negative policy cases."}],"application_tests":{"status":"not_started","reason":"TASK-0003 is now the first PHASE-01 implementation task and will create the Laravel/React runtime plus boot, test, typecheck, build, and architecture gates before application development continues."}}
+{
+  "schema_version": 1,
+  "updated_for_task": "TASK-0004",
+  "suites": [
+    {"name":"ai-continuity-validation","command":"python tools/ai_state.py validate","status":"passing","notes":"TASK-0003 bootstrap candidate b0c337c6dd97592edb305d3070c4a3c4698b4fc0 passed AI Continuity Guard run 32630999842; the task-transition head must re-certify before merge."},
+    {"name":"ai-transaction-integrity","command":"python tools/ai_txn.py validate && python tools/test_ai_txn.py","status":"passing","notes":"Crash-recoverable continuity transaction regression coverage remains green under the hosted governance guard."},
+    {"name":"ai-continuity-integrity","command":"python tools/test_ai_continuity.py","status":"passing","notes":"Transition, fingerprint, journal, append-only and product-change ledger guards are green."},
+    {"name":"ai-context-pack-integrity","command":"python tools/test_ai_context.py","status":"passing","notes":"Deterministic context, checksum/source drift and full pack assembly remain green."},
+    {"name":"ai-policy-registry-integrity","command":"python tools/ai_policy.py && python tools/test_ai_policy.py","status":"passing","notes":"Agent/tool/risk/memory relationships, prompt/eval references, model capabilities, observability requirements and negative policy cases remain green."}
+  ],
+  "application_tests": {
+    "status": "passing",
+    "reason": "Application Foundation CI run 32630999852 passed committed Composer/npm lock installs, PHP 8.3 and PHP 8.5 backend tests (3 tests, 26 assertions), Docker Compose validation, the developer PHP image build, TypeScript strict typecheck, and the Vite production build on bootstrap candidate b0c337c6dd97592edb305d3070c4a3c4698b4fc0."
+  }
+}

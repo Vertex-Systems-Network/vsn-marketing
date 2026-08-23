@@ -22,5 +22,5 @@
     "application_test_status": "task_0005_ci_passed"
   },
   "blockers": [],
-  "exact_next_action": "Define the versioned canonical event envelope and outbox dispatcher, then add audit, idempotency, retry, and replay integration tests."
+  "exact_next_action": "Run GitHub-hosted Application Foundation CI and AI Continuity Guard for the TASK-0006 candidate; fix any failures without changing acceptance criteria, then complete TASK-0006 only after all five criteria have exact-head evidence."
 }

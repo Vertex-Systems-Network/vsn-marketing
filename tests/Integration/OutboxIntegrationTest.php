@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
-use LogicException;
 
 beforeEach(function () {
     Artisan::call('migrate:fresh', ['--force' => true]);
@@ -35,7 +34,7 @@ function taskFourEnvelope(): OutboxEnvelope
 
 it('refuses outbox writes outside the owning database transaction', function () {
     expect(fn () => app(TransactionalOutbox::class)->record(taskFourEnvelope()))
-        ->toThrow(LogicException::class, 'active database transaction');
+        ->toThrow(\LogicException::class, 'active database transaction');
 });
 
 it('persists atomically then relays one message to Redis with an active lease', function () {

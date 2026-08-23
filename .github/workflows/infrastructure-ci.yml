@@ -97,5 +97,5 @@ jobs:
           docker run --rm --network host \
             -e MC_HOST_local="http://${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}@127.0.0.1:9000" \
             minio/mc:latest mb --ignore-existing "local/${AWS_BUCKET}"
-      - name: Run infrastructure integration tests
-        run: php artisan test --testsuite=Integration
+      - name: Run warning-free infrastructure integration tests
+        run: php artisan test --testsuite=Integration --display-warnings --fail-on-warning

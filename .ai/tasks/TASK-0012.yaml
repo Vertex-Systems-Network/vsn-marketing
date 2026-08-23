@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0012",
+  "phase": "PHASE-02",
+  "module": "Core",
+  "title": "Certify PHASE-02 customer data core and isolation gates",
+  "status": "planned",
+  "objective": "Close PHASE-02 only after the canonical contact/list/consent/event data core is jointly verified for tenant isolation, provider neutrality, evidence preservation, architecture quality, and full hosted CI continuity.",
+  "dependencies": [
+    "TASK-0011"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Integrated Contact, ContactIdentity, Company, List, Tag, ConsentRecord, Event, and EventType workflows pass PostgreSQL-backed acceptance tests",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Cross-workspace read/write/reference/membership/consent/event paths fail closed across the complete PHASE-02 data core",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Provider-neutral identity, append-oriented consent evidence, and canonical-event invariants are enforced by automated regression tests",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Backend, architecture, static-analysis, formatting, frontend, Playwright, and AI continuity gates are green on the exact acceptance head",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "PHASE-02 completion evidence is recorded without pulling PHASE-03+ implementation forward",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "php artisan test",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Run the complete PHASE-02 customer-data acceptance matrix, close any isolation or invariant gaps, then record exact-head completion evidence before advancing the roadmap."
+}

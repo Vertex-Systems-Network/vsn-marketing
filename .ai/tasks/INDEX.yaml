@@ -1,73 +1,17 @@
 {
   "schema_version": 1,
   "tasks": [
-    {
-      "id": "TASK-0001",
-      "phase": "PHASE-00",
-      "title": "Install AI continuity control plane",
-      "weight": 40,
-      "status": "completed",
-      "dependencies": []
-    },
-    {
-      "id": "TASK-0002",
-      "phase": "PHASE-00",
-      "title": "Lock initial application stack and bootstrap architecture",
-      "weight": 60,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0001"
-      ]
-    },
-    {
-      "id": "TASK-0003",
-      "phase": "PHASE-01",
-      "title": "Bootstrap Laravel application shell and developer runtime",
-      "weight": 20,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0002"
-      ]
-    },
-    {
-      "id": "TASK-0004",
-      "phase": "PHASE-01",
-      "title": "Establish persistence, queue, cache, and object-storage infrastructure",
-      "weight": 20,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0003"
-      ]
-    },
-    {
-      "id": "TASK-0005",
-      "phase": "PHASE-01",
-      "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
-      "weight": 25,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0004"
-      ]
-    },
-    {
-      "id": "TASK-0006",
-      "phase": "PHASE-01",
-      "title": "Establish canonical events, audit, idempotency, and async execution foundation",
-      "weight": 20,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0005"
-      ]
-    },
-    {
-      "id": "TASK-0007",
-      "phase": "PHASE-01",
-      "title": "Harden application CI, observability, and PHASE-01 completion gate",
-      "weight": 15,
-      "status": "completed",
-      "dependencies": [
-        "TASK-0006"
-      ]
-    }
+    {"id":"TASK-0001","phase":"PHASE-00","title":"Install AI continuity control plane","weight":40,"status":"completed","dependencies":[]},
+    {"id":"TASK-0002","phase":"PHASE-00","title":"Lock initial application stack and bootstrap architecture","weight":60,"status":"completed","dependencies":["TASK-0001"]},
+    {"id":"TASK-0003","phase":"PHASE-01","title":"Bootstrap Laravel application shell and developer runtime","weight":20,"status":"completed","dependencies":["TASK-0002"]},
+    {"id":"TASK-0004","phase":"PHASE-01","title":"Establish persistence, queue, cache, and object-storage infrastructure","weight":20,"status":"completed","dependencies":["TASK-0003"]},
+    {"id":"TASK-0005","phase":"PHASE-01","title":"Implement identity, tenancy, and workspace-scoped RBAC foundation","weight":25,"status":"completed","dependencies":["TASK-0004"]},
+    {"id":"TASK-0006","phase":"PHASE-01","title":"Establish canonical events, audit, idempotency, and async execution foundation","weight":20,"status":"completed","dependencies":["TASK-0005"]},
+    {"id":"TASK-0007","phase":"PHASE-01","title":"Harden application CI, observability, and PHASE-01 completion gate","weight":15,"status":"completed","dependencies":["TASK-0006"]},
+    {"id":"TASK-0008","phase":"PHASE-02","title":"Establish canonical contact, identity, and company data foundation","weight":25,"status":"planned","dependencies":["TASK-0007"]},
+    {"id":"TASK-0009","phase":"PHASE-02","title":"Implement lists, tags, and deterministic contact membership","weight":20,"status":"planned","dependencies":["TASK-0008"]},
+    {"id":"TASK-0010","phase":"PHASE-02","title":"Implement append-oriented consent evidence and eligibility queries","weight":25,"status":"planned","dependencies":["TASK-0009"]},
+    {"id":"TASK-0011","phase":"PHASE-02","title":"Persist canonical customer events and contact timelines","weight":20,"status":"planned","dependencies":["TASK-0010"]},
+    {"id":"TASK-0012","phase":"PHASE-02","title":"Certify PHASE-02 customer data core and isolation gates","weight":10,"status":"planned","dependencies":["TASK-0011"]}
   ]
 }

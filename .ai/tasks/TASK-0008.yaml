@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0008",
+  "phase": "PHASE-02",
+  "module": "Contacts",
+  "title": "Establish canonical contact, identity, and company data foundation",
+  "status": "planned",
+  "objective": "Implement provider-neutral, workspace-scoped Contact, ContactIdentity, and Company domain/application contracts and persistence as the canonical customer identity foundation for later marketing modules.",
+  "dependencies": [
+    "TASK-0007"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical Contact, ContactIdentity, and Company domain models and PostgreSQL persistence exist",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Workspace boundaries are mandatory and brand scope is preserved where applicable; cross-workspace references fail closed",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Identity normalization and uniqueness rules are deterministic and external provider IDs remain references rather than canonical primary identity",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Contact and company state-changing application actions are auditable and use explicit module contracts",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Automated PostgreSQL integration and security tests prove contact lifecycle behavior and cross-workspace isolation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check"
+  ],
+  "exact_next_action": "Create the Contacts module around canonical Contact, ContactIdentity, and Company models first; enforce workspace isolation and provider-neutral identity rules before adding lists or consent behavior."
+}

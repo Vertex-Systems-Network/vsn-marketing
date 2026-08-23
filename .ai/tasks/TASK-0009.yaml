@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0009",
+  "phase": "PHASE-02",
+  "module": "Contacts",
+  "title": "Implement lists, tags, and deterministic contact membership",
+  "status": "planned",
+  "objective": "Add canonical workspace-scoped List and Tag data plus deterministic contact membership operations without pulling segmentation or provider synchronization into PHASE-02.",
+  "dependencies": [
+    "TASK-0008"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical List and Tag models and persistence exist within the customer data core",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "List, tag, contact, and membership relationships are workspace-scoped and reject cross-workspace references",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Add/remove membership and tag-assignment operations are deterministic and retry-safe",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Membership state changes are auditable and do not implement PHASE-08 segment evaluation",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Integration tests cover list/tag lifecycle, duplicate-safe membership changes, and tenant isolation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check"
+  ],
+  "exact_next_action": "Add canonical List and Tag persistence over the accepted contact foundation, then implement idempotent workspace-scoped membership operations with audit and isolation tests."
+}

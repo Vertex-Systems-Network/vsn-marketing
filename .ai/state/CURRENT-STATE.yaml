@@ -22,5 +22,5 @@
     "application_test_status": "task_0006_ci_passed"
   },
   "blockers": [],
-  "exact_next_action": "Add the full application CI matrix and baseline observability, then certify PHASE-01 with backend, frontend, e2e, architecture, and continuity gates green."
+  "exact_next_action": "Implement the TASK-0007 CI matrix, structured correlation-aware observability, health/metrics surfaces, and acceptance tests; then certify all required suites on the exact PR head."
 }

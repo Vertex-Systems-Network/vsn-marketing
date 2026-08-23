@@ -44,7 +44,7 @@
       "phase": "PHASE-01",
       "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
       "weight": 25,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0004"
       ]

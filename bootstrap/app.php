@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Modules\Identity\Presentation\Http\Middleware\RequireWorkspacePermission;
+use App\Modules\Identity\Presentation\Http\Middleware\ResolveTenantContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,6 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        $middleware->alias([
+            'tenant' => ResolveTenantContext::class,
+            'workspace.permission' => RequireWorkspacePermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

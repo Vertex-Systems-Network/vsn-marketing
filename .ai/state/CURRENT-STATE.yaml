@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-01",
     "active_task": "TASK-0005",
     "last_completed_task": "TASK-0004",
@@ -19,8 +19,8 @@
   },
   "quality": {
     "continuity_validation": "passed_on_default_branch",
-    "application_test_status": "task_0004_ci_passed"
+    "application_test_status": "task_0005_ci_pending"
   },
   "blockers": [],
-  "exact_next_action": "Implement authentication and Organization → Workspace → Brand tenancy first, then layer canonical workspace RBAC and tenant-isolation tests over the same context boundary."
+  "exact_next_action": "Run TASK-0005 authentication, tenancy, RBAC, tenant-context propagation, and cross-workspace security tests; fix failures before acceptance certification."
 }

@@ -4,7 +4,7 @@
   "phase": "PHASE-01",
   "module": "Identity",
   "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement first-party authentication, Organization → Workspace → Brand tenancy, and canonical workspace-scoped RBAC with fail-closed tenant isolation across web, API, jobs, and events.",
   "dependencies": [
     "TASK-0004"

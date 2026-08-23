@@ -6,6 +6,7 @@
     <testsuites>
         <testsuite name="Unit"><directory>tests/Unit</directory></testsuite>
         <testsuite name="Feature"><directory>tests/Feature</directory></testsuite>
+        <testsuite name="Integration"><directory>tests/Integration</directory></testsuite>
     </testsuites>
     <source><include><directory>app</directory></include></source>
     <php>
@@ -15,8 +16,12 @@
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
+        <env name="FILESYSTEM_DISK" value="local"/>
+        <env name="OBJECT_STORE_DISK" value="local"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="QUEUE_FAILED_DRIVER" value="null"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="LOG_CHANNEL" value="null"/>
+        <env name="RUN_INFRA_INTEGRATION" value="false"/>
     </php>
 </phpunit>

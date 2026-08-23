@@ -1,0 +1,46 @@
+name: TASK-0004 Dependency Lock Bootstrap
+
+on:
+  pull_request:
+    paths:
+      - composer.json
+      - composer.lock
+      - .github/workflows/task-0004-lock-bootstrap.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: task-0004-lock-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lock:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql, redis, pcntl, posix
+          coverage: none
+      - name: Generate deterministic TASK-0004 Composer lock
+        run: composer update laravel/horizon league/flysystem-aws-s3-v3 --with-all-dependencies --no-interaction --prefer-dist --no-progress
+      - name: Commit generated lockfile
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add composer.lock
+          if git diff --cached --quiet; then
+            echo "composer.lock is already synchronized."
+            exit 0
+          fi
+          git commit -m "chore: lock TASK-0004 infrastructure dependencies"
+          git push origin "HEAD:${HEAD_BRANCH}"

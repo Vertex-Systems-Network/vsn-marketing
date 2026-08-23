@@ -74,7 +74,7 @@
       "phase": "PHASE-02",
       "title": "Establish canonical contact, identity, and company data foundation",
       "weight": 25,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0007"
       ]

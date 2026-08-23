@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Contacts",
   "title": "Establish canonical contact, identity, and company data foundation",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement provider-neutral, workspace-scoped Contact, ContactIdentity, and Company domain/application contracts and persistence as the canonical customer identity foundation for later marketing modules.",
   "dependencies": [
     "TASK-0007"

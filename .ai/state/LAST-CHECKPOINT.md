@@ -2,22 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-08-23T19:24:06+00:00`
+- Timestamp: `2026-08-23T19:54:24+00:00`
 - Active task: `TASK-0008`
 - Next task: `TASK-0009`
 - Current phase: `PHASE-02`
-- Execution status: `ready`
-- State fingerprint: `0b12ba4f68b60a20122094773e5edc1db57e8bf64ebe94ed7ed1b5fb17aba54b`
+- Execution status: `in_progress`
+- State fingerprint: `2fd76db503ce245a93f8947e00b1718ba20a2bcd0dee18915f8208046d0e1fc9`
 
 ## Completed / observed this session
 
-Completed `TASK-0007` and activated `TASK-0008`.
-
-Transition evidence: PHASE-02 task chain TASK-0008 through TASK-0012 is merged on main at ed5fc609ecfb1ee2e92ef41c918eb1d8e693aeca; governance-main run 32660988654 is green. Planning PR #16 exact head 6124bc8bf15af52a5cec93fd4e27ad367d750af0 passed AI Continuity Guard 32660764046 and Application Foundation CI 32660764038.
+Started TASK-0008 implementation from certified main 6d4fa98df4fa420d57cfa54a99dd31c1205ed362. Scope is limited to canonical Contact, ContactIdentity, and Company persistence/contracts, workspace and brand isolation, deterministic identity normalization, auditable state-changing actions, and PostgreSQL integration/security coverage. No TASK-0009 work is included.
 
 ## Tests
 
-AI Continuity Guard 32660764046 PASS; Application Foundation CI 32660764038 PASS including PHP 8.3, PostgreSQL 18 + Redis 8 integration, Playwright, backend, architecture, Larastan, Pint, TypeScript, Vitest, and production build; governance-main 32660988654 PASS on merged plan.
+Preflight: governance-main run 32661316738 PASS on merged activation commit 6d4fa98df4fa420d57cfa54a99dd31c1205ed362; activation head 75674391360e759ac7768ec08e11a94a9ffd13a7 passed AI Continuity Guard 32661176322 and Application Foundation CI 32661176448. TASK-0008 product tests are pending on this branch.
 
 ## Blockers
 

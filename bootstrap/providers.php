@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Audit\AuditServiceProvider;
+use App\Modules\Contacts\ContactsServiceProvider;
 use App\Modules\Core\CoreServiceProvider;
 use App\Modules\Events\EventsServiceProvider;
 use App\Modules\Identity\IdentityServiceProvider;
@@ -14,4 +15,5 @@ return [
     AuditServiceProvider::class,
     EventsServiceProvider::class,
     IdentityServiceProvider::class,
+    ContactsServiceProvider::class,
 ];

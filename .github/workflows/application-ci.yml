@@ -142,5 +142,7 @@ jobs:
         run: composer validate --strict
       - name: Install locked PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare integration environment
+        run: touch .env
       - name: Run infrastructure integration suite
         run: php artisan test --testsuite=Integration --fail-on-warning --display-warnings

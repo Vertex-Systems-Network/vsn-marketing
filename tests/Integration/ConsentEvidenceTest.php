@@ -6,7 +6,6 @@ use App\Modules\Consent\Domain\ConsentDecision;
 use App\Modules\Consent\Domain\EffectiveConsentStatus;
 use App\Modules\Contacts\Application\CreateContact;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
-use DateTimeImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -72,7 +71,7 @@ it('preserves append-only consent evidence and resolves effective consent on Pos
         'marketing',
         'signup-form',
         ConsentDecision::Granted,
-        new DateTimeImmutable('2026-08-20T10:00:00+00:00'),
+        new \DateTimeImmutable('2026-08-20T10:00:00+00:00'),
     );
     app(RecordConsent::class)->handle(
         $fixture['context'],
@@ -81,7 +80,7 @@ it('preserves append-only consent evidence and resolves effective consent on Pos
         'marketing',
         'preference-center',
         ConsentDecision::Denied,
-        new DateTimeImmutable('2026-08-21T10:00:00+00:00'),
+        new \DateTimeImmutable('2026-08-21T10:00:00+00:00'),
     );
     $effective = app(GetEffectiveConsent::class)->handle($fixture['context'], $contact->id, 'email', 'marketing');
 
@@ -110,7 +109,7 @@ it('rejects direct mutation of historical consent evidence on PostgreSQL', funct
 it('fails closed for conflicting latest evidence on PostgreSQL', function () {
     $fixture = consentIntegrationTenant('ambiguous');
     $contact = app(CreateContact::class)->handle($fixture['context'], firstName: 'Ambiguous');
-    $occurredAt = new DateTimeImmutable('2026-08-22T12:00:00+00:00');
+    $occurredAt = new \DateTimeImmutable('2026-08-22T12:00:00+00:00');
 
     app(RecordConsent::class)->handle(
         $fixture['context'], $contact->id, 'email', 'marketing', 'form-a', ConsentDecision::Granted, $occurredAt,

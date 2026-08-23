@@ -1,0 +1,119 @@
+name: Infrastructure Integration CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# TASK-0004 bootstrap only: write access is removed immediately after Composer
+# materializes the Horizon/S3 lockfile on this same-repository feature branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: infrastructure-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: vsn_marketing_test
+          POSTGRES_USER: vsn
+          POSTGRES_PASSWORD: vsn
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U vsn -d vsn_marketing_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      APP_ENV: testing
+      APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: vsn_marketing_test
+      DB_USERNAME: vsn
+      DB_PASSWORD: vsn
+      DB_SSLMODE: disable
+      CACHE_STORE: redis
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: redis
+      QUEUE_FAILED_DRIVER: database-uuids
+      REDIS_CLIENT: phpredis
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      REDIS_CACHE_DB: 1
+      REDIS_QUEUE_DB: 2
+      REDIS_QUEUE_CONNECTION: queue
+      FILESYSTEM_DISK: s3
+      OBJECT_STORAGE_DISK: s3
+      AWS_ACCESS_KEY_ID: vsn
+      AWS_SECRET_ACCESS_KEY: vsn-development-secret
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_BUCKET: vsn-marketing-test
+      AWS_ENDPOINT: http://127.0.0.1:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: 'true'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_pgsql, posix, redis
+          coverage: none
+      - name: Resolve TASK-0004 PHP dependencies
+        run: composer update laravel/horizon league/flysystem-aws-s3-v3 --with-all-dependencies --no-interaction --prefer-dist --no-progress
+      - name: Validate resolved Composer graph
+        run: composer validate --strict
+      - name: Start S3-compatible MinIO
+        run: |
+          docker run -d --name vsn-minio -p 9000:9000 \
+            -e MINIO_ROOT_USER="$AWS_ACCESS_KEY_ID" \
+            -e MINIO_ROOT_PASSWORD="$AWS_SECRET_ACCESS_KEY" \
+            minio/minio:latest server /data
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:9000/minio/health/ready >/dev/null; then break; fi
+            if [ "$attempt" -eq 30 ]; then docker logs vsn-minio; exit 1; fi
+            sleep 1
+          done
+          docker run --rm --network host \
+            -e MC_HOST_local="http://${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}@127.0.0.1:9000" \
+            minio/mc:latest mb --ignore-existing "local/${AWS_BUCKET}"
+      - name: Run infrastructure integration tests
+        run: php artisan test --testsuite=Integration
+      - name: Require generated lockfile
+        run: test -f composer.lock
+      - name: Materialize TASK-0004 Composer lockfile
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add composer.lock
+          if git diff --cached --quiet; then
+            echo "Composer lockfile already matches TASK-0004."
+            exit 0
+          fi
+          git commit -m "chore: lock TASK-0004 PHP dependencies"
+          git push origin "HEAD:${HEAD_BRANCH}"

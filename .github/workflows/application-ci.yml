@@ -45,8 +45,8 @@ jobs:
         run: docker compose config --quiet
       - name: Build developer PHP image
         run: docker build --tag vsn-marketing-foundation:test --file docker/app/Dockerfile .
-      - name: Run backend tests
-        run: php artisan test
+      - name: Run backend unit and feature tests
+        run: php artisan test --testsuite=Unit,Feature
       - name: Typecheck frontend
         run: npm run typecheck
       - name: Build frontend
@@ -73,5 +73,5 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate --ansi
-      - name: Run backend tests on PHP 8.3
-        run: php artisan test
+      - name: Run backend unit and feature tests on PHP 8.3
+        run: php artisan test --testsuite=Unit,Feature

@@ -19,12 +19,10 @@ use App\Modules\Identity\Domain\Tenancy\Brand;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
-use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 
 uses(RefreshDatabase::class);
 
@@ -74,8 +72,8 @@ function phase02CertificationEvent(
     return new CanonicalEvent(
         eventId: $eventId,
         eventType: 'contact.phase02_certified',
-        occurredAt: new DateTimeImmutable('2026-08-23T20:00:00+00:00'),
-        receivedAt: new DateTimeImmutable('2026-08-23T20:00:05+00:00'),
+        occurredAt: new \DateTimeImmutable('2026-08-23T20:00:00+00:00'),
+        receivedAt: new \DateTimeImmutable('2026-08-23T20:00:05+00:00'),
         workspaceId: (string) $fixture['workspace']->getKey(),
         brandId: (string) $fixture['brand']->getKey(),
         subjects: [
@@ -122,7 +120,7 @@ it('certifies the complete PHASE-02 customer data lifecycle and canonical invari
         'marketing',
         'certification-form',
         ConsentDecision::Granted,
-        new DateTimeImmutable('2026-08-23T18:00:00+00:00'),
+        new \DateTimeImmutable('2026-08-23T18:00:00+00:00'),
     );
     $denied = app(RecordConsent::class)->handle(
         $context,
@@ -131,7 +129,7 @@ it('certifies the complete PHASE-02 customer data lifecycle and canonical invari
         'marketing',
         'preference-center',
         ConsentDecision::Denied,
-        new DateTimeImmutable('2026-08-23T19:00:00+00:00'),
+        new \DateTimeImmutable('2026-08-23T19:00:00+00:00'),
     );
     $effective = app(GetEffectiveConsent::class)->handle($context, $contact->id, 'email', 'marketing');
 
@@ -190,7 +188,7 @@ it('certifies the complete PHASE-02 customer data lifecycle and canonical invari
         ['revision' => 999],
     );
     expect(fn () => app(PersistCustomerEvent::class)->handle($context, $conflictingRetry))
-        ->toThrow(InvalidArgumentException::class, 'Canonical event identity conflicts with persisted event data.');
+        ->toThrow(\InvalidArgumentException::class, 'Canonical event identity conflicts with persisted event data.');
 });
 
 it('certifies complete application-level cross-workspace fail-closed behavior across the PHASE-02 data core', function () {
@@ -252,8 +250,8 @@ it('certifies complete application-level cross-workspace fail-closed behavior ac
     $crossWorkspaceEvent = new CanonicalEvent(
         eventId: (string) Str::uuid(),
         eventType: 'contact.cross_workspace',
-        occurredAt: new DateTimeImmutable('2026-08-23T21:00:00+00:00'),
-        receivedAt: new DateTimeImmutable('2026-08-23T21:00:05+00:00'),
+        occurredAt: new \DateTimeImmutable('2026-08-23T21:00:00+00:00'),
+        receivedAt: new \DateTimeImmutable('2026-08-23T21:00:05+00:00'),
         workspaceId: (string) $primary['workspace']->getKey(),
         brandId: (string) $primary['brand']->getKey(),
         subjects: [

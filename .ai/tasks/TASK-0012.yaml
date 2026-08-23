@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Core",
   "title": "Certify PHASE-02 customer data core and isolation gates",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Close PHASE-02 only after the canonical contact/list/consent/event data core is jointly verified for tenant isolation, provider neutrality, evidence preservation, architecture quality, and full hosted CI continuity.",
   "dependencies": [
     "TASK-0011"

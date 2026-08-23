@@ -2,22 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-08-23T22:42:33+00:00`
+- Timestamp: `2026-08-23T22:59:26+00:00`
 - Active task: `TASK-0012`
 - Next task: `none`
 - Current phase: `PHASE-02`
-- Execution status: `ready`
-- State fingerprint: `7001c87037ca4e0b0cf59b7d0b18a55059920facfc91007440243e54e5770a4c`
+- Execution status: `in_progress`
+- State fingerprint: `d13db387c66a783cdec17499d29da5b8def10f161c266b769c65f130ac5f9d4e`
 
 ## Completed / observed this session
 
-Completed `TASK-0011` and activated `TASK-0012`.
-
-Transition evidence: Exact product head de78747f20b4738434fb1a11152a3734141e0928 passed AI Continuity Guard run 32670383037 and Application Foundation CI run 32670383081. AC-1 through AC-5 are supported by durable EventType/customer Event persistence bound to the TASK-0006 canonical envelope, composite workspace/brand/contact/contact-identity isolation, duplicate-safe internal canonical event identity with external provider IDs retained only as provenance, deterministic occurred/received contact timelines, transactional audit recording, and PostgreSQL direct-FK isolation coverage. No provider adapters or TASK-0012 certification implementation is included.
+Started TASK-0012 certification from certified main 513ad78f1f66e04a0938c36341f344051e6f1e1f. Scope is limited to complete PHASE-02 customer-data integration/isolation/invariant acceptance evidence and hosted CI continuity. No PHASE-03+ implementation is included.
 
 ## Tests
 
-python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32670383037 PASS; hosted Application Foundation CI 32670383081 PASS (php-floor, integration, e2e, foundation).
+Preflight: governance-main run 32672073102 PASS on merged TASK-0011 commit 513ad78f1f66e04a0938c36341f344051e6f1e1f; accepted-state head a30ba20d1f03ed1b13c776deb327b0b4f33a4db7 passed AI Continuity Guard 32671463140 and Application Foundation CI 32671463127. TASK-0012 certification tests are pending on this branch.
 
 ## Blockers
 

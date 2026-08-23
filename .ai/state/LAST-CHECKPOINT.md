@@ -2,33 +2,27 @@
 
 ## State
 
-- Timestamp: `2026-08-23T11:38:00+00:00`
-- Active task: `TASK-0005`
-- Next task: `TASK-0006`
+- Timestamp: `2026-08-23T11:56:36+00:00`
+- Active task: `TASK-0006`
+- Next task: `TASK-0007`
 - Current phase: `PHASE-01`
-- Execution status: `in_progress`
-- State fingerprint: `0607c3ff3ea6321b2533e432e06ad5bb37eba91ad49af64b5a90983d47b36775`
+- Execution status: `ready`
+- State fingerprint: `aae77f6e95f512f4835b0a3a2a9e5a1872b39d9afdb7f0bd22045096a3758e63`
 
 ## Completed / observed this session
 
-- PR #12 merged TASK-0004 to `main` as `7e2247e7f67f2b86b3abde0f42815e91ef97aef9`.
-- Default-branch `governance-main` passed for that exact merge.
-- Superseded draft PR #11 was closed to remove contradictory TASK-0004 state.
-- TASK-0005 implementation started from the certified main tree.
-- First-party session authentication, Organization → Workspace → Brand persistence, workspace-scoped canonical RBAC, tenant-context propagation, and fail-closed security tests are introduced in the active branch.
-- No new Composer dependency is introduced; TASK-0006 event/audit/idempotency execution remains out of scope.
+Completed `TASK-0005` and activated `TASK-0006`.
+
+Transition evidence: Application Foundation CI run 32637746729 and AI Continuity Guard run 32637746855 both passed exact TASK-0005 implementation head 00373a68fcb92d736dcd99162d7a6b3d60c50c9a; all five TASK-0005 acceptance criteria have hosted evidence.
 
 ## Tests
 
-- Certified TASK-0004 main governance: PASS.
-- Local PHP syntax validation for TASK-0005 changed/new PHP files: PASS.
-- Hosted `php artisan test`: pending on TASK-0005 implementation head.
-- Hosted AI Continuity Guard: pending on TASK-0005 implementation head.
+AI Continuity Guard #58 PASS; Application Foundation CI #27 PASS; PHP 8.3 backend 13 passed / 137 assertions including 6 TASK-0005 identity/tenancy/RBAC tests; PHP 8.5 foundation PASS; PostgreSQL 18 + Redis 8 integration PASS; Docker image/Compose PASS; TypeScript/Vite PASS.
 
 ## Blockers
 
-- None.
+- None
 
 ## Exact next action
 
-Run TASK-0005 authentication, tenancy, RBAC, tenant-context propagation, and cross-workspace security tests; fix failures before acceptance certification.
+Define the versioned canonical event envelope and outbox dispatcher, then add audit, idempotency, retry, and replay integration tests.

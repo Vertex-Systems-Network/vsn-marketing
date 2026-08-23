@@ -34,7 +34,7 @@
     }
   ],
   "application_tests": {
-    "status": "pending",
-    "reason": "TASK-0005 authentication, tenancy, workspace RBAC, tenant-context propagation, and cross-workspace security changes require hosted `php artisan test` certification."
+    "status": "passing",
+    "reason": "Application Foundation CI run 32637746729 passed exact TASK-0005 implementation head 00373a68fcb92d736dcd99162d7a6b3d60c50c9a: PHP 8.3 backend suite (13 passed / 137 assertions, including all 6 identity/tenancy/RBAC security tests), PHP 8.5 foundation, Docker Compose/image, TypeScript/Vite, and PostgreSQL 18 + Redis 8 integration. AI Continuity Guard run 32637746855 passed on the same exact head."
   }
 }

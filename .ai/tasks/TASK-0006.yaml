@@ -1,1 +1,44 @@
-{"schema_version":1,"id":"TASK-0006","phase":"PHASE-01","module":"Events","title":"Establish canonical events, audit, idempotency, and async execution foundation","status":"planned","objective":"Create the canonical event envelope, durable outbox dispatcher, audit event model, retry/dead-letter policy, and idempotent asynchronous execution primitives required by later product modules.","dependencies":["TASK-0005"],"acceptance_criteria":[{"id":"AC-1","text":"Canonical event envelope and versioning rules are implemented","done":false},{"id":"AC-2","text":"Transactional outbox dispatcher publishes typed events safely","done":false},{"id":"AC-3","text":"AuditEvent persistence captures state-changing execution evidence","done":false},{"id":"AC-4","text":"Idempotency, retries, and terminal/dead-letter failure semantics are deterministic","done":false},{"id":"AC-5","text":"Integration tests prove durable replay and duplicate-safe execution","done":false}],"required_tests":["python tools/ai_state.py validate","php artisan test --testsuite=Integration"],"exact_next_action":"Define the versioned canonical event envelope and outbox dispatcher, then add audit, idempotency, retry, and replay integration tests."}
+{
+  "schema_version": 1,
+  "id": "TASK-0006",
+  "phase": "PHASE-01",
+  "module": "Events",
+  "title": "Establish canonical events, audit, idempotency, and async execution foundation",
+  "status": "ready",
+  "objective": "Create the canonical event envelope, durable outbox dispatcher, audit event model, retry/dead-letter policy, and idempotent asynchronous execution primitives required by later product modules.",
+  "dependencies": [
+    "TASK-0005"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical event envelope and versioning rules are implemented",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Transactional outbox dispatcher publishes typed events safely",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "AuditEvent persistence captures state-changing execution evidence",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Idempotency, retries, and terminal/dead-letter failure semantics are deterministic",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Integration tests prove durable replay and duplicate-safe execution",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "php artisan test --testsuite=Integration"
+  ],
+  "exact_next_action": "Define the versioned canonical event envelope and outbox dispatcher, then add audit, idempotency, retry, and replay integration tests."
+}

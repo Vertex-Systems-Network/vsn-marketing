@@ -2,40 +2,33 @@
 
 ## State
 
-- Timestamp: `2026-08-23T09:30:00+00:00`
+- Timestamp: `2026-08-23T10:02:00+00:00`
 - Active task: `TASK-0004`
 - Next task: `TASK-0005`
 - Current phase: `PHASE-01`
-- Execution status: `ready`
-- State fingerprint: `1ec52e1a3ba34b596546aa5756c075a8c2f0d3b5711b727418f854c66a6bd28d`
+- Execution status: `in_progress`
+- State fingerprint: `e3a3c951c4744fa9ecc56ecbd83f99db400c0357d8964a14bdff86db1a2462be`
 
 ## Completed / observed this session
 
-- TASK-0003 acceptance criteria are satisfied on bootstrap candidate `b0c337c6dd97592edb305d3070c4a3c4698b4fc0`.
-- Application Foundation CI run `32630999852` passed committed Composer/npm lock installs, PHP 8.3 compatibility-floor tests, PHP 8.5 tests, Docker Compose validation, a real developer PHP image build, TypeScript strict typecheck, and the Vite production build.
-- Backend bootstrap coverage is 3 tests / 26 assertions, including health, bounded runtime status, and the provider-neutral Core architecture boundary.
-- AI Continuity Guard run `32630999842` passed on the same bootstrap candidate.
-- `composer.lock` and `package-lock.json` are committed; final CI is read-only and uses `composer install` plus `npm ci`.
-- The developer PHP image was corrected to install the PHP build toolchain and the `redis` extension required by `REDIS_CLIENT=phpredis`.
-- Issue #6 remains intentionally open as the durable default-branch governance ledger; no actionable GitHub Issue is pending.
-- TASK-0004 is ready and remains dependency-gated behind this transition head's final hosted certification and merge.
+- PR #10 merged to `main` as `b0fcb2bd07d02a305b03bb443bc919307af47c3f`.
+- Issue #6 records `AI_CONTINUITY_MAIN PASS` for that exact merge commit from workflow run `32631894994`.
+- No open pull requests exist; Issue #6 remains the only open issue and is intentionally retained as governance evidence.
+- TASK-0004 implementation started from the certified main tree.
+- PostgreSQL/Redis runtime defaults, Horizon supervision, S3-compatible object storage, a transactional outbox, worker/scheduler policy, and service-backed integration CI are being introduced behind Core contracts.
+- `laravel/horizon` and the S3 Flysystem adapter require a governed Composer lockfile refresh before TASK-0004 can complete.
 
 ## Tests
 
-- `python tools/ai_state.py validate` / AI Continuity Guard run `32630999842`: PASS on bootstrap candidate.
-- Application Foundation CI run `32630999852`: PASS.
-- PHP 8.3 compatibility-floor `php artisan test`: PASS.
-- PHP 8.5 `php artisan test`: PASS — 3 tests / 26 assertions.
-- `docker compose config --quiet`: PASS.
-- Developer PHP Docker image build: PASS.
-- `npm run typecheck`: PASS.
-- `npm run build`: PASS.
-- Task-transition head: pending final hosted re-certification before merge.
+- Default-branch governance for `b0fcb2bd07d02a305b03bb443bc919307af47c3f`: PASS (`governance-main`, run `32631894994`).
+- TASK-0003 application foundation: previously PASS on the identical merged tree.
+- TASK-0004 hosted dependency resolution and integration suites: pending.
+- Final TASK-0004 acceptance certification: pending.
 
 ## Blockers
 
-- None.
+- None. Dependency lockfile generation is an expected bootstrap step, not a blocker.
 
 ## Exact next action
 
-Configure PostgreSQL, Redis/Horizon, S3-compatible storage, and the transactional outbox behind explicit infrastructure contracts with integration coverage.
+Run TASK-0004 dependency bootstrap and infrastructure integration CI; fix PostgreSQL/Redis/Horizon/S3/outbox failures, then certify acceptance criteria before TASK-0005.

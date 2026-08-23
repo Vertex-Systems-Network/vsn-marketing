@@ -15,11 +15,43 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+
+  horizon:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    working_dir: /workspace
+    command: sh -lc "composer install --no-interaction --prefer-dist && php artisan horizon"
+    env_file: .env
+    volumes:
+      - .:/workspace
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    working_dir: /workspace
+    command: sh -lc "composer install --no-interaction --prefer-dist && php artisan schedule:work"
+    env_file: .env
+    volumes:
+      - .:/workspace
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   vite:
     image: node:24-bookworm-slim
     working_dir: /workspace
-    command: sh -lc "npm install --no-audit --no-fund && npm run dev -- --host=0.0.0.0"
+    command: sh -lc "npm ci --no-audit --no-fund && npm run dev -- --host=0.0.0.0"
     volumes:
       - .:/workspace
     ports:
@@ -43,6 +75,7 @@ services:
 
   redis:
     image: redis:8-alpine
+    command: redis-server --appendonly yes --appendfsync everysec
     ports:
       - "6379:6379"
     healthcheck:
@@ -50,6 +83,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    volumes:
+      - redis-data:/data
 
   minio:
     image: minio/minio:latest
@@ -63,6 +98,20 @@ services:
     volumes:
       - minio-data:/data
 
+  minio-init:
+    image: minio/mc:latest
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - >
+        until mc alias set local http://minio:9000 ${AWS_ACCESS_KEY_ID:-vsn} ${AWS_SECRET_ACCESS_KEY:-vsn-development-secret}; do sleep 1; done;
+        mc mb --ignore-existing local/${AWS_BUCKET:-vsn-marketing};
+        mc anonymous set none local/${AWS_BUCKET:-vsn-marketing};
+    depends_on:
+      minio:
+        condition: service_started
+
 volumes:
   postgres-data:
+  redis-data:
   minio-data:

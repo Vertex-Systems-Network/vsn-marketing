@@ -44,7 +44,7 @@
       "phase": "PHASE-01",
       "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
       "weight": 25,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0004"
       ]
@@ -54,7 +54,7 @@
       "phase": "PHASE-01",
       "title": "Establish canonical events, audit, idempotency, and async execution foundation",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0005"
       ]

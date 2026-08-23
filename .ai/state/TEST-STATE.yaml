@@ -6,7 +6,7 @@
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32634314369 passed on exact TASK-0004 product certification head 964ece870eb6c62484d3ac18530b5fe94064347f; TASK-0005 activates from this certified baseline."
+      "notes": "Default-branch governance is green on TASK-0004 merge 7e2247e7f67f2b86b3abde0f42815e91ef97aef9; TASK-0005 branch must re-certify after implementation changes."
     },
     {
       "name": "ai-transaction-integrity",
@@ -18,13 +18,13 @@
       "name": "ai-continuity-integrity",
       "command": "python tools/test_ai_continuity.py",
       "status": "passing",
-      "notes": "Transition, fingerprint, journal, append-only and product-change ledger guards are green."
+      "notes": "Transition, fingerprint, journal, append-only and product-change ledger guards remain green on the certified baseline."
     },
     {
       "name": "ai-context-pack-integrity",
       "command": "python tools/test_ai_context.py",
       "status": "passing",
-      "notes": "Deterministic context, checksum/source drift and full pack assembly remain green."
+      "notes": "Deterministic context, checksum/source drift and full pack assembly remain green on the certified baseline."
     },
     {
       "name": "ai-policy-registry-integrity",
@@ -35,6 +35,6 @@
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "Application Foundation CI run 32634314365 passed exact product head 964ece870eb6c62484d3ac18530b5fe94064347f: locked Composer/npm installs, PHP 8.3/8.5 backend tests, Docker Compose validation and developer image build, TypeScript/Vite gates, plus PostgreSQL 18 + Redis 8 integration coverage (4 tests / 25 assertions) under --fail-on-warning, including durable publish failure and successful later retry."
+    "reason": "Application Foundation CI run 32637746729 passed exact TASK-0005 implementation head 00373a68fcb92d736dcd99162d7a6b3d60c50c9a: PHP 8.3 backend suite (13 passed / 137 assertions, including all 6 identity/tenancy/RBAC security tests), PHP 8.5 foundation, Docker Compose/image, TypeScript/Vite, and PostgreSQL 18 + Redis 8 integration. AI Continuity Guard run 32637746855 passed on the same exact head."
   }
 }

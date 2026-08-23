@@ -4,7 +4,7 @@
   "phase": "PHASE-01",
   "module": "Identity",
   "title": "Implement identity, tenancy, and workspace-scoped RBAC foundation",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement first-party authentication, Organization → Workspace → Brand tenancy, and canonical workspace-scoped RBAC with fail-closed tenant isolation across web, API, jobs, and events.",
   "dependencies": [
     "TASK-0004"
@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "First-party authentication foundation is implemented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Organization, Workspace, and Brand tenancy entities and persistence exist",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Canonical workspace-scoped roles and permissions are implemented in-domain",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Tenant context propagates through web, API, jobs, and canonical events",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Cross-workspace access fails closed in automated security tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

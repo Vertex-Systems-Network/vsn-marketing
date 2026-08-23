@@ -246,8 +246,18 @@ def validate() -> list[str]:
     if not active_id or not active:
         errors.append(f"active task {active_id!r} is missing from task registry/files")
     else:
-        if active.get("status") not in {"ready", "in_progress", "blocked"}:
+        terminal_reconciliation = (
+            execution.get("status") == "needs_reconciliation"
+            and execution.get("next_task") is None
+            and execution.get("last_completed_task") == active_id
+            and active.get("status") == "completed"
+        )
+        if active.get("status") not in {"ready", "in_progress", "blocked"} and not terminal_reconciliation:
             errors.append(f"active task {active_id} has illegal active status {active.get('status')!r}")
+        if terminal_reconciliation:
+            phase_status = next((row.get("status") for row in phase_rows if row.get("id") == current_phase), None)
+            if phase_status != "completed":
+                errors.append("terminal reconciliation requires the current phase to be completed")
         incomplete_deps = [dep for dep in active.get("dependencies", []) if tasks_by_id.get(dep, {}).get("status") != "completed"]
         if incomplete_deps:
             errors.append(f"active task {active_id} has incomplete dependencies: {', '.join(incomplete_deps)}")
@@ -301,6 +311,8 @@ def validate() -> list[str]:
         errors.append("execution is ready while required test state contains failures: " + ", ".join(failing))
     if execution.get("status") == "blocked" and not state.get("blockers"):
         errors.append("execution.status is blocked but CURRENT-STATE contains no blockers")
+    if execution.get("status") == "needs_reconciliation" and not state.get("blockers"):
+        errors.append("execution.status is needs_reconciliation but CURRENT-STATE contains no blockers")
     return errors
 
 
@@ -424,7 +436,7 @@ def next_registry_task(index: dict, current_id: str) -> str | None:
     return None
 
 
-def transition_task(complete_id: str, next_id: str, evidence: str, tests: str, *, dry_run: bool = False) -> list[str]:
+def transition_task(complete_id: str, next_id: str | None, evidence: str, tests: str, *, dry_run: bool = False) -> list[str]:
     initial_errors = validate()
     if initial_errors:
         return ["pre-transition validation failed"] + initial_errors
@@ -437,6 +449,72 @@ def transition_task(complete_id: str, next_id: str, evidence: str, tests: str, *
     active_id = state["execution"]["active_task"]
     if active_id != complete_id:
         return [f"cannot complete {complete_id}; active task is {active_id}"]
+    if next_id is None:
+        current = json.loads(json.dumps(tasks[complete_id]))
+        incomplete_criteria = [item.get("id", "unknown") for item in current.get("acceptance_criteria", []) if not item.get("done")]
+        if incomplete_criteria:
+            return [f"{complete_id} cannot complete; acceptance criteria are false: " + ", ".join(incomplete_criteria)]
+        current["status"] = "completed"
+        new_index = json.loads(json.dumps(index))
+        for row in new_index.get("tasks", []):
+            if row.get("id") == complete_id:
+                row["status"] = "completed"
+        unfinished = [row.get("id") for row in new_index.get("tasks", []) if row.get("status") != "completed"]
+        if unfinished:
+            return [f"{complete_id} cannot complete without --next; registered unfinished task(s) remain: " + ", ".join(str(item) for item in unfinished)]
+        old_phase = current.get("phase")
+        new_roadmap = json.loads(json.dumps(roadmap))
+        phase_has_remaining = any(row.get("phase") == old_phase and row.get("id") != complete_id and row.get("status") != "completed" for row in new_index.get("tasks", []))
+        if phase_has_remaining:
+            return [f"{complete_id} cannot terminal-complete while {old_phase} still has unfinished registered tasks"]
+        for phase in new_roadmap.get("phases", []):
+            if phase.get("id") == old_phase:
+                phase["status"] = "completed"
+        new_state = json.loads(json.dumps(state))
+        new_state["execution"]["status"] = "needs_reconciliation"
+        new_state["execution"]["current_phase"] = old_phase
+        new_state["execution"]["active_task"] = complete_id
+        new_state["execution"]["last_completed_task"] = complete_id
+        new_state["execution"]["next_task"] = None
+        new_state["blockers"] = [f"No successor task is registered after {complete_id}; explicit roadmap staging is required before further implementation."]
+        phase_percent, roadmap_percent = calculate_progress(new_index, new_roadmap, old_phase)
+        new_state["progress"]["phase_percent"] = phase_percent
+        new_state["progress"]["roadmap_percent"] = roadmap_percent
+        new_state["progress"]["calculation"] = "Calculated deterministically from task weights and completed task statuses."
+        new_state["exact_next_action"] = "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
+        if dry_run:
+            print(f"Terminal transition valid: {complete_id}; phase={old_phase}; roadmap={roadmap_percent:.2f}%; successor=none")
+            return []
+        snapshots = {
+            task_path(complete_id): task_path(complete_id).read_text(encoding="utf-8"),
+            INDEX_PATH: INDEX_PATH.read_text(encoding="utf-8"),
+            ROADMAP_PATH: ROADMAP_PATH.read_text(encoding="utf-8"),
+            STATE_PATH: STATE_PATH.read_text(encoding="utf-8"),
+            CHECKPOINT_PATH: CHECKPOINT_PATH.read_text(encoding="utf-8"),
+        }
+        try:
+            write_json_yaml(task_path(complete_id), current)
+            write_json_yaml(INDEX_PATH, new_index)
+            write_json_yaml(ROADMAP_PATH, new_roadmap)
+            write_json_yaml(STATE_PATH, new_state)
+            CHECKPOINT_PATH.write_text(
+                checkpoint_body(
+                    new_state,
+                    summary=f"Completed `{complete_id}` with no registered successor.\n\nTransition evidence: {evidence.strip()}",
+                    tests=tests,
+                    next_action=new_state["exact_next_action"],
+                ),
+                encoding="utf-8",
+            )
+            post_errors = validate()
+            if post_errors:
+                raise ValueError("post-transition validation failed: " + "; ".join(post_errors))
+        except Exception as exc:
+            for path, content in snapshots.items():
+                path.write_text(content, encoding="utf-8")
+            return [f"terminal transition rolled back: {exc}"]
+        print(f"Terminal transition complete: {complete_id}; no successor registered")
+        return []
     if next_id not in tasks:
         return [f"next task {next_id} does not exist"]
     if next_id == complete_id:
@@ -528,7 +606,7 @@ def main() -> int:
     drift.add_argument("--head", required=True)
     transition = sub.add_parser("transition")
     transition.add_argument("--complete", required=True)
-    transition.add_argument("--next", dest="next_task", required=True)
+    transition.add_argument("--next", dest="next_task")
     transition.add_argument("--evidence", required=True)
     transition.add_argument("--tests", required=True)
     transition.add_argument("--dry-run", action="store_true")

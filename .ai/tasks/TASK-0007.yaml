@@ -4,7 +4,7 @@
   "phase": "PHASE-01",
   "module": "Core",
   "title": "Harden application CI, observability, and PHASE-01 completion gate",
-  "status": "ready",
+  "status": "completed",
   "objective": "Make the new application foundation continuously verifiable with backend/frontend/e2e CI, baseline observability, health/metrics surfaces, and explicit PHASE-01 completion evidence.",
   "dependencies": [
     "TASK-0006"
@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "Backend tests, static analysis, formatting, and architecture tests run in CI",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "TypeScript typecheck, frontend unit tests, and production build run in CI",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Playwright critical smoke runs against the application",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Structured logs, correlation IDs, health checks, and baseline metrics are implemented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "PHASE-01 completion evidence is recorded with all required suites green",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

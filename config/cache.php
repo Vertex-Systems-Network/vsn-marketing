@@ -3,7 +3,7 @@
 use Illuminate\Support\Str;
 
 return [
-    'default' => env('CACHE_STORE', 'file'),
+    'default' => env('CACHE_STORE', 'redis'),
     'stores' => [
         'array' => ['driver' => 'array', 'serialize' => false],
         'file' => ['driver' => 'file', 'path' => storage_path('framework/cache/data'), 'lock_path' => storage_path('framework/cache/data')],

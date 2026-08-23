@@ -1,3 +1,6 @@
 <?php
 
-// Console routes are intentionally empty until a module owns a command.
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('outbox:relay')->everyMinute()->withoutOverlapping()->onOneServer();
+Schedule::command('horizon:snapshot')->everyFiveMinutes()->withoutOverlapping()->onOneServer();

@@ -1,0 +1,160 @@
+name: TASK-0008 Acceptance Transition
+
+on:
+  push:
+    branches:
+      - task-0008-contact-data-foundation
+
+permissions:
+  contents: write
+
+jobs:
+  accept:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v7
+        with:
+          ref: task-0008-contact-data-foundation
+          fetch-depth: 0
+
+      - name: Require certified parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "7314481c9baecbba7b4cdc74c006a5dfa9f7c582"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/task-0008-acceptance.yml"
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Validate clean canonical state before acceptance
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+
+      - name: Record exact TASK-0008 acceptance evidence
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0008.yaml')
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          expected = {
+              'AC-1': 'Canonical Contact, ContactIdentity, and Company domain models and PostgreSQL persistence exist',
+              'AC-2': 'Workspace boundaries are mandatory and brand scope is preserved where applicable; cross-workspace references fail closed',
+              'AC-3': 'Identity normalization and uniqueness rules are deterministic and external provider IDs remain references rather than canonical primary identity',
+              'AC-4': 'Contact and company state-changing application actions are auditable and use explicit module contracts',
+              'AC-5': 'Automated PostgreSQL integration and security tests prove contact lifecycle behavior and cross-workspace isolation',
+          }
+          assert task['id'] == 'TASK-0008'
+          assert task['status'] == 'in_progress'
+          assert {item['id']: item['text'] for item in task['acceptance_criteria']} == expected
+          for item in task['acceptance_criteria']:
+              item['done'] = True
+          task_path.write_text(json.dumps(task, indent=2) + '\n', encoding='utf-8')
+
+          test_state = {
+              'schema_version': 1,
+              'updated_for_task': 'TASK-0009',
+              'suites': [
+                  {
+                      'name': 'ai-continuity-validation',
+                      'command': 'python tools/ai_state.py validate',
+                      'status': 'passing',
+                      'notes': 'AI Continuity Guard run 32666855032 passed exact TASK-0008 certified product head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard.'
+                  },
+                  {
+                      'name': 'backend-tests',
+                      'command': 'php artisan test',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32666855014 passed backend tests on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582, including the PHP 8.3 compatibility-floor job.'
+                  },
+                  {
+                      'name': 'postgresql-integration',
+                      'command': 'php artisan test --testsuite=Integration',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32666855014 integration job passed on PostgreSQL 18 and Redis 8, including canonical contact lifecycle, audit evidence, and cross-workspace rejection coverage.'
+                  },
+                  {
+                      'name': 'php-static-analysis',
+                      'command': 'composer analyse',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32666855014 foundation job passed Larastan on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582.'
+                  },
+                  {
+                      'name': 'php-formatting',
+                      'command': 'composer lint:check',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32666855014 foundation job passed pinned Pint formatting on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582.'
+                  },
+                  {
+                      'name': 'critical-e2e',
+                      'command': 'npm run test:e2e',
+                      'status': 'passing',
+                      'notes': 'Application Foundation CI run 32666855014 e2e job passed the critical Playwright smoke on exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582.'
+                  }
+              ],
+              'application_tests': {
+                  'status': 'passing',
+                  'reason': 'TASK-0008 exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed Application Foundation CI run 32666855014: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded.'
+              }
+          }
+          Path('.ai/state/TEST-STATE.yaml').write_text(json.dumps(test_state, indent=2) + '\n', encoding='utf-8')
+
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+          assert state['execution']['active_task'] == 'TASK-0008'
+          assert state['execution']['status'] == 'in_progress'
+          state['quality']['continuity_validation'] = 'task_0008_pr_head_passed'
+          state['quality']['application_test_status'] = 'task_0008_ci_passed'
+          state_path.write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
+
+      - name: Validate acceptance inputs
+        run: python tools/ai_state.py validate
+
+      - name: Transition TASK-0008 to registered TASK-0009
+        run: >-
+          python tools/ai_txn.py transition
+          --complete TASK-0008
+          --next TASK-0009
+          --evidence "Exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed AI Continuity Guard run 32666855032 and Application Foundation CI run 32666855014. AC-1 through AC-5 are supported by canonical Contact/ContactIdentity/Company persistence, fail-closed workspace and brand isolation, deterministic identity normalization and provider-reference semantics, auditable state-changing actions, and PostgreSQL lifecycle/security integration coverage."
+          --tests "python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32666855032 PASS; hosted Application Foundation CI 32666855014 PASS (php-floor, integration, e2e, foundation)."
+
+      - name: Validate final canonical transition
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+
+      - name: Require exact successor and no future implementation
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          state = json.loads(Path('.ai/state/CURRENT-STATE.yaml').read_text(encoding='utf-8'))
+          completed = json.loads(Path('.ai/tasks/TASK-0008.yaml').read_text(encoding='utf-8'))
+          successor = json.loads(Path('.ai/tasks/TASK-0009.yaml').read_text(encoding='utf-8'))
+          assert completed['status'] == 'completed'
+          assert all(item['done'] is True for item in completed['acceptance_criteria'])
+          assert state['execution']['active_task'] == 'TASK-0009'
+          assert state['execution']['status'] == 'ready'
+          assert state['execution']['last_completed_task'] == 'TASK-0008'
+          assert successor['status'] == 'ready'
+          assert all(item['done'] is False for item in successor['acceptance_criteria'])
+
+      - name: Commit accepted canonical state and remove driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/task-0008-acceptance.yml
+          git add .ai/tasks/TASK-0008.yaml .ai/tasks/TASK-0009.yaml .ai/tasks/INDEX.yaml .ai/roadmap/ROADMAP.yaml .ai/state/CURRENT-STATE.yaml .ai/state/TEST-STATE.yaml .ai/state/LAST-CHECKPOINT.md .ai/state/EXECUTION-JOURNAL.jsonl
+          git diff --cached --check
+          git commit -m "chore: accept TASK-0008 contact data foundation"
+          git push origin HEAD:task-0008-contact-data-foundation

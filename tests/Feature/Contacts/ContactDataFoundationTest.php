@@ -14,7 +14,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 
 uses(RefreshDatabase::class);
 
@@ -184,7 +183,7 @@ it('enforces workspace identity uniqueness while allowing the same normalized id
         $second->id,
         ContactIdentityType::Email,
         'unique@example.com',
-    ))->toThrow(InvalidArgumentException::class, 'Contact identity already exists in this workspace.');
+    ))->toThrow(\InvalidArgumentException::class, 'Contact identity already exists in this workspace.');
 
     $outsideIdentity = app(AddContactIdentity::class)->handle(
         $outside['context'],

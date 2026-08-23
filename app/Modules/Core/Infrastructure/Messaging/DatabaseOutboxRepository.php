@@ -14,8 +14,7 @@ final readonly class DatabaseOutboxRepository implements OutboxRepository
     public function __construct(
         private DatabaseManager $database,
         private Clock $clock,
-    ) {
-    }
+    ) {}
 
     public function store(OutboxMessage $message): void
     {

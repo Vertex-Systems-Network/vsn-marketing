@@ -17,8 +17,7 @@ final readonly class IdempotentExecutor
     public function __construct(
         private IdempotencyRepository $idempotency,
         private AuditRecorder $audit,
-    ) {
-    }
+    ) {}
 
     public function run(
         string $workspaceId,

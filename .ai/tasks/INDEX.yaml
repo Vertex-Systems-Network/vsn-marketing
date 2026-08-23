@@ -64,7 +64,7 @@
       "phase": "PHASE-01",
       "title": "Harden application CI, observability, and PHASE-01 completion gate",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0006"
       ]

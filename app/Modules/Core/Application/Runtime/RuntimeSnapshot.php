@@ -6,9 +6,7 @@ use App\Modules\Core\Domain\Contracts\Clock;
 
 final readonly class RuntimeSnapshot
 {
-    public function __construct(private Clock $clock)
-    {
-    }
+    public function __construct(private Clock $clock) {}
 
     /** @return array{name:string,environment:string,php:string,time:string} */
     public function toArray(): array

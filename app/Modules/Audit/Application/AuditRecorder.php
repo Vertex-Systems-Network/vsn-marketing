@@ -13,8 +13,7 @@ final readonly class AuditRecorder
         private Clock $clock,
         private IdentifierGenerator $identifiers,
         private AuditEventRepository $events,
-    ) {
-    }
+    ) {}
 
     public function record(
         string $workspaceId,

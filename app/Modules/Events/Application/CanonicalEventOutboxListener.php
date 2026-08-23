@@ -9,9 +9,7 @@ use RuntimeException;
 
 final readonly class CanonicalEventOutboxListener
 {
-    public function __construct(private Dispatcher $events)
-    {
-    }
+    public function __construct(private Dispatcher $events) {}
 
     public function handle(OutboxMessagePublished $published): void
     {

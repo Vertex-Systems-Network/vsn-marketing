@@ -177,7 +177,7 @@ it('propagates the same tenant context through web api job and event boundaries'
     $context = TenantContext::fromArray($expected);
     $seen = null;
 
-    (new UseTenantContext($context))->handle(new stdClass(), function () use (&$seen): void {
+    (new UseTenantContext($context))->handle(new stdClass, function () use (&$seen): void {
         $seen = app(TenantContextStore::class)->require()->toArray();
     });
 

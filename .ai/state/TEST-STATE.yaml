@@ -1,40 +1,40 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0006",
+  "updated_for_task": "TASK-0007",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32640770685 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315; transactional acceptance run 32640928793 then revalidated continuity before and after TASK-0006 -> TASK-0007."
+      "notes": "AI Continuity Guard run 32656319987 passed exact TASK-0007 product head 350351d33b7a184e1730dc5880f9501e7451d183, including transactional state, journal integrity, policy registries, context, append-only history, and product-change ledger guard."
     },
     {
       "name": "ai-transaction-integrity",
       "command": "python tools/ai_txn.py validate && python tools/test_ai_txn.py",
       "status": "passing",
-      "notes": "Transactional acceptance run 32640928793 completed recover, pre-transition validation, atomic TASK-0006 -> TASK-0007 transition, journal update, and post-transition validation successfully."
+      "notes": "TASK-0007 terminal completion used the crash-recoverable transaction wrapper after the exact product head was fully certified; terminal no-successor state is validated explicitly."
     },
     {
       "name": "ai-continuity-integrity",
       "command": "python tools/test_ai_continuity.py",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32640770685 passed transition, fingerprint, append-only journal, and product-change ledger checks on exact TASK-0006 product head."
+      "notes": "Continuity integrity tests passed before terminal completion and are re-run after the transition in this GitHub-hosted reconciliation job."
     },
     {
       "name": "ai-context-pack-integrity",
       "command": "python tools/test_ai_context.py",
       "status": "passing",
-      "notes": "Deterministic context, checksum/source drift and full pack assembly remain green on the certified baseline."
+      "notes": "Deterministic context pack integrity remains green during TASK-0007 terminal completion reconciliation."
     },
     {
       "name": "ai-policy-registry-integrity",
       "command": "python tools/ai_policy.py && python tools/test_ai_policy.py",
       "status": "passing",
-      "notes": "Agent/tool/risk/memory relationships, prompt/eval references, model capabilities, observability requirements and negative policy cases remain green."
+      "notes": "AI policy registry and negative guard tests remain green during TASK-0007 terminal completion reconciliation."
     }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "Application Foundation CI run 32640770631 passed exact TASK-0006 product head a2f8bf7413990c01c775f85c6105c486c3f63315: PHP 8.3 backend, PHP 8.5 foundation/backend, Docker Compose and developer image, TypeScript typecheck, Vite production build, and PostgreSQL 18 + Redis 8 integration. Acceptance run 32640928793 re-ran the required integration suite warning-clean: 8 tests / 66 assertions."
+    "reason": "Application Foundation CI run 32656320074 passed exact TASK-0007 product head 350351d33b7a184e1730dc5880f9501e7451d183: PHP 8.3 compatibility; PHP 8.5 backend and architecture tests; Larastan; Pint; TypeScript typecheck; Vitest frontend unit tests; Vite production build; PostgreSQL 18 + Redis 8 integration; and Playwright critical smoke."
   }
 }

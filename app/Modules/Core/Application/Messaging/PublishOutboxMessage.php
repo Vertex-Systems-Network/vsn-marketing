@@ -32,9 +32,7 @@ final class PublishOutboxMessage implements ShouldBeUnique, ShouldQueue
 
     public int $uniqueFor = 3600;
 
-    public function __construct(public readonly string $messageId)
-    {
-    }
+    public function __construct(public readonly string $messageId) {}
 
     public function uniqueId(): string
     {

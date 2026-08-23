@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Modules\Core\Presentation\Http\Middleware\ObserveRequest;
 use App\Modules\Identity\Presentation\Http\Middleware\RequireWorkspacePermission;
 use App\Modules\Identity\Presentation\Http\Middleware\ResolveTenantContext;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(ObserveRequest::class);
+
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

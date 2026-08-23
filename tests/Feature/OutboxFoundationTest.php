@@ -4,7 +4,8 @@ use App\Modules\Core\Application\Messaging\OutboxMessagePublished;
 use App\Modules\Core\Application\Messaging\OutboxRecorder;
 use App\Modules\Core\Application\Messaging\PublishOutboxMessage;
 use App\Modules\Core\Domain\Contracts\DistributedLock;
-use Closure;
+use App\Modules\Core\Domain\Contracts\OutboxRepository;
+use App\Modules\Core\Domain\Contracts\OutboxTransport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Queue;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    app()->bind(DistributedLock::class, static fn () => new class implements DistributedLock {
+    app()->bind(DistributedLock::class, static fn () => new class implements DistributedLock
+    {
         public function run(string $name, int $seconds, Closure $criticalSection): bool
         {
             $criticalSection();
@@ -72,8 +74,8 @@ it('marks an outbox row published only after transport success', function () {
     );
 
     app(PublishOutboxMessage::class, ['messageId' => $id])->handle(
-        app(\App\Modules\Core\Domain\Contracts\OutboxRepository::class),
-        app(\App\Modules\Core\Domain\Contracts\OutboxTransport::class),
+        app(OutboxRepository::class),
+        app(OutboxTransport::class),
     );
 
     Event::assertDispatched(OutboxMessagePublished::class);

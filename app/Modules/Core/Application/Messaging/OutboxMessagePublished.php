@@ -6,7 +6,5 @@ use App\Modules\Core\Domain\Messaging\OutboxMessage;
 
 final readonly class OutboxMessagePublished
 {
-    public function __construct(public OutboxMessage $message)
-    {
-    }
+    public function __construct(public OutboxMessage $message) {}
 }

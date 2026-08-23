@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use Laravel\Horizon\Horizon;
 
 uses(RefreshDatabase::class);
 
@@ -54,7 +55,7 @@ it('loads Horizon and enqueues durable outbox work on Redis without pre-publishi
     $queue = 'outbox-integration-'.Str::lower(Str::random(12));
     config()->set('infrastructure.outbox.queue', $queue);
 
-    expect(class_exists(\Laravel\Horizon\Horizon::class))->toBeTrue()
+    expect(class_exists(Horizon::class))->toBeTrue()
         ->and(config('horizon.defaults.supervisor-1.queue'))->toContain('default', 'outbox');
 
     $id = app(OutboxRecorder::class)->record(
@@ -85,7 +86,8 @@ it('persists publish failures and succeeds on a later retry', function () {
         ->and($job->maxExceptions)->toBe(5)
         ->and($job->backoff())->toBe([5, 30, 120, 300]);
 
-    $failingTransport = new class implements OutboxTransport {
+    $failingTransport = new class implements OutboxTransport
+    {
         public function publish(OutboxMessage $message): void
         {
             throw new RuntimeException('transport unavailable');
@@ -106,7 +108,8 @@ it('persists publish failures and succeeds on a later retry', function () {
         'available_at' => app(Clock::class)->now()->modify('-1 second'),
     ]);
 
-    $successfulTransport = new class implements OutboxTransport {
+    $successfulTransport = new class implements OutboxTransport
+    {
         public int $published = 0;
 
         public function publish(OutboxMessage $message): void

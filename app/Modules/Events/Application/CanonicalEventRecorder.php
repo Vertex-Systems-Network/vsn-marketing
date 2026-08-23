@@ -15,8 +15,7 @@ final readonly class CanonicalEventRecorder
         private Clock $clock,
         private IdentifierGenerator $identifiers,
         private OutboxRepository $outbox,
-    ) {
-    }
+    ) {}
 
     public function record(
         string $eventType,

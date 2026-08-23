@@ -439,24 +439,33 @@ def checkpoint(args) -> None:
 def transition(args) -> None:
     coordinator = TxnCoordinator(ROOT)
     paths = [
-        task_path(args.complete), task_path(args.next_task),
+        task_path(args.complete),
         ROOT / ".ai/tasks/INDEX.yaml", ROOT / ".ai/roadmap/ROADMAP.yaml",
         ROOT / ".ai/state/CURRENT-STATE.yaml", ROOT / ".ai/state/LAST-CHECKPOINT.md",
         ROOT / ".ai/state/EXECUTION-JOURNAL.jsonl",
     ]
+    if args.next_task:
+        paths.insert(1, task_path(args.next_task))
     coordinator.begin("task_transition", paths)
     try:
         command = [
-            "tools/ai_state.py", "transition", "--complete", args.complete, "--next", args.next_task,
+            "tools/ai_state.py", "transition", "--complete", args.complete,
             "--evidence", args.evidence, "--tests", args.tests,
         ]
+        if args.next_task:
+            command.extend(["--next", args.next_task])
         if args.dry_run:
             command.append("--dry-run")
         run_tool(command)
         if not args.dry_run:
+            summary = (
+                f"{args.complete} completed; {args.next_task} activated. {args.evidence}"
+                if args.next_task
+                else f"{args.complete} completed; no successor registered. {args.evidence}"
+            )
             run_tool([
                 "tools/ai_journal.py", "record", "--type", "task_transition",
-                "--summary", f"{args.complete} completed; {args.next_task} activated. {args.evidence}",
+                "--summary", summary,
             ])
             validate_integrity()
     except BaseException:
@@ -480,7 +489,7 @@ def main() -> int:
     cp = sub.add_parser("checkpoint")
     cp.add_argument("--summary", required=True); cp.add_argument("--tests", required=True); cp.add_argument("--next", dest="next_action", required=True)
     tr = sub.add_parser("transition")
-    tr.add_argument("--complete", required=True); tr.add_argument("--next", dest="next_task", required=True)
+    tr.add_argument("--complete", required=True); tr.add_argument("--next", dest="next_task")
     tr.add_argument("--evidence", required=True); tr.add_argument("--tests", required=True); tr.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     try:

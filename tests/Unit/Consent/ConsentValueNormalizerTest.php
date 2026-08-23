@@ -1,7 +1,6 @@
 <?php
 
 use App\Modules\Consent\Domain\ConsentValueNormalizer;
-use InvalidArgumentException;
 
 it('normalizes canonical consent dimensions deterministically', function () {
     $normalizer = new ConsentValueNormalizer;

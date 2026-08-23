@@ -6,21 +6,23 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-02",
     "active_task": "TASK-0012",
-    "last_completed_task": "TASK-0011",
+    "last_completed_task": "TASK-0012",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 17.3,
-    "phase_percent": 90.0,
+    "roadmap_percent": 18.0,
+    "phase_percent": 100.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0011_pr_head_passed",
-    "application_test_status": "task_0011_ci_passed"
+    "continuity_validation": "task_0012_pr_head_passed",
+    "application_test_status": "task_0012_ci_passed"
   },
-  "blockers": [],
-  "exact_next_action": "Run the complete PHASE-02 customer-data acceptance matrix, close any isolation or invariant gaps, then record exact-head completion evidence before advancing the roadmap."
+  "blockers": [
+    "No successor task is registered after TASK-0012; explicit roadmap staging is required before further implementation."
+  ],
+  "exact_next_action": "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
 }

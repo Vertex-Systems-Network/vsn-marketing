@@ -114,7 +114,7 @@
       "phase": "PHASE-02",
       "title": "Certify PHASE-02 customer data core and isolation gates",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0011"
       ]

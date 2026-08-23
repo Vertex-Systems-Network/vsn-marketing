@@ -7,7 +7,6 @@ use App\Modules\Events\Application\GetContactTimeline;
 use App\Modules\Events\Application\PersistCustomerEvent;
 use App\Modules\Events\Domain\CanonicalEvent;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
-use DateTimeImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

@@ -6,7 +6,6 @@ use App\Modules\Consent\Domain\ConsentDecision;
 use App\Modules\Consent\Domain\EffectiveConsentStatus;
 use App\Modules\Contacts\Application\CreateContact;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
-use DateTimeImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

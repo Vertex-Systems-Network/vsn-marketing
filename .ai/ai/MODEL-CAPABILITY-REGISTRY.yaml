@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "registry_policy": "Concrete provider/model routes are configuration; core workflows request capabilities.",
+  "capability_keys": ["structured_output","tool_calling","streaming","vision","long_context","reasoning","batch","embeddings","json_schema","regional_processing","usage_telemetry"],
+  "route_schema": {
+    "id":"string",
+    "provider_adapter":"string",
+    "model_reference":"secret/config reference, not hardcoded in core",
+    "capabilities":"map<boolean|number|string>",
+    "data_regions":"list",
+    "status":"candidate|active|degraded|disabled",
+    "cost_profile":"dynamic configuration",
+    "latency_profile":"measured telemetry",
+    "eval_profile":"versioned measured scores"
+  },
+  "routing_rules": [
+    "All required capabilities must match before ranking.",
+    "Workspace data policy and region constraints are hard filters.",
+    "Fallback must preserve schema, tool permissions, risk tier and privacy constraints.",
+    "Provider failure may trip a circuit breaker; it never authorizes policy bypass.",
+    "Model aliases are versioned configuration and must be auditable."
+  ]
+}

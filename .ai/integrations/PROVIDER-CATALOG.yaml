@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "note": "Commercial plans, free tiers, quotas and API details are volatile external metadata. Runtime/provider registry data must be refreshable and must not be hardcoded as permanent product truth.",
+  "providers": [
+    {"id":"smtp","class":"delivery","status":"planned","auth":["username_password","provider_specific"]},
+    {"id":"amazon_ses","class":"delivery","status":"planned"},
+    {"id":"sendgrid","class":"delivery","status":"planned"},
+    {"id":"brevo","class":"delivery_marketing","status":"planned"},
+    {"id":"mailgun","class":"delivery","status":"planned"},
+    {"id":"resend","class":"delivery","status":"planned"},
+    {"id":"postmark","class":"delivery","status":"planned"},
+    {"id":"mailersend","class":"delivery","status":"planned"},
+    {"id":"mailchimp","class":"marketing","status":"planned"},
+    {"id":"activecampaign","class":"marketing","status":"planned"},
+    {"id":"customer_io","class":"marketing","status":"planned"},
+    {"id":"klaviyo","class":"marketing","status":"planned"},
+    {"id":"google_gmail","class":"mailbox","status":"planned"},
+    {"id":"microsoft_graph_mail","class":"mailbox","status":"planned"},
+    {"id":"mautic","class":"self_hosted_marketing","status":"planned"},
+    {"id":"listmonk","class":"self_hosted_marketing","status":"planned"},
+    {"id":"postal","class":"self_hosted_delivery","status":"planned"}
+  ]
+}

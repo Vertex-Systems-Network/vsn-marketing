@@ -6,41 +6,59 @@
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32670383037 passed exact TASK-0011 product head de78747f20b4738434fb1a11152a3734141e0928, including transactional state, journal integrity, policy registries, deterministic context, append-only history, and product-change ledger guard."
+      "notes": "AI Continuity Guard run 32672928382 passed exact TASK-0012 certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9, including transactional state, journal integrity, policy registries, deterministic context, append-only history, and product-change ledger guard."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32670383081 passed backend tests on exact TASK-0011 head de78747f20b4738434fb1a11152a3734141e0928, including PHP 8.3 compatibility and canonical customer event feature coverage."
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed backend tests on exact TASK-0012 certified head; PHP 8.3 compatibility job 97276441360 also passed."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Application Foundation CI run 32670383081 integration job 97270244008 passed on PostgreSQL 18 and Redis 8, including durable Event/EventType persistence, duplicate-safe canonical event identity, contact/identity subject linkage, timeline hydration, and direct cross-workspace/wrong-contact-identity FK rejection."
+      "notes": "Application Foundation CI run 32672928375 integration job 97276441338 passed on PostgreSQL 18 and Redis 8 with 24 tests / 157 assertions. Phase02CustomerDataCertificationTest passed the complete Contact/Identity/Company/List/Tag/Consent/Event/EventType lifecycle and complete application-level cross-workspace fail-closed case; append-only consent and direct composite-FK isolation regressions also passed without ineffective-import PHP warnings."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Application Foundation CI run 32670383081 foundation job 97270243912 passed Larastan on exact TASK-0011 head de78747f20b4738434fb1a11152a3734141e0928."
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Larastan/static analysis on exact TASK-0012 certified head."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Application Foundation CI run 32670383081 foundation job 97270243912 passed pinned Pint formatting on exact TASK-0011 head de78747f20b4738434fb1a11152a3734141e0928."
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed pinned Pint formatting on exact TASK-0012 certified head after the repository-authoritative formatter/runtime-warning reconciliation."
+    },
+    {
+      "name": "frontend-typecheck",
+      "command": "npm run typecheck",
+      "status": "passing",
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed TypeScript typecheck on exact TASK-0012 certified head."
+    },
+    {
+      "name": "frontend-unit-tests",
+      "command": "npm run test",
+      "status": "passing",
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Vitest frontend unit tests on exact TASK-0012 certified head."
+    },
+    {
+      "name": "frontend-build",
+      "command": "npm run build",
+      "status": "passing",
+      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed the production frontend build on exact TASK-0012 certified head."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Application Foundation CI run 32670383081 e2e job 97270244023 passed the critical Playwright smoke on exact TASK-0011 head de78747f20b4738434fb1a11152a3734141e0928."
+      "notes": "Application Foundation CI run 32672928375 e2e job 97276441406 passed the critical Playwright smoke on exact TASK-0012 certified head."
     }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "TASK-0011 exact product head de78747f20b4738434fb1a11152a3734141e0928 passed Application Foundation CI run 32670383081: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
+    "reason": "TASK-0012 exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard 32672928382 and Application Foundation CI 32672928375: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
   }
 }

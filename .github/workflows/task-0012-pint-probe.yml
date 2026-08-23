@@ -42,12 +42,25 @@ jobs:
       - name: Apply exact repository Pint output
         run: vendor/bin/pint --parallel
 
-      - name: Show exact formatter diff
+      - name: Remove proven ineffective global imports
+        shell: bash
+        run: |
+          sed -i '/^use InvalidArgumentException;$/d' tests/Unit/Consent/ConsentValueNormalizerTest.php
+          sed -i '/^use DateTimeImmutable;$/d' tests/Feature/Consent/ConsentEvidenceTest.php
+          sed -i -e '/^use DateTimeImmutable;$/d' -e '/^use InvalidArgumentException;$/d' tests/Feature/Events/CustomerEventPersistenceTest.php
+
+      - name: Show exact reconciled diff
         run: |
           git status --short
-          git diff -- tests/Integration/ConsentEvidenceTest.php tests/Integration/CustomerEventPersistenceTest.php tests/Integration/Phase02CustomerDataCertificationTest.php
+          git diff -- \
+            tests/Unit/Consent/ConsentValueNormalizerTest.php \
+            tests/Feature/Consent/ConsentEvidenceTest.php \
+            tests/Feature/Events/CustomerEventPersistenceTest.php \
+            tests/Integration/ConsentEvidenceTest.php \
+            tests/Integration/CustomerEventPersistenceTest.php \
+            tests/Integration/Phase02CustomerDataCertificationTest.php
 
-      - name: Require clean second Pint pass
+      - name: Require clean Pint after reconciliation
         run: vendor/bin/pint --parallel --test
 
       - name: Require backend tests without ineffective-import warnings
@@ -56,11 +69,11 @@ jobs:
           set -o pipefail
           php artisan test --fail-on-warning --display-warnings 2>&1 | tee /tmp/task-0012-backend.log
           if grep -Fq "The use statement with non-compound name" /tmp/task-0012-backend.log; then
-            echo "Ineffective global use statement warning detected after Pint; refusing to commit formatter output." >&2
+            echo "Ineffective global use statement warning detected after reconciliation; refusing to commit." >&2
             exit 1
           fi
 
-      - name: Commit exact formatter output and self-remove
+      - name: Commit reconciled output and self-remove
         shell: bash
         run: |
           rm .github/workflows/task-0012-pint-probe.yml
@@ -68,8 +81,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
-            echo "No formatter changes to commit."
+            echo "No reconciled changes to commit."
             exit 0
           fi
-          git commit -m "style: apply exact TASK-0012 Pint output"
+          git commit -m "style: reconcile TASK-0012 test formatting"
           git push origin HEAD:${{ github.head_ref }}

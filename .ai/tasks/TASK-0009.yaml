@@ -4,7 +4,7 @@
   "phase": "PHASE-02",
   "module": "Contacts",
   "title": "Implement lists, tags, and deterministic contact membership",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Add canonical workspace-scoped List and Tag data plus deterministic contact membership operations without pulling segmentation or provider synchronization into PHASE-02.",
   "dependencies": [
     "TASK-0008"

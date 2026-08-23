@@ -2,22 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-08-23T21:18:59+00:00`
+- Timestamp: `2026-08-23T21:30:12+00:00`
 - Active task: `TASK-0009`
 - Next task: `TASK-0010`
 - Current phase: `PHASE-02`
-- Execution status: `ready`
-- State fingerprint: `16dce3a693514884846a213e40294dd32ec43d8426d4c2820b8585edb5b1edca`
+- Execution status: `in_progress`
+- State fingerprint: `7e1518e3df56ca730bfcb0ffc3794f554eb0b5bf1b48290510d93c38fc350633`
 
 ## Completed / observed this session
 
-Completed `TASK-0008` and activated `TASK-0009`.
-
-Transition evidence: Exact head 7314481c9baecbba7b4cdc74c006a5dfa9f7c582 passed AI Continuity Guard run 32666855032 and Application Foundation CI run 32666855014. AC-1 through AC-5 are supported by canonical Contact/ContactIdentity/Company persistence, fail-closed workspace and brand isolation, deterministic identity normalization and provider-reference semantics, auditable state-changing actions, and PostgreSQL lifecycle/security integration coverage.
+Started TASK-0009 implementation from certified main 259c8a13bb98c4bb292f8f0558f26ac45eeb5429. Scope is limited to canonical workspace-scoped List and Tag persistence, deterministic retry-safe contact membership and tag assignment, auditable state changes, and PostgreSQL tenant-isolation coverage. No TASK-0010 consent work or PHASE-08 segmentation is included.
 
 ## Tests
 
-python tools/ai_state.py validate; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; hosted AI Continuity Guard 32666855032 PASS; hosted Application Foundation CI 32666855014 PASS (php-floor, integration, e2e, foundation).
+Preflight: governance-main run 32667328624 PASS on merged TASK-0008 commit 259c8a13bb98c4bb292f8f0558f26ac45eeb5429; accepted-state head 7283c58ec7ae8cf17516964c37badecc387489df passed AI Continuity Guard 32667184737 and Application Foundation CI 32667184744. TASK-0009 product tests are pending on this branch.
 
 ## Blockers
 

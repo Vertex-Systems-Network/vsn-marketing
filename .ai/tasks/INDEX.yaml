@@ -84,7 +84,7 @@
       "phase": "PHASE-02",
       "title": "Implement lists, tags, and deterministic contact membership",
       "weight": 20,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0008"
       ]

@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/workspace
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -55,7 +55,7 @@ services:
     volumes:
       - .:/workspace
     ports:
-      - "5173:5173"
+      - "127.0.0.1:5173:5173"
 
   postgres:
     image: postgres:18-alpine
@@ -64,7 +64,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME:-vsn}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-vsn}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-vsn} -d ${DB_DATABASE:-vsn_marketing}"]
       interval: 5s
@@ -77,7 +77,7 @@ services:
     image: redis:8-alpine
     command: redis-server --appendonly yes --appendfsync everysec
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -93,8 +93,8 @@ services:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-vsn}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-vsn-development-secret}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
     volumes:
       - minio-data:/data
 

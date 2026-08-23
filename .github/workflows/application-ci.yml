@@ -24,7 +24,7 @@ jobs:
         with:
           php-version: '8.5'
           tools: composer:v2
-          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          extensions: mbstring, pdo_sqlite, pdo_pgsql, redis, pcntl, posix
           coverage: none
       - name: Set up Node 24
         uses: actions/setup-node@v6
@@ -46,7 +46,7 @@ jobs:
       - name: Build developer PHP image
         run: docker build --tag vsn-marketing-foundation:test --file docker/app/Dockerfile .
       - name: Run backend tests
-        run: php artisan test
+        run: php artisan test --fail-on-warning --display-warnings
       - name: Typecheck frontend
         run: npm run typecheck
       - name: Build frontend
@@ -63,7 +63,7 @@ jobs:
         with:
           php-version: '8.3'
           tools: composer:v2
-          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          extensions: mbstring, pdo_sqlite, pdo_pgsql, redis, pcntl, posix
           coverage: none
       - name: Validate locked Composer manifest
         run: composer validate --strict
@@ -74,4 +74,75 @@ jobs:
           cp .env.example .env
           php artisan key:generate --ansi
       - name: Run backend tests on PHP 8.3
-        run: php artisan test
+        run: php artisan test --fail-on-warning --display-warnings
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: vsn_marketing_test
+          POSTGRES_USER: vsn
+          POSTGRES_PASSWORD: vsn
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U vsn -d vsn_marketing_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      APP_ENV: testing
+      APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: vsn_marketing_test
+      DB_USERNAME: vsn
+      DB_PASSWORD: vsn
+      DB_SSLMODE: disable
+      CACHE_STORE: redis
+      REDIS_CLIENT: phpredis
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      REDIS_CACHE_DB: 1
+      REDIS_QUEUE_DB: 2
+      REDIS_LOCK_DB: 3
+      REDIS_QUEUE_CONNECTION: queue
+      QUEUE_CONNECTION: redis
+      QUEUE_FAILED_DRIVER: database-uuids
+      FILESYSTEM_DISK: local
+      OBJECT_STORE_DISK: local
+      SESSION_DRIVER: array
+      RUN_INFRA_INTEGRATION: 'true'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_pgsql, redis, pcntl, posix
+          coverage: none
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare integration environment
+        run: touch .env
+      - name: Run infrastructure integration suite
+        run: php artisan test --testsuite=Integration --fail-on-warning --display-warnings

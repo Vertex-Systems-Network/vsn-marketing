@@ -5,7 +5,7 @@ import { expect, test, vi } from 'vitest';
 import Welcome from './welcome';
 
 vi.mock('@inertiajs/react', () => ({
-    Head: ({ title }: { title: string }) => <title>{title}</title>,
+    Head: () => null,
 }));
 
 test('renders the phase-one foundation message', () => {

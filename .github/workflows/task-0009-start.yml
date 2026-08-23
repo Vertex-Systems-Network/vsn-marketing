@@ -1,0 +1,87 @@
+name: TASK-0009 Start
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/task-0009-start.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  start:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'task-0009-lists-tags-membership'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Mark TASK-0009 in progress
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          task_path = Path('.ai/tasks/TASK-0009.yaml')
+          index_path = Path('.ai/tasks/INDEX.yaml')
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+
+          task = json.loads(task_path.read_text(encoding='utf-8'))
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+
+          if state['execution']['active_task'] != 'TASK-0009' or task['status'] != 'ready':
+              raise SystemExit('TASK-0009 is not the ready active task; refusing to mutate canonical state')
+
+          task['status'] = 'in_progress'
+          for row in index['tasks']:
+              if row['id'] == 'TASK-0009':
+                  row['status'] = 'in_progress'
+                  break
+          else:
+              raise SystemExit('TASK-0009 missing from task index')
+
+          state['execution']['status'] = 'in_progress'
+          state['blockers'] = []
+
+          for path, payload in ((task_path, task), (index_path, index), (state_path, state)):
+              path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+      - name: Generate synchronized checkpoint
+        run: |
+          python tools/ai_state.py checkpoint \
+            --summary "Started TASK-0009 implementation from certified main 259c8a13bb98c4bb292f8f0558f26ac45eeb5429. Scope is limited to canonical workspace-scoped List and Tag persistence, deterministic retry-safe contact membership and tag assignment, auditable state changes, and PostgreSQL tenant-isolation coverage. No TASK-0010 consent work or PHASE-08 segmentation is included." \
+            --next "Add canonical List and Tag persistence over the accepted contact foundation, then implement idempotent workspace-scoped membership operations with audit and isolation tests." \
+            --tests "Preflight: governance-main run 32667328624 PASS on merged TASK-0008 commit 259c8a13bb98c4bb292f8f0558f26ac45eeb5429; accepted-state head 7283c58ec7ae8cf17516964c37badecc387489df passed AI Continuity Guard 32667184737 and Application Foundation CI 32667184744. TASK-0009 product tests are pending on this branch."
+
+      - name: Append task-start journal event
+        run: |
+          python tools/ai_journal.py record \
+            --type task_started \
+            --summary "Started TASK-0009 implementation from certified main 259c8a13bb98c4bb292f8f0558f26ac45eeb5429: canonical List and Tag persistence, retry-safe workspace-scoped contact membership and tag assignment, auditable mutations, and PostgreSQL lifecycle/isolation coverage. No TASK-0010 consent work or PHASE-08 segmentation is included."
+
+      - name: Validate synchronized continuity state
+        run: |
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/ai_txn.py validate
+
+      - name: Commit canonical task start
+        run: |
+          rm .github/workflows/task-0009-start.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai .github/workflows/task-0009-start.yml
+          git commit -m 'chore: start TASK-0009 lists tags membership'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

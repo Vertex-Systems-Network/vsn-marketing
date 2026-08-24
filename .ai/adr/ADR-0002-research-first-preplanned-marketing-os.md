@@ -55,12 +55,13 @@ Relevant external baselines include:
 
 - NIST Secure Software Development Framework (SSDF)
 - OWASP Application Security Verification Standard (ASVS)
+- OWASP Artificial Intelligence Security Verification Standard (AISVS) for AI-enabled system security requirements
 - SLSA build/provenance guidance
 - OpenSSF Scorecard practices
 - WCAG 2.2 Level AA
 - SRE-style SLO/error-budget and capacity practices
 
-These references are baselines to research against at task activation, not frozen dependency versions.
+These references are baselines to research against at task activation, not frozen dependency versions. Their current stable versions must be revalidated by the active Research Gate; for example, OWASP AISVS 1.0 became available in 2026 after the repository's original AI-control-plane design.
 
 ### 6. Audit findings become planned work
 
@@ -75,7 +76,7 @@ The following are explicit roadmap requirements:
 - accessibility, keyboard, responsive, and visual-regression gates for critical UI;
 - backup/restore, RPO/RTO, disaster-recovery and webhook replay evidence;
 - security regression, fuzz/property testing where risk justifies it, and provider contract testing;
-- AI prompt-injection, tool-abuse, cross-tenant context, data-exfiltration, budget-denial, malformed-output, and unsafe-fallback evaluations;
+- AI prompt-injection, tool-abuse, cross-tenant context, data-exfiltration, budget-denial, malformed-output, unsafe-fallback, and applicable AISVS-derived security evaluations;
 - immutable auditability and deterministic policy gates for all privileged AI/provider actions;
 - design-system consistency and complete loading/empty/error/permission states;
 - data retention, deletion/export, classification, redaction, residency, and privacy research before enterprise release.

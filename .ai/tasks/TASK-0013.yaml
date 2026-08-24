@@ -44,6 +44,11 @@
       "id": "AC-7",
       "text": "AI continuity validation and all applicable unchanged application quality gates are green on the exact TASK-0013 acceptance head",
       "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "The deterministic AI context inventory is reconciled so accepted research/quality/preplanned-roadmap governance sources and canonical ADR locations cannot be omitted from future agent context packs",
+      "done": false
     }
   ],
   "required_tests": [
@@ -61,5 +66,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Activate TASK-0013 transactionally, perform the Research-First Gate using current authoritative sources, write the PHASE-03 research pack, then reconcile ADR-0002/roadmap/audit findings before any provider implementation."
+  "exact_next_action": "Activate TASK-0013 transactionally, perform the Research-First Gate using current authoritative sources, write the PHASE-03 research pack, then reconcile ADR-0002/roadmap/audit findings/context inventory before any provider implementation."
 }

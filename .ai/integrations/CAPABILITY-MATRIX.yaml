@@ -1,6 +1,86 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "capability_model": {
+    "support_states": [
+      "supported",
+      "unsupported",
+      "unknown"
+    ],
+    "readiness_states": [
+      "unconfigured",
+      "configuration_required",
+      "sandbox_only",
+      "private_only",
+      "review_required",
+      "ready",
+      "suspended",
+      "deprecated"
+    ],
+    "dimensions": {
+      "authentication": [
+        "method",
+        "scopes",
+        "roles",
+        "token_lifetime",
+        "refresh_semantics",
+        "provider_review",
+        "access_tier",
+        "region"
+      ],
+      "quota": [
+        "operation",
+        "scope",
+        "window",
+        "unit",
+        "limit",
+        "remaining",
+        "reset_at",
+        "region",
+        "principal",
+        "account_tier",
+        "discovery_method"
+      ],
+      "asynchronous_operation": [
+        "submission_mode",
+        "provider_operation_id",
+        "status_polling",
+        "webhook_reconciliation",
+        "terminal_states"
+      ],
+      "media": [
+        "kind",
+        "mime_types",
+        "count",
+        "size",
+        "duration",
+        "dimensions",
+        "upload_session_expiry"
+      ],
+      "publication": [
+        "publish_mode",
+        "remote_schedule",
+        "status_read",
+        "edit",
+        "delete",
+        "visibility",
+        "analytics"
+      ],
+      "disclosure": [
+        "ai_generated",
+        "paid_partnership",
+        "branded_content"
+      ]
+    }
+  },
   "capability_namespace": [
+    "auth.api_key",
+    "auth.oauth2",
+    "auth.smtp_credentials",
+    "auth.scope_metadata",
+    "auth.role_metadata",
+    "auth.app_review_metadata",
+    "auth.token_refresh",
+    "account.readiness.read",
     "email.send.transactional",
     "email.send.marketing",
     "email.send.batch",
@@ -14,16 +94,52 @@
     "domain.remote.verify",
     "suppression.remote.read",
     "suppression.remote.write",
+    "mailbox.read",
+    "mailbox.send_user_message",
+    "mailbox.reply",
+    "messaging.send",
+    "messaging.receive",
+    "publication.create",
+    "publication.schedule.remote",
+    "publication.status.read",
+    "publication.update",
+    "publication.delete",
+    "publication.analytics.read",
+    "publication.media.image",
+    "publication.media.video",
+    "publication.media.carousel",
+    "publication.media.short_form_video",
+    "publication.disclosure.ai_generated",
+    "publication.disclosure.paid_partnership",
+    "publication.disclosure.branded_content",
+    "community.comment.read",
+    "community.comment.reply",
+    "community.mention.read",
+    "community.conversation.read",
+    "analytics.channel.read",
     "webhook.delivered",
     "webhook.bounced",
     "webhook.complained",
     "webhook.opened",
     "webhook.clicked",
     "webhook.unsubscribed",
+    "webhook.verify",
+    "webhook.replay_guard",
+    "webhook.raw_body_required",
+    "webhook.event_deduplication",
     "quota.remote.read",
-    "mailbox.read",
-    "mailbox.send_user_message",
-    "mailbox.reply"
+    "quota.dynamic_discovery",
+    "quota.multi_window",
+    "quota.region_scoped",
+    "quota.principal_scoped",
+    "async.status.read",
+    "async.reconcile"
   ],
-  "rule": "A connector advertises only capabilities proven by its implementation and contract tests. Unknown is not treated as supported."
+  "rules": [
+    "A connector advertises only capabilities proven by implementation and contract tests.",
+    "Unknown is never treated as supported; callers fail closed or choose an explicitly compatible alternative.",
+    "Capability support and connection readiness are separate facts: technically supported does not imply the current connection may use the capability in production.",
+    "Volatile limits, scopes, roles, provider-review status, versions and policy constraints are refreshable provenance-stamped metadata rather than permanent hard-coded product truth.",
+    "Provider-name conditionals are forbidden in core business logic when a capability/readiness dimension can express the behavior."
+  ]
 }

@@ -1,23 +1,174 @@
 {
-  "schema_version": 1,
-  "note": "Commercial plans, free tiers, quotas and API details are volatile external metadata. Runtime/provider registry data must be refreshable and must not be hardcoded as permanent product truth.",
+  "schema_version": 2,
+  "note": "Commercial plans, free tiers, quotas, scopes, API versions, review requirements and platform policies are volatile external metadata. Runtime/provider registry data must be refreshable, provenance-stamped and revalidated at the implementation task rather than hard-coded as permanent product truth.",
+  "phase_03_reference_strategy": {
+    "selected_by_task": "TASK-0013",
+    "revalidate_on_task": "TASK-0017",
+    "reference_providers": [
+      "amazon_ses",
+      "brevo",
+      "google_gmail"
+    ],
+    "reason": "Use a deliberately diverse delivery, delivery/marketing and mailbox trio to prove provider-neutral capability, auth, quota, webhook and readiness contracts before broad connector expansion."
+  },
   "providers": [
-    {"id":"smtp","class":"delivery","status":"planned","auth":["username_password","provider_specific"]},
-    {"id":"amazon_ses","class":"delivery","status":"planned"},
-    {"id":"sendgrid","class":"delivery","status":"planned"},
-    {"id":"brevo","class":"delivery_marketing","status":"planned"},
-    {"id":"mailgun","class":"delivery","status":"planned"},
-    {"id":"resend","class":"delivery","status":"planned"},
-    {"id":"postmark","class":"delivery","status":"planned"},
-    {"id":"mailersend","class":"delivery","status":"planned"},
-    {"id":"mailchimp","class":"marketing","status":"planned"},
-    {"id":"activecampaign","class":"marketing","status":"planned"},
-    {"id":"customer_io","class":"marketing","status":"planned"},
-    {"id":"klaviyo","class":"marketing","status":"planned"},
-    {"id":"google_gmail","class":"mailbox","status":"planned"},
-    {"id":"microsoft_graph_mail","class":"mailbox","status":"planned"},
-    {"id":"mautic","class":"self_hosted_marketing","status":"planned"},
-    {"id":"listmonk","class":"self_hosted_marketing","status":"planned"},
-    {"id":"postal","class":"self_hosted_delivery","status":"planned"}
+    {
+      "id": "smtp",
+      "class": "delivery",
+      "status": "planned",
+      "auth_families": ["username_password", "provider_specific"],
+      "implementation_phase": "PHASE-03-or-later"
+    },
+    {
+      "id": "amazon_ses",
+      "class": "delivery",
+      "status": "phase_03_reference_candidate",
+      "implementation_phase": "PHASE-03",
+      "research_focus": ["regional_readiness", "multi_dimensional_quota", "api_and_smtp_auth"]
+    },
+    {
+      "id": "sendgrid",
+      "class": "delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "brevo",
+      "class": "delivery_marketing",
+      "status": "phase_03_reference_candidate",
+      "implementation_phase": "PHASE-03",
+      "research_focus": ["api_key_and_oauth", "scope_and_review_readiness", "multi_window_rate_limits", "webhooks"]
+    },
+    {
+      "id": "mailgun",
+      "class": "delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "resend",
+      "class": "delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "postmark",
+      "class": "delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "mailersend",
+      "class": "delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "mailchimp",
+      "class": "marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "activecampaign",
+      "class": "marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "customer_io",
+      "class": "marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "klaviyo",
+      "class": "marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "google_gmail",
+      "class": "mailbox",
+      "status": "phase_03_reference_candidate",
+      "implementation_phase": "PHASE-03",
+      "research_focus": ["oauth_scope_sensitivity", "per_principal_quota_units", "mailbox_not_bulk_delivery"]
+    },
+    {
+      "id": "microsoft_graph_mail",
+      "class": "mailbox",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "mautic",
+      "class": "self_hosted_marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "listmonk",
+      "class": "self_hosted_marketing",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "postal",
+      "class": "self_hosted_delivery",
+      "status": "planned",
+      "implementation_phase": "later"
+    },
+    {
+      "id": "tiktok",
+      "class": "social_publishing_community",
+      "status": "researched_future",
+      "implementation_phase": "PHASE-13",
+      "research_only_until_phase": "PHASE-13"
+    },
+    {
+      "id": "linkedin",
+      "class": "social_publishing_community",
+      "status": "researched_future",
+      "implementation_phase": "PHASE-13",
+      "research_only_until_phase": "PHASE-13"
+    },
+    {
+      "id": "youtube",
+      "class": "social_publishing_community",
+      "status": "researched_future",
+      "implementation_phase": "PHASE-13",
+      "research_only_until_phase": "PHASE-13"
+    },
+    {
+      "id": "pinterest",
+      "class": "social_publishing_community",
+      "status": "researched_future",
+      "implementation_phase": "PHASE-13",
+      "research_only_until_phase": "PHASE-13"
+    },
+    {
+      "id": "meta_instagram",
+      "class": "social_publishing_community",
+      "status": "planned_future_research",
+      "implementation_phase": "PHASE-13"
+    },
+    {
+      "id": "meta_facebook",
+      "class": "social_publishing_community",
+      "status": "planned_future_research",
+      "implementation_phase": "PHASE-13"
+    },
+    {
+      "id": "x",
+      "class": "social_publishing_community",
+      "status": "planned_future_research",
+      "implementation_phase": "PHASE-13"
+    }
+  ],
+  "rules": [
+    "Catalog presence does not imply implementation, contractual support or production eligibility.",
+    "Reference-provider selection is evidence for abstraction quality, not provider endorsement or vendor lock-in.",
+    "Every connector activation must revalidate current official API, auth, quota, review, sandbox, policy and deprecation facts.",
+    "Social providers researched by TASK-0013 shape the capability model only; concrete social adapters remain PHASE-13 under the accepted roadmap."
   ]
 }

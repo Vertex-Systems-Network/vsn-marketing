@@ -66,5 +66,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Activate TASK-0013 transactionally, perform the Research-First Gate using current authoritative sources, write the PHASE-03 research pack, then reconcile ADR-0002/roadmap/audit findings/context inventory before any provider implementation."
+  "exact_next_action": "Perform the TASK-0013 Research-First Gate using current authoritative sources, write the PHASE-03 research pack, then reconcile ADR-0002, roadmap/audit findings, and the deterministic context inventory before any provider implementation."
 }

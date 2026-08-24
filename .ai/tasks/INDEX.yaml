@@ -118,6 +118,16 @@
       "dependencies": [
         "TASK-0011"
       ]
+    },
+    {
+      "id": "TASK-0013",
+      "phase": "PHASE-03",
+      "title": "Research and reconcile PHASE-03 provider/channel architecture",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0012"
+      ]
     }
   ]
 }

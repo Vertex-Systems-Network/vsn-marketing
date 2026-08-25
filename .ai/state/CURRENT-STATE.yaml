@@ -21,6 +21,8 @@
     "continuity_validation": "task_0012_pr_head_passed",
     "application_test_status": "task_0012_ci_passed"
   },
-  "blockers": [],
-  "exact_next_action": "Inspect and resolve any PR #28 application/security CI failures, then harden and re-read the effective main ruleset to require strict up-to-date application/security/governance checks plus independent review; rerun exact-head acceptance gates and trusted-main provenance/Scorecard evidence. Keep TASK-0014 active and do not start TASK-0015 provider work."
+  "blockers": [
+    "TASK-0014 AC-1: active main ruleset 21212844 still permits zero approving reviews, does not require last-push approval or strict up-to-date status checks, and requires only governance; the available GitHub connector exposes ruleset reads but no ruleset write operation, so an authorized repository-settings change is required before acceptance."
+  ],
+  "exact_next_action": "Finish TASK-0014 security-control hardening and exact-head evidence, then have an authorized repository admin harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, and resolved review threads; re-read the effective ruleset and only then collect trusted-main Release Integrity/Scorecard evidence. Do not start TASK-0015."
 }

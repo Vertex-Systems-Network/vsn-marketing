@@ -128,6 +128,56 @@
       "dependencies": [
         "TASK-0012"
       ]
+    },
+    {
+      "id": "TASK-0014",
+      "phase": "PHASE-03",
+      "title": "Harden repository and software-supply-chain governance",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0013"
+      ]
+    },
+    {
+      "id": "TASK-0015",
+      "phase": "PHASE-03",
+      "title": "Implement canonical provider capability and connection foundation",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0014"
+      ]
+    },
+    {
+      "id": "TASK-0016",
+      "phase": "PHASE-03",
+      "title": "Implement adapter, error, quota, webhook and reconciliation contracts",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0015"
+      ]
+    },
+    {
+      "id": "TASK-0017",
+      "phase": "PHASE-03",
+      "title": "Implement initial reference connectors and sandbox contract matrix",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0016"
+      ]
+    },
+    {
+      "id": "TASK-0018",
+      "phase": "PHASE-03",
+      "title": "Certify PHASE-03 provider neutrality, security and quality gates",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0017"
+      ]
     }
   ]
 }

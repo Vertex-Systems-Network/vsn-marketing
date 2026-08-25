@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0014",
+  "phase": "PHASE-03",
+  "module": "Security",
+  "title": "Harden repository and software-supply-chain governance",
+  "status": "planned",
+  "objective": "Establish measurable repository, CI, SAST, dependency, secret, container, action-integrity, SBOM and provenance controls before production-capable external provider integrations are introduced.",
+  "dependencies": [
+    "TASK-0013"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Default-branch rules/status enforcement is verified and documented for required checks, review/merge safety and privileged workflow changes; any unavailable control is an explicit blocker or time-bounded approved exception rather than an assumption",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "SAST coverage is capability-correct: CodeQL is used only for supported JavaScript/TypeScript/GitHub-Actions surfaces, while PHP receives a PHP-capable SAST/taint-analysis path with an explicit severity/failure policy",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Dependency, secret and applicable container/image scanning run in CI with deterministic severity handling, documented false-positive/exception ownership and no committed credentials",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Third-party GitHub Actions used by privileged workflows are pinned to immutable full commit SHAs or have a documented owner, rationale and expiry for an approved exception; workflow permissions remain least-privilege",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "A reproducible SBOM and practical build/release provenance path are defined and exercised, with current OpenSSF/SLSA guidance treated as researched baselines rather than marketing claims",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Security-control changes include regression evidence and do not introduce provider SDKs, connector implementations, delivery routing or other TASK-0015+ product work",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "AI continuity validation and all applicable application/security quality gates are green on the exact TASK-0014 acceptance head",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Research current repository/security scanning and software-supply-chain controls, then harden CI/rules/SAST/dependency/secret/container/action-integrity/SBOM/provenance gates without starting provider implementation."
+}

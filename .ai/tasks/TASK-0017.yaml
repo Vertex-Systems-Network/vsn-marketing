@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0017",
+  "phase": "PHASE-03",
+  "module": "Connectors",
+  "title": "Implement initial reference connectors and sandbox contract matrix",
+  "status": "planned",
+  "objective": "Implement a deliberately diverse first connector set that proves the canonical provider framework across delivery, delivery/marketing and mailbox classes without allowing any provider to own core data or behavior.",
+  "dependencies": [
+    "TASK-0016"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Fresh TASK-0017 research revalidates the reference-provider choice and current APIs; unless evidence requires an explicit roadmap change, the reference set is Amazon SES, Brevo and Gmail API as selected by TASK-0013 research",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Each reference connector implements the same provider-neutral contracts and advertises only capabilities/readiness actually proven by implementation and tests; provider IDs never become core behavioral branches",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Authentication success/failure, scopes/readiness, secret-reference handling, current rate/quota behavior and unsupported operations are covered per connector without persisting raw credentials in canonical application data",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Transient/permanent errors, rate limits, idempotency, asynchronous reconciliation and webhook success/malformed/authenticity/replay behavior are contract-tested where the provider supports the relevant capability",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Sandbox/test limitations and any provider review or production-readiness restrictions are explicit test evidence rather than silently treated as production capability",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Gmail mailbox operations remain logically distinct from bulk marketing delivery, and no PHASE-04 routing/failover engine or PHASE-13 social connector implementation is pulled forward",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Cross-workspace connector/connection/reference isolation and all applicable backend/integration/architecture/static/format/frontend/AI-continuity gates are green on the exact TASK-0017 acceptance head",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Revalidate SES, Brevo and Gmail official APIs and sandbox/readiness constraints, then implement the smallest diverse reference connector set that proves the canonical contracts and negative matrix without pulling later-phase routing or social work forward."
+}

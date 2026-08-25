@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  statuses: write
-  issues: write
 
 concurrency:
   group: ai-continuity-${{ github.workflow }}-${{ github.ref }}
@@ -64,13 +62,25 @@ jobs:
       - name: Require ledger update for product changes (push)
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
         run: python tools/ai_state.py verify-change-set --base "${{ github.event.before }}" --head "${{ github.sha }}"
+
+  publish-default-branch-governance:
+    name: publish-default-branch-governance
+    if: ${{ always() && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: governance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+      issues: write
+    env:
+      GOVERNANCE_RESULT: ${{ needs.governance.result }}
+    steps:
       - name: Publish default-branch governance status
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            const jobStatus = '${{ job.status }}';
-            const state = jobStatus === 'success' ? 'success' : 'failure';
+            const result = process.env.GOVERNANCE_RESULT;
+            const state = result === 'success' ? 'success' : 'failure';
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -81,11 +91,10 @@ jobs:
               target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
             });
       - name: Append default-branch governance ledger
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            const outcome = '${{ job.status }}' === 'success' ? 'PASS' : 'FAIL';
+            const outcome = process.env.GOVERNANCE_RESULT === 'success' ? 'PASS' : 'FAIL';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,

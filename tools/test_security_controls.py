@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import json
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import check_action_pins
 import normalize_sbom
+import security_exceptions
 
 PINNED_SHA = "3d3c42e5aac5ba805825da76410c181273ba90b1"
 
@@ -50,6 +52,102 @@ def test_action_pin_guard() -> None:
         )
         failures = check_action_pins.validate_repository(root)
         assert_true(len(failures) == 1, "repository scan must report mutable workflow dependency")
+
+
+def test_security_exception_governance() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        security_dir = root / "security"
+        security_dir.mkdir(parents=True)
+        registry = security_dir / "exceptions.json"
+
+        original_root = security_exceptions.ROOT
+        original_registry = security_exceptions.REGISTRY
+        original_forbidden = security_exceptions.FORBIDDEN_IGNORE_FILES
+        security_exceptions.ROOT = root
+        security_exceptions.REGISTRY = registry
+        security_exceptions.FORBIDDEN_IGNORE_FILES = (
+            root / ".trivyignore",
+            root / ".trivyignore.yaml",
+            root / ".semgrepignore",
+        )
+
+        now = datetime(2026, 8, 10, tzinfo=timezone.utc)
+        valid = {
+            "id": "SEC-EX-0001",
+            "scanner": "trivy",
+            "finding": "CVE-2099-0001",
+            "owner": "security-owner",
+            "reason": "Temporary upstream remediation window",
+            "approved_by": "independent-reviewer",
+            "created_at": "2026-08-01T00:00:00+00:00",
+            "expires_at": "2026-08-20T00:00:00+00:00",
+            "evidence": "https://example.invalid/security/SEC-EX-0001",
+        }
+
+        def write_registry(exception: dict) -> None:
+            registry.write_text(
+                json.dumps({"schema_version": 1, "exceptions": [exception]}, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+        try:
+            write_registry(valid)
+            assert_true(
+                security_exceptions.validate_registry(now=now) == [],
+                "well-formed independently approved time-bounded exception must pass",
+            )
+
+            self_approved = dict(valid, approved_by=valid["owner"])
+            write_registry(self_approved)
+            errors = security_exceptions.validate_registry(now=now)
+            assert_true(
+                any("independent from owner" in error for error in errors),
+                "self-approved security exception must fail",
+            )
+
+            overlong = dict(
+                valid,
+                created_at="2026-08-01T00:00:00+00:00",
+                expires_at="2026-09-01T00:00:01+00:00",
+            )
+            write_registry(overlong)
+            errors = security_exceptions.validate_registry(now=now)
+            assert_true(
+                any("maximum 30-day" in error for error in errors),
+                "exception longer than 30 days must fail",
+            )
+
+            expired = dict(valid, expires_at="2026-08-09T23:59:59+00:00")
+            write_registry(expired)
+            errors = security_exceptions.validate_registry(now=now)
+            assert_true(
+                any("is expired" in error for error in errors),
+                "expired security exception must fail",
+            )
+
+            write_registry(valid)
+            (root / ".trivyignore").write_text("CVE-2099-0001\n", encoding="utf-8")
+            errors = security_exceptions.validate_registry(now=now)
+            assert_true(
+                any("hidden scanner suppressions" in error for error in errors),
+                "scanner-local suppression must fail outside canonical registry",
+            )
+            (root / ".trivyignore").unlink()
+
+            (root / "composer.json").write_text(
+                json.dumps({"config": {"audit": {"ignore": ["CVE-2099-0001"]}}}),
+                encoding="utf-8",
+            )
+            errors = security_exceptions.validate_registry(now=now)
+            assert_true(
+                any("config.audit.ignore is forbidden" in error for error in errors),
+                "Composer audit suppression must fail outside canonical registry",
+            )
+        finally:
+            security_exceptions.ROOT = original_root
+            security_exceptions.REGISTRY = original_registry
+            security_exceptions.FORBIDDEN_IGNORE_FILES = original_forbidden
 
 
 def sbom(serial: str, timestamp: str, root_ref: str, component_ref: str, root_name: str) -> dict:
@@ -120,7 +218,7 @@ def test_sbom_normalization() -> None:
 
 
 def main() -> int:
-    tests = [test_action_pin_guard, test_sbom_normalization]
+    tests = [test_action_pin_guard, test_security_exception_governance, test_sbom_normalization]
     for test in tests:
         test()
         print(f"PASS {test.__name__}")

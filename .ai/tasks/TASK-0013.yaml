@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "A dated .ai/research/PHASE-03/TASK-0013-RESEARCH.md evidence pack uses current official provider/API/platform/standards sources and records market, security, privacy, capability, quota, webhook, version/deprecation, sandbox, and implementation-impact findings",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Every material audit finding is reconciled into an explicit roadmap task, cross-cutting quality gate, approved deferral, or recorded blocker without weakening existing PHASE-02 acceptance",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "ADR-0002 is reviewed against research and either accepted, revised while remaining proposed, or rejected with recorded evidence before implementation relies on proposed Assets/Publishing/Community or research-governance architecture changes",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "PHASE-03 has a complete weighted task chain and measurable exit criteria, and the long-horizon TASK-0013..TASK-0100 preplanned skeleton is dependency-consistent and explicitly extension-only under the Research-First Standard",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Canonical continuity inconsistencies are reconciled, including successor registration, blocker/state agreement, exact-head acceptance evidence, and the PHASE-01 phase-document traceability decision without fabricating historical evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "No provider SDK, connector implementation, delivery engine, social publishing implementation, or other PHASE-03+ product capability is introduced by this governance/research task",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "AI continuity validation and all applicable unchanged application quality gates are green on the exact TASK-0013 acceptance head",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "The deterministic AI context inventory is reconciled so accepted research/quality/preplanned-roadmap governance sources and canonical ADR locations cannot be omitted from future agent context packs",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -66,5 +66,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform the TASK-0013 Research-First Gate using current authoritative sources, write the PHASE-03 research pack, then reconcile ADR-0002, roadmap/audit findings, and the deterministic context inventory before any provider implementation."
+  "exact_next_action": "After exact-head acceptance evidence is green and this TASK-0013 research/reconciliation change is merged, transactionally complete TASK-0013 and activate TASK-0014; do not begin provider implementation before that transition."
 }

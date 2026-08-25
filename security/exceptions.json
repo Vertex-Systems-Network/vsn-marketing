@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "default_expiry_days": 30,
+    "required_fields": [
+      "id",
+      "scanner",
+      "finding",
+      "owner",
+      "reason",
+      "approved_by",
+      "created_at",
+      "expires_at",
+      "evidence"
+    ]
+  },
+  "exceptions": []
+}

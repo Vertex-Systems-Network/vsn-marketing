@@ -1,0 +1,75 @@
+rules:
+  - id: vsn.php.laravel.request-to-command-execution
+    message: Untrusted request data reaches an OS command execution sink.
+    languages: [php]
+    severity: ERROR
+    mode: taint
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ->input(...)
+          - pattern: $REQ->query(...)
+          - pattern: $REQ->get(...)
+          - pattern: request(...)
+          - pattern: request()->input(...)
+          - pattern: request()->query(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: exec(...)
+          - pattern: system(...)
+          - pattern: shell_exec(...)
+          - pattern: passthru(...)
+          - pattern: proc_open(...)
+
+  - id: vsn.php.laravel.request-to-raw-sql
+    message: Untrusted request data reaches a raw SQL sink. Use bound parameters or query-builder primitives.
+    languages: [php]
+    severity: ERROR
+    mode: taint
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ->input(...)
+          - pattern: $REQ->query(...)
+          - pattern: $REQ->get(...)
+          - pattern: request(...)
+          - pattern: request()->input(...)
+          - pattern: request()->query(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: DB::unprepared(...)
+          - pattern: DB::statement(...)
+          - pattern: DB::select(...)
+          - pattern: DB::insert(...)
+          - pattern: DB::update(...)
+          - pattern: DB::delete(...)
+          - pattern: DB::raw(...)
+          - pattern: $QUERY->whereRaw(...)
+          - pattern: $QUERY->orderByRaw(...)
+          - pattern: $QUERY->havingRaw(...)
+
+  - id: vsn.php.request-to-unsafe-deserialization
+    message: Untrusted request data reaches PHP unserialize(). Prefer typed JSON or a validated schema.
+    languages: [php]
+    severity: ERROR
+    mode: taint
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ->input(...)
+          - pattern: $REQ->get(...)
+          - pattern: request(...)
+          - pattern: request()->input(...)
+    pattern-sinks:
+      - pattern: unserialize(...)
+
+  - id: vsn.php.request-to-eval
+    message: Untrusted request data reaches eval(). Dynamic code execution is forbidden.
+    languages: [php]
+    severity: ERROR
+    mode: taint
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ->input(...)
+          - pattern: $REQ->get(...)
+          - pattern: request(...)
+          - pattern: request()->input(...)
+    pattern-sinks:
+      - pattern: eval(...)

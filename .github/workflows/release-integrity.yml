@@ -1,0 +1,52 @@
+name: Release Integrity
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-attest:
+    name: release-integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Require immutable workflow dependencies
+        run: python tools/check_action_pins.py
+      - name: Validate security exception governance
+        run: python tools/security_exceptions.py
+      - name: Install checksum-verified Trivy
+        run: bash tools/install_trivy.sh "$RUNNER_TEMP/vsn-trivy"
+      - name: Build reproducible source archive and normalized SBOM
+        env:
+          TRIVY_BIN: ${{ runner.temp }}/vsn-trivy/trivy
+        run: bash tools/build_supply_chain_artifacts.sh "$RUNNER_TEMP/vsn-supply-chain"
+      - name: Verify generated digests
+        run: sha256sum --check "$RUNNER_TEMP/vsn-supply-chain/SHA256SUMS"
+      - name: Retain SBOM and checksummed source artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: supply-chain-${{ github.sha }}
+          path: ${{ runner.temp }}/vsn-supply-chain/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Generate signed build provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: ${{ runner.temp }}/vsn-supply-chain/vsn-marketing-source.tar.gz
+      - name: Generate signed SBOM attestation for source artifact
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: ${{ runner.temp }}/vsn-supply-chain/vsn-marketing-source.tar.gz
+          sbom-path: ${{ runner.temp }}/vsn-supply-chain/vsn-marketing-sbom.cdx.json

@@ -17,6 +17,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "security" / "exceptions.json"
+MAX_EXCEPTION_SECONDS = 30 * 24 * 60 * 60
 REQUIRED_FIELDS = {
     "id",
     "scanner",
@@ -91,10 +92,21 @@ def validate_registry(now: datetime | None = None) -> list[str]:
             if not isinstance(value, str) or not value.strip():
                 errors.append(f"{prefix}.{field} must be non-empty")
 
+        owner = exception.get("owner")
+        approved_by = exception.get("approved_by")
+        if isinstance(owner, str) and isinstance(approved_by, str) and owner.strip() == approved_by.strip():
+            errors.append(f"{prefix}.approved_by must be independent from owner")
+
         created_at = parse_datetime(exception.get("created_at"), f"{prefix}.created_at", errors)
         expires_at = parse_datetime(exception.get("expires_at"), f"{prefix}.expires_at", errors)
-        if created_at and expires_at and expires_at <= created_at:
-            errors.append(f"{prefix}.expires_at must be later than created_at")
+        if created_at and created_at > now:
+            errors.append(f"{prefix}.created_at cannot be in the future")
+        if created_at and expires_at:
+            lifetime = (expires_at - created_at).total_seconds()
+            if lifetime <= 0:
+                errors.append(f"{prefix}.expires_at must be later than created_at")
+            elif lifetime > MAX_EXCEPTION_SECONDS:
+                errors.append(f"{prefix} exceeds the maximum 30-day exception lifetime")
         if expires_at and expires_at <= now:
             errors.append(f"{prefix} is expired as of {now.isoformat()}")
 

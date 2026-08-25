@@ -22,5 +22,5 @@
     "application_test_status": "task_0012_ci_passed"
   },
   "blockers": [],
-  "exact_next_action": "Research current repository/security scanning and software-supply-chain controls, then harden CI/rules/SAST/dependency/secret/container/action-integrity/SBOM/provenance gates without starting provider implementation."
+  "exact_next_action": "Inspect and resolve any PR #28 application/security CI failures, then harden and re-read the effective main ruleset to require strict up-to-date application/security/governance checks plus independent review; rerun exact-head acceptance gates and trusted-main provenance/Scorecard evidence. Keep TASK-0014 active and do not start TASK-0015 provider work."
 }

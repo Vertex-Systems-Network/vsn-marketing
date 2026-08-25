@@ -3,8 +3,8 @@
 
 Security scanners fail closed by default. Any future exception must be explicit,
 owned, independently approved, evidence-linked, and time bounded. Scanner-local
-ignore files and hidden Composer audit ignores are rejected so suppressions
-cannot bypass the canonical exception process.
+ignore/configuration files and hidden Composer audit ignores are rejected so
+suppressions cannot bypass the canonical exception process.
 """
 
 from __future__ import annotations
@@ -33,6 +33,13 @@ FORBIDDEN_IGNORE_FILES = (
     ROOT / ".trivyignore",
     ROOT / ".trivyignore.yaml",
     ROOT / ".semgrepignore",
+)
+# Trivy auto-loads these filenames from the working directory. Either can alter
+# scanner selection, secret rules, allow rules, skip patterns, severities, or
+# ignore-file behavior outside the reviewed CI command line.
+FORBIDDEN_SCANNER_CONFIG_FILES = (
+    ROOT / "trivy.yaml",
+    ROOT / "trivy-secret.yaml",
 )
 
 
@@ -94,7 +101,11 @@ def validate_registry(now: datetime | None = None) -> list[str]:
 
         owner = exception.get("owner")
         approved_by = exception.get("approved_by")
-        if isinstance(owner, str) and isinstance(approved_by, str) and owner.strip() == approved_by.strip():
+        if (
+            isinstance(owner, str)
+            and isinstance(approved_by, str)
+            and owner.strip().casefold() == approved_by.strip().casefold()
+        ):
             errors.append(f"{prefix}.approved_by must be independent from owner")
 
         created_at = parse_datetime(exception.get("created_at"), f"{prefix}.created_at", errors)
@@ -123,12 +134,23 @@ def validate_registry(now: datetime | None = None) -> list[str]:
                     "register and implement a reviewed security exception instead"
                 )
 
+    for config_file in FORBIDDEN_SCANNER_CONFIG_FILES:
+        if config_file.exists():
+            errors.append(
+                f"{config_file.relative_to(ROOT)} is forbidden because the scanner auto-loads it; "
+                "keep security policy explicit in reviewed workflow/tool arguments"
+            )
+
     composer_path = ROOT / "composer.json"
     if composer_path.exists():
-        composer = json.loads(composer_path.read_text(encoding="utf-8"))
-        audit_config = composer.get("config", {}).get("audit", {})
-        if isinstance(audit_config, dict) and audit_config.get("ignore"):
-            errors.append("composer.json config.audit.ignore is forbidden; use security/exceptions.json")
+        try:
+            composer = json.loads(composer_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"composer.json is invalid JSON while checking audit suppressions: {exc}")
+        else:
+            audit_config = composer.get("config", {}).get("audit", {})
+            if isinstance(audit_config, dict) and audit_config.get("ignore"):
+                errors.append("composer.json config.audit.ignore is forbidden; use security/exceptions.json")
 
     return errors
 

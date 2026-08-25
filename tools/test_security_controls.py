@@ -13,6 +13,7 @@ import normalize_sbom
 import security_exceptions
 
 PINNED_SHA = "3d3c42e5aac5ba805825da76410c181273ba90b1"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_true(condition: bool, message: str) -> None:
@@ -47,11 +48,27 @@ def test_action_pin_guard() -> None:
         workflow_dir = root / ".github" / "workflows"
         workflow_dir.mkdir(parents=True)
         (workflow_dir / "unsafe.yml").write_text(
-            "jobs:\n  test:\n    steps:\n      - uses: actions/checkout@v7\n",
+            "jobs:\n"
+            "  tagged:\n"
+            "    steps:\n"
+            "      - uses: actions/checkout@v7\n"
+            "  quoted:\n"
+            "    steps:\n"
+            "      - 'uses' : actions/setup-node@v6\n"
+            "  flow:\n"
+            "    steps:\n"
+            "      - { uses: actions/checkout@v7 }\n",
             encoding="utf-8",
         )
         failures = check_action_pins.validate_repository(root)
-        assert_true(len(failures) == 1, "repository scan must report mutable workflow dependency")
+        assert_true(
+            len(failures) == 3,
+            f"repository scan must fail closed on mutable/noncanonical workflow dependencies: {failures}",
+        )
+        assert_true(
+            any("unsupported/noncanonical uses syntax" in failure for failure in failures),
+            "flow-style uses syntax must be rejected rather than skipped",
+        )
 
 
 def test_security_exception_governance() -> None:
@@ -64,12 +81,17 @@ def test_security_exception_governance() -> None:
         original_root = security_exceptions.ROOT
         original_registry = security_exceptions.REGISTRY
         original_forbidden = security_exceptions.FORBIDDEN_IGNORE_FILES
+        original_configs = security_exceptions.FORBIDDEN_SCANNER_CONFIG_FILES
         security_exceptions.ROOT = root
         security_exceptions.REGISTRY = registry
         security_exceptions.FORBIDDEN_IGNORE_FILES = (
             root / ".trivyignore",
             root / ".trivyignore.yaml",
             root / ".semgrepignore",
+        )
+        security_exceptions.FORBIDDEN_SCANNER_CONFIG_FILES = (
+            root / "trivy.yaml",
+            root / "trivy-secret.yaml",
         )
 
         now = datetime(2026, 8, 10, tzinfo=timezone.utc)
@@ -98,12 +120,12 @@ def test_security_exception_governance() -> None:
                 "well-formed independently approved time-bounded exception must pass",
             )
 
-            self_approved = dict(valid, approved_by=valid["owner"])
+            self_approved = dict(valid, approved_by=valid["owner"].upper())
             write_registry(self_approved)
             errors = security_exceptions.validate_registry(now=now)
             assert_true(
                 any("independent from owner" in error for error in errors),
-                "self-approved security exception must fail",
+                "case-only identity changes must not bypass independent approval",
             )
 
             overlong = dict(
@@ -135,6 +157,15 @@ def test_security_exception_governance() -> None:
             )
             (root / ".trivyignore").unlink()
 
+            for config_name in ("trivy.yaml", "trivy-secret.yaml"):
+                (root / config_name).write_text("allow-rules: []\n", encoding="utf-8")
+                errors = security_exceptions.validate_registry(now=now)
+                assert_true(
+                    any("scanner auto-loads it" in error for error in errors),
+                    f"auto-loaded {config_name} must fail outside reviewed policy",
+                )
+                (root / config_name).unlink()
+
             (root / "composer.json").write_text(
                 json.dumps({"config": {"audit": {"ignore": ["CVE-2099-0001"]}}}),
                 encoding="utf-8",
@@ -148,6 +179,23 @@ def test_security_exception_governance() -> None:
             security_exceptions.ROOT = original_root
             security_exceptions.REGISTRY = original_registry
             security_exceptions.FORBIDDEN_IGNORE_FILES = original_forbidden
+            security_exceptions.FORBIDDEN_SCANNER_CONFIG_FILES = original_configs
+
+
+def test_security_workflow_fail_closed_flags() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "security-ci.yml").read_text(encoding="utf-8")
+    assert_true(
+        "--disable-nosem" in workflow,
+        "PHP SAST must disable inline nosemgrep suppression in blocking CI",
+    )
+    assert_true(
+        "--severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL" in workflow,
+        "credential scans must fail on findings at every Trivy secret severity",
+    )
+    assert_true(
+        "--scanners vuln" in workflow and "--scanners secret" in workflow,
+        "container vulnerability and secret thresholds must be separated",
+    )
 
 
 def sbom(serial: str, timestamp: str, root_ref: str, component_ref: str, root_name: str) -> dict:
@@ -218,7 +266,12 @@ def test_sbom_normalization() -> None:
 
 
 def main() -> int:
-    tests = [test_action_pin_guard, test_security_exception_governance, test_sbom_normalization]
+    tests = [
+        test_action_pin_guard,
+        test_security_exception_governance,
+        test_security_workflow_fail_closed_flags,
+        test_sbom_normalization,
+    ]
     for test in tests:
         test()
         print(f"PASS {test.__name__}")

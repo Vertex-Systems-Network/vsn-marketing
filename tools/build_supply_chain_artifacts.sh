@@ -23,7 +23,10 @@ NORMALIZED_SBOM="${OUT_DIR}/vsn-marketing-sbom.cdx.json"
   --output "${RAW_SBOM}" \
   "${ROOT_DIR}"
 
-python "${ROOT_DIR}/tools/normalize_sbom.py" "${RAW_SBOM}" "${NORMALIZED_SBOM}"
+python "${ROOT_DIR}/tools/normalize_sbom.py" \
+  "${RAW_SBOM}" \
+  "${NORMALIZED_SBOM}" \
+  --root-name vsn-marketing
 rm -f "${RAW_SBOM}"
 
 (

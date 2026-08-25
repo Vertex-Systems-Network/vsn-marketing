@@ -38,6 +38,8 @@ That state does **not** satisfy `TASK-0014 AC-1`. The task remains blocked until
 
 `python tools/check_action_pins.py` scans every workflow under `.github/workflows/` and fails when an external `uses:` reference is not a full 40-character commit SHA. Local repository actions (`./...`) are allowed. A future Docker action reference must use a `sha256:` digest.
 
+Pull-request application, security and AI-continuity validation resolves the task head as `${{ github.event.pull_request.head.sha }}` rather than relying on GitHub's synthetic PR merge ref. The checkout and change-set validation paths therefore target the same acceptance commit. Push/manual executions fall back to `${{ github.sha }}`.
+
 Reviewed action pins introduced by TASK-0014 include:
 
 | Dependency | Immutable reference | Human-readable release |
@@ -126,12 +128,12 @@ The script writes `SHA256SUMS`. `sbom-reproducibility` independently generates b
 
 ## Build provenance and attestation
 
-`Release Integrity` runs only on trusted `main` pushes or explicit workflow dispatch. It regenerates the checksummed source artifact and normalized SBOM, retains them as a workflow artifact, and uses `actions/attest` to create:
+`Release Integrity` can be triggered by a `main` push or manual workflow dispatch, but the privileged attestation job is explicitly restricted to `refs/heads/main`. A manual dispatch against any other ref is not permitted to mint repository attestations. On trusted `main`, the workflow regenerates the checksummed source artifact and normalized SBOM, retains them as a workflow artifact, and uses `actions/attest` to create:
 
 1. signed build provenance for `vsn-marketing-source.tar.gz`;
 2. a signed CycloneDX SBOM attestation binding the SBOM to the same source artifact.
 
-The attestation job alone receives `id-token: write`, `attestations: write`, and `artifact-metadata: write`; other security jobs retain read-only repository permissions unless their documented GitHub API operation requires more.
+The attestation job alone receives `id-token: write`, `attestations: write`, and `artifact-metadata: write`; other security jobs retain read-only repository permissions unless their documented GitHub API operation requires more. Checkout credentials are not persisted in privileged/security validation jobs that do not need to push back to the repository.
 
 Verification example after downloading an attested source artifact:
 

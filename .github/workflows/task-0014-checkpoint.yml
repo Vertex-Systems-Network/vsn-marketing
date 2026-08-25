@@ -1,0 +1,72 @@
+name: TASK-0014 Canonical Checkpoint
+
+on:
+  push:
+    branches: [task-0014-supply-chain-hardening]
+
+permissions:
+  contents: read
+
+jobs:
+  checkpoint:
+    if: ${{ github.event.head_commit.message == 'chore(ai): run TASK-0014 canonical checkpoint' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      CHECKPOINT_SUMMARY: >-
+        TASK-0014 research and implementation added immutable GitHub Actions pin enforcement,
+        capability-correct CodeQL and PHP/Laravel SAST separation, dependency/secret/container
+        scanning, independently approved time-bounded security exception governance, reproducible
+        normalized SBOM generation, source provenance/SBOM attestations, and OpenSSF posture evidence.
+        TASK-0014 remains active and is not accepted; the effective main ruleset still requires
+        hardening and exact-head application/security evidence remains required.
+      CHECKPOINT_TESTS: >-
+        Research-only head 0ef55a5775a368956f67cd48424cc62bf81400c0 passed AI Continuity run
+        32878822284 and Application Foundation CI run 32878822303. Implementation head
+        593dbc0b1733c76d8041983f409e745b72718bec passed the immutable-action guard and all
+        continuity/state/journal/policy/context validators and negative continuity tests before
+        verify-change-set correctly failed because the mandatory synchronized checkpoint had not
+        yet been written. No acceptance is claimed from that failed run.
+      CHECKPOINT_NEXT: >-
+        Inspect and resolve any PR #28 application/security CI failures, then harden and re-read
+        the effective main ruleset to require strict up-to-date application/security/governance
+        checks plus independent review; rerun exact-head acceptance gates and trusted-main
+        provenance/Scorecard evidence. Keep TASK-0014 active and do not start TASK-0015 provider work.
+    steps:
+      - name: Checkout task branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: task-0014-supply-chain-hardening
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Run repository-native transactional checkpoint
+        run: >-
+          python tools/ai_txn.py checkpoint
+          --summary "$CHECKPOINT_SUMMARY"
+          --tests "$CHECKPOINT_TESTS"
+          --next "$CHECKPOINT_NEXT"
+      - name: Verify checkpoint mutation scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only | sort > "$RUNNER_TEMP/actual.txt"
+          printf '%s\n' \
+            '.ai/state/CURRENT-STATE.yaml' \
+            '.ai/state/EXECUTION-JOURNAL.jsonl' \
+            '.ai/state/LAST-CHECKPOINT.md' \
+            | sort > "$RUNNER_TEMP/expected.txt"
+          diff -u "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/actual.txt"
+          python tools/ai_txn.py validate
+      - name: Commit canonical checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai/state/CURRENT-STATE.yaml .ai/state/LAST-CHECKPOINT.md .ai/state/EXECUTION-JOURNAL.jsonl
+          git commit -m 'chore(ai): checkpoint TASK-0014 implementation progress'
+          git push origin HEAD:task-0014-supply-chain-hardening

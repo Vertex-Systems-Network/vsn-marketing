@@ -33,7 +33,7 @@ jobs:
           TRIVY_BIN: ${{ runner.temp }}/vsn-trivy/trivy
         run: bash tools/build_supply_chain_artifacts.sh "$RUNNER_TEMP/vsn-supply-chain"
       - name: Verify generated digests
-        run: sha256sum --check "$RUNNER_TEMP/vsn-supply-chain/SHA256SUMS"
+        run: (cd "$RUNNER_TEMP/vsn-supply-chain" && sha256sum --check SHA256SUMS)
       - name: Retain SBOM and checksummed source artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

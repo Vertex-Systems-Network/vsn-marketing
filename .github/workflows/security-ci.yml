@@ -169,7 +169,7 @@ jobs:
         run: |
           cmp "$RUNNER_TEMP/supply-chain-a/vsn-marketing-source.tar.gz" "$RUNNER_TEMP/supply-chain-b/vsn-marketing-source.tar.gz"
           cmp "$RUNNER_TEMP/supply-chain-a/vsn-marketing-sbom.cdx.json" "$RUNNER_TEMP/supply-chain-b/vsn-marketing-sbom.cdx.json"
-          sha256sum --check "$RUNNER_TEMP/supply-chain-a/SHA256SUMS"
+          (cd "$RUNNER_TEMP/supply-chain-a" && sha256sum --check SHA256SUMS)
 
   security-gates:
     name: security-gates

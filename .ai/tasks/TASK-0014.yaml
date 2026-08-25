@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Security",
   "title": "Harden repository and software-supply-chain governance",
-  "status": "planned",
+  "status": "ready",
   "objective": "Establish measurable repository, CI, SAST, dependency, secret, container, action-integrity, SBOM and provenance controls before production-capable external provider integrations are introduced.",
   "dependencies": [
     "TASK-0013"

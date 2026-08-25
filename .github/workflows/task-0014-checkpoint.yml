@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   checkpoint:
-    if: ${{ github.event.head_commit.message == 'chore(ai): run TASK-0014 canonical checkpoint' }}
+    if: "${{ github.event.head_commit.message == 'chore(ai): run TASK-0014 canonical checkpoint' }}"
     runs-on: ubuntu-latest
     permissions:
       contents: write

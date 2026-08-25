@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-08-25T18:30:05+00:00`
+- Timestamp: `2026-08-25T18:39:52+00:00`
 - Active task: `TASK-0014`
 - Next task: `TASK-0015`
 - Current phase: `PHASE-03`
 - Execution status: `ready`
-- State fingerprint: `6bdb64f3d3e1a9f4e2c4e279c9933e77af44c0d0052d7c81fdf31050ffa3bdef`
+- State fingerprint: `419a3859c681d6a3ab5602477f3133add3b64a63d84f1791a8e5ae785c5cd9be`
 
 ## Completed / observed this session
 
-Reconciled canonical TASK-0014 state with observed GitHub governance evidence. The AC-1 ruleset gap is now explicitly recorded as an acceptance blocker while unrelated TASK-0014 hardening may continue.
+TASK-0014 non-runner security hardening is implemented and the pre-checkpoint exact head passed AI Continuity, Application Foundation, and Security Supply Chain CI. The AC-1 main-ruleset blocker remains explicit and TASK-0015 remains forbidden.
 
 ## Tests
 
-State reconciliation validation: ai_state validate, ai_journal validate, and ai_context manifest run transactionally; runner-dependent application/security acceptance remains intentionally pending.
+Pre-checkpoint exact-head evidence on 6ec3858ee803a763b88ad2747fc5f10dd43a7e2e: AI Continuity Guard run 32884741230 PASS; Application Foundation CI run 32884741086 PASS; Security Supply Chain CI run 32884741244 PASS, including action-integrity regression tests, CodeQL JavaScript/TypeScript and Actions, PHP Semgrep with inline suppression disabled, dependency audit, all-severity repository/container secret gates, critical container vulnerability gate, and reproducible SBOM. Final exact-head rerun is still required after this checkpoint workflow is removed.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ State reconciliation validation: ai_state validate, ai_journal validate, and ai_
 
 ## Exact next action
 
-Finish TASK-0014 security-control hardening and exact-head evidence, then have an authorized repository admin harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, and resolved review threads; re-read the effective ruleset and only then collect trusted-main Release Integrity/Scorecard evidence. Do not start TASK-0015.
+Remove the temporary acceptance-checkpoint workflow, then require AI Continuity, Application Foundation CI, and Security Supply Chain CI to pass on that exact resulting head. If green, have an authorized repository administrator harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, and resolved threads; re-read effective rules and then collect trusted-main Release Integrity/Scorecard evidence. Do not start TASK-0015.

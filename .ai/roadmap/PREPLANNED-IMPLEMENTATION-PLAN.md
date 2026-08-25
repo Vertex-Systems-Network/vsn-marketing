@@ -70,7 +70,7 @@ Purpose: own reusable channel content and creative assets independently of provi
 
 - **TASK-0031 — Research current content editors, template formats, asset workflows, rendering security, and channel media requirements.** Benchmark mature market workflows and accessibility expectations.
 - **TASK-0032 — Implement canonical content/template/version/component model.** Immutable versions, variables, localization, provenance, and channel rendering contracts.
-- **TASK-0033 — Implement canonical asset library and variant pipeline.** Pending ADR-0002 acceptance for `Assets`; media metadata, rights/provenance, transformations, channel variants, object-storage isolation.
+- **TASK-0033 — Implement canonical asset library and variant pipeline.** Use the ADR-0002-accepted `Assets` boundary for media metadata, rights/provenance, transformations, channel variants and object-storage isolation.
 - **TASK-0034 — Implement safe editor/render/compiler pipeline.** Drag/drop/code pathways as appropriate, sanitization, preview, test rendering, async compilation, and untrusted-content controls.
 - **TASK-0035 — Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization.** Canonical VSN source remains authoritative.
 - **TASK-0036 — Certify PHASE-06.** Rendering security, asset isolation, accessibility, visual regression, performance, version reproducibility, and provider sync tests.
@@ -82,7 +82,7 @@ Purpose: orchestrate governed cross-channel publishing and campaigns from one ca
 - **TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows.** Capture platform-specific restrictions before implementation.
 - **TASK-0038 — Implement campaign lifecycle, snapshots, recipients/targets, approvals, and audit history.** Draft/review/approved/scheduled/running/cancelled/completed states.
 - **TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler.** DST, reschedule, cancellation, missed-run, and approval timing behavior.
-- **TASK-0040 — Implement channel-neutral publication lifecycle.** Pending ADR-0002 acceptance for `Publishing`; target accounts, publication attempts, provider status reconciliation, supported edit/delete, retries, idempotency, media references.
+- **TASK-0040 — Implement channel-neutral publication lifecycle.** Use the ADR-0002-accepted `Publishing` boundary for target accounts, publication attempts, provider status reconciliation, supported edit/delete, retries, idempotency and media references.
 - **TASK-0041 — Implement campaign/publishing operator UX.** Bulk safeguards, previews, channel adaptations, approval queues, permission/error/partial-success states.
 - **TASK-0042 — Certify PHASE-07.** Scheduling precision, duplicate prevention, approval enforcement, social/provider contract matrices, PostgreSQL-backed browser flows, accessibility and performance.
 
@@ -115,7 +115,7 @@ Purpose: provide vendor-neutral, observable, policy-controlled product AI with r
 - **TASK-0055 — Implement AI gateway, capability routing, fallback, budgets, circuit breaking, usage/cost telemetry, and model-route configuration.** No core workflow hardcodes a model vendor.
 - **TASK-0056 — Implement context assembler, workspace/brand/customer/run memory boundaries, retrieval provenance, redaction, freshness, and context manifests.** Cross-tenant leakage forbidden.
 - **TASK-0057 — Implement structured output validation, typed tool executor, deterministic policy/risk/approval gates, and auditable result envelopes.** Models propose; software authorizes.
-- **TASK-0058 — Implement specialized agent runtime, prompt registry integration, evaluation harness, and candidate promotion flow.** Existing canonical agents first; proposed Research/Market Intelligence agent only after ADR acceptance.
+- **TASK-0058 — Implement specialized agent runtime, prompt registry integration, evaluation harness, and candidate promotion flow.** Existing canonical agents first; any Research/Market Intelligence agent must be explicitly registered and evaluated under ADR-0002 and active-task governance.
 - **TASK-0059 — Implement content/creative AI adapters.** Text, vision, image/video or other media capabilities only through evaluated provider-neutral routes, provenance, brand/policy review, and rights/safety checks.
 - **TASK-0060 — Implement AI red-team and abuse-resistance suite.** Prompt injection, indirect injection, tool abuse, exfiltration, cross-tenant context, hallucinated IDs, policy manipulation, unsafe fallback, budget denial, infinite loops, and self-modification attempts.
 - **TASK-0061 — Certify PHASE-10.** Golden evals, deterministic policies, model fallback, privacy/security, cost/latency, canary/rollback and exact-head evidence.
@@ -150,7 +150,7 @@ Purpose: expand from email/provider foundation to full permission-based communic
 - **TASK-0075 — Research current SMS, WhatsApp, RCS, push, in-app, Instagram, Facebook, LinkedIn, TikTok, X, Pinterest, YouTube, Threads and other prioritized channel APIs/policies.** Only channels justified by current official support enter implementation.
 - **TASK-0076 — Implement messaging adapters and canonical channel capability mapping.** SMS/WhatsApp/push/RCS/in-app prioritized by research and business value.
 - **TASK-0077 — Implement prioritized social publishing adapters.** Account types, app review, scopes, media, scheduling/direct publish, status polling, edit/delete and analytics per connector.
-- **TASK-0078 — Implement normalized community inbox.** Pending ADR-0002 acceptance for `Community`; comments, mentions, conversations/DMs where APIs permit, assignments, moderation and AI response proposals.
+- **TASK-0078 — Implement normalized community inbox.** Use the ADR-0002-accepted `Community` boundary for comments, mentions, conversations/DMs where APIs permit, assignments, moderation and AI response proposals.
 - **TASK-0079 — Implement listening and market/competitor/topic signals where permitted.** Respect platform policies; no unauthorized scraping.
 - **TASK-0080 — Implement cross-channel normalized engagement and publication analytics.** Preserve provider-specific provenance/limitations.
 - **TASK-0081 — Certify PHASE-13.** Channel contract, policy, privacy, rate-limit, moderation, social UI, community isolation and failure-reconciliation evidence.
@@ -204,7 +204,7 @@ Purpose: make the platform deployable for enterprise, agencies, regulated custom
 | Critical browser E2E uses SQLite | TASK-0023 onward production-representative PostgreSQL browser paths |
 | No formal load/SLO gates | TASK-0023 and inherited Quality Engineering Gates |
 | No accessibility/visual regression baseline | TASK-0036 onward, WCAG 2.2 AA |
-| PHASE-01 phase-document traceability gap | TASK-0013 governance reconciliation/backfill decision without falsifying history |
+| PHASE-01 phase-document traceability gap | TASK-0013 + `.ai/roadmap/PHASE-01-RETROSPECTIVE.md`, explicitly without fabricating an original phase plan |
 | Product UI barely started | PHASE-06/07 onward coherent design-system/operator UX gates |
 | AI prompt/tool/provider abuse risks | TASK-0060, TASK-0092 and inherited AI gates |
 | No DR/restore evidence | TASK-0099, with earlier task-level recovery tests where relevant |

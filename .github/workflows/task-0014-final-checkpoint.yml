@@ -1,0 +1,47 @@
+name: TASK-0014 Acceptance Checkpoint
+
+on:
+  push:
+    branches:
+      - task-0014-supply-chain-hardening
+
+permissions:
+  contents: write
+
+jobs:
+  checkpoint:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout task branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: task-0014-supply-chain-hardening
+          fetch-depth: 0
+      - name: Write repository-native checkpoint
+        shell: bash
+        run: |
+          python tools/ai_txn.py checkpoint \
+            --summary "TASK-0014 non-runner security hardening is implemented and the pre-checkpoint exact head passed AI Continuity, Application Foundation, and Security Supply Chain CI. The AC-1 main-ruleset blocker remains explicit and TASK-0015 remains forbidden." \
+            --tests "Pre-checkpoint exact-head evidence on 6ec3858ee803a763b88ad2747fc5f10dd43a7e2e: AI Continuity Guard run 32884741230 PASS; Application Foundation CI run 32884741086 PASS; Security Supply Chain CI run 32884741244 PASS, including action-integrity regression tests, CodeQL JavaScript/TypeScript and Actions, PHP Semgrep with inline suppression disabled, dependency audit, all-severity repository/container secret gates, critical container vulnerability gate, and reproducible SBOM. Final exact-head rerun is still required after this checkpoint workflow is removed." \
+            --next "Remove the temporary acceptance-checkpoint workflow, then require AI Continuity, Application Foundation CI, and Security Supply Chain CI to pass on that exact resulting head. If green, have an authorized repository administrator harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, and resolved threads; re-read effective rules and then collect trusted-main Release Integrity/Scorecard evidence. Do not start TASK-0015."
+      - name: Verify checkpoint mutation scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          test "$(printf '%s\n' "$changed" | sed '/^$/d' | sort)" = "$(printf '%s\n' \
+            '.ai/state/CURRENT-STATE.yaml' \
+            '.ai/state/EXECUTION-JOURNAL.jsonl' \
+            '.ai/state/LAST-CHECKPOINT.md' | sort)"
+      - name: Commit checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .ai/state/CURRENT-STATE.yaml .ai/state/EXECUTION-JOURNAL.jsonl .ai/state/LAST-CHECKPOINT.md
+          git commit -m 'chore(ai): checkpoint TASK-0014 acceptance evidence'
+          git push origin HEAD:task-0014-supply-chain-hardening

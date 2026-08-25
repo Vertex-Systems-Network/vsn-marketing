@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-08-25T18:39:52+00:00`
+- Timestamp: `2026-08-25T19:31:39+00:00`
 - Active task: `TASK-0014`
 - Next task: `TASK-0015`
 - Current phase: `PHASE-03`
 - Execution status: `ready`
-- State fingerprint: `419a3859c681d6a3ab5602477f3133add3b64a63d84f1791a8e5ae785c5cd9be`
+- State fingerprint: `0b618f3c604c21f473ea977d756f0a989985c7830a61dcf64b592fbe8014f393`
 
 ## Completed / observed this session
 
-TASK-0014 non-runner security hardening is implemented and the pre-checkpoint exact head passed AI Continuity, Application Foundation, and Security Supply Chain CI. The AC-1 main-ruleset blocker remains explicit and TASK-0015 remains forbidden.
+TASK-0014 exact-head acceptance CI is green on bf147299c21f1b32e43c0dde04bb4b51c850adfc: AI Continuity, Application Foundation, and Security Supply Chain CI including aggregate security-gates all passed. PR #28 is Ready for review. AC-1 remains blocked on effective main-ruleset hardening and an independent approval; TASK-0015 remains forbidden.
 
 ## Tests
 
-Pre-checkpoint exact-head evidence on 6ec3858ee803a763b88ad2747fc5f10dd43a7e2e: AI Continuity Guard run 32884741230 PASS; Application Foundation CI run 32884741086 PASS; Security Supply Chain CI run 32884741244 PASS, including action-integrity regression tests, CodeQL JavaScript/TypeScript and Actions, PHP Semgrep with inline suppression disabled, dependency audit, all-severity repository/container secret gates, critical container vulnerability gate, and reproducible SBOM. Final exact-head rerun is still required after this checkpoint workflow is removed.
+Exact-head evidence on bf147299c21f1b32e43c0dde04bb4b51c850adfc: AI Continuity Guard run 32885113890 PASS; Application Foundation CI run 32885113908 PASS; Security Supply Chain CI run 32885113941 PASS including action-integrity, dependency audit, PHP Semgrep, repository and container secret scans, critical fixed container vulnerability scan, CodeQL Actions, CodeQL JavaScript/TypeScript, reproducible SBOM, and aggregate security-gates. PR #28 has zero review threads and zero submitted independent reviews. Effective main ruleset 21212844 still has zero required approvals, last-push approval disabled, strict status checks disabled, and requires only governance.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ Pre-checkpoint exact-head evidence on 6ec3858ee803a763b88ad2747fc5f10dd43a7e2e: 
 
 ## Exact next action
 
-Remove the temporary acceptance-checkpoint workflow, then require AI Continuity, Application Foundation CI, and Security Supply Chain CI to pass on that exact resulting head. If green, have an authorized repository administrator harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, and resolved threads; re-read effective rules and then collect trusted-main Release Integrity/Scorecard evidence. Do not start TASK-0015.
+Have an authorized repository administrator harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, resolved threads, and no bypass/force-push/deletion path. Obtain a real independent approval on PR #28, then re-read effective ruleset and reviews. Only after AC-1 is evidenced may PR #28 merge; after merge require trusted-main Release Integrity/SBOM attestation, OpenSSF Scorecard, AI Continuity, Application Foundation, and Security Supply Chain evidence before transactionally completing TASK-0014 or activating TASK-0015.

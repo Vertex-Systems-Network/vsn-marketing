@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
 concurrency:
   group: security-supply-chain-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -20,6 +23,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.13'
@@ -42,6 +47,8 @@ jobs:
         language: [javascript-typescript, actions]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
       - name: Initialize CodeQL
         uses: github/codeql-action/init@db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28 # v4
         with:
@@ -58,10 +65,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-          cache: pip
       - name: Install reviewed PHP-capable SAST engine
         run: python -m pip install --disable-pip-version-check 'semgrep==1.173.0'
       - name: Run PHP/Laravel taint rules
@@ -79,6 +87,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
@@ -100,6 +110,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ env.TARGET_SHA }}
           fetch-depth: 0
       - name: Install checksum-verified Trivy
         run: bash tools/install_trivy.sh "$RUNNER_TEMP/vsn-trivy"
@@ -120,8 +131,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
       - name: Build application container for scanning
-        run: docker build --tag "vsn-marketing-security:${GITHUB_SHA}" --file docker/app/Dockerfile .
+        run: docker build --tag "vsn-marketing-security:${TARGET_SHA}" --file docker/app/Dockerfile .
       - name: Install checksum-verified Trivy
         run: bash tools/install_trivy.sh "$RUNNER_TEMP/vsn-trivy"
       - name: Fail on critical container vulnerabilities or embedded secrets
@@ -131,7 +144,7 @@ jobs:
           --severity CRITICAL
           --ignore-unfixed
           --exit-code 1
-          "vsn-marketing-security:${GITHUB_SHA}"
+          "vsn-marketing-security:${TARGET_SHA}"
 
   sbom-reproducibility:
     name: sbom-reproducibility
@@ -140,6 +153,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ env.TARGET_SHA }}
           fetch-depth: 0
       - name: Install checksum-verified Trivy
         run: bash tools/install_trivy.sh "$RUNNER_TEMP/vsn-trivy"

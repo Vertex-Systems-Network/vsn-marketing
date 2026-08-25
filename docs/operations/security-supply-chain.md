@@ -32,11 +32,11 @@ The same independent-review rule applies to privileged workflow and security-pol
 
 At `main@595aa762f70a6a8a3d4adc5e6144efe371c60401`, repository ruleset `21212844` was active and had no bypass actors, but it required **zero** approving reviews, did not require last-push approval, used non-strict required status checks, and required only the `governance` status context.
 
-That state does **not** satisfy `TASK-0014 AC-1`. The task remains blocked until the active `main` ruleset is changed to the target contract above and the effective rule is re-read from GitHub, or a specifically approved, time-bounded exception is recorded. Documentation alone is not enforcement.
+That state does **not** satisfy `TASK-0014 AC-1`. The gap is recorded in canonical `CURRENT-STATE.yaml` and `BLOCKERS.md`. The task remains unaccepted until the active `main` ruleset is changed to the target contract above and the effective rule is re-read from GitHub, or a specifically approved, time-bounded exception is recorded. Documentation alone is not enforcement.
 
 ## GitHub Actions integrity
 
-`python tools/check_action_pins.py` scans every workflow under `.github/workflows/` and fails when an external `uses:` reference is not a full 40-character commit SHA. Local repository actions (`./...`) are allowed. A future Docker action reference must use a `sha256:` digest.
+`python tools/check_action_pins.py` scans every workflow under `.github/workflows/` and fails when an external `uses:` reference is not a full 40-character commit SHA. Local repository actions (`./...`) are allowed. A future Docker action reference must use a `sha256:` digest. The guard also rejects noncanonical/flow-style `uses` syntax rather than silently skipping syntax its narrow parser cannot safely interpret.
 
 Pull-request application, security and AI-continuity validation resolves the task head as `${{ github.event.pull_request.head.sha }}` rather than relying on GitHub's synthetic PR merge ref. The checkout and change-set validation paths therefore target the same acceptance commit. Push/manual executions fall back to `${{ github.sha }}`.
 
@@ -78,7 +78,7 @@ PHP uses Semgrep `1.173.0`, pinned at installation time, with repository-owned t
 - PHP `unserialize()`;
 - PHP `eval()`.
 
-CI invokes Semgrep with `--error --severity ERROR`. Any matching ERROR finding makes `php-sast` fail. This is a Community Edition path and must not be represented as proprietary cross-file/interprocedural analysis.
+CI invokes Semgrep with `--disable-nosem --error --severity ERROR`. Inline `nosemgrep` comments therefore cannot suppress a blocking finding, and meaningful `.semgrepignore` content is rejected by the canonical exception validator. Any matching ERROR finding makes `php-sast` fail. This is a Community Edition path and must not be represented as proprietary cross-file/interprocedural analysis.
 
 ## Dependency vulnerability policy
 
@@ -93,11 +93,16 @@ No Composer audit ignore list is allowed outside the canonical exception process
 
 Trivy `0.73.0` is downloaded from its immutable GitHub release URL and verified against the recorded Linux x86-64 SHA-256 digest before execution.
 
-`secret-scan` scans the reviewed repository tree and fails on HIGH or CRITICAL secret findings. A discovered real credential must be revoked/rotated; adding a suppression is not remediation.
+`secret-scan` scans the reviewed repository tree and fails on secret findings at every Trivy severity: UNKNOWN, LOW, MEDIUM, HIGH, and CRITICAL. A discovered real credential must be revoked/rotated; adding a suppression is not remediation. This tree scan is evidence for the exact reviewed commit; it is **not** represented as a complete historical scan of every prior Git commit.
+
+Trivy can auto-load `trivy.yaml` and `trivy-secret.yaml`, and those files can change scanner behavior, rules, allow-rules, and skip patterns. Repository-local copies of those auto-loaded filenames are therefore forbidden by `tools/security_exceptions.py`; scanner policy must stay explicit in reviewed workflow/tool arguments.
 
 ## Container vulnerability policy
 
-The application Dockerfile is built by CI and scanned with the same checksum-verified Trivy binary. `container-scan` fails on fixed CRITICAL vulnerabilities and CRITICAL embedded-secret findings. `--ignore-unfixed` prevents CI from claiming that maintainers can remediate a base-image vulnerability for which no upstream fix exists; such findings remain visible in scanner output and must be reassessed as upstream fixes become available.
+The application Dockerfile is built by CI and scanned with the same checksum-verified Trivy binary. `container-scan` deliberately separates two thresholds:
+
+- vulnerability scanning fails on fixed CRITICAL vulnerabilities and uses `--ignore-unfixed` so the gate does not claim maintainers can remediate an upstream issue with no available fix;
+- secret scanning fails on embedded secret findings at every Trivy severity (UNKNOWN through CRITICAL).
 
 The current developer Dockerfile uses mutable upstream image tags (`php:8.5-cli-bookworm` and `composer:2`). TASK-0014 therefore does **not** claim byte-reproducible container images or container provenance. Its provenance subject is the source release artifact described below.
 
@@ -110,12 +115,12 @@ The canonical registry is `security/exceptions.json`. It is empty by default.
 - a unique ID and scanner/finding identity;
 - a named owner;
 - a concrete reason and evidence link;
-- an `approved_by` identity different from the owner;
+- an `approved_by` identity different from the owner, compared case-insensitively;
 - timezone-aware creation/expiry timestamps;
 - a lifetime no longer than 30 days;
 - an expiry later than creation and later than the validation time.
 
-Non-comment entries in `.trivyignore`, `.trivyignore.yaml`, or `.semgrepignore`, and hidden `composer.json` audit ignores, are rejected. If a scanner requires a technical suppression mechanism in the future, the code that maps the approved registry entry to that narrow suppression must be reviewed in the same change.
+Non-comment entries in `.trivyignore`, `.trivyignore.yaml`, or `.semgrepignore`, repository-local `trivy.yaml`/`trivy-secret.yaml`, and hidden `composer.json` audit ignores are rejected. If a scanner requires a technical suppression mechanism in the future, the code that maps the approved registry entry to that narrow suppression must be reviewed in the same change.
 
 ## Reproducible SBOM path
 

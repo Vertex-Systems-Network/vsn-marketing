@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0015",
+  "phase": "PHASE-03",
+  "module": "Providers",
+  "title": "Implement canonical provider capability and connection foundation",
+  "status": "planned",
+  "objective": "Implement provider-neutral Provider, ProviderConnection, ProviderCapability and ProviderQuota foundations with tenant isolation, secret-reference authentication lifecycle, connection readiness and research-backed multidimensional capability metadata.",
+  "dependencies": [
+    "TASK-0014"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Provider, ProviderConnection, ProviderCapability and ProviderQuota are canonical workspace-safe domain concepts with migrations/models/services that do not import or branch on concrete provider SDKs",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Connection readiness is modeled separately from technical capability support and can represent configuration, sandbox/private-only, provider-review, ready, suspended and deprecated states without pretending unknown is supported",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Authentication metadata supports multiple auth families, scopes/roles, token/refresh lifecycle, provider-review/access-tier/region constraints and secret references while preventing raw credentials from becoming canonical application data",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Quota metadata is multidimensional and refreshable across operation, scope, window, unit, region, principal/account tier and dynamic-discovery semantics rather than a single fixed integer",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Cross-workspace provider connection, capability, quota and credential-reference reads/writes/references fail closed in automated tests",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Migrations are rollback-safe and provider metadata retains source/version/freshness provenance required by later reconciliation without hard-coding volatile limits as permanent truth",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "AI continuity and all applicable backend/integration/architecture/static/format/frontend quality gates are green on the exact TASK-0015 acceptance head",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build"
+  ],
+  "exact_next_action": "Revalidate current provider/auth/quota requirements, then implement the canonical workspace-safe provider capability/connection/readiness/quota foundation behind secret references with no concrete provider SDK dependency."
+}

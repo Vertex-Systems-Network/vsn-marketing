@@ -21,12 +21,11 @@
     "continuity_validation": "task_0014_main_push_passed",
     "application_test_status": "task_0014_main_push_passed",
     "security_supply_chain_status": "task_0014_main_push_passed",
-    "release_integrity_status": "failed_sbom_attestation_pending_fix",
+    "release_integrity_status": "task_0014_main_push_passed_signed_attestations",
     "scorecard_status": "task_0014_main_push_passed"
   },
   "blockers": [
-    "TASK-0014 trusted-main Release Integrity run 33004203858 failed only at CycloneDX SBOM attestation because the normalized SBOM removed serialNumber; deterministic serial fix is staged on task-0014-single-owner-reconciliation.",
-    "TASK-0014 AC-1: active main ruleset 21212844 still lacks strict up-to-date enforcement and required contexts foundation, php-floor, integration, e2e, and security-gates. Under the explicit single-owner governance decision, zero approving reviews and last-push approval disabled are intentional."
+    "TASK-0014 AC-1: active main ruleset 21212844 still lacks strict up-to-date enforcement and required contexts foundation, php-floor, integration, e2e, and security-gates. Under the explicit single-owner governance decision, zero approving reviews and last-push approval disabled are intentional; review-thread resolution, no bypass, non-fast-forward, and deletion protection are already present."
   ],
-  "exact_next_action": "Complete and certify the task-0014-single-owner-reconciliation follow-up: fix deterministic CycloneDX serialNumber, align canonical single-owner governance/operator state, pass exact-head CI, merge, apply and read-back certify main ruleset 21212844 with strict six-context enforcement, then require trusted-main Release Integrity/SBOM attestation, OpenSSF Scorecard, AI Continuity, Application Foundation, and Security Supply Chain success before transactionally completing TASK-0014 or activating TASK-0015."
+  "exact_next_action": "Have an authorized repository administrator apply and read-back certify main ruleset 21212844 with strict required status checks for governance, foundation, php-floor, integration, e2e, and security-gates; preserve the single-owner zero-review/last-push-off policy, resolved review threads, no bypass, non-fast-forward, and deletion protection. Once read-back passes, run the repository-native TASK-0014 completion transaction and activate TASK-0015. Do not start TASK-0015 before that transaction."
 }

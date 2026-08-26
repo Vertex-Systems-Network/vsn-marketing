@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -255,7 +256,15 @@ def test_sbom_normalization() -> None:
         == normalize_sbom.canonical_json(normalized_second),
         "volatile CycloneDX serial/timestamp/BOM refs/path must normalize deterministically",
     )
-    assert_true("serialNumber" not in normalized_first, "CycloneDX document serial must be removed")
+    serial = normalized_first.get("serialNumber")
+    assert_true(isinstance(serial, str) and serial.startswith("urn:uuid:"), "CycloneDX serial must remain attestable")
+    uuid.UUID(serial.removeprefix("urn:uuid:"))
+    assert_true(
+        normalized_first.get("bomFormat") == "CycloneDX"
+        and bool(normalized_first.get("specVersion"))
+        and bool(serial),
+        "actions/attest CycloneDX format detection fields must be preserved",
+    )
     assert_true("timestamp" not in normalized_first["metadata"], "metadata timestamp must be removed")
 
     root_ref = normalized_first["metadata"]["component"]["bom-ref"]

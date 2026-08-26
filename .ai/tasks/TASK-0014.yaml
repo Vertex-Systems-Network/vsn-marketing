@@ -12,7 +12,7 @@
   "acceptance_criteria": [
     {
       "id": "AC-1",
-      "text": "Default-branch rules/status enforcement is verified and documented for required checks, review/merge safety and privileged workflow changes; any unavailable control is an explicit blocker or time-bounded approved exception rather than an assumption",
+      "text": "Default-branch rules/status enforcement is verified and documented for required checks, single-owner merge safety and privileged workflow changes. Because this repository is intentionally single-maintainer, required approving reviews and last-push approval are not acceptance requirements; owner merge is allowed only when the exact PR head has all required checks green, review threads are resolved, strict up-to-date status enforcement is enabled, bypass actors are absent, and force-push/deletion protection is effective. Any unavailable control remains an explicit blocker or time-bounded approved exception rather than an assumption.",
       "done": false
     },
     {
@@ -61,5 +61,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Research current repository/security scanning and software-supply-chain controls, then harden CI/rules/SAST/dependency/secret/container/action-integrity/SBOM/provenance gates without starting provider implementation."
+  "exact_next_action": "Repair the trusted-main SBOM attestation failure, reconcile the ruleset operator and canonical governance text to the single-owner contract, harden/read-back ruleset 21212844 to strict six-context enforcement with zero required reviews and last-push approval disabled, then re-run trusted-main certification before transactionally completing TASK-0014. Do not start TASK-0015 before that transaction."
 }

@@ -2,25 +2,26 @@
 
 ## State
 
-- Timestamp: `2026-08-25T19:31:39+00:00`
+- Timestamp: `2026-08-26T19:53:30+00:00`
 - Active task: `TASK-0014`
 - Next task: `TASK-0015`
 - Current phase: `PHASE-03`
 - Execution status: `ready`
-- State fingerprint: `0b618f3c604c21f473ea977d756f0a989985c7830a61dcf64b592fbe8014f393`
+- State fingerprint: `81348506e112d41c041524fb1e95795a7221f33c0a4a2c87b1df1a50b5da5ffd`
 
 ## Completed / observed this session
 
-TASK-0014 exact-head acceptance CI is green on bf147299c21f1b32e43c0dde04bb4b51c850adfc: AI Continuity, Application Foundation, and Security Supply Chain CI including aggregate security-gates all passed. PR #28 is Ready for review. AC-1 remains blocked on effective main-ruleset hardening and an independent approval; TASK-0015 remains forbidden.
+PR #28 was squash-merged to `main` as `b98372df4602bc865fa91f0dc7838913a059bb25` under the repository owner's explicit single-maintainer governance decision after exact-head governance, foundation, php-floor, integration, e2e, and security-gates verification. Trusted-main AI Continuity, Application Foundation, Security Supply Chain, and OpenSSF Scorecard passed. Release Integrity run `33004203858` failed only because normalized CycloneDX output removed `serialNumber`, which prevented the pinned attestation action from recognizing the SBOM. The deterministic CycloneDX serial fix and single-owner governance/operator reconciliation are staged on `task-0014-single-owner-reconciliation`, now represented by PR #30. The first PR #30 governance attempt exposed only this stale checkpoint and is being reconciled here; TASK-0015 remains forbidden.
 
 ## Tests
 
-Exact-head evidence on bf147299c21f1b32e43c0dde04bb4b51c850adfc: AI Continuity Guard run 32885113890 PASS; Application Foundation CI run 32885113908 PASS; Security Supply Chain CI run 32885113941 PASS including action-integrity, dependency audit, PHP Semgrep, repository and container secret scans, critical fixed container vulnerability scan, CodeQL Actions, CodeQL JavaScript/TypeScript, reproducible SBOM, and aggregate security-gates. PR #28 has zero review threads and zero submitted independent reviews. Effective main ruleset 21212844 still has zero required approvals, last-push approval disabled, strict status checks disabled, and requires only governance.
+Trusted-main evidence on `b98372df4602bc865fa91f0dc7838913a059bb25`: AI Continuity Guard PASS; Application Foundation CI PASS; Security Supply Chain CI PASS; OpenSSF Scorecard PASS; Release Integrity failed only at CycloneDX SBOM attestation. PR #30 exact-head CI must be re-run after this checkpoint correction and must pass governance, foundation, php-floor, integration, e2e, and security-gates before merge. After merge, trusted-main Release Integrity/SBOM attestation and the complete main certification set must pass again.
 
 ## Blockers
 
-- TASK-0014 AC-1: active main ruleset 21212844 still permits zero approving reviews, does not require last-push approval or strict up-to-date status checks, and requires only governance; the available GitHub connector exposes ruleset reads but no ruleset write operation, so an authorized repository-settings change is required before acceptance.
+- TASK-0014 trusted-main Release Integrity run 33004203858 failed only at CycloneDX SBOM attestation because the normalized SBOM removed serialNumber; deterministic serial fix is staged on task-0014-single-owner-reconciliation.
+- TASK-0014 AC-1: active main ruleset 21212844 still lacks strict up-to-date enforcement and required contexts foundation, php-floor, integration, e2e, and security-gates. Under the explicit single-owner governance decision, zero approving reviews and last-push approval disabled are intentional.
 
 ## Exact next action
 
-Have an authorized repository administrator harden main ruleset 21212844 to require governance, foundation, php-floor, integration, e2e, and security-gates with strict up-to-date checks, at least one independent approval, last-push approval, resolved threads, and no bypass/force-push/deletion path. Obtain a real independent approval on PR #28, then re-read effective ruleset and reviews. Only after AC-1 is evidenced may PR #28 merge; after merge require trusted-main Release Integrity/SBOM attestation, OpenSSF Scorecard, AI Continuity, Application Foundation, and Security Supply Chain evidence before transactionally completing TASK-0014 or activating TASK-0015.
+Complete and certify the task-0014-single-owner-reconciliation follow-up: fix deterministic CycloneDX serialNumber, align canonical single-owner governance/operator state, pass exact-head CI, merge, apply and read-back certify main ruleset 21212844 with strict six-context enforcement, then require trusted-main Release Integrity/SBOM attestation, OpenSSF Scorecard, AI Continuity, Application Foundation, and Security Supply Chain success before transactionally completing TASK-0014 or activating TASK-0015.

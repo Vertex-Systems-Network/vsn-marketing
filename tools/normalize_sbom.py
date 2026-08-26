@@ -4,8 +4,9 @@
 Trivy intentionally emits a fresh CycloneDX serial number/timestamp and may use
 opaque UUID BOM references for filesystem components. Those values are valid for
 an individual BOM but make byte-for-byte reproduction impossible. This tool
-removes document-instance metadata and replaces component BOM references with
-content-derived references while preserving the dependency graph.
+removes volatile instance metadata, replaces component BOM references with
+content-derived references, and emits a deterministic valid CycloneDX serial
+number while preserving the dependency graph.
 """
 
 from __future__ import annotations
@@ -13,10 +14,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import uuid
 from pathlib import Path
 from typing import Any
 
 VOLATILE_METADATA_KEYS = {"timestamp"}
+SERIAL_NAMESPACE = uuid.UUID("9669db74-ec90-5c73-9f32-d59b845e5e38")
 
 
 def canonical_json(value: Any) -> str:
@@ -110,6 +113,13 @@ def normalize(value: Any, parent_key: str | None = None) -> Any:
     return value
 
 
+def deterministic_serial(document_without_serial: dict[str, Any]) -> str:
+    """Return a stable RFC 4122 UUID serial for a normalized CycloneDX document."""
+
+    digest = hashlib.sha256(canonical_json(document_without_serial).encode("utf-8")).hexdigest()
+    return f"urn:uuid:{uuid.uuid5(SERIAL_NAMESPACE, digest)}"
+
+
 def normalize_document(source: dict[str, Any], *, root_name: str | None = None) -> dict[str, Any]:
     # Filesystem scanners may record an absolute checkout path as the root name.
     # The release identity is repository-defined, so make it explicit before
@@ -122,7 +132,14 @@ def normalize_document(source: dict[str, Any], *, root_name: str | None = None) 
 
     reference_map = build_reference_map(source)
     rewritten = rewrite_references(source, reference_map)
-    return normalize(rewritten)
+    normalized = normalize(rewritten)
+    if not isinstance(normalized, dict):
+        raise ValueError("normalized CycloneDX document must remain an object")
+
+    # actions/attest identifies CycloneDX by bomFormat + specVersion +
+    # serialNumber. Trivy's random serial is therefore replaced, not omitted.
+    normalized["serialNumber"] = deterministic_serial(normalized)
+    return normalized
 
 
 def main() -> int:

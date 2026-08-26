@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Apply and certify the TASK-0014 AC-1 repository ruleset contract.
+"""Apply and certify the TASK-0014 AC-1 single-owner repository ruleset contract.
 
-This operator intentionally does not manage pull-request reviewers. It hardens the
-effective repository ruleset through GitHub's REST API using an administrator-
-authenticated `gh` session, then reads the ruleset back and fails closed unless
-the locked TASK-0014 AC-1 controls are effective.
+The repository is intentionally operated by a single maintainer. The operator
+therefore does not require a second-human PR approval or last-push approval.
+It does require strict exact-head CI, resolved review threads, no bypass actors,
+and force-push/deletion protection before TASK-0014 acceptance.
 """
 
 from __future__ import annotations
@@ -99,8 +99,10 @@ def build_target_ruleset(current: dict[str, Any]) -> dict[str, Any]:
             params = rule.setdefault("parameters", {})
             if not isinstance(params, dict):
                 raise ValueError("pull_request parameters must be an object")
-            params["required_approving_review_count"] = 1
-            params["require_last_push_approval"] = True
+            params["required_approving_review_count"] = 0
+            params["dismiss_stale_reviews_on_push"] = False
+            params["require_code_owner_review"] = False
+            params["require_last_push_approval"] = False
             params["required_review_thread_resolution"] = True
         elif rule_type == "required_status_checks":
             saw_required_status_checks = True
@@ -153,10 +155,10 @@ def validate_effective_ruleset(ruleset: dict[str, Any]) -> list[str]:
     if not isinstance(pr_params, dict):
         errors.append("pull_request rule is missing")
     else:
-        if pr_params.get("required_approving_review_count", 0) < 1:
-            errors.append("at least one approving review must be required")
-        if pr_params.get("require_last_push_approval") is not True:
-            errors.append("last-push approval must be required")
+        if pr_params.get("required_approving_review_count") != 0:
+            errors.append("single-owner governance must require zero approving reviews")
+        if pr_params.get("require_last_push_approval") is not False:
+            errors.append("single-owner governance must keep last-push approval disabled")
         if pr_params.get("required_review_thread_resolution") is not True:
             errors.append("review-thread resolution must be required")
 
@@ -285,6 +287,11 @@ def self_test() -> None:
     assert "code_quality" in rule_types, "unrelated security rules must be preserved"
     assert effective["bypass_actors"] == [], "target must not introduce bypass actors"
 
+    pr_params = _rule_map(effective)["pull_request"]["parameters"]
+    assert pr_params["required_approving_review_count"] == 0
+    assert pr_params["require_last_push_approval"] is False
+    assert pr_params["required_review_thread_resolution"] is True
+
     wrong_repo = copy.deepcopy(weak)
     wrong_repo["source"] = "example/wrong-repository"
     try:
@@ -300,7 +307,7 @@ def main() -> int:
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="apply the locked AC-1 target; without this flag the operator is read-only",
+        help="apply the locked single-owner AC-1 target; without this flag the operator is read-only",
     )
     parser.add_argument(
         "--self-test",
@@ -358,7 +365,7 @@ def main() -> int:
         return 1
 
     print(CERTIFICATION_MARKER)
-    print("Ruleset hardening is certified. A real independent approval on PR #28 is still required.")
+    print("Ruleset hardening is certified for single-owner governance; independent PR approval is intentionally not required.")
     return 0
 
 

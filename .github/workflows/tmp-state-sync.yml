@@ -1,0 +1,31 @@
+name: Temporary TASK-0014 state journal sync
+
+on:
+  push:
+    branches:
+      - 'state/task-0014-post-merge-certification'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-journal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: state/task-0014-post-merge-certification
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Append repository-native checkpoint journal event
+        run: >-
+          python tools/ai_journal.py record
+          --type checkpoint
+          --summary "PR #30 merged to main as c061d9cf02e4972d4f8502834b88170f88bfcd8e. Trusted-main AI Continuity, Application Foundation, Security Supply Chain, OpenSSF Scorecard, and Release Integrity all passed; Release Integrity produced retained supply-chain evidence plus signed build provenance and signed SBOM attestation. AC-2 through AC-7 are evidenced complete. AC-1 remains blocked only on hosted ruleset 21212844 strict six-context enforcement. All repository workflows use GitHub-hosted ubuntu-latest runners; no self-hosted/local runner dependency remains."
+      - name: Commit journal append
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .ai/state/EXECUTION-JOURNAL.jsonl
+          git commit -m "chore(state): append TASK-0014 certification checkpoint"
+          git push origin HEAD:state/task-0014-post-merge-certification

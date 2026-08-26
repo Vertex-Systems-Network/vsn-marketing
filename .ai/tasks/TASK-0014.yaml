@@ -18,32 +18,32 @@
     {
       "id": "AC-2",
       "text": "SAST coverage is capability-correct: CodeQL is used only for supported JavaScript/TypeScript/GitHub-Actions surfaces, while PHP receives a PHP-capable SAST/taint-analysis path with an explicit severity/failure policy",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Dependency, secret and applicable container/image scanning run in CI with deterministic severity handling, documented false-positive/exception ownership and no committed credentials",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Third-party GitHub Actions used by privileged workflows are pinned to immutable full commit SHAs or have a documented owner, rationale and expiry for an approved exception; workflow permissions remain least-privilege",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "A reproducible SBOM and practical build/release provenance path are defined and exercised, with current OpenSSF/SLSA guidance treated as researched baselines rather than marketing claims",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Security-control changes include regression evidence and do not introduce provider SDKs, connector implementations, delivery routing or other TASK-0015+ product work",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "AI continuity validation and all applicable application/security quality gates are green on the exact TASK-0014 acceptance head",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -61,5 +61,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Repair the trusted-main SBOM attestation failure, reconcile the ruleset operator and canonical governance text to the single-owner contract, harden/read-back ruleset 21212844 to strict six-context enforcement with zero required reviews and last-push approval disabled, then re-run trusted-main certification before transactionally completing TASK-0014. Do not start TASK-0015 before that transaction."
+  "exact_next_action": "Apply and read-back certify hosted main ruleset 21212844 with strict required status checks for governance, foundation, php-floor, integration, e2e, and security-gates while preserving the single-owner zero-review/last-push-off policy, resolved review threads, no bypass, non-fast-forward, and deletion protection. After that read-back passes, transactionally complete TASK-0014 and activate TASK-0015. Do not start TASK-0015 before that transaction."
 }

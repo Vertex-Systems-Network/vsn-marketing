@@ -19,6 +19,7 @@ use App\Modules\Providers\Domain\Connectors\WebhookVerificationResult;
 use App\Modules\Providers\Domain\Connectors\WebhookVerificationStatus;
 use App\Modules\Providers\Domain\ProviderReadinessStatus;
 use DateTimeImmutable;
+use InvalidArgumentException;
 use UnexpectedValueException;
 
 it('fails closed for unknown or readiness-incompatible connector capabilities', function () {
@@ -146,7 +147,7 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
         ->toThrow(UnexpectedValueException::class, 'Webhook replay or duplicate delivery detected.');
 });
 
-it('treats transport acceptance as non-terminal and reconciles async operations idempotently', function () {
+it('treats transport acceptance as non-terminal and reconciles async operations monotonically and idempotently', function () {
     $submittedAt = new DateTimeImmutable('2026-08-31T15:56:00+00:00');
     $operation = new ProviderOperation(
         operation: 'messages.submit',
@@ -160,6 +161,18 @@ it('treats transport acceptance as non-terminal and reconciles async operations 
         status: ProviderOperationStatus::InProgress,
         source: ReconciliationSource::Polling,
         observedAt: $submittedAt->modify('+5 seconds'),
+    ));
+    $regressed = $reconciler->reconcile($inProgress, new ProviderOperationObservation(
+        providerOperationId: 'provider-op-7',
+        status: ProviderOperationStatus::Pending,
+        source: ReconciliationSource::Webhook,
+        observedAt: $submittedAt->modify('+6 seconds'),
+    ));
+    $unknown = $reconciler->reconcile($inProgress, new ProviderOperationObservation(
+        providerOperationId: 'provider-op-7',
+        status: ProviderOperationStatus::Unknown,
+        source: ReconciliationSource::Polling,
+        observedAt: $submittedAt->modify('+7 seconds'),
     ));
     $succeeded = $reconciler->reconcile($inProgress, new ProviderOperationObservation(
         providerOperationId: 'provider-op-7',
@@ -177,7 +190,16 @@ it('treats transport acceptance as non-terminal and reconciles async operations 
 
     expect($operation->status->isTerminal())->toBeFalse()
         ->and($inProgress->providerOperationId)->toBe('provider-op-7')
+        ->and($regressed)->toBe($inProgress)
+        ->and($unknown)->toBe($inProgress)
         ->and($succeeded->status->isTerminal())->toBeTrue()
         ->and($succeeded->evidence['reconciliation_source'])->toBe('webhook')
-        ->and($duplicate)->toBe($succeeded);
+        ->and($duplicate)->toBe($succeeded)
+        ->and(fn () => $reconciler->reconcile($succeeded, new ProviderOperationObservation(
+            providerOperationId: 'provider-op-7',
+            status: ProviderOperationStatus::Failed,
+            source: ReconciliationSource::Polling,
+            observedAt: $submittedAt->modify('+12 seconds'),
+        )))
+        ->toThrow(InvalidArgumentException::class, 'A terminal provider operation cannot be reconciled to a different terminal or non-terminal state.');
 });

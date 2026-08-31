@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-08-31T08:03:00+00:00`
+- Timestamp: `2026-08-31T09:17:00+00:00`
 - Active task: `TASK-0015`
 - Next task: `TASK-0016`
 - Current phase: `PHASE-03`
@@ -11,13 +11,13 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0014` and activated `TASK-0015`.
+TASK-0015 implementation candidate is open as PR #37. Fresh provider/auth/quota research revalidation is recorded, and the branch implements canonical workspace-safe Provider, ProviderConnection, ProviderCapability and ProviderQuota foundations; explicit readiness/support separation; approved secret references instead of raw credentials; multidimensional quota/provenance metadata; rollback-safe composite-workspace migrations; repository/services; and feature/PostgreSQL isolation coverage. No concrete provider SDK or TASK-0016+ implementation is included.
 
-Transition evidence: Hosted ruleset 21212844 read-back on 2026-08-31 confirmed strict up-to-date enforcement with required contexts governance, foundation, php-floor, integration, e2e, and security-gates; zero required reviews, last-push approval off, review-thread resolution on, no bypass actors, deletion protection, and non-fast-forward protection remain intact. Protected main ab95439f5ec66dfd201edc0ed63a440cbddec599 retains trusted-main AI Continuity run 33311009406 PASS, Application Foundation run 33311009408 PASS, Security Supply Chain run 33311009411 PASS, Release Integrity run 33311009485 PASS, and OpenSSF Scorecard run 33311009412 PASS.
+Initial AI Continuity Guard validation passed transactional state, AI state, journal integrity, policy registries, transaction recovery tests, deterministic context tests and append-only journal history. The product-change ledger guard then correctly required synchronized CURRENT-STATE and LAST-CHECKPOINT updates; this checkpoint supplies that synchronization without changing the canonical state fingerprint or inventing a lifecycle transition.
 
 ## Tests
 
-python tools/ai_txn.py validate; python tools/ai_state.py validate; python tools/ai_journal.py validate; python tools/ai_policy.py; python tools/ai_context.py manifest; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e
+python tools/ai_txn.py validate PASS; python tools/ai_state.py validate PASS; python tools/ai_journal.py validate PASS; python tools/ai_policy.py PASS; python tools/ai_context.py manifest PASS; append-only journal check PASS. PR #37 exact-head application, PostgreSQL integration, e2e and security gates are pending/re-running after this ledger-only synchronization.
 
 ## Blockers
 

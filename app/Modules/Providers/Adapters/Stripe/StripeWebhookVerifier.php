@@ -44,10 +44,8 @@ final class StripeWebhookVerifier implements WebhookVerifier
             return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'stripe', 'malformed-signature-header');
         }
 
-        // Use the request's receivedAt timestamp (provided by the test harness) when available.
-        $now = $request->receivedAt instanceof \DateTimeInterface
-            ? $request->receivedAt->getTimestamp()
-            : time();
+        // receivedAt is strongly typed to DateTimeImmutable on the request; use it directly.
+        $now = $request->receivedAt->getTimestamp();
 
         if (abs($now - $timestamp) > $this->tolerance) {
             return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'stripe', 'timestamp-out-of-range');

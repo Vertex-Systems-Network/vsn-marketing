@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Connectors",
   "title": "Implement adapter, error, quota, webhook and reconciliation contracts",
-  "status": "planned",
+  "status": "ready",
   "objective": "Define stable provider-neutral connector contracts for capabilities, normalized errors/events, quota/rate signals, webhook verification/replay/idempotency, asynchronous status reconciliation and API version/deprecation metadata.",
   "dependencies": [
     "TASK-0015"

@@ -13,5 +13,6 @@ final readonly class ProviderResponseEvidence
         public array $headers = [],
         public ?string $providerRequestId = null,
         public array $metadata = [],
-    ) {}
+    ) {
+    }
 }

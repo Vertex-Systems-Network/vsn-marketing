@@ -14,5 +14,6 @@ final readonly class ProviderFailureEvidence
         public ?int $httpStatus = null,
         public array $headers = [],
         public array $metadata = [],
-    ) {}
+    ) {
+    }
 }

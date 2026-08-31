@@ -24,7 +24,8 @@ final readonly class ConnectorManifest
         public array $sandboxLimitations = [],
         public array $capabilities = [],
         public array $metadata = [],
-    ) {}
+    ) {
+    }
 
     public function capability(string $operation): ConnectorCapability
     {

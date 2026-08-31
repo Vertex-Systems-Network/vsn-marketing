@@ -6,6 +6,7 @@ use App\Modules\Contacts\ContactsServiceProvider;
 use App\Modules\Core\CoreServiceProvider;
 use App\Modules\Events\EventsServiceProvider;
 use App\Modules\Identity\IdentityServiceProvider;
+use App\Modules\Providers\ProvidersServiceProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\HorizonServiceProvider;
 
@@ -18,4 +19,5 @@ return [
     IdentityServiceProvider::class,
     ContactsServiceProvider::class,
     ConsentServiceProvider::class,
+    ProvidersServiceProvider::class,
 ];

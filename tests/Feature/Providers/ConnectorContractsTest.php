@@ -98,7 +98,7 @@ it('represents simultaneous dynamic quota signals across different scopes and wi
         ->and($signals[1]->unit)->toBe('quota_unit');
 });
 
-it('preserves raw webhook bytes and fails closed on unsupported verification or duplicate delivery', function () {
+it('preserves raw webhook bytes and fails closed on unsupported, malformed, or duplicate delivery', function () {
     $request = new WebhookRequest(
         rawBody: "{\"signed\":\"bytes\\nunchanged\"}",
         headers: ['authorization' => 'Bearer fixture'],
@@ -107,7 +107,8 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
     );
 
     $unsupportedVerifier = new class implements WebhookVerifier {
-        public function verify(WebhookRequest $request): WebhookVerificationResult {
+        public function verify(WebhookRequest $request): WebhookVerificationResult
+        {
             return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'unsupported');
         }
     };
@@ -115,7 +116,8 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
         /** @var array<string, true> */
         private array $seen = [];
 
-        public function claim(string $workspaceId, string $connectorKey, string $deduplicationKey, DateTimeImmutable $receivedAt): bool {
+        public function claim(string $workspaceId, string $connectorKey, string $deduplicationKey, DateTimeImmutable $receivedAt): bool
+        {
             $key = $workspaceId.'|'.$connectorKey.'|'.$deduplicationKey;
             if (isset($this->seen[$key])) {
                 return false;
@@ -130,8 +132,22 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
         ->and(fn () => (new WebhookIngressGuard($unsupportedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
         ->toThrow(UnexpectedValueException::class, 'Webhook authenticity verification failed closed.');
 
+    $malformedVerifier = new class implements WebhookVerifier {
+        public function verify(WebhookRequest $request): WebhookVerificationResult
+        {
+            return new WebhookVerificationResult(
+                status: WebhookVerificationStatus::Verified,
+                strategy: 'jwt',
+            );
+        }
+    };
+
+    expect(fn () => (new WebhookIngressGuard($malformedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
+        ->toThrow(UnexpectedValueException::class, 'Webhook replay protection requires a deduplication key.');
+
     $verified = new class implements WebhookVerifier {
-        public function verify(WebhookRequest $request): WebhookVerificationResult {
+        public function verify(WebhookRequest $request): WebhookVerificationResult
+        {
             return new WebhookVerificationResult(
                 status: WebhookVerificationStatus::Verified,
                 strategy: 'jwt',
@@ -195,6 +211,13 @@ it('treats transport acceptance as non-terminal and reconciles async operations 
         ->and($succeeded->status->isTerminal())->toBeTrue()
         ->and($succeeded->evidence['reconciliation_source'])->toBe('webhook')
         ->and($duplicate)->toBe($succeeded)
+        ->and(fn () => $reconciler->reconcile($inProgress, new ProviderOperationObservation(
+            providerOperationId: 'provider-op-other',
+            status: ProviderOperationStatus::Succeeded,
+            source: ReconciliationSource::Webhook,
+            observedAt: $submittedAt->modify('+11 seconds'),
+        )))
+        ->toThrow(InvalidArgumentException::class, 'Provider operation observation does not match the canonical provider operation ID.')
         ->and(fn () => $reconciler->reconcile($succeeded, new ProviderOperationObservation(
             providerOperationId: 'provider-op-7',
             status: ProviderOperationStatus::Failed,

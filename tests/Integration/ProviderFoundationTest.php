@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Providers\Application\CreateProviderConnection;
 use App\Modules\Providers\Application\RecordProviderCapability;
 use App\Modules\Providers\Application\RecordProviderQuota;
@@ -7,7 +8,6 @@ use App\Modules\Providers\Application\RegisterProvider;
 use App\Modules\Providers\Domain\AuthFamily;
 use App\Modules\Providers\Domain\CapabilitySupport;
 use App\Modules\Providers\Domain\ProviderReadinessStatus;
-use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

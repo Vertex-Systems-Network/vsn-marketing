@@ -136,8 +136,6 @@ def validate() -> list[str]:
         material = {key: value for key, value in event.items() if key != "hash"}
         expected_hash = canonical_hash(material)
         if event.get("hash") != expected_hash:
-            print(f"DEBUG journal event {idx} stored={event.get('hash')} expected={expected_hash}", file=sys.stderr)
-            print("DEBUG material=" + repr(json.dumps(material, sort_keys=True, separators=(",", ":"), ensure_ascii=False)), file=sys.stderr)
             errors.append(f"journal event {idx}: hash mismatch")
         previous_hash = str(event.get("hash", ""))
         previous_seq = seq if isinstance(seq, int) else previous_seq

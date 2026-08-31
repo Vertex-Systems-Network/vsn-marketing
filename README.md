@@ -1,10 +1,82 @@
 # VSN Marketing
 
-AI-native, provider-agnostic marketing operating system under active design and development.
+AI-native, provider-agnostic marketing operating system under active development.
 
-## Current repository state
+## Development progress
 
-The product code has not been scaffolded yet. Phase 00 is establishing the architecture and continuity controls first so any authorized human or AI coding agent can resume deterministically without depending on conversation history.
+> Last verified: **2026-09-01** against `main` at `ed34452dd8c11dd0f2472fae72020a8b479fe289`.
+>
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). ETA ranges below are planning estimates, not completion guarantees.
+
+**Overall roadmap progress: 21.5%**  
+**Current phase: PHASE-03 — 50%**  
+**Active task: TASK-0016**  
+**Last completed task: TASK-0015**  
+**Estimated remaining effort: ~66–106 focused development days**
+
+```text
+Overall  [████░░░░░░░░░░░░░░░░] 21.5%
+Phase 03 [██████████░░░░░░░░░░] 50.0%
+```
+
+```mermaid
+pie showData
+    title VSN Marketing Roadmap Completion
+    "Completed / certified weight" : 21.5
+    "Remaining roadmap weight" : 78.5
+```
+
+### Phase / module progress
+
+| Phase | Weight | Main modules / capability | Status | Progress | Estimated remaining days |
+|---|---:|---|---|---:|---:|
+| PHASE-00 | 4% | Architecture, AI continuity, project governance | ✅ Complete | 100% | 0 |
+| PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% | 0 |
+| PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% | 0 |
+| **PHASE-03** | **7%** | **Providers, Connectors, Webhooks, Integrations, provider security baseline** | 🚧 **In progress** | **50%** | **2–4** |
+| PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ⏳ Planned | 0% | 4–6 |
+| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% | 4–6 |
+| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% | 5–8 |
+| PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% | 5–8 |
+| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% | 3–5 |
+| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% | 5–8 |
+| PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% | 7–11 |
+| PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% | 4–6 |
+| PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% | 5–8 |
+| PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | ⏳ Planned | 0% | 6–10 |
+| PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ⏳ Planned | 0% | 5–8 |
+| PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% | 5–8 |
+| PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% | 6–10 |
+
+### Current execution snapshot
+
+PHASE-03 establishes the provider/channel abstraction and initial adapters without allowing provider-specific behavior to own canonical product data. Its task chain is:
+
+| Task | Phase weight | Purpose | State |
+|---|---:|---|---|
+| TASK-0013 | 15% | Provider/channel research and architecture reconciliation | ✅ Complete |
+| TASK-0014 | 15% | Repository security and software-supply-chain hardening | ✅ Complete |
+| TASK-0015 | 20% | Canonical provider capability/connection/quota foundation | ✅ Complete |
+| **TASK-0016** | **20%** | **Adapter/error/quota/webhook/reconciliation contracts** | 🚧 **Active** |
+| TASK-0017 | 20% | Initial reference connectors and sandbox contract matrix | ⏳ Next |
+| TASK-0018 | 10% | PHASE-03 certification | ⏳ Planned |
+
+The current canonical calculation is:
+
+```text
+PHASE-00  4.0 / 4.0
+PHASE-01  7.0 / 7.0
+PHASE-02  7.0 / 7.0
+PHASE-03  3.5 / 7.0
+-------------------
+TOTAL    21.5 / 100
+```
+
+## Delivery estimate assumptions
+
+The **66–106 focused development day** range assumes continuous AI-native implementation, fast review/merge cycles, stable infrastructure, and no major external API/app-review blockers. Later phases carry higher uncertainty because they depend on provider policies, production-scale performance evidence, security gates, accessibility, AI evaluation/red-team work, and enterprise recovery/compliance requirements.
+
+The roadmap is research-first: new provider/API/model realities can add justified tasks, so the estimate should be recalculated after each phase certification rather than treated as a fixed deadline.
 
 ## For coding agents and contributors
 
@@ -26,4 +98,4 @@ The active task, exact next action, progress, blockers, tests, roadmap, architec
 - Specialized AI agents behind typed tools and structured outputs.
 - Future AI Connector Factory for controlled provider integration generation.
 
-Implementation sequence is defined in `.ai/roadmap/MASTER-ROADMAP.md`.
+Implementation sequence is defined in [`.ai/roadmap/MASTER-ROADMAP.md`](.ai/roadmap/MASTER-ROADMAP.md).

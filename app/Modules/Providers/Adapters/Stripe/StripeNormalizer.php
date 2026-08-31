@@ -23,8 +23,9 @@ final class StripeNormalizer
         // Map a small set of Stripe error codes to categories; default to Unknown.
         $category = match ($code) {
             'rate_limit' => ProviderErrorCategory::RateLimited,
-            'api_connection_error' => ProviderErrorCategory::Transient,
-            'invalid_request_error', 'authentication_error' => ProviderErrorCategory::InvalidRequest,
+            'api_connection_error' => ProviderErrorCategory::Unavailable,
+            'invalid_request_error' => ProviderErrorCategory::Validation,
+            'authentication_error' => ProviderErrorCategory::Authentication,
             default => ProviderErrorCategory::Unknown,
         };
 

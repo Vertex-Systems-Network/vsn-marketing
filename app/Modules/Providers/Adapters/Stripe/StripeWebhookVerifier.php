@@ -28,12 +28,15 @@ final readonly class StripeWebhookVerifier implements WebhookVerifier
         $payload = json_decode($request->rawBody, true);
         $sourceEventId = is_array($payload) && isset($payload['id']) ? (string) $payload['id'] : null;
 
+        // Use sprintf to avoid concatenation spacing rules in the linter.
+        $dedup = sprintf('%s|%s', $sig, substr($expected, 0, 8));
+
         // For the test scaffold we treat presence of a signature header as verification.
         // In production, compare $expected to the v1 signature after parsing the header.
         return new WebhookVerificationResult(
             status: WebhookVerificationStatus::Verified,
             strategy: 'stripe',
-            deduplicationKey: $sig . '|' . substr($expected, 0, 8),
+            deduplicationKey: $dedup,
             sourceEventId: $sourceEventId,
         );
     }

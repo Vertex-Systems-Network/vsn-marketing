@@ -7,13 +7,7 @@ use App\Modules\Providers\Domain\Connectors\ProviderErrorCategory;
 
 final class StripeNormalizer
 {
-    /**
-     * Normalize a Stripe API error payload into the project's NormalizedProviderError.
-     * This is intentionally conservative and preserves provider evidence for downstream
-     * troubleshooting.
-     *
-     * @param array<string, mixed> $error
-     */
+    /** @param array<string, mixed> $error */
     public function normalize(array $error): NormalizedProviderError
     {
         $code = $error['code'] ?? null;

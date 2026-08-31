@@ -16,7 +16,8 @@ final readonly class ConnectorCapability
         public CapabilitySupport $support,
         public array $readinessStates,
         public array $constraints = [],
-    ) {}
+    ) {
+    }
 
     public function isUsableAt(ProviderReadinessStatus $readiness): bool
     {

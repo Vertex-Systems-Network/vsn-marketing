@@ -1,1 +1,0 @@
-fix(phpstan): remove redundant instanceof check on receivedAt

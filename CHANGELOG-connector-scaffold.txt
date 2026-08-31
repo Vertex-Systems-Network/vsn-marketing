@@ -1,0 +1,1 @@
+Update connector scaffolding with concrete normalizer, webhook verifier, quota parser, dedup store, reconciler, provider bindings, and unit tests.

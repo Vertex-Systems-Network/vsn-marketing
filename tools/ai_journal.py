@@ -101,6 +101,7 @@ def verify_append_only(base: str) -> list[str]:
         stderr=subprocess.PIPE,
     )
     if proc.returncode != 0:
+        # The bootstrap PR legitimately introduces the journal for the first time.
         return []
 
     base_lines = nonempty_lines(proc.stdout)

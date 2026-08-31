@@ -32,7 +32,7 @@ final readonly class ProviderOperation
             throw new InvalidArgumentException('A terminal provider operation cannot be reconciled to a different terminal or non-terminal state.');
         }
 
-        if ($observation->status === ProviderOperationStatus::Unknown) {
+        if (! $this->status->canAdvanceTo($observation->status)) {
             return $this;
         }
 

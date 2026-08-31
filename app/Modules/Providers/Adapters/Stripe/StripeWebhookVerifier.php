@@ -9,35 +9,71 @@ use App\Modules\Providers\Domain\Connectors\WebhookVerificationStatus;
 
 final readonly class StripeWebhookVerifier implements WebhookVerifier
 {
+    // Allowed clock skew in seconds when validating the timestamped signature.
+    private int $tolerance = 300; // 5 minutes
+
     public function __construct(private string $signingSecret)
     {
     }
 
     public function verify(WebhookRequest $request): WebhookVerificationResult
     {
-        // Reference the signing secret to satisfy static analysis; real verification
-        // should validate timestamped signature using the signing secret and raw body.
-        $expected = hash_hmac('sha256', $request->rawBody, $this->signingSecret);
+        $sigHeader = $request->headers['stripe-signature'] ?? $request->headers['Stripe-Signature'] ?? null;
 
-        $sig = $request->headers['stripe-signature'] ?? $request->headers['Stripe-Signature'] ?? null;
-
-        if ($sig === null) {
+        if ($sigHeader === null) {
             return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'missing-signature');
         }
 
-        $payload = json_decode($request->rawBody, true);
-        $sourceEventId = is_array($payload) && isset($payload['id']) ? (string) $payload['id'] : null;
+        // Parse header: expected format "t=<timestamp>,v1=<signature>[,v1=<sig2>...]"
+        $parts = array_map('trim', explode(',', $sigHeader));
+        $timestamp = null;
+        $signatures = [];
 
-        // Use sprintf to avoid concatenation spacing rules in the linter.
-        $dedup = sprintf('%s|%s', $sig, substr($expected, 0, 8));
+        foreach ($parts as $part) {
+            if (str_starts_with($part, 't=')) {
+                $timestamp = (int) substr($part, 2);
+                continue;
+            }
 
-        // For the test scaffold we treat presence of a signature header as verification.
-        // In production, compare $expected to the v1 signature after parsing the header.
-        return new WebhookVerificationResult(
-            status: WebhookVerificationStatus::Verified,
-            strategy: 'stripe',
-            deduplicationKey: $dedup,
-            sourceEventId: $sourceEventId,
-        );
+            if (str_starts_with($part, 'v1=')) {
+                $signatures[] = substr($part, 3);
+            }
+        }
+
+        if ($timestamp === null || empty($signatures)) {
+            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'malformed-signature-header');
+        }
+
+        // Use the request's receivedAt timestamp (provided by the test harness) when available.
+        $now = $request->receivedAt instanceof \DateTimeInterface
+            ? $request->receivedAt->getTimestamp()
+            : time();
+
+        if (abs($now - $timestamp) > $this->tolerance) {
+            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'timestamp-out-of-range');
+        }
+
+        $payload = $request->rawBody;
+        $signedPayload = sprintf('%d.%s', $timestamp, $payload);
+        $expected = hash_hmac('sha256', $signedPayload, $this->signingSecret);
+
+        foreach ($signatures as $sig) {
+            if (hash_equals($expected, $sig)) {
+                // Extract a source event id from the payload if available.
+                $data = json_decode($payload, true);
+                $sourceEventId = is_array($data) && isset($data['id']) ? (string) $data['id'] : null;
+
+                $dedup = sprintf('%s|%s', $sig, substr($expected, 0, 8));
+
+                return new WebhookVerificationResult(
+                    status: WebhookVerificationStatus::Verified,
+                    strategy: 'stripe',
+                    deduplicationKey: $dedup,
+                    sourceEventId: $sourceEventId,
+                );
+            }
+        }
+
+        return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'invalid-signature');
     }
 }

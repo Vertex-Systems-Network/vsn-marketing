@@ -1,0 +1,39 @@
+name: Temporary Journal Repair
+
+on:
+  push:
+    branches:
+      - state/complete-task-0015-activate-0016
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Restore immutable history and append seq 43
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          journal=.ai/state/EXECUTION-JOURNAL.jsonl
+          tail -n 1 "$journal" > /tmp/seq43.jsonl
+          git show origin/main:"$journal" > /tmp/main-journal.jsonl
+          cat /tmp/main-journal.jsonl /tmp/seq43.jsonl > "$journal"
+          python tools/ai_journal.py validate
+          python tools/ai_journal.py verify-append-only --base origin/main
+          if git diff --quiet -- "$journal"; then
+            echo "Journal already repaired."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$journal"
+          git commit -m "fix: restore append-only journal history"
+          git push origin HEAD:state/complete-task-0015-activate-0016

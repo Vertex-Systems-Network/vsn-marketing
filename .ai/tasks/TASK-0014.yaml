@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Security",
   "title": "Harden repository and software-supply-chain governance",
-  "status": "ready",
+  "status": "completed",
   "objective": "Establish measurable repository, CI, SAST, dependency, secret, container, action-integrity, SBOM and provenance controls before production-capable external provider integrations are introduced.",
   "dependencies": [
     "TASK-0013"
@@ -13,7 +13,7 @@
     {
       "id": "AC-1",
       "text": "Default-branch rules/status enforcement is verified and documented for required checks, single-owner merge safety and privileged workflow changes. Because this repository is intentionally single-maintainer, required approving reviews and last-push approval are not acceptance requirements; owner merge is allowed only when the exact PR head has all required checks green, review threads are resolved, strict up-to-date status enforcement is enabled, bypass actors are absent, and force-push/deletion protection is effective. Any unavailable control remains an explicit blocker or time-bounded approved exception rather than an assumption.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",

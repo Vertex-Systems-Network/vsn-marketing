@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Providers",
   "title": "Implement canonical provider capability and connection foundation",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement provider-neutral Provider, ProviderConnection, ProviderCapability and ProviderQuota foundations with tenant isolation, secret-reference authentication lifecycle, connection readiness and research-backed multidimensional capability metadata.",
   "dependencies": [
     "TASK-0014"

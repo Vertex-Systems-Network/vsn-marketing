@@ -2,25 +2,27 @@
 
 ## State
 
-- Timestamp: `2026-08-26T20:01:00+00:00`
-- Active task: `TASK-0014`
-- Next task: `TASK-0015`
+- Timestamp: `2026-08-31T08:03:00+00:00`
+- Active task: `TASK-0015`
+- Next task: `TASK-0016`
 - Current phase: `PHASE-03`
 - Execution status: `ready`
-- State fingerprint: `80edd61171e77fb32f70a2f20a4893dd8865a33af18abd8b72480a5156f4711b`
+- State fingerprint: `5712350fffa18d7253228d8576bc838d5abfa5dba1975fdd11a96191af4cdab7`
 
 ## Completed / observed this session
 
-PR #30 merged to `main` as `c061d9cf02e4972d4f8502834b88170f88bfcd8e`. Trusted-main AI Continuity Guard run `33007840141`, Application Foundation CI run `33007840160`, Security Supply Chain CI run `33007840164`, OpenSSF Scorecard run `33007840199`, and Release Integrity run `33007840156` all passed on that exact SHA. Release Integrity retained the supply-chain artifact and completed signed build provenance plus signed SBOM attestation. TASK-0014 AC-2 through AC-7 now have hosted evidence; AC-1 remains the only incomplete criterion. Runner audit confirms all repository workflows use GitHub-hosted `ubuntu-latest`; there is no self-hosted/local-runner dependency or wait.
+Completed `TASK-0014` and activated `TASK-0015`.
+
+Transition evidence: Hosted ruleset 21212844 read-back on 2026-08-31 confirmed strict up-to-date enforcement with required contexts governance, foundation, php-floor, integration, e2e, and security-gates; zero required reviews, last-push approval off, review-thread resolution on, no bypass actors, deletion protection, and non-fast-forward protection remain intact. Protected main ab95439f5ec66dfd201edc0ed63a440cbddec599 retains trusted-main AI Continuity run 33311009406 PASS, Application Foundation run 33311009408 PASS, Security Supply Chain run 33311009411 PASS, Release Integrity run 33311009485 PASS, and OpenSSF Scorecard run 33311009412 PASS.
 
 ## Tests
 
-Trusted-main exact-SHA evidence on `c061d9cf02e4972d4f8502834b88170f88bfcd8e`: AI Continuity PASS; Application Foundation PASS including foundation, php-floor, integration and e2e; Security Supply Chain PASS including aggregate security-gates; OpenSSF Scorecard PASS; Release Integrity PASS including reproducible source/SBOM, digest verification, retained artifact, signed build provenance and signed SBOM attestation.
+python tools/ai_txn.py validate; python tools/ai_state.py validate; python tools/ai_journal.py validate; python tools/ai_policy.py; python tools/ai_context.py manifest; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e
 
 ## Blockers
 
-- TASK-0014 AC-1: active main ruleset 21212844 still lacks strict up-to-date enforcement and required contexts foundation, php-floor, integration, e2e, and security-gates. Under the explicit single-owner governance decision, zero approving reviews and last-push approval disabled are intentional; review-thread resolution, no bypass, non-fast-forward, and deletion protection are already present.
+- None
 
 ## Exact next action
 
-Have an authorized repository administrator apply and read-back certify main ruleset 21212844 with strict required status checks for governance, foundation, php-floor, integration, e2e, and security-gates; preserve the single-owner zero-review/last-push-off policy, resolved review threads, no bypass, non-fast-forward, and deletion protection. Once read-back passes, run the repository-native TASK-0014 completion transaction and activate TASK-0015. Do not start TASK-0015 before that transaction.
+Revalidate current provider/auth/quota requirements, then implement the canonical workspace-safe provider capability/connection/readiness/quota foundation behind secret references with no concrete provider SDK dependency.

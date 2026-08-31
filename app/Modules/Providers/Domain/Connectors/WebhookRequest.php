@@ -16,6 +16,5 @@ final readonly class WebhookRequest
         public array $query,
         public DateTimeImmutable $receivedAt,
         public ?string $sourceAddress = null,
-    ) {
-    }
+    ) {}
 }

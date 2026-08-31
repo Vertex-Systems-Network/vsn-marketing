@@ -105,20 +105,16 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
         receivedAt: new DateTimeImmutable('2026-08-31T15:56:00+00:00'),
     );
 
-    $unsupportedVerifier = new class implements WebhookVerifier
-    {
-        public function verify(WebhookRequest $request): WebhookVerificationResult
-        {
+    $unsupportedVerifier = new class implements WebhookVerifier {
+        public function verify(WebhookRequest $request): WebhookVerificationResult {
             return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'unsupported');
         }
     };
-    $replays = new class implements WebhookReplayGuard
-    {
+    $replays = new class implements WebhookReplayGuard {
         /** @var array<string, true> */
         private array $seen = [];
 
-        public function claim(string $workspaceId, string $connectorKey, string $deduplicationKey, DateTimeImmutable $receivedAt): bool
-        {
+        public function claim(string $workspaceId, string $connectorKey, string $deduplicationKey, DateTimeImmutable $receivedAt): bool {
             $key = $workspaceId.'|'.$connectorKey.'|'.$deduplicationKey;
             if (isset($this->seen[$key])) {
                 return false;
@@ -133,10 +129,8 @@ it('preserves raw webhook bytes and fails closed on unsupported verification or 
         ->and(fn () => (new WebhookIngressGuard($unsupportedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
         ->toThrow(UnexpectedValueException::class, 'Webhook authenticity verification failed closed.');
 
-    $verified = new class implements WebhookVerifier
-    {
-        public function verify(WebhookRequest $request): WebhookVerificationResult
-        {
+    $verified = new class implements WebhookVerifier {
+        public function verify(WebhookRequest $request): WebhookVerificationResult {
             return new WebhookVerificationResult(
                 status: WebhookVerificationStatus::Verified,
                 strategy: 'jwt',

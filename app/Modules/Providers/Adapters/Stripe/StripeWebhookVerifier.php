@@ -7,12 +7,12 @@ use App\Modules\Providers\Domain\Connectors\WebhookRequest;
 use App\Modules\Providers\Domain\Connectors\WebhookVerificationResult;
 use App\Modules\Providers\Domain\Connectors\WebhookVerificationStatus;
 
-final readonly class StripeWebhookVerifier implements WebhookVerifier
+final class StripeWebhookVerifier implements WebhookVerifier
 {
     // Allowed clock skew in seconds when validating the timestamped signature.
     private int $tolerance = 300; // 5 minutes
 
-    public function __construct(private string $signingSecret)
+    public function __construct(private readonly string $signingSecret)
     {
     }
 

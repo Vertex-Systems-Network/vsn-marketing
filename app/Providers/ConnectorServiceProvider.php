@@ -15,6 +15,8 @@ use App\Connectors\Contracts\ReconciliationInterface;
 use App\Connectors\Reconciliation\DefaultReconciler;
 use App\Connectors\Dedup\DedupStoreInterface;
 use App\Connectors\Dedup\InMemoryDedupStore;
+use App\Connectors\Dedup\RedisDedupStore;
+use App\Connectors\Dedup\DatabaseDedupStore;
 
 class ConnectorServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,22 @@ class ConnectorServiceProvider extends ServiceProvider
         $this->app->singleton(WebhookVerifierInterface::class, GenericWebhookVerifier::class);
         $this->app->singleton(QuotaSignalInterface::class, QuotaSignalParser::class);
         $this->app->singleton(ReconciliationInterface::class, DefaultReconciler::class);
-        $this->app->singleton(DedupStoreInterface::class, InMemoryDedupStore::class);
+
+        // Dedup store selection based on config
+        $store = config('connectors.dedup_store', 'in_memory');
+
+        switch ($store) {
+            case 'redis':
+                $this->app->singleton(DedupStoreInterface::class, RedisDedupStore::class);
+                break;
+            case 'database':
+                $this->app->singleton(DedupStoreInterface::class, DatabaseDedupStore::class);
+                break;
+            case 'in_memory':
+            default:
+                $this->app->singleton(DedupStoreInterface::class, InMemoryDedupStore::class);
+                break;
+        }
     }
 
     public function boot()

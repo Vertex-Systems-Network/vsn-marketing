@@ -119,6 +119,48 @@ class RepositoryContinuityTests(unittest.TestCase):
         )
         self.assertEqual(0, proc.returncode, proc.stdout + proc.stderr)
 
+    def test_task_0015_transition_hash_preview(self):
+        module = load_journal_module()
+        target_state = {
+            "schema_version": 1,
+            "execution": {
+                "status": "ready",
+                "current_phase": "PHASE-03",
+                "active_task": "TASK-0016",
+                "last_completed_task": "TASK-0015",
+                "next_task": "TASK-0017",
+            },
+            "progress": {
+                "roadmap_percent": 21.5,
+                "phase_percent": 50.0,
+                "calculation": "Calculated deterministically from task weights and completed task statuses.",
+            },
+            "blockers": [],
+            "exact_next_action": "Revalidate current webhook/rate/version behavior, then implement provider-neutral adapter/error/quota/webhook/reconciliation contracts and negative contract tests before adding reference connectors.",
+        }
+        fingerprint = module.state_fingerprint(target_state)
+        evidence = (
+            "Protected main 1a5b3791ff5cae2a2aeaffff22eef7cbc48fd1ae passed AI Continuity run 33405400554, "
+            "Application Foundation run 33405400523 (foundation, php-floor, integration, e2e), Security Supply Chain run "
+            "33405400544 including security-gates, Release Integrity run 33405400493 with signed build provenance and signed "
+            "SBOM attestation, and OpenSSF Scorecard run 33405400500. TASK-0015 provider foundation implements workspace-safe "
+            "Provider, ProviderConnection, ProviderCapability and ProviderQuota concepts, separate readiness/support states, "
+            "secret-reference authentication metadata, multidimensional dynamic quota provenance, fail-closed cross-workspace "
+            "tests, rollback-safe migrations, and no concrete provider SDK dependency. Hosted main ruleset 21212844 remains "
+            "strict with governance, foundation, php-floor, integration, e2e and security-gates and no bypass actors."
+        )
+        material = {
+            "seq": 43,
+            "timestamp": "2026-08-31T15:00:00+00:00",
+            "type": "task_transition",
+            "task_id": "TASK-0016",
+            "state_fingerprint": fingerprint,
+            "summary": f"TASK-0015 completed; TASK-0016 activated. {evidence}",
+            "prev_hash": "f9a5df9797eaddf7c041ff18409c1c00636cbee77a0e2e953b763a5bd28c2d12",
+        }
+        print(f"TASK0015_TRANSITION_STATE_FINGERPRINT={fingerprint}")
+        print(f"TASK0015_TRANSITION_EVENT_HASH={module.canonical_hash(material)}")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

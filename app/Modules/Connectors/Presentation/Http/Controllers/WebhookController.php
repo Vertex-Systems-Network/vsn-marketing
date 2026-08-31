@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Connectors\Contracts\WebhookVerifierInterface;
 use App\Connectors\Dedup\DedupStoreInterface;
 use Psr\Log\LoggerInterface;
+use App\Jobs\ProcessConnectorWebhook;
 
 class WebhookController extends Controller
 {
@@ -61,8 +62,10 @@ class WebhookController extends Controller
             $this->dedup->record($dedupId);
         }
 
-        // TODO: dispatch processing job for the connector (async)
-        $this->logger->info('Webhook accepted', ['connector' => $connector, 'dedup_id' => $dedupId]);
+        // Dispatch processing job asynchronously so webhook responds quickly
+        ProcessConnectorWebhook::dispatch($connector, $rawBody, $headers, $dedupId);
+
+        $this->logger->info('Webhook accepted and dispatched', ['connector' => $connector, 'dedup_id' => $dedupId]);
 
         return response()->json(['status' => 'accepted'], 202);
     }

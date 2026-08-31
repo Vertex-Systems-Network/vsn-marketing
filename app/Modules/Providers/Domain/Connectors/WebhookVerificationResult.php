@@ -8,6 +8,7 @@ final readonly class WebhookVerificationResult
     public function __construct(
         public WebhookVerificationStatus $status,
         public string $strategy,
+        public ?string $reason = null,
         public ?string $deduplicationKey = null,
         public ?string $sourceEventId = null,
         public array $evidence = [],

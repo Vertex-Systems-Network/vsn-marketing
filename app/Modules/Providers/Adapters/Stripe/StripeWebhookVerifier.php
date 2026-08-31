@@ -21,7 +21,7 @@ final class StripeWebhookVerifier implements WebhookVerifier
         $sigHeader = $request->headers['stripe-signature'] ?? $request->headers['Stripe-Signature'] ?? null;
 
         if ($sigHeader === null) {
-            return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'missing-signature');
+            return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'stripe', 'missing-signature');
         }
 
         // Parse header: expected format "t=<timestamp>,v1=<signature>[,v1=<sig2>...]"
@@ -41,7 +41,7 @@ final class StripeWebhookVerifier implements WebhookVerifier
         }
 
         if ($timestamp === null || empty($signatures)) {
-            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'malformed-signature-header');
+            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'stripe', 'malformed-signature-header');
         }
 
         // Use the request's receivedAt timestamp (provided by the test harness) when available.
@@ -50,7 +50,7 @@ final class StripeWebhookVerifier implements WebhookVerifier
             : time();
 
         if (abs($now - $timestamp) > $this->tolerance) {
-            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'timestamp-out-of-range');
+            return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'stripe', 'timestamp-out-of-range');
         }
 
         $payload = $request->rawBody;
@@ -66,14 +66,15 @@ final class StripeWebhookVerifier implements WebhookVerifier
                 $dedup = sprintf('%s|%s', $sig, substr($expected, 0, 8));
 
                 return new WebhookVerificationResult(
-                    status: WebhookVerificationStatus::Verified,
-                    strategy: 'stripe',
-                    deduplicationKey: $dedup,
-                    sourceEventId: $sourceEventId,
+                    WebhookVerificationStatus::Verified,
+                    'stripe',
+                    null,
+                    $dedup,
+                    $sourceEventId,
                 );
             }
         }
 
-        return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'invalid-signature');
+        return new WebhookVerificationResult(WebhookVerificationStatus::Rejected, 'stripe', 'invalid-signature');
     }
 }

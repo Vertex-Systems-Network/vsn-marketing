@@ -106,13 +106,15 @@ it('preserves raw webhook bytes and fails closed on unsupported, malformed, or d
         receivedAt: new DateTimeImmutable('2026-08-31T15:56:00+00:00'),
     );
 
-    $unsupportedVerifier = new class implements WebhookVerifier {
+    $unsupportedVerifier = new class implements WebhookVerifier
+    {
         public function verify(WebhookRequest $request): WebhookVerificationResult
         {
             return new WebhookVerificationResult(WebhookVerificationStatus::Unsupported, 'unsupported');
         }
     };
-    $replays = new class implements WebhookReplayGuard {
+    $replays = new class implements WebhookReplayGuard
+    {
         /** @var array<string, true> */
         private array $seen = [];
 
@@ -132,7 +134,8 @@ it('preserves raw webhook bytes and fails closed on unsupported, malformed, or d
         ->and(fn () => (new WebhookIngressGuard($unsupportedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
         ->toThrow(UnexpectedValueException::class, 'Webhook authenticity verification failed closed.');
 
-    $malformedVerifier = new class implements WebhookVerifier {
+    $malformedVerifier = new class implements WebhookVerifier
+    {
         public function verify(WebhookRequest $request): WebhookVerificationResult
         {
             return new WebhookVerificationResult(
@@ -145,7 +148,8 @@ it('preserves raw webhook bytes and fails closed on unsupported, malformed, or d
     expect(fn () => (new WebhookIngressGuard($malformedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
         ->toThrow(UnexpectedValueException::class, 'Webhook replay protection requires a deduplication key.');
 
-    $verified = new class implements WebhookVerifier {
+    $verified = new class implements WebhookVerifier
+    {
         public function verify(WebhookRequest $request): WebhookVerificationResult
         {
             return new WebhookVerificationResult(

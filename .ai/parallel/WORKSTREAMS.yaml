@@ -1,0 +1,130 @@
+{
+  "schema_version": 2,
+  "mode": "staged",
+  "parent_task": "TASK-0017",
+  "branch_creation_baseline_sha": "bc821953b69dea2ac58eb1e3dbe41699a0dc111b",
+  "branches_precreated": true,
+  "remote_branch_validation_required": true,
+  "workstreams": [
+    {
+      "id": "WS-0017-RESEARCH-QA",
+      "role": "research",
+      "module": "Connectors",
+      "capability": "TASK-0017 provider research + QA evidence",
+      "assigned_agent": null,
+      "branch": "agent/task-0017-research-qa",
+      "worktree": "worktrees/task-0017-research-qa",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": [],
+      "merge_group": 10,
+      "merge_strategy": "squash",
+      "write_paths": [
+        ".ai/research/PHASE-03/TASK-0017-RESEARCH.md",
+        "docs/provider-research/**"
+      ]
+    },
+    {
+      "id": "WS-0017-SES",
+      "role": "worker",
+      "module": "Connectors",
+      "capability": "Amazon SES reference connector",
+      "assigned_agent": null,
+      "branch": "agent/task-0017-ses",
+      "worktree": "worktrees/task-0017-ses",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "merge_group": 20,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Providers/Infrastructure/Connectors/AmazonSes/**",
+        "tests/Feature/Providers/Connectors/AmazonSes/**"
+      ]
+    },
+    {
+      "id": "WS-0017-BREVO",
+      "role": "worker",
+      "module": "Connectors",
+      "capability": "Brevo reference connector",
+      "assigned_agent": null,
+      "branch": "agent/task-0017-brevo",
+      "worktree": "worktrees/task-0017-brevo",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "merge_group": 20,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Providers/Infrastructure/Connectors/Brevo/**",
+        "tests/Feature/Providers/Connectors/Brevo/**"
+      ]
+    },
+    {
+      "id": "WS-0017-GMAIL",
+      "role": "worker",
+      "module": "Connectors",
+      "capability": "Gmail reference connector",
+      "assigned_agent": null,
+      "branch": "agent/task-0017-gmail",
+      "worktree": "worktrees/task-0017-gmail",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "merge_group": 20,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Providers/Infrastructure/Connectors/Gmail/**",
+        "tests/Feature/Providers/Connectors/Gmail/**"
+      ]
+    },
+    {
+      "id": "WS-0017-CONTRACT-MATRIX",
+      "role": "worker",
+      "module": "Connectors",
+      "capability": "Cross-connector sandbox and negative contract matrix",
+      "assigned_agent": null,
+      "branch": "agent/task-0017-contract-matrix",
+      "worktree": "worktrees/task-0017-contract-matrix",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "merge_group": 30,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "tests/Feature/Providers/ConnectorMatrix/**",
+        "tests/Fixtures/Providers/ConnectorMatrix/**"
+      ]
+    },
+    {
+      "id": "WS-0017-SUPERVISOR-INTEGRATION",
+      "role": "supervisor",
+      "module": "Connectors",
+      "capability": "Shared integration, merge coordination and final acceptance",
+      "assigned_agent": "supervisor-main",
+      "branch": "supervisor/task-0017-integration",
+      "worktree": "worktrees/task-0017-integration",
+      "status": "planned",
+      "slot_status": "occupied",
+      "start_status": "staged_waiting_for_task_activation",
+      "onboarded_from_branch": "main",
+      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "merge_group": 40,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Providers/ProvidersServiceProvider.php",
+        "app/Modules/Providers/Domain/Connectors/Contracts/**",
+        "database/migrations/**",
+        "config/**",
+        ".ai/state/**",
+        ".ai/tasks/**",
+        ".ai/parallel/**"
+      ]
+    }
+  ]
+}

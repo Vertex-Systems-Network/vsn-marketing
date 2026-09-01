@@ -8,9 +8,9 @@ use DateTimeImmutable;
 final readonly class ConnectorManifest
 {
     /**
-     * @param list<string> $sandboxLimitations
-     * @param list<ConnectorCapability> $capabilities
-     * @param array<string, mixed> $metadata
+     * @param  list<string>  $sandboxLimitations
+     * @param  list<ConnectorCapability>  $capabilities
+     * @param  array<string, mixed>  $metadata
      */
     public function __construct(
         public string $connectorKey,

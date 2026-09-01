@@ -100,7 +100,7 @@ it('represents simultaneous dynamic quota signals across different scopes and wi
 
 it('preserves raw webhook bytes and fails closed on unsupported, malformed, or duplicate delivery', function () {
     $request = new WebhookRequest(
-        rawBody: "{\"signed\":\"bytes\\nunchanged\"}",
+        rawBody: '{"signed":"bytes\\nunchanged"}',
         headers: ['authorization' => 'Bearer fixture'],
         query: [],
         receivedAt: new DateTimeImmutable('2026-08-31T15:56:00+00:00'),
@@ -130,7 +130,7 @@ it('preserves raw webhook bytes and fails closed on unsupported, malformed, or d
         }
     };
 
-    expect($request->rawBody)->toBe("{\"signed\":\"bytes\\nunchanged\"}")
+    expect($request->rawBody)->toBe('{"signed":"bytes\\nunchanged"}')
         ->and(fn () => (new WebhookIngressGuard($unsupportedVerifier, $replays))->verifyAndClaim('workspace-1', 'fixture', $request))
         ->toThrow(UnexpectedValueException::class, 'Webhook authenticity verification failed closed.');
 

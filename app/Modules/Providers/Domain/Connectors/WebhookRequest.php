@@ -7,8 +7,8 @@ use DateTimeImmutable;
 final readonly class WebhookRequest
 {
     /**
-     * @param array<string, string|list<string>> $headers
-     * @param array<string, string|list<string>> $query
+     * @param  array<string, string|list<string>>  $headers
+     * @param  array<string, string|list<string>>  $query
      */
     public function __construct(
         public string $rawBody,

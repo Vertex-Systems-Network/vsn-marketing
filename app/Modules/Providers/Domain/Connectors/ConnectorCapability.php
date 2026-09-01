@@ -8,8 +8,8 @@ use App\Modules\Providers\Domain\ProviderReadinessStatus;
 final readonly class ConnectorCapability
 {
     /**
-     * @param list<ProviderReadinessStatus> $readinessStates
-     * @param array<string, mixed> $constraints
+     * @param  list<ProviderReadinessStatus>  $readinessStates
+     * @param  array<string, mixed>  $constraints
      */
     public function __construct(
         public string $operation,

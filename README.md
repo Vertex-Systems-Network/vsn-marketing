@@ -80,8 +80,8 @@ The roadmap is research-first: new provider/API/model realities can add justifie
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2-supervisor`  
-Agent instruction fingerprint: `dbf6e53e65cdfe8beb3d20db8fa67fbf21e6e4f53110797d623bf76040025eb8`
+Agent instruction revision: `parallel-v2.1-supervisor-onboarding`  
+Agent instruction fingerprint: `d2f26c4a767db4bfda4e89b38eac2ea1958c160a26327a1715d88ed7452cdc75`
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
@@ -115,6 +115,24 @@ python tools/ai_parallel.py sync-check
 The TASK-0017 pilot branches were pre-created from trusted main `bc821953b69dea2ac58eb1e3dbe41699a0dc111b` and remain staged until TASK-0017 is canonical: `agent/task-0017-research-qa`, `agent/task-0017-ses`, `agent/task-0017-brevo`, `agent/task-0017-gmail`, `agent/task-0017-contract-matrix`, and `supervisor/task-0017-integration`.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
+
+### New agent onboarding
+
+Every new development agent begins from `main` and runs:
+
+```bash
+python tools/ai_parallel.py onboarding-check --branch main
+```
+
+The Supervisor checks the AI-Native Plan for an open slot and assigns one deterministically with:
+
+```bash
+python tools/ai_parallel.py onboard --agent <agent-name> --agent-start-branch main
+```
+
+The assignment marks the slot occupied, records the agent and start status, and refreshes the AI-Native Plan. If all worker/research/QA slots are occupied, onboarding stops immediately and the Supervisor must reply exactly: **`Go Home Come Back Next Time`**. The rejected agent receives no branch assignment, lease, or work.
+
+Dynamic agent/slot assignments update orchestration state but do not require a README fingerprint bump unless working instructions themselves change.
 
 The active task, exact next action, progress, blockers, tests, roadmap, architecture rules, last checkpoint, workstreams, leases, and merge protocol live under [`.ai/`](.ai/).
 

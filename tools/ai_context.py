@@ -14,6 +14,8 @@ CHECKPOINT = AI / "state" / "LAST-CHECKPOINT.md"
 INDEX = AI / "tasks" / "INDEX.yaml"
 ROADMAP = AI / "roadmap" / "ROADMAP.yaml"
 
+# These files define cross-cutting governance and architecture that an execution
+# agent must not silently omit merely because the active task lives elsewhere.
 BASE_FILES = [
     "README.md",
     "AGENTS.md",
@@ -73,7 +75,11 @@ def sha256_text(text: str) -> str:
 def relative_paths(directory: Path, pattern: str) -> list[str]:
     if not directory.exists():
         return []
-    return [str(path.relative_to(ROOT)).replace("\\", "/") for path in sorted(directory.glob(pattern)) if path.is_file()]
+    return [
+        str(path.relative_to(ROOT)).replace("\\", "/")
+        for path in sorted(directory.glob(pattern))
+        if path.is_file()
+    ]
 
 
 def ordered_sources() -> list[str]:
@@ -81,16 +87,32 @@ def ordered_sources() -> list[str]:
     active_task = state["execution"]["active_task"]
     phase = state["execution"]["current_phase"]
     files = list(BASE_FILES)
+
     files.append(f".ai/tasks/{active_task}.yaml")
+
     phase_doc = f".ai/roadmap/{phase}.md"
     if (ROOT / phase_doc).exists():
         files.append(phase_doc)
+
     active_research = f".ai/research/{phase}/{active_task}-RESEARCH.md"
     if (ROOT / active_research).exists():
         files.append(active_research)
+
+    # `.ai/adr` is the canonical architecture-decision location. The legacy
+    # `.ai/decisions` directory is still included so historical continuity
+    # decisions are not erased while the repository contains both namespaces.
     files.extend(relative_paths(AI / "adr", "ADR-*.md"))
-    files.extend(rel for rel in relative_paths(AI / "decisions", "ADR-*.md") if not rel.endswith("ADR-TEMPLATE.md"))
-    files.extend(rel for rel in relative_paths(AI / "contracts", "*.md") if rel not in files)
+    files.extend(
+        rel
+        for rel in relative_paths(AI / "decisions", "ADR-*.md")
+        if not rel.endswith("ADR-TEMPLATE.md")
+    )
+
+    files.extend(
+        rel
+        for rel in relative_paths(AI / "contracts", "*.md")
+        if rel not in files
+    )
     return list(dict.fromkeys(files))
 
 
@@ -102,7 +124,11 @@ def build_pack(include_content: bool) -> dict:
         if not path.exists():
             raise ValueError(f"required context source missing: {rel}")
         text = path.read_text(encoding="utf-8")
-        item = {"path": rel, "sha256": sha256_text(text), "bytes": len(text.encode("utf-8"))}
+        item = {
+            "path": rel,
+            "sha256": sha256_text(text),
+            "bytes": len(text.encode("utf-8")),
+        }
         if include_content:
             item["content"] = text
         sources.append(item)
@@ -113,9 +139,14 @@ def build_pack(include_content: bool) -> dict:
         "current_phase": state["execution"]["current_phase"],
         "next_task": state["execution"].get("next_task"),
         "exact_next_action": state["exact_next_action"],
-        "sources": [{k: v for k, v in item.items() if k != "content"} for item in sources],
+        "sources": [
+            {k: v for k, v in item.items() if k != "content"}
+            for item in sources
+        ],
     }
-    manifest_hash = sha256_text(json.dumps(basis, sort_keys=True, separators=(",", ":"), ensure_ascii=False))
+    manifest_hash = sha256_text(
+        json.dumps(basis, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    )
     return {**basis, "manifest_sha256": manifest_hash, "sources": sources}
 
 
@@ -127,35 +158,53 @@ def verify_manifest(path: Path) -> list[str]:
         errors.append("context manifest hash does not match current repository state")
     if actual.get("active_task") != expected["active_task"]:
         errors.append("context manifest active_task is stale")
-    if [(x.get("path"), x.get("sha256")) for x in actual.get("sources", [])] != [(x.get("path"), x.get("sha256")) for x in expected["sources"]]:
+    if [
+        (x.get("path"), x.get("sha256")) for x in actual.get("sources", [])
+    ] != [
+        (x.get("path"), x.get("sha256")) for x in expected["sources"]
+    ]:
         errors.append("context manifest source order or checksums are stale")
     return errors
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="VSN Marketing deterministic AI context compiler")
+    parser = argparse.ArgumentParser(
+        description="VSN Marketing deterministic AI context compiler"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
-    manifest = sub.add_parser("manifest"); manifest.add_argument("--out")
-    build = sub.add_parser("build"); build.add_argument("--out", required=True)
-    verify = sub.add_parser("verify"); verify.add_argument("--file", required=True)
+    manifest = sub.add_parser("manifest")
+    manifest.add_argument("--out")
+    build = sub.add_parser("build")
+    build.add_argument("--out", required=True)
+    verify = sub.add_parser("verify")
+    verify.add_argument("--file", required=True)
     args = parser.parse_args()
     try:
         if args.command == "manifest":
             payload = build_pack(False)
             text = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
-            if args.out: Path(args.out).write_text(text, encoding="utf-8")
-            else: print(text, end="")
+            if args.out:
+                Path(args.out).write_text(text, encoding="utf-8")
+            else:
+                print(text, end="")
             return 0
         if args.command == "build":
-            Path(args.out).write_text(json.dumps(build_pack(True), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-            print(f"Context pack written: {args.out}"); return 0
+            Path(args.out).write_text(
+                json.dumps(build_pack(True), indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            print(f"Context pack written: {args.out}")
+            return 0
         errors = verify_manifest(Path(args.file))
         if errors:
-            for error in errors: print(f"ERROR: {error}")
+            for error in errors:
+                print(f"ERROR: {error}")
             return 1
-        print("Context manifest matches current repository state."); return 0
+        print("Context manifest matches current repository state.")
+        return 0
     except (ValueError, KeyError, json.JSONDecodeError, OSError) as exc:
-        print(f"ERROR: {exc}"); return 1
+        print(f"ERROR: {exc}")
+        return 1
 
 
 if __name__ == "__main__":

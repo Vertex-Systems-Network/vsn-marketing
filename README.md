@@ -81,7 +81,7 @@ The roadmap is research-first: new provider/API/model realities can add justifie
 ## For coding agents and contributors
 
 Agent instruction revision: `parallel-v2.1-supervisor-onboarding`  
-Agent instruction fingerprint: `d2f26c4a767db4bfda4e89b38eac2ea1958c160a26327a1715d88ed7452cdc75`
+Agent instruction fingerprint: `6963e4a3b40f2e6209b6ee205be534e549a625898dc60cab554879a9ecaf0f97`
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 

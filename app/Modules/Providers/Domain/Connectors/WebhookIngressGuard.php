@@ -19,8 +19,7 @@ final readonly class WebhookIngressGuard
         WebhookRequest $request,
         bool $verificationRequired = true,
         bool $replayProtectionRequired = true,
-    ): WebhookVerificationResult
-    {
+    ): WebhookVerificationResult {
         $result = $this->verifier->verify($request);
 
         if (! $result->accepts($verificationRequired)) {

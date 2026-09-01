@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "supervisor_owned_paths": [
+    ".ai/state/**",
+    ".ai/tasks/**",
+    ".ai/roadmap/**",
+    ".ai/parallel/**",
+    "AGENTS.md",
+    "README.md",
+    ".github/**",
+    "composer.json",
+    "composer.lock",
+    "package.json",
+    "package-lock.json",
+    "config/**",
+    "routes/**",
+    "database/migrations/**",
+    "app/Modules/Core/**",
+    "app/Modules/Providers/ProvidersServiceProvider.php",
+    "app/Modules/Providers/Domain/Connectors/Contracts/**"
+  ]
+}

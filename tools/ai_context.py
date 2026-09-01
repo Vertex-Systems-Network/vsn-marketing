@@ -17,6 +17,7 @@ ROADMAP = AI / "roadmap" / "ROADMAP.yaml"
 # These files define cross-cutting governance and architecture that an execution
 # agent must not silently omit merely because the active task lives elsewhere.
 BASE_FILES = [
+    "README.md",
     "AGENTS.md",
     ".ai/README.md",
     ".ai/00-PROJECT-CHARTER.md",
@@ -32,6 +33,12 @@ BASE_FILES = [
     ".ai/10-AI-CONTROL-PLANE.md",
     ".ai/11-RESEARCH-FIRST-STANDARD.md",
     ".ai/12-QUALITY-ENGINEERING-GATES.md",
+    ".ai/13-PARALLEL-DEVELOPMENT.md",
+    ".ai/parallel/CONTROL.yaml",
+    ".ai/parallel/AI-NATIVE-PLAN.md",
+    ".ai/parallel/WORKSTREAMS.yaml",
+    ".ai/parallel/AGENT-LEASES.yaml",
+    ".ai/parallel/SHARED-PATHS.yaml",
     ".ai/state/CURRENT-STATE.yaml",
     ".ai/state/LAST-CHECKPOINT.md",
     ".ai/state/BLOCKERS.md",

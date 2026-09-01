@@ -6,18 +6,20 @@ This repository is designed to be developed by humans and multiple AI coding age
 
 The repository is the memory. Before changing anything, every agent MUST read, in order:
 
-1. `.ai/00-PROJECT-CHARTER.md`
-2. `.ai/01-MASTER-ARCHITECTURE.md`
-3. `.ai/05-AI-RULES.md`
-4. `.ai/10-AI-CONTROL-PLANE.md`
-5. `.ai/11-RESEARCH-FIRST-STANDARD.md`
-6. `.ai/12-QUALITY-ENGINEERING-GATES.md`
-7. `.ai/roadmap/PREPLANNED-IMPLEMENTATION-PLAN.md`
-8. `.ai/state/CURRENT-STATE.yaml`
-9. `.ai/state/LAST-CHECKPOINT.md`
-10. `.ai/state/EXECUTION-JOURNAL.jsonl`
-11. the active task referenced by `CURRENT-STATE.yaml`
-12. relevant ADRs, contracts, AI registries, research packs, and phase document
+1. `README.md` — operator-facing working instructions and current instruction revision/fingerprint.
+2. `.ai/00-PROJECT-CHARTER.md`
+3. `.ai/01-MASTER-ARCHITECTURE.md`
+4. `.ai/05-AI-RULES.md`
+5. `.ai/10-AI-CONTROL-PLANE.md`
+6. `.ai/11-RESEARCH-FIRST-STANDARD.md`
+7. `.ai/12-QUALITY-ENGINEERING-GATES.md`
+8. `.ai/13-PARALLEL-DEVELOPMENT.md` and `.ai/parallel/AI-NATIVE-PLAN.md` plus the machine registries under `.ai/parallel/`
+9. `.ai/roadmap/PREPLANNED-IMPLEMENTATION-PLAN.md`
+10. `.ai/state/CURRENT-STATE.yaml`
+11. `.ai/state/LAST-CHECKPOINT.md`
+12. `.ai/state/EXECUTION-JOURNAL.jsonl`
+13. the active task referenced by `CURRENT-STATE.yaml`
+14. relevant ADRs, contracts, AI registries, research packs, and phase document
 
 Then run:
 
@@ -28,9 +30,12 @@ python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_journal.py validate
 python tools/ai_policy.py
+python tools/ai_parallel.py validate
 python tools/ai_context.py manifest
 python tools/ai_state.py status
 python tools/ai_journal.py status
+python tools/ai_parallel.py status
+python tools/ai_parallel.py sync-check
 ```
 
 `ai_txn.py recover` rolls back an interrupted continuity mutation before any new work begins. `ai_state.py recover` then compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. No implementation work may begin if a validator fails. Reconcile state first.
@@ -53,6 +58,21 @@ python tools/ai_journal.py status
 - Treat `tools/ai_context.py manifest` as the canonical context inventory. If its manifest changes while working, inspect the changed source before continuing.
 - Product AI must follow `.ai/10-AI-CONTROL-PLANE.md` and the machine-readable registries under `.ai/ai/`; prompts cannot override deterministic tool/risk policy.
 - The preplanned roadmap is a minimum known plan. Research may extend it explicitly but may never silently remove, weaken, reorder, or reinterpret existing requirements.
+- Parallel writable work MUST follow `.ai/13-PARALLEL-DEVELOPMENT.md`: one canonical top-level active task, pre-created dedicated branches/worktrees, explicit workstreams, assigned agents, exclusive leases, and disjoint declared write paths.
+- The agent operating the main-repository context is the **Supervisor**. The Supervisor owns review/merge decisions, shared paths, merge order, and post-merge broadcasts; protected `main` is never used as the Supervisor's scratch branch.
+- Before a declared parallel cycle begins, branch creation for every worker/Supervisor workstream is the Supervisor's first repository mutation. Planning/code writes must not precede branch creation.
+- Normal worker/research agents MUST NOT write Supervisor-owned paths from `.ai/parallel/SHARED-PATHS.yaml`; they escalate shared changes instead.
+- A non-draft registered workstream PR is not submitted until it contains `Workstream: <ID>` and the exact completion signal `Work Done and Submitted`.
+- A submitted workstream PR preempts optional Supervisor implementation work. The Supervisor pauses, reviews, merges only approved/current-main/green work, broadcasts the merge, synchronizes its own branch, then resumes.
+- After every workstream merge, the Supervisor sends the exact alert `New changes have been merged — please merge these changes into your branch first, then resume your own work.` to GitHub issue #43 and every other open registered workstream PR.
+- Every active worker must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, and rerun affected fast checks before resuming after an alert.
+- Canonical agent-working instruction changes MUST update `.ai/parallel/CONTROL.yaml` and the matching instruction revision/fingerprint plus working guidance in `README.md` in the same PR; stale README instructions are a CI failure.
+
+## Parallel Supervisor interrupt protocol
+
+A registered non-draft pull request containing the exact standalone line `Work Done and Submitted` is a durable submission interrupt. When one appears, the Supervisor must pause its own module work at a safe checkpoint, review the submission, verify current-main ancestry and required exact-head CI, merge if approved, broadcast the required alert to issue #43 and all remaining open workstream PRs, synchronize the Supervisor branch with the new main SHA, rerun affected checks, and only then resume its paused work.
+
+A worker receiving the alert must stop before another write, merge/pull latest `main`, resolve only owned-path conflicts (escalating shared conflicts), run `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume. Chat-only completion/alert messages are not durable repository evidence; PRs and the broadcast issue are the persistent coordination surfaces.
 
 ## Research-first protocol
 

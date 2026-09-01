@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "protocol_version": "2.1.0",
+  "instruction_revision": "parallel-v2.1-supervisor-onboarding",
+  "instruction_sources": [
+    ".ai/13-PARALLEL-DEVELOPMENT.md"
+  ],
+  "instruction_fingerprint": "d2f26c4a767db4bfda4e89b38eac2ea1958c160a26327a1715d88ed7452cdc75",
+  "supervisor_agent": "supervisor-main",
+  "protected_main_branch": "main",
+  "branch_creation_required_before_plan_writes": true,
+  "required_completion_signal": "Work Done and Submitted",
+  "required_merge_alert": "New changes have been merged — please merge these changes into your branch first, then resume your own work.",
+  "broadcast_issue_number": 43,
+  "default_pr_merge_strategy": "squash",
+  "agent_main_sync_strategy": "merge",
+  "default_max_concurrent_writers": 6,
+  "scale_target_writers": 10,
+  "hard_cap_writers": 12,
+  "one_writer_lease_per_agent": true,
+  "supervisor_owns_global_state": true,
+  "parent_task_must_be_active_for_writes": true,
+  "current_main_must_be_ancestor_before_resume_or_submit": true,
+  "new_agent_must_start_from_main": true,
+  "onboarding_requires_supervisor": true,
+  "onboarding_assignment_strategy": "lowest_merge_group_open_slot",
+  "onboarding_no_slot_message": "Go Home Come Back Next Time",
+  "dynamic_plan_assignment_changes_do_not_require_instruction_revision": true
+}

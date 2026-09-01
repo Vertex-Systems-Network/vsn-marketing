@@ -25,7 +25,11 @@ AI MUST NOT:
 - implement a new subsystem/provider/channel/API/AI capability from assumptions without the required current research;
 - use research as permission to silently delete, weaken, reorder, or reinterpret the preplanned roadmap;
 - select an AI/provider route solely because it is popular or marketed as best;
-- treat stale API/model/platform documentation as current evidence when the task is freshness-sensitive.
+- treat stale API/model/platform documentation as current evidence when the task is freshness-sensitive;
+- start or continue writable parallel work without a registered workstream, assigned branch/worktree, exclusive lease, current instruction revision, dependency readiness, and disjoint write-path ownership;
+- let a worker mutate Supervisor-owned shared paths or bypass the shared-contract/migration barrier;
+- treat a chat-only completion message as durable submission evidence when a registered workstream PR is required;
+- continue writable work after `main` advanced until the branch is synchronized and `ai_parallel.py sync-check` passes.
 
 AI MUST:
 
@@ -39,7 +43,13 @@ AI MUST:
 - evaluate applicable Quality Engineering Gates for every task and phase certification;
 - preserve exact next-action handoff on interruption;
 - record blockers rather than guessing;
-- keep implementation, tests, task state, registry, research evidence, and checkpoint synchronized.
+- keep implementation, tests, task state, registry, research evidence, and checkpoint synchronized;
+- validate `.ai/13-PARALLEL-DEVELOPMENT.md` and `.ai/parallel/` before writable parallel work;
+- require the Supervisor to create all declared parallel branches before any planning/code write for that parallel cycle;
+- require every completed workstream PR to announce exactly `Work Done and Submitted`;
+- require the Supervisor to process submitted work before resuming optional own-module work, then broadcast the exact merge alert through issue #43 and remaining open workstream PRs;
+- require alerted agents to synchronize latest `main` before resuming;
+- keep `README.md` synchronized whenever canonical agent-working instructions change, including the deterministic instruction revision/fingerprint enforced by `tools/ai_parallel.py`.
 
 ## Research and roadmap rule
 

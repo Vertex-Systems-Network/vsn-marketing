@@ -46,6 +46,12 @@ Every phase evaluates applicable `.ai/12-QUALITY-ENGINEERING-GATES.md` controls.
 
 A phase cannot close merely because feature code exists.
 
+## Parallel execution rule
+
+Phase/task sequencing remains canonical even when implementation is parallelized. The active top-level task may be decomposed into Supervisor-controlled workstreams under `.ai/13-PARALLEL-DEVELOPMENT.md`; parallel work does not make later roadmap tasks active. The Supervisor creates every declared branch first, assigns one agent/worktree/write scope per lane, owns shared state/contracts/migrations and all merges, processes `Work Done and Submitted` submissions as interrupts, broadcasts every merge, and requires all active branches to synchronize latest `main` before resuming.
+
+This rule is reusable across all later phases whenever independent modules/capabilities provide safe path-disjoint work.
+
 ## Sequence principle
 
 Foundation → Data → Provider Abstraction → Delivery → Deliverability → Content/Creative → Campaigns/Publishing → Segmentation → Journeys → AI → Optimization → Analytics → Omnichannel/Social → Connector Factory → Autonomous Marketing → Enterprise.

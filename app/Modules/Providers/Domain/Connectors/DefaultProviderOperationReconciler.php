@@ -9,7 +9,8 @@ final readonly class DefaultProviderOperationReconciler implements ProviderOpera
     public function reconcile(
         ProviderOperation $operation,
         ProviderOperationObservation $observation,
-    ): ProviderOperation {
+    ): ProviderOperation
+    {
         return $operation->withObservation($observation);
     }
 }

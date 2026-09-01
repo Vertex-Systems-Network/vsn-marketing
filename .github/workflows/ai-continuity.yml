@@ -41,6 +41,10 @@ jobs:
         run: python tools/ai_journal.py validate
       - name: Validate AI policy registries
         run: python tools/ai_policy.py
+      - name: Validate parallel Supervisor control plane
+        run: python tools/ai_parallel.py validate
+      - name: Require pre-created workstream branches
+        run: python tools/ai_parallel.py validate-remote-branches
       - name: Test transactional continuity recovery
         run: python tools/test_ai_txn.py
       - name: Test AI continuity integrity guards
@@ -49,8 +53,16 @@ jobs:
         run: python tools/test_ai_context.py
       - name: Test AI policy negative guards
         run: python tools/test_ai_policy.py
+      - name: Test parallel Supervisor negative guards
+        run: python tools/test_ai_parallel.py
       - name: Compile deterministic AI context manifest
         run: python tools/ai_context.py manifest > /tmp/vsn-ai-context-manifest.json
+      - name: Validate registered workstream PR submission signal
+        if: github.event_name == 'pull_request'
+        run: python tools/ai_parallel.py validate-pr-event --event-path "$GITHUB_EVENT_PATH"
+      - name: Require registered workstream branch to contain current main
+        if: github.event_name == 'pull_request'
+        run: python tools/ai_parallel.py sync-check --branch "${{ github.event.pull_request.head.ref }}"
       - name: Require append-only journal history (PR)
         if: github.event_name == 'pull_request'
         run: python tools/ai_journal.py verify-append-only --base "${{ github.event.pull_request.base.sha }}"
@@ -61,6 +73,7 @@ jobs:
         run: |
           python tools/ai_state.py status
           python tools/ai_journal.py status
+          python tools/ai_parallel.py status
       - name: Require ledger update for product changes (PR)
         if: github.event_name == 'pull_request'
         run: python tools/ai_state.py verify-change-set --base "${{ github.event.pull_request.base.sha }}" --head "${{ env.TARGET_SHA }}"

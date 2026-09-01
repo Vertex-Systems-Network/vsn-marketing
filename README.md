@@ -80,14 +80,43 @@ The roadmap is research-first: new provider/API/model realities can add justifie
 
 ## For coding agents and contributors
 
-Read [`AGENTS.md`](AGENTS.md), then run:
+Agent instruction revision: `parallel-v2-supervisor`  
+Agent instruction fingerprint: `dbf6e53e65cdfe8beb3d20db8fa67fbf21e6e4f53110797d623bf76040025eb8`
+
+VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
+
+Before modifying the repository, read this README, [`AGENTS.md`](AGENTS.md), [`.ai/13-PARALLEL-DEVELOPMENT.md`](.ai/13-PARALLEL-DEVELOPMENT.md), and the machine registries under [`.ai/parallel/`](.ai/parallel/). Then run the full startup sequence from `AGENTS.md`, including:
 
 ```bash
+python tools/ai_txn.py recover
+python tools/ai_txn.py validate
+python tools/ai_state.py recover
 python tools/ai_state.py validate
+python tools/ai_journal.py validate
+python tools/ai_policy.py
+python tools/ai_parallel.py validate
+python tools/ai_context.py manifest
 python tools/ai_state.py status
+python tools/ai_journal.py status
+python tools/ai_parallel.py status
+python tools/ai_parallel.py sync-check
 ```
 
-The active task, exact next action, progress, blockers, tests, roadmap, architecture rules, and last checkpoint live under [`.ai/`](.ai/).
+### Parallel agent rules
+
+- **Branch-first:** for a declared parallel cycle, the Supervisor's first repository mutation is creating every worker branch and its own `supervisor/...` branch. No planning/code write precedes branch creation.
+- **One writer, one lane:** writable parallel work requires a registered workstream, assigned logical agent, dedicated branch/worktree, exclusive lease, dependency readiness, and non-overlapping write paths.
+- **Shared files:** workers do not edit Supervisor-owned state/tasks/roadmap/parallel registries, dependency manifests, workflows/config/routes, migrations, Core, or canonical connector contracts.
+- **Completion:** when a worker or the Supervisor finishes its assigned workstream, its non-draft PR must contain `Workstream: <ID>` and the exact standalone signal **`Work Done and Submitted`**.
+- **Supervisor interrupt:** a submitted workstream PR preempts optional Supervisor module work. The Supervisor pauses, reviews, merges only approved/current-main/green changes, synchronizes its own branch, then resumes.
+- **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
+- **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
+
+The TASK-0017 pilot branches were pre-created from trusted main `bc821953b69dea2ac58eb1e3dbe41699a0dc111b` and remain staged until TASK-0017 is canonical: `agent/task-0017-research-qa`, `agent/task-0017-ses`, `agent/task-0017-brevo`, `agent/task-0017-gmail`, `agent/task-0017-contract-matrix`, and `supervisor/task-0017-integration`.
+
+**Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
+
+The active task, exact next action, progress, blockers, tests, roadmap, architecture rules, last checkpoint, workstreams, leases, and merge protocol live under [`.ai/`](.ai/).
 
 ## Architectural direction
 

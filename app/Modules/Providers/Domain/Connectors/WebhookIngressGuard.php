@@ -23,11 +23,11 @@ final readonly class WebhookIngressGuard
     {
         $result = $this->verifier->verify($request);
 
-        if (! $result->accepts($verificationRequired)) {
+        if (!$result->accepts($verificationRequired)) {
             throw new UnexpectedValueException('Webhook authenticity verification failed closed.');
         }
 
-        if (! $replayProtectionRequired) {
+        if (!$replayProtectionRequired) {
             return $result;
         }
 
@@ -36,7 +36,7 @@ final readonly class WebhookIngressGuard
             throw new UnexpectedValueException('Webhook replay protection requires a deduplication key.');
         }
 
-        if (! $this->replayGuard->claim($workspaceId, $connectorKey, $key, $request->receivedAt)) {
+        if (!$this->replayGuard->claim($workspaceId, $connectorKey, $key, $request->receivedAt)) {
             throw new UnexpectedValueException('Webhook replay or duplicate delivery detected.');
         }
 

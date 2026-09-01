@@ -1,36 +1,98 @@
 {
+  "schema_version": 1,
   "id": "TASK-0017",
-  "name": "Initial reference connectors and sandbox contract matrix",
   "phase": "PHASE-03",
   "module": "Connectors",
   "title": "Implement initial reference connectors and sandbox contract matrix",
   "status": "planned",
-  "objective": "Implement the initial reference delivery, marketing-platform and mailbox connectors selected by current PHASE-03 research, and prove each adapter against the provider-neutral TASK-0016 contracts plus an explicit sandbox/test limitation matrix without allowing provider behavior to own canonical application data.",
-  "dependencies": ["TASK-0016"],
-  "branch": "task-0017-reference-connectors",
-  "allowed_paths": [
-    ".ai/tasks/**", ".ai/research/**", ".ai/integrations/**", ".ai/parallel/**",
-    "app/Modules/Providers/**", "tests/Feature/Providers/**", "tests/Fixtures/Providers/**", "README.md", "docs/**"
+  "objective": "Implement a deliberately diverse first connector set that proves the canonical provider framework across delivery, delivery/marketing and mailbox classes without allowing any provider to own core data or behavior.",
+  "dependencies": [
+    "TASK-0016"
   ],
   "acceptance_criteria": [
-    {"id":"AC-1","text":"Current provider documentation is revalidated for Amazon SES, Brevo and Gmail before adapter implementation, including authentication/scopes, sandbox or test behavior, rate/quota signals, webhook or push-notification behavior, current API/version/deprecation constraints and provider review or production restrictions","done":false},
-    {"id":"AC-2","text":"Amazon SES, Brevo and Gmail reference adapters implement only the provider-neutral TASK-0016 connector contracts and retain provider-specific behavior behind connector boundaries without provider SDKs leaking into canonical business modules","done":false},
-    {"id":"AC-3","text":"Authentication lifecycle, capability/readiness truth, quota/runtime evidence and unsupported operations are covered per connector without persisting raw credentials in canonical application data","done":false},
-    {"id":"AC-4","text":"Transient/permanent errors, rate limits, idempotency, asynchronous reconciliation and webhook success/malformed/authenticity/replay behavior are contract-tested where the provider supports the relevant capability","done":false},
-    {"id":"AC-5","text":"Sandbox/test limitations and any provider review or production-readiness restrictions are explicit test evidence rather than silently treated as production capability","done":false},
-    {"id":"AC-6","text":"Gmail mailbox operations remain logically distinct from bulk marketing delivery, and no PHASE-04 routing/failover engine or PHASE-13 social connector implementation is pulled forward","done":false},
-    {"id":"AC-7","text":"Cross-workspace connector/connection/reference isolation and all applicable backend/integration/architecture/static/format/frontend/AI-continuity gates are green on the exact TASK-0017 acceptance head","done":false},
-    {"id":"AC-8","text":"Before TASK-0017 writable parallel work begins, the Supervisor has pre-created every declared worker/Supervisor branch from a known main SHA, and the AI-Native Plan plus WORKSTREAMS registry map each branch to module/capability, assigned agent, dedicated worktree, dependencies, write paths, merge group and squash strategy with remote branch validation green","done":false},
-    {"id":"AC-9","text":"TASK-0017 workstreams use exclusive leases and zero overlapping active write scopes; Supervisor-owned shared paths/contracts/migrations/state are not mutated by workers, and the Supervisor works only from its own registered branch while owning all workstream PR review/merge decisions","done":false},
-    {"id":"AC-10","text":"Every completed registered non-draft workstream PR announces exactly `Work Done and Submitted`; each submission preempts optional Supervisor module work for review, and every successful merge triggers the exact merge alert through broadcast issue #43 and all remaining open workstream PRs","done":false},
-    {"id":"AC-11","text":"Every alerted active agent and the Supervisor synchronize latest main into their branch before resuming, with current-main ancestry enforced by `ai_parallel.py sync-check`/CI; stale-main submissions fail closed","done":false},
-    {"id":"AC-12","text":"Canonical agent-working instructions, README guidance, instruction revision/fingerprint and deterministic context pack remain synchronized; negative guard tests reject missing branches, stale instructions, invalid completion signals, duplicate leases, shared-path writes, overlapping writers, wrong parent task and excessive concurrency","done":false},
-    {"id":"AC-13","text":"New-agent onboarding is admission-controlled: every new agent starts from main, the Supervisor assigns only an open pre-created slot and records agent/start status in the AI-Native Plan and WORKSTREAMS registry, and a full registry rejects with exact `Go Home Come Back Next Time` without branch assignment, lease, or work starting","done":false}
+    {
+      "id": "AC-1",
+      "text": "Fresh TASK-0017 research revalidates the reference-provider choice and current APIs; unless evidence requires an explicit roadmap change, the reference set is Amazon SES, Brevo and Gmail API as selected by TASK-0013 research",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Each reference connector implements the same provider-neutral contracts and advertises only capabilities/readiness actually proven by implementation and tests; provider IDs never become core behavioral branches",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Authentication success/failure, scopes/readiness, secret-reference handling, current rate/quota behavior and unsupported operations are covered per connector without persisting raw credentials in canonical application data",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Transient/permanent errors, rate limits, idempotency, asynchronous reconciliation and webhook success/malformed/authenticity/replay behavior are contract-tested where the provider supports the relevant capability",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Sandbox/test limitations and any provider review or production-readiness restrictions are explicit test evidence rather than silently treated as production capability",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Gmail mailbox operations remain logically distinct from bulk marketing delivery, and no PHASE-04 routing/failover engine or PHASE-13 social connector implementation is pulled forward",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Cross-workspace connector/connection/reference isolation and all applicable backend/integration/architecture/static/format/frontend/AI-continuity gates are green on the exact TASK-0017 acceptance head",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Before TASK-0017 writable parallel work begins, the Supervisor has pre-created every declared worker/Supervisor branch from a known main SHA, and the AI-Native Plan plus WORKSTREAMS registry map each branch to module/capability, assigned agent, dedicated worktree, dependencies, write paths, merge group and squash strategy with remote branch validation green",
+      "done": false
+    },
+    {
+      "id": "AC-9",
+      "text": "TASK-0017 workstreams use exclusive leases and zero overlapping active write scopes; Supervisor-owned shared paths/contracts/migrations/state are not mutated by workers, and the Supervisor works only from its own registered branch while owning all workstream PR review/merge decisions",
+      "done": false
+    },
+    {
+      "id": "AC-10",
+      "text": "Every completed registered non-draft workstream PR announces exactly `Work Done and Submitted`; each submission preempts optional Supervisor module work for review, and every successful merge triggers the exact merge alert through broadcast issue #43 and all remaining open workstream PRs",
+      "done": false
+    },
+    {
+      "id": "AC-11",
+      "text": "Every alerted active agent and the Supervisor synchronize latest main into their branch before resuming, with current-main ancestry enforced by `ai_parallel.py sync-check`/CI; stale-main submissions fail closed",
+      "done": false
+    },
+    {
+      "id": "AC-12",
+      "text": "Canonical agent-working instructions, README guidance, instruction revision/fingerprint and deterministic context pack remain synchronized; negative guard tests reject missing branches, stale instructions, invalid completion signals, duplicate leases, shared-path writes, overlapping writers, wrong parent task and excessive concurrency",
+      "done": false
+    },
+    {
+      "id": "AC-13",
+      "text": "New-agent onboarding is admission-controlled: every new agent starts from main, the Supervisor assigns only an open pre-created slot and records agent/start status in the AI-Native Plan/WORKSTREAMS registry, and a full registry rejects the agent with exact `Go Home Come Back Next Time` without branch/lease/work assignment",
+      "done": false
+    }
   ],
   "required_tests": [
-    "python tools/ai_txn.py validate", "python tools/ai_state.py validate", "python tools/ai_journal.py validate", "python tools/ai_policy.py",
-    "python tools/ai_parallel.py validate-remote-branches", "python tools/ai_parallel.py validate", "python tools/test_ai_parallel.py", "python tools/ai_context.py manifest",
-    "php artisan test", "php artisan test --testsuite=Integration", "composer analyse", "composer lint:check", "npm run typecheck", "npm run test", "npm run build", "npm run test:e2e"
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate-remote-branches",
+    "python tools/ai_parallel.py validate",
+    "python tools/test_ai_parallel.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
   ],
-  "exact_next_action": "Activate the staged Supervisor control plane only after TASK-0017 is canonical: onboard new agents only from main into open pre-created slots, verify all branches against remote, revalidate TASK-0017 research, lease path-disjoint research/SES/Brevo/Gmail/contract-matrix/Supervisor lanes, require `Work Done and Submitted` for each non-draft submission, and after every Supervisor merge broadcast/synchronize latest main before any agent resumes."
+  "exact_next_action": "Activate the staged Supervisor control plane only after TASK-0017 is canonical: verify all pre-created branches against remote, run/revalidate TASK-0017 research, lease path-disjoint research/SES/Brevo/Gmail/contract-matrix/Supervisor lanes, require `Work Done and Submitted` for each non-draft submission, and after every Supervisor merge broadcast/synchronize latest main before any agent resumes; onboard additional agents only from main into open slots, otherwise return `Go Home Come Back Next Time`."
 }

@@ -65,7 +65,7 @@
       "merge_strategy": "squash",
       "write_paths": [
         "app/Modules/Providers/Infrastructure/Connectors/Brevo/**",
-        "tests/Feature/Providers/Infrastructure/Connectors/Brevo/**"
+        "tests/Feature/Providers/Connectors/Brevo/**"
       ]
     },
     {

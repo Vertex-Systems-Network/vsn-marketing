@@ -84,7 +84,7 @@ it('normalizes SES auth rate validation and availability failures while preservi
         ->and($limited->retryAfterSeconds)->toBe(7)
         ->and($limited->isRetryable())->toBeTrue()
         ->and($limited->evidence['metadata']['request_id'])->toBe('req-rate')
-        ->and($auth->category)->toBe(ProviderErrorCategory::Authorization)
+        ->and($auth->category)->toBe(ProviderErrorCategory::Authentication)
         ->and($rejected->category)->toBe(ProviderErrorCategory::Validation)
         ->and($unavailable->category)->toBe(ProviderErrorCategory::Unavailable)
         ->and($unavailable->isRetryable())->toBeTrue();

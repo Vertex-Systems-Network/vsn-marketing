@@ -55,6 +55,8 @@ jobs:
         run: python tools/test_ai_policy.py
       - name: Test parallel Supervisor negative guards
         run: python tools/test_ai_parallel.py
+      - name: Test worker ledger ownership guards
+        run: python tools/test_ai_workstream_ledger.py
       - name: Compile deterministic AI context manifest
         run: python tools/ai_context.py manifest > /tmp/vsn-ai-context-manifest.json
       - name: Validate registered workstream PR submission signal
@@ -74,12 +76,43 @@ jobs:
           python tools/ai_state.py status
           python tools/ai_journal.py status
           python tools/ai_parallel.py status
-      - name: Require ledger update for product changes (PR)
+      - name: Enforce worker ledger ownership or require global ledger (PR)
         if: github.event_name == 'pull_request'
-        run: python tools/ai_state.py verify-change-set --base "${{ github.event.pull_request.base.sha }}" --head "${{ env.TARGET_SHA }}"
-      - name: Require ledger update for product changes (push)
+        shell: bash
+        run: |
+          set +e
+          python tools/ai_workstream_ledger.py \
+            --mode pr \
+            --event-path "$GITHUB_EVENT_PATH" \
+            --base "${{ github.event.pull_request.base.sha }}" \
+            --head "${{ env.TARGET_SHA }}"
+          decision=$?
+          set -e
+          if [ "$decision" -eq 0 ]; then
+            echo "Registered worker PR is lease-contained; Supervisor retains global ledger ownership."
+          elif [ "$decision" -eq 2 ]; then
+            python tools/ai_state.py verify-change-set --base "${{ github.event.pull_request.base.sha }}" --head "${{ env.TARGET_SHA }}"
+          else
+            exit "$decision"
+          fi
+      - name: Enforce worker merge ledger ownership or require global ledger (push)
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
-        run: python tools/ai_state.py verify-change-set --base "${{ github.event.before }}" --head "${{ env.TARGET_SHA }}"
+        shell: bash
+        run: |
+          set +e
+          python tools/ai_workstream_ledger.py \
+            --mode push \
+            --base "${{ github.event.before }}" \
+            --head "${{ env.TARGET_SHA }}"
+          decision=$?
+          set -e
+          if [ "$decision" -eq 0 ]; then
+            echo "Merged worker change is lease-contained; Supervisor retains global ledger ownership until integration."
+          elif [ "$decision" -eq 2 ]; then
+            python tools/ai_state.py verify-change-set --base "${{ github.event.before }}" --head "${{ env.TARGET_SHA }}"
+          else
+            exit "$decision"
+          fi
 
   publish-default-branch-governance:
     name: publish-default-branch-governance

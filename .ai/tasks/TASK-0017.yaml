@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Connectors",
   "title": "Implement initial reference connectors and sandbox contract matrix",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement a deliberately diverse first connector set that proves the canonical provider framework across delivery, delivery/marketing and mailbox classes without allowing any provider to own core data or behavior.",
   "dependencies": [
     "TASK-0016"
@@ -94,5 +94,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Activate the staged Supervisor control plane only after TASK-0017 is canonical: verify all pre-created branches against remote, run/revalidate TASK-0017 research, lease path-disjoint research/SES/Brevo/Gmail/contract-matrix/Supervisor lanes, require `Work Done and Submitted` for each non-draft submission, and after every Supervisor merge broadcast/synchronize latest main before any agent resumes; onboard additional agents only from main into open slots, otherwise return `Go Home Come Back Next Time`."
+  "exact_next_action": "Onboard the first new agent from main into WS-0017-RESEARCH-QA, verify its registered remote branch contains current main, lease only the research write scope, revalidate current Amazon SES, Brevo and Gmail official APIs plus sandbox/readiness constraints, then after the Supervisor reviews/merges that research and broadcasts latest main, open the dependency-ready SES/Brevo/Gmail/contract-matrix slots for parallel onboarding."
 }

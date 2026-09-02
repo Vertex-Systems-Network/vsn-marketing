@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Connectors",
   "title": "Implement adapter, error, quota, webhook and reconciliation contracts",
-  "status": "ready",
+  "status": "completed",
   "objective": "Define stable provider-neutral connector contracts for capabilities, normalized errors/events, quota/rate signals, webhook verification/replay/idempotency, asynchronous status reconciliation and API version/deprecation metadata.",
   "dependencies": [
     "TASK-0015"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "Connector manifests and interfaces expose granular capabilities/readiness metadata without provider-name conditionals in core/application code and explicitly represent unsupported/unknown operations",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Provider errors normalize into stable retryable, rate-limited, authentication, authorization, validation, unavailable and permanent categories while preserving provider-specific evidence for diagnostics",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Webhook verification is connector-owned and strategy-driven, preserves raw-body requirements, rejects failed authenticity checks when required, protects against replay and deduplicates/reconciles canonical events idempotently",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Rate/quota contracts can ingest dynamic provider metadata and response/reset signals across multiple windows/scopes/units without freezing volatile limits into core constants",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Asynchronous external operations support provider operation IDs, status polling/webhook reconciliation, terminal-state mapping and duplicate-safe retries instead of assuming HTTP success equals business completion",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Connector metadata records API/version/deprecation/documentation provenance and sandbox/test limitations, with contract tests covering malformed/unsupported behaviors and fail-closed semantics",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "AI continuity and all applicable backend/integration/architecture/static/format/frontend quality gates are green on the exact TASK-0016 acceptance head",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

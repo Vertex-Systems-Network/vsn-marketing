@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "mode": "staged",
+  "mode": "active",
   "parent_task": "TASK-0017",
   "branch_creation_baseline_sha": "bc821953b69dea2ac58eb1e3dbe41699a0dc111b",
   "branches_precreated": true,
@@ -36,7 +36,9 @@
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "dependencies": [
+        "WS-0017-RESEARCH-QA"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
@@ -55,7 +57,9 @@
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "dependencies": [
+        "WS-0017-RESEARCH-QA"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
@@ -74,7 +78,9 @@
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "dependencies": [
+        "WS-0017-RESEARCH-QA"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
@@ -93,7 +99,9 @@
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "dependencies": [
+        "WS-0017-RESEARCH-QA"
+      ],
       "merge_group": 30,
       "merge_strategy": "squash",
       "write_paths": [
@@ -111,9 +119,11 @@
       "worktree": "worktrees/task-0017-integration",
       "status": "planned",
       "slot_status": "occupied",
-      "start_status": "staged_waiting_for_task_activation",
+      "start_status": "assigned_waiting_for_dependencies",
       "onboarded_from_branch": "main",
-      "dependencies": ["WS-0017-RESEARCH-QA"],
+      "dependencies": [
+        "WS-0017-RESEARCH-QA"
+      ],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [

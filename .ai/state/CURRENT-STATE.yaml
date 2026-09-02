@@ -8,22 +8,22 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-03",
-    "active_task": "TASK-0016",
-    "last_completed_task": "TASK-0015",
-    "next_task": "TASK-0017"
+    "active_task": "TASK-0017",
+    "last_completed_task": "TASK-0016",
+    "next_task": "TASK-0018"
   },
   "progress": {
-    "roadmap_percent": 21.5,
-    "phase_percent": 50.0,
+    "roadmap_percent": 22.9,
+    "phase_percent": 70.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0016_candidate_ledger_synchronized",
-    "application_test_status": "task_0016_exact_head_ci_pending",
-    "security_supply_chain_status": "task_0016_exact_head_ci_pending",
-    "release_integrity_status": "task_0015_main_push_passed_signed_attestations",
-    "scorecard_status": "task_0015_main_push_passed"
+    "continuity_validation": "task_0016_main_push_passed",
+    "application_test_status": "task_0016_main_push_passed",
+    "security_supply_chain_status": "task_0016_main_push_passed",
+    "release_integrity_status": "task_0016_main_push_passed_signed_attestations",
+    "scorecard_status": "task_0016_main_push_passed"
   },
   "blockers": [],
-  "exact_next_action": "Revalidate current webhook/rate/version behavior, then implement provider-neutral adapter/error/quota/webhook/reconciliation contracts and negative contract tests before adding reference connectors."
+  "exact_next_action": "Onboard the first new agent from main into WS-0017-RESEARCH-QA, verify its registered remote branch contains current main, lease only the research write scope, revalidate current Amazon SES, Brevo and Gmail official APIs plus sandbox/readiness constraints, then after the Supervisor reviews/merges that research and broadcasts latest main, open the dependency-ready SES/Brevo/Gmail/contract-matrix slots for parallel onboarding."
 }

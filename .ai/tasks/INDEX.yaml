@@ -154,7 +154,7 @@
       "phase": "PHASE-03",
       "title": "Implement adapter, error, quota, webhook and reconciliation contracts",
       "weight": 20,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0015"
       ]
@@ -164,7 +164,7 @@
       "phase": "PHASE-03",
       "title": "Implement initial reference connectors and sandbox contract matrix",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0016"
       ]

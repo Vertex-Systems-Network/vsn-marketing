@@ -1,4 +1,15 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "agent-research-qa-01",
+      "workstream": "WS-0017-RESEARCH-QA",
+      "branch": "agent/task-0017-research-qa",
+      "status": "active",
+      "write_paths": [
+        ".ai/research/PHASE-03/TASK-0017-RESEARCH.md",
+        "docs/provider-research/**"
+      ]
+    }
+  ]
 }

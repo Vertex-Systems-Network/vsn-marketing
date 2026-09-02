@@ -26,13 +26,39 @@ def main() -> int:
 
     code, _ = mod.onboarding_check("agent/task-0017-ses")
     require(code == 2, "new agents must not onboard from worker branches")
-    code, message = mod.onboarding_check("main")
-    require(code == 0 and message.startswith("Open slots:"), "main onboarding should find capacity")
 
-    slots = mod.open_slots(registry)
+    # Onboarding tests must not assume the live registry is still pristine. The
+    # pilot intentionally mutates slot assignments as agents are admitted, so
+    # build a deterministic all-open fixture to keep the negative guard valid
+    # throughout TASK-0017 execution.
+    onboarding_registry = copy.deepcopy(registry)
+    for item in mod.rows(onboarding_registry):
+        if item.get("role") == "supervisor":
+            continue
+        item["slot_status"] = "open"
+        item["assigned_agent"] = None
+        item["status"] = "planned"
+        item["start_status"] = "awaiting_agent"
+        item.pop("onboarded_from_branch", None)
+
+    original = mod.load
+    try:
+        def fixture_load(path):
+            if path == mod.CONTROL:
+                return control
+            if path == mod.WORKSTREAMS:
+                return onboarding_registry
+            return original(path)
+        mod.load = fixture_load
+        code, message = mod.onboarding_check("main")
+        require(code == 0 and message.startswith("Open slots:"), "main onboarding should find capacity")
+    finally:
+        mod.load = original
+
+    slots = mod.open_slots(onboarding_registry)
     require(slots and slots[0]["id"] == "WS-0017-RESEARCH-QA", "onboarding must choose lowest merge-group slot first")
 
-    full = copy.deepcopy(registry)
+    full = copy.deepcopy(onboarding_registry)
     for row in mod.rows(full):
         if row.get("role") != "supervisor":
             row["slot_status"] = "occupied"

@@ -2,22 +2,22 @@
 
 ## State
 
-- Timestamp: `2026-09-02T19:42:24+00:00`
-- Active task: `TASK-0017`
-- Next task: `TASK-0018`
+- Timestamp: `2026-09-03T21:59:58+00:00`
+- Active task: `TASK-0018`
+- Next task: `none`
 - Current phase: `PHASE-03`
 - Execution status: `ready`
-- State fingerprint: `5af3fd9875bc2f384e96acdd44097a2013c6a5ce383560f5b14e74ee425be62e`
+- State fingerprint: `01a46dec24b9aa4923e47ab4abe83121ea7e025347ec3c5ab7ccc2a473da3b0f`
 
 ## Completed / observed this session
 
-Completed `TASK-0016` and activated `TASK-0017`.
+Completed `TASK-0017` and activated `TASK-0018`.
 
-Transition evidence: Protected main ebfb23a47eb883992f638a4b8cf29bf617f01324 passed AI Continuity run 33565489320, Application Foundation run 33565489361 (foundation, php-floor, integration, e2e), Security Supply Chain run 33565489371 including security-gates, Release Integrity run 33565489347 with signed build provenance and signed SBOM attestation, and OpenSSF Scorecard run 33565489269. TASK-0016 product implementation remains the trusted provider-neutral connector contract foundation merged as bc821953b69dea2ac58eb1e3dbe41699a0dc111b; the later Supervisor control-plane merge did not change product runtime semantics.
+Transition evidence: Protected main 4caa654426397473d21d382a8e4d3bcf43057546 passed AI Continuity run 33808835709, Application Foundation run 33808835634, Security Supply Chain run 33808835644, Release Integrity run 33808835615, and OpenSSF Scorecard run 33808835611 after PR #54 merged; TASK-0017 acceptance is complete, provider leases are released, and six isolated TASK-0018 certification branches were pre-created from the certified main.
 
 ## Tests
 
-python tools/ai_txn.py validate; python tools/ai_state.py validate; python tools/ai_journal.py validate; python tools/ai_policy.py; python tools/ai_parallel.py validate; python tools/ai_context.py manifest; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e; trusted-main GitHub Actions runs 33565489320, 33565489361, 33565489371, 33565489347, 33565489269 PASS
+python tools/ai_txn.py validate; python tools/ai_state.py validate; python tools/ai_journal.py validate; python tools/ai_policy.py; python tools/ai_parallel.py validate-remote-branches; python tools/ai_parallel.py validate; python tools/test_ai_parallel.py; python tools/ai_context.py manifest; php artisan test; php artisan test --testsuite=Integration; composer analyse; composer lint:check; npm run typecheck; npm run test; npm run build; npm run test:e2e; trusted-main GitHub Actions runs 33808835709, 33808835634, 33808835644, 33808835615, 33808835611 PASS
 
 ## Blockers
 
@@ -25,4 +25,4 @@ python tools/ai_txn.py validate; python tools/ai_state.py validate; python tools
 
 ## Exact next action
 
-Onboard the first new agent from main into WS-0017-RESEARCH-QA, verify its registered remote branch contains current main, lease only the research write scope, revalidate current Amazon SES, Brevo and Gmail official APIs plus sandbox/readiness constraints, then after the Supervisor reviews/merges that research and broadcasts latest main, open the dependency-ready SES/Brevo/Gmail/contract-matrix slots for parallel onboarding.
+Run a PHASE-03-wide evidence review and exact-head certification across provider neutrality, tenant isolation, security/supply-chain controls, connector contracts and reference adapters; block completion on any unmet exit criterion.

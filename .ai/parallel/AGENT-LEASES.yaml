@@ -1,4 +1,50 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "agent-evidence-map-01",
+      "workstream": "WS-0018-EVIDENCE-MAP",
+      "branch": "agent/task-0018-evidence-map",
+      "status": "active",
+      "write_paths": [
+        ".ai/audits/PHASE-03/TASK-0018-EVIDENCE.md"
+      ]
+    },
+    {
+      "agent": "agent-neutrality-01",
+      "workstream": "WS-0018-NEUTRALITY",
+      "branch": "agent/task-0018-neutrality",
+      "status": "active",
+      "write_paths": [
+        "tests/Architecture/Providers/Phase03/**"
+      ]
+    },
+    {
+      "agent": "agent-isolation-01",
+      "workstream": "WS-0018-ISOLATION",
+      "branch": "agent/task-0018-isolation",
+      "status": "active",
+      "write_paths": [
+        "tests/Integration/Providers/Phase03/**"
+      ]
+    },
+    {
+      "agent": "agent-connector-cert-01",
+      "workstream": "WS-0018-CONNECTOR-CERT",
+      "branch": "agent/task-0018-connector-cert",
+      "status": "active",
+      "write_paths": [
+        "tests/Feature/Providers/Certification/Connectors/**"
+      ]
+    },
+    {
+      "agent": "agent-security-cert-01",
+      "workstream": "WS-0018-SECURITY-CERT",
+      "branch": "agent/task-0018-security-cert",
+      "status": "active",
+      "write_paths": [
+        ".ai/audits/PHASE-03/TASK-0018-SECURITY.md"
+      ]
+    }
+  ]
 }

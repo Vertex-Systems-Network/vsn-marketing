@@ -23,14 +23,15 @@ def require(value: bool, message: str) -> None:
 def main() -> int:
     control = mod.load(mod.CONTROL)
     registry = mod.load(mod.WORKSTREAMS)
+    workers = [row for row in mod.rows(registry) if row.get("role") != "supervisor"]
+    require(bool(workers), "parallel registry must contain at least one worker slot")
 
-    code, _ = mod.onboarding_check("agent/task-0017-ses")
+    code, _ = mod.onboarding_check(workers[0]["branch"])
     require(code == 2, "new agents must not onboard from worker branches")
 
-    # Onboarding tests must not assume the live registry is still pristine. The
-    # pilot intentionally mutates slot assignments as agents are admitted, so
-    # build a deterministic all-open fixture to keep the negative guard valid
-    # throughout TASK-0017 execution.
+    # Onboarding tests must not assume the live registry is still pristine or
+    # tied to one task. Build a deterministic all-open fixture so the negative
+    # guard remains valid across future task/workstream transitions.
     onboarding_registry = copy.deepcopy(registry)
     for item in mod.rows(onboarding_registry):
         if item.get("role") == "supervisor":
@@ -56,7 +57,8 @@ def main() -> int:
         mod.load = original
 
     slots = mod.open_slots(onboarding_registry)
-    require(slots and slots[0]["id"] == "WS-0017-RESEARCH-QA", "onboarding must choose lowest merge-group slot first")
+    worker_merge_groups = [row.get("merge_group") for row in mod.rows(onboarding_registry) if row.get("role") != "supervisor"]
+    require(slots and slots[0].get("merge_group") == min(worker_merge_groups), "onboarding must choose lowest merge-group slot first")
 
     full = copy.deepcopy(onboarding_registry)
     for row in mod.rows(full):

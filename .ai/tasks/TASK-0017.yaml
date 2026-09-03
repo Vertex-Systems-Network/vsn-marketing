@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Connectors",
   "title": "Implement initial reference connectors and sandbox contract matrix",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement a deliberately diverse first connector set that proves the canonical provider framework across delivery, delivery/marketing and mailbox classes without allowing any provider to own core data or behavior.",
   "dependencies": [
     "TASK-0016"

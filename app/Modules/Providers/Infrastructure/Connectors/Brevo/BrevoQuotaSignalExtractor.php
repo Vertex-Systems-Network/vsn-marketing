@@ -21,9 +21,11 @@ final class BrevoQuotaSignalExtractor implements QuotaSignalExtractor
         }
 
         $observedAt = $this->date($response->metadata['observed_at'] ?? null);
-        $resetsAt = $observedAt !== null && $resetSeconds !== null
-            ? $observedAt->modify('+'.$resetSeconds.' seconds')
-            : null;
+        $resetsAt = null;
+        if ($observedAt !== null && $resetSeconds !== null) {
+            $candidate = $observedAt->modify('+'.$resetSeconds.' seconds');
+            $resetsAt = $candidate === false ? null : $candidate;
+        }
         $windowSeconds = $response->metadata['rate_limit_window_seconds'] ?? null;
         if (! is_int($windowSeconds) || $windowSeconds <= 0) {
             $windowSeconds = null;

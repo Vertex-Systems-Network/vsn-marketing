@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "mode": "active",
+  "mode": "staged",
   "parent_task": "TASK-0017",
   "branch_creation_baseline_sha": "bc821953b69dea2ac58eb1e3dbe41699a0dc111b",
   "branches_precreated": true,
@@ -34,9 +34,9 @@
       "assigned_agent": "agent-ses-01",
       "branch": "agent/task-0017-ses",
       "worktree": "worktrees/task-0017-ses",
-      "status": "leased",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "leased_ready_to_start",
+      "start_status": "merged",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0017-RESEARCH-QA"
@@ -56,9 +56,9 @@
       "assigned_agent": "agent-brevo-01",
       "branch": "agent/task-0017-brevo",
       "worktree": "worktrees/task-0017-brevo",
-      "status": "leased",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "leased_ready_to_start",
+      "start_status": "merged",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0017-RESEARCH-QA"
@@ -78,9 +78,9 @@
       "assigned_agent": "agent-gmail-01",
       "branch": "agent/task-0017-gmail",
       "worktree": "worktrees/task-0017-gmail",
-      "status": "leased",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "leased_ready_to_start",
+      "start_status": "merged",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0017-RESEARCH-QA"
@@ -100,9 +100,9 @@
       "assigned_agent": "agent-contract-matrix-01",
       "branch": "agent/task-0017-contract-matrix",
       "worktree": "worktrees/task-0017-contract-matrix",
-      "status": "leased",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "leased_ready_to_start",
+      "start_status": "merged",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0017-RESEARCH-QA"
@@ -122,9 +122,9 @@
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/task-0017-integration",
       "worktree": "worktrees/task-0017-integration",
-      "status": "planned",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "assigned_waiting_for_provider_merges",
+      "start_status": "merged",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0017-RESEARCH-QA"

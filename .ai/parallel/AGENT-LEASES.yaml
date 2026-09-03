@@ -1,45 +1,4 @@
 {
   "schema_version": 2,
-  "leases": [
-    {
-      "agent": "agent-brevo-01",
-      "workstream": "WS-0017-BREVO",
-      "branch": "agent/task-0017-brevo",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/Brevo/**",
-        "tests/Feature/Providers/Connectors/Brevo/**"
-      ]
-    },
-    {
-      "agent": "agent-gmail-01",
-      "workstream": "WS-0017-GMAIL",
-      "branch": "agent/task-0017-gmail",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/Gmail/**",
-        "tests/Feature/Providers/Connectors/Gmail/**"
-      ]
-    },
-    {
-      "agent": "agent-ses-01",
-      "workstream": "WS-0017-SES",
-      "branch": "agent/task-0017-ses",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/AmazonSes/**",
-        "tests/Feature/Providers/Connectors/AmazonSes/**"
-      ]
-    },
-    {
-      "agent": "agent-contract-matrix-01",
-      "workstream": "WS-0017-CONTRACT-MATRIX",
-      "branch": "agent/task-0017-contract-matrix",
-      "status": "active",
-      "write_paths": [
-        "tests/Feature/Providers/ConnectorMatrix/**",
-        "tests/Fixtures/Providers/ConnectorMatrix/**"
-      ]
-    }
-  ]
+  "leases": []
 }

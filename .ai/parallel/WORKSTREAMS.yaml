@@ -1,143 +1,131 @@
 {
   "schema_version": 2,
   "mode": "staged",
-  "parent_task": "TASK-0017",
-  "branch_creation_baseline_sha": "bc821953b69dea2ac58eb1e3dbe41699a0dc111b",
+  "parent_task": "TASK-0018",
+  "branch_creation_baseline_sha": "4caa654426397473d21d382a8e4d3bcf43057546",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0017-RESEARCH-QA",
-      "role": "research",
-      "module": "Connectors",
-      "capability": "TASK-0017 provider research + QA evidence",
-      "assigned_agent": "agent-research-qa-01",
-      "branch": "agent/task-0017-research-qa",
-      "worktree": "worktrees/task-0017-research-qa",
-      "status": "merged",
+      "id": "WS-0018-EVIDENCE-MAP",
+      "role": "worker",
+      "module": "Providers",
+      "capability": "PHASE-03 acceptance evidence map",
+      "assigned_agent": "agent-evidence-map-01",
+      "branch": "agent/task-0018-evidence-map",
+      "worktree": "worktrees/task-0018-evidence-map",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        ".ai/research/PHASE-03/TASK-0017-RESEARCH.md",
-        "docs/provider-research/**"
+        ".ai/audits/PHASE-03/TASK-0018-EVIDENCE.md"
       ]
     },
     {
-      "id": "WS-0017-SES",
+      "id": "WS-0018-NEUTRALITY",
       "role": "worker",
-      "module": "Connectors",
-      "capability": "Amazon SES reference connector",
-      "assigned_agent": "agent-ses-01",
-      "branch": "agent/task-0017-ses",
-      "worktree": "worktrees/task-0017-ses",
-      "status": "merged",
+      "module": "Providers",
+      "capability": "Provider-neutral architecture regression certification",
+      "assigned_agent": "agent-neutrality-01",
+      "branch": "agent/task-0018-neutrality",
+      "worktree": "worktrees/task-0018-neutrality",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0017-RESEARCH-QA"
-      ],
+      "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/AmazonSes/**",
-        "tests/Feature/Providers/Connectors/AmazonSes/**"
+        "tests/Architecture/Providers/Phase03/**"
       ]
     },
     {
-      "id": "WS-0017-BREVO",
+      "id": "WS-0018-ISOLATION",
       "role": "worker",
-      "module": "Connectors",
-      "capability": "Brevo reference connector",
-      "assigned_agent": "agent-brevo-01",
-      "branch": "agent/task-0017-brevo",
-      "worktree": "worktrees/task-0017-brevo",
-      "status": "merged",
+      "module": "Providers",
+      "capability": "Cross-workspace provider isolation certification",
+      "assigned_agent": "agent-isolation-01",
+      "branch": "agent/task-0018-isolation",
+      "worktree": "worktrees/task-0018-isolation",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0017-RESEARCH-QA"
-      ],
+      "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/Brevo/**",
-        "tests/Feature/Providers/Connectors/Brevo/**"
+        "tests/Integration/Providers/Phase03/**"
       ]
     },
     {
-      "id": "WS-0017-GMAIL",
+      "id": "WS-0018-CONNECTOR-CERT",
       "role": "worker",
-      "module": "Connectors",
-      "capability": "Gmail reference connector",
-      "assigned_agent": "agent-gmail-01",
-      "branch": "agent/task-0017-gmail",
-      "worktree": "worktrees/task-0017-gmail",
-      "status": "merged",
+      "module": "Providers",
+      "capability": "Connector contract, webhook, quota and reconciliation certification",
+      "assigned_agent": "agent-connector-cert-01",
+      "branch": "agent/task-0018-connector-cert",
+      "worktree": "worktrees/task-0018-connector-cert",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0017-RESEARCH-QA"
-      ],
+      "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Providers/Infrastructure/Connectors/Gmail/**",
-        "tests/Feature/Providers/Connectors/Gmail/**"
+        "tests/Feature/Providers/Certification/Connectors/**"
       ]
     },
     {
-      "id": "WS-0017-CONTRACT-MATRIX",
+      "id": "WS-0018-SECURITY-CERT",
       "role": "worker",
-      "module": "Connectors",
-      "capability": "Cross-connector sandbox and negative contract matrix",
-      "assigned_agent": "agent-contract-matrix-01",
-      "branch": "agent/task-0017-contract-matrix",
-      "worktree": "worktrees/task-0017-contract-matrix",
-      "status": "merged",
+      "module": "Providers",
+      "capability": "Security and supply-chain evidence certification",
+      "assigned_agent": "agent-security-cert-01",
+      "branch": "agent/task-0018-security-cert",
+      "worktree": "worktrees/task-0018-security-cert",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0017-RESEARCH-QA"
-      ],
-      "merge_group": 30,
+      "dependencies": [],
+      "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Feature/Providers/ConnectorMatrix/**",
-        "tests/Fixtures/Providers/ConnectorMatrix/**"
+        ".ai/audits/PHASE-03/TASK-0018-SECURITY.md"
       ]
     },
     {
-      "id": "WS-0017-SUPERVISOR-INTEGRATION",
+      "id": "WS-0018-SUPERVISOR-CERTIFICATION",
       "role": "supervisor",
-      "module": "Connectors",
-      "capability": "Shared integration, merge coordination and final acceptance",
+      "module": "Providers",
+      "capability": "PHASE-03 final certification, merge coordination and canonical closeout",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/task-0017-integration",
-      "worktree": "worktrees/task-0017-integration",
-      "status": "merged",
+      "branch": "supervisor/task-0018-certification",
+      "worktree": "worktrees/task-0018-certification",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0017-RESEARCH-QA"
+        "WS-0018-EVIDENCE-MAP",
+        "WS-0018-NEUTRALITY",
+        "WS-0018-ISOLATION",
+        "WS-0018-CONNECTOR-CERT",
+        "WS-0018-SECURITY-CERT"
       ],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Providers/ProvidersServiceProvider.php",
-        "app/Modules/Providers/Domain/Connectors/Contracts/**",
-        "database/migrations/**",
-        "config/**",
         ".ai/state/**",
         ".ai/tasks/**",
+        ".ai/roadmap/**",
         ".ai/parallel/**"
       ]
     }

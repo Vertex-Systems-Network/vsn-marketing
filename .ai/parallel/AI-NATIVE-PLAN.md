@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0017 Pilot
 
-Status: **active** — TASK-0017 is the canonical active task; worker slots are admitted only by the Supervisor from `main`.
+Status: **closeout staged** — TASK-0017 worker lanes are merged and leases released; the Supervisor acceptance transition is the only remaining write.
 
 Branch creation baseline: `bc821953b69dea2ac58eb1e3dbe41699a0dc111b`  
 Supervisor: `supervisor-main`  
@@ -13,11 +13,11 @@ The branches below were created before this plan was written.
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0017-RESEARCH-QA | TASK-0017 provider research + QA evidence | `occupied` | `agent-research-qa-01` | `merged` | `agent/task-0017-research-qa` | squash | merged |
-| 20 | WS-0017-BREVO | Brevo reference connector | `occupied` | `agent-brevo-01` | `leased_ready_to_start` | `agent/task-0017-brevo` | squash | merge latest main before resume |
-| 20 | WS-0017-GMAIL | Gmail reference connector | `occupied` | `agent-gmail-01` | `leased_ready_to_start` | `agent/task-0017-gmail` | squash | merge latest main before resume |
-| 20 | WS-0017-SES | Amazon SES reference connector | `occupied` | `agent-ses-01` | `leased_ready_to_start` | `agent/task-0017-ses` | squash | merge latest main before resume |
-| 30 | WS-0017-CONTRACT-MATRIX | Cross-connector sandbox and negative contract matrix | `occupied` | `agent-contract-matrix-01` | `leased_ready_to_start` | `agent/task-0017-contract-matrix` | squash | merge latest main before resume |
-| 40 | WS-0017-SUPERVISOR-INTEGRATION | Shared integration, merge coordination and final acceptance | `occupied` | `supervisor-main` | `assigned_waiting_for_provider_merges` | `supervisor/task-0017-integration` | squash | merge latest main before resume |
+| 20 | WS-0017-BREVO | Brevo reference connector | `occupied` | `agent-brevo-01` | `merged` | `agent/task-0017-brevo` | squash | merged |
+| 20 | WS-0017-GMAIL | Gmail reference connector | `occupied` | `agent-gmail-01` | `merged` | `agent/task-0017-gmail` | squash | merged |
+| 20 | WS-0017-SES | Amazon SES reference connector | `occupied` | `agent-ses-01` | `merged` | `agent/task-0017-ses` | squash | merged |
+| 30 | WS-0017-CONTRACT-MATRIX | Cross-connector sandbox and negative contract matrix | `occupied` | `agent-contract-matrix-01` | `merged` | `agent/task-0017-contract-matrix` | squash | merged |
+| 40 | WS-0017-SUPERVISOR-INTEGRATION | Shared integration, merge coordination and final acceptance | `occupied` | `supervisor-main` | `merged` | `supervisor/task-0017-integration` | squash | merged |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Merge order

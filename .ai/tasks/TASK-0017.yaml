@@ -13,67 +13,67 @@
     {
       "id": "AC-1",
       "text": "Fresh TASK-0017 research revalidates the reference-provider choice and current APIs; unless evidence requires an explicit roadmap change, the reference set is Amazon SES, Brevo and Gmail API as selected by TASK-0013 research",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Each reference connector implements the same provider-neutral contracts and advertises only capabilities/readiness actually proven by implementation and tests; provider IDs never become core behavioral branches",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Authentication success/failure, scopes/readiness, secret-reference handling, current rate/quota behavior and unsupported operations are covered per connector without persisting raw credentials in canonical application data",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Transient/permanent errors, rate limits, idempotency, asynchronous reconciliation and webhook success/malformed/authenticity/replay behavior are contract-tested where the provider supports the relevant capability",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Sandbox/test limitations and any provider review or production-readiness restrictions are explicit test evidence rather than silently treated as production capability",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Gmail mailbox operations remain logically distinct from bulk marketing delivery, and no PHASE-04 routing/failover engine or PHASE-13 social connector implementation is pulled forward",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Cross-workspace connector/connection/reference isolation and all applicable backend/integration/architecture/static/format/frontend/AI-continuity gates are green on the exact TASK-0017 acceptance head",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "Before TASK-0017 writable parallel work begins, the Supervisor has pre-created every declared worker/Supervisor branch from a known main SHA, and the AI-Native Plan plus WORKSTREAMS registry map each branch to module/capability, assigned agent, dedicated worktree, dependencies, write paths, merge group and squash strategy with remote branch validation green",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-9",
       "text": "TASK-0017 workstreams use exclusive leases and zero overlapping active write scopes; Supervisor-owned shared paths/contracts/migrations/state are not mutated by workers, and the Supervisor works only from its own registered branch while owning all workstream PR review/merge decisions",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-10",
       "text": "Every completed registered non-draft workstream PR announces exactly `Work Done and Submitted`; each submission preempts optional Supervisor module work for review, and every successful merge triggers the exact merge alert through broadcast issue #43 and all remaining open workstream PRs",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-11",
       "text": "Every alerted active agent and the Supervisor synchronize latest main into their branch before resuming, with current-main ancestry enforced by `ai_parallel.py sync-check`/CI; stale-main submissions fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-12",
       "text": "Canonical agent-working instructions, README guidance, instruction revision/fingerprint and deterministic context pack remain synchronized; negative guard tests reject missing branches, stale instructions, invalid completion signals, duplicate leases, shared-path writes, overlapping writers, wrong parent task and excessive concurrency",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-13",
       "text": "New-agent onboarding is admission-controlled: every new agent starts from main, the Supervisor assigns only an open pre-created slot and records agent/start status in the AI-Native Plan/WORKSTREAMS registry, and a full registry rejects the agent with exact `Go Home Come Back Next Time` without branch/lease/work assignment",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

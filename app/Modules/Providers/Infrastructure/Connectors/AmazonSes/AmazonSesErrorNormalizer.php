@@ -52,7 +52,7 @@ final class AmazonSesErrorNormalizer implements ProviderErrorNormalizer
             return ProviderErrorCategory::Validation;
         }
 
-        if ($status !== null && $status >= 400 && $status < 500) {
+        if ($status !== null && $status >= 400) {
             return ProviderErrorCategory::Permanent;
         }
 

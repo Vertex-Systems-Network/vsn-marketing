@@ -14,6 +14,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 
+// PHASE-03 certification intentionally exercises only workspace-isolation boundaries.
 uses(RefreshDatabase::class);
 
 beforeEach(function () {

@@ -26,11 +26,9 @@ test('PHASE-03 provider application and domain layers remain connector neutral',
 
             $source = file_get_contents($file->getPathname());
             expect($source)->not->toBeFalse();
-            $relative = str_replace(base_path().DIRECTORY_SEPARATOR, '', $file->getPathname());
 
             foreach ($forbidden as $token) {
-                expect((string) $source, $relative.' must not depend on concrete provider token '.$token)
-                    ->not->toContain($token);
+                expect((string) $source)->not->toContain($token);
             }
         }
     }

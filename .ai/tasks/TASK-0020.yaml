@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0020",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Implement canonical message, recipient materialization, and immutable execution snapshots",
+  "status": "planned",
+  "objective": "Implement provider-neutral canonical delivery inputs so every outbound execution uses a workspace-safe message, deterministic recipient materialization and immutable snapshot of the exact execution inputs and policy context.",
+  "dependencies": [
+    "TASK-0019"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical message and recipient execution concepts are workspace-safe, provider-neutral and keep external provider identifiers as references/provenance rather than canonical identity",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Recipient materialization is deterministic and records the exact target address/channel identity, marketing-versus-transactional intent, relevant content/template reference and provider-capability requirements used for execution",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Every execution attempt binds to an immutable reproducible snapshot so later contact/content/configuration changes cannot silently rewrite historical send inputs",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Cross-workspace access to canonical messages, recipient materializations and execution snapshots fails closed at application and PostgreSQL integrity boundaries",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Execution input preparation preserves policy evidence required by later queue/routing work and cannot silently convert marketing intent to transactional intent or bypass consent/suppression/authorization requirements",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "No TASK-0021 queue router, TASK-0022 retry/failover engine, PHASE-05 deliverability implementation or PHASE-07 campaign orchestration is pulled forward",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Rollback-safe migrations plus backend, PostgreSQL integration, architecture/static/format and applicable frontend/E2E/security/AI-continuity gates are green on the exact acceptance head",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0019 research is accepted and TASK-0020 is transactionally activated, implement canonical delivery inputs and immutable execution snapshots without pulling queue routing or retry/failover work forward."
+}

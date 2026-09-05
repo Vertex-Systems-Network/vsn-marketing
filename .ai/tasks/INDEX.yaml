@@ -144,6 +144,14 @@
       "weight": 10,
       "status": "completed",
       "dependencies": ["TASK-0017"]
+    },
+    {
+      "id": "TASK-0019",
+      "phase": "PHASE-04",
+      "title": "Research delivery-engine semantics and current provider constraints",
+      "weight": 15,
+      "status": "ready",
+      "dependencies": ["TASK-0018"]
     }
   ]
 }

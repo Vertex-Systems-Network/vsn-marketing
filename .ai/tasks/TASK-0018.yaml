@@ -4,7 +4,7 @@
   "phase": "PHASE-03",
   "module": "Providers",
   "title": "Certify PHASE-03 provider neutrality, security and quality gates",
-  "status": "ready",
+  "status": "completed",
   "objective": "Close PHASE-03 only after the provider framework, security/supply-chain controls, canonical provider data, connector contracts and reference adapters are jointly proven provider-neutral, tenant-safe, fail-closed and continuously verifiable.",
   "dependencies": [
     "TASK-0017"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "TASK-0014 through TASK-0017 acceptance evidence remains valid and PHASE-03 exit criteria are mapped to concrete exact-head tests/evidence without weakening prior task acceptance",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Automated architecture/regression evidence proves core/application provider behavior is capability-driven and contains no provider-name branching that belongs in connectors",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Cross-workspace provider connection/capability/quota/credential-reference access fails closed and unsupported/unknown capability execution cannot be mistaken for supported readiness",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Webhook authenticity/replay/idempotency, normalized error semantics, rate/quota behavior, asynchronous reconciliation and reference-connector contract matrices are green with provider-specific limitations preserved as evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Repository/security/supply-chain controls required by TASK-0014 have measurable passing evidence or explicitly approved time-bounded exceptions; unresolved mandatory controls block PHASE-03 completion",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "No PHASE-04 delivery routing/failover engine, PHASE-05 deliverability implementation, PHASE-06 asset studio, PHASE-07 publishing engine or PHASE-13 social/community connector is pulled into PHASE-03 certification",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "AI continuity, backend, PostgreSQL integration, architecture, static analysis, formatting, frontend, Playwright and applicable security gates are green on the exact PHASE-03 acceptance head and canonical state/checkpoint/journal are synchronized transactionally",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

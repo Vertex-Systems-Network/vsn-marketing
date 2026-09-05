@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0023",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates",
+  "status": "planned",
+  "objective": "Establish measured operational quality gates for the PHASE-04 delivery engine using production-representative PostgreSQL/Redis execution, load, saturation, recovery and fault-injection evidence before any reliability or scale claim is accepted.",
+  "dependencies": [
+    "TASK-0022"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Delivery SLOs and service-level indicators are explicitly defined for queue age, attempt throughput, success/error classes, saturation, reconciliation lag and p95/p99 latency where the metric is meaningful",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Production-representative PostgreSQL/Redis load tests measure behavior across normal, burst, quota-constrained and saturated conditions using repeatable workloads and recorded environment assumptions",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Fault-injection covers worker termination, Redis interruption/latency, PostgreSQL contention, provider timeout/error/rate-limit scenarios and recovery without silent duplicate delivery or state loss",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Measured evidence reports duplicate behavior, retry amplification, queue growth/backpressure, circuit-breaker behavior, dead-letter/reconciliation recovery and resource saturation without unsupported extrapolation",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Operational telemetry can identify workspace/provider/channel hotspots and policy/rate/quota blocking without exposing secrets or cross-workspace data",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Regression thresholds are automated where deterministic and any non-automated acceptance threshold is documented with reproducible evidence and an explicit owner/decision rule",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "All applicable exact-head backend/integration/architecture/static/format/frontend/E2E/security/AI-continuity gates remain green and no PHASE-05+ product implementation is introduced by the performance/SLO task",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0022 acceptance and transactional activation, execute measured production-representative delivery SLO/load/fault testing and automate deterministic regression thresholds before PHASE-04 certification."
+}

@@ -13,27 +13,27 @@
     {
       "id": "AC-1",
       "text": "Current authoritative evidence is captured for Laravel queue/runtime behavior and the registered reference providers (Amazon SES, Brevo and Gmail API), including quota/rate-limit, retry and failure semantics relevant to delivery execution",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "A provider-neutral delivery contract defines queue/routing/throttle/idempotency semantics and explicit duplicate-risk boundaries without provider-name branching in canonical execution logic",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Retry classification, circuit-breaker, dead-letter, reconciliation, scheduling precision, backpressure and failover behavior are specified with fail-closed rules for ambiguous or unsafe outcomes",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Operational SLOs and measurable load, saturation and fault-injection acceptance targets are defined for later PHASE-04 implementation and certification",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Contradictions, provider-specific exceptions and unresolved assumptions are recorded explicitly as decisions or blockers; no PHASE-04 implementation or later-phase deliverability work is pulled forward during this research task",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -51,5 +51,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Research and reconcile PHASE-04 delivery-engine semantics from current authoritative sources, including queue/backpressure, idempotency, provider quota/rate-limit behavior, retry/failover safety, scheduling precision, duplicate-risk, and measurable operational SLOs before any delivery-engine implementation begins."
+  "exact_next_action": "Run exact-head required repository validation on this TASK-0019 research acceptance candidate. After the accepted research change is merged and trusted main passes applicable gates, transactionally complete TASK-0019 and activate/register TASK-0020 from the canonical preplanned roadmap; do not begin DeliveryEngine implementation before that transition."
 }

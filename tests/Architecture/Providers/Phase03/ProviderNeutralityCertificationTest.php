@@ -1,9 +1,14 @@
 <?php
 
 test('PHASE-03 provider application and domain layers remain connector neutral', function () {
+    $providerPath = dirname(__DIR__, 4)
+        .DIRECTORY_SEPARATOR.'app'
+        .DIRECTORY_SEPARATOR.'Modules'
+        .DIRECTORY_SEPARATOR.'Providers';
+
     $roots = [
-        base_path('app/Modules/Providers/Application'),
-        base_path('app/Modules/Providers/Domain'),
+        $providerPath.DIRECTORY_SEPARATOR.'Application',
+        $providerPath.DIRECTORY_SEPARATOR.'Domain',
     ];
     $forbidden = [
         'Infrastructure\\Connectors\\',

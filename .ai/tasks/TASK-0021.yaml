@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0021",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Implement queue routing, idempotency, rate limits, quotas, and backpressure",
+  "status": "planned",
+  "objective": "Implement deterministic provider-neutral delivery queue orchestration with workspace/provider/channel-safe routing, idempotency, concurrency control, throttling, quotas and bounded backpressure.",
+  "dependencies": [
+    "TASK-0020"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Queue routing is capability-driven and deterministic across workspace/provider/channel dimensions; canonical Delivery code does not branch on concrete provider names",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Idempotency keys and durable execution state prevent duplicate externally visible sends across retries, worker restarts and concurrent consumers without relying only on in-memory locks",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Rate-limit and quota enforcement consumes canonical ProviderQuota/capability metadata and applies workspace/provider/channel controls with explicit provenance and safe handling of unknown or stale limits",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Backpressure and concurrency limits are bounded, observable and fair enough to prevent one workspace/provider/channel from silently exhausting shared execution capacity",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Queue admission and routing fail closed when required consent/suppression/authorization/approval/region/budget/risk/capability policy is not satisfied and cannot reinterpret marketing-versus-transactional intent",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "PostgreSQL/Redis production-parity integration tests cover concurrency, lock/lease behavior, durable idempotency, quota contention, queue saturation and worker restart/recovery cases",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "No TASK-0022 retry/failover implementation, PHASE-05 deliverability product behavior or PHASE-07 campaign orchestration is pulled forward; exact-head application/security/AI-continuity gates remain green",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0020 acceptance and transactional activation, implement deterministic queue routing/idempotency/rate/quota/backpressure controls without pulling retry/failover semantics forward."
+}

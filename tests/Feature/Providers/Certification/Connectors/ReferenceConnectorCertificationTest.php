@@ -4,11 +4,12 @@ use App\Modules\Providers\Domain\CapabilitySupport;
 use App\Modules\Providers\Infrastructure\Connectors\AmazonSes\AmazonSesConnector;
 use App\Modules\Providers\Infrastructure\Connectors\Brevo\BrevoConnector;
 use App\Modules\Providers\Infrastructure\Connectors\Gmail\GmailConnector;
+use DateTimeImmutable;
 
 it('certifies reference connector manifests stay aligned with accepted TASK-0017 contract evidence', function () {
     /** @var array<string, array<string, mixed>> $matrix */
     $matrix = require base_path('tests/Fixtures/Providers/ConnectorMatrix/reference-provider-matrix.php');
-    $observedAt = new \DateTimeImmutable('2026-09-04T00:00:00+00:00');
+    $observedAt = new DateTimeImmutable('2026-09-04T00:00:00+00:00');
     $manifests = [
         'amazon-ses' => (new AmazonSesConnector($observedAt))->manifest(),
         'brevo' => (new BrevoConnector($observedAt))->manifest(),
@@ -44,7 +45,7 @@ it('certifies reference connector manifests stay aligned with accepted TASK-0017
 it('certifies webhook and mailbox semantics use executable runtime strategies without weakening historical evidence', function () {
     /** @var array<string, array<string, mixed>> $matrix */
     $matrix = require base_path('tests/Fixtures/Providers/ConnectorMatrix/reference-provider-matrix.php');
-    $observedAt = new \DateTimeImmutable('2026-09-04T00:00:00+00:00');
+    $observedAt = new DateTimeImmutable('2026-09-04T00:00:00+00:00');
     $ses = (new AmazonSesConnector($observedAt))->manifest();
     $brevo = (new BrevoConnector($observedAt))->manifest();
     $gmail = (new GmailConnector($observedAt))->manifest();

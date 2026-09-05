@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0022",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Implement retry classification, circuit breakers, dead letters, reconciliation, and failover",
+  "status": "planned",
+  "objective": "Implement durable delivery failure handling that classifies outcomes, retries safely, isolates unhealthy provider routes, reconciles ambiguous outcomes and permits only policy-compatible failover without duplicate delivery.",
+  "dependencies": [
+    "TASK-0021"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Delivery outcomes are normalized into explicit success, retryable, permanent, rate/quota, authentication/authorization, unsupported-capability and indeterminate/ambiguous classes with connector-specific details retained as provenance",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Retry scheduling is bounded, deterministic and idempotent; retries cannot create silent duplicate delivery after worker failure, timeout or an ambiguous provider acknowledgement",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Circuit breakers isolate unhealthy provider/capability routes with observable state and controlled recovery probes rather than globally disabling unrelated workspace/channel/provider traffic",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Terminal or exhausted attempts enter an auditable dead-letter/reconciliation path with explicit replay authorization and no automatic infinite retry loop",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Failover occurs only to capability-compatible routes and re-evaluates consent, suppression, authorization, approval, region, budget, risk, quota and intent constraints; failover never acts as policy bypass",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Reconciliation handles delayed/duplicate/out-of-order provider evidence and ambiguous outcomes without silently changing canonical identity or producing a second externally visible delivery",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Fault, timeout, rate-limit, provider-outage, dead-letter, replay and failover tests are production-representative and all exact-head application/security/AI-continuity gates are green without pulling PHASE-05+ implementation forward",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0021 acceptance and transactional activation, implement bounded retry/circuit-breaker/dead-letter/reconciliation/failover behavior with duplicate and policy-bypass prevention as hard gates."
+}

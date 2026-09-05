@@ -21,17 +21,17 @@ it('certifies reference connector manifests stay aligned with accepted TASK-0017
         $evidence = $matrix[$key];
         $send = $manifest->capability('email.send');
 
-        expect($manifest->connectorKey, $key)->toBe($key)
-            ->and($manifest->metadata['provider_class'] ?? null, $key)->toBe($evidence['connector_class'])
-            ->and($manifest->metadata['credentials'] ?? null, $key)->toBe('secret-reference-only')
-            ->and($manifest->metadata['acceptance_is_delivery'] ?? null, $key)->toBeFalse()
-            ->and($send->support, $key)->toBe(CapabilitySupport::Supported)
-            ->and($send->constraints['provider_idempotency_token'] ?? null, $key)->toBeFalse()
-            ->and($evidence['send']['provider_native_idempotency_proven'], $key)->toBeFalse()
-            ->and($evidence['send']['ambiguous_outcome_requires_reconciliation'], $key)->toBeTrue();
+        expect($manifest->connectorKey)->toBe($key)
+            ->and($manifest->metadata['provider_class'] ?? null)->toBe($evidence['connector_class'])
+            ->and($manifest->metadata['credentials'] ?? null)->toBe('secret-reference-only')
+            ->and($manifest->metadata['acceptance_is_delivery'] ?? null)->toBeFalse()
+            ->and($send->support)->toBe(CapabilitySupport::Supported)
+            ->and($send->constraints['provider_idempotency_token'] ?? null)->toBeFalse()
+            ->and($evidence['send']['provider_native_idempotency_proven'])->toBeFalse()
+            ->and($evidence['send']['ambiguous_outcome_requires_reconciliation'])->toBeTrue();
 
         foreach ($evidence['unsupported_phase_capabilities'] as $operation) {
-            expect($manifest->capability($operation)->support, $key.' must fail closed for '.$operation)
+            expect($manifest->capability($operation)->support)
                 ->toBe(CapabilitySupport::Unknown);
         }
     }

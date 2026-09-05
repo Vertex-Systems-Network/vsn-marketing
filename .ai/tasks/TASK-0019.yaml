@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0019",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Research delivery-engine semantics and current provider constraints",
+  "status": "planned",
+  "objective": "Use current authoritative research to define provider-neutral delivery execution semantics, provider constraints, retry/idempotency/failover safety, scheduling precision and measurable operational SLO targets before any PHASE-04 delivery implementation begins.",
+  "dependencies": [
+    "TASK-0018"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "A dated .ai/research/PHASE-04/TASK-0019-RESEARCH.md evidence pack uses current official/primary sources for queueing, provider quotas/rates, retry guidance, duplicate-risk behavior, scheduling precision, webhook/reconciliation implications and operational SLO expectations",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Research explicitly compares the currently relevant reference-provider constraints and records which behaviors belong in canonical Delivery contracts versus provider-specific Connector capabilities without introducing provider-name branching into core/application logic",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Retry, idempotency, ambiguous outcome, dead-letter, reconciliation, circuit-breaker and failover semantics are specified so duplicate delivery and policy bypass fail closed, including consent, suppression, authorization, approval, region, budget, risk, quota and capability constraints",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "A measurable PHASE-04 reliability/performance test plan defines production-representative PostgreSQL/Redis coverage and evidence targets for throughput, queue age, saturation, recovery, duplicate behavior and p95/p99 latency where meaningful without unsupported scale claims",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "TASK-0020 through TASK-0024 acceptance boundaries are reconciled against the research, canonical module registry and PHASE-04 exit criteria; any required architecture change is routed through ADR governance before implementation relies on it",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "No canonical message implementation, queue router, retry engine, failover engine, sender-domain/deliverability feature, campaign engine or other PHASE-04+ product capability is introduced by this research-only task",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "AI continuity and all applicable unchanged application/security quality gates are green on the exact TASK-0019 acceptance head",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0019 is transactionally activated, perform the dated PHASE-04 delivery-engine research and reconcile the planned implementation contracts before any TASK-0020 product work begins."
+}

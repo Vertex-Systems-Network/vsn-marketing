@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-04",
-    "active_task": "TASK-0019",
-    "last_completed_task": "TASK-0018",
+    "active_task": "TASK-0020",
+    "last_completed_task": "TASK-0019",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 25.0,
-    "phase_percent": 0.0,
+    "roadmap_percent": 28.0,
+    "phase_percent": 42.86,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -25,5 +25,5 @@
     "scorecard_status": "task_0016_main_push_passed"
   },
   "blockers": [],
-  "exact_next_action": "Research and reconcile PHASE-04 delivery-engine semantics from current authoritative sources, including queue/backpressure, idempotency, provider quota/rate-limit behavior, retry/failover safety, scheduling precision, duplicate-risk, and measurable operational SLOs before any delivery-engine implementation begins."
+  "exact_next_action": "Implement the canonical workspace-safe message and recipient materialization model with immutable execution snapshots and stable business-intent identity, preserving marketing/transactional separation and reproducible send inputs; do not implement queue routing, provider throttling, retries, failover, or later PHASE-04 work in TASK-0020."
 }

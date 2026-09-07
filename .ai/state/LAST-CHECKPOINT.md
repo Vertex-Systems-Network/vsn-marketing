@@ -2,22 +2,26 @@
 
 ## State
 
-- Timestamp: `2026-09-05T21:48:00+00:00`
-- Active task: `TASK-0019`
+- Timestamp: `2026-09-07T09:13:00+00:00`
+- Active task: `TASK-0020`
 - Next task: `none`
 - Current phase: `PHASE-04`
 - Execution status: `ready`
-- State fingerprint: `98bd88d6cfa3ab445ee41ae1cb51e7e3d62ca99ce0d2aee1da45c47dae702db3`
+- State fingerprint: `1707d820f88c5a21915663366f9ba6d54c1fb0c53a7247b643bdc747ec7726af`
 
 ## Completed / observed this session
 
-Registered and activated `TASK-0019` as the explicit successor to completed `TASK-0018` and opened `PHASE-04` at 0% task progress. Only the delivery-engine research task is executable; preplanned TASK-0020 through TASK-0024 remain unregistered and therefore non-executable.
+Completed `TASK-0019` and activated `TASK-0020`.
 
-No product code, provider connector behavior, delivery routing, retry/failover implementation or later-phase deliverability behavior changed in this transition.
+Transition evidence: TASK-0019 research PR #70 merged to trusted main `fe3e0bd059f87805638befe1538117f438e65a5b`. The accepted research supports the existing PHASE-04 plan without a roadmap split and explicitly authorizes TASK-0020 as the next bounded implementation task. TASK-0021 through TASK-0024 remain preplanned but unregistered and therefore non-executable.
+
+No DeliveryEngine product implementation, queue routing, provider throttling, retry/failover, sender-domain/deliverability work, credentials, paid sends, or later-phase content/template implementation changed in this transition.
 
 ## Tests
 
-This activation must pass exact-head AI continuity/state/journal/policy validation and the repository's required Foundation, PHP floor, Integration, E2E and Security Supply Chain gates before merge.
+Trusted main `fe3e0bd059f87805638befe1538117f438e65a5b` after PR #70 passed the applicable repository push-side AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows.
+
+This transition candidate must independently pass exact-head AI transaction/state/journal/policy validation plus the repository's required foundation, PHP-floor, integration, E2E, and security gates before merge.
 
 ## Blockers
 
@@ -25,4 +29,4 @@ This activation must pass exact-head AI continuity/state/journal/policy validati
 
 ## Exact next action
 
-Research and reconcile PHASE-04 delivery-engine semantics from current authoritative sources, including queue/backpressure, idempotency, provider quota/rate-limit behavior, retry/failover safety, scheduling precision, duplicate-risk, and measurable operational SLOs before any delivery-engine implementation begins.
+Implement the canonical workspace-safe message and recipient materialization model with immutable execution snapshots and stable business-intent identity, preserving marketing/transactional separation and reproducible send inputs; do not implement queue routing, provider throttling, retries, failover, or later PHASE-04 work in TASK-0020.

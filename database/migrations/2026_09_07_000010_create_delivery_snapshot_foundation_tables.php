@@ -9,13 +9,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('brands', function (Blueprint $table): void {
-            $table->unique(['id', 'workspace_id'], 'brands_id_workspace_uq');
-        });
-        Schema::table('contact_identities', function (Blueprint $table): void {
-            $table->unique(['id', 'contact_id', 'workspace_id'], 'contact_identity_id_contact_workspace_uq');
-        });
-
         Schema::create('delivery_messages', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->uuid('workspace_id');
@@ -94,13 +87,6 @@ return new class extends Migration
         Schema::dropIfExists('delivery_recipient_snapshots');
         Schema::dropIfExists('delivery_message_snapshots');
         Schema::dropIfExists('delivery_messages');
-
-        Schema::table('contact_identities', function (Blueprint $table): void {
-            $table->dropUnique('contact_identity_id_contact_workspace_uq');
-        });
-        Schema::table('brands', function (Blueprint $table): void {
-            $table->dropUnique('brands_id_workspace_uq');
-        });
     }
 
     private function createImmutabilityGuards(): void

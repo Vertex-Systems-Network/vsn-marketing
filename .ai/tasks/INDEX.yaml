@@ -150,8 +150,16 @@
       "phase": "PHASE-04",
       "title": "Research delivery-engine semantics and current provider constraints",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": ["TASK-0018"]
+    },
+    {
+      "id": "TASK-0020",
+      "phase": "PHASE-04",
+      "title": "Implement canonical message, recipient materialization, and immutable execution snapshots",
+      "weight": 20,
+      "status": "ready",
+      "dependencies": ["TASK-0019"]
     }
   ]
 }

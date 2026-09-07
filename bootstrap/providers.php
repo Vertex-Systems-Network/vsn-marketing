@@ -4,6 +4,7 @@ use App\Modules\Audit\AuditServiceProvider;
 use App\Modules\Consent\ConsentServiceProvider;
 use App\Modules\Contacts\ContactsServiceProvider;
 use App\Modules\Core\CoreServiceProvider;
+use App\Modules\DeliveryEngine\DeliveryEngineServiceProvider;
 use App\Modules\Events\EventsServiceProvider;
 use App\Modules\Identity\IdentityServiceProvider;
 use App\Modules\Providers\ProvidersServiceProvider;
@@ -20,4 +21,5 @@ return [
     ContactsServiceProvider::class,
     ConsentServiceProvider::class,
     ProvidersServiceProvider::class,
+    DeliveryEngineServiceProvider::class,
 ];

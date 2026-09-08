@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 uses(RefreshDatabase::class);
 
@@ -141,7 +142,7 @@ it('keeps business intent identity workspace scoped and intent type explicit', f
         MessageIntentType::Marketing,
         DeliveryChannel::Email,
         ['subject' => 'Duplicate logical intent'],
-    ))->toThrow(\InvalidArgumentException::class);
+    ))->toThrow(InvalidArgumentException::class);
 });
 
 it('fails closed when a recipient identity belongs to another workspace', function () {

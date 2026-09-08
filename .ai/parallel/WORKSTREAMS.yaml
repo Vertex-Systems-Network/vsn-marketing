@@ -88,37 +88,6 @@
         "app/Modules/DeliveryEngine/Application/DescribeDeliveryBackpressure.php",
         "tests/Feature/DeliveryBackpressureObservabilityTest.php"
       ]
-    },
-    {
-      "id": "WS-0021-SUPERVISOR-INTEGRATION",
-      "role": "supervisor",
-      "module": "DeliveryEngine",
-      "capability": "Shared admission wiring, canonical ledger/checkpoint coordination and TASK-0021 integration",
-      "assigned_agent": "supervisor-main",
-      "branch": "supervisor/task-0021-parallel-integration",
-      "worktree": "worktrees/task-0021-parallel-integration",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "coordination_in_progress_pending_worker_merges",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0021-FAIRNESS-POLICY",
-        "WS-0021-REDIS-ADMISSION",
-        "WS-0021-CONCURRENCY-CERT",
-        "WS-0021-BACKPRESSURE-OBSERVABILITY"
-      ],
-      "merge_group": 40,
-      "merge_strategy": "squash",
-      "write_paths": [
-        ".ai/state/**",
-        ".ai/tasks/**",
-        ".ai/roadmap/**",
-        ".ai/parallel/**",
-        "README.md",
-        "app/Modules/DeliveryEngine/Infrastructure/DatabaseDeliveryAdmissionRepository.php",
-        "app/Modules/DeliveryEngine/DeliveryEngineServiceProvider.php",
-        "database/migrations/**"
-      ]
     }
   ]
 }

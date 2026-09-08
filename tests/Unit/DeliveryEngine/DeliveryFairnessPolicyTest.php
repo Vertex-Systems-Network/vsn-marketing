@@ -1,7 +1,6 @@
 <?php
 
 use App\Modules\DeliveryEngine\Domain\DeliveryFairnessPolicy;
-use InvalidArgumentException;
 
 it('admits a workspace while it remains below its deterministic weighted share', function () {
     $decision = (new DeliveryFairnessPolicy())->decide(

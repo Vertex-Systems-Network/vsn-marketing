@@ -12,4 +12,11 @@ enum DeliveryChannel: string
             self::Email => 'email',
         };
     }
+
+    public function providerOperation(): string
+    {
+        return match ($this) {
+            self::Email => 'email.send',
+        };
+    }
 }

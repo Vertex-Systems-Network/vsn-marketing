@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-08T11:06:30+00:00`
+- Timestamp: `2026-09-08T11:52:00+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,17 +11,15 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0020` after delivery snapshot foundation PR #73 merged to trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4`. The accepted implementation provides provider-neutral marketing/transactional message intent, workspace-scoped stable business-intent identity, deterministic recipient materialization, immutable message and recipient execution snapshots, deterministic snapshot hashing, fail-closed tenant/reference boundaries, database-level immutability enforcement, transactional audit evidence, and production-representative PostgreSQL coverage.
+TASK-0021 implementation candidate now includes provider-neutral durable delivery operation admission over immutable TASK-0020 snapshots. The candidate provides deterministic channel/priority queue routes, stable logical idempotency independent of queue/provider/attempt IDs, composite workspace/snapshot foreign-key isolation, race-safe create-or-find enqueue, and first-create audit evidence.
 
-Registered and activated `TASK-0021` as the only executable PHASE-04 task. TASK-0021 is bounded to provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots. TASK-0022 through TASK-0024 remain preplanned and unregistered.
+The second bounded slice adds deterministic ready/supported provider-connection selection for the canonical channel operation (`email.send`), fresh canonical quota-evidence locking, a separate delivery quota-consumption ledger that preserves ProviderQuota provenance, atomic remaining-budget enforcement, deterministic fallback to the next eligible connection, provider/connection/quota/workspace composite database boundaries, and explicit persisted backpressure reasons for unavailable connections or missing/incomplete/stale/exhausted quota evidence. Repeated admission and repeated identical backpressure are idempotent: quota evidence is not consumed twice, the original backpressure timestamp is preserved, and duplicate state-change audit evidence is not emitted.
 
-No TASK-0021 product implementation, retry classification, circuit breaker, dead-letter, reconciliation, failover, sender-domain/deliverability policy, credential, paid-send, or later-phase implementation changed in this control transition.
+This candidate does not yet claim TASK-0021 completion. Redis-backed runtime concurrency/fairness and production-representative PostgreSQL/Redis concurrent-admission evidence remain to be implemented and validated. Retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, and TASK-0022+ behavior remain out of scope.
 
 ## Tests
 
-Trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4` after PR #73 completed all applicable post-merge checks successfully with no remaining failed or in-progress required checks.
-
-This TASK-0020 -> TASK-0021 control transition candidate must independently pass exact-head AI transaction/state/journal/policy validation plus the repository's required governance, foundation, php-floor, integration, E2E, and security gates before merge.
+The first queue/idempotency slice passed its exact-head hosted checks before the quota slice was added. New feature coverage now includes successful quota-backed admission, exact quota exhaustion, missing quota evidence, scheduled-not-before behavior, deterministic fallback routing, cross-workspace admission rejection, duplicate admission idempotency, and stable backpressure timestamps/audit evidence. The new exact head must independently pass AI transaction/state/journal/policy validation plus governance, foundation, PHP-floor, integration, E2E, static/format, and security gates.
 
 ## Blockers
 

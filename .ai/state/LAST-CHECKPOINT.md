@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-08T11:52:00+00:00`
+- Timestamp: `2026-09-08T21:56:00+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,15 +11,13 @@
 
 ## Completed / observed this session
 
-TASK-0021 implementation candidate now includes provider-neutral durable delivery operation admission over immutable TASK-0020 snapshots. The candidate provides deterministic channel/priority queue routes, stable logical idempotency independent of queue/provider/attempt IDs, composite workspace/snapshot foreign-key isolation, race-safe create-or-find enqueue, and first-create audit evidence.
+TASK-0021 production-representative concurrency certification PR #86 exposed a genuine PostgreSQL idempotency race in the shared delivery-operation repository: a simultaneous duplicate insert raised the workspace/idempotency unique constraint inside the outer delivery transaction, leaving the losing PostgreSQL transaction aborted before its read-back could execute. Supervisor PR #87 replaces exception-driven duplicate recovery with conflict-tolerant insert plus canonical workspace/idempotency read-back, preserving one durable logical operation and first-create evidence without weakening the worker certification.
 
-The second bounded slice adds deterministic ready/supported provider-connection selection for the canonical channel operation (`email.send`), fresh canonical quota-evidence locking, a separate delivery quota-consumption ledger that preserves ProviderQuota provenance, atomic remaining-budget enforcement, deterministic fallback to the next eligible connection, provider/connection/quota/workspace composite database boundaries, and explicit persisted backpressure reasons for unavailable connections or missing/incomplete/stale/exhausted quota evidence. Repeated admission and repeated identical backpressure are idempotent: quota evidence is not consumed twice, the original backpressure timestamp is preserved, and duplicate state-change audit evidence is not emitted.
-
-This candidate does not yet claim TASK-0021 completion. Redis-backed runtime concurrency/fairness and production-representative PostgreSQL/Redis concurrent-admission evidence remain to be implemented and validated. Retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, and TASK-0022+ behavior remain out of scope.
+The Redis admission/fairness worker evidence remains green. This checkpoint does not claim TASK-0021 completion and does not change retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, or TASK-0022+ behavior.
 
 ## Tests
 
-The first queue/idempotency slice passed its exact-head hosted checks before the quota slice was added. New feature coverage now includes successful quota-backed admission, exact quota exhaustion, missing quota evidence, scheduled-not-before behavior, deterministic fallback routing, cross-workspace admission rejection, duplicate admission idempotency, and stable backpressure timestamps/audit evidence. The new exact head must independently pass AI transaction/state/journal/policy validation plus governance, foundation, PHP-floor, integration, E2E, static/format, and security gates.
+PR #86 already proves the Redis fairness/concurrency cases and PostgreSQL one-unit quota serialization pass; its simultaneous duplicate-enqueue case is the regression reproducer for the shared repository race. PR #87 must pass exact-head AI Continuity, foundation/static/format, PHP-floor, PostgreSQL/Redis integration, E2E, and security gates before merge. After #87 merges, PR #86 must synchronize the resulting main and rerun the original production-representative concurrency certification to green.
 
 ## Blockers
 

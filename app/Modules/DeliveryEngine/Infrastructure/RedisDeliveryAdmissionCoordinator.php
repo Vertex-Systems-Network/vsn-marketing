@@ -4,8 +4,10 @@ namespace App\Modules\DeliveryEngine\Infrastructure;
 
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionCoordinator;
+use Illuminate\Redis\Connections\PhpRedisConnection;
 use Illuminate\Redis\RedisManager;
 use InvalidArgumentException;
+use LogicException;
 
 final readonly class RedisDeliveryAdmissionCoordinator implements DeliveryAdmissionCoordinator
 {
@@ -69,18 +71,16 @@ LUA;
         $expiresMs = $nowMs + ($ttlSeconds * 1000);
         $member = hash('sha256', $workspaceId."\0".$operationId);
 
-        $result = $this->redis->connection('locks')->eval(
+        $result = $this->connection()->eval(
             self::ACQUIRE_SCRIPT,
-            [
-                $this->globalKey(),
-                $this->workspaceKey($workspaceId),
-                $member,
-                (string) $nowMs,
-                (string) $expiresMs,
-                (string) $workspaceConcurrencyLimit,
-                (string) $globalConcurrencyLimit,
-            ],
             2,
+            $this->globalKey(),
+            $this->workspaceKey($workspaceId),
+            $member,
+            (string) $nowMs,
+            (string) $expiresMs,
+            (string) $workspaceConcurrencyLimit,
+            (string) $globalConcurrencyLimit,
         );
 
         return (int) $result === 1;
@@ -94,15 +94,24 @@ LUA;
 
         $member = hash('sha256', $workspaceId."\0".$operationId);
 
-        $this->redis->connection('locks')->eval(
+        $this->connection()->eval(
             self::RELEASE_SCRIPT,
-            [
-                $this->globalKey(),
-                $this->workspaceKey($workspaceId),
-                $member,
-            ],
             2,
+            $this->globalKey(),
+            $this->workspaceKey($workspaceId),
+            $member,
         );
+    }
+
+    private function connection(): PhpRedisConnection
+    {
+        $connection = $this->redis->connection('locks');
+
+        if (! $connection instanceof PhpRedisConnection) {
+            throw new LogicException('Redis delivery admission requires the phpredis client.');
+        }
+
+        return $connection;
     }
 
     private function assertInputs(

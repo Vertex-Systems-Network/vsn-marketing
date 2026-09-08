@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "DeliveryEngine",
   "title": "Implement canonical message, recipient materialization, and immutable execution snapshots",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement the provider-neutral, workspace-safe message and recipient materialization foundation required for reproducible delivery execution, including explicit marketing/transactional intent, immutable execution snapshots, stable business-intent identity, and fail-closed tenant/reference boundaries without pulling queue routing, throttling, retry, failover, or later deliverability work forward.",
   "dependencies": [
     "TASK-0019"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "Canonical message intent explicitly separates marketing and transactional execution semantics and can materialize reproducible provider-neutral send inputs without embedding concrete provider SDK types or provider-name branches",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Recipient materialization resolves the intended channel destination from authorized canonical workspace/customer data before delivery execution and persists an immutable recipient snapshot so later retries or workers cannot silently change the logical recipient",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Immutable message and recipient execution snapshots preserve the exact logical send inputs and provenance needed by later DeliveryOperation records; accepted snapshots are not mutated in place and changes require a new immutable snapshot/version",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Stable workspace-scoped business-intent identity and snapshot references are independent of queue job IDs, provider request IDs and attempt ordinals, preserving the TASK-0019 idempotency boundary without implementing routing or retry behavior",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Cross-workspace message, recipient, contact/identity and snapshot references fail closed at application and database boundaries, and immutable snapshot writes remain auditable under concurrency",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Migrations and persistence are rollback-safe and covered by production-representative PostgreSQL integration tests proving snapshot immutability, deterministic materialization and tenant isolation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "TASK-0020 contains no queue routing, provider quota/throttle engine, retry/failover/circuit-breaker implementation, sender-domain/deliverability policy, or later-phase content/template work; all applicable exact-head continuity, backend, integration, static, format, frontend and E2E quality gates pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

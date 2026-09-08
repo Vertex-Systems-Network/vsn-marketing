@@ -158,8 +158,16 @@
       "phase": "PHASE-04",
       "title": "Implement canonical message, recipient materialization, and immutable execution snapshots",
       "weight": 20,
-      "status": "ready",
+      "status": "completed",
       "dependencies": ["TASK-0019"]
+    },
+    {
+      "id": "TASK-0021",
+      "phase": "PHASE-04",
+      "title": "Implement queue routing, idempotency, rate limits, quotas, and backpressure",
+      "weight": 20,
+      "status": "ready",
+      "dependencies": ["TASK-0020"]
     }
   ]
 }

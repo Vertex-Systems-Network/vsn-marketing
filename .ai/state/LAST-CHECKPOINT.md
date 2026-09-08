@@ -2,26 +2,26 @@
 
 ## State
 
-- Timestamp: `2026-09-08T00:32:00+00:00`
-- Active task: `TASK-0020`
+- Timestamp: `2026-09-08T11:06:30+00:00`
+- Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
 - Execution status: `ready`
-- State fingerprint: `1707d820f88c5a21915663366f9ba6d54c1fb0c53a7247b643bdc747ec7726af`
+- State fingerprint: `0e91968c183b4e2286bebf56e86b6e8b380a96d6b98afb46f4aebd5bd2bd372e`
 
 ## Completed / observed this session
 
-TASK-0020 implementation candidate PR #73 now contains the bounded DeliveryEngine foundation: provider-neutral message intent, workspace-scoped stable business-intent identity, canonical contact-identity selection, immutable versioned message execution snapshots, immutable recipient snapshots with normalized destination/source provenance, deterministic canonical snapshot hashing, tenant-safe database boundaries, database-level immutability enforcement, and transactional audit evidence.
+Completed `TASK-0020` after delivery snapshot foundation PR #73 merged to trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4`. The accepted implementation provides provider-neutral marketing/transactional message intent, workspace-scoped stable business-intent identity, deterministic recipient materialization, immutable message and recipient execution snapshots, deterministic snapshot hashing, fail-closed tenant/reference boundaries, database-level immutability enforcement, transactional audit evidence, and production-representative PostgreSQL coverage.
 
-The migration follow-up at `33d05acb721c48f68db5ecaeaf57e2a7203d4639` reuses the pre-existing `brands_id_workspace_uq` and `contact_identity_id_contact_workspace_uq` indexes instead of attempting to recreate them. Queue routing, provider throttling, retries, failover, sender-domain/deliverability policy, provider SDK branching, credentials, paid sends, and later PHASE-04 work remain intentionally out of scope.
+Registered and activated `TASK-0021` as the only executable PHASE-04 task. TASK-0021 is bounded to provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots. TASK-0022 through TASK-0024 remain preplanned and unregistered.
 
-This checkpoint is a factual candidate-state synchronization only. TASK-0020 remains active and is not marked completed; the fingerprint-bearing execution, progress, blockers, and exact-next-action fields are unchanged.
+No TASK-0021 product implementation, retry classification, circuit breaker, dead-letter, reconciliation, failover, sender-domain/deliverability policy, credential, paid-send, or later-phase implementation changed in this control transition.
 
 ## Tests
 
-At PR #73 candidate head `33d05acb721c48f68db5ecaeaf57e2a7203d4639`, PHP 8.3, integration, backend, architecture, static-analysis, E2E, and security checks passed. AI transaction/state/journal/policy validators also passed; the AI Continuity workflow required this source-change candidate to synchronize both `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`, which this update supplies.
+Trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4` after PR #73 completed all applicable post-merge checks successfully with no remaining failed or in-progress required checks.
 
-Laravel Pint/formatting remains to be revalidated on the new exact head before merge. No merge is authorized until all required exact-head checks are green.
+This TASK-0020 -> TASK-0021 control transition candidate must independently pass exact-head AI transaction/state/journal/policy validation plus the repository's required governance, foundation, php-floor, integration, E2E, and security gates before merge.
 
 ## Blockers
 
@@ -29,4 +29,4 @@ Laravel Pint/formatting remains to be revalidated on the new exact head before m
 
 ## Exact next action
 
-Implement the canonical workspace-safe message and recipient materialization model with immutable execution snapshots and stable business-intent identity, preserving marketing/transactional separation and reproducible send inputs; do not implement queue routing, provider throttling, retries, failover, or later PHASE-04 work in TASK-0020.
+Implement provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots; do not implement retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, or later PHASE-04 work in TASK-0021.

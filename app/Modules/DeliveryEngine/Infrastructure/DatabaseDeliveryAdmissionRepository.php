@@ -31,7 +31,14 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             ->first();
 
         if (! $row instanceof stdClass) {
-            return new DeliveryAdmissionResult($operation, false, null, null, 'operation_unavailable');
+            return new DeliveryAdmissionResult(
+                operation: $operation,
+                admitted: false,
+                changed: false,
+                providerId: null,
+                providerConnectionId: null,
+                backpressureReason: 'operation_unavailable',
+            );
         }
 
         $locked = $this->toOperation($row);
@@ -39,6 +46,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             return new DeliveryAdmissionResult(
                 operation: $locked,
                 admitted: true,
+                changed: false,
                 providerId: $locked->providerId,
                 providerConnectionId: $locked->providerConnectionId,
                 backpressureReason: null,
@@ -46,7 +54,14 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
         }
 
         if ($locked->scheduledNotBeforeAt > $now) {
-            return new DeliveryAdmissionResult($locked, false, null, null, 'scheduled_not_before');
+            return new DeliveryAdmissionResult(
+                operation: $locked,
+                admitted: false,
+                changed: false,
+                providerId: null,
+                providerConnectionId: null,
+                backpressureReason: 'scheduled_not_before',
+            );
         }
 
         $candidates = $connection->table('provider_connections as connections')
@@ -171,6 +186,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             return new DeliveryAdmissionResult(
                 operation: $admitted,
                 admitted: true,
+                changed: true,
                 providerId: $providerId,
                 providerConnectionId: $connectionId,
                 backpressureReason: null,
@@ -198,11 +214,27 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
         string $reason,
         DateTimeImmutable $now,
     ): DeliveryAdmissionResult {
+        if (
+            $operation->state === DeliveryOperationState::Backpressured
+            && $operation->backpressureReason === $reason
+        ) {
+            return new DeliveryAdmissionResult(
+                operation: $operation,
+                admitted: false,
+                changed: false,
+                providerId: null,
+                providerConnectionId: null,
+                backpressureReason: $reason,
+            );
+        }
+
         $backpressuredAt = $operation->backpressuredAt ?? $now;
         $this->database->connection()->table('delivery_operations')
             ->where('id', $operation->id)
             ->where('workspace_id', $operation->workspaceId)
             ->update([
+                'provider_id' => null,
+                'provider_connection_id' => null,
                 'state' => DeliveryOperationState::Backpressured->value,
                 'backpressure_reason' => $reason,
                 'backpressured_at' => $backpressuredAt,
@@ -215,6 +247,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
         return new DeliveryAdmissionResult(
             operation: $updated,
             admitted: false,
+            changed: true,
             providerId: null,
             providerConnectionId: null,
             backpressureReason: $reason,

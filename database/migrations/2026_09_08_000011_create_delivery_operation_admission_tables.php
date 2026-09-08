@@ -14,6 +14,18 @@ return new class extends Migration
                 'delivery_recipient_id_workspace_message_uq',
             );
         });
+        Schema::table('provider_connections', function (Blueprint $table): void {
+            $table->unique(
+                ['id', 'provider_id', 'workspace_id'],
+                'provider_conn_id_provider_workspace_uq',
+            );
+        });
+        Schema::table('provider_quotas', function (Blueprint $table): void {
+            $table->unique(
+                ['id', 'provider_id', 'connection_id', 'workspace_id'],
+                'provider_quota_route_workspace_uq',
+            );
+        });
 
         Schema::create('delivery_operations', function (Blueprint $table): void {
             $table->uuid('id')->primary();
@@ -46,8 +58,12 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->foreign(['provider_id', 'workspace_id'], 'delivery_operation_provider_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('providers')->restrictOnDelete();
-            $table->foreign(['provider_connection_id', 'workspace_id'], 'delivery_operation_connection_workspace_fk')
-                ->references(['id', 'workspace_id'])->on('provider_connections')->restrictOnDelete();
+            $table->foreign(
+                ['provider_connection_id', 'provider_id', 'workspace_id'],
+                'delivery_operation_connection_provider_workspace_fk',
+            )->references(['id', 'provider_id', 'workspace_id'])
+                ->on('provider_connections')
+                ->restrictOnDelete();
             $table->unique(['id', 'workspace_id'], 'delivery_operation_id_workspace_uq');
             $table->unique(['workspace_id', 'idempotency_key'], 'delivery_operation_workspace_idempotency_uq');
             $table->index(
@@ -82,10 +98,18 @@ return new class extends Migration
                 ->references(['id', 'workspace_id'])->on('delivery_operations')->cascadeOnDelete();
             $table->foreign(['provider_id', 'workspace_id'], 'delivery_quota_provider_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('providers')->restrictOnDelete();
-            $table->foreign(['provider_connection_id', 'workspace_id'], 'delivery_quota_connection_workspace_fk')
-                ->references(['id', 'workspace_id'])->on('provider_connections')->restrictOnDelete();
-            $table->foreign(['quota_id', 'workspace_id'], 'delivery_quota_evidence_workspace_fk')
-                ->references(['id', 'workspace_id'])->on('provider_quotas')->restrictOnDelete();
+            $table->foreign(
+                ['provider_connection_id', 'provider_id', 'workspace_id'],
+                'delivery_quota_connection_provider_workspace_fk',
+            )->references(['id', 'provider_id', 'workspace_id'])
+                ->on('provider_connections')
+                ->restrictOnDelete();
+            $table->foreign(
+                ['quota_id', 'provider_id', 'provider_connection_id', 'workspace_id'],
+                'delivery_quota_evidence_route_workspace_fk',
+            )->references(['id', 'provider_id', 'connection_id', 'workspace_id'])
+                ->on('provider_quotas')
+                ->restrictOnDelete();
             $table->unique(['operation_id', 'quota_id'], 'delivery_quota_operation_evidence_uq');
             $table->index(
                 ['workspace_id', 'provider_connection_id', 'quota_id'],
@@ -99,6 +123,12 @@ return new class extends Migration
         Schema::dropIfExists('delivery_operation_quota_consumptions');
         Schema::dropIfExists('delivery_operations');
 
+        Schema::table('provider_quotas', function (Blueprint $table): void {
+            $table->dropUnique('provider_quota_route_workspace_uq');
+        });
+        Schema::table('provider_connections', function (Blueprint $table): void {
+            $table->dropUnique('provider_conn_id_provider_workspace_uq');
+        });
         Schema::table('delivery_recipient_snapshots', function (Blueprint $table): void {
             $table->dropUnique('delivery_recipient_id_workspace_message_uq');
         });

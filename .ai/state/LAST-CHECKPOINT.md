@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-08T11:35:00+00:00`
+- Timestamp: `2026-09-08T11:52:00+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,15 +11,15 @@
 
 ## Completed / observed this session
 
-TASK-0021 implementation candidate now includes the first bounded queue/admission slice: provider-neutral delivery operation states and priority classes, deterministic channel/priority queue routes, a stable workspace/business-intent/channel/normalized-destination idempotency key, durable `delivery_operations` persistence, composite snapshot/workspace foreign-key isolation, race-safe create-or-find admission, brand-scoped snapshot resolution, transactional first-create audit evidence, and feature coverage for duplicate enqueue, rematerialized immutable snapshots, not-before scheduling, workspace isolation, and brand isolation.
+TASK-0021 implementation candidate now includes provider-neutral durable delivery operation admission over immutable TASK-0020 snapshots. The candidate provides deterministic channel/priority queue routes, stable logical idempotency independent of queue/provider/attempt IDs, composite workspace/snapshot foreign-key isolation, race-safe create-or-find enqueue, and first-create audit evidence.
 
-The canonical idempotency key does not use queue job IDs, provider request IDs, provider names, or attempt ordinals. A repeated logical send with newly materialized immutable snapshots resolves to the previously created operation rather than silently creating another logical send.
+The second bounded slice adds deterministic ready/supported provider-connection selection for the canonical channel operation (`email.send`), fresh canonical quota-evidence locking, a separate delivery quota-consumption ledger that preserves ProviderQuota provenance, atomic remaining-budget enforcement, deterministic fallback to the next eligible connection, provider/connection/quota/workspace composite database boundaries, and explicit persisted backpressure reasons for unavailable connections or missing/incomplete/stale/exhausted quota evidence. Repeated admission and repeated identical backpressure are idempotent: quota evidence is not consumed twice, the original backpressure timestamp is preserved, and duplicate state-change audit evidence is not emitted.
 
-This candidate does not yet claim TASK-0021 completion. Provider quota/rate consumption, provider-connection admission, Redis-backed runtime concurrency/fairness, and explicit backpressure transitions remain to be implemented and validated in later TASK-0021 slices. Retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, and TASK-0022+ behavior remain out of scope.
+This candidate does not yet claim TASK-0021 completion. Redis-backed runtime concurrency/fairness and production-representative PostgreSQL/Redis concurrent-admission evidence remain to be implemented and validated. Retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, and TASK-0022+ behavior remain out of scope.
 
 ## Tests
 
-New feature coverage is committed on `task-0021-queue-admission`, but exact-head hosted CI has not yet completed. This candidate must pass AI transaction/state/journal/policy validation plus governance, foundation, PHP-floor, integration, E2E, static/format, and security gates before merge.
+The first queue/idempotency slice passed its exact-head hosted checks before the quota slice was added. New feature coverage now includes successful quota-backed admission, exact quota exhaustion, missing quota evidence, scheduled-not-before behavior, deterministic fallback routing, cross-workspace admission rejection, duplicate admission idempotency, and stable backpressure timestamps/audit evidence. The new exact head must independently pass AI transaction/state/journal/policy validation plus governance, foundation, PHP-floor, integration, E2E, static/format, and security gates.
 
 ## Blockers
 

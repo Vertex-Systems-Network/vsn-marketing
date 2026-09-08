@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-08T11:06:30+00:00`
+- Timestamp: `2026-09-08T11:35:00+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,17 +11,15 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0020` after delivery snapshot foundation PR #73 merged to trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4`. The accepted implementation provides provider-neutral marketing/transactional message intent, workspace-scoped stable business-intent identity, deterministic recipient materialization, immutable message and recipient execution snapshots, deterministic snapshot hashing, fail-closed tenant/reference boundaries, database-level immutability enforcement, transactional audit evidence, and production-representative PostgreSQL coverage.
+TASK-0021 implementation candidate now includes the first bounded queue/admission slice: provider-neutral delivery operation states and priority classes, deterministic channel/priority queue routes, a stable workspace/business-intent/channel/normalized-destination idempotency key, durable `delivery_operations` persistence, composite snapshot/workspace foreign-key isolation, race-safe create-or-find admission, brand-scoped snapshot resolution, transactional first-create audit evidence, and feature coverage for duplicate enqueue, rematerialized immutable snapshots, not-before scheduling, workspace isolation, and brand isolation.
 
-Registered and activated `TASK-0021` as the only executable PHASE-04 task. TASK-0021 is bounded to provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots. TASK-0022 through TASK-0024 remain preplanned and unregistered.
+The canonical idempotency key does not use queue job IDs, provider request IDs, provider names, or attempt ordinals. A repeated logical send with newly materialized immutable snapshots resolves to the previously created operation rather than silently creating another logical send.
 
-No TASK-0021 product implementation, retry classification, circuit breaker, dead-letter, reconciliation, failover, sender-domain/deliverability policy, credential, paid-send, or later-phase implementation changed in this control transition.
+This candidate does not yet claim TASK-0021 completion. Provider quota/rate consumption, provider-connection admission, Redis-backed runtime concurrency/fairness, and explicit backpressure transitions remain to be implemented and validated in later TASK-0021 slices. Retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, and TASK-0022+ behavior remain out of scope.
 
 ## Tests
 
-Trusted main `a0db904d8ee36c9e8a0fd895438c515f9ba503c4` after PR #73 completed all applicable post-merge checks successfully with no remaining failed or in-progress required checks.
-
-This TASK-0020 -> TASK-0021 control transition candidate must independently pass exact-head AI transaction/state/journal/policy validation plus the repository's required governance, foundation, php-floor, integration, E2E, and security gates before merge.
+New feature coverage is committed on `task-0021-queue-admission`, but exact-head hosted CI has not yet completed. This candidate must pass AI transaction/state/journal/policy validation plus governance, foundation, PHP-floor, integration, E2E, static/format, and security gates before merge.
 
 ## Blockers
 

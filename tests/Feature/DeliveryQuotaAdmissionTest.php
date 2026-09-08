@@ -96,6 +96,8 @@ function quotaAdmissionProvider(
     string $suffix,
     ?string $remaining,
     string $connectionId,
+    string $unit = 'request',
+    array $quotaMetadata = [],
 ): array {
     $providerId = (string) Str::uuid();
     $capabilityId = (string) Str::uuid();
@@ -170,7 +172,7 @@ function quotaAdmissionProvider(
             'operation' => 'email.send',
             'scope_type' => 'account',
             'scope_reference' => null,
-            'unit' => 'request',
+            'unit' => $unit,
             'window_type' => 'fixed',
             'window_seconds' => 60,
             'region' => null,
@@ -183,7 +185,7 @@ function quotaAdmissionProvider(
             'resets_at' => $now->copy()->addMinute(),
             'dynamically_discovered' => true,
             'discovery_key' => 'quota-'.$suffix,
-            'metadata' => '{}',
+            'metadata' => json_encode($quotaMetadata, JSON_THROW_ON_ERROR),
             'source_url' => 'https://example.test/quota/'.$suffix,
             'source_version' => 'test',
             'observed_at' => $now,
@@ -314,6 +316,49 @@ it('selects the next deterministic eligible connection when an earlier route is 
         ->and(DB::table('delivery_operation_quota_consumptions')
             ->where('provider_connection_id', $secondRoute['connectionId'])
             ->count())->toBe(1);
+});
+
+it('consumes the canonical per-operation cost for abstract provider quota units', function () {
+    $fixture = quotaAdmissionTenant('quota-units');
+    $route = quotaAdmissionProvider(
+        $fixture,
+        'quota-units',
+        '150',
+        '00000000-0000-4000-8000-000000000001',
+        'quota_unit',
+        ['operation_cost_units' => 100],
+    );
+    $first = quotaAdmissionOperation($fixture, 'quota-units-1');
+    $second = quotaAdmissionOperation($fixture, 'quota-units-2');
+
+    $accepted = app(AdmitDeliveryOperation::class)->handle($fixture['context'], $first);
+    $blocked = app(AdmitDeliveryOperation::class)->handle($fixture['context'], $second);
+
+    expect($accepted->admitted)->toBeTrue()
+        ->and($blocked->admitted)->toBeFalse()
+        ->and($blocked->backpressureReason)->toBe('quota_exhausted')
+        ->and((float) DB::table('delivery_operation_quota_consumptions')
+            ->where('quota_id', $route['quotaId'])
+            ->sum('units'))->toBe(100.0);
+});
+
+it('fails closed when an abstract quota unit lacks an explicit operation cost', function () {
+    $fixture = quotaAdmissionTenant('unknown-cost');
+    quotaAdmissionProvider(
+        $fixture,
+        'unknown-cost',
+        '6000',
+        '00000000-0000-4000-8000-000000000001',
+        'quota_unit',
+    );
+    $operation = quotaAdmissionOperation($fixture, 'quota-unknown-cost-1');
+
+    $result = app(AdmitDeliveryOperation::class)->handle($fixture['context'], $operation);
+
+    expect($result->admitted)->toBeFalse()
+        ->and($result->backpressureReason)->toBe('quota_operation_cost_unknown')
+        ->and($result->operation->state)->toBe(DeliveryOperationState::Backpressured)
+        ->and(DB::table('delivery_operation_quota_consumptions')->count())->toBe(0);
 });
 
 it('rejects admission through a context from another workspace', function () {

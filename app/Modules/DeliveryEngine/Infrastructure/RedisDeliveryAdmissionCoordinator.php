@@ -71,14 +71,16 @@ LUA;
 
         $result = $this->redis->connection('locks')->eval(
             self::ACQUIRE_SCRIPT,
+            [
+                $this->globalKey(),
+                $this->workspaceKey($workspaceId),
+                $member,
+                (string) $nowMs,
+                (string) $expiresMs,
+                (string) $workspaceConcurrencyLimit,
+                (string) $globalConcurrencyLimit,
+            ],
             2,
-            $this->globalKey(),
-            $this->workspaceKey($workspaceId),
-            $member,
-            (string) $nowMs,
-            (string) $expiresMs,
-            (string) $workspaceConcurrencyLimit,
-            (string) $globalConcurrencyLimit,
         );
 
         return (int) $result === 1;
@@ -94,10 +96,12 @@ LUA;
 
         $this->redis->connection('locks')->eval(
             self::RELEASE_SCRIPT,
+            [
+                $this->globalKey(),
+                $this->workspaceKey($workspaceId),
+                $member,
+            ],
             2,
-            $this->globalKey(),
-            $this->workspaceKey($workspaceId),
-            $member,
         );
     }
 

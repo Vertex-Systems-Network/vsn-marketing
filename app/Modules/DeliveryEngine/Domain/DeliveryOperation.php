@@ -11,6 +11,8 @@ final readonly class DeliveryOperation
         public string $workspaceId,
         public string $messageSnapshotId,
         public string $recipientSnapshotId,
+        public ?string $providerId,
+        public ?string $providerConnectionId,
         public DeliveryChannel $channel,
         public string $idempotencyKey,
         public DateTimeImmutable $scheduledNotBeforeAt,

@@ -4,79 +4,72 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-01** against `main` at `ed34452dd8c11dd0f2472fae72020a8b479fe289`.
+> Last verified: **2026-09-08** against `main` at `a678505125ea1241431a6c62441c4db45610b086` after merge of PR #75.
 >
-> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). ETA ranges below are planning estimates, not completion guarantees.
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
 
-**Overall roadmap progress: 21.5%**  
-**Current phase: PHASE-03 — 50%**  
-**Active task: TASK-0016**  
-**Last completed task: TASK-0015**  
-**Estimated remaining effort: ~66–106 focused development days**
+**Overall roadmap progress: 29.45%**  
+**Current phase: PHASE-04 — 63.64%**  
+**Active task: TASK-0021**  
+**Last completed task: TASK-0020**
 
 ```text
-Overall  [████░░░░░░░░░░░░░░░░] 21.5%
-Phase 03 [██████████░░░░░░░░░░] 50.0%
+Overall  [██████░░░░░░░░░░░░░░] 29.45%
+Phase 04 [█████████████░░░░░░░] 63.64%
 ```
 
 ```mermaid
 pie showData
     title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 21.5
-    "Remaining roadmap weight" : 78.5
+    "Completed / certified weight" : 29.45
+    "Remaining roadmap weight" : 70.55
 ```
 
 ### Phase / module progress
 
-| Phase | Weight | Main modules / capability | Status | Progress | Estimated remaining days |
-|---|---:|---|---|---:|---:|
-| PHASE-00 | 4% | Architecture, AI continuity, project governance | ✅ Complete | 100% | 0 |
-| PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% | 0 |
-| PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% | 0 |
-| **PHASE-03** | **7%** | **Providers, Connectors, Webhooks, Integrations, provider security baseline** | 🚧 **In progress** | **50%** | **2–4** |
-| PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ⏳ Planned | 0% | 4–6 |
-| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% | 4–6 |
-| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% | 5–8 |
-| PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% | 5–8 |
-| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% | 3–5 |
-| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% | 5–8 |
-| PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% | 7–11 |
-| PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% | 4–6 |
-| PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% | 5–8 |
-| PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | ⏳ Planned | 0% | 6–10 |
-| PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ⏳ Planned | 0% | 5–8 |
-| PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% | 5–8 |
-| PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% | 6–10 |
+| Phase | Weight | Main modules / capability | Status | Progress |
+|---|---:|---|---|---:|
+| PHASE-00 | 4% | Architecture, AI continuity, project governance | ✅ Complete | 100% |
+| PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
+| PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
+| PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
+| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress** | **63.64%** |
+| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
+| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
+| PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
+| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
+| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
+| PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
+| PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
+| PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |
+| PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | ⏳ Planned | 0% |
+| PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ⏳ Planned | 0% |
+| PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% |
+| PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% |
 
 ### Current execution snapshot
 
-PHASE-03 establishes the provider/channel abstraction and initial adapters without allowing provider-specific behavior to own canonical product data. Its task chain is:
+PHASE-04 is active. `TASK-0019` delivery-engine research and `TASK-0020` immutable execution snapshots are complete. `TASK-0021` remains active and is intentionally bounded to provider-neutral queue routing, durable logical-operation idempotency, quota/rate admission, backpressure and fairness over immutable TASK-0020 snapshots.
 
-| Task | Phase weight | Purpose | State |
-|---|---:|---|---|
-| TASK-0013 | 15% | Provider/channel research and architecture reconciliation | ✅ Complete |
-| TASK-0014 | 15% | Repository security and software-supply-chain hardening | ✅ Complete |
-| TASK-0015 | 20% | Canonical provider capability/connection/quota foundation | ✅ Complete |
-| **TASK-0016** | **20%** | **Adapter/error/quota/webhook/reconciliation contracts** | 🚧 **Active** |
-| TASK-0017 | 20% | Initial reference connectors and sandbox contract matrix | ⏳ Next |
-| TASK-0018 | 10% | PHASE-03 certification | ⏳ Planned |
+PR #75 (`TASK-0021: durable delivery operation admission foundation`) is merged. The integrated slice adds durable delivery operations, provider-neutral queue routes and priorities, stable workspace-scoped idempotency, deterministic provider-connection selection, canonical quota-evidence consumption, provider-specific canonical operation-cost accounting, tenant-safe persistence boundaries, idempotent quota admission/backpressure transitions, audit evidence and focused feature coverage.
 
-The current canonical calculation is:
+`TASK-0021` is **not complete yet**. Remaining work includes Redis-backed runtime concurrency/fairness, saturation behavior and production-representative PostgreSQL/Redis concurrent-admission evidence. Retry classification, circuit breakers, dead letters, reconciliation, remote-execution failover, sender-domain/deliverability policy, credentials, paid sends and TASK-0022+ behavior remain out of scope for the current task.
+
+Current canonical calculation:
 
 ```text
-PHASE-00  4.0 / 4.0
-PHASE-01  7.0 / 7.0
-PHASE-02  7.0 / 7.0
-PHASE-03  3.5 / 7.0
--------------------
-TOTAL    21.5 / 100
+PHASE-00  4.00 / 4.00
+PHASE-01  7.00 / 7.00
+PHASE-02  7.00 / 7.00
+PHASE-03  7.00 / 7.00
+PHASE-04  4.45 / 7.00
+---------------------
+TOTAL    29.45 / 100
 ```
 
 ## Delivery estimate assumptions
 
-The **66–106 focused development day** range assumes continuous AI-native implementation, fast review/merge cycles, stable infrastructure, and no major external API/app-review blockers. Later phases carry higher uncertainty because they depend on provider policies, production-scale performance evidence, security gates, accessibility, AI evaluation/red-team work, and enterprise recovery/compliance requirements.
-
-The roadmap is research-first: new provider/API/model realities can add justified tasks, so the estimate should be recalculated after each phase certification rather than treated as a fixed deadline.
+Delivery timing depends on exact-head CI, production-representative concurrency evidence, provider policies, security gates, accessibility, AI evaluation/red-team work, and enterprise recovery/compliance requirements. The roadmap is research-first, so estimates should be recalculated after each phase certification rather than treated as fixed deadlines.
 
 ## For coding agents and contributors
 
@@ -112,7 +105,7 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The TASK-0017 pilot branches were pre-created from trusted main `bc821953b69dea2ac58eb1e3dbe41699a0dc111b` and remain staged until TASK-0017 is canonical: `agent/task-0017-research-qa`, `agent/task-0017-ses`, `agent/task-0017-brevo`, `agent/task-0017-gmail`, `agent/task-0017-contract-matrix`, and `supervisor/task-0017-integration`.
+The latest registered parallel workstreams on `main` are the completed TASK-0018 certification cycle, and `.ai/parallel/AGENT-LEASES.yaml` currently has no active leases. A new writable TASK-0021 parallel cycle must therefore be registered through the repository's canonical Supervisor tooling before workers may mutate dedicated lanes.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

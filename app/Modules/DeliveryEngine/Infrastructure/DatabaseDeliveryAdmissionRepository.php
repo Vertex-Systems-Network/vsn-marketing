@@ -119,6 +119,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             }
 
             $quotaRows = [];
+            $quotaRequiredUnits = [];
             $blocked = false;
             foreach ($quotas as $quota) {
                 if (! $quota instanceof stdClass) {
@@ -138,18 +139,26 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                     break;
                 }
 
+                $requiredUnits = $this->requiredUnits($quota);
+                if ($requiredUnits === null) {
+                    $lastReason = 'quota_operation_cost_unknown';
+                    $blocked = true;
+                    break;
+                }
+
                 $consumed = (float) $connection->table('delivery_operation_quota_consumptions')
                     ->where('workspace_id', $locked->workspaceId)
                     ->where('quota_id', (string) $quota->id)
                     ->sum('units');
 
-                if (($available - $consumed) < 1.0) {
+                if (($available - $consumed) < $requiredUnits) {
                     $lastReason = 'quota_exhausted';
                     $blocked = true;
                     break;
                 }
 
                 $quotaRows[] = $quota;
+                $quotaRequiredUnits[(string) $quota->id] = $requiredUnits;
             }
 
             if ($blocked || $quotaRows === []) {
@@ -163,7 +172,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                     'provider_id' => $providerId,
                     'provider_connection_id' => $connectionId,
                     'quota_id' => (string) $quota->id,
-                    'units' => 1,
+                    'units' => $quotaRequiredUnits[(string) $quota->id],
                     'created_at' => $now,
                 ]);
             }
@@ -207,6 +216,28 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
         }
 
         return null;
+    }
+
+    private function requiredUnits(stdClass $quota): ?float
+    {
+        $unit = (string) $quota->unit;
+        if (in_array($unit, ['request', 'recipient'], true)) {
+            return 1.0;
+        }
+
+        $metadata = json_decode((string) $quota->metadata, true);
+        if (! is_array($metadata)) {
+            return null;
+        }
+
+        $cost = $metadata['operation_cost_units'] ?? null;
+        if (! is_int($cost) && ! is_float($cost) && ! (is_string($cost) && is_numeric($cost))) {
+            return null;
+        }
+
+        $requiredUnits = (float) $cost;
+
+        return is_finite($requiredUnits) && $requiredUnits > 0 ? $requiredUnits : null;
     }
 
     private function backpressure(

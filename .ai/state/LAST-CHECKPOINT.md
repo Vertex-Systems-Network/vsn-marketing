@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-07T09:13:00+00:00`
+- Timestamp: `2026-09-08T00:32:00+00:00`
 - Active task: `TASK-0020`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,17 +11,17 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0019` and activated `TASK-0020`.
+TASK-0020 implementation candidate PR #73 now contains the bounded DeliveryEngine foundation: provider-neutral message intent, workspace-scoped stable business-intent identity, canonical contact-identity selection, immutable versioned message execution snapshots, immutable recipient snapshots with normalized destination/source provenance, deterministic canonical snapshot hashing, tenant-safe database boundaries, database-level immutability enforcement, and transactional audit evidence.
 
-Transition evidence: TASK-0019 research PR #70 merged to trusted main `fe3e0bd059f87805638befe1538117f438e65a5b`. The accepted research supports the existing PHASE-04 plan without a roadmap split and explicitly authorizes TASK-0020 as the next bounded implementation task. TASK-0021 through TASK-0024 remain preplanned but unregistered and therefore non-executable.
+The migration follow-up at `33d05acb721c48f68db5ecaeaf57e2a7203d4639` reuses the pre-existing `brands_id_workspace_uq` and `contact_identity_id_contact_workspace_uq` indexes instead of attempting to recreate them. Queue routing, provider throttling, retries, failover, sender-domain/deliverability policy, provider SDK branching, credentials, paid sends, and later PHASE-04 work remain intentionally out of scope.
 
-No DeliveryEngine product implementation, queue routing, provider throttling, retry/failover, sender-domain/deliverability work, credentials, paid sends, or later-phase content/template implementation changed in this transition.
+This checkpoint is a factual candidate-state synchronization only. TASK-0020 remains active and is not marked completed; the fingerprint-bearing execution, progress, blockers, and exact-next-action fields are unchanged.
 
 ## Tests
 
-Trusted main `fe3e0bd059f87805638befe1538117f438e65a5b` after PR #70 passed the applicable repository push-side AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows.
+At PR #73 candidate head `33d05acb721c48f68db5ecaeaf57e2a7203d4639`, PHP 8.3, integration, backend, architecture, static-analysis, E2E, and security checks passed. AI transaction/state/journal/policy validators also passed; the AI Continuity workflow required this source-change candidate to synchronize both `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`, which this update supplies.
 
-This transition candidate must independently pass exact-head AI transaction/state/journal/policy validation plus the repository's required foundation, PHP-floor, integration, E2E, and security gates before merge.
+Laravel Pint/formatting remains to be revalidated on the new exact head before merge. No merge is authorized until all required exact-head checks are green.
 
 ## Blockers
 

@@ -1,132 +1,92 @@
 {
   "schema_version": 2,
-  "mode": "staged",
-  "parent_task": "TASK-0018",
-  "branch_creation_baseline_sha": "4caa654426397473d21d382a8e4d3bcf43057546",
+  "mode": "active",
+  "parent_task": "TASK-0021",
+  "branch_creation_baseline_sha": "4e2470b8f019faecde3bd0c64e089f1b5de5fdac",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0018-EVIDENCE-MAP",
+      "id": "WS-0021-FAIRNESS-POLICY",
       "role": "worker",
-      "module": "Providers",
-      "capability": "PHASE-03 acceptance evidence map",
-      "assigned_agent": "agent-evidence-map-01",
-      "branch": "agent/task-0018-evidence-map",
-      "worktree": "worktrees/task-0018-evidence-map",
-      "status": "merged",
+      "module": "DeliveryEngine",
+      "capability": "Deterministic provider-neutral workspace fairness policy primitives",
+      "assigned_agent": "agent-fairness-01",
+      "branch": "agent/task-0021-fairness-policy",
+      "worktree": "worktrees/task-0021-fairness-policy",
+      "status": "leased",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "leased_ready_to_start",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        ".ai/audits/PHASE-03/TASK-0018-EVIDENCE.md"
+        "app/Modules/DeliveryEngine/Domain/DeliveryFairnessPolicy.php",
+        "app/Modules/DeliveryEngine/Domain/DeliveryFairnessDecision.php",
+        "tests/Unit/DeliveryEngine/DeliveryFairnessPolicyTest.php"
       ]
     },
     {
-      "id": "WS-0018-NEUTRALITY",
+      "id": "WS-0021-REDIS-ADMISSION",
       "role": "worker",
-      "module": "Providers",
-      "capability": "Provider-neutral architecture regression certification",
-      "assigned_agent": "agent-neutrality-01",
-      "branch": "agent/task-0018-neutrality",
-      "worktree": "worktrees/task-0018-neutrality",
-      "status": "merged",
+      "module": "DeliveryEngine",
+      "capability": "Redis-backed atomic admission coordination without provider-specific branching",
+      "assigned_agent": "agent-redis-admission-01",
+      "branch": "agent/task-0021-redis-admission",
+      "worktree": "worktrees/task-0021-redis-admission",
+      "status": "leased",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "leased_ready_to_start",
+      "onboarded_from_branch": "main",
+      "dependencies": [],
+      "merge_group": 10,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Domain/Contracts/DeliveryAdmissionCoordinator.php",
+        "app/Modules/DeliveryEngine/Infrastructure/RedisDeliveryAdmissionCoordinator.php",
+        "tests/Integration/DeliveryEngine/RedisDeliveryAdmissionCoordinatorTest.php"
+      ]
+    },
+    {
+      "id": "WS-0021-CONCURRENCY-CERT",
+      "role": "worker",
+      "module": "DeliveryEngine",
+      "capability": "Production-representative PostgreSQL and Redis concurrency certification coverage",
+      "assigned_agent": "agent-concurrency-cert-01",
+      "branch": "agent/task-0021-concurrency-cert",
+      "worktree": "worktrees/task-0021-concurrency-cert",
+      "status": "leased",
+      "slot_status": "occupied",
+      "start_status": "leased_ready_to_start",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Architecture/Providers/Phase03/**"
+        "tests/Integration/DeliveryEngine/DeliveryAdmissionConcurrencyTest.php",
+        "tests/Integration/DeliveryEngine/DeliveryFairnessConcurrencyTest.php"
       ]
     },
     {
-      "id": "WS-0018-ISOLATION",
+      "id": "WS-0021-BACKPRESSURE-OBSERVABILITY",
       "role": "worker",
-      "module": "Providers",
-      "capability": "Cross-workspace provider isolation certification",
-      "assigned_agent": "agent-isolation-01",
-      "branch": "agent/task-0018-isolation",
-      "worktree": "worktrees/task-0018-isolation",
-      "status": "merged",
+      "module": "DeliveryEngine",
+      "capability": "Machine-readable backpressure reason, age and visibility primitives",
+      "assigned_agent": "agent-backpressure-observability-01",
+      "branch": "agent/task-0021-backpressure-observability",
+      "worktree": "worktrees/task-0021-backpressure-observability",
+      "status": "leased",
       "slot_status": "occupied",
-      "start_status": "merged",
+      "start_status": "leased_ready_to_start",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Integration/Providers/Phase03/**"
-      ]
-    },
-    {
-      "id": "WS-0018-CONNECTOR-CERT",
-      "role": "worker",
-      "module": "Providers",
-      "capability": "Connector contract, webhook, quota and reconciliation certification",
-      "assigned_agent": "agent-connector-cert-01",
-      "branch": "agent/task-0018-connector-cert",
-      "worktree": "worktrees/task-0018-connector-cert",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "merged",
-      "onboarded_from_branch": "main",
-      "dependencies": [],
-      "merge_group": 20,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "tests/Feature/Providers/Certification/Connectors/**"
-      ]
-    },
-    {
-      "id": "WS-0018-SECURITY-CERT",
-      "role": "worker",
-      "module": "Providers",
-      "capability": "Security and supply-chain evidence certification",
-      "assigned_agent": "agent-security-cert-01",
-      "branch": "agent/task-0018-security-cert",
-      "worktree": "worktrees/task-0018-security-cert",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "merged",
-      "onboarded_from_branch": "main",
-      "dependencies": [],
-      "merge_group": 20,
-      "merge_strategy": "squash",
-      "write_paths": [
-        ".ai/audits/PHASE-03/TASK-0018-SECURITY.md"
-      ]
-    },
-    {
-      "id": "WS-0018-SUPERVISOR-CERTIFICATION",
-      "role": "supervisor",
-      "module": "Providers",
-      "capability": "PHASE-03 final certification, merge coordination and canonical closeout",
-      "assigned_agent": "supervisor-main",
-      "branch": "supervisor/task-0018-certification",
-      "worktree": "worktrees/task-0018-certification",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "merged",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0018-EVIDENCE-MAP",
-        "WS-0018-NEUTRALITY",
-        "WS-0018-ISOLATION",
-        "WS-0018-CONNECTOR-CERT",
-        "WS-0018-SECURITY-CERT"
-      ],
-      "merge_group": 40,
-      "merge_strategy": "squash",
-      "write_paths": [
-        ".ai/state/**",
-        ".ai/tasks/**",
-        ".ai/roadmap/**",
-        ".ai/parallel/**"
+        "app/Modules/DeliveryEngine/Domain/DeliveryBackpressureSnapshot.php",
+        "app/Modules/DeliveryEngine/Application/DescribeDeliveryBackpressure.php",
+        "tests/Feature/DeliveryBackpressureObservabilityTest.php"
       ]
     }
   ]

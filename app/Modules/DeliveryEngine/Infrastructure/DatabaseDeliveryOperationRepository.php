@@ -193,7 +193,7 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
                 ! $existingMessage instanceof stdClass ||
                 ! $existingRecipient instanceof stdClass ||
                 (string) $existingMessage->content_hash !== (string) $incomingMessage->content_hash ||
-                (string) $existingRecipient->content_hash !== (string) $incomingRecipient->content_hash
+                ! $this->sameRecipientEvidence($existingRecipient, $incomingRecipient)
             ) {
                 throw new LogicException('Delivery operation idempotency key conflicts with changed execution snapshot content.');
             }
@@ -206,6 +206,26 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
         ) {
             throw new LogicException('Delivery operation idempotency key conflicts with a different immutable execution intent.');
         }
+    }
+
+    private function sameRecipientEvidence(stdClass $left, stdClass $right): bool
+    {
+        foreach ([
+            'contact_id',
+            'contact_identity_id',
+            'channel',
+            'destination',
+            'normalized_destination',
+            'identity_provider',
+            'identity_provider_reference',
+            'identity_verified_at',
+        ] as $field) {
+            if (($left->{$field} ?? null) != ($right->{$field} ?? null)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function hydrate(stdClass $row): DeliveryOperation

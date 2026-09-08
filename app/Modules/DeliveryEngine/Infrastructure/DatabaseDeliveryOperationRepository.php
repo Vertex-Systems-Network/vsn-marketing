@@ -17,6 +17,7 @@ use App\Modules\DeliveryEngine\Domain\RecipientExecutionSnapshot;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\QueryException;
+use RuntimeException;
 use stdClass;
 
 final readonly class DatabaseDeliveryOperationRepository implements DeliveryOperationRepository
@@ -115,6 +116,8 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
                 'workspace_id' => $snapshots->message->workspaceId,
                 'message_snapshot_id' => $snapshots->message->id,
                 'recipient_snapshot_id' => $snapshots->recipient->id,
+                'provider_id' => null,
+                'provider_connection_id' => null,
                 'channel' => $snapshots->message->channel->value,
                 'idempotency_key' => $idempotencyKey,
                 'scheduled_not_before_at' => $scheduledNotBeforeAt,
@@ -139,12 +142,7 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
 
         $created = $this->findByIdempotencyKey($snapshots->message->workspaceId, $idempotencyKey);
         if ($created === null) {
-            throw new QueryException(
-                $this->database->connection()->getName(),
-                'select delivery operation after insert',
-                [],
-                new \RuntimeException('Inserted delivery operation could not be read back.'),
-            );
+            throw new RuntimeException('Inserted delivery operation could not be read back.');
         }
 
         return new DeliveryOperationCreation($created, true);
@@ -171,6 +169,8 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
             workspaceId: (string) $row->workspace_id,
             messageSnapshotId: (string) $row->message_snapshot_id,
             recipientSnapshotId: (string) $row->recipient_snapshot_id,
+            providerId: $row->provider_id === null ? null : (string) $row->provider_id,
+            providerConnectionId: $row->provider_connection_id === null ? null : (string) $row->provider_connection_id,
             channel: DeliveryChannel::from((string) $row->channel),
             idempotencyKey: (string) $row->idempotency_key,
             scheduledNotBeforeAt: new DateTimeImmutable((string) $row->scheduled_not_before_at),

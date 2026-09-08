@@ -4,14 +4,15 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-08** against `main` at `a678505125ea1241431a6c62441c4db45610b086` after merge of PR #75.
+> Last verified: **2026-09-08** from trusted pre-cycle `main` baseline `4e2470b8f019faecde3bd0c64e089f1b5de5fdac` after README status PR #77.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
 
 **Overall roadmap progress: 29.45%**  
 **Current phase: PHASE-04 — 63.64%**  
 **Active task: TASK-0021**  
-**Last completed task: TASK-0020**
+**Last completed task: TASK-0020**  
+**Parallel execution: 4 worker lanes + 1 Supervisor integration lane registered for the remaining TASK-0021 scope**
 
 ```text
 Overall  [██████░░░░░░░░░░░░░░] 29.45%
@@ -53,7 +54,9 @@ PHASE-04 is active. `TASK-0019` delivery-engine research and `TASK-0020` immutab
 
 PR #75 (`TASK-0021: durable delivery operation admission foundation`) is merged. The integrated slice adds durable delivery operations, provider-neutral queue routes and priorities, stable workspace-scoped idempotency, deterministic provider-connection selection, canonical quota-evidence consumption, provider-specific canonical operation-cost accounting, tenant-safe persistence boundaries, idempotent quota admission/backpressure transitions, audit evidence and focused feature coverage.
 
-`TASK-0021` is **not complete yet**. Remaining work includes Redis-backed runtime concurrency/fairness, saturation behavior and production-representative PostgreSQL/Redis concurrent-admission evidence. Retry classification, circuit breakers, dead letters, reconciliation, remote-execution failover, sender-domain/deliverability policy, credentials, paid sends and TASK-0022+ behavior remain out of scope for the current task.
+The remaining TASK-0021 work is now decomposed into four conflict-safe worker lanes: deterministic workspace fairness policy, Redis-backed atomic admission coordination, PostgreSQL/Redis concurrency certification, and machine-readable backpressure observability. A fifth Supervisor lane owns shared admission wiring, canonical state/parallel registries, migrations and final integration. All five branches were pre-created from the same trusted main baseline before cycle planning/code mutation.
+
+`TASK-0021` is **not complete yet**. Required remaining evidence is Redis-backed runtime concurrency/fairness, saturation behavior, machine-readable backpressure age/reason, and production-representative PostgreSQL/Redis concurrent-admission proof. Retry classification, circuit breakers, dead letters, reconciliation, remote-execution failover, sender-domain/deliverability policy, credentials, paid sends and TASK-0022+ behavior remain out of scope for the current task.
 
 Current canonical calculation:
 
@@ -105,7 +108,7 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The latest registered parallel workstreams on `main` are the completed TASK-0018 certification cycle, and `.ai/parallel/AGENT-LEASES.yaml` currently has no active leases. A new writable TASK-0021 parallel cycle must therefore be registered through the repository's canonical Supervisor tooling before workers may mutate dedicated lanes.
+The active TASK-0021 parallel cycle currently has four leased worker lanes and one Supervisor integration lane. Worker ownership is disjoint and machine-registered in `.ai/parallel/WORKSTREAMS.yaml` / `.ai/parallel/AGENT-LEASES.yaml`; shared state, migrations, README, database-admission wiring and service-provider integration remain Supervisor-only.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

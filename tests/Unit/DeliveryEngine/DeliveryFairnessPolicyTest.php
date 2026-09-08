@@ -3,7 +3,7 @@
 use App\Modules\DeliveryEngine\Domain\DeliveryFairnessPolicy;
 
 it('admits a workspace while it remains below its deterministic weighted share', function () {
-    $decision = (new DeliveryFairnessPolicy())->decide(
+    $decision = (new DeliveryFairnessPolicy)->decide(
         workspaceId: 'workspace-a',
         workspaceInFlight: 1,
         globalInFlight: 3,
@@ -19,7 +19,7 @@ it('admits a workspace while it remains below its deterministic weighted share',
 });
 
 it('backpressures a saturated workspace without consuming another workspace fair share', function () {
-    $policy = new DeliveryFairnessPolicy();
+    $policy = new DeliveryFairnessPolicy;
 
     $saturated = $policy->decide(
         workspaceId: 'workspace-a',
@@ -47,7 +47,7 @@ it('backpressures a saturated workspace without consuming another workspace fair
 });
 
 it('honors the stricter workspace concurrency ceiling', function () {
-    $decision = (new DeliveryFairnessPolicy())->decide(
+    $decision = (new DeliveryFairnessPolicy)->decide(
         workspaceId: 'workspace-a',
         workspaceInFlight: 2,
         globalInFlight: 2,
@@ -63,7 +63,7 @@ it('honors the stricter workspace concurrency ceiling', function () {
 });
 
 it('reserves at least one slot for every active positive-weight workspace', function () {
-    $decision = (new DeliveryFairnessPolicy())->decide(
+    $decision = (new DeliveryFairnessPolicy)->decide(
         workspaceId: 'workspace-small',
         workspaceInFlight: 0,
         globalInFlight: 0,
@@ -78,7 +78,7 @@ it('reserves at least one slot for every active positive-weight workspace', func
 });
 
 it('blocks every workspace once global capacity is exhausted', function () {
-    $decision = (new DeliveryFairnessPolicy())->decide(
+    $decision = (new DeliveryFairnessPolicy)->decide(
         workspaceId: 'workspace-a',
         workspaceInFlight: 0,
         globalInFlight: 8,
@@ -93,7 +93,7 @@ it('blocks every workspace once global capacity is exhausted', function () {
 });
 
 it('fails closed on invalid fairness evidence', function (array $input) {
-    expect(fn () => (new DeliveryFairnessPolicy())->decide(...$input))
+    expect(fn () => (new DeliveryFairnessPolicy)->decide(...$input))
         ->toThrow(InvalidArgumentException::class);
 })->with([
     'negative in-flight' => [[

@@ -18,10 +18,6 @@ final class DeliveryOperationKey
             throw new InvalidArgumentException('Recipient snapshot does not belong to the message snapshot.');
         }
 
-        if ($message->channel !== $recipient->channel) {
-            throw new InvalidArgumentException('Delivery snapshot channels must match.');
-        }
-
         return hash('sha256', implode('|', [
             'delivery-operation:v1',
             $message->workspaceId,

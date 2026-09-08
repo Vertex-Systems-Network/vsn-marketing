@@ -15,6 +15,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 final readonly class MaterializeExecutionSnapshots
 {
     public const MESSAGE_AUDIT_ACTION = 'delivery.message_snapshot.materialized';
+
     public const RECIPIENT_AUDIT_ACTION = 'delivery.recipient_snapshot.materialized';
 
     public function __construct(

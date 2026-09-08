@@ -3,6 +3,7 @@
 namespace App\Modules\DeliveryEngine\Domain\Contracts;
 
 use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
+use App\Modules\DeliveryEngine\Domain\DeliveryOperationScheduleResult;
 use DateTimeImmutable;
 
 interface DeliveryOperationRepository
@@ -14,7 +15,7 @@ interface DeliveryOperationRepository
         string $recipientSnapshotId,
         string $providerConnectionId,
         DateTimeImmutable $scheduledNotBeforeAt,
-    ): DeliveryOperation;
+    ): DeliveryOperationScheduleResult;
 
     public function findByIdempotencyKey(string $workspaceId, string $idempotencyKey): ?DeliveryOperation;
 }

@@ -73,8 +73,8 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
         if ($existing !== null) {
             $this->assertIdempotentReplay(
                 $existing,
-                $messageSnapshotId,
-                $recipientSnapshotId,
+                $message,
+                $recipient,
                 $providerConnectionId,
                 $channel,
                 $scheduledNotBeforeAt,
@@ -114,8 +114,8 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
 
             $this->assertIdempotentReplay(
                 $raced,
-                $messageSnapshotId,
-                $recipientSnapshotId,
+                $message,
+                $recipient,
                 $providerConnectionId,
                 $channel,
                 $scheduledNotBeforeAt,
@@ -170,15 +170,36 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
 
     private function assertIdempotentReplay(
         DeliveryOperation $existing,
-        string $messageSnapshotId,
-        string $recipientSnapshotId,
+        stdClass $incomingMessage,
+        stdClass $incomingRecipient,
         string $providerConnectionId,
         DeliveryChannel $channel,
         DateTimeImmutable $scheduledNotBeforeAt,
     ): void {
+        $sameSnapshotIdentity = $existing->messageSnapshotId === (string) $incomingMessage->id
+            && $existing->recipientSnapshotId === (string) $incomingRecipient->id;
+
+        if (! $sameSnapshotIdentity) {
+            $existingMessage = $this->database->connection()->table('delivery_message_snapshots')
+                ->where('id', $existing->messageSnapshotId)
+                ->where('workspace_id', $existing->workspaceId)
+                ->first();
+            $existingRecipient = $this->database->connection()->table('delivery_recipient_snapshots')
+                ->where('id', $existing->recipientSnapshotId)
+                ->where('workspace_id', $existing->workspaceId)
+                ->first();
+
+            if (
+                ! $existingMessage instanceof stdClass ||
+                ! $existingRecipient instanceof stdClass ||
+                (string) $existingMessage->content_hash !== (string) $incomingMessage->content_hash ||
+                (string) $existingRecipient->content_hash !== (string) $incomingRecipient->content_hash
+            ) {
+                throw new LogicException('Delivery operation idempotency key conflicts with changed execution snapshot content.');
+            }
+        }
+
         if (
-            $existing->messageSnapshotId !== $messageSnapshotId ||
-            $existing->recipientSnapshotId !== $recipientSnapshotId ||
             $existing->providerConnectionId !== $providerConnectionId ||
             $existing->channel !== $channel ||
             $existing->scheduledNotBeforeAt->getTimestamp() !== $scheduledNotBeforeAt->getTimestamp()

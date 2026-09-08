@@ -16,7 +16,6 @@ use App\Modules\DeliveryEngine\Domain\MessageIntentType;
 use App\Modules\DeliveryEngine\Domain\RecipientExecutionSnapshot;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\QueryException;
 use RuntimeException;
 use stdClass;
 
@@ -109,43 +108,35 @@ final readonly class DatabaseDeliveryOperationRepository implements DeliveryOper
         $state = $scheduledNotBeforeAt > $now
             ? DeliveryOperationState::Scheduled
             : DeliveryOperationState::Ready;
+        $connection = $this->database->connection();
 
-        try {
-            $this->database->connection()->table('delivery_operations')->insert([
-                'id' => $id,
-                'workspace_id' => $snapshots->message->workspaceId,
-                'message_snapshot_id' => $snapshots->message->id,
-                'recipient_snapshot_id' => $snapshots->recipient->id,
-                'provider_id' => null,
-                'provider_connection_id' => null,
-                'channel' => $snapshots->message->channel->value,
-                'idempotency_key' => $idempotencyKey,
-                'scheduled_not_before_at' => $scheduledNotBeforeAt,
-                'priority_class' => $priorityClass->value,
-                'state' => $state->value,
-                'queue_name' => $route->queueName,
-                'queue_partition_key' => $route->partitionKey,
-                'backpressure_reason' => null,
-                'backpressured_at' => null,
-                'version' => 0,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
-        } catch (QueryException $exception) {
-            $existing = $this->findByIdempotencyKey($snapshots->message->workspaceId, $idempotencyKey);
-            if ($existing !== null) {
-                return new DeliveryOperationCreation($existing, false);
-            }
+        $inserted = $connection->table('delivery_operations')->insertOrIgnore([
+            'id' => $id,
+            'workspace_id' => $snapshots->message->workspaceId,
+            'message_snapshot_id' => $snapshots->message->id,
+            'recipient_snapshot_id' => $snapshots->recipient->id,
+            'provider_id' => null,
+            'provider_connection_id' => null,
+            'channel' => $snapshots->message->channel->value,
+            'idempotency_key' => $idempotencyKey,
+            'scheduled_not_before_at' => $scheduledNotBeforeAt,
+            'priority_class' => $priorityClass->value,
+            'state' => $state->value,
+            'queue_name' => $route->queueName,
+            'queue_partition_key' => $route->partitionKey,
+            'backpressure_reason' => null,
+            'backpressured_at' => null,
+            'version' => 0,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
 
-            throw $exception;
+        $operation = $this->findByIdempotencyKey($snapshots->message->workspaceId, $idempotencyKey);
+        if ($operation === null) {
+            throw new RuntimeException('Delivery operation insert did not produce the requested idempotency key.');
         }
 
-        $created = $this->findByIdempotencyKey($snapshots->message->workspaceId, $idempotencyKey);
-        if ($created === null) {
-            throw new RuntimeException('Inserted delivery operation could not be read back.');
-        }
-
-        return new DeliveryOperationCreation($created, true);
+        return new DeliveryOperationCreation($operation, $inserted === 1);
     }
 
     private function findByIdempotencyKey(string $workspaceId, string $idempotencyKey): ?DeliveryOperation

@@ -18,9 +18,9 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0020_pr73_candidate_internal_validators_pass_change_set_sync_included",
-    "application_test_status": "task_0020_pr73_candidate_php83_integration_backend_architecture_static_e2e_passed",
-    "security_supply_chain_status": "task_0020_pr73_candidate_security_checks_passed",
+    "continuity_validation": "task_0021_queue_admission_candidate_change_set_sync_included",
+    "application_test_status": "task_0021_queue_admission_candidate_pending_exact_head_ci",
+    "security_supply_chain_status": "task_0021_queue_admission_candidate_pending_exact_head_ci",
     "release_integrity_status": "task_0016_main_push_passed_signed_attestations",
     "scorecard_status": "task_0016_main_push_passed"
   },

@@ -24,6 +24,7 @@ interface DeliveryRecoveryRepository
         DeliveryFailureObservation $observation,
         DeliveryRetryDecision $retryDecision,
         DeliveryCircuitBreakerDecision $breakerDecision,
+        int $breakerConsecutiveFailuresAfterOutcome,
         DeliveryDeadLetterDecision $deadLetterDecision,
         DateTimeImmutable $observedAt,
         ?DateTimeImmutable $nextAttemptAt,

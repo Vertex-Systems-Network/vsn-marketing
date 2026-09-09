@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
   "protocol_version": "2.1.0",
-  "instruction_revision": "parallel-v2.2-issue-pr-readme-progress",
+  "instruction_revision": "parallel-v2.1-supervisor-onboarding",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "e5cc24cbfd70adb9d61b61b1b50c66ff95cb746f2871f0e8ff4944823390a881",
+  "instruction_fingerprint": "d2f26c4a767db4bfda4e89b38eac2ea1958c160a26327a1715d88ed7452cdc75",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,

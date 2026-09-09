@@ -32,30 +32,6 @@ Writable work requires all of the following:
 
 Workers may not mutate paths in `.ai/parallel/SHARED-PATHS.yaml`. Shared contract, migration, dependency, workflow, route/config, global state, or architecture mutations are Supervisor-controlled integration changes.
 
-## Session startup triage
-
-Every development session and every resumed writable cycle MUST triage repository work in this order before starting new implementation:
-
-1. **Issues first:** inspect all open issues relevant to the active task, including governance/broadcast issues and newly reported defects. Resolve or explicitly classify actionable blockers before starting new feature work.
-2. **Merge requests / pull requests second:** inspect every open PR/MR, submitted workstream PR, failing check, requested change, and merge conflict. Review, repair, synchronize, and merge eligible current-main green work before starting optional new implementation.
-3. **New implementation third:** only after issue and PR/MR triage may the agent start or resume planned development work.
-
-A submitted workstream PR remains a Supervisor interrupt and has priority over optional Supervisor module work. Triage must never bypass branch, lease, dependency, continuity, review, or CI gates.
-
-## End-of-cycle README progress synchronization
-
-At the end of every completed work cycle, merged workstream, or final development pass, the Supervisor MUST update the top-level `README.md` in the same integration/closeout flow.
-
-The README update MUST include:
-
-- a current overall roadmap progress percentage and text progress bar;
-- the current phase percentage and progress bar when a phase is active;
-- a **module-wise progress table** showing each active/completed module or capability, its status, evidence/PR where practical, and progress percentage;
-- the active task, last completed task, current blockers, and next work when materially changed;
-- only verified/merged/certified progress; draft, failing, unmerged, or merely planned work MUST NOT inflate completion percentages.
-
-Canonical `.ai/` state remains authoritative. README is the required human-readable execution snapshot and must be synchronized after work finalization.
-
 ## Completion and Supervisor interrupt
 
 A completed registered non-draft workstream PR must contain both standalone lines:

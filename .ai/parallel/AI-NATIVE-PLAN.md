@@ -10,17 +10,6 @@ All five cycle branches (four workers plus the reserved Supervisor coordination 
 
 The cycle remains inside TASK-0021. Retry classification, circuit breakers, dead letters, reconciliation, provider failover, sender-domain/deliverability policy, credentials/paid sends, and TASK-0022+ behavior remain excluded.
 
-## Mandatory session order
-
-Every new or resumed development session follows this order before optional implementation starts:
-
-1. **Issues first** — inspect open issues relevant to the active task, governance and defect reports; resolve or explicitly classify actionable blockers.
-2. **MR/PR second** — inspect all open merge requests/pull requests, submitted worker PRs, review feedback, merge conflicts and failing checks; repair/synchronize/merge eligible green work before new development.
-3. **Development third** — start or resume planned implementation only after the issue and MR/PR queues are triaged.
-4. **README closeout last** — after each completed work cycle/merged workstream/final development pass, update the top-level README with verified progress only: overall progress bar, active-phase progress bar, and a module-wise progress table with status/evidence/progress. Unmerged or failing work never inflates completion.
-
-This startup/closeout order is mandatory and does not override leases, branch isolation, continuity, dependency or CI gates.
-
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|

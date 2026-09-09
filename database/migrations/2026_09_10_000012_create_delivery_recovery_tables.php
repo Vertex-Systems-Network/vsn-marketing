@@ -8,6 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::table('delivery_operation_quota_consumptions', function (Blueprint $table): void {
+            $table->unsignedInteger('attempt_number')->default(1);
+            $table->dropUnique('delivery_quota_operation_evidence_uq');
+            $table->unique(
+                ['operation_id', 'quota_id', 'attempt_number'],
+                'delivery_quota_operation_attempt_evidence_uq',
+            );
+        });
+
         Schema::create('delivery_attempts', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->uuid('workspace_id');
@@ -137,5 +146,11 @@ return new class extends Migration
         Schema::dropIfExists('delivery_dead_letters');
         Schema::dropIfExists('delivery_reconciliations');
         Schema::dropIfExists('delivery_attempts');
+
+        Schema::table('delivery_operation_quota_consumptions', function (Blueprint $table): void {
+            $table->dropUnique('delivery_quota_operation_attempt_evidence_uq');
+            $table->dropColumn('attempt_number');
+            $table->unique(['operation_id', 'quota_id'], 'delivery_quota_operation_evidence_uq');
+        });
     }
 };

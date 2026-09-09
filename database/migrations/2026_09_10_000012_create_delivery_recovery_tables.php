@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('recovery_action', 48);
             $table->boolean('retry_allowed')->default(false);
             $table->string('failure_reason', 191);
+            $table->string('operation_state_after', 48);
+            $table->timestampTz('next_attempt_at')->nullable();
             $table->string('error_category', 48)->nullable();
             $table->unsignedSmallInteger('http_status')->nullable();
             $table->unsignedInteger('minimum_delay_seconds')->nullable();

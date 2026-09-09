@@ -21,7 +21,7 @@ TASK-0022 through TASK-0024 remain preplanned but unregistered. No successor is 
 
 Pre-closeout exact head `58affc951a1731cfd7f19bcdb1d251815db2ca50` passed all required PR acceptance workflows: AI Continuity Guard run `34373137372`, Application Foundation CI run `34373137354`, and Security Supply Chain CI run `34373137397`. Application evidence includes backend tests, architecture tests, PHP 8.3 floor, PostgreSQL/Redis integration, static analysis, Pint formatting, frontend typecheck/unit/build, and Playwright E2E. Security evidence includes dependency audit, PHP SAST, reproducible SBOM, secret scan, container scan, CodeQL, and action integrity.
 
-This canonical closeout transition changes `.ai/**` state, so PR #90 must pass fresh exact-head required checks again before merge.
+The final closeout head must pass fresh exact-head required checks before PR #90 merges.
 
 ## Blockers
 
@@ -29,4 +29,4 @@ This canonical closeout transition changes `.ai/**` state, so PR #90 must pass f
 
 ## Exact next action
 
-Pass fresh exact-head closeout checks for PR #90, merge the accepted TASK-0021 terminal transition, verify trusted-main post-merge gates, then explicitly stage the next registered roadmap task. Do not infer or silently activate TASK-0022 before that control transition.
+Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work.

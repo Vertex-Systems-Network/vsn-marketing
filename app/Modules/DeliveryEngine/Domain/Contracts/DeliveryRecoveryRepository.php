@@ -15,7 +15,6 @@ interface DeliveryRecoveryRepository
     public function lockSnapshot(
         string $workspaceId,
         string $operationId,
-        string $operationClass,
     ): ?DeliveryRecoverySnapshot;
 
     public function recordAttemptOutcome(
@@ -28,5 +27,6 @@ interface DeliveryRecoveryRepository
         DeliveryDeadLetterDecision $deadLetterDecision,
         DateTimeImmutable $observedAt,
         ?DateTimeImmutable $nextAttemptAt,
+        int $maxReconciliationProbeAttempts,
     ): DeliveryRecoveryResult;
 }

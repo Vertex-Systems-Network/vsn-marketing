@@ -2,6 +2,7 @@
 
 namespace App\Modules\DeliveryEngine;
 
+use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionCoordinator;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionRepository;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryOperationRepository;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryRepository;
@@ -12,6 +13,7 @@ use App\Modules\DeliveryEngine\Infrastructure\DatabaseDeliveryOperationRepositor
 use App\Modules\DeliveryEngine\Infrastructure\DatabaseDeliveryRepository;
 use App\Modules\DeliveryEngine\Infrastructure\DatabaseDeliveryTransaction;
 use App\Modules\DeliveryEngine\Infrastructure\DatabaseRecipientSource;
+use App\Modules\DeliveryEngine\Infrastructure\RedisDeliveryAdmissionCoordinator;
 use Illuminate\Support\ServiceProvider;
 
 final class DeliveryEngineServiceProvider extends ServiceProvider
@@ -21,6 +23,7 @@ final class DeliveryEngineServiceProvider extends ServiceProvider
         $this->app->singleton(DeliveryRepository::class, DatabaseDeliveryRepository::class);
         $this->app->singleton(DeliveryOperationRepository::class, DatabaseDeliveryOperationRepository::class);
         $this->app->singleton(DeliveryAdmissionRepository::class, DatabaseDeliveryAdmissionRepository::class);
+        $this->app->singleton(DeliveryAdmissionCoordinator::class, RedisDeliveryAdmissionCoordinator::class);
         $this->app->singleton(RecipientSource::class, DatabaseRecipientSource::class);
         $this->app->singleton(DeliveryTransaction::class, DatabaseDeliveryTransaction::class);
     }

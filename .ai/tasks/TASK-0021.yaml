@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "DeliveryEngine",
   "title": "Implement queue routing, idempotency, rate limits, quotas, and backpressure",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement provider-neutral queue routing and concurrency-safe admission control over immutable TASK-0020 execution snapshots, preserving durable logical-operation idempotency and deterministic workspace/provider/channel rate, quota, backpressure, and fairness boundaries without pulling retry/failover/reconciliation or later deliverability work forward.",
   "dependencies": [
     "TASK-0020"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "Provider-neutral queue routing consumes immutable TASK-0020 message and recipient snapshot references and creates durable workspace-safe delivery operations without embedding concrete provider SDK types or provider-name branches",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Durable logical-operation idempotency is workspace scoped and independent of queue job IDs, provider request IDs, and attempt ordinals so concurrent duplicate enqueue or admission cannot create duplicate logical delivery operations",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Concurrency-safe workspace, provider-connection, and channel rate/quota enforcement uses canonical quota evidence and deterministic atomic admission so injected provider or workspace budgets cannot be exceeded",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Backpressure delays rather than silently drops eligible operations, exposes a machine-readable delay reason and age, and applies deterministic fairness controls so one saturated workspace cannot starve another under the configured policy",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Cross-workspace, provider-connection, channel, snapshot, and quota references fail closed at application and persistence boundaries, including under concurrent admission and worker races",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Rollback-safe persistence plus production-representative PostgreSQL and Redis integration coverage proves logical idempotency, atomic quota/rate admission, backpressure visibility, fairness, and tenant isolation under concurrency",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "TASK-0021 contains no retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials/paid sends, or later PHASE-04 work; all applicable exact-head continuity, backend, integration, static, format, frontend, E2E, and security gates pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

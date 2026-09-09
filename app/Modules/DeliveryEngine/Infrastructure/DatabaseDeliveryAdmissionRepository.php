@@ -3,21 +3,26 @@
 namespace App\Modules\DeliveryEngine\Infrastructure;
 
 use App\Modules\Core\Domain\Contracts\Clock;
+use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionCoordinator;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionRepository;
 use App\Modules\DeliveryEngine\Domain\DeliveryAdmissionResult;
 use App\Modules\DeliveryEngine\Domain\DeliveryChannel;
+use App\Modules\DeliveryEngine\Domain\DeliveryFairnessPolicy;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperationState;
 use App\Modules\DeliveryEngine\Domain\DeliveryPriorityClass;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
 use stdClass;
+use Throwable;
 
 final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmissionRepository
 {
     public function __construct(
         private DatabaseManager $database,
         private Clock $clock,
+        private DeliveryAdmissionCoordinator $coordinator,
+        private DeliveryFairnessPolicy $fairness,
     ) {}
 
     public function admit(DeliveryOperation $operation, string $providerOperation): DeliveryAdmissionResult
@@ -165,44 +170,141 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                 continue;
             }
 
-            foreach ($quotaRows as $quota) {
-                $connection->table('delivery_operation_quota_consumptions')->insertOrIgnore([
-                    'workspace_id' => $locked->workspaceId,
-                    'operation_id' => $locked->id,
-                    'provider_id' => $providerId,
-                    'provider_connection_id' => $connectionId,
-                    'quota_id' => (string) $quota->id,
-                    'units' => $quotaRequiredUnits[(string) $quota->id],
-                    'created_at' => $now,
-                ]);
+            $reservationAcquired = false;
+            if ($this->concurrencyEnabled()) {
+                $globalConcurrencyLimit = $this->globalConcurrencyLimit();
+                $workspaceConcurrencyLimit = $this->workspaceConcurrencyLimit($globalConcurrencyLimit);
+                $activeWorkspaceWeightTotal = max(1, (int) $connection->table('delivery_operations')
+                    ->whereIn('state', [
+                        DeliveryOperationState::Ready->value,
+                        DeliveryOperationState::Backpressured->value,
+                    ])
+                    ->where('scheduled_not_before_at', '<=', $now)
+                    ->distinct()
+                    ->count('workspace_id'));
+
+                // Redis is the atomic source of live in-flight counts. The policy derives
+                // the deterministic workspace share from current eligible workspace demand.
+                $fairness = $this->fairness->decide(
+                    workspaceId: $locked->workspaceId,
+                    workspaceInFlight: 0,
+                    globalInFlight: 0,
+                    workspaceWeight: 1,
+                    activeWorkspaceWeightTotal: $activeWorkspaceWeightTotal,
+                    globalConcurrencyLimit: $globalConcurrencyLimit,
+                    workspaceConcurrencyLimit: $workspaceConcurrencyLimit,
+                );
+
+                if (! $fairness->admitted) {
+                    return $this->backpressure(
+                        $locked,
+                        $fairness->reason ?? 'concurrency_capacity_exhausted',
+                        $now,
+                    );
+                }
+
+                $reservationAcquired = $this->coordinator->tryAcquire(
+                    workspaceId: $locked->workspaceId,
+                    operationId: $locked->id,
+                    workspaceConcurrencyLimit: $fairness->workspaceShare,
+                    globalConcurrencyLimit: $globalConcurrencyLimit,
+                    ttlSeconds: $this->reservationTtlSeconds(),
+                );
+
+                if (! $reservationAcquired) {
+                    return $this->backpressure($locked, 'concurrency_capacity_exhausted', $now);
+                }
             }
 
-            $connection->table('delivery_operations')
-                ->where('id', $locked->id)
-                ->where('workspace_id', $locked->workspaceId)
-                ->update([
-                    'provider_id' => $providerId,
-                    'provider_connection_id' => $connectionId,
-                    'state' => DeliveryOperationState::Leased->value,
-                    'backpressure_reason' => null,
-                    'backpressured_at' => null,
-                    'version' => $locked->version + 1,
-                    'updated_at' => $now,
-                ]);
+            try {
+                foreach ($quotaRows as $quota) {
+                    $connection->table('delivery_operation_quota_consumptions')->insertOrIgnore([
+                        'workspace_id' => $locked->workspaceId,
+                        'operation_id' => $locked->id,
+                        'provider_id' => $providerId,
+                        'provider_connection_id' => $connectionId,
+                        'quota_id' => (string) $quota->id,
+                        'units' => $quotaRequiredUnits[(string) $quota->id],
+                        'created_at' => $now,
+                    ]);
+                }
 
-            $admitted = $this->readOperation($locked->workspaceId, $locked->id) ?? $locked;
+                $connection->table('delivery_operations')
+                    ->where('id', $locked->id)
+                    ->where('workspace_id', $locked->workspaceId)
+                    ->update([
+                        'provider_id' => $providerId,
+                        'provider_connection_id' => $connectionId,
+                        'state' => DeliveryOperationState::Leased->value,
+                        'backpressure_reason' => null,
+                        'backpressured_at' => null,
+                        'version' => $locked->version + 1,
+                        'updated_at' => $now,
+                    ]);
 
-            return new DeliveryAdmissionResult(
-                operation: $admitted,
-                admitted: true,
-                changed: true,
-                providerId: $providerId,
-                providerConnectionId: $connectionId,
-                backpressureReason: null,
-            );
+                $admitted = $this->readOperation($locked->workspaceId, $locked->id) ?? $locked;
+
+                return new DeliveryAdmissionResult(
+                    operation: $admitted,
+                    admitted: true,
+                    changed: true,
+                    providerId: $providerId,
+                    providerConnectionId: $connectionId,
+                    backpressureReason: null,
+                );
+            } catch (Throwable $exception) {
+                if ($reservationAcquired) {
+                    $this->coordinator->release($locked->workspaceId, $locked->id);
+                }
+
+                throw $exception;
+            }
         }
 
         return $this->backpressure($locked, $lastReason, $now);
+    }
+
+    private function concurrencyEnabled(): bool
+    {
+        return (bool) config('delivery.admission.concurrency_enabled', true);
+    }
+
+    private function globalConcurrencyLimit(): int
+    {
+        $configured = config('delivery.admission.global_concurrency_limit');
+        if (is_numeric($configured) && (int) $configured > 0) {
+            return (int) $configured;
+        }
+
+        $environment = app()->environment();
+        $horizon = config("horizon.environments.{$environment}.supervisor-1.maxProcesses");
+        if (! is_numeric($horizon) || (int) $horizon < 1) {
+            $horizon = config('horizon.defaults.supervisor-1.maxProcesses', 1);
+        }
+
+        return max(1, (int) $horizon);
+    }
+
+    private function workspaceConcurrencyLimit(int $globalConcurrencyLimit): int
+    {
+        $configured = config('delivery.admission.workspace_concurrency_limit');
+        if (! is_numeric($configured) || (int) $configured < 1) {
+            return $globalConcurrencyLimit;
+        }
+
+        return min($globalConcurrencyLimit, (int) $configured);
+    }
+
+    private function reservationTtlSeconds(): int
+    {
+        $configured = config('delivery.admission.reservation_ttl_seconds');
+        if (is_numeric($configured) && (int) $configured > 0) {
+            return (int) $configured;
+        }
+
+        $queueReservationTtl = config('queue.connections.redis.retry_after', 120);
+
+        return max(1, is_numeric($queueReservationTtl) ? (int) $queueReservationTtl : 120);
     }
 
     private function availableUnits(stdClass $quota): ?float

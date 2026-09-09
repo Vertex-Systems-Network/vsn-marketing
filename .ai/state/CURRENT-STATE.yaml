@@ -6,24 +6,26 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-04",
     "active_task": "TASK-0021",
-    "last_completed_task": "TASK-0020",
+    "last_completed_task": "TASK-0021",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 29.45,
-    "phase_percent": 63.64,
+    "roadmap_percent": 32.0,
+    "phase_percent": 100.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0021_postgresql_idempotency_race_fix_change_set_sync_included",
-    "application_test_status": "task_0021_postgresql_idempotency_race_fix_pending_exact_head_ci_and_worker_recertification",
-    "security_supply_chain_status": "task_0021_postgresql_idempotency_race_fix_pending_exact_head_ci",
+    "continuity_validation": "task_0021_exact_head_passed_run_34373137372",
+    "application_test_status": "task_0021_exact_head_passed_run_34373137354",
+    "security_supply_chain_status": "task_0021_exact_head_passed_run_34373137397",
     "release_integrity_status": "task_0016_main_push_passed_signed_attestations",
     "scorecard_status": "task_0016_main_push_passed"
   },
-  "blockers": [],
-  "exact_next_action": "Implement provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots; do not implement retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, or later PHASE-04 work in TASK-0021."
+  "blockers": [
+    "No successor task is registered after TASK-0021; explicit roadmap staging is required before further implementation."
+  ],
+  "exact_next_action": "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
 }

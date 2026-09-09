@@ -2,27 +2,31 @@
 
 ## State
 
-- Timestamp: `2026-09-08T21:56:00+00:00`
+- Timestamp: `2026-09-09T15:58:59+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
-- Execution status: `ready`
-- State fingerprint: `0e91968c183b4e2286bebf56e86b6e8b380a96d6b98afb46f4aebd5bd2bd372e`
+- Execution status: `needs_reconciliation`
+- State fingerprint: `fbdcb3655b49d45c3279dc3e4856071a3f1a7baa8b8b87efede9d101175a156d`
 
 ## Completed / observed this session
 
-TASK-0021 production-representative concurrency certification PR #86 exposed a genuine PostgreSQL idempotency race in the shared delivery-operation repository: a simultaneous duplicate insert raised the workspace/idempotency unique constraint inside the outer delivery transaction, leaving the losing PostgreSQL transaction aborted before its read-back could execute. Supervisor PR #87 replaces exception-driven duplicate recovery with conflict-tolerant insert plus canonical workspace/idempotency read-back, preserving one durable logical operation and first-create evidence without weakening the worker certification.
+TASK-0021 acceptance is complete and the terminal Supervisor closeout is staged on PR #90. All four worker lanes are merged and their leases are released. The integrated delivery admission path preserves durable PostgreSQL quota evidence, acquires Redis concurrency capacity before quota consumption / transition to `leased`, exposes denied capacity as `concurrency_capacity_exhausted` backpressure, derives deterministic workspace fairness, and releases a reservation if persistence fails before admission commits.
 
-The Redis admission/fairness worker evidence remains green. This checkpoint does not claim TASK-0021 completion and does not change retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, or TASK-0022+ behavior.
+Production coordination defaults enabled through `config/delivery.php`; the isolated PHPUnit runtime explicitly disables external Redis while focused wiring tests inject a recording coordinator. No retry classification, circuit breakers, dead letters, reconciliation, provider failover, sender-domain/deliverability policy, credentials, paid sends, or TASK-0022+ behavior is introduced.
+
+TASK-0022 through TASK-0024 remain preplanned but unregistered. No successor is executable until an explicit roadmap staging transition occurs after TASK-0021 closeout is accepted on trusted main.
 
 ## Tests
 
-PR #86 already proves the Redis fairness/concurrency cases and PostgreSQL one-unit quota serialization pass; its simultaneous duplicate-enqueue case is the regression reproducer for the shared repository race. PR #87 must pass exact-head AI Continuity, foundation/static/format, PHP-floor, PostgreSQL/Redis integration, E2E, and security gates before merge. After #87 merges, PR #86 must synchronize the resulting main and rerun the original production-representative concurrency certification to green.
+Pre-closeout exact head `58affc951a1731cfd7f19bcdb1d251815db2ca50` passed all required PR acceptance workflows: AI Continuity Guard run `34373137372`, Application Foundation CI run `34373137354`, and Security Supply Chain CI run `34373137397`. Application evidence includes backend tests, architecture tests, PHP 8.3 floor, PostgreSQL/Redis integration, static analysis, Pint formatting, frontend typecheck/unit/build, and Playwright E2E. Security evidence includes dependency audit, PHP SAST, reproducible SBOM, secret scan, container scan, CodeQL, and action integrity.
+
+The final closeout head must pass fresh exact-head required checks before PR #90 merges.
 
 ## Blockers
 
-- None
+- No successor task is registered after TASK-0021; explicit roadmap staging is required before further implementation.
 
 ## Exact next action
 
-Implement provider-neutral queue routing, durable logical-operation idempotency, concurrency-safe workspace/provider/channel rate and quota enforcement, and observable backpressure/fairness controls over immutable TASK-0020 execution snapshots; do not implement retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, or later PHASE-04 work in TASK-0021.
+Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work.

@@ -23,5 +23,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="LOG_CHANNEL" value="null"/>
         <env name="RUN_INFRA_INTEGRATION" value="false"/>
+        <env name="DELIVERY_ADMISSION_CONCURRENCY_ENABLED" value="false"/>
     </php>
 </phpunit>

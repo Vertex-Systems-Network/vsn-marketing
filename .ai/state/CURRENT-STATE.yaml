@@ -18,9 +18,9 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0021_postgresql_idempotency_race_fix_change_set_sync_included",
-    "application_test_status": "task_0021_postgresql_idempotency_race_fix_pending_exact_head_ci_and_worker_recertification",
-    "security_supply_chain_status": "task_0021_postgresql_idempotency_race_fix_pending_exact_head_ci",
+    "continuity_validation": "task_0021_supervisor_concurrency_wiring_change_set_synchronized_pending_exact_head_ci",
+    "application_test_status": "task_0021_supervisor_concurrency_wiring_pending_exact_head_foundation_and_postgresql_redis_integration",
+    "security_supply_chain_status": "task_0021_supervisor_concurrency_wiring_pending_exact_head_security_ci",
     "release_integrity_status": "task_0016_main_push_passed_signed_attestations",
     "scorecard_status": "task_0016_main_push_passed"
   },

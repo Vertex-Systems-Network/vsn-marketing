@@ -166,7 +166,7 @@
       "phase": "PHASE-04",
       "title": "Implement queue routing, idempotency, rate limits, quotas, and backpressure",
       "weight": 20,
-      "status": "ready",
+      "status": "completed",
       "dependencies": ["TASK-0020"]
     }
   ]

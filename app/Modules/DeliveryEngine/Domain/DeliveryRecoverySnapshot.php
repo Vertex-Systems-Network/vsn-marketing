@@ -14,13 +14,14 @@ final readonly class DeliveryRecoverySnapshot
         public int $breakerConsecutiveFailures,
         public ?DateTimeImmutable $breakerNextProbeAt,
         public bool $breakerProbeInFlight,
+        public int $breakerVersion,
     ) {
         if (trim($operationClass) === '') {
             throw new InvalidArgumentException('Recovery operation class must not be empty.');
         }
 
-        if ($breakerConsecutiveFailures < 0) {
-            throw new InvalidArgumentException('Circuit breaker failure count must be non-negative.');
+        if ($breakerConsecutiveFailures < 0 || $breakerVersion < 0) {
+            throw new InvalidArgumentException('Circuit breaker counters must be non-negative.');
         }
 
         if ($breakerState !== DeliveryCircuitBreakerState::Open && $breakerNextProbeAt !== null) {

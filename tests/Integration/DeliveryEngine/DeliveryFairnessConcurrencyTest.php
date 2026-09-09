@@ -79,7 +79,7 @@ function deliveryFairnessConcurrencyCoordinatorAt(string $instant): RedisDeliver
 }
 
 it('preserves an equal peer workspace share under simultaneous Redis saturation', function () {
-    $policy = new DeliveryFairnessPolicy();
+    $policy = new DeliveryFairnessPolicy;
     $workspaceA = $policy->decide(
         workspaceId: 'workspace-a',
         workspaceInFlight: 0,

@@ -3,7 +3,7 @@
 return [
     'admission' => [
         'concurrency_enabled' => filter_var(
-            env('DELIVERY_ADMISSION_CONCURRENCY_ENABLED', env('APP_ENV') !== 'testing'),
+            env('DELIVERY_ADMISSION_CONCURRENCY_ENABLED', true),
             FILTER_VALIDATE_BOOL,
         ),
         'global_concurrency_limit' => env('DELIVERY_ADMISSION_GLOBAL_CONCURRENCY_LIMIT'),

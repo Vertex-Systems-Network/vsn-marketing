@@ -9,7 +9,7 @@ use InvalidArgumentException;
 final readonly class DeliveryFailureObservation
 {
     public function __construct(
-        public ?ProviderErrorCategory $errorCategory,
+        public ?ProviderErrorCategory $errorCategory = null,
         public ?int $httpStatus = null,
         public ?int $minimumDelaySeconds = null,
         public ?DateTimeImmutable $resetAt = null,

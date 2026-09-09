@@ -1,6 +1,6 @@
 <?php
 
-function task0020DeliveryEngineSources(): string
+function deliveryEngineSources(): string
 {
     $root = dirname(__DIR__, 2).DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'Modules'.DIRECTORY_SEPARATOR.'DeliveryEngine';
     $source = '';
@@ -15,8 +15,8 @@ function task0020DeliveryEngineSources(): string
     return $source;
 }
 
-test('TASK-0020 delivery foundation remains provider neutral and does not pull execution policy forward', function () {
-    $source = task0020DeliveryEngineSources();
+test('DeliveryEngine remains provider neutral and keeps framework queue policy outside the module', function () {
+    $source = deliveryEngineSources();
 
     expect($source)
         ->not->toContain('Amazon SES')
@@ -25,8 +25,5 @@ test('TASK-0020 delivery foundation remains provider neutral and does not pull e
         ->not->toContain('Aws\\')
         ->not->toContain('Google\\')
         ->not->toContain('ShouldQueue')
-        ->not->toContain('RateLimiter')
-        ->not->toContain('CircuitBreaker')
-        ->not->toContain('retryAfter')
-        ->not->toContain('failover');
+        ->not->toContain('RateLimiter');
 });

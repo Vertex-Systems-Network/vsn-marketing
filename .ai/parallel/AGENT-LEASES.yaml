@@ -1,48 +1,4 @@
 {
   "schema_version": 2,
-  "leases": [
-    {
-      "agent": "agent-fairness-01",
-      "workstream": "WS-0021-FAIRNESS-POLICY",
-      "branch": "agent/task-0021-fairness-policy",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/DeliveryFairnessPolicy.php",
-        "app/Modules/DeliveryEngine/Domain/DeliveryFairnessDecision.php",
-        "tests/Unit/DeliveryEngine/DeliveryFairnessPolicyTest.php"
-      ]
-    },
-    {
-      "agent": "agent-redis-admission-01",
-      "workstream": "WS-0021-REDIS-ADMISSION",
-      "branch": "agent/task-0021-redis-admission",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Contracts/DeliveryAdmissionCoordinator.php",
-        "app/Modules/DeliveryEngine/Infrastructure/RedisDeliveryAdmissionCoordinator.php",
-        "tests/Integration/DeliveryEngine/RedisDeliveryAdmissionCoordinatorTest.php"
-      ]
-    },
-    {
-      "agent": "agent-concurrency-cert-01",
-      "workstream": "WS-0021-CONCURRENCY-CERT",
-      "branch": "agent/task-0021-concurrency-cert",
-      "status": "active",
-      "write_paths": [
-        "tests/Integration/DeliveryEngine/DeliveryAdmissionConcurrencyTest.php",
-        "tests/Integration/DeliveryEngine/DeliveryFairnessConcurrencyTest.php"
-      ]
-    },
-    {
-      "agent": "agent-backpressure-observability-01",
-      "workstream": "WS-0021-BACKPRESSURE-OBSERVABILITY",
-      "branch": "agent/task-0021-backpressure-observability",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/DeliveryBackpressureSnapshot.php",
-        "app/Modules/DeliveryEngine/Application/DescribeDeliveryBackpressure.php",
-        "tests/Feature/DeliveryBackpressureObservabilityTest.php"
-      ]
-    }
-  ]
+  "leases": []
 }

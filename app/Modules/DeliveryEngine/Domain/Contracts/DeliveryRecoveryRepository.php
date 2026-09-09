@@ -17,6 +17,11 @@ interface DeliveryRecoveryRepository
         string $operationId,
     ): ?DeliveryRecoverySnapshot;
 
+    public function findRecordedAttempt(
+        DeliveryRecoverySnapshot $snapshot,
+        DeliveryFailureObservation $observation,
+    ): ?DeliveryRecoveryResult;
+
     public function recordAttemptOutcome(
         string $attemptId,
         DeliveryRecoverySnapshot $snapshot,

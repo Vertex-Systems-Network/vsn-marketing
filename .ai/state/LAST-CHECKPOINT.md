@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-08T21:56:00+00:00`
+- Timestamp: `2026-09-09T14:32:00+00:00`
 - Active task: `TASK-0021`
 - Next task: `none`
 - Current phase: `PHASE-04`
@@ -11,13 +11,13 @@
 
 ## Completed / observed this session
 
-TASK-0021 production-representative concurrency certification PR #86 exposed a genuine PostgreSQL idempotency race in the shared delivery-operation repository: a simultaneous duplicate insert raised the workspace/idempotency unique constraint inside the outer delivery transaction, leaving the losing PostgreSQL transaction aborted before its read-back could execute. Supervisor PR #87 replaces exception-driven duplicate recovery with conflict-tolerant insert plus canonical workspace/idempotency read-back, preserving one durable logical operation and first-create evidence without weakening the worker certification.
+All four TASK-0021 worker lanes are merged, including production-representative PostgreSQL/Redis concurrency certification. The reserved Supervisor integration branch is synchronized with current `main` and PR #90 now wires the accepted Redis admission coordinator and fairness policy into the durable database admission path. Redis capacity is acquired only after viable provider/quota evidence is found and before quota consumption / transition to `leased`; denied capacity becomes observable `concurrency_capacity_exhausted` backpressure without consuming provider quota. A reservation is released if persistence throws before admission commits.
 
-The Redis admission/fairness worker evidence remains green. This checkpoint does not claim TASK-0021 completion and does not change retry classification, circuit breakers, dead letters, reconciliation, failover, sender-domain/deliverability policy, credentials, paid sends, or TASK-0022+ behavior.
+Production coordination defaults enabled through `config/delivery.php`; the isolated PHPUnit runtime explicitly disables external Redis while focused wiring tests inject a recording coordinator to certify quota-safety and equal-share derivation. No retry classification, circuit breakers, dead letters, reconciliation, provider failover, sender-domain/deliverability policy, credentials, paid sends, or TASK-0022+ behavior is introduced.
 
 ## Tests
 
-PR #86 already proves the Redis fairness/concurrency cases and PostgreSQL one-unit quota serialization pass; its simultaneous duplicate-enqueue case is the regression reproducer for the shared repository race. PR #87 must pass exact-head AI Continuity, foundation/static/format, PHP-floor, PostgreSQL/Redis integration, E2E, and security gates before merge. After #87 merges, PR #86 must synchronize the resulting main and rerun the original production-representative concurrency certification to green.
+PR #90 exact-head AI Continuity initially failed only because Supervisor product/source changes had not yet synchronized `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`; every preceding continuity/control-plane validation step passed. These two ledgers are now synchronized. Application Foundation CI and Security Supply Chain CI remain the exact-head acceptance gates for the integration, including focused feature coverage plus PostgreSQL/Redis integration, static analysis, formatting, frontend/E2E and security checks.
 
 ## Blockers
 

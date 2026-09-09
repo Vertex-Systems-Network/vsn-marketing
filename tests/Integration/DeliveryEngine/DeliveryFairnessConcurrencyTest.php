@@ -65,7 +65,7 @@ function deliveryFairnessConcurrencyRun(string $script, array $payloads): array
 
 function deliveryFairnessConcurrencyCoordinatorAt(string $instant): RedisDeliveryAdmissionCoordinator
 {
-    $clock = new class (new DateTimeImmutable($instant)) implements Clock
+    $clock = new class(new DateTimeImmutable($instant)) implements Clock
     {
         public function __construct(private DateTimeImmutable $instant) {}
 

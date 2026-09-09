@@ -90,7 +90,7 @@ it('is idempotent for identical ambiguous evidence', function () {
 });
 
 it('never manufactures acceptance or replay permission from absent provider evidence', function () {
-    $decision = (new DeliveryReconciliationPolicy)->decide(new DeliveryReconciliationEvidence());
+    $decision = (new DeliveryReconciliationPolicy)->decide(new DeliveryReconciliationEvidence);
 
     expect($decision->resolution)->toBe(DeliveryReconciliationResolution::Pending)
         ->and($decision->accepted)->toBeFalse()

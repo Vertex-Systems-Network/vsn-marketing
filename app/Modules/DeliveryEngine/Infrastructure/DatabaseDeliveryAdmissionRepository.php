@@ -7,12 +7,16 @@ use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionCoordinator;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryAdmissionRepository;
 use App\Modules\DeliveryEngine\Domain\DeliveryAdmissionResult;
 use App\Modules\DeliveryEngine\Domain\DeliveryChannel;
+use App\Modules\DeliveryEngine\Domain\DeliveryCircuitBreakerKey;
+use App\Modules\DeliveryEngine\Domain\DeliveryCircuitBreakerPolicy;
+use App\Modules\DeliveryEngine\Domain\DeliveryCircuitBreakerState;
 use App\Modules\DeliveryEngine\Domain\DeliveryFairnessPolicy;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperationState;
 use App\Modules\DeliveryEngine\Domain\DeliveryPriorityClass;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
+use RuntimeException;
 use stdClass;
 use Throwable;
 
@@ -23,6 +27,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
         private Clock $clock,
         private DeliveryAdmissionCoordinator $coordinator,
         private DeliveryFairnessPolicy $fairness,
+        private DeliveryCircuitBreakerPolicy $breakerPolicy,
     ) {}
 
     public function admit(DeliveryOperation $operation, string $providerOperation): DeliveryAdmissionResult
@@ -58,18 +63,37 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             );
         }
 
+        if (! in_array($locked->state, [
+            DeliveryOperationState::Scheduled,
+            DeliveryOperationState::Ready,
+            DeliveryOperationState::Backpressured,
+        ], true)) {
+            return new DeliveryAdmissionResult(
+                operation: $locked,
+                admitted: false,
+                changed: false,
+                providerId: $locked->providerId,
+                providerConnectionId: $locked->providerConnectionId,
+                backpressureReason: 'operation_state_not_admissible',
+            );
+        }
+
+        if (($locked->providerId === null) !== ($locked->providerConnectionId === null)) {
+            return $this->backpressure($locked, 'route_binding_incomplete', $now);
+        }
+
         if ($locked->scheduledNotBeforeAt > $now) {
             return new DeliveryAdmissionResult(
                 operation: $locked,
                 admitted: false,
                 changed: false,
-                providerId: null,
-                providerConnectionId: null,
+                providerId: $locked->providerId,
+                providerConnectionId: $locked->providerConnectionId,
                 backpressureReason: 'scheduled_not_before',
             );
         }
 
-        $candidates = $connection->table('provider_connections as connections')
+        $candidateQuery = $connection->table('provider_connections as connections')
             ->join('provider_capabilities as capabilities', function ($join): void {
                 $join->on('capabilities.workspace_id', '=', 'connections.workspace_id')
                     ->on('capabilities.provider_id', '=', 'connections.provider_id')
@@ -86,7 +110,15 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             ->where(function ($query) use ($now): void {
                 $query->whereNull('capabilities.fresh_until')
                     ->orWhere('capabilities.fresh_until', '>=', $now);
-            })
+            });
+
+        if ($locked->providerId !== null && $locked->providerConnectionId !== null) {
+            $candidateQuery
+                ->where('connections.provider_id', $locked->providerId)
+                ->where('connections.id', $locked->providerConnectionId);
+        }
+
+        $candidates = $candidateQuery
             ->select([
                 'connections.id as connection_id',
                 'connections.provider_id',
@@ -217,6 +249,62 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             }
 
             try {
+                $breakerKey = new DeliveryCircuitBreakerKey(
+                    workspaceId: $locked->workspaceId,
+                    providerConnectionId: $connectionId,
+                    operationClass: $providerOperation,
+                );
+                $breaker = $connection->table('delivery_circuit_breakers')
+                    ->where('id', $breakerKey->fingerprint())
+                    ->where('workspace_id', $locked->workspaceId)
+                    ->where('provider_connection_id', $connectionId)
+                    ->where('operation_class', $providerOperation)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($breaker instanceof stdClass) {
+                    if ((string) $breaker->provider_id !== $providerId) {
+                        throw new RuntimeException('Delivery circuit breaker route evidence is inconsistent.');
+                    }
+
+                    $breakerDecision = $this->breakerPolicy->beforeAttempt(
+                        state: DeliveryCircuitBreakerState::from((string) $breaker->state),
+                        now: $now,
+                        nextProbeAt: $breaker->next_probe_at === null
+                            ? null
+                            : new DateTimeImmutable((string) $breaker->next_probe_at),
+                        probeInFlight: (bool) $breaker->probe_in_flight,
+                    );
+
+                    if ($breakerDecision->workHeld) {
+                        if ($reservationAcquired) {
+                            $this->coordinator->release($locked->workspaceId, $locked->id);
+                        }
+
+                        $lastReason = 'circuit_breaker_open';
+                        continue;
+                    }
+
+                    if ($breakerDecision->probeAllowed) {
+                        $breakerVersion = (int) $breaker->version;
+                        $claimed = $connection->table('delivery_circuit_breakers')
+                            ->where('id', $breakerKey->fingerprint())
+                            ->where('workspace_id', $locked->workspaceId)
+                            ->where('version', $breakerVersion)
+                            ->update([
+                                'state' => DeliveryCircuitBreakerState::HalfOpen->value,
+                                'next_probe_at' => null,
+                                'probe_in_flight' => true,
+                                'version' => $breakerVersion + 1,
+                                'updated_at' => $now,
+                            ]);
+
+                        if ($claimed !== 1) {
+                            throw new RuntimeException('Delivery circuit breaker probe claim raced with another admission.');
+                        }
+                    }
+                }
+
                 foreach ($quotaRows as $quota) {
                     $connection->table('delivery_operation_quota_consumptions')->insertOrIgnore([
                         'workspace_id' => $locked->workspaceId,
@@ -355,8 +443,8 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                 operation: $operation,
                 admitted: false,
                 changed: false,
-                providerId: null,
-                providerConnectionId: null,
+                providerId: $operation->providerId,
+                providerConnectionId: $operation->providerConnectionId,
                 backpressureReason: $reason,
             );
         }
@@ -366,8 +454,6 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             ->where('id', $operation->id)
             ->where('workspace_id', $operation->workspaceId)
             ->update([
-                'provider_id' => null,
-                'provider_connection_id' => null,
                 'state' => DeliveryOperationState::Backpressured->value,
                 'backpressure_reason' => $reason,
                 'backpressured_at' => $backpressuredAt,
@@ -381,8 +467,8 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             operation: $updated,
             admitted: false,
             changed: true,
-            providerId: null,
-            providerConnectionId: null,
+            providerId: $updated->providerId,
+            providerConnectionId: $updated->providerConnectionId,
             backpressureReason: $reason,
         );
     }

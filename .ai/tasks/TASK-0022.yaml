@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0022",
+  "phase": "PHASE-04",
+  "module": "DeliveryEngine",
+  "title": "Implement retry classification, circuit breakers, dead letters, reconciliation, and failover",
+  "status": "ready",
+  "objective": "Implement provider-neutral failure-recovery semantics over the accepted TASK-0021 delivery-operation and admission foundation, including normalized retry classification, observable tenant-scoped circuit breakers, dead-letter handling, idempotent ambiguity reconciliation, and compatible failover that never bypasses policy or replays accepted or unresolved ambiguous sends.",
+  "dependencies": [
+    "TASK-0021"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Normalized provider-neutral attempt outcomes classify permanent validation, auth/policy, rate-limited, transient pre-accept, transient server, ambiguous transport, and provider-accepted cases into deterministic retry, hold, reconcile, fail, or accept actions using current provider retry/reset evidence without provider-name branching",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Circuit breakers are explicit and observable with closed/open/half-open states scoped at least by workspace, provider connection, and operation class; breaker state delays or holds work without dropping operations or leaking health state across tenants",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Dead-letter handling persists auditable terminal evidence only for permanent failure, exhausted retry-safe budgets, expiry, or fail-closed invariant corruption; ambiguous attempts remain in reconciliation rather than being silently dead-lettered or replayed",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Reconciliation is idempotent and preserves every ambiguous attempt until evidence proves accepted, proves not accepted and retry-safe, or requires explicit operator resolution; absence of provider evidence never manufactures acceptance or authorizes duplicate risk",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Compatible failover creates a new attempt under the same workspace-scoped logical operation only after the previous route is known not accepted and the alternate route passes capability, policy, readiness, quota, breaker, and tenant checks; accepted or unresolved ambiguous operations can never reroute automatically",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Concurrent retry, breaker, reconciliation, dead-letter, and failover races fail closed across workspace and provider-connection boundaries and are covered by production-representative PostgreSQL/Redis tests proving accepted operations are not replayed and ambiguous outcomes are not blindly failed over",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "TASK-0022 does not introduce sender-domain/deliverability policy, credentials or paid-send activation, PHASE-04 load/SLO certification, or TASK-0023+ behavior; all applicable exact-head continuity, backend, integration, static, format, frontend, E2E, and security gates pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Implement provider-neutral retry classification, explicit tenant-scoped circuit breakers, dead-letter and reconciliation flows, and compatible failover over TASK-0021 delivery operations and attempts; ambiguous outcomes must reconcile before replay or failover, accepted operations must never reroute, and no sender-domain/deliverability, credentials/paid sends, or TASK-0023+ behavior may be pulled forward."
+}

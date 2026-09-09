@@ -93,6 +93,11 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             );
         }
 
+        $admissionAttemptNumber = ((int) $connection->table('delivery_attempts')
+            ->where('workspace_id', $locked->workspaceId)
+            ->where('operation_id', $locked->id)
+            ->max('attempt_number')) + 1;
+
         $candidateQuery = $connection->table('provider_connections as connections')
             ->join('provider_capabilities as capabilities', function ($join): void {
                 $join->on('capabilities.workspace_id', '=', 'connections.workspace_id')
@@ -312,6 +317,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                         'provider_id' => $providerId,
                         'provider_connection_id' => $connectionId,
                         'quota_id' => (string) $quota->id,
+                        'attempt_number' => $admissionAttemptNumber,
                         'units' => $quotaRequiredUnits[(string) $quota->id],
                         'created_at' => $now,
                     ]);

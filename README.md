@@ -4,26 +4,26 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-09** from `main` at `56d35c28f68ec0dcdd6f3ca9897f9b4e7f244b73` after accepted TASK-0021 worker merges PR #81, PR #82 and PR #83 plus README status PR #84.
+> Last verified: **2026-09-09** from trusted `main` at `775f8a47cfa4fe092bc90346788f37567f7e3e36` after TASK-0022 activation PR #91 merged and post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows passed.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
 
-**Overall roadmap progress: 29.45%**  
-**Current phase: PHASE-04 — 63.64%**  
-**Active task: TASK-0021**  
-**Last completed task: TASK-0020**  
-**Parallel execution: 4 registered worker lanes; fairness policy, Redis admission and backpressure observability are merged, with concurrency certification remaining before Supervisor closeout**
+**Overall roadmap progress: 30.13%**  
+**Current phase: PHASE-04 — 73.33%**  
+**Active task: TASK-0022**  
+**Last completed task: TASK-0021**  
+**Parallel execution: 5 registered TASK-0022 worker lanes plus the reserved Supervisor integration branch; worker implementation starts only after this control-plane activation is accepted on main**
 
 ```text
-Overall  [██████░░░░░░░░░░░░░░] 29.45%
-Phase 04 [█████████████░░░░░░░] 63.64%
+Overall  [██████░░░░░░░░░░░░░░] 30.13%
+Phase 04 [███████████████░░░░░] 73.33%
 ```
 
 ```mermaid
 pie showData
     title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 29.45
-    "Remaining roadmap weight" : 70.55
+    "Completed / certified weight" : 30.13
+    "Remaining roadmap weight" : 69.87
 ```
 
 ### Phase / module progress
@@ -34,7 +34,7 @@ pie showData
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
 | PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
 | PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
-| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress** | **63.64%** |
+| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress** | **73.33%** |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
 | PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
@@ -50,15 +50,29 @@ pie showData
 
 ### Current execution snapshot
 
-PHASE-04 is active. `TASK-0019` delivery-engine research and `TASK-0020` immutable execution snapshots are complete. `TASK-0021` remains active and is intentionally bounded to provider-neutral queue routing, durable logical-operation idempotency, quota/rate admission, backpressure and fairness over immutable TASK-0020 snapshots.
+PHASE-04 is active. `TASK-0019` delivery-engine research, `TASK-0020` immutable execution snapshots, and `TASK-0021` queue routing/idempotency/quota/backpressure are complete. `TASK-0022` is now the only executable roadmap task.
 
-PR #75 (`TASK-0021: durable delivery operation admission foundation`) is merged. The integrated slice adds durable delivery operations, provider-neutral queue routes and priorities, stable workspace-scoped idempotency, deterministic provider-connection selection, canonical quota-evidence consumption, provider-specific canonical operation-cost accounting, tenant-safe persistence boundaries, idempotent quota admission/backpressure transitions, audit evidence and focused feature coverage.
+TASK-0022 implements provider-neutral delivery recovery semantics over the accepted TASK-0021 operation/admission foundation. The bounded scope is: normalized retry classification, tenant-scoped circuit breakers, dead-letter handling, idempotent ambiguity reconciliation, and compatible provider failover. The safety boundary is strict: an ambiguous provider outcome must enter reconciliation before replay/failover; an accepted logical operation never reroutes; provider names must not become core policy branches.
 
-PR #81 (`deterministic workspace fairness policy`), PR #82 (`Redis atomic admission coordination`) and PR #83 (`backpressure reason and age observability`) are merged. These accepted worker slices add provider-neutral deterministic fairness primitives, Redis-backed atomic global/workspace concurrency reservations with idempotent acquisition, deterministic release, TTL cleanup and cluster-safe key placement, plus tenant-safe machine-readable backpressure reason/start-time/age projection. PR #82 was certified on its final head by Application Foundation CI, Redis integration tests, PHP static analysis, PHP 8.3 compatibility, E2E, Security Supply Chain CI and AI Continuity Guard before merge.
+The parallel cycle is decomposed into five conflict-safe worker lanes created from trusted main `775f8a47cfa4fe092bc90346788f37567f7e3e36` before any cycle planning mutation:
 
-The only remaining registered TASK-0021 worker lane is PostgreSQL/Redis concurrency certification. After accepted worker delivery, the reserved Supervisor coordination branch owns bounded shared admission wiring, canonical parallel-state reconciliation and final TASK-0021 closeout. The canonical workstream/lease registries still carry cycle ownership until that Supervisor-controlled reconciliation; merged worker status is therefore reported here from accepted Git history without manually weakening canonical lease controls.
+- `WS-0022-RETRY-CLASSIFICATION` — deterministic mapping from normalized provider error evidence to delivery recovery disposition.
+- `WS-0022-CIRCUIT-BREAKER` — tenant/provider-connection/operation-class breaker state and transitions.
+- `WS-0022-RECONCILIATION` — ambiguity/reconciliation decision primitives that never infer acceptance from missing evidence.
+- `WS-0022-DEAD-LETTER` — deterministic dead-letter reason/evidence primitives for terminal/exhausted/expired/invariant outcomes.
+- `WS-0022-FAILOVER-POLICY` — failover eligibility that permits rerouting only when prior non-acceptance is proven and forbids accepted/ambiguous reroutes.
 
-`TASK-0021` is **not complete yet**. Required remaining evidence includes production-representative concurrent PostgreSQL + Redis admission proof, saturation/fairness certification with no tenant starvation, and final shared integration against the accepted worker contracts. Retry classification, circuit breakers, dead letters, reconciliation, remote-execution failover, sender-domain/deliverability policy, credentials, paid sends and TASK-0022+ behavior remain out of scope for the current task.
+The reserved `supervisor/task-0022-parallel-integration` branch owns shared persistence/state-machine migrations, service-provider/config wiring, orchestration, canonical `.ai/**` state, and final integration after worker deliveries are accepted. Worker write paths are disjoint and do not include Supervisor-owned shared paths.
+
+No sender-domain/deliverability policy, secrets/credentials, paid provider execution, suppression policy, TASK-0023, TASK-0024, or later-phase behavior is authorized by TASK-0022.
+
+Trusted-main certification for TASK-0022 activation:
+
+- AI Continuity Guard `34394642732` — PASS
+- Application Foundation CI `34394642755` — PASS
+- Security Supply Chain CI `34394642810` — PASS
+- Release Integrity `34394642691` — PASS
+- OpenSSF Scorecard `34394642730` — PASS
 
 Current canonical calculation:
 
@@ -67,14 +81,14 @@ PHASE-00  4.00 / 4.00
 PHASE-01  7.00 / 7.00
 PHASE-02  7.00 / 7.00
 PHASE-03  7.00 / 7.00
-PHASE-04  4.45 / 7.00
+PHASE-04  5.13 / 7.00
 ---------------------
-TOTAL    29.45 / 100
+TOTAL    30.13 / 100
 ```
 
 ## Delivery estimate assumptions
 
-Delivery timing depends on exact-head CI, production-representative concurrency evidence, provider policies, security gates, accessibility, AI evaluation/red-team work, and enterprise recovery/compliance requirements. The roadmap is research-first, so estimates should be recalculated after each phase certification rather than treated as fixed deadlines.
+Delivery timing depends on exact-head CI, production-representative recovery/reconciliation evidence, provider policies, security gates, accessibility, AI evaluation/red-team work, and enterprise recovery/compliance requirements. The roadmap is research-first, so estimates should be recalculated after each phase certification rather than treated as fixed deadlines.
 
 ## For coding agents and contributors
 
@@ -110,7 +124,7 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The active TASK-0021 parallel cycle has four registered worker lanes. Fairness policy, Redis admission and backpressure observability have been accepted and merged; concurrency certification remains outstanding, while the canonical lease registry remains Supervisor-controlled until the cycle is reconciled and closed out.
+The active TASK-0022 parallel cycle has five registered worker lanes, all pre-created from the same trusted main baseline with exclusive disjoint write paths. The reserved Supervisor integration branch owns shared integration and canonical closeout after accepted worker deliveries.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

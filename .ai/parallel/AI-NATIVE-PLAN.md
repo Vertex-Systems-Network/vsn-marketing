@@ -1,45 +1,48 @@
-# AI-Native Parallel Plan — TASK-0021 Delivery Admission Completion
+# AI-Native Parallel Plan — TASK-0022 Recovery Safety
 
-Status: **closeout staged** — all four TASK-0021 worker lanes are merged, worker leases are released, bounded Supervisor integration is complete, and only the terminal canonical acceptance transition remains before merge.
+Status: **active** — TASK-0022 is decomposed into five conflict-safe writable domain-policy lanes. A Supervisor coordination branch, `supervisor/task-0022-parallel-integration`, was pre-created from the same trusted baseline and retains all shared persistence, state-machine, migration, wiring, provider-adapter integration, canonical `.ai/**`, and final acceptance work.
 
 Supervisor: `supervisor-main`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
-All five cycle branches (four workers plus the reserved Supervisor coordination branch) were created from trusted `main` `4e2470b8f019faecde3bd0c64e089f1b5de5fdac`. All worker deliveries are integrated into `supervisor/task-0021-parallel-integration`; the Supervisor branch has completed the bounded shared wiring and exact-head acceptance pass.
+All six cycle branches (five workers plus the reserved Supervisor coordination branch) were pre-created from trusted `main` `775f8a47cfa4fe092bc90346788f37567f7e3e36` before this cycle's planning or code mutation. That trusted head passed post-merge AI Continuity run `34394642732`, Application Foundation run `34394642755`, Security Supply Chain run `34394642810`, Release Integrity run `34394642691`, and OpenSSF Scorecard run `34394642730`.
 
-The cycle remains inside TASK-0021 until this closeout PR merges. Retry classification, circuit breakers, dead letters, reconciliation, provider failover, sender-domain/deliverability policy, credentials/paid sends, and TASK-0022+ behavior remain excluded.
+The cycle remains strictly inside TASK-0022. Sender-domain/deliverability policy, credential or paid-send activation, PHASE-04 SLO/load certification, and TASK-0023+ behavior remain excluded. Provider ambiguity is never treated as ordinary retry permission: accepted operations never reroute, and unresolved ambiguous attempts must reconcile before replay or failover.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 10 | WS-0021-FAIRNESS-POLICY | Deterministic provider-neutral workspace fairness policy primitives | `occupied` | `agent-fairness-01` | `merged` | `agent/task-0021-fairness-policy` | squash | merged |
-| 10 | WS-0021-REDIS-ADMISSION | Redis-backed atomic admission coordination without provider-specific branching | `occupied` | `agent-redis-admission-01` | `merged` | `agent/task-0021-redis-admission` | squash | merged |
-| 20 | WS-0021-BACKPRESSURE-OBSERVABILITY | Machine-readable backpressure reason, age and visibility primitives | `occupied` | `agent-backpressure-observability-01` | `merged` | `agent/task-0021-backpressure-observability` | squash | merged |
-| 20 | WS-0021-CONCURRENCY-CERT | Production-representative PostgreSQL and Redis concurrency certification coverage | `occupied` | `agent-concurrency-cert-01` | `merged` | `agent/task-0021-concurrency-cert` | squash | merged |
+| 10 | WS-0022-RETRY-CLASSIFICATION | Provider-neutral retry and recovery classification primitives | `occupied` | `agent-retry-classification-01` | `leased_ready_to_start` | `agent/task-0022-retry-classification` | squash | merge latest main before resume |
+| 10 | WS-0022-CIRCUIT-BREAKER | Tenant-scoped explicit circuit-breaker state and transition policy | `occupied` | `agent-circuit-breaker-01` | `leased_ready_to_start` | `agent/task-0022-circuit-breaker` | squash | merge latest main before resume |
+| 20 | WS-0022-RECONCILIATION | Idempotent ambiguity reconciliation decision primitives | `occupied` | `agent-reconciliation-01` | `leased_ready_to_start` | `agent/task-0022-reconciliation` | squash | merge latest main before resume |
+| 20 | WS-0022-DEAD-LETTER | Auditable terminal dead-letter eligibility policy | `occupied` | `agent-dead-letter-01` | `leased_ready_to_start` | `agent/task-0022-dead-letter` | squash | merge latest main before resume |
+| 20 | WS-0022-FAILOVER-POLICY | Compatible failover eligibility preserving logical-operation identity | `occupied` | `agent-failover-policy-01` | `leased_ready_to_start` | `agent/task-0022-failover-policy` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Conflict boundaries
 
-- Fairness policy owns only `DeliveryFairnessPolicy`, `DeliveryFairnessDecision`, and its unit test.
-- Redis admission owns only the admission-coordinator contract/Redis implementation and its integration test.
-- Concurrency certification owns only the two TASK-0021 concurrency integration-test files.
-- Backpressure observability owns only the immutable backpressure snapshot/query primitives and its focused feature test.
-- Supervisor retains shared ownership of canonical `.ai/**`, README, migrations, service-provider wiring, and the existing database-admission repository; workers do not mutate those paths.
+- Retry classification owns only `DeliveryAttemptOutcomeClass`, `DeliveryRecoveryAction`, `DeliveryFailureObservation`, `DeliveryRetryDecision`, `DeliveryRetryPolicy`, and its unit test.
+- Circuit breaker owns only `DeliveryCircuitBreakerState`, `DeliveryCircuitBreakerKey`, `DeliveryCircuitBreakerDecision`, `DeliveryCircuitBreakerPolicy`, and its unit test.
+- Reconciliation owns only `DeliveryReconciliationResolution`, `DeliveryReconciliationEvidence`, `DeliveryReconciliationDecision`, `DeliveryReconciliationPolicy`, and its unit test.
+- Dead letter owns only `DeliveryDeadLetterReason`, `DeliveryDeadLetterDecision`, `DeliveryDeadLetterPolicy`, and its unit test.
+- Failover owns only `DeliveryRouteAcceptanceState`, `DeliveryFailoverDecision`, `DeliveryFailoverPolicy`, and its unit test.
+- Supervisor retains shared ownership of canonical `.ai/**`, README, config, migrations, `DeliveryOperationState`, existing repositories, service-provider wiring, provider-adapter integration, shared application workflow code, and final PostgreSQL/Redis concurrency certification. Workers do not mutate those paths.
 
-## Merge / synchronization closeout
+## Merge / synchronization order
 
-1. All merge-group 10 and merge-group 20 worker deliveries are accepted and integrated.
-2. All worker leases are released; no worker lane remains writable for TASK-0021.
-3. Supervisor bounded integration wires accepted fairness/Redis coordination into the durable admission path without widening scope.
-4. Pre-closeout exact head `58affc951a1731cfd7f19bcdb1d251815db2ca50` passed AI Continuity, Application Foundation, PostgreSQL/Redis integration, static/format, E2E, and Security Supply Chain gates.
-5. The terminal canonical closeout must pass the same exact-head required checks after this state transition before PR #90 may merge.
+1. Merge-group 10 retry-classification and circuit-breaker lanes may develop concurrently.
+2. Merge-group 20 reconciliation, dead-letter, and failover-policy lanes may also develop concurrently because their declared files are disjoint; their PRs remain subject to current-main ancestry and exact-head CI.
+3. After every approved worker merge, all still-open workers and the reserved Supervisor branch must synchronize latest `main` before another write, following the required issue #43 broadcast protocol.
+4. Only after accepted worker primitives are integrated may the Supervisor extend shared delivery-operation states/persistence, add attempt/reconciliation/dead-letter/breaker persistence and provider-error adaptation, wire application recovery flows, and add production-representative race certification.
+5. TASK-0022 may close only after exact-head continuity, backend, PostgreSQL/Redis integration, static/format, frontend/E2E, and security gates prove all acceptance criteria.
 
-## Accepted evidence
+## Required remaining evidence
 
-- atomic Redis-backed concurrency control over the existing durable PostgreSQL operation/quota ledger;
-- deterministic workspace fairness under saturation with no tenant starvation;
-- machine-readable backpressure reason and age visibility;
-- production-representative concurrent PostgreSQL + Redis tests proving no duplicate logical operations and no quota oversubscription;
-- exact-head architecture guard preserves the TASK-0020 retry/failover boundary;
-- no widening into TASK-0022 retry/failover semantics.
+- deterministic normalization from provider-neutral failure observations into permanent, auth/policy, rate-limited, transient-pre-accept, transient-server, ambiguous-transport, and accepted outcomes;
+- explicit tenant-scoped closed/open/half-open breaker behavior without cross-workspace health leakage;
+- dead-letter policy that never converts unresolved ambiguity into a terminal replayable failure;
+- idempotent reconciliation that keeps ambiguity durable until evidence proves accepted, proves retry-safe non-acceptance, or requires operator resolution;
+- failover policy that never reroutes accepted or unresolved ambiguous operations and rechecks capability, policy, readiness, quota, breaker, and tenant safety;
+- durable operation/attempt/reconciliation persistence plus concurrent PostgreSQL/Redis tests proving accepted sends are not replayed and ambiguous sends are not blindly failed over;
+- no widening into sender-domain/deliverability, credentials/paid sends, TASK-0023 load/SLO certification, or later roadmap work.

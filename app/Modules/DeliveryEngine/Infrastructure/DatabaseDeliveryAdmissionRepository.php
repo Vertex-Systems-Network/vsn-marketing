@@ -302,9 +302,9 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             return (int) $configured;
         }
 
-        $retryAfter = config('queue.connections.redis.retry_after', 120);
+        $queueReservationTtl = config('queue.connections.redis.retry_after', 120);
 
-        return max(1, is_numeric($retryAfter) ? (int) $retryAfter : 120);
+        return max(1, is_numeric($queueReservationTtl) ? (int) $queueReservationTtl : 120);
     }
 
     private function availableUnits(stdClass $quota): ?float

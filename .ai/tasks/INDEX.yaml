@@ -168,6 +168,14 @@
       "weight": 20,
       "status": "completed",
       "dependencies": ["TASK-0020"]
+    },
+    {
+      "id": "TASK-0022",
+      "phase": "PHASE-04",
+      "title": "Implement retry classification, circuit breakers, dead letters, reconciliation, and failover",
+      "weight": 20,
+      "status": "ready",
+      "dependencies": ["TASK-0021"]
     }
   ]
 }

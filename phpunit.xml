@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
@@ -23,5 +23,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="LOG_CHANNEL" value="null"/>
         <env name="RUN_INFRA_INTEGRATION" value="false"/>
+        <env name="DELIVERY_ADMISSION_CONCURRENCY_ENABLED" value="false"/>
     </php>
 </phpunit>

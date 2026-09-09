@@ -137,7 +137,10 @@ final readonly class RecoverDeliveryOperation
             return $result;
         });
 
-        if ($result->operation->state !== DeliveryOperationState::Leased) {
+        if (
+            $result->operation->state !== DeliveryOperationState::Leased
+            && (bool) config('delivery.admission.concurrency_enabled', true)
+        ) {
             $this->coordinator->release($result->operation->workspaceId, $result->operation->id);
         }
 

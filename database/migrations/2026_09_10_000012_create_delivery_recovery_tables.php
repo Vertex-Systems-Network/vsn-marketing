@@ -58,11 +58,14 @@ return new class extends Migration
             $table->uuid('operation_id');
             $table->uuid('attempt_id');
             $table->string('resolution', 48);
+            $table->boolean('provider_accepted')->default(false);
+            $table->boolean('acceptance_known_not_occurred')->default(false);
             $table->boolean('retry_safe')->default(false);
             $table->unsignedInteger('probe_attempt_number')->default(0);
             $table->unsignedInteger('max_probe_attempts');
             $table->boolean('operator_action_required')->default(false);
             $table->string('reason', 191);
+            $table->timestampTz('evidence_observed_at')->nullable();
             $table->timestampTz('resolved_at')->nullable();
             $table->timestampTz('created_at');
             $table->timestampTz('updated_at');

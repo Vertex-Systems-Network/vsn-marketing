@@ -12,7 +12,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-04 — 100.00% of currently machine-registered weighted work**  
 **Active task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
 **Last completed task: TASK-0022**  
-**Parallel execution: one Supervisor-owned TASK-0101 lane on `supervisor/task-0101-persistent-control-plane`; no worker lane is required for this cross-cutting governance task**
+**Parallel execution: one active Supervisor-owned TASK-0101 lane on `supervisor/task-0101-persistent-control-plane` plus one pre-created OPEN QA capacity slot; no additional writer is currently assigned or leased**
 
 ```text
 Overall  [██████░░░░░░░░░░░░░░] 32.00%
@@ -58,9 +58,10 @@ TASK-0101 installs `.github/workflows/persistent-supervisor.yml` as the GitHub-n
 
 The authority boundary is strict: the persistent Supervisor does **not** auto-merge, auto-approve, move refs, force-push, change branch protection, weaken checks, edit canonical `.ai` state, or mutate product/runtime code. Pull-request content is treated as untrusted data. Privileged PR triage uses `pull_request_target` only with trusted default-branch code; PR head code is never checked out or executed with the write-capable coordination token.
 
-The dedicated Supervisor lane was created from trusted main `94461fe3d050a04bd87b86820232577caf9ad8e3` before TASK-0101 planning/implementation writes:
+The active Supervisor lane and optional QA capacity were created from trusted main `94461fe3d050a04bd87b86820232577caf9ad8e3` before their respective registry writes:
 
-- `WS-0101-PERSISTENT-SUPERVISOR` — deterministic GitHub API reconciliation, durable status issue, exact-head CI/ancestry readiness policy, and workflow wrapper.
+- `WS-0101-PERSISTENT-SUPERVISOR` — active Supervisor-owned deterministic GitHub API reconciliation, durable status issue, exact-head CI/ancestry readiness policy, and workflow wrapper.
+- `WS-0101-PERSISTENT-SUPERVISOR-QA` — OPEN, unassigned, unleased independent verification slot restricted to a disjoint QA evidence path; it does not add an active writer.
 
 Trusted-main certification before TASK-0101 activation:
 
@@ -122,7 +123,7 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The active TASK-0101 cycle has one registered Supervisor lane. Its GitHub-native runtime is staged on the dedicated Supervisor branch and becomes truly persistent only after merge to the default branch. No external ChatGPT schedule is part of repository supervision.
+The active TASK-0101 cycle has one occupied Supervisor lane and one OPEN QA capacity slot. Only `supervisor-main` is assigned/leased; the QA slot remains inactive unless an independent verifier is explicitly onboarded. The GitHub-native runtime is staged on the dedicated Supervisor branch and becomes truly persistent only after merge to the default branch. No external ChatGPT schedule is part of repository supervision.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

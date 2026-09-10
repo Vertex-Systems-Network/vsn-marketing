@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "AIControlPlane",
   "title": "Install persistent GitHub-native Supervisor control plane",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Install a deterministic repository-native Supervisor runtime in GitHub Actions that keeps coordination observable between interactive agent sessions through event-driven execution plus a bounded five-minute heartbeat, while preserving the repository's existing human/Supervisor merge authority, continuity ledgers, branch rules, workstream completion protocol, and least-privilege security boundaries.",
   "dependencies": [
     "TASK-0022"
@@ -23,22 +23,22 @@
     {
       "id": "AC-3",
       "text": "A non-draft registered workstream is considered review-ready only when its body contains the exact standalone completion signal `Work Done and Submitted`, its head contains current main, and required exact-head CI has succeeded; review-ready triage never implies approval",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "The persistent Supervisor never auto-merges, force-pushes, changes canonical `.ai` state, bypasses branch protection, weakens required checks, fabricates worker completion, or mutates product/runtime code; write permission is limited to durable issue/PR coordination surfaces",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Workflow permissions follow least privilege, third-party actions are immutable-SHA pinned, untrusted pull-request content is treated strictly as data, and workflow behavior avoids recursive event storms from `GITHUB_TOKEN` writes",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Repository-native tests or deterministic validation cover signal parsing, current-main ancestry classification, exact-head CI classification, status rendering/deduplication, and fail-closed behavior for missing or ambiguous evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
@@ -59,5 +59,5 @@
     "exact-head Application Foundation CI",
     "exact-head Security Supply Chain CI"
   ],
-  "exact_next_action": "Implement and certify a deterministic GitHub-native persistent Supervisor on the dedicated Supervisor branch: five-minute heartbeat plus event-driven reconciliation, durable status issue, exact standalone completion-signal parsing, current-main ancestry and exact-head CI triage, least-privilege permissions, no auto-merge, and no canonical-state mutation; preserve preplanned TASK-0023 delivery SLO/load work unchanged."
+  "exact_next_action": "Merge certified PR #101 only after a fresh non-draft exact-head governance pass, then verify the default-branch Persistent Supervisor creates or updates the durable status issue and reports current main/canonical state; after post-merge gates pass, transactionally complete TASK-0101 and activate the preserved TASK-0023 delivery SLO/load certification task."
 }

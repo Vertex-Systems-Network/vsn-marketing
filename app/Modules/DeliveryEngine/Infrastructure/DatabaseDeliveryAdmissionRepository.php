@@ -287,6 +287,7 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                         }
 
                         $lastReason = 'circuit_breaker_open';
+
                         continue;
                     }
 

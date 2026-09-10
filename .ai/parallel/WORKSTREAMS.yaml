@@ -7,14 +7,14 @@
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0023-SUPERVISOR-INTEGRATION",
+      "id": "WS-0023-ACTIVATION",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "TASK-0023 delivery SLO/load/fault-injection research, production-parity harness integration, threshold governance, canonical evidence, and acceptance",
+      "capability": "Transactional TASK-0101 closeout, preserved TASK-0023/TASK-0024 registration, TASK-0023 activation, and parallel-control handoff",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/task-0023-delivery-slo",
       "worktree": "worktrees/task-0023-delivery-slo",
-      "status": "leased",
+      "status": "in_progress",
       "slot_status": "occupied",
       "start_status": "active",
       "onboarded_from_branch": "main",
@@ -22,7 +22,6 @@
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        ".ai/research/PHASE-04/TASK-0023-RESEARCH.md",
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
@@ -34,27 +33,23 @@
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
         ".ai/state/EXECUTION-JOURNAL.jsonl",
-        "README.md",
-        ".github/workflows/task-0023-delivery-slo.yml",
-        "tools/delivery_slo_gate.py",
-        "tools/test_delivery_slo_gate.py",
-        "tests/Integration/DeliveryEngine/DeliverySloLoadGateTest.php",
-        "tests/Integration/DeliveryEngine/DeliveryFaultInjectionGateTest.php",
-        "docs/verification/TASK-0023-DELIVERY-SLO.md"
+        "README.md"
       ]
     },
     {
       "id": "WS-0023-PERFORMANCE-QA",
       "role": "worker",
       "module": "Delivery",
-      "capability": "Independent TASK-0023 performance/fault-injection evidence review without shared-path mutation",
+      "capability": "Reserved independent TASK-0023 performance/fault-injection evidence review capacity; must sync to activation main before any lease or write",
       "assigned_agent": null,
       "branch": "agent/task-0023-performance-qa",
       "worktree": "worktrees/task-0023-performance-qa",
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": [],
+      "dependencies": [
+        "WS-0023-ACTIVATION"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [

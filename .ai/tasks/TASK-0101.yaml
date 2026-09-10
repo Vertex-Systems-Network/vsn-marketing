@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "AIControlPlane",
   "title": "Install persistent GitHub-native Supervisor control plane",
-  "status": "in_progress",
+  "status": "ready",
   "objective": "Install a deterministic repository-native Supervisor runtime in GitHub Actions that keeps coordination observable between interactive agent sessions through event-driven execution plus a bounded five-minute heartbeat, while preserving the repository's existing human/Supervisor merge authority, continuity ledgers, branch rules, workstream completion protocol, and least-privilege security boundaries.",
   "dependencies": [
     "TASK-0022"

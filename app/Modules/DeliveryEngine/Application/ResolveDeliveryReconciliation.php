@@ -7,6 +7,7 @@ use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryReconciliationRepository;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryTransaction;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationEvidence;
+use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationPolicy;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationResult;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -19,6 +20,7 @@ final readonly class ResolveDeliveryReconciliation
         private Clock $clock,
         private DeliveryReconciliationRepository $repository,
         private DeliveryTransaction $transaction,
+        private DeliveryReconciliationPolicy $policy,
         private AuditRecorder $audit,
     ) {}
 
@@ -47,7 +49,21 @@ final readonly class ResolveDeliveryReconciliation
                 throw new AuthorizationException('Delivery reconciliation access denied or unavailable.');
             }
 
-            $result = $this->repository->resolve($snapshot, $evidence, $observedAt);
+            $canonicalEvidence = new DeliveryReconciliationEvidence(
+                providerAccepted: $evidence->providerAccepted,
+                acceptanceKnownNotOccurred: $evidence->acceptanceKnownNotOccurred,
+                retrySafe: $evidence->retrySafe,
+                probeAttemptNumber: $evidence->probeAttemptNumber,
+                maxProbeAttempts: $snapshot->maxProbeAttempts,
+                reason: $evidence->reason,
+            );
+            $decision = $this->policy->decide($canonicalEvidence);
+            $result = $this->repository->resolve(
+                $snapshot,
+                $canonicalEvidence,
+                $decision,
+                $observedAt,
+            );
             if (! $result->changed) {
                 return $result;
             }
@@ -61,15 +77,16 @@ final readonly class ResolveDeliveryReconciliation
                 subjectId: $result->operation->id,
                 evidence: [
                     'attempt_id' => $result->attemptId,
-                    'probe_attempt_number' => $evidence->probeAttemptNumber,
+                    'probe_attempt_number' => $canonicalEvidence->probeAttemptNumber,
                     'resolution' => $result->resolution->value,
-                    'provider_accepted' => $evidence->providerAccepted,
-                    'acceptance_known_not_occurred' => $evidence->acceptanceKnownNotOccurred,
-                    'retry_safe' => $evidence->retrySafe,
+                    'provider_accepted' => $canonicalEvidence->providerAccepted,
+                    'acceptance_known_not_occurred' => $canonicalEvidence->acceptanceKnownNotOccurred,
+                    'retry_safe' => $canonicalEvidence->retrySafe,
                     'retry_allowed' => $result->retryAllowed,
                     'operator_action_required' => $result->operatorActionRequired,
                     'operation_state' => $result->operation->state->value,
-                    'reason' => $result->reason,
+                    'evidence_reason' => $result->reason,
+                    'policy_reason' => $decision->reason,
                 ],
             );
 

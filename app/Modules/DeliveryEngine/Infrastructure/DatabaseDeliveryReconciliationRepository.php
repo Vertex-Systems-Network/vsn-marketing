@@ -7,6 +7,7 @@ use App\Modules\DeliveryEngine\Domain\DeliveryChannel;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperationState;
 use App\Modules\DeliveryEngine\Domain\DeliveryPriorityClass;
+use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationDecision;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationEvidence;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationResolution;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationResult;
@@ -65,6 +66,7 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
     public function resolve(
         DeliveryReconciliationSnapshot $snapshot,
         DeliveryReconciliationEvidence $evidence,
+        DeliveryReconciliationDecision $decision,
         DateTimeImmutable $observedAt,
     ): DeliveryReconciliationResult {
         if ($evidence->probeAttemptNumber === $snapshot->probeAttemptNumber) {
@@ -89,8 +91,8 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
             throw new RuntimeException('Delivery reconciliation probe budget has been exhausted.');
         }
 
-        $resolution = $this->resolutionFor($snapshot, $evidence);
-        $operatorActionRequired = $resolution === DeliveryReconciliationResolution::OperatorResolutionRequired;
+        $resolution = $decision->resolution;
+        $operatorActionRequired = $decision->operatorActionRequired;
         $connection = $this->database->connection();
         $reconciliationUpdated = $connection->table('delivery_reconciliations')
             ->where('workspace_id', $snapshot->operation->workspaceId)
@@ -107,7 +109,7 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
                 'operator_action_required' => $operatorActionRequired,
                 'reason' => $evidence->reason,
                 'evidence_observed_at' => $observedAt,
-                'resolved_at' => $resolution === DeliveryReconciliationResolution::Pending ? null : $observedAt,
+                'resolved_at' => $decision->terminal() ? $observedAt : null,
                 'updated_at' => $observedAt,
             ]);
 
@@ -115,7 +117,7 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
             throw new RuntimeException('Delivery reconciliation changed during locked resolution.');
         }
 
-        if ($resolution !== DeliveryReconciliationResolution::Pending) {
+        if ($decision->terminal()) {
             $targetState = $resolution === DeliveryReconciliationResolution::Accepted
                 ? DeliveryOperationState::Accepted
                 : DeliveryOperationState::Held;
@@ -150,7 +152,7 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
             attemptId: $snapshot->attemptId,
             resolution: $resolution,
             changed: true,
-            retryAllowed: $resolution === DeliveryReconciliationResolution::NotAcceptedRetrySafe,
+            retryAllowed: $decision->retryAllowed,
             operatorActionRequired: $operatorActionRequired,
             reason: $evidence->reason,
         );
@@ -274,25 +276,6 @@ final readonly class DatabaseDeliveryReconciliationRepository implements Deliver
 
         return $this->readOperation($workspaceId, $operationId)
             ?? throw new RuntimeException('Failover delivery operation could not be reloaded.');
-    }
-
-    private function resolutionFor(
-        DeliveryReconciliationSnapshot $snapshot,
-        DeliveryReconciliationEvidence $evidence,
-    ): DeliveryReconciliationResolution {
-        if ($evidence->providerAccepted) {
-            return DeliveryReconciliationResolution::Accepted;
-        }
-
-        if ($evidence->acceptanceKnownNotOccurred && $evidence->retrySafe) {
-            return DeliveryReconciliationResolution::NotAcceptedRetrySafe;
-        }
-
-        if ($evidence->acceptanceKnownNotOccurred || $evidence->probeAttemptNumber >= $snapshot->maxProbeAttempts) {
-            return DeliveryReconciliationResolution::OperatorResolutionRequired;
-        }
-
-        return DeliveryReconciliationResolution::Pending;
     }
 
     private function assertDuplicateEvidenceMatches(

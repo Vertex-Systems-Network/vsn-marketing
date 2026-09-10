@@ -3,6 +3,7 @@
 namespace App\Modules\DeliveryEngine\Domain\Contracts;
 
 use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
+use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationDecision;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationEvidence;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationResult;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationSnapshot;
@@ -19,6 +20,7 @@ interface DeliveryReconciliationRepository
     public function resolve(
         DeliveryReconciliationSnapshot $snapshot,
         DeliveryReconciliationEvidence $evidence,
+        DeliveryReconciliationDecision $decision,
         DateTimeImmutable $observedAt,
     ): DeliveryReconciliationResult;
 

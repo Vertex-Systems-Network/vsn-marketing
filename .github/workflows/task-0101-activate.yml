@@ -1,0 +1,53 @@
+name: TASK-0101 Transactional Activation
+
+on:
+  push:
+    branches:
+      - supervisor/task-0101-persistent-control-plane
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: task-0101-activation
+  cancel-in-progress: true
+
+jobs:
+  activate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Recover and validate continuity
+        run: |
+          python tools/ai_txn.py recover
+          python tools/ai_txn.py validate
+          python tools/ai_parallel.py validate
+      - name: Activate TASK-0101 through guarded transition
+        run: |
+          python tools/ai_txn.py transition \
+            --complete TASK-0022 \
+            --next TASK-0101 \
+            --evidence "Operator explicitly prioritized a repository-native persistent Supervisor after TASK-0022. TASK-0023 remains reserved for delivery SLO/load certification; additional governance work is registered as zero-weight TASK-0101. Post-merge main 94461fe3d050a04bd87b86820232577caf9ad8e3 is green." \
+            --tests "main AI Continuity 34507925149 success; Application Foundation 34507924783 success; Security Supply Chain 34507924951 success; Release Integrity 34507924894 success; OpenSSF Scorecard 34507924921 success"
+      - name: Validate activated state
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py status
+          python tools/ai_journal.py validate
+          python tools/ai_context.py manifest >/tmp/context.json
+      - name: Commit transactional activation
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No activation changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .ai/tasks/TASK-0022.yaml .ai/tasks/TASK-0101.yaml .ai/tasks/INDEX.yaml .ai/roadmap/ROADMAP.yaml .ai/state/CURRENT-STATE.yaml .ai/state/LAST-CHECKPOINT.md .ai/state/EXECUTION-JOURNAL.jsonl
+          git commit -m "chore(ai): activate TASK-0101 persistent supervisor"
+          git push origin HEAD:supervisor/task-0101-persistent-control-plane

@@ -79,6 +79,9 @@ jobs:
             --summary "TASK-0101 is merged on main c6dab8eff0e8284a1e39d3105429ba5931fec9da. AI Continuity 34522847507, Application 34522847451, Security 34522847473, Release Integrity 34522847562, and OpenSSF Scorecard 34522847785 passed. Persistent Supervisor default-branch workflow_run 34523049920 passed and issue #102 reports HEALTHY with no blockers. Restored the preserved TASK-0023/TASK-0024 specifications and registered the remaining PHASE-04 weights as 15/10 so the phase totals 100." \
             --tests "main AI Continuity 34522847507 success; Application Foundation 34522847451 success; Security Supply Chain 34522847473 success; Release Integrity 34522847562 success; OpenSSF Scorecard 34522847785 success; Persistent Supervisor 34523049920 success; status issue #102 HEALTHY" \
             --next "Transactionally complete TASK-0101 after its merged default-branch Persistent Supervisor run 34523049920 and HEALTHY status issue #102, then activate the preserved TASK-0023 delivery SLO/load/fault-injection task without changing TASK-0024 certification scope."
+          python tools/ai_journal.py record \
+            --type manual_sync \
+            --summary "Registered preserved TASK-0023/TASK-0024, finalized TASK-0101 post-merge acceptance evidence, recalculated PHASE-04 progress, and synchronized the pre-transition checkpoint before the guarded TASK-0101 to TASK-0023 transition."
           python tools/ai_txn.py validate
       - name: Complete TASK-0101 and activate TASK-0023 transactionally
         run: |

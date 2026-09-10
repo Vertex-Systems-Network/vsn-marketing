@@ -7,6 +7,7 @@ from persistent_supervisor import (
     REQUIRED_CI,
     classify_ci,
     evaluate_pr,
+    find_status_issue,
     issue_needs_update,
     main_is_ancestor,
     render_status,
@@ -207,6 +208,26 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
         health, body = render_status(state, registry, self.main, main_ci, [blocked])
         self.assertEqual(health, "DEGRADED")
         self.assertIn("completion", body.lower())
+
+    def test_status_issue_lookup_uses_authoritative_issue_listing(self) -> None:
+        class FakeClient:
+            def __init__(self) -> None:
+                self.paths: list[str] = []
+
+            def get_all(self, path: str, per_page: int = 100) -> list[dict]:
+                self.paths.append(path)
+                return [
+                    {"number": 9, "title": "Unrelated"},
+                    {"number": 10, "title": "[Supervisor] Persistent Control Plane Status", "pull_request": {}},
+                    {"number": 11, "title": "[Supervisor] Persistent Control Plane Status", "state": "open"},
+                ]
+
+        client = FakeClient()
+        issue = find_status_issue(client, "Vertex-Systems-Network/vsn-marketing")
+        self.assertEqual(issue["number"], 11)
+        self.assertEqual(len(client.paths), 1)
+        self.assertIn("/issues?state=all", client.paths[0])
+        self.assertNotIn("/search/issues", client.paths[0])
 
     def test_issue_deduplication(self) -> None:
         body = "stable\n"

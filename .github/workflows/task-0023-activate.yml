@@ -1,0 +1,103 @@
+name: TASK-0023 Transactional Activation
+
+on:
+  push:
+    branches:
+      - supervisor/task-0023-delivery-slo
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: task-0023-activation
+  cancel-in-progress: true
+
+jobs:
+  activate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Register preserved PHASE-04 successor tasks and post-merge evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          index_path = Path('.ai/tasks/INDEX.yaml')
+          state_path = Path('.ai/state/CURRENT-STATE.yaml')
+          task_path = Path('.ai/tasks/TASK-0101.yaml')
+
+          index = json.loads(index_path.read_text())
+          known = {row['id'] for row in index['tasks']}
+          additions = [
+              {
+                  'id': 'TASK-0023',
+                  'phase': 'PHASE-04',
+                  'title': 'Establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates',
+                  'weight': 15,
+                  'status': 'planned',
+                  'dependencies': ['TASK-0022'],
+              },
+              {
+                  'id': 'TASK-0024',
+                  'phase': 'PHASE-04',
+                  'title': 'Certify PHASE-04 delivery safety, reliability, and performance gates',
+                  'weight': 10,
+                  'status': 'planned',
+                  'dependencies': ['TASK-0023'],
+              },
+          ]
+          for row in additions:
+              if row['id'] not in known:
+                  index['tasks'].append(row)
+          index_path.write_text(json.dumps(index, indent=2) + '\n')
+
+          task = json.loads(task_path.read_text())
+          for criterion in task.get('acceptance_criteria', []):
+              criterion['done'] = True
+          task_path.write_text(json.dumps(task, indent=2) + '\n')
+
+          state = json.loads(state_path.read_text())
+          state['progress']['phase_percent'] = 75.0
+          state['progress']['roadmap_percent'] = 30.25
+          state['quality']['continuity_validation'] = 'task_0101_main_push_passed_run_34522847507'
+          state['quality']['application_test_status'] = 'task_0101_main_push_passed_run_34522847451'
+          state['quality']['security_supply_chain_status'] = 'task_0101_main_push_passed_run_34522847473'
+          state['quality']['release_integrity_status'] = 'task_0101_main_push_passed_run_34522847562'
+          state['quality']['scorecard_status'] = 'task_0101_main_push_passed_run_34522847785'
+          state['exact_next_action'] = 'Transactionally complete TASK-0101 after its merged default-branch Persistent Supervisor run 34523049920 and HEALTHY status issue #102, then activate the preserved TASK-0023 delivery SLO/load/fault-injection task without changing TASK-0024 certification scope.'
+          state_path.write_text(json.dumps(state, indent=2) + '\n')
+          PY
+      - name: Synchronize checkpoint and validate pre-transition state
+        run: |
+          python tools/ai_state.py checkpoint \
+            --summary "TASK-0101 is merged on main c6dab8eff0e8284a1e39d3105429ba5931fec9da. AI Continuity 34522847507, Application 34522847451, Security 34522847473, Release Integrity 34522847562, and OpenSSF Scorecard 34522847785 passed. Persistent Supervisor default-branch workflow_run 34523049920 passed and issue #102 reports HEALTHY with no blockers. Restored the preserved TASK-0023/TASK-0024 specifications and registered the remaining PHASE-04 weights as 15/10 so the phase totals 100." \
+            --tests "main AI Continuity 34522847507 success; Application Foundation 34522847451 success; Security Supply Chain 34522847473 success; Release Integrity 34522847562 success; OpenSSF Scorecard 34522847785 success; Persistent Supervisor 34523049920 success; status issue #102 HEALTHY" \
+            --next "Transactionally complete TASK-0101 after its merged default-branch Persistent Supervisor run 34523049920 and HEALTHY status issue #102, then activate the preserved TASK-0023 delivery SLO/load/fault-injection task without changing TASK-0024 certification scope."
+          python tools/ai_txn.py validate
+      - name: Complete TASK-0101 and activate TASK-0023 transactionally
+        run: |
+          python tools/ai_txn.py transition \
+            --complete TASK-0101 \
+            --next TASK-0023 \
+            --evidence "TASK-0101 merged as c6dab8eff0e8284a1e39d3105429ba5931fec9da; all five post-merge main gates passed; Persistent Supervisor workflow_run 34523049920 passed; durable issue #102 reached HEALTHY with current-main and required exact-head CI success; TASK-0023 and TASK-0024 are restored from the preplanned PHASE-04 specifications without renumbering." \
+            --tests "AI Continuity 34522847507 PASS; Application Foundation 34522847451 PASS; Security Supply Chain 34522847473 PASS; Release Integrity 34522847562 PASS; OpenSSF Scorecard 34522847785 PASS; Persistent Supervisor 34523049920 PASS; issue #102 HEALTHY"
+          python tools/ai_txn.py validate
+          python tools/ai_state.py status
+          python tools/ai_journal.py validate
+      - name: Commit transactional activation
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No activation changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .ai/tasks/TASK-0101.yaml .ai/tasks/TASK-0023.yaml .ai/tasks/TASK-0024.yaml .ai/tasks/INDEX.yaml .ai/roadmap/ROADMAP.yaml .ai/state/CURRENT-STATE.yaml .ai/state/LAST-CHECKPOINT.md .ai/state/EXECUTION-JOURNAL.jsonl
+          git commit -m "chore(ai): complete TASK-0101 and activate TASK-0023"
+          git push origin HEAD:supervisor/task-0023-delivery-slo

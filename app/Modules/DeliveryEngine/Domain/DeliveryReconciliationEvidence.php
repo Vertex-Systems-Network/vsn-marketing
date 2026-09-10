@@ -12,6 +12,7 @@ final readonly class DeliveryReconciliationEvidence
         public bool $retrySafe = false,
         public int $probeAttemptNumber = 0,
         public int $maxProbeAttempts = 3,
+        public string $reason = 'provider_reconciliation_probe',
     ) {
         if ($providerAccepted && $acceptanceKnownNotOccurred) {
             throw new InvalidArgumentException('Reconciliation evidence cannot prove both accepted and not accepted.');
@@ -31,6 +32,10 @@ final readonly class DeliveryReconciliationEvidence
 
         if ($probeAttemptNumber > $maxProbeAttempts) {
             throw new InvalidArgumentException('Reconciliation probe attempts cannot exceed the configured maximum.');
+        }
+
+        if (trim($reason) === '') {
+            throw new InvalidArgumentException('Reconciliation evidence reason must not be empty.');
         }
     }
 

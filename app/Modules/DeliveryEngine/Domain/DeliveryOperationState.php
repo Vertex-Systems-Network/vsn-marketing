@@ -8,4 +8,8 @@ enum DeliveryOperationState: string
     case Ready = 'ready';
     case Backpressured = 'backpressured';
     case Leased = 'leased';
+    case Reconciling = 'reconciling';
+    case Held = 'held';
+    case Accepted = 'accepted';
+    case DeadLettered = 'dead_lettered';
 }

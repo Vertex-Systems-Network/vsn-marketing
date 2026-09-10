@@ -6,24 +6,26 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-04",
     "active_task": "TASK-0022",
-    "last_completed_task": "TASK-0021",
+    "last_completed_task": "TASK-0022",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 30.13,
-    "phase_percent": 73.33,
+    "roadmap_percent": 32.0,
+    "phase_percent": 100.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0022_retry_main_push_passed_run_34397650997",
-    "application_test_status": "task_0022_retry_main_push_passed_run_34397651070",
-    "security_supply_chain_status": "task_0022_retry_main_push_passed_run_34397651068",
-    "release_integrity_status": "task_0022_retry_main_push_passed_run_34397650999",
-    "scorecard_status": "task_0022_retry_main_push_passed_run_34397651100"
+    "continuity_validation": "task_0022_supervisor_recovery_integration_pending_exact_head_continuity",
+    "application_test_status": "task_0022_supervisor_recovery_integration_pending_exact_head_application_ci",
+    "security_supply_chain_status": "task_0022_supervisor_recovery_integration_pending_exact_head_security_ci",
+    "release_integrity_status": "task_0022_failover_main_push_passed_run_34405243186",
+    "scorecard_status": "task_0022_failover_main_push_passed_run_34405242993"
   },
-  "blockers": [],
-  "exact_next_action": "Implement provider-neutral retry classification, explicit tenant-scoped circuit breakers, dead-letter and reconciliation flows, and compatible failover over TASK-0021 delivery operations and attempts; ambiguous outcomes must reconcile before replay or failover, accepted operations must never reroute, and no sender-domain/deliverability, credentials/paid sends, or TASK-0023+ behavior may be pulled forward."
+  "blockers": [
+    "No successor task is registered after TASK-0022; explicit roadmap staging is required before further implementation."
+  ],
+  "exact_next_action": "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
 }

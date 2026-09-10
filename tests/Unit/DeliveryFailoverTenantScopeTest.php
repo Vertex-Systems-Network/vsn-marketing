@@ -7,7 +7,7 @@ it('tenant-scopes alternate provider connection lookup before taking a row lock'
 
     expect($source)->not->toBeFalse();
 
-    $lookupStart = strpos($source, "$connection->table('provider_connections')");
+    $lookupStart = strpos($source, "\$connection->table('provider_connections')");
     expect($lookupStart)->not->toBeFalse();
 
     $lockPosition = strpos($source, '->lockForUpdate()', $lookupStart);
@@ -16,7 +16,7 @@ it('tenant-scopes alternate provider connection lookup before taking a row lock'
     $lookup = substr($source, $lookupStart, $lockPosition - $lookupStart);
 
     expect($lookup)
-        ->toContain("->where('workspace_id', $workspaceId)")
-        ->toContain("->where('provider_id', $alternateProviderId)")
-        ->toContain("->where('id', $alternateProviderConnectionId)");
+        ->toContain("->where('workspace_id', \$workspaceId)")
+        ->toContain("->where('provider_id', \$alternateProviderId)")
+        ->toContain("->where('id', \$alternateProviderConnectionId)");
 });

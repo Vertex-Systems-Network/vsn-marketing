@@ -8,6 +8,7 @@
       "status": "active",
       "write_paths": [
         ".github/workflows/persistent-supervisor.yml",
+        ".github/workflows/ai-continuity.yml",
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",

@@ -1,26 +1,27 @@
 name: TASK-0022 Pint Autofix
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - supervisor/task-0022-parallel-integration
 
 permissions:
   contents: write
 
 concurrency:
-  group: task-0022-pint-autofix-${{ github.event.pull_request.number }}
+  group: task-0022-pint-autofix-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   pint-autofix:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'supervisor/task-0022-parallel-integration' }}
+    if: ${{ github.ref == 'refs/heads/supervisor/task-0022-parallel-integration' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout exact PR branch
+      - name: Checkout exact Supervisor branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: supervisor/task-0022-parallel-integration
           fetch-depth: 0
           persist-credentials: true
       - name: Set up PHP 8.5
@@ -50,4 +51,4 @@ jobs:
             exit 0
           fi
           git commit -m "style(delivery): apply Pint formatting"
-          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+          git push origin "HEAD:supervisor/task-0022-parallel-integration"

@@ -37,15 +37,15 @@ final readonly class DatabaseDeliveryFailoverEligibilityRepository implements De
             ->lockForUpdate()
             ->first();
         $alternateConnection = $connection->table('provider_connections')
+            ->where('workspace_id', $workspaceId)
             ->where('provider_id', $alternateProviderId)
             ->where('id', $alternateProviderConnectionId)
             ->lockForUpdate()
             ->first();
 
         $alternateExists = $alternateConnection instanceof stdClass;
-        $sameWorkspace = ! $alternateExists
-            || (string) $alternateConnection->workspace_id === $workspaceId;
-        $providerExists = $sameWorkspace && $alternateExists && $connection->table('providers')
+        $sameWorkspace = $alternateExists;
+        $providerExists = $alternateExists && $connection->table('providers')
             ->where('workspace_id', $workspaceId)
             ->where('id', $alternateProviderId)
             ->exists();

@@ -114,15 +114,19 @@ def evaluate_pr(
 ) -> dict[str, Any]:
     head = pr.get("head") if isinstance(pr.get("head"), dict) else {}
     base = pr.get("base") if isinstance(pr.get("base"), dict) else {}
+    head_repo = head.get("repo") if isinstance(head.get("repo"), dict) else {}
+    base_repo = base.get("repo") if isinstance(base.get("repo"), dict) else {}
     head_sha = str(head.get("sha", ""))
     body = str(pr.get("body") or "")
     wid = str(workstream.get("id", ""))
     completion_signal = str(control.get("required_completion_signal", "Work Done and Submitted"))
     ci = classify_ci(runs, head_sha)
+    head_repo_name = head_repo.get("full_name")
+    base_repo_name = base_repo.get("full_name")
 
     checks = {
         "targets_main": base.get("ref") == control.get("protected_main_branch", "main"),
-        "same_repository": (head.get("repo") or {}).get("full_name") == pr.get("base", {}).get("repo", {}).get("full_name"),
+        "same_repository": bool(head_repo_name) and head_repo_name == base_repo_name,
         "non_draft": pr.get("draft") is False,
         "workstream_marker": standalone(body, f"Workstream: {wid}"),
         "completion_signal": standalone(body, completion_signal),
@@ -188,8 +192,6 @@ def render_status(
         if status != "success":
             blockers.append(f"Main exact-head CI `{name}` is `{status}`")
     for pr in prs:
-        # Draft work is expected and does not degrade the control plane. A submitted
-        # non-draft workstream with blockers requires Supervisor attention.
         if not pr.get("draft") and not pr.get("review_ready"):
             for reason in pr.get("blockers", []):
                 blockers.append(f"PR #{pr.get('number')} ({pr.get('workstream')}): {reason}")

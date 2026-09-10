@@ -1,0 +1,52 @@
+name: Persistent Supervisor Control Plane
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+      - ready_for_review
+      - converted_to_draft
+      - closed
+  issue_comment:
+    types: [created]
+  workflow_run:
+    workflows:
+      - AI Continuity Guard
+      - Application Foundation CI
+      - Security Supply Chain CI
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: persistent-supervisor-control-plane
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    name: reconcile
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout trusted default branch only
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Recompute durable Supervisor state
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_API_URL: ${{ github.api_url }}
+        run: python tools/persistent_supervisor.py

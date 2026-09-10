@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0101",
+  "phase": "PHASE-04",
+  "module": "AIControlPlane",
+  "title": "Install persistent GitHub-native Supervisor control plane",
+  "status": "ready",
+  "objective": "Install a deterministic repository-native Supervisor runtime in GitHub Actions that keeps coordination observable between interactive agent sessions through event-driven execution plus a bounded five-minute heartbeat, while preserving the repository's existing human/Supervisor merge authority, continuity ledgers, branch rules, workstream completion protocol, and least-privilege security boundaries.",
+  "dependencies": [
+    "TASK-0022"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "A pinned GitHub Actions workflow on the default branch runs on a five-minute schedule, manual dispatch, relevant pull-request events, issue-comment events, and completion of core CI workflows, with concurrency preventing overlapping Supervisor reconciliations",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "The workflow reads canonical repository state and parallel-control metadata, inspects open pull requests against current main, and publishes one durable Supervisor status issue that clearly reports active task, continuity status, current main SHA, submitted workstreams, stale-main ancestry, exact-head CI state, and actionable blockers",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "A non-draft registered workstream is considered review-ready only when its body contains the exact standalone completion signal `Work Done and Submitted`, its head contains current main, and required exact-head CI has succeeded; review-ready triage never implies approval",
+      "done": true
+    },
+    {
+      "id": "AC-4",
+      "text": "The persistent Supervisor never auto-merges, force-pushes, changes canonical `.ai` state, bypasses branch protection, weakens required checks, fabricates worker completion, or mutates product/runtime code; write permission is limited to durable issue/PR coordination surfaces",
+      "done": true
+    },
+    {
+      "id": "AC-5",
+      "text": "Workflow permissions follow least privilege, third-party actions are immutable-SHA pinned, untrusted pull-request content is treated strictly as data, and workflow behavior avoids recursive event storms from `GITHUB_TOKEN` writes",
+      "done": true
+    },
+    {
+      "id": "AC-6",
+      "text": "Repository-native tests or deterministic validation cover signal parsing, current-main ancestry classification, exact-head CI classification, status rendering/deduplication, and fail-closed behavior for missing or ambiguous evidence",
+      "done": true
+    },
+    {
+      "id": "AC-7",
+      "text": "The AI-native plan and operator-facing execution guidance describe the persistent Supervisor as the always-on coordination runtime, preserve original TASK-0023 delivery SLO/load work without renumbering, and all applicable exact-head continuity, application, security, release-integrity, and workflow-policy gates pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "python tools/test_persistent_supervisor.py",
+    "GitHub Actions workflow syntax/pinning policy validation",
+    "exact-head AI Continuity Guard",
+    "exact-head Application Foundation CI",
+    "exact-head Security Supply Chain CI"
+  ],
+  "exact_next_action": "Merge certified PR #101 only after a fresh non-draft exact-head governance pass, then verify the default-branch Persistent Supervisor creates or updates the durable status issue and reports current main/canonical state; after post-merge gates pass, transactionally complete TASK-0101 and activate the preserved TASK-0023 delivery SLO/load certification task."
+}

@@ -218,6 +218,16 @@
       "dependencies": [
         "TASK-0021"
       ]
+    },
+    {
+      "id": "TASK-0101",
+      "phase": "PHASE-04",
+      "title": "Install persistent GitHub-native Supervisor control plane",
+      "weight": 0,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0022"
+      ]
     }
   ]
 }

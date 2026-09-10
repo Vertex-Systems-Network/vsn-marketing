@@ -7,35 +7,26 @@ use InvalidArgumentException;
 final readonly class DeliveryReconciliationEvidence
 {
     public function __construct(
+        public int $probeAttemptNumber,
         public bool $providerAccepted = false,
         public bool $acceptanceKnownNotOccurred = false,
         public bool $retrySafe = false,
-        public int $probeAttemptNumber = 0,
-        public int $maxProbeAttempts = 3,
+        public string $reason = 'provider_reconciliation_probe',
     ) {
+        if ($probeAttemptNumber < 1) {
+            throw new InvalidArgumentException('Reconciliation probe attempt number must be at least one.');
+        }
+
+        if (trim($reason) === '') {
+            throw new InvalidArgumentException('Reconciliation evidence reason must not be empty.');
+        }
+
         if ($providerAccepted && $acceptanceKnownNotOccurred) {
-            throw new InvalidArgumentException('Reconciliation evidence cannot prove both accepted and not accepted.');
+            throw new InvalidArgumentException('Reconciliation evidence cannot prove both acceptance and non-acceptance.');
         }
 
         if ($retrySafe && ! $acceptanceKnownNotOccurred) {
-            throw new InvalidArgumentException('Retry-safe reconciliation evidence requires proven non-acceptance.');
+            throw new InvalidArgumentException('Retry-safe reconciliation evidence must prove provider non-acceptance.');
         }
-
-        if ($probeAttemptNumber < 0) {
-            throw new InvalidArgumentException('Reconciliation probe attempt number must be non-negative.');
-        }
-
-        if ($maxProbeAttempts < 1) {
-            throw new InvalidArgumentException('Reconciliation maximum probe attempts must be at least one.');
-        }
-
-        if ($probeAttemptNumber > $maxProbeAttempts) {
-            throw new InvalidArgumentException('Reconciliation probe attempts cannot exceed the configured maximum.');
-        }
-    }
-
-    public function probeBudgetRemains(): bool
-    {
-        return $this->probeAttemptNumber < $this->maxProbeAttempts;
     }
 }

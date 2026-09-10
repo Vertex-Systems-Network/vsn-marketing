@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0101 Persistent Supervisor Control Plane
 
-Status: **active** — TASK-0101 installs the repository-native always-on Supervisor runtime requested by the operator. The work is intentionally isolated to a single Supervisor-owned lane because it changes shared GitHub Actions and AI governance surfaces. No worker lane is required for this cross-cutting control-plane task.
+Status: **active** — TASK-0101 installs the repository-native always-on Supervisor runtime requested by the operator. Shared implementation remains isolated to the Supervisor-owned lane; one disjoint **OPEN** QA worker slot is pre-created to preserve deterministic onboarding/independent-verification capacity without adding an active writer or lease.
 
 Supervisor: `supervisor-main`  
 Supervisor branch: `supervisor/task-0101-persistent-control-plane`  
@@ -8,7 +8,7 @@ Trusted baseline: `94461fe3d050a04bd87b86820232577caf9ad8e3`
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
-The dedicated Supervisor branch was created from the trusted post-TASK-0022 `main` before TASK-0101 planning or implementation writes. That baseline passed AI Continuity Guard run `34507925149`, Application Foundation CI run `34507924783`, Security Supply Chain CI run `34507924951`, Release Integrity run `34507924894`, and OpenSSF Scorecard run `34507924921`.
+The dedicated Supervisor branch and the optional QA branch were created from the trusted post-TASK-0022 `main` before their respective registry mutations. That baseline passed AI Continuity Guard run `34507925149`, Application Foundation CI run `34507924783`, Security Supply Chain CI run `34507924951`, Release Integrity run `34507924894`, and OpenSSF Scorecard run `34507924921`.
 
 TASK-0101 is a zero-roadmap-weight cross-cutting governance insertion. It does **not** renumber, reinterpret, or replace the preplanned product roadmap. In particular, the reserved **TASK-0023 remains delivery SLO/load/saturation/fault-injection/PostgreSQL/Redis production-parity certification**, followed by TASK-0024 PHASE-04 certification.
 
@@ -16,6 +16,7 @@ TASK-0101 is a zero-roadmap-weight cross-cutting governance insertion. It does *
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0101-PERSISTENT-SUPERVISOR | Persistent GitHub-native Supervisor reconciliation and durable coordination status | `occupied` | `supervisor-main` | `active` | `supervisor/task-0101-persistent-control-plane` | squash | merge latest main before resume |
+| 20 | WS-0101-PERSISTENT-SUPERVISOR-QA | Independent persistent Supervisor verification evidence without shared-path mutation | **OPEN** | — | `awaiting_agent` | `agent/task-0101-persistent-supervisor-qa` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Canonical runtime
@@ -24,7 +25,7 @@ The always-on Supervisor runtime is `.github/workflows/persistent-supervisor.yml
 
 Runtime triggers:
 
-- event-driven pull-request reconciliation for opened, synchronized, reopened, edited, ready-for-review, draft-conversion, and closed activity;
+- event-driven `pull_request_target` reconciliation for opened, synchronized, reopened, edited, ready-for-review, draft-conversion, and closed activity; the privileged job always checks out trusted `main` and never PR-head code;
 - `issue_comment` creation so durable coordination activity can cause a fresh reconciliation;
 - `workflow_run` completion for AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI;
 - manual `workflow_dispatch`;
@@ -70,13 +71,14 @@ It MUST NOT:
 - edit canonical `.ai` state, checkpoints, task files, workstream registries, product/runtime code, migrations, configuration, or tests;
 - modify branch protection, repository rules, required checks, deployments, environments, packages, or secrets;
 - fabricate worker completion or treat ambiguous evidence as success;
-- execute PR titles, bodies, branch names, or comments as shell/code input.
+- execute PR titles, bodies, branch names, or comments as shell/code input;
+- check out or execute pull-request head code inside the write-capable `pull_request_target` workflow.
 
 Its token permissions are limited to repository/action reads and issue/PR coordination writes. Third-party Actions dependencies are immutable-SHA pinned. `GITHUB_TOKEN` writes are deliberately used for status surfaces so normal recursive workflow-trigger storms are suppressed by GitHub's token semantics.
 
 ## Implementation / verification sequence
 
-1. Keep TASK-0101 active and the single Supervisor lane leased to `supervisor-main`.
+1. Keep TASK-0101 active and the Supervisor lane leased to `supervisor-main`; leave the QA lane open unless independent verification is actually assigned.
 2. Implement the deterministic policy/API runner under `tools/persistent_supervisor.py` using only Python standard-library HTTP/JSON facilities and explicit GitHub REST calls.
 3. Add deterministic tests under `tools/test_persistent_supervisor.py` for standalone-signal parsing, workstream registration, main ancestry classification, exact-head CI classification, issue rendering/deduplication, and fail-closed missing evidence.
 4. Add the pinned, least-privilege `.github/workflows/persistent-supervisor.yml` wrapper.

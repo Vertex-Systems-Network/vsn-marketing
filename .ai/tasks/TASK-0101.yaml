@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "AIControlPlane",
   "title": "Install persistent GitHub-native Supervisor control plane",
-  "status": "ready",
+  "status": "completed",
   "objective": "Install a deterministic repository-native Supervisor runtime in GitHub Actions that keeps coordination observable between interactive agent sessions through event-driven execution plus a bounded five-minute heartbeat, while preserving the repository's existing human/Supervisor merge authority, continuity ledgers, branch rules, workstream completion protocol, and least-privilege security boundaries.",
   "dependencies": [
     "TASK-0022"
@@ -13,12 +13,12 @@
     {
       "id": "AC-1",
       "text": "A pinned GitHub Actions workflow on the default branch runs on a five-minute schedule, manual dispatch, relevant pull-request events, issue-comment events, and completion of core CI workflows, with concurrency preventing overlapping Supervisor reconciliations",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "The workflow reads canonical repository state and parallel-control metadata, inspects open pull requests against current main, and publishes one durable Supervisor status issue that clearly reports active task, continuity status, current main SHA, submitted workstreams, stale-main ancestry, exact-head CI state, and actionable blockers",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
@@ -43,7 +43,7 @@
     {
       "id": "AC-7",
       "text": "The AI-native plan and operator-facing execution guidance describe the persistent Supervisor as the always-on coordination runtime, preserve original TASK-0023 delivery SLO/load work without renumbering, and all applicable exact-head continuity, application, security, release-integrity, and workflow-policy gates pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

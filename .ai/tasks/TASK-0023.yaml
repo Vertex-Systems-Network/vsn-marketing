@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "Delivery",
   "title": "Establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates",
-  "status": "planned",
+  "status": "ready",
   "objective": "Establish measured operational quality gates for the PHASE-04 delivery engine using production-representative PostgreSQL/Redis execution, load, saturation, recovery and fault-injection evidence before any reliability or scale claim is accepted.",
   "dependencies": [
     "TASK-0022"

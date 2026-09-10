@@ -4,26 +4,26 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-09** from trusted `main` at `775f8a47cfa4fe092bc90346788f37567f7e3e36` after TASK-0022 activation PR #91 merged and post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows passed.
+> Last verified: **2026-09-10** from trusted `main` at `94461fe3d050a04bd87b86820232577caf9ad8e3` after TASK-0022 recovery/reconciliation/failover completion merged and post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows passed.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
 
-**Overall roadmap progress: 30.13%**  
-**Current phase: PHASE-04 — 73.33%**  
-**Active task: TASK-0022**  
-**Last completed task: TASK-0021**  
-**Parallel execution: 5 registered TASK-0022 worker lanes plus the reserved Supervisor integration branch; worker implementation starts only after this control-plane activation is accepted on main**
+**Overall roadmap progress: 32.00%**  
+**Current phase: PHASE-04 — 100.00% of currently machine-registered weighted work**  
+**Active task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
+**Last completed task: TASK-0022**  
+**Parallel execution: one Supervisor-owned TASK-0101 lane on `supervisor/task-0101-persistent-control-plane`; no worker lane is required for this cross-cutting governance task**
 
 ```text
-Overall  [██████░░░░░░░░░░░░░░] 30.13%
-Phase 04 [███████████████░░░░░] 73.33%
+Overall  [██████░░░░░░░░░░░░░░] 32.00%
+Phase 04 [████████████████████] 100.00% registered weighted work
 ```
 
 ```mermaid
 pie showData
     title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 30.13
-    "Remaining roadmap weight" : 69.87
+    "Completed / certified weight" : 32.00
+    "Remaining roadmap weight" : 68.00
 ```
 
 ### Phase / module progress
@@ -34,7 +34,7 @@ pie showData
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
 | PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
 | PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
-| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress** | **73.33%** |
+| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **Product sequence continues after TASK-0101** | **100% of registered weighted work** |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
 | PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
@@ -50,29 +50,25 @@ pie showData
 
 ### Current execution snapshot
 
-PHASE-04 is active. `TASK-0019` delivery-engine research, `TASK-0020` immutable execution snapshots, and `TASK-0021` queue routing/idempotency/quota/backpressure are complete. `TASK-0022` is now the only executable roadmap task.
+TASK-0022 is complete. The operator explicitly prioritized a repository-native persistent Supervisor before resuming the preplanned product sequence, so the additional cross-cutting governance work is registered as **TASK-0101** rather than stealing or renumbering an existing roadmap task.
 
-TASK-0022 implements provider-neutral delivery recovery semantics over the accepted TASK-0021 operation/admission foundation. The bounded scope is: normalized retry classification, tenant-scoped circuit breakers, dead-letter handling, idempotent ambiguity reconciliation, and compatible provider failover. The safety boundary is strict: an ambiguous provider outcome must enter reconciliation before replay/failover; an accepted logical operation never reroutes; provider names must not become core policy branches.
+The preplanned **TASK-0023 remains unchanged**: establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates. TASK-0024 remains PHASE-04 certification. TASK-0101 has zero roadmap weight, so inserting this governance prerequisite does not inflate product-progress calculations.
 
-The parallel cycle is decomposed into five conflict-safe worker lanes created from trusted main `775f8a47cfa4fe092bc90346788f37567f7e3e36` before any cycle planning mutation:
+TASK-0101 installs `.github/workflows/persistent-supervisor.yml` as the GitHub-native always-on coordination runtime. Its design combines event-driven reconciliation with a five-minute scheduled heartbeat, uses one durable Supervisor status issue, recognizes only the exact standalone `Work Done and Submitted` signal, verifies current-main ancestry and exact-head required CI, and may emit a deduplicated `SUPERVISOR REVIEW READY` triage marker.
 
-- `WS-0022-RETRY-CLASSIFICATION` — deterministic mapping from normalized provider error evidence to delivery recovery disposition.
-- `WS-0022-CIRCUIT-BREAKER` — tenant/provider-connection/operation-class breaker state and transitions.
-- `WS-0022-RECONCILIATION` — ambiguity/reconciliation decision primitives that never infer acceptance from missing evidence.
-- `WS-0022-DEAD-LETTER` — deterministic dead-letter reason/evidence primitives for terminal/exhausted/expired/invariant outcomes.
-- `WS-0022-FAILOVER-POLICY` — failover eligibility that permits rerouting only when prior non-acceptance is proven and forbids accepted/ambiguous reroutes.
+The authority boundary is strict: the persistent Supervisor does **not** auto-merge, auto-approve, move refs, force-push, change branch protection, weaken checks, edit canonical `.ai` state, or mutate product/runtime code. Pull-request content is treated as untrusted data. Privileged PR triage uses `pull_request_target` only with trusted default-branch code; PR head code is never checked out or executed with the write-capable coordination token.
 
-The reserved `supervisor/task-0022-parallel-integration` branch owns shared persistence/state-machine migrations, service-provider/config wiring, orchestration, canonical `.ai/**` state, and final integration after worker deliveries are accepted. Worker write paths are disjoint and do not include Supervisor-owned shared paths.
+The dedicated Supervisor lane was created from trusted main `94461fe3d050a04bd87b86820232577caf9ad8e3` before TASK-0101 planning/implementation writes:
 
-No sender-domain/deliverability policy, secrets/credentials, paid provider execution, suppression policy, TASK-0023, TASK-0024, or later-phase behavior is authorized by TASK-0022.
+- `WS-0101-PERSISTENT-SUPERVISOR` — deterministic GitHub API reconciliation, durable status issue, exact-head CI/ancestry readiness policy, and workflow wrapper.
 
-Trusted-main certification for TASK-0022 activation:
+Trusted-main certification before TASK-0101 activation:
 
-- AI Continuity Guard `34394642732` — PASS
-- Application Foundation CI `34394642755` — PASS
-- Security Supply Chain CI `34394642810` — PASS
-- Release Integrity `34394642691` — PASS
-- OpenSSF Scorecard `34394642730` — PASS
+- AI Continuity Guard `34507925149` — PASS
+- Application Foundation CI `34507924783` — PASS
+- Security Supply Chain CI `34507924951` — PASS
+- Release Integrity `34507924894` — PASS
+- OpenSSF Scorecard `34507924921` — PASS
 
 Current canonical calculation:
 
@@ -81,10 +77,12 @@ PHASE-00  4.00 / 4.00
 PHASE-01  7.00 / 7.00
 PHASE-02  7.00 / 7.00
 PHASE-03  7.00 / 7.00
-PHASE-04  5.13 / 7.00
+PHASE-04  7.00 / 7.00 registered weighted work
 ---------------------
-TOTAL    30.13 / 100
+TOTAL    32.00 / 100
 ```
+
+The 100% PHASE-04 figure above is a deterministic calculation over currently machine-registered weighted tasks, not a claim that preplanned TASK-0023/TASK-0024 have been completed. They must be explicitly machine-registered and executed after TASK-0101.
 
 ## Delivery estimate assumptions
 
@@ -124,7 +122,7 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The active TASK-0022 parallel cycle has five registered worker lanes, all pre-created from the same trusted main baseline with exclusive disjoint write paths. The reserved Supervisor integration branch owns shared integration and canonical closeout after accepted worker deliveries.
+The active TASK-0101 cycle has one registered Supervisor lane. Its GitHub-native runtime is staged on the dedicated Supervisor branch and becomes truly persistent only after merge to the default branch. No external ChatGPT schedule is part of repository supervision.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

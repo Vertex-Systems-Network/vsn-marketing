@@ -307,10 +307,8 @@ class GitHubClient:
 
 
 def find_status_issue(client: GitHubClient, repo: str) -> dict[str, Any] | None:
-    query = urllib.parse.quote(f'repo:{repo} is:issue in:title "{STATUS_TITLE}"')
-    result = client.get(f"/search/issues?q={query}&per_page=20")
-    items = result.get("items", []) if isinstance(result, dict) else []
-    for item in items:
+    issues = client.get_all(f"/repos/{repo}/issues?state=all&sort=updated&direction=desc")
+    for item in issues:
         if isinstance(item, dict) and item.get("title") == STATUS_TITLE and "pull_request" not in item:
             return item
     return None

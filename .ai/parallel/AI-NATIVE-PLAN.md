@@ -1,16 +1,16 @@
 # AI-Native Parallel Plan — TASK-0023 Delivery SLO / Load / Fault Certification
 
-Status: **active** — TASK-0023 is the canonical PHASE-04 task. The implementation cycle runs ten disjoint worker lanes plus one Supervisor integration lane from trusted main `e93157c4042967a8931b914eff9175b2d75cb94e`.
+Status: **active** — TASK-0023 is the canonical PHASE-04 task. The implementation cycle provisions ten disjoint worker lanes from trusted main `e93157c4042967a8931b914eff9175b2d75cb94e`; a Supervisor control-activation slice lands their registry/leases before workers begin writes.
 
 Supervisor: `supervisor-main`  
-Supervisor branch: `supervisor/task-0023-parallel-integration`  
+Control branch: `supervisor/task-0023-parallel-integration`  
 Trusted baseline: `e93157c4042967a8931b914eff9175b2d75cb94e`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
 The trusted baseline passed post-merge AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, Release Integrity, and OpenSSF Scorecard. Persistent Supervisor issue #102 is `HEALTHY`, active task is TASK-0023, parallel mode is active, and no blocker is reported.
 
-All eleven cycle branches were pre-created from the trusted baseline before these plan/registry mutations. Ten workers are intentionally split across different canonical modules/capabilities. Worker write scopes are disjoint and avoid Supervisor-owned `.ai/**`, `.github/**`, configuration, migrations, shared Core runtime, and provider connector contracts.
+All ten worker branches plus the Supervisor control branch were pre-created from the trusted baseline before these plan/registry mutations. Worker write scopes are disjoint and avoid Supervisor-owned `.ai/**`, `.github/**`, configuration, migrations, shared Core runtime, and provider connector contracts.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
@@ -25,30 +25,21 @@ All eleven cycle branches were pre-created from the trusted baseline before thes
 | 80 | WS-0023-OBSERVABILITY | Tenancy — workspace/provider/channel hotspot and blocker telemetry isolation | `occupied` | `worker-observability` | `active` | `agent/task-0023-observability` | squash | merge latest main before resume |
 | 90 | WS-0023-SECURITY-TELEMETRY | Security — secret redaction and cross-workspace telemetry leakage prevention | `occupied` | `worker-security-telemetry` | `active` | `agent/task-0023-security-telemetry` | squash | merge latest main before resume |
 | 100 | WS-0023-REGRESSION-THRESHOLDS | Connectors — deterministic fail-closed regression gate for measured SLO evidence | `occupied` | `worker-regression-thresholds` | `active` | `agent/task-0023-regression-thresholds` | squash | merge latest main before resume |
-| 110 | WS-0023-INTEGRATION | Delivery — Supervisor shared wiring, integration, exact-head certification, acceptance and TASK-0024 handoff | `occupied` | `supervisor-main` | `active` | `supervisor/task-0023-parallel-integration` | squash | merge latest main before resume |
+| 110 | WS-0023-CONTROL-ACTIVATION | Delivery — activate ten-worker registry/leases only; no product/runtime changes | `occupied` | `supervisor-main` | `active` | `supervisor/task-0023-parallel-integration` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Parallel execution rules
 
-1. Ten workers may progress concurrently only inside their registered write scopes.
-2. The Supervisor remains the sole writer for global state, workflow/config changes, shared Delivery runtime integration, acceptance metadata, and final task transition.
-3. Each worker must stay current with `main` before resume/submission, target `main`, include a standalone `Workstream: <ID>` line, and add standalone `Work Done and Submitted` only when that lane is actually complete.
-4. No worker may claim production capacity beyond measurements produced by the committed harness/evidence.
-5. TASK-0023 cannot complete until all acceptance criteria are measured/proven and exact-head AI Continuity, Application Foundation, Security Supply Chain and required integration/fault suites pass.
-6. No PHASE-05+ product capability is authorized.
+1. The control-activation PR lands first. Workers do not write until that registry/lease state is on `main` and their pre-created branches are fast-forwarded to the new main.
+2. Ten workers may then progress concurrently only inside their registered write scopes.
+3. The Supervisor remains sole owner of global state, workflow/config changes, shared runtime integration, acceptance metadata, and final task transition.
+4. Each worker must stay current with `main` before resume/submission, target `main`, include a standalone `Workstream: <ID>` line, and add standalone `Work Done and Submitted` only when that lane is actually complete.
+5. No worker may claim production capacity beyond measurements produced by committed harness/evidence.
+6. TASK-0023 cannot complete until all acceptance criteria are measured/proven and exact-head required CI plus integration/fault suites pass.
+7. No PHASE-05+ product capability is authorized.
 
-## Integration order
+## After control activation
 
-Workers are integrated in merge-group order when dependencies and exact-head checks allow. After any merge, issue #43 receives the required sync alert and remaining branches must merge latest `main` before resuming. The Supervisor resolves shared wiring centrally rather than granting overlapping worker write scopes.
-
-## TASK-0023 target evidence
-
-- explicit queue-age, throughput, success/error, saturation, reconciliation-lag and meaningful p95/p99 SLIs/SLOs;
-- repeatable PostgreSQL/Redis normal, burst, quota-constrained and saturation workloads;
-- worker termination, Redis interruption/latency, PostgreSQL contention, provider timeout/error/rate-limit fault injection;
-- duplicate behavior, retry amplification, queue growth/backpressure, breaker, DLQ/reconciliation recovery and resource saturation evidence;
-- safe workspace/provider/channel hotspot telemetry;
-- deterministic regression thresholds where stable;
-- exact-head full application/security/continuity certification before TASK-0023 completion and guarded TASK-0024 activation.
+After the control-activation PR merges, all ten worker branches are fast-forwarded to that new `main` and receive their first scoped implementation commits/draft PRs. A fresh Supervisor integration branch is then created from that same main for shared wiring, merge coordination, exact-head certification, acceptance evidence, and guarded TASK-0024 handoff.
 
 No external ChatGPT schedule is part of repository supervision.

@@ -53,7 +53,7 @@
     "python tools/ai_policy.py",
     "python tools/ai_parallel.py validate",
     "python tools/ai_context.py manifest",
-    "python -m unittest discover -s tests -p 'test_*supervisor*.py'",
+    "python tools/test_persistent_supervisor.py",
     "GitHub Actions workflow syntax/pinning policy validation",
     "exact-head AI Continuity Guard",
     "exact-head Application Foundation CI",

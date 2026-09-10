@@ -4,26 +4,27 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-10** from trusted `main` at `94461fe3d050a04bd87b86820232577caf9ad8e3` after TASK-0022 recovery/reconciliation/failover completion merged and post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard workflows passed.
+> Last verified: **2026-09-10** from trusted `main` at `c6dab8eff0e8284a1e39d3105429ba5931fec9da` after TASK-0101 Persistent Supervisor merged. Post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard passed; Persistent Supervisor default-branch run `34523049920` passed and status issue #102 reached `HEALTHY`.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
 
-**Overall roadmap progress: 32.00%**  
-**Current phase: PHASE-04 — 100.00% of currently machine-registered weighted work**  
-**Active task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
-**Last completed task: TASK-0022**  
-**Parallel execution: one active Supervisor-owned TASK-0101 lane on `supervisor/task-0101-persistent-control-plane` plus one pre-created OPEN QA capacity slot; no additional writer is currently assigned or leased**
+**Overall roadmap progress: 30.25%**  
+**Current phase: PHASE-04 — 75.00%**  
+**Active task: TASK-0023 — Delivery SLO/load/saturation/fault-injection and PostgreSQL/Redis production-parity gates**  
+**Last completed task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
+**Next task: TASK-0024 — PHASE-04 certification**  
+**Parallel execution: TASK-0023 activation is Supervisor-owned on `supervisor/task-0023-delivery-slo`; one QA capacity branch is pre-created but remains OPEN, unassigned and unleased**
 
 ```text
-Overall  [██████░░░░░░░░░░░░░░] 32.00%
-Phase 04 [████████████████████] 100.00% registered weighted work
+Overall  [██████░░░░░░░░░░░░░░] 30.25%
+Phase 04 [███████████████░░░░░] 75.00%
 ```
 
 ```mermaid
 pie showData
     title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 32.00
-    "Remaining roadmap weight" : 68.00
+    "Completed / certified weight" : 30.25
+    "Remaining roadmap weight" : 69.75
 ```
 
 ### Phase / module progress
@@ -34,7 +35,7 @@ pie showData
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
 | PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
 | PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
-| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **Product sequence continues after TASK-0101** | **100% of registered weighted work** |
+| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress — TASK-0023** | **75.00%** |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
 | PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
@@ -50,40 +51,38 @@ pie showData
 
 ### Current execution snapshot
 
-TASK-0022 is complete. The operator explicitly prioritized a repository-native persistent Supervisor before resuming the preplanned product sequence, so the additional cross-cutting governance work is registered as **TASK-0101** rather than stealing or renumbering an existing roadmap task.
+TASK-0101 is complete. The repository-native Persistent Supervisor is now standing infrastructure on `main`; no external ChatGPT schedule is part of repository supervision. Its GitHub Actions workflow combines event-driven reconciliation with a five-minute heartbeat, maintains the durable `[Supervisor] Persistent Control Plane Status` issue, verifies current-main ancestry and exact-head required CI for registered submissions, and does not auto-merge or mutate canonical/product state.
 
-The preplanned **TASK-0023 remains unchanged**: establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates. TASK-0024 remains PHASE-04 certification. TASK-0101 has zero roadmap weight, so inserting this governance prerequisite does not inflate product-progress calculations.
+Product execution has returned to the preserved PHASE-04 roadmap. TASK-0023 and TASK-0024 use the preplanned specifications originally reserved before TASK-0101 was inserted. TASK-0023 carries the remaining delivery SLO/load/fault-injection work and TASK-0024 is the final PHASE-04 certification task.
 
-TASK-0101 installs `.github/workflows/persistent-supervisor.yml` as the GitHub-native always-on coordination runtime. Its design combines event-driven reconciliation with a five-minute scheduled heartbeat, uses one durable Supervisor status issue, recognizes only the exact standalone `Work Done and Submitted` signal, verifies current-main ancestry and exact-head required CI, and may emit a deduplicated `SUPERVISOR REVIEW READY` triage marker.
+TASK-0023 requires measured production-representative evidence rather than scale claims by assumption. Its scope includes queue-age/throughput/saturation/reconciliation-lag and meaningful p95/p99 SLIs/SLOs, PostgreSQL/Redis normal/burst/quota/saturation workloads, worker/Redis/PostgreSQL/provider fault injection, duplicate and retry-amplification evidence, recovery behavior, hotspot telemetry, and automated deterministic regression thresholds where stable.
 
-The authority boundary is strict: the persistent Supervisor does **not** auto-merge, auto-approve, move refs, force-push, change branch protection, weaken checks, edit canonical `.ai` state, or mutate product/runtime code. Pull-request content is treated as untrusted data. Privileged PR triage uses `pull_request_target` only with trusted default-branch code; PR head code is never checked out or executed with the write-capable coordination token.
+The current activation control-plane workstream is `WS-0023-ACTIVATION`. Its standalone completion signal refers only to TASK-0023 registration/activation and parallel handoff; it does **not** claim TASK-0023 performance acceptance is complete. After activation reaches `main`, fresh implementation lanes must synchronize from that main before performance/load/fault work begins.
 
-The active Supervisor lane and optional QA capacity were created from trusted main `94461fe3d050a04bd87b86820232577caf9ad8e3` before their respective registry writes:
-
-- `WS-0101-PERSISTENT-SUPERVISOR` — active Supervisor-owned deterministic GitHub API reconciliation, durable status issue, exact-head CI/ancestry readiness policy, and workflow wrapper.
-- `WS-0101-PERSISTENT-SUPERVISOR-QA` — OPEN, unassigned, unleased independent verification slot restricted to a disjoint QA evidence path; it does not add an active writer.
-
-Trusted-main certification before TASK-0101 activation:
-
-- AI Continuity Guard `34507925149` — PASS
-- Application Foundation CI `34507924783` — PASS
-- Security Supply Chain CI `34507924951` — PASS
-- Release Integrity `34507924894` — PASS
-- OpenSSF Scorecard `34507924921` — PASS
-
-Current canonical calculation:
+Current canonical PHASE-04 calculation:
 
 ```text
-PHASE-00  4.00 / 4.00
-PHASE-01  7.00 / 7.00
-PHASE-02  7.00 / 7.00
-PHASE-03  7.00 / 7.00
-PHASE-04  7.00 / 7.00 registered weighted work
----------------------
-TOTAL    32.00 / 100
+TASK-0019  15 / 15  completed
+TASK-0020  20 / 20  completed
+TASK-0021  20 / 20  completed
+TASK-0022  20 / 20  completed
+TASK-0023   0 / 15  ready
+TASK-0024   0 / 10  planned
+TASK-0101   0 /  0  completed governance insertion
+-----------------------------------------------
+PHASE-04   75 / 100 = 75.00%
+ROADMAP                30.25%
 ```
 
-The 100% PHASE-04 figure above is a deterministic calculation over currently machine-registered weighted tasks, not a claim that preplanned TASK-0023/TASK-0024 have been completed. They must be explicitly machine-registered and executed after TASK-0101.
+Trusted-main evidence before TASK-0023 activation:
+
+- AI Continuity Guard `34522847507` — PASS
+- Application Foundation CI `34522847451` — PASS
+- Security Supply Chain CI `34522847473` — PASS
+- Release Integrity `34522847562` — PASS
+- OpenSSF Scorecard `34522847785` — PASS
+- Persistent Supervisor `34523049920` — PASS
+- Persistent status issue #102 — `HEALTHY`, no blockers
 
 ## Delivery estimate assumptions
 
@@ -123,7 +122,9 @@ python tools/ai_parallel.py sync-check
 - **Merge alert:** after every workstream merge the Supervisor posts this exact alert to GitHub issue [#43](https://github.com/Vertex-Systems-Network/vsn-marketing/issues/43) and every other open registered workstream PR: **`New changes have been merged — please merge these changes into your branch first, then resume your own work.`**
 - **Resume only after sync:** every alerted agent must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume.
 
-The active TASK-0101 cycle has one occupied Supervisor lane and one OPEN QA capacity slot. Only `supervisor-main` is assigned/leased; the QA slot remains inactive unless an independent verifier is explicitly onboarded. The GitHub-native runtime is staged on the dedicated Supervisor branch and becomes truly persistent only after merge to the default branch. No external ChatGPT schedule is part of repository supervision.
+The active control-plane slice has one occupied Supervisor activation lane and one OPEN QA capacity slot. Only `supervisor-main` is currently assigned/leased. The QA branch must merge the activation main and pass sync-check before it can be leased for TASK-0023 implementation evidence.
+
+The Persistent Supervisor is independent standing infrastructure: `.github/workflows/persistent-supervisor.yml` continues to observe repository state between interactive sessions, but its review-ready marker is triage only and never approval or merge authority.
 
 **Instruction sync is mandatory:** whenever canonical agent-working instructions change, the same PR must review/update this section, bump the instruction revision when behavior changes materially, recompute `.ai/parallel/CONTROL.yaml`'s deterministic fingerprint, and copy the same revision/fingerprint here. `python tools/ai_parallel.py validate` and CI fail closed on drift.
 

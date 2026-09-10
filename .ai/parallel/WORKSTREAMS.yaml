@@ -38,6 +38,24 @@
         "tools/persistent_supervisor.py",
         "tools/test_persistent_supervisor.py"
       ]
+    },
+    {
+      "id": "WS-0101-PERSISTENT-SUPERVISOR-QA",
+      "role": "worker",
+      "module": "AIControlPlane",
+      "capability": "Independent persistent Supervisor verification evidence without shared-path mutation",
+      "assigned_agent": null,
+      "branch": "agent/task-0101-persistent-supervisor-qa",
+      "worktree": "worktrees/task-0101-persistent-supervisor-qa",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "awaiting_agent",
+      "dependencies": [],
+      "merge_group": 20,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "docs/verification/TASK-0101-PERSISTENT-SUPERVISOR-QA.md"
+      ]
     }
   ]
 }

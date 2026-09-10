@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0024",
+  "phase": "PHASE-04",
+  "module": "Delivery",
+  "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
+  "status": "planned",
+  "objective": "Close PHASE-04 only after canonical delivery inputs, queue/rate controls, failure recovery, policy safety, production-parity integration and measured reliability/performance evidence are jointly proven on the exact acceptance head.",
+  "dependencies": [
+    "TASK-0023"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "TASK-0019 through TASK-0023 acceptance evidence remains valid and every PHASE-04 exit criterion maps to concrete exact-head tests or measured evidence without weakening prior PHASE-03 provider/security acceptance",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "End-to-end delivery certification proves canonical message/recipient/snapshot inputs, capability-driven routing, idempotency, rate/quota/backpressure controls and durable execution state remain workspace-safe and provider-neutral",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Retry, ambiguous outcome, circuit-breaker, dead-letter, reconciliation and capability-compatible failover paths cannot silently double-deliver or bypass consent, suppression, authorization, approval, region, budget, risk, quota or intent policy",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "PostgreSQL/Redis production-parity, concurrency, saturation, restart/recovery and provider fault-injection evidence is green and measured SLO/performance results satisfy the documented TASK-0023 thresholds or block phase completion",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Cross-workspace, unsupported capability, stale/unknown quota, rate-limit, provider outage, duplicate event, replay and policy-denial regressions fail closed with auditable state",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "No PHASE-05 sender-domain/deliverability implementation, PHASE-06 content/asset studio, PHASE-07 campaign/publishing engine, PHASE-09 journey engine or other later-phase product capability is silently pulled into PHASE-04 certification",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "AI continuity, backend, PostgreSQL/Redis integration, architecture, static analysis, formatting, frontend, Playwright and security/supply-chain gates are green on the exact PHASE-04 acceptance head and canonical state/checkpoint/journal are synchronized transactionally",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Run a PHASE-04-wide exact-head certification over delivery inputs, queue controls, retry/failover safety, tenant/policy isolation and measured production-parity reliability/performance evidence; block completion on any unmet exit criterion."
+}

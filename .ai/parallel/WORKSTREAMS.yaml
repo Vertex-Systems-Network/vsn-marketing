@@ -1,19 +1,19 @@
 {
   "schema_version": 2,
   "mode": "active",
-  "parent_task": "TASK-0101",
-  "branch_creation_baseline_sha": "94461fe3d050a04bd87b86820232577caf9ad8e3",
+  "parent_task": "TASK-0023",
+  "branch_creation_baseline_sha": "c6dab8eff0e8284a1e39d3105429ba5931fec9da",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0101-PERSISTENT-SUPERVISOR",
+      "id": "WS-0023-ACTIVATION",
       "role": "supervisor",
-      "module": "AIControlPlane",
-      "capability": "Persistent GitHub-native Supervisor reconciliation and durable coordination status",
+      "module": "Delivery",
+      "capability": "Transactional TASK-0101 closeout, preserved TASK-0023/TASK-0024 registration, TASK-0023 activation, and parallel-control handoff",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/task-0101-persistent-control-plane",
-      "worktree": "worktrees/task-0101-persistent-supervisor",
+      "branch": "supervisor/task-0023-delivery-slo",
+      "worktree": "worktrees/task-0023-delivery-slo",
       "status": "in_progress",
       "slot_status": "occupied",
       "start_status": "active",
@@ -22,39 +22,38 @@
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        ".github/workflows/persistent-supervisor.yml",
-        ".github/workflows/ai-continuity.yml",
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
+        ".ai/tasks/TASK-0023.yaml",
+        ".ai/tasks/TASK-0024.yaml",
         ".ai/tasks/TASK-0101.yaml",
-        ".ai/research/PHASE-04/TASK-0101-RESEARCH.md",
+        ".ai/tasks/INDEX.yaml",
+        ".ai/roadmap/ROADMAP.yaml",
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
         ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/INDEX.yaml",
-        ".ai/roadmap/ROADMAP.yaml",
-        "README.md",
-        "tools/persistent_supervisor.py",
-        "tools/test_persistent_supervisor.py"
+        "README.md"
       ]
     },
     {
-      "id": "WS-0101-PERSISTENT-SUPERVISOR-QA",
+      "id": "WS-0023-PERFORMANCE-QA",
       "role": "worker",
-      "module": "AIControlPlane",
-      "capability": "Independent persistent Supervisor verification evidence without shared-path mutation",
+      "module": "Delivery",
+      "capability": "Reserved independent TASK-0023 performance/fault-injection evidence review capacity; must sync to activation main before any lease or write",
       "assigned_agent": null,
-      "branch": "agent/task-0101-persistent-supervisor-qa",
-      "worktree": "worktrees/task-0101-persistent-supervisor-qa",
+      "branch": "agent/task-0023-performance-qa",
+      "worktree": "worktrees/task-0023-performance-qa",
       "status": "planned",
       "slot_status": "open",
       "start_status": "awaiting_agent",
-      "dependencies": [],
+      "dependencies": [
+        "WS-0023-ACTIVATION"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "docs/verification/TASK-0101-PERSISTENT-SUPERVISOR-QA.md"
+        "docs/verification/TASK-0023-PERFORMANCE-QA.md"
       ]
     }
   ]

@@ -3,25 +3,22 @@
   "leases": [
     {
       "agent": "supervisor-main",
-      "workstream": "WS-0101-PERSISTENT-SUPERVISOR",
-      "branch": "supervisor/task-0101-persistent-control-plane",
+      "workstream": "WS-0023-ACTIVATION",
+      "branch": "supervisor/task-0023-delivery-slo",
       "status": "active",
       "write_paths": [
-        ".github/workflows/persistent-supervisor.yml",
-        ".github/workflows/ai-continuity.yml",
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
+        ".ai/tasks/TASK-0023.yaml",
+        ".ai/tasks/TASK-0024.yaml",
         ".ai/tasks/TASK-0101.yaml",
-        ".ai/research/PHASE-04/TASK-0101-RESEARCH.md",
+        ".ai/tasks/INDEX.yaml",
+        ".ai/roadmap/ROADMAP.yaml",
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
         ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/INDEX.yaml",
-        ".ai/roadmap/ROADMAP.yaml",
-        "README.md",
-        "tools/persistent_supervisor.py",
-        "tools/test_persistent_supervisor.py"
+        "README.md"
       ]
     }
   ]

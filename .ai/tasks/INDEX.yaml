@@ -224,9 +224,29 @@
       "phase": "PHASE-04",
       "title": "Install persistent GitHub-native Supervisor control plane",
       "weight": 0,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0022"
+      ]
+    },
+    {
+      "id": "TASK-0023",
+      "phase": "PHASE-04",
+      "title": "Establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates",
+      "weight": 15,
       "status": "ready",
       "dependencies": [
         "TASK-0022"
+      ]
+    },
+    {
+      "id": "TASK-0024",
+      "phase": "PHASE-04",
+      "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0023"
       ]
     }
   ]

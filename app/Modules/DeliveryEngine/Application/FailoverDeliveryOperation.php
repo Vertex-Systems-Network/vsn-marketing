@@ -4,11 +4,14 @@ namespace App\Modules\DeliveryEngine\Application;
 
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Domain\Contracts\Clock;
+use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryFailoverEligibilityRepository;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryReconciliationRepository;
 use App\Modules\DeliveryEngine\Domain\Contracts\DeliveryTransaction;
 use App\Modules\DeliveryEngine\Domain\DeliveryAdmissionResult;
+use App\Modules\DeliveryEngine\Domain\DeliveryFailoverPolicy;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
+use RuntimeException;
 
 final readonly class FailoverDeliveryOperation
 {
@@ -17,7 +20,9 @@ final readonly class FailoverDeliveryOperation
     public function __construct(
         private Clock $clock,
         private DeliveryReconciliationRepository $repository,
+        private DeliveryFailoverEligibilityRepository $eligibilityRepository,
         private DeliveryTransaction $transaction,
+        private DeliveryFailoverPolicy $policy,
         private AdmitDeliveryOperation $admit,
         private AuditRecorder $audit,
     ) {}
@@ -30,14 +35,46 @@ final readonly class FailoverDeliveryOperation
         string $alternateProviderConnectionId,
     ): DeliveryAdmissionResult {
         $preparedAt = $this->clock->now();
-        $operation = $this->transaction->run(function () use (
+
+        return $this->transaction->run(function () use (
             $context,
             $operationId,
             $reconciliationAttemptId,
             $alternateProviderId,
             $alternateProviderConnectionId,
             $preparedAt,
-        ) {
+        ): DeliveryAdmissionResult {
+            $snapshot = $this->repository->lockSnapshot(
+                workspaceId: $context->workspaceId,
+                operationId: $operationId,
+                attemptId: $reconciliationAttemptId,
+            );
+
+            if ($snapshot === null || $snapshot->operation->workspaceId !== $context->workspaceId) {
+                throw new AuthorizationException('Delivery failover access denied or unavailable.');
+            }
+
+            $eligibility = $this->eligibilityRepository->assess(
+                $snapshot,
+                $alternateProviderId,
+                $alternateProviderConnectionId,
+                $preparedAt,
+            );
+            $decision = $this->policy->decide(
+                previousRouteAcceptance: $eligibility->previousRouteAcceptance,
+                sameWorkspace: $eligibility->sameWorkspace,
+                tenantChecksPass: $eligibility->tenantChecksPass,
+                capabilityCompatible: $eligibility->capabilityCompatible,
+                policyAllows: $eligibility->policyAllows,
+                connectionReady: $eligibility->connectionReady,
+                quotaAvailable: $eligibility->quotaAvailable,
+                breakerAllows: $eligibility->breakerAllows,
+            );
+
+            if (! $decision->eligible) {
+                throw new RuntimeException('Delivery failover denied by policy: '.$decision->reason.'.');
+            }
+
             $prepared = $this->repository->prepareFailover(
                 workspaceId: $context->workspaceId,
                 operationId: $operationId,
@@ -64,12 +101,11 @@ final readonly class FailoverDeliveryOperation
                     'alternate_provider_connection_id' => $alternateProviderConnectionId,
                     'operation_state' => $prepared->state->value,
                     'version' => $prepared->version,
+                    'policy_reason' => $decision->reason,
                 ],
             );
 
-            return $prepared;
+            return $this->admit->handle($context, $prepared);
         });
-
-        return $this->admit->handle($context, $operation);
     }
 }

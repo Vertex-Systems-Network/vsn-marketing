@@ -1,91 +1,57 @@
-# AI-Native Parallel Plan — TASK-0101 Persistent Supervisor Control Plane
+# AI-Native Parallel Plan — TASK-0023 Delivery SLO / Load / Fault Certification
 
-Status: **active** — TASK-0101 installs the repository-native always-on Supervisor runtime requested by the operator. Shared implementation remains isolated to the Supervisor-owned lane; one disjoint **OPEN** QA worker slot is pre-created to preserve deterministic onboarding/independent-verification capacity without adding an active writer or lease.
+Status: **active** — TASK-0023 is the canonical PHASE-04 task. It establishes measured delivery SLOs, production-representative PostgreSQL/Redis load and saturation evidence, fault-injection coverage, and deterministic regression thresholds before PHASE-04 certification.
 
 Supervisor: `supervisor-main`  
-Supervisor branch: `supervisor/task-0101-persistent-control-plane`  
-Trusted baseline: `94461fe3d050a04bd87b86820232577caf9ad8e3`  
+Supervisor branch: `supervisor/task-0023-delivery-slo`  
+Trusted baseline: `c6dab8eff0e8284a1e39d3105429ba5931fec9da`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
-The dedicated Supervisor branch and the optional QA branch were created from the trusted post-TASK-0022 `main` before their respective registry mutations. That baseline passed AI Continuity Guard run `34507925149`, Application Foundation CI run `34507924783`, Security Supply Chain CI run `34507924951`, Release Integrity run `34507924894`, and OpenSSF Scorecard run `34507924921`.
+The TASK-0023 Supervisor branch and optional QA branch were pre-created from trusted `main` `c6dab8eff0e8284a1e39d3105429ba5931fec9da` before TASK-0023 parallel planning mutations. That baseline is the merged TASK-0101 Persistent Supervisor control plane and passed post-merge AI Continuity `34522847507`, Application Foundation `34522847451`, Security Supply Chain `34522847473`, Release Integrity `34522847562`, and OpenSSF Scorecard `34522847785`. Persistent Supervisor default-branch run `34523049920` passed and durable issue #102 reached `HEALTHY` with no blockers.
 
-TASK-0101 is a zero-roadmap-weight cross-cutting governance insertion. It does **not** renumber, reinterpret, or replace the preplanned product roadmap. In particular, the reserved **TASK-0023 remains delivery SLO/load/saturation/fault-injection/PostgreSQL/Redis production-parity certification**, followed by TASK-0024 PHASE-04 certification.
+TASK-0101 is complete. The repository-native Persistent Supervisor remains standing infrastructure while product execution returns to the preserved roadmap. TASK-0023 has weight 15 and TASK-0024 has weight 10, completing the original PHASE-04 task-weight denominator of 100 without changing their preplanned scope.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 10 | WS-0101-PERSISTENT-SUPERVISOR | Persistent GitHub-native Supervisor reconciliation and durable coordination status | `occupied` | `supervisor-main` | `active` | `supervisor/task-0101-persistent-control-plane` | squash | merge latest main before resume |
-| 20 | WS-0101-PERSISTENT-SUPERVISOR-QA | Independent persistent Supervisor verification evidence without shared-path mutation | **OPEN** | — | `awaiting_agent` | `agent/task-0101-persistent-supervisor-qa` | squash | merge latest main before resume |
+| 10 | WS-0023-SUPERVISOR-INTEGRATION | TASK-0023 delivery SLO/load/fault-injection research, production-parity harness integration, threshold governance, canonical evidence, and acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/task-0023-delivery-slo` | squash | merge latest main before resume |
+| 20 | WS-0023-PERFORMANCE-QA | Independent TASK-0023 performance/fault-injection evidence review without shared-path mutation | **OPEN** | — | `awaiting_agent` | `agent/task-0023-performance-qa` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
-## Canonical runtime
+## TASK-0023 scope
 
-The always-on Supervisor runtime is `.github/workflows/persistent-supervisor.yml`. It becomes persistent only after merge to the default branch, because GitHub scheduled workflows and `workflow_run` triggering depend on the workflow existing on the default branch.
+The Supervisor lane owns current-research reconciliation, test/harness design, shared CI workflow integration, canonical evidence, and final acceptance. The optional QA lane is intentionally unassigned and unleased; it exists only as conflict-safe independent verification capacity if a worker is explicitly onboarded.
 
-Runtime triggers:
+Required product evidence includes:
 
-- event-driven `pull_request_target` reconciliation for opened, synchronized, reopened, edited, ready-for-review, draft-conversion, and closed activity; the privileged job always checks out trusted `main` and never PR-head code;
-- `issue_comment` creation so durable coordination activity can cause a fresh reconciliation;
-- `workflow_run` completion for AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI;
-- manual `workflow_dispatch`;
-- a `*/5 * * * *` heartbeat, the shortest schedule interval GitHub supports. The heartbeat is a reconciliation safety net, not a hard real-time guarantee because GitHub may delay or drop scheduled runs during load.
+- explicit SLIs/SLOs for queue age, throughput, meaningful p95/p99 latency, success/error classes, saturation and reconciliation lag;
+- repeatable PostgreSQL/Redis workloads across normal, burst, quota-constrained and saturated conditions;
+- fault injection for worker termination, Redis interruption/latency, PostgreSQL contention, provider timeout/error/rate-limit behavior and recovery;
+- measured duplicate behavior, retry amplification, queue growth/backpressure, circuit-breaker behavior, dead-letter/reconciliation recovery and resource saturation;
+- workspace/provider/channel hotspot telemetry without secret or cross-workspace leakage;
+- automated deterministic regression thresholds where measurement is stable, with explicit evidence/decision rules for non-automated thresholds;
+- exact-head application, integration, security, continuity and workflow-policy gates before acceptance.
 
-A constant concurrency group with stale-run cancellation ensures a newer reconciliation supersedes obsolete work.
+TASK-0023 must not pull PHASE-05+ sender-domain, deliverability, campaign, content, journey, AI-agent or unrelated product work forward.
 
-## Durable status model
+## Persistent Supervisor remains active infrastructure
 
-The runtime owns one issue titled `[Supervisor] Persistent Control Plane Status`. Every run recomputes repository state from authoritative sources and updates that issue rather than trusting old comments or chat memory.
+`.github/workflows/persistent-supervisor.yml` remains the repository-native always-on coordination runtime. It combines event-driven reconciliation with the five-minute heartbeat, updates `[Supervisor] Persistent Control Plane Status`, validates exact standalone `Work Done and Submitted` submissions, checks current-main ancestry and exact-head required CI, and never auto-merges or mutates canonical product/state files.
 
-The issue reports at minimum:
+The Persistent Supervisor observes TASK-0023 as soon as this activation/control-plane PR reaches `main`. Its status issue is expected to transiently report drift while main and a newly staged cycle differ, then converge after the canonical transition is merged and main gates finish.
 
-- current default-branch SHA;
-- canonical active task and execution status from `.ai/state/CURRENT-STATE.yaml`;
-- configured parallel parent task and workstream registry state;
-- open registered workstream PRs;
-- whether each PR contains the exact standalone `Work Done and Submitted` signal;
-- whether current `main` is an ancestor of the PR head;
-- required exact-head CI status for AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI;
-- review-ready state and blockers.
+## Execution sequence
 
-## Review-ready contract
+1. Merge this TASK-0023 activation/control-plane change only after exact-head AI Continuity, Application Foundation and Security Supply Chain gates pass.
+2. Reconfirm Persistent Supervisor issue #102 converges to `HEALTHY` on the new TASK-0023 main state.
+3. Perform research-first revalidation against current PostgreSQL, Redis, Laravel/PHP and GitHub Actions/runtime behavior before fixing load or fault thresholds.
+4. Record research in `.ai/research/PHASE-04/TASK-0023-RESEARCH.md`; do not guess production-performance contracts.
+5. Implement a deterministic/repeatable load and fault-injection harness using production-representative PostgreSQL/Redis services and bounded CI workloads.
+6. Record environment assumptions and measured outputs in `docs/verification/TASK-0023-DELIVERY-SLO.md`.
+7. Automate stable regression thresholds and retain fail-closed behavior for duplicate/recovery evidence.
+8. Keep the QA slot open unless explicitly assigned through the standard onboarding/lease flow.
+9. When all TASK-0023 acceptance criteria are proven on an exact head, submit the Supervisor PR with `Workstream: WS-0023-SUPERVISOR-INTEGRATION` and standalone `Work Done and Submitted`.
+10. After merged post-main certification, transactionally complete TASK-0023 and activate already-registered TASK-0024 for final PHASE-04 certification.
 
-`SUPERVISOR REVIEW READY` is deterministic triage only. It is true only when all of the following are true for a registered non-draft workstream PR:
-
-1. the PR targets `main`;
-2. the PR body contains standalone `Workstream: <registered-id>`;
-3. the PR body contains the exact standalone line `Work Done and Submitted`;
-4. current `main` is contained in the PR head history;
-5. all three required CI workflows have completed successfully on that exact PR head SHA.
-
-The runtime may add one deduplicated review-ready PR comment keyed to the exact head SHA. That marker is **not approval and never authorizes merge by itself**.
-
-## Security and authority boundaries
-
-The persistent Supervisor is a deterministic observer/triage plane, not an autonomous code-writing or merge agent.
-
-It MUST NOT:
-
-- auto-merge or auto-approve pull requests;
-- force-push or move refs;
-- edit canonical `.ai` state, checkpoints, task files, workstream registries, product/runtime code, migrations, configuration, or tests;
-- modify branch protection, repository rules, required checks, deployments, environments, packages, or secrets;
-- fabricate worker completion or treat ambiguous evidence as success;
-- execute PR titles, bodies, branch names, or comments as shell/code input;
-- check out or execute pull-request head code inside the write-capable `pull_request_target` workflow.
-
-Its token permissions are limited to repository/action reads and issue/PR coordination writes. Third-party Actions dependencies are immutable-SHA pinned. `GITHUB_TOKEN` writes are deliberately used for status surfaces so normal recursive workflow-trigger storms are suppressed by GitHub's token semantics.
-
-## Implementation / verification sequence
-
-1. Keep TASK-0101 active and the Supervisor lane leased to `supervisor-main`; leave the QA lane open unless independent verification is actually assigned.
-2. Implement the deterministic policy/API runner under `tools/persistent_supervisor.py` using only Python standard-library HTTP/JSON facilities and explicit GitHub REST calls.
-3. Add deterministic tests under `tools/test_persistent_supervisor.py` for standalone-signal parsing, workstream registration, main ancestry classification, exact-head CI classification, issue rendering/deduplication, and fail-closed missing evidence.
-4. Add the pinned, least-privilege `.github/workflows/persistent-supervisor.yml` wrapper.
-5. Update operator-facing README guidance without changing the canonical parallel instruction revision/fingerprint unless agent-working semantics themselves change.
-6. Run all continuity/parallel/policy tests plus exact-head Application, Security Supply Chain, and AI Continuity gates.
-7. Merge only after current-main ancestry and exact-head green evidence are true. No automatic merge path is introduced.
-8. After merge, verify a default-branch Persistent Supervisor run creates/updates the durable status issue and reports healthy canonical state.
-9. Close TASK-0101 through the transactional continuity wrapper and then explicitly stage the already-reserved TASK-0023 delivery SLO/load task as the next canonical product task.
-
-No external ChatGPT schedule is required or authorized for repository supervision.
+No external ChatGPT schedule is part of repository supervision.

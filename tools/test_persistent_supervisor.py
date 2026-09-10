@@ -133,6 +133,21 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
         self.assertFalse(evaluated["checks"]["contains_current_main"])
         self.assertFalse(evaluated["checks"]["exact_head_ci"])
 
+    def test_malformed_repository_evidence_fails_closed_without_exception(self) -> None:
+        pr = self.pr()
+        pr["base"] = None
+        evaluated = evaluate_pr(
+            pr,
+            self.workstream,
+            self.control,
+            self.main,
+            {"status": "ahead", "behind_by": 0},
+            self.runs(),
+        )
+        self.assertFalse(evaluated["review_ready"])
+        self.assertFalse(evaluated["checks"]["targets_main"])
+        self.assertFalse(evaluated["checks"]["same_repository"])
+
     def test_draft_is_not_review_ready(self) -> None:
         evaluated = evaluate_pr(
             self.pr(draft=True),

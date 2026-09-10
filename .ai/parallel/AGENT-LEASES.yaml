@@ -3,11 +3,10 @@
   "leases": [
     {
       "agent": "supervisor-main",
-      "workstream": "WS-0023-SUPERVISOR-INTEGRATION",
+      "workstream": "WS-0023-ACTIVATION",
       "branch": "supervisor/task-0023-delivery-slo",
       "status": "active",
       "write_paths": [
-        ".ai/research/PHASE-04/TASK-0023-RESEARCH.md",
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
@@ -19,13 +18,7 @@
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
         ".ai/state/EXECUTION-JOURNAL.jsonl",
-        "README.md",
-        ".github/workflows/task-0023-delivery-slo.yml",
-        "tools/delivery_slo_gate.py",
-        "tools/test_delivery_slo_gate.py",
-        "tests/Integration/DeliveryEngine/DeliverySloLoadGateTest.php",
-        "tests/Integration/DeliveryEngine/DeliveryFaultInjectionGateTest.php",
-        "docs/verification/TASK-0023-DELIVERY-SLO.md"
+        "README.md"
       ]
     }
   ]

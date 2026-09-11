@@ -218,7 +218,12 @@ it('replays accepted durable evidence without creating a second physical attempt
         ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
         ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(0)
         ->and(DB::table('delivery_dead_letters')->where('operation_id', $operation->id)->count())->toBe(0)
-        ->and(DB::table('audit_events')->where('action', RecoverDeliveryOperation::AUDIT_ACTION)->count())->toBe(1);
+        ->and(DB::table('audit_events')
+            ->where('action', RecoverDeliveryOperation::AUDIT_ACTION)
+            ->where('workspace_id', $fixture['workspace_id'])
+            ->where('subject_type', 'delivery_operation')
+            ->where('subject_id', $operation->id)
+            ->count())->toBe(1);
 });
 
 it('fails closed when a restarted worker reports conflicting evidence for an existing attempt number', function () {

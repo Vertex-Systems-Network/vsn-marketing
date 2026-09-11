@@ -18,7 +18,7 @@ function deliveryTelemetryRedactionOperation(string $workspaceId = 'workspace-a'
         workspaceId: $workspaceId,
         messageSnapshotId: 'message-secret-payload-marker',
         recipientSnapshotId: 'recipient-secret-address-marker',
-        providerId: 'provider-secret-marker',
+        providerId: 'provider-public-id',
         providerConnectionId: 'connection-secret-marker',
         channel: DeliveryChannel::Email,
         idempotencyKey: hash('sha256', 'secret-idempotency-material'),
@@ -58,7 +58,7 @@ function deliveryTelemetryRedactionDescriptor(): DescribeDeliveryBackpressure
     return new DescribeDeliveryBackpressure($clock);
 }
 
-it('retains only the minimum operational backpressure evidence', function () {
+it('retains only bounded operational dimensions and redacts sensitive delivery material', function () {
     $snapshot = deliveryTelemetryRedactionDescriptor()->handle(
         deliveryTelemetryRedactionContext('workspace-a'),
         deliveryTelemetryRedactionOperation(),
@@ -68,14 +68,17 @@ it('retains only the minimum operational backpressure evidence', function () {
     expect(array_keys(get_object_vars($snapshot)))->toBe([
         'operationId',
         'workspaceId',
+        'providerId',
+        'channel',
         'reason',
         'backpressuredAt',
         'ageSeconds',
     ])
+        ->and($snapshot?->providerId)->toBe('provider-public-id')
+        ->and($snapshot?->channel)->toBe('email')
         ->and($encoded)->toContain('provider_connection_unavailable')
         ->and($encoded)->not->toContain('message-secret-payload-marker')
         ->and($encoded)->not->toContain('recipient-secret-address-marker')
-        ->and($encoded)->not->toContain('provider-secret-marker')
         ->and($encoded)->not->toContain('connection-secret-marker')
         ->and($encoded)->not->toContain('secret-idempotency-material')
         ->and($encoded)->not->toContain('recipient@example.test');

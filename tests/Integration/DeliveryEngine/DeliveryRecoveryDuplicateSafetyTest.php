@@ -215,9 +215,9 @@ it('replays accepted durable evidence without creating a second physical attempt
         ->and($first->action)->toBe(DeliveryRecoveryAction::MarkAccepted)
         ->and($replayed->changed)->toBeFalse()
         ->and($replayed->attemptId)->toBe($attemptId)
-        ->and(DB::table('delivery_attempts')->count())->toBe(1)
-        ->and(DB::table('delivery_reconciliations')->count())->toBe(0)
-        ->and(DB::table('delivery_dead_letters')->count())->toBe(0)
+        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
+        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(0)
+        ->and(DB::table('delivery_dead_letters')->where('operation_id', $operation->id)->count())->toBe(0)
         ->and(DB::table('audit_events')->where('action', RecoverDeliveryOperation::AUDIT_ACTION)->count())->toBe(1);
 });
 
@@ -241,7 +241,7 @@ it('fails closed when a restarted worker reports conflicting evidence for an exi
             requestMayHaveReachedProvider: true,
         ),
     ))->toThrow(RuntimeException::class)
-        ->and(DB::table('delivery_attempts')->count())->toBe(1)
+        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
         ->and(DB::table('delivery_operations')->where('id', $operation->id)->value('state'))
         ->toBe(DeliveryOperationState::Accepted->value);
 });
@@ -264,9 +264,9 @@ it('keeps ambiguous transport in durable reconciliation instead of replaying it 
     expect($result->operation->state)->toBe(DeliveryOperationState::Reconciling)
         ->and($result->outcomeClass)->toBe(DeliveryAttemptOutcomeClass::AmbiguousTransport)
         ->and($result->reconciliationResolution)->toBe(DeliveryReconciliationResolution::Pending)
-        ->and(DB::table('delivery_attempts')->count())->toBe(1)
-        ->and(DB::table('delivery_reconciliations')->count())->toBe(1)
-        ->and(DB::table('delivery_reconciliations')->value('resolution'))
+        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
+        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(1)
+        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->value('resolution'))
         ->toBe(DeliveryReconciliationResolution::Pending->value)
-        ->and(DB::table('delivery_dead_letters')->count())->toBe(0);
+        ->and(DB::table('delivery_dead_letters')->where('operation_id', $operation->id)->count())->toBe(0);
 });

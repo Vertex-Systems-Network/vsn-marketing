@@ -87,8 +87,8 @@ it('prevents retry amplification when the attempt budget is exhausted', function
 });
 
 it('uses provider reset evidence when rate limiting opens the breaker', function () {
-    $now = new \DateTimeImmutable('2026-09-12T00:00:00+00:00');
-    $providerResetAt = new \DateTimeImmutable('2026-09-12T00:05:00+00:00');
+    $now = new DateTimeImmutable('2026-09-12T00:00:00+00:00');
+    $providerResetAt = new DateTimeImmutable('2026-09-12T00:05:00+00:00');
 
     $decision = (new DeliveryCircuitBreakerPolicy)->afterOutcome(
         state: DeliveryCircuitBreakerState::Closed,
@@ -107,7 +107,7 @@ it('uses provider reset evidence when rate limiting opens the breaker', function
 
 it('requires accepted provider evidence before a half-open breaker closes', function () {
     $policy = new DeliveryCircuitBreakerPolicy;
-    $now = new \DateTimeImmutable('2026-09-12T00:00:00+00:00');
+    $now = new DateTimeImmutable('2026-09-12T00:00:00+00:00');
 
     $failedProbe = $policy->afterOutcome(
         state: DeliveryCircuitBreakerState::HalfOpen,

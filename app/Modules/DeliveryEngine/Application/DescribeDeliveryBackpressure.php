@@ -33,8 +33,6 @@ final readonly class DescribeDeliveryBackpressure
         return new DeliveryBackpressureSnapshot(
             operationId: $operation->id,
             workspaceId: $operation->workspaceId,
-            providerId: $operation->providerId,
-            channel: $operation->channel->value,
             reason: $operation->backpressureReason,
             backpressuredAt: $operation->backpressuredAt,
             ageSeconds: $ageSeconds,

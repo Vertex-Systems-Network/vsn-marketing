@@ -320,7 +320,7 @@ it('holds quota-saturated work without hot-loop attempt amplification', function
 
     $logicalOperations = DB::table('delivery_operations')->where('workspace_id', $fixture['workspace_id'])->count();
     $physicalAttempts = DB::table('delivery_attempts')->where('workspace_id', $fixture['workspace_id'])->count();
-    $retryAmplification = $logicalOperations === 0 ? 0.0 : $physicalAttempts / $logicalOperations;
+    $retryAmplification = $logicalOperations === 0 ? 0.0 : (float) $physicalAttempts / $logicalOperations;
 
     expect(DB::table('delivery_operation_quota_consumptions')
         ->where('quota_id', $provider['quota_id'])

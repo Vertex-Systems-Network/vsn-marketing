@@ -33,10 +33,10 @@ SCENARIOS: dict[str, dict[str, object]] = {
 def build_plan(scenario: str, operations: int, seed: int) -> WorkloadPlan:
     if scenario not in SCENARIOS:
         raise ValueError(f"unknown scenario: {scenario}")
-    if operations <= 0:
-        raise ValueError("operations must be positive")
-    if seed < 0:
-        raise ValueError("seed must be non-negative")
+    if isinstance(operations, bool) or not isinstance(operations, int) or operations <= 0:
+        raise ValueError("operations must be a positive integer")
+    if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
+        raise ValueError("seed must be a non-negative integer")
 
     spec = SCENARIOS[scenario]
     return WorkloadPlan(

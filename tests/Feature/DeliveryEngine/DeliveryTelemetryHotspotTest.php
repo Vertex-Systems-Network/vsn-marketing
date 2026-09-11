@@ -14,6 +14,8 @@ function deliveryTelemetryOperation(
     string $reason,
     string $backpressuredAt,
     string $operationId = 'operation-hotspot-1',
+    ?string $providerId = 'provider-hotspot-1',
+    DeliveryChannel $channel = DeliveryChannel::Email,
 ): DeliveryOperation {
     $createdAt = new DateTimeImmutable('2026-09-12T00:00:00+00:00');
 
@@ -22,9 +24,9 @@ function deliveryTelemetryOperation(
         workspaceId: $workspaceId,
         messageSnapshotId: 'message-snapshot-sensitive-1',
         recipientSnapshotId: 'recipient-snapshot-sensitive-1',
-        providerId: 'provider-hotspot-1',
+        providerId: $providerId,
         providerConnectionId: 'provider-connection-hotspot-1',
-        channel: DeliveryChannel::Email,
+        channel: $channel,
         idempotencyKey: str_repeat('a', 64),
         scheduledNotBeforeAt: $createdAt,
         priorityClass: DeliveryPriorityClass::Normal,
@@ -64,7 +66,7 @@ function deliveryTelemetryDescriptor(string $instant): DescribeDeliveryBackpress
     return new DescribeDeliveryBackpressure($clock);
 }
 
-it('emits attributable bounded backpressure evidence for hotspot diagnostics', function () {
+it('emits bounded workspace provider channel and blocking evidence for hotspot diagnostics', function () {
     $snapshot = deliveryTelemetryDescriptor('2026-09-12T00:02:30+00:00')->handle(
         deliveryTelemetryContext('workspace-a'),
         deliveryTelemetryOperation(
@@ -77,18 +79,22 @@ it('emits attributable bounded backpressure evidence for hotspot diagnostics', f
     expect($snapshot)->not->toBeNull()
         ->and($snapshot?->operationId)->toBe('operation-hotspot-1')
         ->and($snapshot?->workspaceId)->toBe('workspace-a')
+        ->and($snapshot?->providerId)->toBe('provider-hotspot-1')
+        ->and($snapshot?->channel)->toBe('email')
         ->and($snapshot?->reason)->toBe('quota_exhausted')
         ->and($snapshot?->ageSeconds)->toBe(120)
         ->and(array_keys(get_object_vars($snapshot)))->toBe([
             'operationId',
             'workspaceId',
+            'providerId',
+            'channel',
             'reason',
             'backpressuredAt',
             'ageSeconds',
         ]);
 });
 
-it('preserves distinct blocking causes without exposing message or recipient dimensions', function (string $reason) {
+it('preserves distinct blocking causes without exposing sensitive delivery dimensions', function (string $reason) {
     $snapshot = deliveryTelemetryDescriptor('2026-09-12T00:01:00+00:00')->handle(
         deliveryTelemetryContext('workspace-a'),
         deliveryTelemetryOperation('workspace-a', $reason, '2026-09-12T00:00:00+00:00'),
@@ -110,6 +116,21 @@ it('preserves distinct blocking causes without exposing message or recipient dim
     'workspace capacity' => 'workspace_concurrency_exhausted',
     'breaker hold' => 'circuit_breaker_open',
 ]);
+
+it('keeps provider dimension nullable while retaining channel attribution', function () {
+    $snapshot = deliveryTelemetryDescriptor('2026-09-12T00:01:00+00:00')->handle(
+        deliveryTelemetryContext('workspace-a'),
+        deliveryTelemetryOperation(
+            workspaceId: 'workspace-a',
+            reason: 'global_concurrency_exhausted',
+            backpressuredAt: '2026-09-12T00:00:00+00:00',
+            providerId: null,
+        ),
+    );
+
+    expect($snapshot?->providerId)->toBeNull()
+        ->and($snapshot?->channel)->toBe('email');
+});
 
 it('denies cross-workspace telemetry inspection', function () {
     $operation = deliveryTelemetryOperation(

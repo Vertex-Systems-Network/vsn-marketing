@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-10T20:01:37+00:00`
+- Timestamp: `2026-09-11T23:44:51+00:00`
 - Active task: `TASK-0023`
 - Next task: `TASK-0024`
 - Current phase: `PHASE-04`
@@ -11,13 +11,11 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0101` and activated `TASK-0023`.
-
-Transition evidence: TASK-0101 merged as c6dab8eff0e8284a1e39d3105429ba5931fec9da; all five post-merge main gates passed; Persistent Supervisor workflow_run 34523049920 passed; durable issue #102 reached HEALTHY with current-main and required exact-head CI success; TASK-0023 and TASK-0024 are restored from the preplanned PHASE-04 specifications without renumbering.
+Integrated the TASK-0023 Supervisor-owned hotspot telemetry seam. Delivery backpressure evidence now exposes bounded workspace/provider/channel/reason/age dimensions while continuing to exclude provider connection, message/recipient, idempotency, and queue-partition material. Worker observability and security-telemetry PRs remain lease-contained certification surfaces.
 
 ## Tests
 
-AI Continuity 34522847507 PASS; Application Foundation 34522847451 PASS; Security Supply Chain 34522847473 PASS; Release Integrity 34522847562 PASS; OpenSSF Scorecard 34522847785 PASS; Persistent Supervisor 34523049920 PASS; issue #102 HEALTHY
+Application Foundation 34659032830 PASS; Security Supply Chain 34659032800 PASS. AI Continuity 34659032884 passed submission, current-main ancestry, append-only journal, and handoff checks, then correctly required synchronized global continuity ledger updates for the Supervisor product change; this checkpoint supplies that required synchronization.
 
 ## Blockers
 

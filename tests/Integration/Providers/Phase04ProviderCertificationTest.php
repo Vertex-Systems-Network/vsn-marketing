@@ -1,8 +1,8 @@
 <?php
 
 use App\Modules\DeliveryEngine\Domain\DeliveryAttemptOutcomeClass;
-use App\Modules\DeliveryEngine\Domain\DeliveryFailureObservation;
 use App\Modules\DeliveryEngine\Domain\DeliveryFailoverPolicy;
+use App\Modules\DeliveryEngine\Domain\DeliveryFailureObservation;
 use App\Modules\DeliveryEngine\Domain\DeliveryRecoveryAction;
 use App\Modules\DeliveryEngine\Domain\DeliveryRetryPolicy;
 use App\Modules\DeliveryEngine\Domain\DeliveryRouteAcceptanceState;

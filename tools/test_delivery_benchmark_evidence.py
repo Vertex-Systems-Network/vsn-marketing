@@ -33,7 +33,7 @@ def valid_evidence() -> dict:
             "operation_count": 4,
             "concurrency": 2,
             "warmup_seconds": 5,
-            "measurement_window_seconds": 10,
+            "measurement_window_seconds": 2,
         },
         "runs": [
             {
@@ -82,6 +82,12 @@ class DeliveryBenchmarkEvidenceTest(unittest.TestCase):
         evidence = valid_evidence()
         evidence["runs"][0]["warmup_observations_excluded"] = False
         with self.assertRaisesRegex(ValueError, "warmup_observations_excluded"):
+            validate_and_aggregate(evidence)
+
+    def test_rejects_short_burst_runs_that_do_not_cover_measurement_window(self) -> None:
+        evidence = valid_evidence()
+        evidence["runs"][0]["elapsed_seconds"] = 1.999
+        with self.assertRaisesRegex(ValueError, "must cover scenario.measurement_window_seconds"):
             validate_and_aggregate(evidence)
 
     def test_rejects_mismatched_metrics_and_invalid_samples(self) -> None:

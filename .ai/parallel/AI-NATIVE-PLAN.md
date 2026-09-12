@@ -1,18 +1,18 @@
 # AI-Native Parallel Plan — TASK-0024 PHASE-04 Delivery Certification
 
-Status: **active** — TASK-0024 is the canonical PHASE-04 certification task. The original certification/tooling lanes are merged on `main`. A narrowly scoped sustained-evidence hardening lane is active because supervisor audit found that fixed-operation benchmark runs can finish materially before the declared measurement window, which would make `completed_operations / elapsed_seconds` a short-burst rate rather than defensible sustainable-throughput evidence.
+Status: **active / external-evidence hold** — TASK-0024 remains the canonical PHASE-04 certification task. All repository certification, benchmark-capture, final-gate, and sustained-measurement hardening lanes are merged on `main`. No additional product implementation is authorized while the remaining AC-4 evidence and approval requirements are external.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-certification-hardening`  
-Trusted baseline: `7c3a59e165997b444af246b8da8bb2b763bab16f`  
+Control branch: `supervisor/task-0024-external-evidence`  
+Trusted baseline: `6af2f5cf91d929b48d2c533a56b3c6af0d8cf430`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
-TASK-0023 is complete, but PHASE-04 is not certified. The canonical TASK-0023 SLO contract intentionally keeps environment-sensitive queue-age, end-to-end latency, sustainable-throughput and reconciliation-lag thresholds as `TBD_MEASURED`; TASK-0024 must remain fail-closed until reproducible benchmark evidence exists and the Delivery owner approves a numeric threshold set. Hosted-CI wall-clock duration is not a production SLO and may not be promoted into one.
+TASK-0023 is complete, but PHASE-04 is not certified. The canonical TASK-0023 SLO contract still keeps environment-sensitive queue-age, end-to-end latency, sustainable-throughput and reconciliation-lag thresholds as `TBD_MEASURED`. TASK-0024 therefore remains fail-closed until reproducible production-representative benchmark evidence exists and a human Delivery owner explicitly approves the numeric threshold set and pinned evidence revisions. Hosted-CI wall-clock duration is not production SLO evidence.
 
-The existing benchmark-capture runner is operational evidence tooling only. It may execute the already-implemented TASK-0019 through TASK-0023 delivery/recovery paths on an explicitly dedicated non-production benchmark environment and emit raw observations in the schema consumed by `tools/delivery_benchmark_evidence.py`. It may not run destructive database reset/Redis flush operations, may not claim that GitHub-hosted CI is production-representative, may not infer thresholds, and may not provide or impersonate Delivery-owner approval.
+The benchmark-capture runner may execute the already-implemented TASK-0019 through TASK-0023 delivery/recovery paths only on an explicitly dedicated non-production benchmark environment. It must emit raw observations for validation by `tools/delivery_benchmark_evidence.py`; it may not perform destructive database/Redis resets, infer thresholds, claim external provider/network latency, or generate Delivery-owner approval.
 
-Supervisor audit additionally requires sustained-throughput evidence to cover the declared measurement window rather than an early-exhausted fixed operation burst. The validator must fail closed when a run does not cover `scenario.measurement_window_seconds`; operators must increase the workload until the benchmark remains active through the intended window. Dependent certification-gate fixtures must also use valid sustained-window evidence.
+Sustainable-throughput evidence is hardened: every measured run must cover its declared `scenario.measurement_window_seconds`. An operation-limited short burst that finishes earlier is invalid evidence and cannot supply the sustainable-throughput threshold.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
@@ -29,22 +29,23 @@ Supervisor audit additionally requires sustained-throughput evidence to cover th
 | 80 | WS-0024-OBSERVABILITY-CERT | Bounded hotspot/blocking telemetry and tenant isolation | `worker-8/TASK-0024` | `tests/Feature/DeliveryEngine/Phase04TelemetryCertificationTest.php` |
 | 90 | WS-0024-SECURITY-CERT | Cross-workspace, redaction and policy-denial security certification | `worker-9/TASK-0024` | `tests/Feature/Security/Phase04DeliverySecurityCertificationTest.php` |
 | 100 | WS-0024-FINAL-GATE | Deterministic complete-evidence + approved-threshold gate; `TBD_MEASURED` blocks | `worker-10/TASK-0024` | `tools/task0024_certification_gate.py`, test |
-| 110 | WS-0024-CONTROL-ACTIVATION | Maintain registry/leases and closeout sequencing only | `supervisor/task-0024-certification-hardening` | `.ai/parallel/*` control files |
+| 110 | WS-0024-CONTROL-ACTIVATION | Maintain fail-closed external-evidence hold and final closeout sequencing | `supervisor/task-0024-external-evidence` | `.ai/parallel/*` control files |
 <!-- WORKSTREAM_TABLE_END -->
 
-## Parallel execution rules
+## External evidence gate
 
-1. Control activation/amendment lands before a newly registered worker performs writable work. Worker branches are created from current `main` before plan writes and remain scoped to their registered paths.
-2. A worker may certify or benchmark an invariant already implemented by TASK-0019 through TASK-0023, but it may not add later-phase product capability just to make certification pass.
-3. No worker may invent provider-specific routes, fixed queue depth, TPS, connection-count, recovery-time, percentile or regression thresholds. Numeric acceptance thresholds require reproducible measured evidence plus Delivery-owner approval.
-4. `TBD_MEASURED`, missing evidence, malformed evidence, environment mismatch, short-burst sustainable-throughput evidence and threshold violation are blocking outcomes, never passes.
-5. Worker PR bodies must contain standalone `Workstream: <ID>` and may add standalone `Work Done and Submitted` only when their scoped evidence/tooling is complete.
-6. Every merge is followed by the issue #43 broadcast and remaining active branches must merge current main before resuming.
-7. No PHASE-05+ sender-domain/deliverability, content studio, campaign/publishing, journey or other later-phase implementation is authorized.
-8. Benchmark capture must fail closed unless the operator explicitly identifies a dedicated non-production benchmark environment. The capture tool must not run `migrate:fresh`, flush Redis, or otherwise reset shared infrastructure.
-9. Benchmark capture emits observations only. Delivery-owner threshold approval remains a separate human decision and is not generated by tooling.
-10. Sustainable-throughput acceptance may not be based on a workload that does not cover the declared measurement window.
+TASK-0024 cannot advance until all of the following exist for one exact source commit and one consistent production-representative non-production environment:
+
+1. validated delivery evidence containing repeated raw `queue_age_ms` and `end_to_end_ms` observations plus sustained throughput;
+2. validated reconciliation evidence containing repeated raw `reconciliation_lag_ms` observations;
+3. environment identity including PHP/Laravel, PostgreSQL, Redis, OS, CPU and memory;
+4. deterministic workload parameters, separated warmup and measurement windows, with every measured run covering its declared window;
+5. an explicit human Delivery-owner-approved threshold manifest pinning both benchmark fingerprints and the exact source commit;
+6. replacement of all required `TBD_MEASURED` values only from that reviewed threshold set; and
+7. a passing `tools/task0024_certification_gate.py` plus all applicable exact-head application/integration/E2E/security/continuity/release checks.
+
+No PHASE-05+ sender-domain/deliverability, content studio, campaign/publishing, journey, or other later-phase implementation is authorized before this gate passes.
 
 ## Final closeout
 
-TASK-0024 can complete only after AC-1 through AC-7 are evidence-backed on one exact acceptance head, the sustained-evidence hardening is merged, all required application/integration/E2E/security/continuity gates are green, the approved numeric performance threshold set is no longer unresolved, and canonical state/checkpoint/journal are synchronized transactionally.
+After the external evidence gate passes, the Supervisor must certify AC-1 through AC-7 on the same exact acceptance head and synchronize canonical task index/roadmap, current state, checkpoint and append-only journal transactionally before TASK-0025 can activate.

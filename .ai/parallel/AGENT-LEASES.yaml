@@ -1,6 +1,7 @@
 {
   "schema_version": 2,
   "leases": [
-    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-external-evidence","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
+    {"agent":"worker-task0024-source-pinning","workstream":"WS-0024-SOURCE-PINNING","branch":"worker-source-pin/TASK-0024","status":"active","write_paths":["docs/operations/TASK-0024-CERTIFICATION.md","tools/task0024_certification_gate.py","tools/test_task0024_certification_gate.py"]},
+    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-source-pinning","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
   ]
 }

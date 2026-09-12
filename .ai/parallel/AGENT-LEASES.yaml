@@ -1,17 +1,7 @@
 {
   "schema_version": 2,
   "leases": [
-    {"agent":"worker-task0024-contracts","workstream":"WS-0024-CERT-CONTRACTS","branch":"worker-1/TASK-0024","status":"active","write_paths":["docs/operations/TASK-0024-CERTIFICATION.md"]},
-    {"agent":"worker-task0024-benchmark","workstream":"WS-0024-BENCHMARK-EVIDENCE","branch":"worker-2/TASK-0024","status":"active","write_paths":["tools/delivery_benchmark_evidence.py","tools/test_delivery_benchmark_evidence.py"]},
-    {"agent":"worker-task0024-postgres","workstream":"WS-0024-POSTGRES-CERT","branch":"worker-3/TASK-0024","status":"active","write_paths":["tests/Integration/DeliveryEngine/Phase04PostgresCertificationTest.php"]},
-    {"agent":"worker-task0024-redis","workstream":"WS-0024-REDIS-CERT","branch":"worker-4/TASK-0024","status":"active","write_paths":["tests/Integration/DeliveryEngine/Phase04RedisCertificationTest.php"]},
-    {"agent":"worker-task0024-provider","workstream":"WS-0024-PROVIDER-CERT","branch":"worker-5/TASK-0024","status":"active","write_paths":["tests/Integration/Providers/Phase04ProviderCertificationTest.php"]},
-    {"agent":"worker-task0024-queue","workstream":"WS-0024-QUEUE-CERT","branch":"worker-6/TASK-0024","status":"active","write_paths":["tests/Integration/DeliveryEngine/Phase04QueueCertificationTest.php"]},
-    {"agent":"worker-task0024-benchmark-capture","workstream":"WS-0024-BENCHMARK-CAPTURE","branch":"worker-12/TASK-0024","status":"active","write_paths":["tools/task0024_benchmark_capture.php","tests/Unit/DeliveryEngine/Task0024BenchmarkCaptureToolTest.php"]},
-    {"agent":"worker-task0024-recovery","workstream":"WS-0024-RECOVERY-CERT","branch":"worker-7/TASK-0024","status":"active","write_paths":["tests/Integration/DeliveryEngine/Phase04RecoveryCertificationTest.php"]},
-    {"agent":"worker-task0024-observability","workstream":"WS-0024-OBSERVABILITY-CERT","branch":"worker-8/TASK-0024","status":"active","write_paths":["tests/Feature/DeliveryEngine/Phase04TelemetryCertificationTest.php"]},
-    {"agent":"worker-task0024-security","workstream":"WS-0024-SECURITY-CERT","branch":"worker-9/TASK-0024","status":"active","write_paths":["tests/Feature/Security/Phase04DeliverySecurityCertificationTest.php"]},
-    {"agent":"worker-task0024-gate","workstream":"WS-0024-FINAL-GATE","branch":"worker-10/TASK-0024","status":"active","write_paths":["tools/task0024_certification_gate.py","tools/test_task0024_certification_gate.py"]},
-    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-certification","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
+    {"agent":"worker-task0024-sustained-evidence","workstream":"WS-0024-SUSTAINED-EVIDENCE","branch":"worker-11-fix/TASK-0024","status":"active","write_paths":["tools/delivery_benchmark_evidence.py","tools/test_delivery_benchmark_evidence.py"]},
+    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-certification-hardening","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
   ]
 }

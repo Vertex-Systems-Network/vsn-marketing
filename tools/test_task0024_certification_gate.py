@@ -36,7 +36,7 @@ def valid_evidence(benchmark_id: str = "steady-main") -> dict:
             "operation_count": 4,
             "concurrency": 2,
             "warmup_seconds": 5,
-            "measurement_window_seconds": 10,
+            "measurement_window_seconds": 2,
         },
         "runs": [
             {

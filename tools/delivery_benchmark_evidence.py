@@ -165,6 +165,10 @@ def validate_and_aggregate(document: Any) -> dict[str, Any]:
             raise ValueError(f"runs[{index}].warmup_observations_excluded must be true")
 
         elapsed = _number(run.get("elapsed_seconds"), f"runs[{index}].elapsed_seconds", allow_zero=False)
+        if elapsed < normalized_scenario["measurement_window_seconds"]:
+            raise ValueError(
+                f"runs[{index}].elapsed_seconds must cover scenario.measurement_window_seconds"
+            )
         completed = _nonnegative_int(
             run.get("completed_operations"), f"runs[{index}].completed_operations"
         )

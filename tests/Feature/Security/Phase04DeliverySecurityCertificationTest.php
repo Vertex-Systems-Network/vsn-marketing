@@ -204,7 +204,11 @@ function phase04SecurityCertificationOperation(array $fixture, string $suffix): 
         $snapshots->recipient->id,
     );
 
-    return compact('operation', 'recipientMarker', 'subjectMarker');
+    return [
+        'operation' => $operation,
+        'recipient_marker' => $recipientMarker,
+        'subject_marker' => $subjectMarker,
+    ];
 }
 
 it('certifies cross-workspace admission fails closed without mutating or auditing the operation', function () {

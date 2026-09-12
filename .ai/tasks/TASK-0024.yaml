@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "Delivery",
   "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
-  "status": "planned",
+  "status": "ready",
   "objective": "Close PHASE-04 only after canonical delivery inputs, queue/rate controls, failure recovery, policy safety, production-parity integration and measured reliability/performance evidence are jointly proven on the exact acceptance head.",
   "dependencies": [
     "TASK-0023"

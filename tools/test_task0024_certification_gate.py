@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
-if str(TOOLS) not in sys.path:
-    sys.path.insert(0, str(TOOLS))
+if str(TOOLS) not in __import__("sys").path:
+    __import__("sys").path.insert(0, str(TOOLS))
 
 from delivery_benchmark_evidence import validate_and_aggregate
-from task0024_certification_gate import REQUIRED_REPOSITORY_EVIDENCE, evaluate_certification
+from task0024_certification_gate import (
+    REQUIRED_REPOSITORY_EVIDENCE,
+    _tracked_repository_artifact,
+    evaluate_certification,
+)
 
-COMMIT = "a" * 40
+ROOT = Path(__file__).resolve().parent.parent
+SOURCE_COMMIT = "a" * 40
+ACCEPTANCE_HEAD = "b" * 40
 RESOLVED_CONTRACT = "All TASK-0023 environment-sensitive thresholds are reviewed and numeric."
 COMPLETE_EVIDENCE = set(REQUIRED_REPOSITORY_EVIDENCE)
 
@@ -21,7 +27,7 @@ def valid_evidence(benchmark_id: str = "steady-main") -> dict:
     return {
         "schema_version": 1,
         "benchmark_id": benchmark_id,
-        "commit_sha": COMMIT,
+        "commit_sha": SOURCE_COMMIT,
         "environment": {
             "php_version": "8.5.10",
             "laravel_version": "13.26.1",
@@ -73,7 +79,7 @@ def approved_manifest(evidence: dict) -> dict:
         "task_id": "TASK-0024",
         "threshold_set_id": "delivery-owner-reviewed-v1",
         "status": "approved",
-        "source_commit_sha": COMMIT,
+        "source_commit_sha": SOURCE_COMMIT,
         "approval": {
             "role": "delivery_owner",
             "approved_by": "delivery-owner@example.test",
@@ -136,26 +142,48 @@ def approved_manifest(evidence: dict) -> dict:
     }
 
 
+def evaluate(
+    evidence: dict,
+    manifest: dict | None = None,
+    *,
+    source_commit_is_ancestor: bool = True,
+    slo_contract: str = RESOLVED_CONTRACT,
+    repository_evidence: set[str] = COMPLETE_EVIDENCE,
+) -> dict:
+    return evaluate_certification(
+        [evidence],
+        manifest if manifest is not None else approved_manifest(evidence),
+        SOURCE_COMMIT,
+        ACCEPTANCE_HEAD,
+        source_commit_is_ancestor,
+        slo_contract,
+        repository_evidence,
+    )
+
+
 class Task0024CertificationGateTest(unittest.TestCase):
-    def test_passes_only_with_explicit_owner_approved_numeric_thresholds(self) -> None:
+    def test_passes_with_distinct_source_commit_and_descendant_acceptance_head(self) -> None:
         evidence = valid_evidence()
-        result = evaluate_certification(
-            [evidence], approved_manifest(evidence), COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence)
         self.assertEqual(result["status"], "pass")
         self.assertFalse(result["thresholds_inferred"])
+        self.assertEqual(result["benchmark_source_commit_sha"], SOURCE_COMMIT)
+        self.assertEqual(result["acceptance_head_sha"], ACCEPTANCE_HEAD)
         self.assertEqual(len(result["checks"]), 7)
         self.assertEqual(result["blockers"], [])
 
+    def test_blocks_when_benchmark_source_is_not_ancestor_of_acceptance_head(self) -> None:
+        evidence = valid_evidence()
+        result = evaluate(evidence, source_commit_is_ancestor=False)
+        self.assertEqual(result["status"], "blocked")
+        self.assertIn(
+            "benchmark source commit is not an ancestor of final acceptance head",
+            result["blockers"],
+        )
+
     def test_blocks_while_canonical_slo_contract_remains_tbd(self) -> None:
         evidence = valid_evidence()
-        result = evaluate_certification(
-            [evidence],
-            approved_manifest(evidence),
-            COMMIT,
-            "queue_age_p95: TBD_MEASURED",
-            COMPLETE_EVIDENCE,
-        )
+        result = evaluate(evidence, slo_contract="queue_age_p95: TBD_MEASURED")
         self.assertEqual(result["status"], "blocked")
         self.assertIn("TASK-0023 SLO contract still contains TBD_MEASURED", result["blockers"])
 
@@ -164,24 +192,21 @@ class Task0024CertificationGateTest(unittest.TestCase):
         manifest = approved_manifest(evidence)
         manifest["status"] = "pending"
         manifest["thresholds"]["queue_age_p95_ms"]["threshold"] = "TBD_MEASURED"
-        result = evaluate_certification(
-            [evidence], manifest, COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence, manifest)
         self.assertEqual(result["status"], "blocked")
         self.assertIn("threshold manifest is not explicitly approved", result["blockers"])
         self.assertIn("threshold manifest contains unresolved TBD_MEASURED values", result["blockers"])
 
-    def test_blocks_wrong_commit_or_unapproved_evidence_revision(self) -> None:
+    def test_blocks_wrong_source_commit_or_unapproved_evidence_revision(self) -> None:
         evidence = valid_evidence()
         manifest = approved_manifest(evidence)
-        manifest["source_commit_sha"] = "b" * 40
+        manifest["source_commit_sha"] = "c" * 40
         manifest["evidence_revisions"]["steady-main"] = "0" * 64
-        result = evaluate_certification(
-            [evidence], manifest, COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence, manifest)
         self.assertEqual(result["status"], "blocked")
         self.assertIn(
-            "threshold manifest source_commit_sha does not match acceptance head", result["blockers"]
+            "threshold manifest source_commit_sha does not match benchmark source commit",
+            result["blockers"],
         )
         self.assertIn("benchmark steady-main evidence fingerprint is not approved", result["blockers"])
 
@@ -190,9 +215,7 @@ class Task0024CertificationGateTest(unittest.TestCase):
         manifest = approved_manifest(evidence)
         del manifest["thresholds"]["end_to_end_p99_ms"]
         manifest["thresholds"]["queue_age_p95_ms"]["statistic"] = "p50"
-        result = evaluate_certification(
-            [evidence], manifest, COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence, manifest)
         self.assertEqual(result["status"], "blocked")
         self.assertIn("missing required threshold: end_to_end_p99_ms", result["blockers"])
         self.assertIn(
@@ -206,9 +229,7 @@ class Task0024CertificationGateTest(unittest.TestCase):
         evidence["scenario"]["fault_mode"] = "provider-timeout"
         aggregate = validate_and_aggregate(evidence)
         manifest["evidence_revisions"]["steady-main"] = aggregate["evidence_fingerprint"]
-        result = evaluate_certification(
-            [evidence], manifest, COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence, manifest)
         self.assertEqual(result["status"], "blocked")
         self.assertTrue(any("fault scenario cannot supply" in blocker for blocker in result["blockers"]))
 
@@ -216,9 +237,7 @@ class Task0024CertificationGateTest(unittest.TestCase):
         evidence = valid_evidence()
         manifest = approved_manifest(evidence)
         manifest["thresholds"]["queue_age_p99_ms"]["threshold"] = 20
-        result = evaluate_certification(
-            [evidence], manifest, COMMIT, RESOLVED_CONTRACT, COMPLETE_EVIDENCE
-        )
+        result = evaluate(evidence, manifest)
         self.assertEqual(result["status"], "blocked")
         self.assertIn(
             "measured evidence does not satisfy threshold: queue_age_p99_ms",
@@ -229,26 +248,32 @@ class Task0024CertificationGateTest(unittest.TestCase):
         evidence = valid_evidence()
         incomplete = set(COMPLETE_EVIDENCE)
         incomplete.remove("tests/Feature/Security/Phase04DeliverySecurityCertificationTest.php")
-        result = evaluate_certification(
-            [evidence], approved_manifest(evidence), COMMIT, RESOLVED_CONTRACT, incomplete
-        )
+        result = evaluate(evidence, repository_evidence=incomplete)
         self.assertEqual(result["status"], "blocked")
         self.assertIn(
             "missing required repository evidence: tests/Feature/Security/Phase04DeliverySecurityCertificationTest.php",
             result["blockers"],
         )
 
-    def test_rejects_benchmark_evidence_from_a_different_acceptance_head(self) -> None:
+    def test_rejects_benchmark_evidence_from_a_different_source_commit(self) -> None:
         evidence = valid_evidence()
-        evidence["commit_sha"] = "b" * 40
-        with self.assertRaisesRegex(ValueError, "does not match expected acceptance head"):
-            evaluate_certification(
-                [evidence],
-                approved_manifest(valid_evidence()),
-                COMMIT,
-                RESOLVED_CONTRACT,
-                COMPLETE_EVIDENCE,
-            )
+        evidence["commit_sha"] = "c" * 40
+        with self.assertRaisesRegex(ValueError, "does not match benchmark source commit"):
+            evaluate(evidence, approved_manifest(valid_evidence()))
+
+    def test_requires_artifacts_to_live_inside_the_repository(self) -> None:
+        tracked = _tracked_repository_artifact(
+            ROOT,
+            Path("tools/test_task0024_certification_gate.py"),
+            "test artifact",
+        )
+        self.assertEqual(tracked, (ROOT / "tools/test_task0024_certification_gate.py").resolve())
+
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / "evidence.json"
+            outside.write_text("{}", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "must be inside the repository"):
+                _tracked_repository_artifact(ROOT, outside, "benchmark evidence")
 
 
 if __name__ == "__main__":

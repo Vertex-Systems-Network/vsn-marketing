@@ -234,7 +234,7 @@
       "phase": "PHASE-04",
       "title": "Establish delivery SLO, load, saturation, fault-injection, and PostgreSQL/Redis production-parity gates",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0022"
       ]
@@ -244,7 +244,7 @@
       "phase": "PHASE-04",
       "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0023"
       ]

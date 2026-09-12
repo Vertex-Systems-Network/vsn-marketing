@@ -6,24 +6,24 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-04",
     "active_task": "TASK-0024",
     "last_completed_task": "TASK-0023",
-    "next_task": "TASK-0025"
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 33.5,
-    "phase_percent": 85.0,
+    "roadmap_percent": 31.3,
+    "phase_percent": 90.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
     "continuity_validation": "task_0101_main_push_passed_run_34522847507",
-    "application_test_status": "task_0101_main_push_passed_run_34522847451",
-    "security_supply_chain_status": "task_0101_main_push_passed_run_34522847473",
+    "application_test_status": "task_0023_hotspot_telemetry_pr_passed_run_34659032830",
+    "security_supply_chain_status": "task_0023_hotspot_telemetry_pr_passed_run_34659032800",
     "release_integrity_status": "task_0101_main_push_passed_run_34522847562",
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },
   "blockers": [],
-  "exact_next_action": "Execute PHASE-04 certification: validate TASK-0019 through TASK-0023 acceptance evidence, run end-to-end delivery certification tests, verify retry/failover safety, confirm PostgreSQL/Redis production-parity evidence, and execute all quality gates on exact acceptance head."
+  "exact_next_action": "Run a PHASE-04-wide exact-head certification over delivery inputs, queue controls, retry/failover safety, tenant/policy isolation and measured production-parity reliability/performance evidence; block completion on any unmet exit criterion."
 }

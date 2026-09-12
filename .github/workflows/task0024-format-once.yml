@@ -1,0 +1,43 @@
+name: TASK-0024 One-shot Pint Repair
+
+on:
+  push:
+    branches:
+      - worker-12/TASK-0024
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: worker-12/TASK-0024
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite, pdo_pgsql, redis, pcntl, posix
+          coverage: none
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Format TASK-0024 PHP files
+        run: vendor/bin/pint tools/task0024_benchmark_capture.php tests/Unit/DeliveryEngine/Task0024BenchmarkCaptureToolTest.php
+      - name: Remove one-shot workflow and commit formatter output
+        run: |
+          git rm .github/workflows/task0024-format-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/task0024_benchmark_capture.php tests/Unit/DeliveryEngine/Task0024BenchmarkCaptureToolTest.php
+          if git diff --cached --quiet; then
+            echo "No formatter changes were required."
+            exit 0
+          fi
+          git commit -m "style(delivery): apply Pint to TASK-0024 benchmark capture"
+          git push origin HEAD:worker-12/TASK-0024

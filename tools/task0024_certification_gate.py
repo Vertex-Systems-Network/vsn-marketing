@@ -5,6 +5,7 @@ import argparse
 import json
 import math
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +24,7 @@ REQUIRED_REPOSITORY_EVIDENCE = (
     "tests/Feature/DeliveryEngine/Phase04TelemetryCertificationTest.php",
     "tests/Feature/Security/Phase04DeliverySecurityCertificationTest.php",
 )
+CANONICAL_SLO_CONTRACT = "docs/operations/TASK-0023-DELIVERY-SLOS.md"
 
 REQUIRED_THRESHOLD_SPECS: dict[str, tuple[str, str, str]] = {
     "queue_age_p95_ms": ("queue_age_ms", "p95", "max"),
@@ -56,6 +58,13 @@ def _number(value: Any, label: str) -> float:
     return number
 
 
+def _sha(value: str, label: str) -> str:
+    normalized = value.strip().lower()
+    if not SHA_RE.fullmatch(normalized):
+        raise ValueError(f"{label} must be a 40-character hexadecimal Git SHA")
+    return normalized
+
+
 def _load_object(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
     return _object(data, str(path))
@@ -76,28 +85,98 @@ def _append_once(blockers: list[str], message: str) -> None:
         blockers.append(message)
 
 
+def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def _require_clean_checkout(root: Path) -> None:
+    status = _git(root, "status", "--porcelain")
+    if status.returncode != 0:
+        raise ValueError("unable to inspect final certification checkout")
+    if status.stdout.strip():
+        raise ValueError("final certification gate requires a clean committed checkout")
+
+
+def _checkout_head(root: Path) -> str:
+    result = _git(root, "rev-parse", "HEAD")
+    if result.returncode != 0:
+        raise ValueError("unable to resolve final acceptance HEAD")
+    return _sha(result.stdout, "final acceptance HEAD")
+
+
+def _source_is_ancestor(root: Path, benchmark_source_commit_sha: str, acceptance_head_sha: str) -> bool:
+    result = _git(
+        root,
+        "merge-base",
+        "--is-ancestor",
+        benchmark_source_commit_sha,
+        acceptance_head_sha,
+    )
+    if result.returncode == 0:
+        return True
+    if result.returncode == 1:
+        return False
+    raise ValueError(
+        "unable to verify benchmark source ancestry; ensure the source commit exists in checkout history"
+    )
+
+
+def _tracked_repository_artifact(root: Path, path: Path, label: str) -> Path:
+    root = root.resolve()
+    candidate = path if path.is_absolute() else root / path
+    resolved = candidate.resolve()
+    try:
+        relative = resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{label} must be inside the repository") from exc
+    if not resolved.is_file():
+        raise ValueError(f"{label} does not exist: {relative.as_posix()}")
+
+    tracked = _git(root, "ls-files", "--error-unmatch", "--", relative.as_posix())
+    if tracked.returncode != 0:
+        raise ValueError(f"{label} must be committed and tracked in the repository")
+
+    committed = _git(root, "diff", "--quiet", "HEAD", "--", relative.as_posix())
+    if committed.returncode == 1:
+        raise ValueError(f"{label} must match the content committed at final acceptance HEAD")
+    if committed.returncode != 0:
+        raise ValueError(f"unable to verify committed {label} content")
+
+    return resolved
+
+
 def evaluate_certification(
     evidence_documents: list[dict[str, Any]],
     threshold_manifest: dict[str, Any],
-    expected_commit_sha: str,
+    benchmark_source_commit_sha: str,
+    acceptance_head_sha: str,
+    source_commit_is_ancestor: bool,
     slo_contract_text: str,
     repository_evidence: set[str],
 ) -> dict[str, Any]:
-    expected_commit_sha = expected_commit_sha.strip().lower()
-    if not SHA_RE.fullmatch(expected_commit_sha):
-        raise ValueError("expected_commit_sha must be a 40-character hexadecimal Git SHA")
+    benchmark_source_commit_sha = _sha(
+        benchmark_source_commit_sha,
+        "benchmark_source_commit_sha",
+    )
+    acceptance_head_sha = _sha(acceptance_head_sha, "acceptance_head_sha")
     if not evidence_documents:
         raise ValueError("at least one benchmark evidence document is required")
 
     evidence_by_id: dict[str, dict[str, Any]] = {}
-    for index, document in enumerate(evidence_documents):
+    for document in evidence_documents:
         aggregate = validate_and_aggregate(document)
         benchmark_id = str(aggregate["benchmark_id"])
         if benchmark_id in evidence_by_id:
             raise ValueError(f"duplicate benchmark_id: {benchmark_id}")
-        if aggregate["commit_sha"] != expected_commit_sha:
+        if aggregate["commit_sha"] != benchmark_source_commit_sha:
             raise ValueError(
-                f"benchmark {benchmark_id} commit_sha does not match expected acceptance head"
+                f"benchmark {benchmark_id} commit_sha does not match benchmark source commit"
             )
         evidence_by_id[benchmark_id] = aggregate
 
@@ -111,6 +190,8 @@ def evaluate_certification(
     blockers: list[str] = []
     checks: list[dict[str, Any]] = []
 
+    if not source_commit_is_ancestor:
+        _append_once(blockers, "benchmark source commit is not an ancestor of final acceptance head")
     if environment_mismatch:
         _append_once(blockers, "benchmark evidence environments do not match")
     for path in REQUIRED_REPOSITORY_EVIDENCE:
@@ -125,8 +206,8 @@ def evaluate_certification(
         _append_once(blockers, "threshold manifest contains unresolved TBD_MEASURED values")
 
     source_commit = str(manifest.get("source_commit_sha", "")).strip().lower()
-    if source_commit != expected_commit_sha:
-        _append_once(blockers, "threshold manifest source_commit_sha does not match acceptance head")
+    if source_commit != benchmark_source_commit_sha:
+        _append_once(blockers, "threshold manifest source_commit_sha does not match benchmark source commit")
 
     if manifest.get("status") != "approved":
         _append_once(blockers, "threshold manifest is not explicitly approved")
@@ -240,7 +321,8 @@ def evaluate_certification(
         "status": status,
         "certification_decision": status,
         "thresholds_inferred": False,
-        "expected_commit_sha": expected_commit_sha,
+        "benchmark_source_commit_sha": benchmark_source_commit_sha,
+        "acceptance_head_sha": acceptance_head_sha,
         "threshold_set_id": threshold_set_id if isinstance(threshold_set_id, str) else None,
         "benchmark_ids": sorted(evidence_by_id),
         "checks": checks,
@@ -255,25 +337,44 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--evidence", action="append", required=True, type=Path)
     parser.add_argument("--thresholds", required=True, type=Path)
-    parser.add_argument("--expected-commit", required=True)
     parser.add_argument(
-        "--slo-contract",
-        type=Path,
-        default=root / "docs" / "operations" / "TASK-0023-DELIVERY-SLOS.md",
+        "--source-commit",
+        required=True,
+        help="Exact benchmark source commit measured by every evidence document and approved manifest.",
     )
     args = parser.parse_args(argv)
 
     try:
-        evidence_documents = [_load_object(path) for path in args.evidence]
-        manifest = _load_object(args.thresholds)
-        slo_contract_text = args.slo_contract.read_text(encoding="utf-8")
+        _require_clean_checkout(root)
+        benchmark_source_commit_sha = _sha(args.source_commit, "benchmark source commit")
+        acceptance_head_sha = _checkout_head(root)
+        source_commit_is_ancestor = _source_is_ancestor(
+            root,
+            benchmark_source_commit_sha,
+            acceptance_head_sha,
+        )
+        evidence_paths = [
+            _tracked_repository_artifact(root, path, "benchmark evidence")
+            for path in args.evidence
+        ]
+        threshold_path = _tracked_repository_artifact(root, args.thresholds, "threshold manifest")
+        slo_contract_path = _tracked_repository_artifact(
+            root,
+            Path(CANONICAL_SLO_CONTRACT),
+            "canonical SLO contract",
+        )
+        evidence_documents = [_load_object(path) for path in evidence_paths]
+        manifest = _load_object(threshold_path)
+        slo_contract_text = slo_contract_path.read_text(encoding="utf-8")
         repository_evidence = {
             path for path in REQUIRED_REPOSITORY_EVIDENCE if (root / path).is_file()
         }
         result = evaluate_certification(
             evidence_documents,
             manifest,
-            args.expected_commit,
+            benchmark_source_commit_sha,
+            acceptance_head_sha,
+            source_commit_is_ancestor,
             slo_contract_text,
             repository_evidence,
         )

@@ -11,7 +11,7 @@ it('exposes the benchmark safety contract without booting the application', func
     $root = task0024BenchmarkRepoRoot();
     $process = new Process([
         PHP_BINARY,
-        $root . '/tools/task0024_benchmark_capture.php',
+        $root.'/tools/task0024_benchmark_capture.php',
         '--help',
     ], $root);
     $process->setTimeout(10);
@@ -31,12 +31,12 @@ it('fails closed before application bootstrap without the exact acknowledgement'
     $root = task0024BenchmarkRepoRoot();
     $process = new Process([
         PHP_BINARY,
-        $root . '/tools/task0024_benchmark_capture.php',
+        $root.'/tools/task0024_benchmark_capture.php',
         '--scenario=delivery',
         '--benchmark-id=task0024-test',
-        '--commit-sha=' . str_repeat('a', 40),
+        '--commit-sha='.str_repeat('a', 40),
         '--database=vsn_marketing_benchmark',
-        '--output=' . sys_get_temp_dir() . '/task0024-test.json',
+        '--output='.sys_get_temp_dir().'/task0024-test.json',
     ], $root, ['APP_ENV' => 'benchmark']);
     $process->setTimeout(10);
     $process->run();
@@ -49,12 +49,12 @@ it('fails closed before application bootstrap outside the benchmark environment'
     $root = task0024BenchmarkRepoRoot();
     $process = new Process([
         PHP_BINARY,
-        $root . '/tools/task0024_benchmark_capture.php',
+        $root.'/tools/task0024_benchmark_capture.php',
         '--scenario=delivery',
         '--benchmark-id=task0024-test',
-        '--commit-sha=' . str_repeat('a', 40),
+        '--commit-sha='.str_repeat('a', 40),
         '--database=vsn_marketing_benchmark',
-        '--output=' . sys_get_temp_dir() . '/task0024-test.json',
+        '--output='.sys_get_temp_dir().'/task0024-test.json',
         '--ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT',
     ], $root, ['APP_ENV' => 'testing']);
     $process->setTimeout(10);
@@ -66,7 +66,7 @@ it('fails closed before application bootstrap outside the benchmark environment'
 
 it('contains no destructive shared infrastructure reset primitive', function (): void {
     $root = task0024BenchmarkRepoRoot();
-    $source = file_get_contents($root . '/tools/task0024_benchmark_capture.php');
+    $source = file_get_contents($root.'/tools/task0024_benchmark_capture.php');
 
     expect($source)->toBeString()
         ->not->toContain("Artisan::call('migrate:fresh'")

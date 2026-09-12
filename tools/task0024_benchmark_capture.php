@@ -16,6 +16,7 @@ use App\Modules\DeliveryEngine\Domain\MessageIntentType;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Providers\Domain\Connectors\ProviderErrorCategory;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Redis\RedisManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -208,7 +209,7 @@ function task0024NormalizeParentOptions(array $options): array
     ];
 }
 
-/** @return Illuminate\Foundation\Application */
+/** @return Application */
 function task0024Bootstrap(string $expectedDatabase)
 {
     $root = dirname(__DIR__);

@@ -1,16 +1,4 @@
 {
   "schema_version": 2,
-  "leases": [
-    {"agent":"worker-slo-contracts","workstream":"WS-0023-SLO-CONTRACTS","branch":"agent/task-0023-slo-contracts","status":"active","write_paths":["docs/operations/TASK-0023-DELIVERY-SLOS.md"]},
-    {"agent":"worker-load-harness","workstream":"WS-0023-LOAD-HARNESS","branch":"agent/task-0023-load-harness","status":"active","write_paths":["tools/delivery_load_harness.py","tools/test_delivery_load_harness.py"]},
-    {"agent":"worker-postgres-contention","workstream":"WS-0023-POSTGRES-CONTENTION","branch":"agent/task-0023-postgres-contention","status":"active","write_paths":["tests/Integration/DeliveryEngine/DeliveryPostgresContentionTest.php"]},
-    {"agent":"worker-redis-faults","workstream":"WS-0023-REDIS-FAULTS","branch":"agent/task-0023-redis-faults","status":"active","write_paths":["tests/Integration/DeliveryEngine/DeliveryRedisFaultInjectionTest.php"]},
-    {"agent":"worker-provider-faults","workstream":"WS-0023-PROVIDER-FAULTS","branch":"agent/task-0023-provider-faults","status":"active","write_paths":["tests/Integration/Providers/DeliveryProviderFaultMatrixTest.php"]},
-    {"agent":"worker-queue-saturation","workstream":"WS-0023-QUEUE-SATURATION","branch":"agent/task-0023-queue-saturation","status":"active","write_paths":["tests/Integration/DeliveryEngine/DeliveryQueueSaturationTest.php"]},
-    {"agent":"worker-recovery-duplicates","workstream":"WS-0023-RECOVERY-DUPLICATES","branch":"agent/task-0023-recovery-duplicates","status":"active","write_paths":["tests/Integration/DeliveryEngine/DeliveryRecoveryDuplicateSafetyTest.php"]},
-    {"agent":"worker-observability","workstream":"WS-0023-OBSERVABILITY","branch":"agent/task-0023-observability","status":"active","write_paths":["tests/Feature/DeliveryEngine/DeliveryTelemetryHotspotTest.php"]},
-    {"agent":"worker-security-telemetry","workstream":"WS-0023-SECURITY-TELEMETRY","branch":"agent/task-0023-security-telemetry","status":"active","write_paths":["tests/Feature/Security/DeliveryTelemetryRedactionTest.php"]},
-    {"agent":"worker-regression-thresholds","workstream":"WS-0023-REGRESSION-THRESHOLDS","branch":"agent/task-0023-regression-thresholds","status":"active","write_paths":["tools/delivery_slo_gate.py","tools/test_delivery_slo_gate.py"]},
-    {"agent":"supervisor-main","workstream":"WS-0023-CONTROL-ACTIVATION","branch":"supervisor/task-0023-parallel-integration","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
-  ]
+  "leases": []
 }

@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-04",
-    "active_task": "TASK-0023",
-    "last_completed_task": "TASK-0101",
-    "next_task": "TASK-0024"
+    "active_task": "TASK-0024",
+    "last_completed_task": "TASK-0023",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 30.25,
-    "phase_percent": 75.0,
+    "roadmap_percent": 31.3,
+    "phase_percent": 90.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -25,5 +25,5 @@
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },
   "blockers": [],
-  "exact_next_action": "Execute measured production-representative delivery SLO/load/fault testing and automate deterministic regression thresholds before PHASE-04 certification; preserve provider-neutral fail-closed delivery semantics and block unsupported scale claims."
+  "exact_next_action": "Run a PHASE-04-wide exact-head certification over delivery inputs, queue controls, retry/failover safety, tenant/policy isolation and measured production-parity reliability/performance evidence; block completion on any unmet exit criterion."
 }

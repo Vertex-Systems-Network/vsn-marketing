@@ -17,11 +17,13 @@ it('exposes the benchmark safety contract without booting the application', func
     $process->setTimeout(10);
     $process->mustRun();
 
-    expect($process->getOutput())
+    $help = preg_replace('/\s+/', ' ', $process->getOutput()) ?? '';
+
+    expect($help)
         ->toContain('APP_ENV must be exported as exactly: benchmark')
         ->toContain('I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT')
-        ->toContain('not infer thresholds')
-        ->toContain('not measure external provider/network latency')
+        ->toContain('does not infer thresholds')
+        ->toContain('does not measure external provider/network latency')
         ->toContain('--seed=24');
 });
 

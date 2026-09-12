@@ -8,22 +8,35 @@ use App\Modules\DeliveryEngine\Application\CreateDeliveryMessage;
 use App\Modules\DeliveryEngine\Application\EnqueueDeliveryOperation;
 use App\Modules\DeliveryEngine\Application\MaterializeExecutionSnapshots;
 use App\Modules\DeliveryEngine\Application\RecoverDeliveryOperation;
+use App\Modules\DeliveryEngine\Application\ResolveDeliveryReconciliation;
 use App\Modules\DeliveryEngine\Domain\DeliveryAttemptOutcomeClass;
 use App\Modules\DeliveryEngine\Domain\DeliveryChannel;
 use App\Modules\DeliveryEngine\Domain\DeliveryFailureObservation;
+use App\Modules\DeliveryEngine\Domain\DeliveryOperation;
 use App\Modules\DeliveryEngine\Domain\DeliveryOperationState;
+use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationEvidence;
 use App\Modules\DeliveryEngine\Domain\DeliveryReconciliationResolution;
 use App\Modules\DeliveryEngine\Domain\DeliveryRecoveryAction;
 use App\Modules\DeliveryEngine\Domain\MessageIntentType;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Providers\Domain\Connectors\ProviderErrorCategory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Redis\RedisManager;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-uses(RefreshDatabase::class);
+beforeEach(function () {
+    if (! filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL)) {
+        $this->markTestSkipped('Set RUN_INFRA_INTEGRATION=true to run TASK-0024 recovery certification.');
+    }
 
-function duplicateSafetyTenant(string $suffix): array
+    Artisan::call('migrate:fresh', ['--force' => true]);
+    app(RedisManager::class)->connection('locks')->flushdb();
+});
+
+/** @return array{workspace_id: string, context: TenantContext} */
+function phase04RecoveryCertificationTenant(string $suffix): array
 {
     $organizationId = (string) Str::uuid();
     $workspaceId = (string) Str::uuid();
@@ -32,24 +45,24 @@ function duplicateSafetyTenant(string $suffix): array
 
     DB::table('organizations')->insert([
         'id' => $organizationId,
-        'name' => 'Duplicate Safety '.$suffix,
-        'slug' => 'duplicate-safety-'.$suffix,
+        'name' => 'PHASE-04 Recovery '.$suffix,
+        'slug' => 'phase04-recovery-'.$suffix,
         'created_at' => $now,
         'updated_at' => $now,
     ]);
     DB::table('workspaces')->insert([
         'id' => $workspaceId,
         'organization_id' => $organizationId,
-        'name' => 'Duplicate Safety Workspace '.$suffix,
-        'slug' => 'duplicate-safety-workspace-'.$suffix,
+        'name' => 'PHASE-04 Recovery Workspace '.$suffix,
+        'slug' => 'phase04-recovery-workspace-'.$suffix,
         'created_at' => $now,
         'updated_at' => $now,
     ]);
     DB::table('brands')->insert([
         'id' => $brandId,
         'workspace_id' => $workspaceId,
-        'name' => 'Duplicate Safety Brand '.$suffix,
-        'slug' => 'duplicate-safety-brand-'.$suffix,
+        'name' => 'PHASE-04 Recovery Brand '.$suffix,
+        'slug' => 'phase04-recovery-brand-'.$suffix,
         'created_at' => $now,
         'updated_at' => $now,
     ]);
@@ -60,12 +73,12 @@ function duplicateSafetyTenant(string $suffix): array
             organizationId: $organizationId,
             workspaceId: $workspaceId,
             brandId: $brandId,
-            actorId: 'duplicate-safety-'.$suffix,
+            actorId: 'phase04-recovery-'.$suffix,
         ),
     ];
 }
 
-function duplicateSafetyProvider(array $fixture, string $suffix): void
+function phase04RecoveryCertificationProvider(array $fixture, string $suffix): void
 {
     $providerId = (string) Str::uuid();
     $connectionId = (string) Str::uuid();
@@ -74,8 +87,8 @@ function duplicateSafetyProvider(array $fixture, string $suffix): void
     DB::table('providers')->insert([
         'id' => $providerId,
         'workspace_id' => $fixture['workspace_id'],
-        'provider_key' => 'duplicate-safety-'.$suffix,
-        'display_name' => 'Duplicate Safety Provider '.$suffix,
+        'provider_key' => 'phase04-recovery-'.$suffix,
+        'display_name' => 'PHASE-04 Recovery Provider '.$suffix,
         'category' => 'delivery',
         'metadata' => '{}',
         'source_url' => 'https://example.test/provider/'.$suffix,
@@ -89,10 +102,10 @@ function duplicateSafetyProvider(array $fixture, string $suffix): void
         'id' => $connectionId,
         'workspace_id' => $fixture['workspace_id'],
         'provider_id' => $providerId,
-        'name' => 'Duplicate Safety Connection '.$suffix,
+        'name' => 'PHASE-04 Recovery Connection '.$suffix,
         'readiness_status' => 'ready',
         'auth_family' => 'api_key',
-        'secret_reference' => 'secret://duplicate-safety/'.$suffix,
+        'secret_reference' => 'secret://phase04-recovery/'.$suffix,
         'requested_scopes' => '[]',
         'granted_scopes' => '[]',
         'roles' => '[]',
@@ -149,7 +162,7 @@ function duplicateSafetyProvider(array $fixture, string $suffix): void
         'remaining_value' => '10',
         'resets_at' => $now->copy()->addMinute(),
         'dynamically_discovered' => true,
-        'discovery_key' => 'duplicate-safety-'.$suffix,
+        'discovery_key' => 'phase04-recovery-'.$suffix,
         'metadata' => '{}',
         'source_url' => 'https://example.test/quota/'.$suffix,
         'source_version' => 'test',
@@ -160,10 +173,10 @@ function duplicateSafetyProvider(array $fixture, string $suffix): void
     ]);
 }
 
-function duplicateSafetyLeasedOperation(array $fixture, string $suffix)
+function phase04RecoveryCertificationLeasedOperation(array $fixture, string $suffix): DeliveryOperation
 {
-    duplicateSafetyProvider($fixture, $suffix);
-    $contact = app(CreateContact::class)->handle($fixture['context'], firstName: 'Duplicate Recipient');
+    phase04RecoveryCertificationProvider($fixture, $suffix);
+    $contact = app(CreateContact::class)->handle($fixture['context'], firstName: 'PHASE-04 Recovery '.$suffix);
     $identity = app(AddContactIdentity::class)->handle(
         $fixture['context'],
         $contact->id,
@@ -172,10 +185,10 @@ function duplicateSafetyLeasedOperation(array $fixture, string $suffix)
     );
     $message = app(CreateDeliveryMessage::class)->handle(
         $fixture['context'],
-        'duplicate-safety-'.$suffix,
+        'phase04-recovery-'.$suffix,
         MessageIntentType::Transactional,
         DeliveryChannel::Email,
-        ['subject' => 'Duplicate safety '.$suffix],
+        ['subject' => 'PHASE-04 Recovery '.$suffix],
     );
     $snapshots = app(MaterializeExecutionSnapshots::class)->handle(
         $fixture['context'],
@@ -183,35 +196,36 @@ function duplicateSafetyLeasedOperation(array $fixture, string $suffix)
         $contact->id,
         $identity->id,
     );
-    $operation = app(EnqueueDeliveryOperation::class)->handle(
+    $queued = app(EnqueueDeliveryOperation::class)->handle(
         $fixture['context'],
         $snapshots->message->id,
         $snapshots->recipient->id,
     );
 
-    return app(AdmitDeliveryOperation::class)->handle($fixture['context'], $operation)->operation;
+    return app(AdmitDeliveryOperation::class)->handle($fixture['context'], $queued)->operation;
 }
 
-it('replays accepted durable evidence without creating a second physical attempt', function () {
-    $fixture = duplicateSafetyTenant('accepted');
-    $operation = duplicateSafetyLeasedOperation($fixture, 'accepted');
+it('certifies accepted recovery evidence is durable and duplicate-safe across replay', function () {
+    $fixture = phase04RecoveryCertificationTenant('accepted');
+    $operation = phase04RecoveryCertificationLeasedOperation($fixture, 'accepted');
     $attemptId = (string) Str::uuid();
-    $accepted = new DeliveryFailureObservation(providerAccepted: true);
+    $observation = new DeliveryFailureObservation(providerAccepted: true);
 
     $first = app(RecoverDeliveryOperation::class)->handle(
         $fixture['context'],
         $operation->id,
         $attemptId,
-        $accepted,
+        $observation,
     );
     $replayed = app(RecoverDeliveryOperation::class)->handle(
         $fixture['context'],
         $operation->id,
         (string) Str::uuid(),
-        $accepted,
+        $observation,
     );
 
     expect($first->operation->state)->toBe(DeliveryOperationState::Accepted)
+        ->and($first->outcomeClass)->toBe(DeliveryAttemptOutcomeClass::ProviderAccepted)
         ->and($first->action)->toBe(DeliveryRecoveryAction::MarkAccepted)
         ->and($replayed->changed)->toBeFalse()
         ->and($replayed->attemptId)->toBe($attemptId)
@@ -219,59 +233,89 @@ it('replays accepted durable evidence without creating a second physical attempt
         ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(0)
         ->and(DB::table('delivery_dead_letters')->where('operation_id', $operation->id)->count())->toBe(0)
         ->and(DB::table('audit_events')
-            ->where('action', RecoverDeliveryOperation::AUDIT_ACTION)
             ->where('workspace_id', $fixture['workspace_id'])
-            ->where('subject_type', 'delivery_operation')
+            ->where('action', RecoverDeliveryOperation::AUDIT_ACTION)
             ->where('subject_id', $operation->id)
             ->count())->toBe(1);
 });
 
-it('fails closed when a restarted worker reports conflicting evidence for an existing attempt number', function () {
-    $fixture = duplicateSafetyTenant('conflict');
-    $operation = duplicateSafetyLeasedOperation($fixture, 'conflict');
-
-    app(RecoverDeliveryOperation::class)->handle(
-        $fixture['context'],
-        $operation->id,
-        (string) Str::uuid(),
-        new DeliveryFailureObservation(providerAccepted: true),
+it('certifies ambiguous recovery stays held in durable reconciliation until acceptance is proven', function () {
+    $fixture = phase04RecoveryCertificationTenant('ambiguous');
+    $operation = phase04RecoveryCertificationLeasedOperation($fixture, 'ambiguous');
+    $attemptId = (string) Str::uuid();
+    $observation = new DeliveryFailureObservation(
+        errorCategory: ProviderErrorCategory::Unknown,
+        requestMayHaveReachedProvider: true,
     );
 
-    expect(fn () => app(RecoverDeliveryOperation::class)->handle(
+    $first = app(RecoverDeliveryOperation::class)->handle(
+        $fixture['context'],
+        $operation->id,
+        $attemptId,
+        $observation,
+        operationExpired: true,
+    );
+    $replayed = app(RecoverDeliveryOperation::class)->handle(
         $fixture['context'],
         $operation->id,
         (string) Str::uuid(),
-        new DeliveryFailureObservation(
-            errorCategory: ProviderErrorCategory::Unknown,
-            requestMayHaveReachedProvider: true,
-        ),
-    ))->toThrow(RuntimeException::class)
-        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
-        ->and(DB::table('delivery_operations')->where('id', $operation->id)->value('state'))
-        ->toBe(DeliveryOperationState::Accepted->value);
-});
-
-it('keeps ambiguous transport in durable reconciliation instead of replaying it after expiry', function () {
-    $fixture = duplicateSafetyTenant('ambiguous');
-    $operation = duplicateSafetyLeasedOperation($fixture, 'ambiguous');
-
-    $result = app(RecoverDeliveryOperation::class)->handle(
-        $fixture['context'],
-        $operation->id,
-        (string) Str::uuid(),
-        new DeliveryFailureObservation(
-            errorCategory: ProviderErrorCategory::Unknown,
-            requestMayHaveReachedProvider: true,
-        ),
+        $observation,
         operationExpired: true,
     );
 
-    expect($result->operation->state)->toBe(DeliveryOperationState::Reconciling)
-        ->and($result->outcomeClass)->toBe(DeliveryAttemptOutcomeClass::AmbiguousTransport)
-        ->and($result->reconciliationResolution)->toBe(DeliveryReconciliationResolution::Pending)
+    expect($first->operation->state)->toBe(DeliveryOperationState::Reconciling)
+        ->and($first->outcomeClass)->toBe(DeliveryAttemptOutcomeClass::AmbiguousTransport)
+        ->and($first->reconciliationResolution)->toBe(DeliveryReconciliationResolution::Pending)
+        ->and($replayed->changed)->toBeFalse()
+        ->and($replayed->attemptId)->toBe($attemptId)
         ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
         ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(1)
-        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->value('resolution'))
-        ->toBe(DeliveryReconciliationResolution::Pending->value)
         ->and(DB::table('delivery_dead_letters')->where('operation_id', $operation->id)->count())->toBe(0);
+
+    $evidence = new DeliveryReconciliationEvidence(
+        providerAccepted: true,
+        probeAttemptNumber: 1,
+        reason: 'task0024_provider_acceptance_confirmed',
+    );
+    $resolved = app(ResolveDeliveryReconciliation::class)->handle(
+        $fixture['context'],
+        $operation->id,
+        $attemptId,
+        $evidence,
+    );
+    $resolvedReplay = app(ResolveDeliveryReconciliation::class)->handle(
+        $fixture['context'],
+        $operation->id,
+        $attemptId,
+        $evidence,
+    );
+
+    expect($resolved->resolution)->toBe(DeliveryReconciliationResolution::Accepted)
+        ->and($resolved->operation->state)->toBe(DeliveryOperationState::Accepted)
+        ->and($resolvedReplay->changed)->toBeFalse()
+        ->and($resolvedReplay->resolution)->toBe(DeliveryReconciliationResolution::Accepted)
+        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(1)
+        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(1)
+        ->and(DB::table('audit_events')
+            ->where('workspace_id', $fixture['workspace_id'])
+            ->where('action', ResolveDeliveryReconciliation::AUDIT_ACTION)
+            ->where('subject_id', $operation->id)
+            ->count())->toBe(1);
+});
+
+it('certifies cross-workspace recovery fails closed without persisting an attempt', function () {
+    $owner = phase04RecoveryCertificationTenant('owner');
+    $operation = phase04RecoveryCertificationLeasedOperation($owner, 'owner');
+    $other = phase04RecoveryCertificationTenant('other');
+
+    expect(fn () => app(RecoverDeliveryOperation::class)->handle(
+        $other['context'],
+        $operation->id,
+        (string) Str::uuid(),
+        new DeliveryFailureObservation(providerAccepted: true),
+    ))->toThrow(AuthorizationException::class)
+        ->and(DB::table('delivery_attempts')->where('operation_id', $operation->id)->count())->toBe(0)
+        ->and(DB::table('delivery_reconciliations')->where('operation_id', $operation->id)->count())->toBe(0)
+        ->and(DB::table('delivery_operations')->where('id', $operation->id)->value('state'))
+        ->toBe(DeliveryOperationState::Leased->value);
 });

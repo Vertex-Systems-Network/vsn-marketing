@@ -84,3 +84,19 @@ it('keeps bounded capacity under repeated reconnect and recovery cycles', functi
         ->and(max($evidence))->toBeGreaterThanOrEqual(min($evidence))
         ->and($coordinator->tryAcquire('workspace-b', 'final-operation', 1, 2, 2))->toBeTrue();
 });
+
+it('preserves idempotent bounded admission through injected Redis server latency', function () {
+    [, $coordinator] = task0023RedisCoordinatorAt('2026-09-12T00:00:00+00:00');
+    $connection = app(RedisManager::class)->connection('locks');
+
+    $connection->command('rawCommand', ['CLIENT', 'PAUSE', '150', 'ALL']);
+    $startedAt = hrtime(true);
+    $acquired = $coordinator->tryAcquire('workspace-latency', 'operation-latency-1', 1, 1, 30);
+    $elapsedMs = (hrtime(true) - $startedAt) / 1_000_000;
+
+    expect($acquired)->toBeTrue()
+        ->and($elapsedMs)->toBeGreaterThanOrEqual(75.0)
+        ->and($elapsedMs)->toBeLessThan(5000.0)
+        ->and($coordinator->tryAcquire('workspace-latency', 'operation-latency-1', 1, 1, 30))->toBeTrue()
+        ->and($coordinator->tryAcquire('workspace-latency', 'operation-latency-2', 1, 1, 30))->toBeFalse();
+});

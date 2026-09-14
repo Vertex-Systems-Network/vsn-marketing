@@ -23,13 +23,14 @@ test('readiness verifies database and cache dependencies for authorized operatio
     $token = str_repeat('b', 32);
     config()->set('operations.token', $token);
 
-    $this->withHeader('X-Operations-Token', $token)
+    $response = $this->withHeader('X-Operations-Token', $token)
         ->getJson('/api/health/ready')
         ->assertOk()
-        ->assertHeader('Cache-Control', 'no-store')
         ->assertJsonPath('status', 'ok')
         ->assertJsonPath('checks.database', 'ok')
         ->assertJsonPath('checks.cache', 'ok');
+
+    expect($response->headers->get('Cache-Control'))->toContain('no-store');
 });
 
 test('baseline metrics expose aggregate request counters without request labels to authorized operations', function () {

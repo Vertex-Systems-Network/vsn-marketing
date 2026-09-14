@@ -48,7 +48,7 @@ The approval is limited to the exact seven v7 numeric values below and the two e
 | 105 | WS-0024-SOURCE-PINNING | Measured source/final-head separation | `worker-source-pin/TASK-0024` | gate/source-pinning files |
 | 107 | WS-0024-BENCHMARK-ENV | Python validator runtime in immutable benchmark image | `worker-benchmark-env-python/TASK-0024` | benchmark Dockerfile + environment contract test |
 | 108 | WS-0024-EVIDENCE-INTAKE | Commit byte-verified Railway v7 raw evidence | `worker-evidence-intake/TASK-0024` | two v7 evidence JSON files |
-| 109 | WS-0024-THRESHOLD-CLOSEOUT | Commit exact approved manifest + resolve canonical `TBD_MEASURED` | `worker-threshold-closeout/TASK-0024` | v7 threshold manifest + TASK-0023 SLO contract |
+| 109 | WS-0024-THRESHOLD-CLOSEOUT | Commit exact approved manifest, resolve canonical pending values, and execute clean exact-head certification proof | `worker-threshold-closeout/TASK-0024` | v7 threshold manifest + TASK-0023 SLO contract + task-specific certification workflow |
 | 110 | WS-0024-CONTROL-ACTIVATION | Coordinate approved threshold closeout and final PHASE-04 certification | `supervisor/task-0024-final-closeout-activate` | Supervisor control files |
 <!-- WORKSTREAM_TABLE_END -->
 
@@ -58,7 +58,7 @@ The approval is limited to the exact seven v7 numeric values below and the two e
 2. Fast-forward `worker-threshold-closeout/TASK-0024` to the resulting main.
 3. Commit `docs/operations/evidence/TASK-0024-thresholds-v7.json` containing the exact human approval identity/time/text, exact benchmark source, both exact evidence fingerprints, and the seven exact approved numeric thresholds.
 4. Replace every canonical `TBD_MEASURED` environment-sensitive value in `docs/operations/TASK-0023-DELIVERY-SLOS.md` with exactly the approved values; do not round or infer.
-5. Merge that bounded closeout PR only after exact-head continuity/application/security checks and review-thread audit.
-6. Run the clean-checkout `tools/task0024_certification_gate.py` on the descendant acceptance head with both committed v7 evidence files, the approved manifest, and benchmark source `dab9b2002770c45fb9543b733d67e868bdb97d93`; require `status=pass`, seven checks, zero blockers, and `thresholds_inferred=false`.
-7. Run all final exact-head backend/integration/architecture/static/format/frontend/E2E/security/release/continuity gates.
+5. Add `.github/workflows/task0024-final-certification.yml`, using immutable action SHAs and `fetch-depth: 0`, to execute the unchanged clean-checkout `tools/task0024_certification_gate.py` against the two committed v7 evidence files, approved manifest, and source `dab9b2002770c45fb9543b733d67e868bdb97d93` on the PR head and on the resulting main push.
+6. Merge that bounded closeout PR only after the task-specific certification workflow returns `pass`, all exact-head continuity/application/security checks pass, and review threads are clear.
+7. Verify the task-specific certification workflow plus all final backend/integration/architecture/static/format/frontend/E2E/security/release/continuity gates on the resulting main acceptance SHA.
 8. Only after AC-1 through AC-7 pass may TASK-0024 complete and TASK-0025/PHASE-05 activate.

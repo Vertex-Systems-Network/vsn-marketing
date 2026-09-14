@@ -8,15 +8,26 @@ The environment must execute an exact repository commit using the immutable runt
 
 ## Source pinning
 
-The benchmark source SHA is the exact `main` commit selected after this benchmark-runtime workstream is merged. Do not hard-code the pre-runtime control baseline as the measured source.
+The benchmark source SHA is the exact `main` commit selected after the benchmark runtime, hosted source-attestation, capture-attestation, and this runbook correction are merged. Do not hard-code an earlier control/runtime baseline as the measured source.
 
-Before any measurement:
+Railway's Docker source archive intentionally does not provide repository `.git` metadata inside the running benchmark image. For Railway-hosted execution, use the immutable deployment commit metadata supplied by Railway and require it to match the explicit benchmark source variable before any measurement:
 
 ```bash
-git rev-parse HEAD
+SOURCE_SHA="$RAILWAY_GIT_COMMIT_SHA"
+printf '%s' "$SOURCE_SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
+test "$SOURCE_SHA" = "$TASK0024_BENCHMARK_SOURCE_SHA"
+printf '%s\n' "$SOURCE_SHA"
 ```
 
-The value must equal the SHA supplied to `--commit-sha`. In Railway GitHub-triggered deployments, `RAILWAY_GIT_COMMIT_SHA` is also required to agree with the checkout HEAD. The benchmark entrypoint fails closed when Git metadata is absent or the source attestations disagree. Never fabricate a `.git` directory or synthetic ref to bypass this check.
+The value must equal the SHA supplied to `--commit-sha`. The benchmark entrypoint and capture tool both fail closed on Railway unless `TASK0024_BENCHMARK_SOURCE_SHA`, `RAILWAY_GIT_COMMIT_SHA`, and the explicit capture `--commit-sha` are full 40-character SHAs and exactly equal. Never fabricate a `.git` directory or synthetic ref to bypass this check.
+
+For local/non-Railway execution only, a real Git checkout is required and the source may be resolved with:
+
+```bash
+SOURCE_SHA="$(git rev-parse HEAD)"
+```
+
+The capture tool independently requires that local checkout HEAD equal `--commit-sha`.
 
 ## Runtime contract
 
@@ -101,13 +112,15 @@ Before collecting evidence, enter the deployed runner using the connected provid
 cd /workspace
 php -v
 php -m | grep -E 'pcntl|pdo_pgsql|redis'
-git rev-parse HEAD
-printf '%s\n' "$RAILWAY_GIT_COMMIT_SHA"
+SOURCE_SHA="$RAILWAY_GIT_COMMIT_SHA"
+printf '%s' "$SOURCE_SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
+test "$SOURCE_SHA" = "$TASK0024_BENCHMARK_SOURCE_SHA"
+printf '%s\n' "$SOURCE_SHA"
 printf '%s\n' "$TASK0024_BENCHMARK_SOURCE_SHA"
 php tools/task0024_benchmark_capture.php --help
 ```
 
-All source SHA values must be identical. The environment must be dedicated to this benchmark. Confirm PostgreSQL and Redis are healthy and no unrelated workload shares the resources during the measured windows.
+The two hosted source SHA values must be identical and full 40-character SHAs. Do not require or synthesize `.git` metadata inside the Railway image. The environment must be dedicated to this benchmark. Confirm PostgreSQL and Redis are healthy and no unrelated workload shares the resources during the measured windows.
 
 If migrations are enabled, confirm the dedicated database is migrated before measurement. Warmup is performed by the capture tool and remains separate from measured runs.
 
@@ -117,7 +130,9 @@ Use a unique benchmark ID and output path. The following parameters are the cano
 
 ```bash
 cd /workspace
-SOURCE_SHA="$(git rev-parse HEAD)"
+SOURCE_SHA="$RAILWAY_GIT_COMMIT_SHA"
+printf '%s' "$SOURCE_SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
+test "$SOURCE_SHA" = "$TASK0024_BENCHMARK_SOURCE_SHA"
 
 php tools/task0024_benchmark_capture.php \
   --scenario=delivery \
@@ -140,7 +155,9 @@ The delivery evidence must contain raw `queue_age_ms`, raw `end_to_end_ms`, and 
 
 ```bash
 cd /workspace
-SOURCE_SHA="$(git rev-parse HEAD)"
+SOURCE_SHA="$RAILWAY_GIT_COMMIT_SHA"
+printf '%s' "$SOURCE_SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
+test "$SOURCE_SHA" = "$TASK0024_BENCHMARK_SOURCE_SHA"
 
 php tools/task0024_benchmark_capture.php \
   --scenario=reconciliation \

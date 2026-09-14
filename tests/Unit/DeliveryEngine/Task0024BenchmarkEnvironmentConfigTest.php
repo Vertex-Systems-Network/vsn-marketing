@@ -30,7 +30,9 @@ it('keeps deployment idle and benchmark execution operator-triggered', function 
     expect($dockerfile)->toBeString()
         ->not->toContain('task0024_benchmark_capture.php')
         ->and($entrypoint)->toBeString()
-        ->not->toContain('task0024_benchmark_capture.php');
+        ->not->toContain('task0024_benchmark_capture.php')
+        ->toContain('TASK0024_BENCHMARK_WORKSPACE:-/workspace')
+        ->toContain('Railway benchmark runtime must use immutable /workspace source path');
 });
 
 it('rejects destructive reset primitives from the benchmark runtime contract', function (): void {
@@ -118,11 +120,46 @@ it('accepts a safe idle runtime only when the exact repository head is attested'
         'REDIS_PORT' => '6379',
         'TASK0024_BENCHMARK_SOURCE_SHA' => $head,
         'TASK0024_BENCHMARK_MIGRATE' => '0',
+        'TASK0024_BENCHMARK_WORKSPACE' => $root,
     ]);
     $process->setTimeout(10);
     $process->mustRun();
 
     expect($process->getExitCode())->toBe(0);
+});
+
+it('rejects workspace overrides on Railway-hosted benchmark execution', function (): void {
+    $root = task0024BenchmarkEnvironmentRoot();
+    $git = new Process(['git', 'rev-parse', 'HEAD'], $root);
+    $git->setTimeout(10);
+    $git->mustRun();
+    $head = trim($git->getOutput());
+
+    $process = new Process([
+        'sh',
+        $root.'/docker/benchmark/entrypoint.sh',
+        'true',
+    ], $root, [
+        'APP_ENV' => 'benchmark',
+        'APP_KEY' => 'base64:test-only-key',
+        'DB_CONNECTION' => 'pgsql',
+        'DB_HOST' => 'postgres.internal',
+        'DB_PORT' => '5432',
+        'DB_DATABASE' => 'vsn_marketing_benchmark',
+        'DB_USERNAME' => 'vsn',
+        'REDIS_HOST' => 'redis.internal',
+        'REDIS_PORT' => '6379',
+        'TASK0024_BENCHMARK_SOURCE_SHA' => $head,
+        'TASK0024_BENCHMARK_MIGRATE' => '0',
+        'TASK0024_BENCHMARK_WORKSPACE' => $root,
+        'RAILWAY_ENVIRONMENT_ID' => 'test-environment-id',
+    ]);
+    $process->setTimeout(10);
+    $process->run();
+
+    expect($process->getExitCode())->toBe(78)
+        ->and($process->getErrorOutput())
+        ->toContain('Railway benchmark runtime must use immutable /workspace source path');
 });
 
 it('documents current Railway private-service mapping without deprecated config as code', function (): void {

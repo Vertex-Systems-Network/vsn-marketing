@@ -49,6 +49,7 @@ it('exposes the benchmark safety contract without booting the application', func
         ->toContain('RAILWAY_GIT_COMMIT_SHA')
         ->toContain('exactly equal')
         ->toContain('benchmark-only breaker budget')
+        ->toContain('warmup plus every repeated run')
         ->toContain('production breaker default is unchanged')
         ->toContain('--seed=24');
 });

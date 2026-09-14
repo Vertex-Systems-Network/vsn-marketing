@@ -1,10 +1,10 @@
 # AI-Native Parallel Plan — TASK-0024 PHASE-04 Delivery Certification
 
-Status: **active — exact Railway v7 numeric threshold set explicitly approved by the human Delivery owner; bounded threshold closeout activated**. The committed production-representative delivery + reconciliation evidence pair remains pinned to benchmark source `dab9b2002770c45fb9543b733d67e868bdb97d93`. PHASE-05 remains blocked until final certification and all exact-head gates pass.
+Status: **active — exact Railway v7 numeric threshold set explicitly approved by the human Delivery owner; final certification workflow repair in progress**. The committed production-representative delivery + reconciliation evidence pair remains pinned to benchmark source `dab9b2002770c45fb9543b733d67e868bdb97d93`. PHASE-05 remains blocked until final certification and all exact-head gates pass.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-final-closeout-activate`  
-Trusted repository baseline: `abaa1dcd9f7211da28c0caad89ef2dd5f8b582bb`  
+Control branch: `supervisor/task-0024-cert-workflow-fix`  
+Trusted repository baseline: `bc9fdf8f97b15b1d1fccb80c61dde2ba814ff422`  
 Benchmark source: `dab9b2002770c45fb9543b733d67e868bdb97d93`  
 Railway archival deployment: `8e60ce6f-11a6-46e7-8e5b-a7a37933ba67`  
 Delivery benchmark: `task0024-delivery-prodrep-07`  
@@ -14,11 +14,11 @@ Reconciliation fingerprint: `01c8b45f929cf44d63926185820ec53977ddf325df740dbb746
 Human approval identity: `wpessential`  
 Human approval time: `2026-09-15T02:20:28+05:00`  
 Human approval text: `Approve TASK-0024 exact v7 thresholds`  
-Committed evidence merge: PR #172 → `2311fd4921e0ae5e9e3e23ca5da035f0575cf96e`  
+Threshold closeout PR: #176  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
-The approval is limited to the exact seven v7 numeric values below and the two exact evidence fingerprints above. No AI agent may round, loosen, tighten, substitute, infer, or otherwise alter these numbers while creating the manifest or resolving the canonical TASK-0023 SLO contract.
+The approval is limited to the exact seven v7 numeric values below and the two exact evidence fingerprints above. No AI agent may round, loosen, tighten, substitute, infer, or otherwise alter these numbers.
 
 ## Human-approved numeric threshold set
 
@@ -30,10 +30,14 @@ The approval is limited to the exact seven v7 numeric values below and the two e
 - `reconciliation_lag_p95_ms` max: `52.111148834228516`
 - `reconciliation_lag_p99_ms` max: `64.10813331604004`
 
+## Final-certification workflow repair
+
+PR #176 first executed the Supervisor-owned `TASK-0024 Final Certification` workflow against the approved worker artifacts. The unchanged certification gate correctly failed closed with `final certification gate requires a clean committed checkout`. The cause is workflow execution, not benchmark evidence or thresholds: importing the Python validator can create `tools/__pycache__` before `_require_clean_checkout()` inspects `git status`. The repair is therefore limited to invoking the unchanged gate with Python bytecode generation disabled (`python3 -B` / equivalent). No gate logic, evidence, manifest value, SLO number, source SHA, or approval metadata may change.
+
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
 |---:|---|---|---|---|
-| 10 | WS-0024-CERT-CONTRACTS | AC/evidence map; preserve fail-closed `TBD_MEASURED` gates | `worker-1/TASK-0024` | certification contract |
+| 10 | WS-0024-CERT-CONTRACTS | AC/evidence map; preserve fail-closed measured gates | `worker-1/TASK-0024` | certification contract |
 | 20 | WS-0024-BENCHMARK-EVIDENCE | Validate repeated benchmark evidence without inferring thresholds | `worker-2/TASK-0024` | evidence validator + tests |
 | 30 | WS-0024-POSTGRES-CERT | PostgreSQL certification | `worker-3/TASK-0024` | PostgreSQL tests |
 | 40 | WS-0024-REDIS-CERT | Redis certification | `worker-4/TASK-0024` | Redis tests |
@@ -48,17 +52,15 @@ The approval is limited to the exact seven v7 numeric values below and the two e
 | 105 | WS-0024-SOURCE-PINNING | Measured source/final-head separation | `worker-source-pin/TASK-0024` | gate/source-pinning files |
 | 107 | WS-0024-BENCHMARK-ENV | Python validator runtime in immutable benchmark image | `worker-benchmark-env-python/TASK-0024` | benchmark Dockerfile + environment contract test |
 | 108 | WS-0024-EVIDENCE-INTAKE | Commit byte-verified Railway v7 raw evidence | `worker-evidence-intake/TASK-0024` | two v7 evidence JSON files |
-| 109 | WS-0024-THRESHOLD-CLOSEOUT | Commit exact approved manifest + resolve canonical `TBD_MEASURED` | `worker-threshold-closeout/TASK-0024` | v7 threshold manifest + TASK-0023 SLO contract |
-| 110 | WS-0024-CONTROL-ACTIVATION | Coordinate approved closeout and own Supervisor-only task-specific certification workflow | `supervisor/task-0024-final-closeout-activate` | Supervisor control files + `.github/workflows/task0024-final-certification.yml` |
+| 109 | WS-0024-THRESHOLD-CLOSEOUT | Commit exact approved manifest + resolve canonical measured SLO values | `worker-threshold-closeout/TASK-0024` | v7 threshold manifest + TASK-0023 SLO contract |
+| 110 | WS-0024-CONTROL-ACTIVATION | Own/repair task-specific certification workflow and coordinate final closeout | `supervisor/task-0024-cert-workflow-fix` | Supervisor control files + task-specific workflow |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Exact next sequence
 
-1. In this Supervisor-owned control activation, add `.github/workflows/task0024-final-certification.yml` with immutable action SHAs, full Git history, and the unchanged clean-checkout certification CLI. The workflow triggers only when the approved manifest or canonical SLO contract changes, so it does not attempt certification before those worker artifacts exist.
-2. Merge this control activation with fresh exact-head continuity/application/security checks.
-3. Fast-forward `worker-threshold-closeout/TASK-0024` to the resulting main.
-4. Commit `docs/operations/evidence/TASK-0024-thresholds-v7.json` containing the exact human approval identity/time/text, exact benchmark source, both exact evidence fingerprints, and the seven exact approved numeric thresholds.
-5. Replace every canonical `TBD_MEASURED` environment-sensitive value in `docs/operations/TASK-0023-DELIVERY-SLOS.md` with exactly the approved values; do not round or infer.
-6. On the threshold-closeout PR exact head, require the task-specific certification workflow to return `status=pass`, all exact-head continuity/application/security checks to pass, and review threads to be clear before squash merge.
-7. On the resulting main acceptance SHA, verify the task-specific certification push run plus all final backend/integration/architecture/static/format/frontend/E2E/security/release/continuity gates.
-8. Only after AC-1 through AC-7 pass may TASK-0024 complete and TASK-0025/PHASE-05 activate.
+1. Change only `.github/workflows/task0024-final-certification.yml` execution to suppress Python bytecode generation while preserving the unchanged certification CLI inputs and full Git history.
+2. Merge this Supervisor repair only after exact-head continuity/application/security checks and review-thread audit.
+3. Synchronize open threshold-closeout PR #176 with the resulting main without altering its approved manifest or SLO content.
+4. Require `TASK-0024 Final Certification` to pass on the synchronized PR exact head, together with AI Continuity, Application Foundation, Security Supply Chain and zero unresolved review threads.
+5. Squash merge the worker closeout, then require the task-specific certification push run plus all final exact-head release/continuity/application/security checks on the resulting main.
+6. Only after AC-1 through AC-7 pass may TASK-0024 complete and TASK-0025/PHASE-05 activate.

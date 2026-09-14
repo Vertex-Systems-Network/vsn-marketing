@@ -59,6 +59,8 @@ Safety requirements:
   - On Railway, --commit-sha, TASK0024_BENCHMARK_SOURCE_SHA, and
     RAILWAY_GIT_COMMIT_SHA must all be full 40-character SHAs and exactly equal.
   - Outside Railway, the checkout HEAD must exactly match --commit-sha.
+  - Reconciliation workers derive a benchmark-only breaker budget that covers
+    warmup plus every repeated run; the production breaker default is unchanged.
   - No destructive database reset or Redis-wide flush is performed.
 
 Usage:
@@ -146,6 +148,24 @@ function task0024PositiveFloat(mixed $value, string $name, float $default): floa
     return $number;
 }
 
+function task0024ReconciliationBreakerFailureThreshold(
+    string $scenario,
+    int $operations,
+    int $runs,
+    float $warmupSeconds,
+): ?int {
+    if ($scenario !== 'reconciliation') {
+        return null;
+    }
+
+    $phaseCount = $runs + ($warmupSeconds > 0 ? 1 : 0);
+    if ($phaseCount <= 0 || $operations > intdiv(PHP_INT_MAX - 1, $phaseCount)) {
+        task0024Fail('reconciliation benchmark operation budget exceeds safe integer range');
+    }
+
+    return ($operations * $phaseCount) + 1;
+}
+
 /** @return array<string, mixed> */
 function task0024NormalizeParentOptions(array $options): array
 {
@@ -200,6 +220,12 @@ function task0024NormalizeParentOptions(array $options): array
         '--measurement-window-seconds',
         30.0,
     );
+    $reconciliationBreakerFailureThreshold = task0024ReconciliationBreakerFailureThreshold(
+        $scenario,
+        $operations,
+        $runs,
+        $warmupSeconds,
+    );
 
     return [
         'scenario' => $scenario,
@@ -212,6 +238,7 @@ function task0024NormalizeParentOptions(array $options): array
         'seed' => $seed,
         'warmup_seconds' => $warmupSeconds,
         'measurement_window_seconds' => $measurementWindowSeconds,
+        'reconciliation_breaker_failure_threshold' => $reconciliationBreakerFailureThreshold,
         'output' => $output,
         'overwrite' => array_key_exists('overwrite', $options),
         'ack' => TASK0024_BENCHMARK_ACK,
@@ -554,6 +581,7 @@ function task0024RunPhase(array $options, array $fixture, string $phaseId, float
                 'seed' => $options['seed'],
                 'duration_seconds' => $durationSeconds,
                 'collect' => $collect,
+                'reconciliation_breaker_failure_threshold' => $options['reconciliation_breaker_failure_threshold'],
                 'fixture' => $fixture,
                 'ready_key' => $readyKey,
                 'go_key' => $goKey,
@@ -735,13 +763,26 @@ function task0024WorkerMain(string $encodedPayload): void
         task0024Fail('worker payload acknowledgement is invalid');
     }
 
+    $reconciliationBreakerFailureThreshold = null;
+    if (($payload['scenario'] ?? null) === 'reconciliation') {
+        $candidate = $payload['reconciliation_breaker_failure_threshold'] ?? null;
+        if (! is_int($candidate) || $candidate <= 0) {
+            task0024Fail('reconciliation worker breaker failure threshold is invalid');
+        }
+        $reconciliationBreakerFailureThreshold = $candidate;
+    }
+
     task0024Bootstrap((string) ($payload['database'] ?? ''));
-    config([
+    $workerConfig = [
         'delivery.admission.concurrency_enabled' => true,
         'delivery.admission.global_concurrency_limit' => (int) $payload['concurrency'],
         'delivery.admission.workspace_concurrency_limit' => (int) $payload['concurrency'],
         'delivery.admission.reservation_ttl_seconds' => max(30, (int) ceil((float) $payload['duration_seconds']) + 30),
-    ]);
+    ];
+    if ($reconciliationBreakerFailureThreshold !== null) {
+        $workerConfig['delivery.recovery.breaker_failure_threshold'] = $reconciliationBreakerFailureThreshold;
+    }
+    config($workerConfig);
 
     $redis = app(RedisManager::class)->connection('locks');
     $redis->incr((string) $payload['ready_key']);
@@ -864,6 +905,9 @@ function task0024ParentMain(array $options): void
         'measurement_scope' => $options['scenario'] === 'delivery'
             ? 'internal delivery-engine enqueue/admit/accepted-outcome path'
             : 'internal delivery-engine ambiguity/reconciliation-resolution path',
+        'benchmark_controls' => $options['scenario'] === 'reconciliation'
+            ? ['reconciliation_breaker_failure_threshold' => $options['reconciliation_breaker_failure_threshold']]
+            : [],
         'external_provider_network_included' => false,
         'thresholds_inferred' => false,
         'delivery_owner_approval_generated' => false,

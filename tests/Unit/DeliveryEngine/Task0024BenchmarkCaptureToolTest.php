@@ -48,6 +48,9 @@ it('exposes the benchmark safety contract without booting the application', func
         ->toContain('TASK0024_BENCHMARK_SOURCE_SHA')
         ->toContain('RAILWAY_GIT_COMMIT_SHA')
         ->toContain('exactly equal')
+        ->toContain('benchmark-only breaker budget')
+        ->toContain('warmup plus every repeated run')
+        ->toContain('production breaker default is unchanged')
         ->toContain('--seed=24');
 });
 
@@ -241,6 +244,47 @@ it('turns unexpected worker exceptions into deterministic non-zero capture failu
         ->and($process->getErrorOutput())
         ->toContain('TASK-0024 benchmark capture blocked: unexpected JsonException')
         ->not->toContain('{');
+});
+
+it('rejects reconciliation workers without the benchmark-only breaker budget before bootstrap', function (): void {
+    $root = task0024BenchmarkRepoRoot();
+    $payload = base64_encode(json_encode([
+        'ack' => 'I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT',
+        'scenario' => 'reconciliation',
+        'database' => 'vsn_marketing_benchmark',
+    ], JSON_THROW_ON_ERROR));
+    $process = new Process([
+        PHP_BINARY,
+        $root.'/tools/task0024_benchmark_capture.php',
+    ], $root, [
+        'APP_ENV' => 'benchmark',
+        'TASK0024_BENCHMARK_WORKER_PAYLOAD' => $payload,
+    ]);
+    $process->setTimeout(10);
+    $process->run();
+
+    expect($process->getExitCode())->toBe(2)
+        ->and($process->getErrorOutput())
+        ->toContain('reconciliation worker breaker failure threshold is invalid');
+});
+
+it('derives reconciliation breaker isolation across warmup and every repeated run without changing production defaults', function (): void {
+    $root = task0024BenchmarkRepoRoot();
+    $source = file_get_contents($root.'/tools/task0024_benchmark_capture.php');
+    $deliveryConfig = file_get_contents($root.'/config/delivery.php');
+
+    expect($source)->toBeString()
+        ->toContain('function task0024ReconciliationBreakerFailureThreshold(')
+        ->toContain('$phaseCount = $runs + ($warmupSeconds > 0 ? 1 : 0);')
+        ->toContain('return ($operations * $phaseCount) + 1;')
+        ->toContain("'reconciliation_breaker_failure_threshold' => \$options['reconciliation_breaker_failure_threshold']")
+        ->toContain("if ((\$payload['scenario'] ?? null) === 'reconciliation')")
+        ->toContain("\$workerConfig['delivery.recovery.breaker_failure_threshold'] = \$reconciliationBreakerFailureThreshold;")
+        ->toContain("'benchmark_controls' => \$options['scenario'] === 'reconciliation'")
+        ->not->toContain("getenv('DELIVERY_RECOVERY_BREAKER_FAILURE_THRESHOLD')");
+
+    expect($deliveryConfig)->toBeString()
+        ->toContain("'breaker_failure_threshold' => env('DELIVERY_RECOVERY_BREAKER_FAILURE_THRESHOLD', 3)");
 });
 
 it('uses an explicit worker result marker instead of decoding arbitrary worker stdout', function (): void {

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "task_id": "TASK-0024",
+  "threshold_set_id": "task0024-v7-exact-human-approved-20260915",
+  "status": "approved",
+  "source_commit_sha": "dab9b2002770c45fb9543b733d67e868bdb97d93",
+  "approval": {
+    "role": "delivery_owner",
+    "approved_by": "wpessential",
+    "approved_at": "2026-09-15T02:20:28+05:00",
+    "approval_text": "Approve TASK-0024 exact v7 thresholds"
+  },
+  "evidence_revisions": {
+    "task0024-delivery-prodrep-07": "3d634f3da23ca069469ec554b0c72746f12d6cdae9fbec7fd72080cad5ff8041",
+    "task0024-reconciliation-prodrep-07": "01c8b45f929cf44d63926185820ec53977ddf325df740dbb746e3a75f878ba95"
+  },
+  "evidence_raw_sha256": {
+    "task0024-delivery-prodrep-07": "463ab4f95c38844f7e509af21db5a8ac8450bff770fd9f42af541b93d02fd837",
+    "task0024-reconciliation-prodrep-07": "fef980468614ab56261c1f3239be11b71789a34bf8a0bd28b92a8c45515f9e0d"
+  },
+  "thresholds": {
+    "queue_age_p95_ms": {
+      "benchmark_id": "task0024-delivery-prodrep-07",
+      "metric": "queue_age_ms",
+      "statistic": "p95",
+      "operator": "max",
+      "threshold": 2115.5879497528076
+    },
+    "queue_age_p99_ms": {
+      "benchmark_id": "task0024-delivery-prodrep-07",
+      "metric": "queue_age_ms",
+      "statistic": "p99",
+      "operator": "max",
+      "threshold": 2862.8649711608887
+    },
+    "end_to_end_p95_ms": {
+      "benchmark_id": "task0024-delivery-prodrep-07",
+      "metric": "end_to_end_ms",
+      "statistic": "p95",
+      "operator": "max",
+      "threshold": 2242.6178455352783
+    },
+    "end_to_end_p99_ms": {
+      "benchmark_id": "task0024-delivery-prodrep-07",
+      "metric": "end_to_end_ms",
+      "statistic": "p99",
+      "operator": "max",
+      "threshold": 2987.617015838623
+    },
+    "reconciliation_lag_p95_ms": {
+      "benchmark_id": "task0024-reconciliation-prodrep-07",
+      "metric": "reconciliation_lag_ms",
+      "statistic": "p95",
+      "operator": "max",
+      "threshold": 52.111148834228516
+    },
+    "reconciliation_lag_p99_ms": {
+      "benchmark_id": "task0024-reconciliation-prodrep-07",
+      "metric": "reconciliation_lag_ms",
+      "statistic": "p99",
+      "operator": "max",
+      "threshold": 64.10813331604004
+    },
+    "sustainable_throughput_ops_s": {
+      "benchmark_id": "task0024-delivery-prodrep-07",
+      "metric": "throughput_ops_s",
+      "statistic": "min",
+      "operator": "min",
+      "threshold": 7.255834504860022
+    }
+  }
+}

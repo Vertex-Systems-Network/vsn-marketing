@@ -1,10 +1,10 @@
 # TASK-0023 Delivery SLO Contract
 
-Status: **implementation evidence complete; PHASE-04 certification remains fail-closed**  
+Status: **environment-sensitive SLO thresholds approved from TASK-0024 Railway v7 evidence; PHASE-04 final certification pending**  
 Workstream: `WS-0023-SLO-CONTRACTS`  
 Acceptance evidence head: `bb47eafd3072cf6ab22eb8863014986c432d9d50`
 
-This document defines the measurement and decision contract for TASK-0023. It intentionally does **not** turn hosted-CI wall-clock timings into production capacity claims. Deterministic safety invariants are enforced now; environment-sensitive latency and throughput thresholds remain evidence-gated and must block PHASE-04 certification until repeatable benchmark evidence is committed and reviewed.
+This document defines the measurement and decision contract for TASK-0023. It intentionally does **not** turn hosted-CI wall-clock timings into production capacity claims. Deterministic safety invariants are enforced now; environment-sensitive latency and throughput thresholds below are the exact values explicitly approved by the human Delivery owner from the committed TASK-0024 Railway v7 benchmark evidence.
 
 ## Required SLIs
 
@@ -27,7 +27,7 @@ This document defines the measurement and decision contract for TASK-0023. It in
 4. Missing or malformed measurements fail closed; they never silently pass a gate.
 5. Workspace/provider/channel breakdowns must not expose credentials, message bodies, recipient PII, provider-connection secrets, idempotency material, queue-partition material, or cross-workspace data.
 6. Provider timeout, rate-limit, transient/permanent failure, Redis interruption/lease loss, PostgreSQL contention, worker termination/restart, and recovery scenarios are evaluated separately from the steady-state baseline.
-7. Environment-sensitive latency or throughput thresholds become enforceable only after repeatable benchmark evidence is committed and reviewed. Until then they remain `TBD_MEASURED`; that state is a **blocking result**, not a pass.
+7. Environment-sensitive latency or throughput thresholds are enforceable only when pinned to reviewed production-representative benchmark evidence and explicit Delivery-owner approval.
 8. Hosted CI test durations are evidence that a scenario executed, not production latency/throughput thresholds and not a scale claim.
 
 ## Production-parity evidence baseline
@@ -67,19 +67,29 @@ These gates are independent of hosted-run speed and are already suitable for reg
 
 ## Environment-sensitive SLO gates
 
-| Gate | Threshold | State / decision rule |
-|---|---|---|
-| Queue age p95 | `TBD_MEASURED` | Delivery owner must approve a repeatable production-representative benchmark; while unset, PHASE-04 certification and any queue-capacity claim are blocked |
-| Queue age p99 | `TBD_MEASURED` | same rule; missing evidence is fail-closed |
-| End-to-end p95 | `TBD_MEASURED` | same rule; no hosted-CI duration may be promoted to a production SLO |
-| End-to-end p99 | `TBD_MEASURED` | same rule; missing evidence is fail-closed |
-| Sustainable throughput | `TBD_MEASURED` | same rule; no production scale claim until repeated benchmark evidence records runner resources and workload parameters |
-| Reconciliation lag p95/p99 | `TBD_MEASURED` | Delivery owner must approve evidence from an ambiguity/reconciliation workload; until then certification is blocked for this metric |
+Approval provenance:
+- threshold set: `task0024-v7-exact-human-approved-20260915`
+- approved by: `wpessential` as Delivery owner
+- approved at: `2026-09-15T02:20:28+05:00`
+- approval text: `Approve TASK-0024 exact v7 thresholds`
+- benchmark source: `dab9b2002770c45fb9543b733d67e868bdb97d93`
+- delivery evidence fingerprint: `3d634f3da23ca069469ec554b0c72746f12d6cdae9fbec7fd72080cad5ff8041`
+- reconciliation evidence fingerprint: `01c8b45f929cf44d63926185820ec53977ddf325df740dbb746e3a75f878ba95`
 
-`tools/delivery_slo_gate.py` is the canonical numeric evaluator once a reviewed threshold set exists. A threshold violation returns failure, and missing/malformed evidence returns an error; neither condition is a pass.
+| Gate | Threshold | State / decision rule |
+|---|---:|---|
+| Queue age p95 | `<= 2115.5879497528076 ms` | approved maximum; measured TASK-0024 v7 delivery p95 must not exceed this value |
+| Queue age p99 | `<= 2862.8649711608887 ms` | approved maximum; measured TASK-0024 v7 delivery p99 must not exceed this value |
+| End-to-end p95 | `<= 2242.6178455352783 ms` | approved maximum; internal benchmark only, not an external provider/network latency claim |
+| End-to-end p99 | `<= 2987.617015838623 ms` | approved maximum; internal benchmark only, not an external provider/network latency claim |
+| Sustainable throughput | `>= 7.255834504860022 ops/s` | approved minimum from the delivery benchmark repeated-run minimum |
+| Reconciliation lag p95 | `<= 52.111148834228516 ms` | approved maximum from the ambiguity/reconciliation workload |
+| Reconciliation lag p99 | `<= 64.10813331604004 ms` | approved maximum from the ambiguity/reconciliation workload |
+
+`tools/delivery_slo_gate.py` remains the canonical numeric evaluator for supported regression evidence, and `tools/task0024_certification_gate.py` is the PHASE-04 final evaluator that binds these approved thresholds to the committed v7 evidence revisions and measured source. A threshold violation returns failure, and missing/malformed evidence returns an error; neither condition is a pass.
 
 ## TASK-0023 completion rule
 
-TASK-0023 establishes the workload, production-parity fault/saturation coverage, deterministic regression invariants, telemetry safety boundary, and fail-closed numeric gate evaluator. Its completion **does not certify PHASE-04 performance or authorize a production scale claim**.
+TASK-0023 establishes the workload, production-parity fault/saturation coverage, deterministic regression invariants, telemetry safety boundary, and fail-closed numeric gate evaluator. Its completion **does not by itself certify PHASE-04 performance or authorize an external-provider scale/latency claim**.
 
-TASK-0024 must run PHASE-04-wide exact-head certification. Any environment-sensitive gate that is still `TBD_MEASURED`, lacks reproducible benchmark evidence, or fails its reviewed threshold must block TASK-0024/PHASE-04 completion. Threshold approval belongs to the Delivery owner; Security co-owns telemetry redaction/isolation acceptance. Thresholds may not be inferred from one hosted-CI wall-clock run.
+TASK-0024 must run PHASE-04-wide clean-checkout certification against the approved threshold manifest and committed v7 evidence on a descendant acceptance head. Any missing approved revision, threshold violation, source-ancestry failure, incomplete evidence, or failed exact-head application/security/continuity/release gate blocks TASK-0024/PHASE-04 completion.

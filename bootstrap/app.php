@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SecurityHeaders;
 use App\Modules\Core\Presentation\Http\Middleware\ObserveRequest;
+use App\Modules\Core\Presentation\Http\Middleware\RequireOperationsToken;
 use App\Modules\Identity\Presentation\Http\Middleware\RequireWorkspacePermission;
 use App\Modules\Identity\Presentation\Http\Middleware\ResolveTenantContext;
 use Illuminate\Foundation\Application;
@@ -19,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(ObserveRequest::class);
+        $middleware->append(SecurityHeaders::class);
 
         $middleware->web(append: [
             HandleInertiaRequests::class,
@@ -26,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
+            'operations.auth' => RequireOperationsToken::class,
             'tenant' => ResolveTenantContext::class,
             'workspace.permission' => RequireWorkspacePermission::class,
         ]);

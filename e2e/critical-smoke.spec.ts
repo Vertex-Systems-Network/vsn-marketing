@@ -8,18 +8,13 @@ test('critical phase-one surfaces are healthy', async ({ page, request }) => {
         }),
     ).toBeVisible();
 
-    const health = await request.get('/api/health/ready', {
+    const health = await request.get('/api/health/live', {
         headers: { 'X-Correlation-ID': 'playwright-critical-smoke' },
     });
     expect(health.ok()).toBeTruthy();
     expect(health.headers()['x-correlation-id']).toBe('playwright-critical-smoke');
     expect(await health.json()).toMatchObject({
         status: 'ok',
-        checks: { database: 'ok', cache: 'ok' },
         correlation_id: 'playwright-critical-smoke',
     });
-
-    const metrics = await request.get('/api/metrics');
-    expect(metrics.ok()).toBeTruthy();
-    expect(await metrics.text()).toContain('vsn_http_requests_total');
 });

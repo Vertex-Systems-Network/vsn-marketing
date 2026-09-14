@@ -1,7 +1,6 @@
 {
   "schema_version": 2,
   "leases": [
-    {"agent":"worker-task0024-source-pinning","workstream":"WS-0024-SOURCE-PINNING","branch":"worker-source-pin/TASK-0024","status":"active","write_paths":["docs/operations/TASK-0024-CERTIFICATION.md","tools/task0024_certification_gate.py","tools/test_task0024_certification_gate.py"]},
-    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-security-audit","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml",".ai/adr/ADR-0003-security-hardening.md",".env.example","app/Providers/AppServiceProvider.php","app/Http/Middleware/SecurityHeaders.php","app/Modules/Core/Presentation/Http/Middleware/RequireOperationsToken.php","bootstrap/app.php","config/operations.php","config/session.php","routes/api.php","routes/web.php","tests/Feature/Security/AuthenticationAndOperationsHardeningTest.php","tests/Feature/RuntimeStatusTest.php","tests/Feature/ObservabilityTest.php","e2e/critical-smoke.spec.ts"]}
+    {"agent":"supervisor-main","workstream":"WS-0024-CONTROL-ACTIVATION","branch":"supervisor/task-0024-external-evidence-v2","status":"active","write_paths":[".ai/parallel/AI-NATIVE-PLAN.md",".ai/parallel/WORKSTREAMS.yaml",".ai/parallel/AGENT-LEASES.yaml"]}
   ]
 }

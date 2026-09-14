@@ -7,6 +7,22 @@ function task0024BenchmarkEnvironmentRoot(): string
     return dirname(__DIR__, 3);
 }
 
+function task0024BenchmarkEnvironmentBaseEnv(): array
+{
+    return [
+        'APP_ENV' => 'benchmark',
+        'APP_KEY' => 'base64:test-only-key',
+        'DB_CONNECTION' => 'pgsql',
+        'DB_HOST' => 'postgres.internal',
+        'DB_PORT' => '5432',
+        'DB_DATABASE' => 'vsn_marketing_benchmark',
+        'DB_USERNAME' => 'vsn',
+        'REDIS_HOST' => 'redis.internal',
+        'REDIS_PORT' => '6379',
+        'TASK0024_BENCHMARK_MIGRATE' => '0',
+    ];
+}
+
 it('builds an immutable source-containing benchmark runtime with required extensions', function (): void {
     $root = task0024BenchmarkEnvironmentRoot();
     $dockerfile = file_get_contents($root.'/docker/benchmark/Dockerfile');
@@ -77,18 +93,10 @@ it('refuses an unsafe database name before any migration or benchmark can run', 
         'sh',
         $root.'/docker/benchmark/entrypoint.sh',
         'true',
-    ], $root, [
-        'APP_ENV' => 'benchmark',
-        'APP_KEY' => 'base64:test-only-key',
-        'DB_CONNECTION' => 'pgsql',
-        'DB_HOST' => 'postgres.internal',
-        'DB_PORT' => '5432',
+    ], $root, array_merge(task0024BenchmarkEnvironmentBaseEnv(), [
         'DB_DATABASE' => 'vsn_marketing',
-        'DB_USERNAME' => 'vsn',
-        'REDIS_HOST' => 'redis.internal',
-        'REDIS_PORT' => '6379',
         'TASK0024_BENCHMARK_SOURCE_SHA' => str_repeat('a', 40),
-    ]);
+    ]));
     $process->setTimeout(10);
     $process->run();
 
@@ -97,7 +105,7 @@ it('refuses an unsafe database name before any migration or benchmark can run', 
         ->toContain('DB_DATABASE must visibly identify a benchmark/perf/load/staging/test database');
 });
 
-it('accepts a safe idle runtime only when the exact repository head is attested', function (): void {
+it('accepts a safe local idle runtime only when the exact repository head is attested', function (): void {
     $root = task0024BenchmarkEnvironmentRoot();
     $git = new Process(['git', 'rev-parse', 'HEAD'], $root);
     $git->setTimeout(10);
@@ -108,20 +116,10 @@ it('accepts a safe idle runtime only when the exact repository head is attested'
         'sh',
         $root.'/docker/benchmark/entrypoint.sh',
         'true',
-    ], $root, [
-        'APP_ENV' => 'benchmark',
-        'APP_KEY' => 'base64:test-only-key',
-        'DB_CONNECTION' => 'pgsql',
-        'DB_HOST' => 'postgres.internal',
-        'DB_PORT' => '5432',
-        'DB_DATABASE' => 'vsn_marketing_benchmark',
-        'DB_USERNAME' => 'vsn',
-        'REDIS_HOST' => 'redis.internal',
-        'REDIS_PORT' => '6379',
+    ], $root, array_merge(task0024BenchmarkEnvironmentBaseEnv(), [
         'TASK0024_BENCHMARK_SOURCE_SHA' => $head,
-        'TASK0024_BENCHMARK_MIGRATE' => '0',
         'TASK0024_BENCHMARK_WORKSPACE' => $root,
-    ]);
+    ]));
     $process->setTimeout(10);
     $process->mustRun();
 
@@ -139,27 +137,70 @@ it('rejects workspace overrides on Railway-hosted benchmark execution', function
         'sh',
         $root.'/docker/benchmark/entrypoint.sh',
         'true',
-    ], $root, [
-        'APP_ENV' => 'benchmark',
-        'APP_KEY' => 'base64:test-only-key',
-        'DB_CONNECTION' => 'pgsql',
-        'DB_HOST' => 'postgres.internal',
-        'DB_PORT' => '5432',
-        'DB_DATABASE' => 'vsn_marketing_benchmark',
-        'DB_USERNAME' => 'vsn',
-        'REDIS_HOST' => 'redis.internal',
-        'REDIS_PORT' => '6379',
+    ], $root, array_merge(task0024BenchmarkEnvironmentBaseEnv(), [
         'TASK0024_BENCHMARK_SOURCE_SHA' => $head,
-        'TASK0024_BENCHMARK_MIGRATE' => '0',
         'TASK0024_BENCHMARK_WORKSPACE' => $root,
         'RAILWAY_ENVIRONMENT_ID' => 'test-environment-id',
-    ]);
+        'RAILWAY_GIT_COMMIT_SHA' => $head,
+    ]));
     $process->setTimeout(10);
     $process->run();
 
     expect($process->getExitCode())->toBe(78)
         ->and($process->getErrorOutput())
         ->toContain('Railway benchmark runtime must use immutable /workspace source path');
+});
+
+it('requires Railway immutable commit metadata for hosted source attestation', function (): void {
+    $root = task0024BenchmarkEnvironmentRoot();
+    $source = str_repeat('a', 40);
+
+    $process = new Process([
+        'sh',
+        $root.'/docker/benchmark/entrypoint.sh',
+        'true',
+    ], $root, array_merge(task0024BenchmarkEnvironmentBaseEnv(), [
+        'TASK0024_BENCHMARK_SOURCE_SHA' => $source,
+        'RAILWAY_ENVIRONMENT_ID' => 'test-environment-id',
+    ]));
+    $process->setTimeout(10);
+    $process->run();
+
+    expect($process->getExitCode())->toBe(78)
+        ->and($process->getErrorOutput())
+        ->toContain('Railway benchmark runtime requires RAILWAY_GIT_COMMIT_SHA source attestation');
+});
+
+it('rejects a Railway deployment SHA that differs from the explicit benchmark source', function (): void {
+    $root = task0024BenchmarkEnvironmentRoot();
+
+    $process = new Process([
+        'sh',
+        $root.'/docker/benchmark/entrypoint.sh',
+        'true',
+    ], $root, array_merge(task0024BenchmarkEnvironmentBaseEnv(), [
+        'TASK0024_BENCHMARK_SOURCE_SHA' => str_repeat('a', 40),
+        'RAILWAY_ENVIRONMENT_ID' => 'test-environment-id',
+        'RAILWAY_GIT_COMMIT_SHA' => str_repeat('b', 40),
+    ]));
+    $process->setTimeout(10);
+    $process->run();
+
+    expect($process->getExitCode())->toBe(78)
+        ->and($process->getErrorOutput())
+        ->toContain('explicit benchmark source SHA does not match Railway deployment SHA');
+});
+
+it('uses Railway commit metadata instead of requiring embedded git metadata on hosted execution', function (): void {
+    $root = task0024BenchmarkEnvironmentRoot();
+    $entrypoint = file_get_contents($root.'/docker/benchmark/entrypoint.sh');
+
+    expect($entrypoint)->toBeString()
+        ->toContain('if [ -n "$railway_environment_id" ]; then')
+        ->toContain('Railway benchmark runtime requires RAILWAY_GIT_COMMIT_SHA source attestation')
+        ->toContain('[ "$source_sha" = "$railway_sha" ]')
+        ->toContain('Git metadata is required outside Railway-hosted execution')
+        ->not->toContain('Git metadata is required; do not run an unattested benchmark image');
 });
 
 it('documents current Railway private-service mapping without deprecated config as code', function (): void {

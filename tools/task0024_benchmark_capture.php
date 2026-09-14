@@ -24,12 +24,18 @@ use Symfony\Component\Process\Process;
 
 const TASK0024_BENCHMARK_ACK = 'I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT';
 const TASK0024_WORKER_PAYLOAD_ENV = 'TASK0024_BENCHMARK_WORKER_PAYLOAD';
+const TASK0024_WORKER_RESULT_PREFIX = 'TASK0024_WORKER_RESULT:';
 
 /** @return never */
 function task0024Fail(string $message, int $exitCode = 2): void
 {
     fwrite(STDERR, 'TASK-0024 benchmark capture blocked: '.$message.PHP_EOL);
     exit($exitCode);
+}
+
+function task0024ThrowableDiagnostic(Throwable $throwable): string
+{
+    return 'unexpected '.get_debug_type($throwable).' at '.basename($throwable->getFile()).':'.$throwable->getLine();
 }
 
 function task0024Help(): string
@@ -485,6 +491,39 @@ function task0024ShardIndices(int $operations, int $concurrency, int $seed): arr
     return $shards;
 }
 
+/** @return array{completed:int,observations:array<string,list<float>>} */
+function task0024DecodeWorkerResult(string $output): array
+{
+    $lines = preg_split('/\R/', $output) ?: [];
+    $resultJson = null;
+
+    for ($index = count($lines) - 1; $index >= 0; $index--) {
+        $line = trim((string) $lines[$index]);
+        if (! str_starts_with($line, TASK0024_WORKER_RESULT_PREFIX)) {
+            continue;
+        }
+
+        $resultJson = substr($line, strlen(TASK0024_WORKER_RESULT_PREFIX));
+        break;
+    }
+
+    if ($resultJson === null || $resultJson === '') {
+        task0024Fail('benchmark worker result marker is missing');
+    }
+
+    try {
+        $decoded = json_decode($resultJson, true, 512, JSON_THROW_ON_ERROR);
+    } catch (JsonException) {
+        task0024Fail('benchmark worker returned malformed JSON result');
+    }
+
+    if (! is_array($decoded)) {
+        task0024Fail('benchmark worker returned malformed JSON result');
+    }
+
+    return $decoded;
+}
+
 /** @return array{completed:int,elapsed_seconds?:float,observations:array<string,list<float>>} */
 function task0024RunPhase(array $options, array $fixture, string $phaseId, float $durationSeconds, int $operations, bool $collect): array
 {
@@ -553,10 +592,7 @@ function task0024RunPhase(array $options, array $fixture, string $phaseId, float
             if ($exitCode !== 0) {
                 task0024Fail('benchmark worker failed: '.trim($process->getErrorOutput().' '.$process->getOutput()));
             }
-            $decoded = json_decode(trim($process->getOutput()), true, 512, JSON_THROW_ON_ERROR);
-            if (! is_array($decoded)) {
-                task0024Fail('benchmark worker returned malformed JSON');
-            }
+            $decoded = task0024DecodeWorkerResult($process->getOutput());
             $completed += (int) ($decoded['completed'] ?? 0);
             foreach (($decoded['observations'] ?? []) as $metric => $values) {
                 if (! is_array($values)) {
@@ -736,7 +772,7 @@ function task0024WorkerMain(string $encodedPayload): void
         }
     }
 
-    fwrite(STDOUT, json_encode([
+    fwrite(STDOUT, TASK0024_WORKER_RESULT_PREFIX.json_encode([
         'completed' => $completed,
         'observations' => $observations,
     ], JSON_THROW_ON_ERROR).PHP_EOL);
@@ -882,15 +918,19 @@ function task0024ParentMain(array $options): void
     exit(0);
 }
 
-$workerPayload = getenv(TASK0024_WORKER_PAYLOAD_ENV);
-if (is_string($workerPayload) && $workerPayload !== '') {
-    task0024WorkerMain($workerPayload);
-}
+try {
+    $workerPayload = getenv(TASK0024_WORKER_PAYLOAD_ENV);
+    if (is_string($workerPayload) && $workerPayload !== '') {
+        task0024WorkerMain($workerPayload);
+    }
 
-$options = task0024Options();
-if (array_key_exists('help', $options)) {
-    fwrite(STDOUT, task0024Help().PHP_EOL);
-    exit(0);
-}
+    $options = task0024Options();
+    if (array_key_exists('help', $options)) {
+        fwrite(STDOUT, task0024Help().PHP_EOL);
+        exit(0);
+    }
 
-task0024ParentMain(task0024NormalizeParentOptions($options));
+    task0024ParentMain(task0024NormalizeParentOptions($options));
+} catch (Throwable $throwable) {
+    task0024Fail(task0024ThrowableDiagnostic($throwable));
+}

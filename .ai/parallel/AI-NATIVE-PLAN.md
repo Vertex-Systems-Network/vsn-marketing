@@ -1,34 +1,23 @@
 # AI-Native Parallel Plan — TASK-0024 PHASE-04 Delivery Certification
 
-Status: **active — user-prioritized cyber-security hardening**. TASK-0024 remains the canonical PHASE-04 certification task. The registered source-pinning worker remains isolated on its existing branch, but merge sequencing is paused while the Supervisor closes concrete security findings discovered during the requested repository audit.
+Status: **active — external-evidence hold**. TASK-0024 remains the canonical PHASE-04 certification task. All currently authorized repository implementation/hardening lanes are merged. PHASE-05 remains blocked until the external production-representative benchmark evidence and explicit human Delivery-owner threshold approval required by AC-4 are committed and pass the final exact-head certification gate.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-security-audit`  
-Trusted baseline: `a4fdfc523f9ed2d4c50411a927a87389cef491a9`  
+Control branch: `supervisor/task-0024-external-evidence-v2`  
+Trusted baseline: `c9e4cc0822b10a66c936e49202e54a999acfd717`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
 TASK-0023 is complete, but PHASE-04 is not certified. Environment-sensitive queue-age, end-to-end latency, sustainable-throughput and reconciliation-lag thresholds remain `TBD_MEASURED`. Hosted-CI wall-clock duration is not production SLO evidence. No numeric threshold may be invented, and no AI agent may impersonate the Delivery owner.
 
-## Security interrupt
+The user-prioritized cyber-security hardening is merged on main via PR #142. Login brute-force throttling, protected detailed operational endpoints, baseline browser security headers, production-secure session-cookie defaults, and regression/E2E coverage are now part of the trusted baseline.
 
-The user explicitly requested a cyber-security audit before further feature/certification work. Supervisor review found four repository-side hardening gaps that are in-scope to fix without adding PHASE-05 capability:
+The TASK-0024 source-pinning hardening is merged on main via PR #144. The certification contract and final gate now distinguish:
 
-1. the public session-login route has no explicit brute-force throttling;
-2. `/api/runtime`, `/api/metrics`, and detailed `/api/health/ready` expose operational metadata without access control;
-3. baseline browser response headers do not yet enforce MIME-sniffing, framing, referrer, permissions, and a minimal non-breaking CSP policy;
-4. the production session cookie secure flag depends on an operator explicitly setting `SESSION_SECURE_COOKIE` rather than failing safe by default.
+- **benchmark source commit** — the exact code commit executed by the production-representative benchmark runner and recorded in each evidence document plus the human Delivery-owner-approved threshold manifest;
+- **final acceptance head** — the later repository commit containing the reviewed evidence/threshold artifacts, resolved canonical SLO contract and closeout state, on which final certification and exact-head CI run.
 
-The existing security supply-chain workflow remains authoritative for immutable action pins, PHP SAST, dependency audits, repository secret scanning, container vulnerability/secret scanning, and reproducible source/SBOM evidence. The active main ruleset remains strict for exact-head required checks, force-push/deletion protection, and review-thread resolution under the repository's documented single-maintainer governance model.
-
-The authorized security hardening is limited to authentication throttling, operational-endpoint access control and throttling, safe response headers, production-secure session-cookie defaults, an ADR, and regression/E2E updates needed to preserve the intended liveness/readiness split. No delivery threshold, measured evidence, provider behavior, or PHASE-05 product capability may change.
-
-The source-pinning distinction remains canonical:
-
-- **benchmark source commit** — the exact code commit executed by the production-representative benchmark runner and recorded in each evidence document plus the owner-approved threshold manifest;
-- **final acceptance head** — the later repository commit containing the reviewed evidence/threshold artifacts, resolved SLO contract and final closeout state, on which exact-head CI/certification runs.
-
-The final acceptance head must preserve the benchmarked delivery behavior and derive from the benchmark source commit. Sustainable-throughput evidence remains hardened: every measured run must cover its declared `scenario.measurement_window_seconds`.
+The final acceptance head must derive from the benchmark source commit. The gate verifies ancestry instead of impossible SHA equality, runs from a clean committed checkout, accepts only tracked committed evidence/threshold artifacts, and always uses the canonical TASK-0023 SLO contract. Sustainable-throughput evidence remains hardened: every measured run must cover its declared `scenario.measurement_window_seconds`.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
@@ -46,33 +35,26 @@ The final acceptance head must preserve the benchmarked delivery behavior and de
 | 90 | WS-0024-SECURITY-CERT | Cross-workspace, redaction and policy-denial security certification | `worker-9/TASK-0024` | security certification test |
 | 100 | WS-0024-FINAL-GATE | Deterministic complete-evidence + approved-threshold gate | `worker-10/TASK-0024` | certification gate + test |
 | 105 | WS-0024-SOURCE-PINNING | Separate measured benchmark source SHA from the later artifact-containing final acceptance head | `worker-source-pin/TASK-0024` | certification contract, final gate, gate tests |
-| 110 | WS-0024-CONTROL-ACTIVATION | User-prioritized cyber audit, hardening, and control sequencing | `supervisor/task-0024-security-audit` | registered Supervisor security/control paths |
+| 110 | WS-0024-CONTROL-ACTIVATION | Maintain fail-closed external-evidence hold and final closeout sequencing | `supervisor/task-0024-external-evidence-v2` | Supervisor control files |
 <!-- WORKSTREAM_TABLE_END -->
-
-## Security hardening rules
-
-1. Login throttling must use independent account and source-IP buckets so rotating either identifier alone does not bypass the other control.
-2. Detailed operational endpoints must fail closed unless a high-entropy operations token is configured and presented; public liveness remains intentionally minimal.
-3. Operations authentication compares secrets in constant time and never writes token values to logs or responses.
-4. Operational endpoints are independently rate-limited and return `Cache-Control: no-store` when authorized.
-5. Baseline response headers must be safe for the existing Inertia/Vite application and must not introduce broad unsafe CSP exemptions.
-6. Production defaults to Secure session cookies while local HTTP development can explicitly opt out.
-7. Every security behavior change requires deterministic tests; critical E2E smoke uses public liveness rather than exposing detailed readiness.
-8. Security hardening must not alter delivery SLO values, benchmark evidence, or later-phase capability.
-
-## Source-pinning hardening rules
-
-1. Benchmark evidence and the threshold manifest must all pin one exact benchmark source commit.
-2. The gate may compare evidence/manifest source SHA to the declared benchmark source SHA, but must not call that SHA the final acceptance head.
-3. The final gate executes from the final repository checkout and must report that final checkout head separately from the benchmark source commit.
-4. The benchmark source commit must be an ancestor of the final acceptance head; missing history or an unrelated source commit is fail-closed.
-5. The final acceptance head must contain the reviewed evidence/approval artifacts and resolved SLO contract and must pass exact-head application/integration/E2E/security/continuity/release checks.
-6. Source-pinning hardening may not alter measured values, infer thresholds, weaken evidence validation, or add PHASE-05 capability.
 
 ## External evidence gate
 
-After security and source-pinning hardening land, TASK-0024 still cannot complete until one production-representative non-production environment supplies validated delivery and reconciliation evidence; every measured run covers its declared window; a human Delivery owner explicitly approves the numeric threshold set and exact evidence fingerprints; required `TBD_MEASURED` values are replaced from that approval; and the final gate plus all exact-head checks pass.
+TASK-0024 remains blocked until all of the following are supplied from one dedicated production-representative non-production environment:
+
+1. **Delivery evidence** containing raw `queue_age_ms`, raw `end_to_end_ms`, and sustained throughput observations.
+2. **Reconciliation evidence** containing raw `reconciliation_lag_ms` and applicable sustained throughput observations.
+3. Both evidence documents pin the same exact benchmark source commit and the same environment identity, deterministic workload assumptions, and required repeated measurement runs.
+4. Every measured run covers the full declared `measurement_window_seconds`; short fixed-operation bursts are invalid for sustainable-throughput certification.
+5. Both evidence documents pass `tools/delivery_benchmark_evidence.py` without inferred thresholds or generated approval.
+6. A real human Delivery owner reviews those measurements and explicitly approves a numeric threshold manifest that pins the same benchmark source commit and exact evidence fingerprints, with role `delivery_owner`, real `approved_by`, and real `approved_at` values.
+7. The approved evidence JSON files and threshold manifest are committed to a later descendant final-certification branch/head.
+8. Canonical `docs/operations/TASK-0023-DELIVERY-SLOS.md` `TBD_MEASURED` values are replaced only from that human-approved threshold set.
+9. From a clean final checkout, `tools/task0024_certification_gate.py` is invoked with `--source-commit <BENCHMARK_SOURCE_SHA>` and only committed repository evidence/threshold paths; it resolves the final acceptance HEAD itself and verifies source ancestry.
+10. All applicable exact-head application, integration, architecture, static, format, frontend, E2E, security, release/integrity, and AI-continuity checks pass on the same final acceptance head.
+
+No connected production-representative benchmark environment has been identified from this session, so the Supervisor must not fabricate benchmark evidence, create paid/production infrastructure without authorization, invent numeric thresholds, or auto-fill Delivery-owner approval.
 
 ## Final closeout
 
-Only after AC-1 through AC-7 pass on the final acceptance head may the Supervisor synchronize canonical task index/roadmap, current state, checkpoint and append-only journal transactionally and activate TASK-0025.
+Only after AC-1 through AC-7 pass on the final acceptance head may the Supervisor synchronize canonical task index/roadmap, current state, checkpoint and append-only journal transactionally and activate TASK-0025. Until then TASK-0024 remains open and PHASE-05 is blocked.

@@ -244,7 +244,7 @@
       "phase": "PHASE-04",
       "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
       "weight": 10,
-      "status": "ready",
+      "status": "blocked",
       "dependencies": [
         "TASK-0023"
       ]

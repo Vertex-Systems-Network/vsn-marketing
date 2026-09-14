@@ -3,8 +3,8 @@
 Status: **active — external-evidence hold**. TASK-0024 remains the canonical PHASE-04 certification task. All currently authorized repository implementation/hardening lanes are merged. PHASE-05 remains blocked until the external production-representative benchmark evidence and explicit human Delivery-owner threshold approval required by AC-4 are committed and pass the final exact-head certification gate.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-ledger-reconcile`  
-Trusted baseline: `701c58cead4e1eb93c94792739233526dc6b53ee`  
+Control branch: `supervisor/task-0024-external-evidence-v3`  
+Trusted baseline: `c48275f85c43879be45ee7044d1532067c618321`  
 Broadcast channel: GitHub issue #43  
 Completion signal: `Work Done and Submitted`
 
@@ -19,7 +19,7 @@ The TASK-0024 source-pinning hardening is merged on main via PR #144. The certif
 
 The final acceptance head must derive from the benchmark source commit. The gate verifies ancestry instead of impossible SHA equality, runs from a clean committed checkout, accepts only tracked committed evidence/threshold artifacts, and always uses the canonical TASK-0023 SLO contract. Sustainable-throughput evidence remains hardened: every measured run must cover its declared `scenario.measurement_window_seconds`.
 
-The Supervisor is reconciling the canonical state/checkpoint/blocker/journal ledger with this already-merged external-evidence hold. This is a control-only state correction: it changes no delivery behavior, benchmark measurement, threshold, or later-phase capability.
+Canonical ledger reconciliation is merged on main via PR #146 at `c48275f85c43879be45ee7044d1532067c618321`. TASK-0024 task/index/state, BLOCKERS, LAST-CHECKPOINT and append-only journal event #57 now consistently record the AC-4 external-evidence block. The active Supervisor lane is therefore narrowed back to control-plane coordination only until real benchmark evidence and human approval arrive.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
@@ -37,7 +37,7 @@ The Supervisor is reconciling the canonical state/checkpoint/blocker/journal led
 | 90 | WS-0024-SECURITY-CERT | Cross-workspace, redaction and policy-denial security certification | `worker-9/TASK-0024` | security certification test |
 | 100 | WS-0024-FINAL-GATE | Deterministic complete-evidence + approved-threshold gate | `worker-10/TASK-0024` | certification gate + test |
 | 105 | WS-0024-SOURCE-PINNING | Separate measured benchmark source SHA from the later artifact-containing final acceptance head | `worker-source-pin/TASK-0024` | certification contract, final gate, gate tests |
-| 110 | WS-0024-CONTROL-ACTIVATION | Maintain fail-closed external-evidence hold, reconcile canonical ledger, and coordinate final closeout | `supervisor/task-0024-ledger-reconcile` | Supervisor control + canonical state ledger files |
+| 110 | WS-0024-CONTROL-ACTIVATION | Maintain fail-closed external-evidence hold and coordinate evidence intake/final closeout | `supervisor/task-0024-external-evidence-v3` | Supervisor control files |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## External evidence gate

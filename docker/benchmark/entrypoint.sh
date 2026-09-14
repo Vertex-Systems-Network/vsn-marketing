@@ -37,43 +37,45 @@ case "$workspace" in
     *) fail 'TASK0024_BENCHMARK_WORKSPACE must be an absolute path' ;;
 esac
 
-if [ -n "${RAILWAY_ENVIRONMENT_ID:-}" ] && [ "$workspace" != "/workspace" ]; then
-    fail 'Railway benchmark runtime must use immutable /workspace source path'
+railway_environment_id=${RAILWAY_ENVIRONMENT_ID:-}
+source_sha=${TASK0024_BENCHMARK_SOURCE_SHA:-}
+railway_sha=${RAILWAY_GIT_COMMIT_SHA:-}
+
+[ -n "$source_sha" ] || fail 'TASK0024_BENCHMARK_SOURCE_SHA is required'
+printf '%s' "$source_sha" | grep -Eq '^[0-9a-fA-F]{40}$' \
+    || fail 'TASK0024_BENCHMARK_SOURCE_SHA must be a 40-character commit SHA'
+
+if [ -n "$railway_environment_id" ]; then
+    [ "$workspace" = "/workspace" ] \
+        || fail 'Railway benchmark runtime must use immutable /workspace source path'
+    [ -n "$railway_sha" ] \
+        || fail 'Railway benchmark runtime requires RAILWAY_GIT_COMMIT_SHA source attestation'
+    printf '%s' "$railway_sha" | grep -Eq '^[0-9a-fA-F]{40}$' \
+        || fail 'RAILWAY_GIT_COMMIT_SHA must be a 40-character commit SHA'
+    [ "$source_sha" = "$railway_sha" ] \
+        || fail 'explicit benchmark source SHA does not match Railway deployment SHA'
+else
+    # Local/non-Railway execution has a real Git checkout, so attest against
+    # checkout HEAD. Hosted Railway source archives intentionally omit .git;
+    # there the platform's immutable deployment SHA is the authoritative source.
+    command -v git >/dev/null 2>&1 || fail 'git is required for local source attestation'
+    git -C "$workspace" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+        || fail 'Git metadata is required outside Railway-hosted execution'
+    actual_sha=$(git -C "$workspace" rev-parse HEAD 2>/dev/null) \
+        || fail 'unable to resolve checkout HEAD'
+    [ "$actual_sha" = "$source_sha" ] \
+        || fail 'checkout HEAD does not match TASK0024_BENCHMARK_SOURCE_SHA'
+
+    if [ -n "$railway_sha" ]; then
+        printf '%s' "$railway_sha" | grep -Eq '^[0-9a-fA-F]{40}$' \
+            || fail 'RAILWAY_GIT_COMMIT_SHA must be a 40-character commit SHA'
+        [ "$actual_sha" = "$railway_sha" ] \
+            || fail 'checkout HEAD does not match RAILWAY_GIT_COMMIT_SHA'
+    fi
 fi
 
 [ -f "$workspace/artisan" ] || fail "application source is missing from $workspace"
 [ -f "$workspace/vendor/autoload.php" ] || fail 'locked Composer dependencies are missing'
-command -v git >/dev/null 2>&1 || fail 'git is required for source attestation'
-git -C "$workspace" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
-    || fail 'Git metadata is required; do not run an unattested benchmark image'
-
-actual_sha=$(git -C "$workspace" rev-parse HEAD 2>/dev/null) \
-    || fail 'unable to resolve checkout HEAD'
-
-source_sha=${TASK0024_BENCHMARK_SOURCE_SHA:-}
-railway_sha=${RAILWAY_GIT_COMMIT_SHA:-}
-
-[ -n "$source_sha" ] || [ -n "$railway_sha" ] \
-    || fail 'TASK0024_BENCHMARK_SOURCE_SHA or RAILWAY_GIT_COMMIT_SHA is required'
-
-if [ -n "$source_sha" ]; then
-    printf '%s' "$source_sha" | grep -Eq '^[0-9a-fA-F]{40}$' \
-        || fail 'TASK0024_BENCHMARK_SOURCE_SHA must be a 40-character commit SHA'
-    [ "$actual_sha" = "$source_sha" ] \
-        || fail 'checkout HEAD does not match TASK0024_BENCHMARK_SOURCE_SHA'
-fi
-
-if [ -n "$railway_sha" ]; then
-    printf '%s' "$railway_sha" | grep -Eq '^[0-9a-fA-F]{40}$' \
-        || fail 'RAILWAY_GIT_COMMIT_SHA must be a 40-character commit SHA'
-    [ "$actual_sha" = "$railway_sha" ] \
-        || fail 'checkout HEAD does not match RAILWAY_GIT_COMMIT_SHA'
-fi
-
-if [ -n "$source_sha" ] && [ -n "$railway_sha" ]; then
-    [ "$source_sha" = "$railway_sha" ] \
-        || fail 'explicit benchmark source SHA does not match Railway deployment SHA'
-fi
 
 case "${TASK0024_BENCHMARK_MIGRATE:-0}" in
     0) ;;

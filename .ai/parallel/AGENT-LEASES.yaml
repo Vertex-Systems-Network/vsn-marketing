@@ -4,7 +4,7 @@
     {
       "agent": "supervisor-main",
       "workstream": "WS-0024-CONTROL-ACTIVATION",
-      "branch": "supervisor/task-0024-final-closeout-activate",
+      "branch": "supervisor/task-0024-cert-workflow-fix",
       "status": "active",
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",

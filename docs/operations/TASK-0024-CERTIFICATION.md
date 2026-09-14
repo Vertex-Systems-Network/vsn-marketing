@@ -2,7 +2,7 @@
 
 Status: **in progress / fail closed**
 
-TASK-0024 is the terminal PHASE-04 certification task. It does not create new delivery capability and it does not authorize production capacity claims. It certifies the accepted TASK-0019 through TASK-0023 delivery surface on one exact acceptance head.
+TASK-0024 is the terminal PHASE-04 certification task. It does not create new delivery capability and it does not authorize production capacity claims. It certifies the accepted TASK-0019 through TASK-0023 delivery surface on one exact final acceptance head. The benchmark source commit is the exact code revision measured in the production-representative benchmark; the final acceptance head is a later repository head that contains the committed benchmark evidence, Delivery-owner-approved threshold manifest, resolved canonical SLO contract, and closeout state. These two SHAs are intentionally distinct and are not required to be equal.
 
 ## Certification rules
 
@@ -12,7 +12,9 @@ TASK-0024 is the terminal PHASE-04 certification task. It does not create new de
 4. Environment-sensitive performance thresholds remain fail-closed while marked `TBD_MEASURED` in `docs/operations/TASK-0023-DELIVERY-SLOS.md`.
 5. Hosted CI wall-clock duration is not production SLO evidence.
 6. Numeric queue-age, end-to-end latency, sustainable-throughput, or reconciliation-lag acceptance thresholds require reproducible production-representative benchmark evidence plus explicit Delivery-owner approval. This contract does not invent those values.
-7. No sender-domain/deliverability, credentials/paid-send activation, content studio, campaign/publishing, journey, or other PHASE-05+ implementation may be introduced to make certification pass.
+7. The exact benchmark source commit recorded by every benchmark evidence document and the Delivery-owner-approved threshold manifest must be an ancestor of the final acceptance head.
+8. Benchmark evidence JSON files, the approved threshold manifest, and the canonical TASK-0023 SLO contract used for final certification must be committed, tracked repository artifacts at the final acceptance head. External, untracked, dirty, or alternate SLO-contract files are not valid final-gate inputs.
+9. No sender-domain/deliverability, credentials/paid-send activation, content studio, campaign/publishing, journey, or other PHASE-05+ implementation may be introduced to make certification pass.
 
 ## Acceptance matrix
 
@@ -40,14 +42,20 @@ TASK-0024 must fail closed while any required environment-sensitive threshold is
 
 A numeric threshold set may be accepted only when all of the following are committed and reviewable:
 
-- exact source commit SHA;
+- exact benchmark source commit SHA identifying the code revision actually measured;
+- every benchmark evidence document pins that same benchmark source commit SHA;
+- the Delivery-owner-approved threshold manifest pins that same benchmark source commit SHA and the exact evidence fingerprints it approves;
+- the benchmark source commit is an ancestor of the final acceptance head that contains the reviewed evidence and threshold artifacts;
 - PHP/Laravel, PostgreSQL and Redis versions;
 - runner/resource assumptions;
 - deterministic scenario seed and workload parameters;
 - warmup separated from the measurement window;
+- every measured run covers its declared `measurement_window_seconds`, so short fixed-operation bursts cannot be represented as sustained throughput;
 - repeated raw observations sufficient to reproduce reported percentiles/throughput/reconciliation lag;
 - no mixing of fault scenarios with steady-state acceptance;
-- explicit Delivery-owner approval identifying the accepted threshold set and evidence revision.
+- explicit Delivery-owner approval identifying the accepted threshold set and evidence revision;
+- benchmark evidence JSON files and the approved threshold manifest are tracked and committed in the final acceptance head; and
+- the canonical `docs/operations/TASK-0023-DELIVERY-SLOS.md` file on that final acceptance head contains the approved numeric values and no unresolved `TBD_MEASURED` entries.
 
 Until then, benchmark observations may be collected and compared, but they are evidence inputs rather than certification thresholds.
 
@@ -57,8 +65,12 @@ TASK-0024 may transition to `completed` only when:
 
 - AC-1 through AC-7 are individually evidence-backed;
 - the AC-4 `TBD_MEASURED` blocker has been resolved by reproducible benchmark evidence plus an approved numeric threshold set;
+- final certification runs from a clean committed checkout and resolves the actual checkout `HEAD` as the final acceptance head;
+- the gate is invoked with the explicit benchmark source commit, verifies that source commit is an ancestor of the final acceptance head, and does not require source/final SHA equality;
+- every supplied benchmark evidence path and threshold-manifest path is inside the repository, tracked by Git, and matches the content committed at the final acceptance head;
+- the gate always reads the canonical `docs/operations/TASK-0023-DELIVERY-SLOS.md` contract from the repository; no alternate SLO-contract override is accepted;
 - deterministic safety/regression gates pass;
-- all applicable exact-head backend, integration, architecture, static, format, frontend, E2E, security and AI-continuity checks are green on the same acceptance head;
+- all applicable exact-head backend, integration, architecture, static, format, frontend, E2E, security and AI-continuity checks are green on the same final acceptance head;
 - the accepted diff contains no PHASE-05+ product implementation; and
 - canonical task index, roadmap, current state, checkpoint and append-only journal are synchronized by the Supervisor closeout transaction.
 

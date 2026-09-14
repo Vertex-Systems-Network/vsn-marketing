@@ -28,13 +28,26 @@ case "$database_name" in
     *) fail 'DB_DATABASE must visibly identify a benchmark/perf/load/staging/test database' ;;
 esac
 
-[ -f /workspace/artisan ] || fail 'application source is missing from /workspace'
-[ -f /workspace/vendor/autoload.php ] || fail 'locked Composer dependencies are missing'
+# /workspace is the immutable hosted-runtime path. A path override exists only
+# so repository tests/local diagnostics can execute this preflight outside the
+# container. Railway-hosted execution is not allowed to override it.
+workspace=${TASK0024_BENCHMARK_WORKSPACE:-/workspace}
+case "$workspace" in
+    /*) ;;
+    *) fail 'TASK0024_BENCHMARK_WORKSPACE must be an absolute path' ;;
+esac
+
+if [ -n "${RAILWAY_ENVIRONMENT_ID:-}" ] && [ "$workspace" != "/workspace" ]; then
+    fail 'Railway benchmark runtime must use immutable /workspace source path'
+fi
+
+[ -f "$workspace/artisan" ] || fail "application source is missing from $workspace"
+[ -f "$workspace/vendor/autoload.php" ] || fail 'locked Composer dependencies are missing'
 command -v git >/dev/null 2>&1 || fail 'git is required for source attestation'
-git -C /workspace rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+git -C "$workspace" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
     || fail 'Git metadata is required; do not run an unattested benchmark image'
 
-actual_sha=$(git -C /workspace rev-parse HEAD 2>/dev/null) \
+actual_sha=$(git -C "$workspace" rev-parse HEAD 2>/dev/null) \
     || fail 'unable to resolve checkout HEAD'
 
 source_sha=${TASK0024_BENCHMARK_SOURCE_SHA:-}
@@ -64,7 +77,7 @@ fi
 
 case "${TASK0024_BENCHMARK_MIGRATE:-0}" in
     0) ;;
-    1) php /workspace/artisan migrate --force --no-interaction ;;
+    1) php "$workspace/artisan" migrate --force --no-interaction ;;
     *) fail 'TASK0024_BENCHMARK_MIGRATE must be 0 or 1' ;;
 esac
 

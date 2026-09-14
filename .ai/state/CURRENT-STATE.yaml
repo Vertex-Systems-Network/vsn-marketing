@@ -18,9 +18,9 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0101_main_push_passed_run_34522847507",
-    "application_test_status": "task_0023_hotspot_telemetry_pr_passed_run_34659032830",
-    "security_supply_chain_status": "task_0023_hotspot_telemetry_pr_passed_run_34659032800",
+    "continuity_validation": "security_hardening_pr_142_exact_head_required",
+    "application_test_status": "security_hardening_pr_142_exact_head_required",
+    "security_supply_chain_status": "security_hardening_pr_142_exact_head_required",
     "release_integrity_status": "task_0101_main_push_passed_run_34522847562",
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },

@@ -225,6 +225,39 @@ it('keeps real git checkout attestation outside Railway', function (): void {
         ->toContain('checkout HEAD does not match --commit-sha');
 });
 
+it('turns unexpected worker exceptions into deterministic non-zero capture failures', function (): void {
+    $root = task0024BenchmarkRepoRoot();
+    $process = new Process([
+        PHP_BINARY,
+        $root.'/tools/task0024_benchmark_capture.php',
+    ], $root, [
+        'APP_ENV' => 'benchmark',
+        'TASK0024_BENCHMARK_WORKER_PAYLOAD' => base64_encode('{'),
+    ]);
+    $process->setTimeout(10);
+    $process->run();
+
+    expect($process->getExitCode())->toBe(2)
+        ->and($process->getErrorOutput())
+        ->toContain('TASK-0024 benchmark capture blocked: unexpected JsonException')
+        ->not->toContain('{');
+});
+
+it('uses an explicit worker result marker instead of decoding arbitrary worker stdout', function (): void {
+    $root = task0024BenchmarkRepoRoot();
+    $source = file_get_contents($root.'/tools/task0024_benchmark_capture.php');
+
+    expect($source)->toBeString()
+        ->toContain("const TASK0024_WORKER_RESULT_PREFIX = 'TASK0024_WORKER_RESULT:';")
+        ->toContain('TASK0024_WORKER_RESULT_PREFIX.json_encode([')
+        ->toContain('function task0024DecodeWorkerResult(string $output): array')
+        ->toContain("task0024Fail('benchmark worker result marker is missing')")
+        ->toContain("task0024Fail('benchmark worker returned malformed JSON result')")
+        ->toContain('catch (Throwable $throwable)')
+        ->toContain('task0024Fail(task0024ThrowableDiagnostic($throwable))')
+        ->not->toContain('json_decode(trim($process->getOutput()), true, 512, JSON_THROW_ON_ERROR)');
+});
+
 it('contains no destructive shared infrastructure reset primitive', function (): void {
     $root = task0024BenchmarkRepoRoot();
     $source = file_get_contents($root.'/tools/task0024_benchmark_capture.php');

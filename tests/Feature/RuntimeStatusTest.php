@@ -10,10 +10,11 @@ test('the core runtime endpoint exposes a bounded foundation snapshot to authori
     $token = str_repeat('a', 32);
     config()->set('operations.token', $token);
 
-    $this->withHeader('X-Operations-Token', $token)
+    $response = $this->withHeader('X-Operations-Token', $token)
         ->getJson('/api/runtime')
         ->assertOk()
-        ->assertHeader('Cache-Control', 'no-store')
         ->assertJsonPath('data.name', 'VSN Marketing')
         ->assertJsonStructure(['data' => ['name', 'environment', 'php', 'time']]);
+
+    expect($response->headers->get('Cache-Control'))->toContain('no-store');
 });

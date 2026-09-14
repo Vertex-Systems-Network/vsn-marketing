@@ -1,0 +1,39 @@
+name: TASK-0024 Final Certification
+
+on:
+  pull_request:
+    paths:
+      - docs/operations/evidence/TASK-0024-thresholds-v7.json
+      - docs/operations/TASK-0023-DELIVERY-SLOS.md
+  push:
+    branches:
+      - main
+    paths:
+      - docs/operations/evidence/TASK-0024-thresholds-v7.json
+      - docs/operations/TASK-0023-DELIVERY-SLOS.md
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    name: certify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact head with benchmark ancestry
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.13'
+          check-latest: false
+      - name: Run clean-checkout TASK-0024 certification gate
+        run: |
+          python3 tools/task0024_certification_gate.py \
+            --evidence docs/operations/evidence/TASK-0024-delivery-prodrep-07.json \
+            --evidence docs/operations/evidence/TASK-0024-reconciliation-prodrep-07.json \
+            --thresholds docs/operations/evidence/TASK-0024-thresholds-v7.json \
+            --source-commit dab9b2002770c45fb9543b733d67e868bdb97d93

@@ -19,18 +19,27 @@ test('correlation ids are propagated and unsafe values are replaced', function (
         ->not->toBe("unsafe\nvalue");
 });
 
-test('readiness verifies database and cache dependencies', function () {
-    $this->getJson('/api/health/ready')
+test('readiness verifies database and cache dependencies for authorized operations', function () {
+    $token = str_repeat('b', 32);
+    config()->set('operations.token', $token);
+
+    $this->withHeader('X-Operations-Token', $token)
+        ->getJson('/api/health/ready')
         ->assertOk()
+        ->assertHeader('Cache-Control', 'no-store')
         ->assertJsonPath('status', 'ok')
         ->assertJsonPath('checks.database', 'ok')
         ->assertJsonPath('checks.cache', 'ok');
 });
 
-test('baseline metrics expose aggregate request counters without request labels', function () {
-    $this->getJson('/api/runtime')->assertOk();
+test('baseline metrics expose aggregate request counters without request labels to authorized operations', function () {
+    $token = str_repeat('c', 32);
+    config()->set('operations.token', $token);
 
-    $response = $this->get('/api/metrics')->assertOk();
+    $headers = ['X-Operations-Token' => $token];
+    $this->getJson('/api/runtime', $headers)->assertOk();
+
+    $response = $this->get('/api/metrics', $headers)->assertOk();
     $body = $response->getContent();
 
     expect($body)

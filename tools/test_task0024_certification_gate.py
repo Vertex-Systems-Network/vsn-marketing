@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
-if str(TOOLS) not in __import__("sys").path:
-    __import__("sys").path.insert(0, str(TOOLS))
+if str(TOOLS) not in sys.path:
+    sys.path.insert(0, str(TOOLS))
 
 from delivery_benchmark_evidence import validate_and_aggregate
 from task0024_certification_gate import (

@@ -11,6 +11,7 @@ RUN apt-get update \
         libonig-dev \
         libpq-dev \
         libzip-dev \
+        python3 \
         unzip \
     && docker-php-ext-install -j"$(nproc)" bcmath mbstring pcntl pdo_pgsql zip \
     && pecl install redis \
@@ -23,8 +24,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 WORKDIR /workspace
 
 # The benchmark image is intentionally source-containing rather than bind-mounted.
-# Git metadata, when present in the deployment build context, is preserved so the
-# capture tool can prove that --commit-sha is the actual checkout HEAD.
+# Railway-hosted source identity is attested through immutable deployment metadata;
+# local/non-Railway execution continues to require real checkout Git metadata.
 COPY . /workspace
 
 RUN composer install \
@@ -33,6 +34,7 @@ RUN composer install \
         --no-progress \
         --prefer-dist \
         --classmap-authoritative \
+    && python3 --version \
     && chmod 0755 /workspace/docker/benchmark/entrypoint.sh
 
 ENTRYPOINT ["/workspace/docker/benchmark/entrypoint.sh"]

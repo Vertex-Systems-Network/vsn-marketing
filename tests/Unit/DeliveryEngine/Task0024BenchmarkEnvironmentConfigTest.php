@@ -23,7 +23,7 @@ function task0024BenchmarkEnvironmentBaseEnv(): array
     ];
 }
 
-it('builds an immutable source-containing benchmark runtime with required extensions', function (): void {
+it('builds an immutable source-containing benchmark runtime with required extensions and validator runtime', function (): void {
     $root = task0024BenchmarkEnvironmentRoot();
     $dockerfile = file_get_contents($root.'/docker/benchmark/Dockerfile');
 
@@ -31,6 +31,8 @@ it('builds an immutable source-containing benchmark runtime with required extens
         ->toContain('FROM php:8.5-cli-bookworm')
         ->toContain('bcmath mbstring pcntl pdo_pgsql zip')
         ->toContain('pecl install redis')
+        ->toContain('python3')
+        ->toContain('python3 --version')
         ->toContain('COPY . /workspace')
         ->toContain('composer install')
         ->toContain('--no-dev')

@@ -1,10 +1,10 @@
 # AI-Native Parallel Plan — TASK-0024 PHASE-04 Delivery Certification
 
-Status: **active — verified Railway v7 evidence intake under fail-closed numeric-approval hold**. TASK-0024 remains blocked until the verified raw evidence pair is committed and the human Delivery owner explicitly approves the numeric threshold set pinned to those exact fingerprints. PHASE-05 remains blocked.
+Status: **active — committed Railway v7 evidence under explicit human numeric-approval hold**. The production-representative delivery + reconciliation evidence pair is committed on main. TASK-0024 remains blocked until the human Delivery owner explicitly approves a specific numeric threshold set pinned to the exact benchmark source and evidence fingerprints. PHASE-05 remains blocked.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-evidence-intake-activate`  
-Trusted baseline: `dab9b2002770c45fb9543b733d67e868bdb97d93`  
+Control branch: `supervisor/task-0024-human-threshold-approval`  
+Trusted repository baseline: `2311fd4921e0ae5e9e3e23ca5da035f0575cf96e`  
 Benchmark source: `dab9b2002770c45fb9543b733d67e868bdb97d93`  
 Railway archival deployment: `8e60ce6f-11a6-46e7-8e5b-a7a37933ba67`  
 Delivery benchmark: `task0024-delivery-prodrep-07`  
@@ -13,15 +13,33 @@ Delivery raw SHA-256: `463ab4f95c38844f7e509af21db5a8ac8450bff770fd9f42af541b93d
 Reconciliation benchmark: `task0024-reconciliation-prodrep-07`  
 Reconciliation fingerprint: `01c8b45f929cf44d63926185820ec53977ddf325df740dbb746e3a75f878ba95`  
 Reconciliation raw SHA-256: `fef980468614ab56261c1f3239be11b71789a34bf8a0bd28b92a8c45515f9e0d`  
+Committed evidence merge: PR #172 → `2311fd4921e0ae5e9e3e23ca5da035f0575cf96e`  
 Broadcast channel: GitHub issue #43  
-Benchmark tracking: GitHub issues #134, #149 and #168  
 Completion signal: `Work Done and Submitted`
 
-The user's authorization covers the dedicated production-representative non-production Railway benchmark environment and capture. It does not pre-approve numeric thresholds. No AI agent may invent evidence, infer or round thresholds, impersonate the Delivery owner, use GitHub CI wall-clock duration as SLO evidence, or activate PHASE-05 early.
+The user's earlier authorization covers provisioning and running the dedicated production-representative non-production Railway benchmark environment. It does **not** pre-approve any numeric SLO threshold. No AI agent may infer, round, or approve thresholds on the Delivery owner's behalf, fabricate approval metadata, use GitHub CI wall-clock duration as production SLO evidence, or activate PHASE-05 early.
 
-PR #170 merged the benchmark-only reconciliation breaker isolation without changing production breaker defaults. Fresh Railway archival deployment `8e60ce6f-11a6-46e7-8e5b-a7a37933ba67` then ran exact source `dab9b2002770c45fb9543b733d67e868bdb97d93` on the existing dedicated private PostgreSQL/Redis benchmark environment. Both delivery and reconciliation evidence documents passed `tools/delivery_benchmark_evidence.py`, both declared full repeated measurement windows, and the runtime emitted the raw files as gzip+base64 archival payloads after validation.
+## Verified measurement facts
 
-The archival payloads were independently reconstructed outside Railway. Their byte-level SHA-256 values exactly match the hashes emitted by the deployment, and recomputing the validator's canonical JSON fingerprint algorithm exactly reproduces both published evidence fingerprints. `WS-0024-EVIDENCE-INTAKE` is therefore registered with write scope limited to the two verified raw JSON evidence files. It may not create a threshold manifest, change `TASK-0023-DELIVERY-SLOS.md`, generate approval metadata, change runtime code, or alter TASK/PHASE completion state.
+The exact committed v7 evidence pair was independently reconstructed from the Railway archival payload, byte-hash checked, committed by PR #172, and revalidated with the repository's nearest-rank evidence semantics.
+
+Delivery pooled measurements:
+- queue age p95: `2115.5879497528076 ms`
+- queue age p99: `2862.8649711608887 ms`
+- end-to-end p95: `2242.6178455352783 ms`
+- end-to-end p99: `2987.617015838623 ms`
+- delivery throughput per run: `7.255834504860022`, `7.662130736362523 ops/s`
+- delivery sustainable-throughput evidence minimum: `7.255834504860022 ops/s`
+- delivery pooled throughput: `7.4588430193545845 ops/s`
+
+Reconciliation pooled measurements:
+- reconciliation lag p95: `52.111148834228516 ms`
+- reconciliation lag p99: `64.10813331604004 ms`
+- reconciliation throughput per run: `6.984616965285404`, `6.68274916854904 ops/s`
+- reconciliation throughput minimum: `6.68274916854904 ops/s`
+- reconciliation pooled throughput: `6.833622662890515 ops/s`
+
+These are measured observations, **not approved thresholds**. Canonical `docs/operations/TASK-0023-DELIVERY-SLOS.md` remains `TBD_MEASURED` until explicit human approval.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
@@ -40,17 +58,23 @@ The archival payloads were independently reconstructed outside Railway. Their by
 | 100 | WS-0024-FINAL-GATE | Complete evidence + approved threshold gate | `worker-10/TASK-0024` | final gate + tests |
 | 105 | WS-0024-SOURCE-PINNING | Measured source/final-head separation | `worker-source-pin/TASK-0024` | gate/source-pinning files |
 | 107 | WS-0024-BENCHMARK-ENV | Python validator runtime in immutable benchmark image | `worker-benchmark-env-python/TASK-0024` | benchmark Dockerfile + environment contract test |
-| 108 | WS-0024-EVIDENCE-INTAKE | Commit byte-verified Railway v7 raw evidence only | `worker-evidence-intake/TASK-0024` | two v7 raw evidence JSON files |
-| 110 | WS-0024-CONTROL-ACTIVATION | Coordinate verified evidence intake, human numeric approval and final closeout | `supervisor/task-0024-evidence-intake-activate` | Supervisor control files |
+| 108 | WS-0024-EVIDENCE-INTAKE | Commit byte-verified Railway v7 raw evidence | `worker-evidence-intake/TASK-0024` | two v7 evidence JSON files |
+| 110 | WS-0024-CONTROL-ACTIVATION | Hold on explicit human numeric approval, then coordinate final closeout | `supervisor/task-0024-human-threshold-approval` | Supervisor control files |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Exact next sequence
 
-1. Merge this control transaction with fresh exact-head continuity/application/security checks.
-2. Create `worker-evidence-intake/TASK-0024` from that merged main and commit only `docs/operations/evidence/TASK-0024-delivery-prodrep-07.json` and `docs/operations/evidence/TASK-0024-reconciliation-prodrep-07.json`.
-3. Re-run the repository evidence validator against both committed files and verify their raw SHA-256 values and canonical fingerprints still exactly match the Railway v7 archival deployment.
-4. Merge the evidence-only PR after exact-head required checks and review-thread audit.
-5. Present the exact measured queue-age p95/p99, end-to-end p95/p99, reconciliation-lag p95/p99, sustainable-throughput measurements and both evidence fingerprints to the human Delivery owner. Obtain explicit approval of specific numeric threshold values; do not infer or round them on the owner's behalf.
-6. Only from that explicit approval, activate a bounded closeout lane to commit the approved threshold manifest, resolve canonical `TBD_MEASURED`, and pin the approved evidence revisions.
-7. Run the clean-checkout TASK-0024 certification gate with source `dab9b2002770c45fb9543b733d67e868bdb97d93`, then every exact-head backend/integration/E2E/security/release/continuity gate.
-8. Only after AC-1 through AC-7 pass may TASK-0024 complete and TASK-0025/PHASE-05 activate.
+1. Merge this post-evidence control reconciliation with fresh exact-head continuity/application/security checks.
+2. Present the exact measured values and both evidence fingerprints to the human Delivery owner.
+3. Require explicit approval of **specific numeric values** for:
+   - `queue_age_p95_ms`
+   - `queue_age_p99_ms`
+   - `end_to_end_p95_ms`
+   - `end_to_end_p99_ms`
+   - `sustainable_throughput_ops_s`
+   - `reconciliation_lag_p95_ms`
+   - `reconciliation_lag_p99_ms`
+4. Only after that approval, register a bounded closeout worker lane that may create the approved threshold manifest, replace canonical `TBD_MEASURED` values with exactly the approved numbers, and pin `dab9b2002770c45fb9543b733d67e868bdb97d93` plus fingerprints `3d634f3da23ca069469ec554b0c72746f12d6cdae9fbec7fd72080cad5ff8041` and `01c8b45f929cf44d63926185820ec53977ddf325df740dbb746e3a75f878ba95`.
+5. Run the clean-checkout TASK-0024 certification gate on a descendant acceptance head, requiring the benchmark source to be an ancestor and all committed evidence/manifest inputs to match Git.
+6. Run all final exact-head backend/integration/architecture/static/format/frontend/E2E/security/release/continuity gates.
+7. Only after AC-1 through AC-7 pass may TASK-0024 complete and TASK-0025/PHASE-05 activate.

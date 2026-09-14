@@ -49,7 +49,10 @@ Safety requirements:
   - The database name must visibly identify a benchmark/perf/load/staging/test DB.
   - --ack must exactly equal:
       I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
-  - The checkout HEAD must exactly match --commit-sha.
+  - Source attestation must pass before application bootstrap.
+  - On Railway, --commit-sha, TASK0024_BENCHMARK_SOURCE_SHA, and
+    RAILWAY_GIT_COMMIT_SHA must all be full 40-character SHAs and exactly equal.
+  - Outside Railway, the checkout HEAD must exactly match --commit-sha.
   - No destructive database reset or Redis-wide flush is performed.
 
 Usage:
@@ -257,15 +260,55 @@ function task0024Bootstrap(string $expectedDatabase)
 
 function task0024VerifyCheckout(string $expectedSha): void
 {
-    $process = new Process(['git', 'rev-parse', 'HEAD'], dirname(__DIR__));
-    $process->setTimeout(10);
-    $process->run();
+    $railwayEnvironmentId = trim((string) getenv('RAILWAY_ENVIRONMENT_ID'));
+    if ($railwayEnvironmentId !== '') {
+        $sourceSha = strtolower(trim((string) getenv('TASK0024_BENCHMARK_SOURCE_SHA')));
+        $railwaySha = strtolower(trim((string) getenv('RAILWAY_GIT_COMMIT_SHA')));
 
-    if (! $process->isSuccessful()) {
-        task0024Fail('unable to resolve checkout HEAD: '.trim($process->getErrorOutput()));
+        if ($sourceSha === '') {
+            task0024Fail('TASK0024_BENCHMARK_SOURCE_SHA is required on Railway');
+        }
+        if (preg_match('/^[0-9a-f]{40}$/', $sourceSha) !== 1) {
+            task0024Fail('TASK0024_BENCHMARK_SOURCE_SHA must be a 40-character hexadecimal Git SHA on Railway');
+        }
+        if ($railwaySha === '') {
+            task0024Fail('RAILWAY_GIT_COMMIT_SHA is required on Railway');
+        }
+        if (preg_match('/^[0-9a-f]{40}$/', $railwaySha) !== 1) {
+            task0024Fail('RAILWAY_GIT_COMMIT_SHA must be a 40-character hexadecimal Git SHA on Railway');
+        }
+        if ($sourceSha !== $expectedSha) {
+            task0024Fail('--commit-sha does not match TASK0024_BENCHMARK_SOURCE_SHA on Railway');
+        }
+        if ($railwaySha !== $expectedSha) {
+            task0024Fail('--commit-sha does not match RAILWAY_GIT_COMMIT_SHA on Railway');
+        }
+
+        return;
     }
 
-    if (strtolower(trim($process->getOutput())) !== $expectedSha) {
+    $pipes = [];
+    $process = proc_open(
+        ['git', 'rev-parse', 'HEAD'],
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        dirname(__DIR__),
+    );
+    if (! is_resource($process)) {
+        task0024Fail('unable to start git for checkout source attestation');
+    }
+
+    $stdout = stream_get_contents($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    $exitCode = proc_close($process);
+
+    if ($exitCode !== 0) {
+        task0024Fail('unable to resolve checkout HEAD: '.trim((string) $stderr));
+    }
+
+    if (strtolower(trim((string) $stdout)) !== $expectedSha) {
         task0024Fail('checkout HEAD does not match --commit-sha');
     }
 }
@@ -703,8 +746,8 @@ function task0024WorkerMain(string $encodedPayload): void
 /** @return never */
 function task0024ParentMain(array $options): void
 {
-    task0024Bootstrap($options['database']);
     task0024VerifyCheckout($options['commit_sha']);
+    task0024Bootstrap($options['database']);
 
     $output = $options['output'];
     $directory = dirname($output);

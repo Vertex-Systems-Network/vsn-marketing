@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0025",
+  "phase": "PHASE-05",
+  "module": "Delivery",
+  "title": "Research current deliverability, sender-authentication, provider, and jurisdictional requirements",
+  "status": "planned",
+  "objective": "Freeze an evidence-backed PHASE-05 sender-authentication, suppression, deliverability and jurisdiction policy contract from current official sources before any production-capable sender-domain implementation begins.",
+  "dependencies": [
+    "TASK-0024"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "A dated official-source evidence pack covers current Gmail, Yahoo and Outlook sender-authentication, bulk/high-volume sender, unsubscribe and enforcement requirements without converting provider-specific rules into unsupported universal constants",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "RFC 8058 one-click unsubscribe semantics and DKIM/header requirements are mapped to explicit platform implementation and adversarial-test requirements",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "US CAN-SPAM, UK PECR and EU ePrivacy/GDPR direct-marketing, opt-out/objection and subscriber-context findings are recorded with source provenance, effective-date awareness and explicit limits on legal generalization",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Research findings are classified into PHASE-05 prerequisites, acceptance criteria, configurable provider/jurisdiction policy, open research items and explicit non-goals while preserving deterministic consent/suppression authority",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "No live DNS mutation, sender-domain production activation, provider credential use, anti-abuse evasion, suppression bypass, PHASE-06 content studio or PHASE-07 campaign implementation is introduced by this research task",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "AI continuity, research-first, policy, parallel-development and context-manifest validation are green on the exact acceptance head before TASK-0026 activation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest"
+  ],
+  "exact_next_action": "Review the dated TASK-0025 official-source research evidence, freeze provider-versioned authentication/bulk-sender rules, RFC 8058 unsubscribe semantics, deterministic suppression and jurisdiction-context policy requirements, then complete TASK-0025 and activate TASK-0026 only after exact-head continuity/research gates pass."
+}

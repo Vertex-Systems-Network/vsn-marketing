@@ -1,11 +1,13 @@
 # AI-Native Parallel Plan — TASK-0024 PHASE-04 Delivery Certification
 
-Status: **active — external-evidence hold**. TASK-0024 remains the canonical PHASE-04 certification task. All currently authorized repository implementation/hardening lanes are merged. PHASE-05 remains blocked until the external production-representative benchmark evidence and explicit human Delivery-owner threshold approval required by AC-4 are committed and pass the final exact-head certification gate.
+Status: **active — benchmark-environment activation under external-evidence hold**. TASK-0024 remains the canonical PHASE-04 certification task. The user has explicitly authorized proceeding with a dedicated production-representative non-production benchmark environment and capture flow. PHASE-05 remains blocked until real benchmark evidence and explicit human Delivery-owner approval of the resulting numeric threshold set are committed and pass the final exact-head certification gate.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task-0024-external-evidence-v3`  
-Trusted baseline: `c48275f85c43879be45ee7044d1532067c618321`  
+Control branch: `supervisor/task-0024-benchmark-env-activate`  
+Trusted baseline: `53b1513d5193968311bc372ab665dcb006c8e3a7`  
+Benchmark source candidate: `53b1513d5193968311bc372ab665dcb006c8e3a7`  
 Broadcast channel: GitHub issue #43  
+Benchmark tracking: GitHub issue #149  
 Completion signal: `Work Done and Submitted`
 
 TASK-0023 is complete, but PHASE-04 is not certified. Environment-sensitive queue-age, end-to-end latency, sustainable-throughput and reconciliation-lag thresholds remain `TBD_MEASURED`. Hosted-CI wall-clock duration is not production SLO evidence. No numeric threshold may be invented, and no AI agent may impersonate the Delivery owner.
@@ -19,7 +21,9 @@ The TASK-0024 source-pinning hardening is merged on main via PR #144. The certif
 
 The final acceptance head must derive from the benchmark source commit. The gate verifies ancestry instead of impossible SHA equality, runs from a clean committed checkout, accepts only tracked committed evidence/threshold artifacts, and always uses the canonical TASK-0023 SLO contract. Sustainable-throughput evidence remains hardened: every measured run must cover its declared `scenario.measurement_window_seconds`.
 
-Canonical ledger reconciliation is merged on main via PR #146 at `c48275f85c43879be45ee7044d1532067c618321`. TASK-0024 task/index/state, BLOCKERS, LAST-CHECKPOINT and append-only journal event #57 now consistently record the AC-4 external-evidence block. The active Supervisor lane is therefore narrowed back to control-plane coordination only until real benchmark evidence and human approval arrive.
+Canonical ledger reconciliation is merged on main via PR #146. TASK-0024 task/index/state, BLOCKERS, LAST-CHECKPOINT and append-only journal event #57 consistently record the AC-4 external-evidence block. PR #148 then parked the Supervisor on the external-evidence hold. The user's subsequent approval authorizes benchmark-environment provisioning/capture work but does **not** pre-approve numeric thresholds that have not yet been measured.
+
+Repository/runtime inspection confirmed the existing `docker/app/Dockerfile` and `compose.yaml` are developer-oriented: the Dockerfile does not copy repository source into the image and Compose relies on bind-mounted source. They must not be represented as an immutable production-representative hosted benchmark deployment without a dedicated benchmark runtime. `WS-0024-BENCHMARK-ENV` therefore owns only the isolated benchmark deployment image/config/runbook and its tests. It must not generate evidence, infer thresholds, or modify canonical SLO values.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Capability | Branch | Write scope |
@@ -37,8 +41,24 @@ Canonical ledger reconciliation is merged on main via PR #146 at `c48275f85c4387
 | 90 | WS-0024-SECURITY-CERT | Cross-workspace, redaction and policy-denial security certification | `worker-9/TASK-0024` | security certification test |
 | 100 | WS-0024-FINAL-GATE | Deterministic complete-evidence + approved-threshold gate | `worker-10/TASK-0024` | certification gate + test |
 | 105 | WS-0024-SOURCE-PINNING | Separate measured benchmark source SHA from the later artifact-containing final acceptance head | `worker-source-pin/TASK-0024` | certification contract, final gate, gate tests |
-| 110 | WS-0024-CONTROL-ACTIVATION | Maintain fail-closed external-evidence hold and coordinate evidence intake/final closeout | `supervisor/task-0024-external-evidence-v3` | Supervisor control files |
+| 107 | WS-0024-BENCHMARK-ENV | Build an immutable, source-containing production-style benchmark runtime and hosted deployment contract for dedicated PostgreSQL + Redis capture without generating evidence or thresholds | `worker-benchmark-env/TASK-0024` | benchmark Docker/config/runbook/tests |
+| 110 | WS-0024-CONTROL-ACTIVATION | Coordinate benchmark-environment activation, evidence intake and final closeout while preserving the fail-closed TASK-0024 gate | `supervisor/task-0024-benchmark-env-activate` | Supervisor control files |
 <!-- WORKSTREAM_TABLE_END -->
+
+## Benchmark-environment activation
+
+The user has authorized proceeding with a dedicated production-representative non-production benchmark environment. Railway is the currently selected hosted path because it can colocate an application service, PostgreSQL and Redis on one private project network, but the Railway plugin is not yet installed/connected in this session. No paid resource may be created until the connected provider presents an applicable plan/cost state that is covered by user authorization.
+
+`WS-0024-BENCHMARK-ENV` must:
+
+1. build an immutable PHP runtime that copies the exact repository source into the image and installs locked Composer dependencies;
+2. preserve the PHP/PostgreSQL/Redis runtime contracts used by TASK-0024 capture, including `pcntl`, `pdo_pgsql` and `phpredis`;
+3. provide a provider-neutral benchmark entrypoint/config that fails closed unless `APP_ENV=benchmark` and a clearly benchmark/perf/load/staging/test database is configured;
+4. use environment-provided secrets and private service connectivity; no credential may be committed;
+5. document Railway mapping separately from the generic runtime, including private PostgreSQL/Redis variable references and the custom benchmark Dockerfile path;
+6. avoid running the benchmark automatically at deploy time; an operator-triggered capture must use the exact source SHA and explicit safety acknowledgement;
+7. add deterministic repository tests that inspect the benchmark runtime/config contract without contacting external infrastructure;
+8. leave evidence JSON, approved threshold manifests, canonical `TBD_MEASURED` values and PHASE-05 code outside this workstream.
 
 ## External evidence gate
 
@@ -54,8 +74,6 @@ TASK-0024 remains blocked until all of the following are supplied from one dedic
 8. Canonical `docs/operations/TASK-0023-DELIVERY-SLOS.md` `TBD_MEASURED` values are replaced only from that human-approved threshold set.
 9. From a clean final checkout, `tools/task0024_certification_gate.py` is invoked with `--source-commit <BENCHMARK_SOURCE_SHA>` and only committed repository evidence/threshold paths; it resolves the final acceptance HEAD itself and verifies source ancestry.
 10. All applicable exact-head application, integration, architecture, static, format, frontend, E2E, security, release/integrity, and AI-continuity checks pass on the same final acceptance head.
-
-No connected production-representative benchmark environment has been identified from this session, so the Supervisor must not fabricate benchmark evidence, create paid/production infrastructure without authorization, invent numeric thresholds, or auto-fill Delivery-owner approval.
 
 ## Final closeout
 

@@ -4,7 +4,7 @@
   "phase": "PHASE-04",
   "module": "Delivery",
   "title": "Certify PHASE-04 delivery safety, reliability, and performance gates",
-  "status": "ready",
+  "status": "blocked",
   "objective": "Close PHASE-04 only after canonical delivery inputs, queue/rate controls, failure recovery, policy safety, production-parity integration and measured reliability/performance evidence are jointly proven on the exact acceptance head.",
   "dependencies": [
     "TASK-0023"
@@ -61,5 +61,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Run a PHASE-04-wide exact-head certification over delivery inputs, queue controls, retry/failover safety, tenant/policy isolation and measured production-parity reliability/performance evidence; block completion on any unmet exit criterion."
+  "exact_next_action": "Capture and validate delivery plus reconciliation benchmark evidence on one dedicated production-representative non-production environment from an exact benchmark source commit, obtain explicit human Delivery-owner approval of the numeric threshold manifest and evidence fingerprints, commit those artifacts, resolve canonical TASK-0023 TBD_MEASURED values from that approval, then run the clean-checkout TASK-0024 final certification gate and all exact-head checks."
 }

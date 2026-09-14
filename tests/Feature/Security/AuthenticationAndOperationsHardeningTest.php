@@ -57,7 +57,7 @@ it('rate limits repeated login attempts against one account even when source IP 
             'email' => 'target@example.test',
             'password' => 'wrong-password',
         ])
-        ->assertTooManyRequests();
+        ->assertStatus(429);
 });
 
 it('rate limits one source IP even when attempted account identifiers rotate', function () {
@@ -75,5 +75,5 @@ it('rate limits one source IP even when attempted account identifiers rotate', f
             'email' => 'attempt-21@example.test',
             'password' => 'wrong-password',
         ])
-        ->assertTooManyRequests();
+        ->assertStatus(429);
 });

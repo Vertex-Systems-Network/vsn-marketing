@@ -19,7 +19,8 @@
       "status": "active",
       "write_paths": [
         "docs/operations/evidence/TASK-0024-thresholds-v7.json",
-        "docs/operations/TASK-0023-DELIVERY-SLOS.md"
+        "docs/operations/TASK-0023-DELIVERY-SLOS.md",
+        ".github/workflows/task0024-final-certification.yml"
       ]
     }
   ]

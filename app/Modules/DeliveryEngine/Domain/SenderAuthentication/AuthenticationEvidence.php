@@ -32,7 +32,7 @@ final readonly class AuthenticationEvidence
             'sourceType' => $this->sourceType,
         ] as $name => $value) {
             if (trim($value) === '') {
-                throw new InvalidArgumentException($name . ' must not be empty.');
+                throw new InvalidArgumentException($name.' must not be empty.');
             }
         }
 
@@ -70,12 +70,12 @@ final readonly class AuthenticationEvidence
     private static function assertRedacted(array $payload, string $path): void
     {
         foreach ($payload as $key => $value) {
-            $current = $path . '.' . (string) $key;
+            $current = $path.'.'.(string) $key;
             $normalized = strtolower((string) $key);
 
             foreach (['password', 'secret', 'private_key', 'signing_key', 'api_key', 'access_token', 'refresh_token', 'credential', 'authorization'] as $fragment) {
                 if (str_contains($normalized, $fragment)) {
-                    throw new InvalidArgumentException('Authentication audit evidence must not contain secret material at ' . $current . '.');
+                    throw new InvalidArgumentException('Authentication audit evidence must not contain secret material at '.$current.'.');
                 }
             }
 
@@ -86,11 +86,11 @@ final readonly class AuthenticationEvidence
             }
 
             if (is_object($value) || is_resource($value)) {
-                throw new InvalidArgumentException('Authentication evidence must be JSON-safe at ' . $current . '.');
+                throw new InvalidArgumentException('Authentication evidence must be JSON-safe at '.$current.'.');
             }
 
             if (is_string($value) && preg_match('/-----BEGIN (?:ENCRYPTED )?(?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i', $value) === 1) {
-                throw new InvalidArgumentException('Authentication audit evidence must not contain private key material at ' . $current . '.');
+                throw new InvalidArgumentException('Authentication audit evidence must not contain private key material at '.$current.'.');
             }
         }
     }

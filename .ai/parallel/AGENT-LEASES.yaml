@@ -1,27 +1,4 @@
 {
   "schema_version": 2,
-  "leases": [
-    {
-      "agent": "supervisor-main",
-      "workstream": "WS-0024-CONTROL-ACTIVATION",
-      "branch": "supervisor/task-0024-final-closeout-activate",
-      "status": "active",
-      "write_paths": [
-        ".ai/parallel/AI-NATIVE-PLAN.md",
-        ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        ".github/workflows/task0024-final-certification.yml"
-      ]
-    },
-    {
-      "agent": "worker-task0024-threshold-closeout",
-      "workstream": "WS-0024-THRESHOLD-CLOSEOUT",
-      "branch": "worker-threshold-closeout/TASK-0024",
-      "status": "active",
-      "write_paths": [
-        "docs/operations/evidence/TASK-0024-thresholds-v7.json",
-        "docs/operations/TASK-0023-DELIVERY-SLOS.md"
-      ]
-    }
-  ]
+  "leases": []
 }

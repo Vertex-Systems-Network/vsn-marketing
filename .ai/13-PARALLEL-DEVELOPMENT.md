@@ -87,7 +87,7 @@ When canonical agent-working behavior changes, the same PR must:
 
 1. update the relevant canonical instruction source;
 2. review/update the top-level README agent section;
-3. bump `.ai/parallel/CONTROL.yaml` instruction revision when behavior materially changes;
+3. bump `.ai/parallel/CONTROL.yaml` instruction revision when behavior changes materially;
 4. recompute its deterministic instruction fingerprint;
 5. copy the same revision/fingerprint into README;
 6. pass `python tools/ai_parallel.py validate`.
@@ -101,6 +101,7 @@ Registered workstream PRs target `main` and default to squash merge. Merge group
 When `.ai/parallel/WEEK-1-SHIPPING-PLAN.md` is ACTIVE, `ship/week-1` is the sprint integration branch while `main` remains the protected release boundary.
 
 - Writable implementation is limited to five primary lanes: backend, frontend, delivery, data, and QA/release. Additional agents may review or research read-only work but must not create overlapping writes.
+- Grandfathered drain exception: workstreams already registered and occupied for the active task when Shipping Mode was activated may finish without being terminated solely to reach the five-writer target. No new writable slot may be added or reassigned above five during that drain. `TASK-0026` is the activation-time grandfathered task; after its transition, the five-writer shipping cap is hard.
 - Sprint feature/workstream PRs target `ship/week-1` unless the Supervisor explicitly marks a change as main-only governance/release work.
 - Before submission or resume, a sprint branch must contain the latest `ship/week-1` baseline and pass the `Shipping Fast Gate`.
 - A merge/push to `ship/week-1` runs the full Application Foundation and AI Continuity integration wave.

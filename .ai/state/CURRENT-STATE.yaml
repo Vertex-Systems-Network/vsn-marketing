@@ -25,5 +25,5 @@
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },
   "blockers": [],
-  "exact_next_action": "Map the accepted TASK-0025 provider/authentication evidence onto the existing provider, tenancy, secret-reference, audit and delivery modules; freeze the minimal sender-domain/sender-identity persistence and policy contracts; then implement the foundation in dependency-safe workstreams without live DNS mutation or production sender activation."
+  "exact_next_action": "Land the TASK-0026 Supervisor foundation in PR #184 after its exact-head continuity, application and security gates pass; then fast-forward all nine registered worker branches to the resulting main and execute Wave 1 domain, authentication-evidence and provider-policy contracts in parallel without live DNS mutation or production sender activation."
 }

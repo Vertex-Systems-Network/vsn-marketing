@@ -8,7 +8,7 @@ use InvalidArgumentException;
 final readonly class AuthenticationEvidenceEvaluator
 {
     /**
-     * @param list<AuthenticationEvidence> $evidence
+     * @param  list<AuthenticationEvidence>  $evidence
      */
     public function evaluate(
         string $workspaceId,
@@ -128,7 +128,7 @@ final readonly class AuthenticationEvidenceEvaluator
     }
 
     /**
-     * @param list<AuthenticationEvidence> $candidates
+     * @param  list<AuthenticationEvidence>  $candidates
      */
     private static function latestObservationContradicts(array $candidates, AuthenticationEvidence $latest): bool
     {

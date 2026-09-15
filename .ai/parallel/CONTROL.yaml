@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.2.0",
-  "instruction_revision": "parallel-v2.2-week1-shipping",
+  "protocol_version": "2.2.1",
+  "instruction_revision": "parallel-v2.2.1-week1-shipping",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "31b5c7010cef875bd5c044e2caf3277c9d5bc7ec31ec7bfa29d63529eefc7e94",
+  "instruction_fingerprint": "5418c6b0b04076a29687bc05ab12e4c4ce392091b47b06b106c3ae9f4f82c5bc",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -29,6 +29,8 @@
   "shipping_mode": true,
   "shipping_integration_branch": "ship/week-1",
   "shipping_max_concurrent_writers": 5,
+  "shipping_grandfathered_task": "TASK-0026",
+  "shipping_grandfathered_existing_slots_only": true,
   "shipping_fast_gate_workflow": "Shipping Fast Gate",
   "shipping_full_application_on_integration_push": true,
   "shipping_full_security_on_main_promotion": true

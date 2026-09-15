@@ -5,13 +5,17 @@ import unittest
 
 from persistent_supervisor import (
     REQUIRED_CI,
+    SHIPPING_FAST_CI,
     classify_ci,
     evaluate_pr,
     find_status_issue,
     issue_needs_update,
     main_is_ancestor,
     render_status,
+    shipping_enabled,
     standalone,
+    workstream_required_ci,
+    workstream_target_branch,
     workstreams_by_branch,
 )
 
@@ -29,7 +33,7 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
             "branch": "supervisor/task-0101-persistent-control-plane",
         }
 
-    def runs(self, conclusion: str = "success") -> list[dict]:
+    def runs(self, conclusion: str = "success", required: tuple[str, ...] = REQUIRED_CI) -> list[dict]:
         return [
             {
                 "id": index + 1,
@@ -39,10 +43,10 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
                 "conclusion": conclusion,
                 "created_at": f"2026-09-10T00:00:0{index}Z",
             }
-            for index, name in enumerate(REQUIRED_CI)
+            for index, name in enumerate(required)
         ]
 
-    def pr(self, *, body: str | None = None, draft: bool = False) -> dict:
+    def pr(self, *, body: str | None = None, draft: bool = False, base: str = "main") -> dict:
         return {
             "number": 100,
             "body": body if body is not None else (
@@ -56,7 +60,7 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
                 "repo": {"full_name": "Vertex-Systems-Network/vsn-marketing"},
             },
             "base": {
-                "ref": "main",
+                "ref": base,
                 "repo": {"full_name": "Vertex-Systems-Network/vsn-marketing"},
             },
         }
@@ -76,6 +80,50 @@ class PersistentSupervisorPolicyTest(unittest.TestCase):
         }
         mapping = workstreams_by_branch(registry)
         self.assertEqual(mapping, {self.workstream["branch"]: self.workstream})
+
+    def test_shipping_policy_changes_workstream_target_and_required_ci_only_when_enabled(self) -> None:
+        self.assertFalse(shipping_enabled(self.control))
+        self.assertEqual(workstream_target_branch(self.control), "main")
+        self.assertEqual(workstream_required_ci(self.control), REQUIRED_CI)
+
+        shipping = {
+            **self.control,
+            "shipping_mode": True,
+            "shipping_integration_branch": "ship/week-1",
+        }
+        self.assertTrue(shipping_enabled(shipping))
+        self.assertEqual(workstream_target_branch(shipping), "ship/week-1")
+        self.assertEqual(workstream_required_ci(shipping), SHIPPING_FAST_CI)
+
+        evaluated = evaluate_pr(
+            self.pr(base="ship/week-1"),
+            self.workstream,
+            shipping,
+            self.main,
+            {"status": "ahead", "behind_by": 0},
+            self.runs(required=SHIPPING_FAST_CI),
+        )
+        self.assertTrue(evaluated["review_ready"])
+        self.assertEqual(evaluated["target_branch"], "ship/week-1")
+        self.assertEqual(evaluated["ci"], {"Shipping Fast Gate": "success"})
+
+    def test_shipping_policy_rejects_old_main_target(self) -> None:
+        shipping = {
+            **self.control,
+            "shipping_mode": True,
+            "shipping_integration_branch": "ship/week-1",
+        }
+        evaluated = evaluate_pr(
+            self.pr(base="main"),
+            self.workstream,
+            shipping,
+            self.main,
+            {"status": "ahead", "behind_by": 0},
+            self.runs(required=SHIPPING_FAST_CI),
+        )
+        self.assertFalse(evaluated["review_ready"])
+        self.assertFalse(evaluated["checks"]["targets_main"])
+        self.assertIn("ship/week-1", " ".join(evaluated["blockers"]))
 
     def test_main_ancestry_fails_closed(self) -> None:
         self.assertTrue(main_is_ancestor({"status": "ahead", "behind_by": 0}))

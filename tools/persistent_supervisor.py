@@ -29,6 +29,7 @@ REQUIRED_CI = (
     "Application Foundation CI",
     "Security Supply Chain CI",
 )
+SHIPPING_FAST_CI = ("Shipping Fast Gate",)
 
 
 class GitHubApiError(RuntimeError):
@@ -59,6 +60,20 @@ def workstreams_by_branch(registry: dict[str, Any]) -> dict[str, dict[str, Any]]
         if isinstance(branch, str) and branch and isinstance(wid, str) and wid:
             result[branch] = row
     return result
+
+
+def shipping_enabled(control: dict[str, Any]) -> bool:
+    return control.get("shipping_mode") is True and bool(str(control.get("shipping_integration_branch", "")).strip())
+
+
+def workstream_target_branch(control: dict[str, Any]) -> str:
+    if shipping_enabled(control):
+        return str(control.get("shipping_integration_branch")).strip()
+    return str(control.get("protected_main_branch", "main"))
+
+
+def workstream_required_ci(control: dict[str, Any]) -> tuple[str, ...]:
+    return SHIPPING_FAST_CI if shipping_enabled(control) else REQUIRED_CI
 
 
 def main_is_ancestor(compare: object) -> bool:
@@ -120,12 +135,14 @@ def evaluate_pr(
     body = str(pr.get("body") or "")
     wid = str(workstream.get("id", ""))
     completion_signal = str(control.get("required_completion_signal", "Work Done and Submitted"))
-    ci = classify_ci(runs, head_sha)
+    target_branch = workstream_target_branch(control)
+    required_ci = workstream_required_ci(control)
+    ci = classify_ci(runs, head_sha, required_ci)
     head_repo_name = head_repo.get("full_name")
     base_repo_name = base_repo.get("full_name")
 
     checks = {
-        "targets_main": base.get("ref") == control.get("protected_main_branch", "main"),
+        "targets_main": base.get("ref") == target_branch,
         "same_repository": bool(head_repo_name) and head_repo_name == base_repo_name,
         "non_draft": pr.get("draft") is False,
         "workstream_marker": standalone(body, f"Workstream: {wid}"),
@@ -135,13 +152,13 @@ def evaluate_pr(
     }
     blockers: list[str] = []
     labels = {
-        "targets_main": "PR does not target protected main",
+        "targets_main": f"PR does not target required integration branch `{target_branch}`",
         "same_repository": "PR head is not the registered base repository",
         "non_draft": "PR is draft",
         "workstream_marker": "registered Workstream marker missing",
         "completion_signal": f"exact standalone `{completion_signal}` signal missing",
-        "contains_current_main": f"PR head does not contain current main {main_sha}",
-        "exact_head_ci": "required exact-head CI is not fully successful",
+        "contains_current_main": f"PR head does not contain current integration baseline {main_sha}",
+        "exact_head_ci": f"required exact-head CI is not fully successful ({', '.join(required_ci)})",
     }
     for key, ok in checks.items():
         if not ok:
@@ -151,6 +168,7 @@ def evaluate_pr(
         "number": int(pr.get("number", 0) or 0),
         "workstream": wid,
         "branch": str(head.get("ref", "")),
+        "target_branch": target_branch,
         "head_sha": head_sha,
         "draft": bool(pr.get("draft")),
         "checks": checks,
@@ -222,8 +240,8 @@ def render_status(
         lines.append("None.")
     else:
         lines.extend([
-            "| PR | Workstream | Head | Completion | Main ancestry | Required CI | Review ready |",
-            "|---:|---|---|---|---|---|---|",
+            "| PR | Workstream | Target | Head | Completion | Baseline ancestry | Required CI | Review ready |",
+            "|---:|---|---|---|---|---|---|---|",
         ])
         for pr in sorted(prs, key=lambda row: int(row.get("number", 0))):
             checks = pr.get("checks", {})
@@ -232,7 +250,7 @@ def render_status(
             ci = "green" if checks.get("exact_head_ci") else "blocked"
             ready = "yes" if pr.get("review_ready") else "no"
             lines.append(
-                f"| #{pr.get('number')} | `{pr.get('workstream')}` | `{_short(str(pr.get('head_sha', '')))}` | {completion} | {ancestry} | {ci} | {ready} |"
+                f"| #{pr.get('number')} | `{pr.get('workstream')}` | `{pr.get('target_branch', 'main')}` | `{_short(str(pr.get('head_sha', '')))}` | {completion} | {ancestry} | {ci} | {ready} |"
             )
 
     lines.extend(["", "## Actionable blockers", ""])
@@ -321,6 +339,14 @@ def runs_for_head(client: GitHubClient, repo: str, sha: str) -> list[dict[str, A
     return [row for row in rows if isinstance(row, dict)]
 
 
+def resolve_branch_sha(client: GitHubClient, repo: str, branch: str) -> str:
+    ref = client.get(f"/repos/{repo}/git/ref/heads/{urllib.parse.quote(branch, safe='')}")
+    sha = str((ref.get("object") or {}).get("sha", "")) if isinstance(ref, dict) else ""
+    if len(sha) != 40:
+        raise GitHubApiError(f"could not resolve branch SHA for {branch}")
+    return sha
+
+
 def reconcile() -> int:
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
     token = os.environ.get("GITHUB_TOKEN", "")
@@ -333,14 +359,12 @@ def reconcile() -> int:
     registry = load_json_yaml(WORKSTREAMS_PATH)
     client = GitHubClient(token, api_url)
     main_branch = str(control.get("protected_main_branch", "main"))
-
-    ref = client.get(f"/repos/{repo}/git/ref/heads/{urllib.parse.quote(main_branch, safe='')}")
-    main_sha = str((ref.get("object") or {}).get("sha", "")) if isinstance(ref, dict) else ""
-    if len(main_sha) != 40:
-        raise GitHubApiError("could not resolve protected main SHA")
+    main_sha = resolve_branch_sha(client, repo, main_branch)
 
     main_runs = runs_for_head(client, repo, main_sha)
     main_ci = classify_ci(main_runs, main_sha)
+    target_branch = workstream_target_branch(control)
+    target_sha = main_sha if target_branch == main_branch else resolve_branch_sha(client, repo, target_branch)
     mapping = workstreams_by_branch(registry)
     open_prs = client.get_all(f"/repos/{repo}/pulls?state=open")
     evaluated: list[dict[str, Any]] = []
@@ -358,14 +382,14 @@ def reconcile() -> int:
         compare: object = None
         if len(head_sha) == 40:
             try:
-                compare = client.get(f"/repos/{repo}/compare/{main_sha}...{head_sha}")
+                compare = client.get(f"/repos/{repo}/compare/{target_sha}...{head_sha}")
             except GitHubApiError:
                 compare = None
         try:
             pr_runs: object = runs_for_head(client, repo, head_sha) if len(head_sha) == 40 else []
         except GitHubApiError:
             pr_runs = []
-        evaluated.append(evaluate_pr(pr, workstream, control, main_sha, compare, pr_runs))
+        evaluated.append(evaluate_pr(pr, workstream, control, target_sha, compare, pr_runs))
 
     health, body = render_status(state, registry, main_sha, main_ci, evaluated)
     issue = find_status_issue(client, repo)
@@ -392,7 +416,7 @@ def reconcile() -> int:
         comment = (
             f"{marker}\n"
             "**SUPERVISOR REVIEW READY**\n\n"
-            f"Exact head `{pr['head_sha']}` contains current main `{main_sha}` and all required exact-head CI workflows are green.\n\n"
+            f"Exact head `{pr['head_sha']}` contains current `{pr.get('target_branch', 'integration')}` baseline and all required exact-head CI workflows are green.\n\n"
             "This is deterministic triage only. It is not approval and does not authorize merge."
         )
         client.post(f"/repos/{repo}/issues/{number}/comments", {"body": comment})

@@ -21,6 +21,8 @@ The repository is the memory. Before changing anything, every agent MUST read, i
 13. the active task referenced by `CURRENT-STATE.yaml`
 14. relevant ADRs, contracts, AI registries, research packs, and phase document
 
+When `.ai/parallel/WEEK-1-SHIPPING-PLAN.md` is ACTIVE, every sprint agent MUST read it before writable work. It temporarily changes the sprint integration target to `ship/week-1`; `main` remains the protected release boundary.
+
 Then run:
 
 ```bash
@@ -63,16 +65,17 @@ python tools/ai_parallel.py sync-check
 - Before a declared parallel cycle begins, branch creation for every worker/Supervisor workstream is the Supervisor's first repository mutation. Planning/code writes must not precede branch creation.
 - Normal worker/research agents MUST NOT write Supervisor-owned paths from `.ai/parallel/SHARED-PATHS.yaml`; they escalate shared changes instead.
 - A non-draft registered workstream PR is not submitted until it contains `Workstream: <ID>` and the exact completion signal `Work Done and Submitted`.
-- A submitted workstream PR preempts optional Supervisor implementation work. The Supervisor pauses, reviews, merges only approved/current-main/green work, broadcasts the merge, synchronizes its own branch, then resumes.
+- A submitted workstream PR preempts optional Supervisor implementation work. The Supervisor pauses, reviews, merges only approved/current-baseline/green work, broadcasts the merge, synchronizes its own branch, then resumes.
 - After every workstream merge, the Supervisor sends the exact alert `New changes have been merged — please merge these changes into your branch first, then resume your own work.` to GitHub issue #43 and every other open registered workstream PR.
-- Every active worker must merge/pull latest `main`, pass `python tools/ai_parallel.py sync-check`, and rerun affected fast checks before resuming after an alert.
+- During Week-1 Shipping Mode, sprint feature/workstream PRs target `ship/week-1`, every worker synchronizes latest `ship/week-1` before resume/submission, and `Shipping Fast Gate` is mandatory before integration merge. Outside Shipping Mode, the normal `main` target/sync rules apply.
+- A merge/push to `ship/week-1` is an integration wave and must pass full Application Foundation CI plus AI Continuity before dependent lanes consume it. Promotion from `ship/week-1` to `main` retains all protected-main application, security and governance gates.
 - Canonical agent-working instruction changes MUST update `.ai/parallel/CONTROL.yaml` and the matching instruction revision/fingerprint plus working guidance in `README.md` in the same PR; stale README instructions are a CI failure.
 
 ## Parallel Supervisor interrupt protocol
 
-A registered non-draft pull request containing the exact standalone line `Work Done and Submitted` is a durable submission interrupt. When one appears, the Supervisor must pause its own module work at a safe checkpoint, review the submission, verify current-main ancestry and required exact-head CI, merge if approved, broadcast the required alert to issue #43 and all remaining open workstream PRs, synchronize the Supervisor branch with the new main SHA, rerun affected checks, and only then resume its paused work.
+A registered non-draft pull request containing the exact standalone line `Work Done and Submitted` is a durable submission interrupt. When one appears, the Supervisor must pause its own module work at a safe checkpoint, review the submission, verify current integration-baseline ancestry and required exact-head CI, merge if approved, broadcast the required alert to issue #43 and all remaining open workstream PRs, synchronize the Supervisor branch with the active integration baseline, rerun affected checks, and only then resume its paused work.
 
-A worker receiving the alert must stop before another write, merge/pull latest `main`, resolve only owned-path conflicts (escalating shared conflicts), run `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume. Chat-only completion/alert messages are not durable repository evidence; PRs and the broadcast issue are the persistent coordination surfaces.
+A worker receiving the alert must stop before another write, merge/pull the active integration baseline (`ship/week-1` during Week-1 Shipping Mode; otherwise `main`), resolve only owned-path conflicts (escalating shared conflicts), rerun affected fast checks, and only then resume. Chat-only completion/alert messages are not durable repository evidence; PRs and the broadcast issue are the persistent coordination surfaces.
 
 ## Research-first protocol
 

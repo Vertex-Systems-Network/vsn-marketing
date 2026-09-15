@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0026",
+  "phase": "PHASE-05",
+  "module": "Delivery",
+  "title": "Implement sender domains and sender identities",
+  "status": "planned",
+  "objective": "Implement a workspace-scoped, provider-aware sender-domain and sender-identity foundation that preserves separately versioned authentication evidence, deterministic verification state, secret-reference boundaries, and fail-closed policy context without performing unapproved live DNS or production sending activation.",
+  "dependencies": [
+    "TASK-0025"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical workspace-scoped sender-domain and sender-identity records exist with deterministic lifecycle/state transitions, idempotent creation/update semantics, immutable identity/audit evidence where required, and cross-workspace isolation enforced by persistence and authorization boundaries",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "SPF, DKIM, DMARC, From-domain alignment, forward/reverse DNS and TLS readiness are represented as separate timestamped/versioned evidence rather than a single verified boolean, with stale/unknown evidence unable to silently become verified",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Mailbox-provider requirements and bulk/high-volume classification inputs are effective-dated/provider-versioned policy data with provenance; Gmail and Outlook numeric thresholds are not promoted into a universal constant and Yahoo remains configurable where the official evidence does not publish a universal numeric threshold",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "DNS/provider credentials and private signing material are never embedded in canonical sender records or audit payloads; only approved secret references, public verification material and redacted evidence may cross the domain boundary",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Verification/synchronization operations are deterministic, idempotent, timeout/ambiguous-outcome aware and auditable, and production-capable DNS mutation or sender activation remains separately gated rather than occurring implicitly during record creation or verification",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Sender identity eligibility exposes explicit purpose/provider/policy context for later suppression and safe-sending evaluation without creating consent, bypassing suppression/objection authority, or implementing TASK-0027/TASK-0028 policy early",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Adversarial tests cover cross-workspace access, stale or contradictory authentication evidence, malformed provider policy, replay/idempotency, secret leakage, ambiguous provider outcomes and fail-closed unknown context without anti-abuse evasion behavior",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "AI continuity, architecture, application, security-supply-chain, parallel-development and exact-head acceptance gates are green before TASK-0027 activation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "composer test",
+    "composer analyse",
+    "npm test",
+    "npm run build"
+  ],
+  "exact_next_action": "Map the accepted TASK-0025 provider/authentication evidence onto the existing provider, tenancy, secret-reference, audit and delivery modules; freeze the minimal sender-domain/sender-identity persistence and policy contracts; then implement the foundation in dependency-safe workstreams without live DNS mutation or production sender activation."
+}

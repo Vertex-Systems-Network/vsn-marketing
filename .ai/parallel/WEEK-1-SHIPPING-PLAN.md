@@ -28,6 +28,10 @@ Feature/workstream PRs for the sprint target `ship/week-1`. `main` remains prote
 
 The Supervisor owns shared contracts, workflows, migrations that cross lanes, global state and merge order. Read-only research/review agents may run in parallel but do not receive overlapping write leases.
 
+### Activation-time drain exception
+
+`TASK-0026` was already active with pre-created, occupied workstreams before Shipping Mode was activated. Those existing workstreams are grandfathered only long enough to drain safely; terminating them solely to force the five-writer target would discard or duplicate in-flight work. No new writable slot may be added or reassigned above five while the grandfathered task drains. After `TASK-0026` transitions, five concurrent writable implementation lanes is the hard Shipping Mode cap; additional agents are read-only reviewers/researchers unless capacity is explicitly freed inside those five lanes.
+
 ## CI tiers
 
 ### Tier 1 — PR Fast Gate

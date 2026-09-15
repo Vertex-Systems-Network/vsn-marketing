@@ -38,7 +38,7 @@
     {
       "id": "AC-6",
       "text": "AI continuity, research-first, policy, parallel-development and context-manifest validation are green on the exact acceptance head before TASK-0026 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -49,5 +49,5 @@
     "python tools/ai_parallel.py validate",
     "python tools/ai_context.py manifest"
   ],
-  "exact_next_action": "Run the exact-head TASK-0025 continuity, research-first, policy, parallel-development and context-manifest gates against the revalidated evidence pack. If all are green, mark AC-6 true, merge the research certification head, then register TASK-0026 before performing a guarded TASK-0025 -> TASK-0026 transition."
+  "exact_next_action": "Require the new AC-6 reconciliation head to pass the exact continuity/application/security acceptance workflows again. If green, merge TASK-0025 research certification, verify resulting-main acceptance, register TASK-0026, then complete TASK-0025 and activate TASK-0026 only through the guarded transaction path."
 }

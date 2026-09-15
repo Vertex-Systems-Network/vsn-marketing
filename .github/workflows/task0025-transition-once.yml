@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - supervisor/task-0025-to-0026-transition
+    paths:
+      - .github/workflows/task0025-transition-once.yml
 
 permissions:
   contents: write
@@ -51,12 +53,11 @@ jobs:
           python tools/ai_parallel.py validate
           python tools/ai_context.py manifest
 
-      - name: Commit transaction output and remove one-shot workflow
+      - name: Commit transaction output
         run: |
           git config user.name "WPEssential"
           git config user.email "wordpress.essential@gmail.com"
-          git rm .github/workflows/task0025-transition-once.yml
           git add .ai
-          git diff --cached --exit-code && { echo "No transaction delta produced"; exit 1; } || true
+          git diff --cached --quiet && { echo "No transaction delta produced"; exit 1; }
           git commit -m "control: transition TASK-0025 to TASK-0026"
           git push origin HEAD:supervisor/task-0025-to-0026-transition

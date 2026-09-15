@@ -258,6 +258,16 @@
       "dependencies": [
         "TASK-0024"
       ]
+    },
+    {
+      "id": "TASK-0026",
+      "phase": "PHASE-05",
+      "title": "Implement sender domains and sender identities",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0025"
+      ]
     }
   ]
 }

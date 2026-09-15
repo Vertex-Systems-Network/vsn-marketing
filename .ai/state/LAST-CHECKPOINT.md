@@ -2,27 +2,27 @@
 
 ## State
 
-- Timestamp: `2026-09-14T10:37:05+00:00`
-- Active task: `TASK-0024`
+- Timestamp: `2026-09-15T07:54:23+00:00`
+- Active task: `TASK-0025`
 - Next task: `none`
-- Current phase: `PHASE-04`
-- Execution status: `blocked`
-- State fingerprint: `d59323c983d01eb7f5d08b695c6f081210240f5b823345e979a4086559cd6506`
+- Current phase: `PHASE-05`
+- Execution status: `ready`
+- State fingerprint: `97b078a3b473ed4af1c93329e60926017c81913fe0a708bc2fc79857ae2ad501`
 
 ## Completed / observed this session
 
-Completed the user-prioritized cyber-security hardening and resumed TASK-0024 certification work. PR #142 merged authentication/operational-surface hardening, PR #144 removed the benchmark-source/final-head self-reference flaw, and PR #145 returned the Supervisor control plane to the external-evidence hold. All currently authorized repository-side TASK-0024 implementation and hardening lanes are merged. No delivery SLO threshold was invented, no Delivery-owner approval was generated, and no PHASE-05 capability was started.
+Completed `TASK-0024` and activated `TASK-0025`.
 
-A final consistency sweep found the canonical continuity ledger still carried PR #142 pre-merge quality markers, no active blocker, and the obsolete TASK-0014 blocker file. This checkpoint reconciles the task/index/state/blocker/journal view with the actual TASK-0024 AC-4 hold.
+Transition evidence: TASK-0024 AC-1 through AC-7 are true; approved v7 threshold manifest and canonical SLO closeout are merged; clean-checkout TASK-0024 final certification and exact-head acceptance gates passed; TASK-0025 research successor is registered on main.
 
 ## Tests
 
-PR #145 exact head `a193ae4aef7f172ac9184a6aa7a680cdfaa7592a` passed AI Continuity Guard run `34833443215`, Application Foundation CI run `34833443241`, and Security Supply Chain CI run `34833443262` before squash merge to main `701c58cead4e1eb93c94792739233526dc6b53ee`. The ledger reconciliation must now pass fresh exact-head continuity, application, and security checks before merge; no stale-green result may be reused.
+TASK-0024 Final Certification PASS; AI Continuity Guard PASS; Application Foundation CI PASS; Security Supply Chain CI PASS; Release Integrity PASS on accepted main heads.
 
 ## Blockers
 
-- TASK-0024 AC-4 requires validated production-representative delivery and reconciliation benchmark evidence plus explicit human Delivery-owner approval of numeric SLO thresholds; canonical TASK-0023 thresholds remain TBD_MEASURED.
+- None
 
 ## Exact next action
 
-Capture and validate delivery plus reconciliation benchmark evidence on one dedicated production-representative non-production environment from an exact benchmark source commit, obtain explicit human Delivery-owner approval of the numeric threshold manifest and evidence fingerprints, commit those artifacts, resolve canonical TASK-0023 TBD_MEASURED values from that approval, then run the clean-checkout TASK-0024 final certification gate and all exact-head checks.
+Review the dated TASK-0025 official-source research evidence, freeze provider-versioned authentication/bulk-sender rules, RFC 8058 unsubscribe semantics, deterministic suppression and jurisdiction-context policy requirements, then complete TASK-0025 and activate TASK-0026 only after exact-head continuity/research gates pass.

@@ -58,6 +58,7 @@ final readonly class AuthenticationEvidenceEvaluator
             if ($candidates === []) {
                 $hasUnknown = true;
                 $reasons[] = $dimension->value.':missing';
+
                 continue;
             }
 
@@ -69,18 +70,21 @@ final readonly class AuthenticationEvidenceEvaluator
             if (isset($contradictoryVersions[$versionKey]) || self::latestObservationContradicts($candidates, $latest)) {
                 $hasContradiction = true;
                 $reasons[] = $dimension->value.':contradictory';
+
                 continue;
             }
 
             if ($latest->observedAt > $at) {
                 $hasUnknown = true;
                 $reasons[] = $dimension->value.':future_observation';
+
                 continue;
             }
 
             if (! $latest->isFreshAt($at)) {
                 $hasStale = true;
                 $reasons[] = $dimension->value.($latest->freshUntil === null ? ':freshness_unknown' : ':stale');
+
                 continue;
             }
 

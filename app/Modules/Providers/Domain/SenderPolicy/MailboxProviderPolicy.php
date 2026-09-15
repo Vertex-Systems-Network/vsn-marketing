@@ -95,6 +95,7 @@ final readonly class MailboxProviderPolicy
 
             if (is_array($value)) {
                 self::assertPublicPolicyPayload($value, $current);
+
                 continue;
             }
 

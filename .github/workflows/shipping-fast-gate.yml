@@ -1,0 +1,112 @@
+name: Shipping Fast Gate
+
+on:
+  pull_request:
+    branches: [ship/week-1]
+  push:
+    branches: [ship/week-1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shipping-fast-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  fast-gate:
+    name: shipping-fast-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Set up Node 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+
+      - name: Require current integration baseline
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin ship/week-1 --quiet
+          git merge-base --is-ancestor origin/ship/week-1 HEAD || {
+            echo 'Branch is stale. Merge latest ship/week-1 before submission.' >&2
+            exit 1
+          }
+
+      - name: Validate immutable workflow dependencies
+        run: python tools/check_action_pins.py
+
+      - name: Validate AI continuity and policy state
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/ai_policy.py
+          python tools/ai_parallel.py validate
+
+      - name: Validate security exception governance
+        run: python tools/security_exceptions.py
+
+      - name: Validate locked Composer manifest
+        run: composer validate --strict
+
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Check PHP formatting first
+        run: composer lint:check
+
+      - name: Run PHP static analysis
+        run: composer analyse
+
+      - name: Run fast backend suites
+        run: php artisan test tests/Unit tests/Feature --fail-on-warning --display-warnings
+
+      - name: Typecheck frontend
+        run: npm run typecheck
+
+      - name: Run frontend unit tests
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: '1'
+        run: npm run test
+
+      - name: Audit locked Composer dependencies
+        run: composer audit --locked --no-interaction --abandoned=report
+
+      - name: Audit locked npm dependencies
+        run: npm audit --audit-level=high

@@ -81,6 +81,7 @@ final readonly class AuthenticationEvidence
 
             if (is_array($value)) {
                 self::assertRedacted($value, $current);
+
                 continue;
             }
 

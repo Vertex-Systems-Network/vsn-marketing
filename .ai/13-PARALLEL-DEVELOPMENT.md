@@ -95,3 +95,18 @@ When canonical agent-working behavior changes, the same PR must:
 ## Merge strategy
 
 Registered workstream PRs target `main` and default to squash merge. Merge groups express ordering constraints. Independent lanes in the same group may develop in parallel but are merged one at a time; after each merge, all remaining active lanes synchronize latest `main` before continuing.
+
+## Temporary Week-1 Shipping Mode
+
+When `.ai/parallel/WEEK-1-SHIPPING-PLAN.md` is ACTIVE, `ship/week-1` is the sprint integration branch while `main` remains the protected release boundary.
+
+- Writable implementation is limited to five primary lanes: backend, frontend, delivery, data, and QA/release. Additional agents may review or research read-only work but must not create overlapping writes.
+- Sprint feature/workstream PRs target `ship/week-1` unless the Supervisor explicitly marks a change as main-only governance/release work.
+- Before submission or resume, a sprint branch must contain the latest `ship/week-1` baseline and pass the `Shipping Fast Gate`.
+- A merge/push to `ship/week-1` runs the full Application Foundation and AI Continuity integration wave.
+- Only a green `ship/week-1` baseline is promoted to `main`; protected-main required checks and full Security Supply Chain CI remain mandatory there.
+- A failed merge wave freezes only the affected dependency chain. Independent lanes may continue when they do not consume the broken contract.
+- Serious integration failures require reproduction, a failing regression test, a fix, and rerun evidence before the affected chain resumes.
+- Shipping Mode changes check placement, not safety requirements. It must not bypass consent, permission, security, migration, data-integrity, delivery-idempotency, or protected-main gates.
+
+During Shipping Mode, the branch target and sync rules in this section override the default direct-to-`main` merge target above for sprint feature/workstream PRs. New-agent admission still begins from `main`; after assignment, the worker synchronizes the current shipping baseline before writable work.

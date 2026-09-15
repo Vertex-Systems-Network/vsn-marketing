@@ -13,32 +13,32 @@
     {
       "id": "AC-1",
       "text": "A dated official-source evidence pack covers current Gmail, Yahoo and Outlook sender-authentication, bulk/high-volume sender, unsubscribe and enforcement requirements without converting provider-specific rules into unsupported universal constants",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "RFC 8058 one-click unsubscribe semantics and DKIM/header requirements are mapped to explicit platform implementation and adversarial-test requirements",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "US CAN-SPAM, UK PECR and EU ePrivacy/GDPR direct-marketing, opt-out/objection and subscriber-context findings are recorded with source provenance, effective-date awareness and explicit limits on legal generalization",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Research findings are classified into PHASE-05 prerequisites, acceptance criteria, configurable provider/jurisdiction policy, open research items and explicit non-goals while preserving deterministic consent/suppression authority",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "No live DNS mutation, sender-domain production activation, provider credential use, anti-abuse evasion, suppression bypass, PHASE-06 content studio or PHASE-07 campaign implementation is introduced by this research task",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "AI continuity, research-first, policy, parallel-development and context-manifest validation are green on the exact acceptance head before TASK-0026 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -49,5 +49,5 @@
     "python tools/ai_parallel.py validate",
     "python tools/ai_context.py manifest"
   ],
-  "exact_next_action": "Review the dated TASK-0025 official-source research evidence, freeze provider-versioned authentication/bulk-sender rules, RFC 8058 unsubscribe semantics, deterministic suppression and jurisdiction-context policy requirements, then complete TASK-0025 and activate TASK-0026 only after exact-head continuity/research gates pass."
+  "exact_next_action": "Require the new AC-6 reconciliation head to pass the exact continuity/application/security acceptance workflows again. If green, merge TASK-0025 research certification, verify resulting-main acceptance, register TASK-0026, then complete TASK-0025 and activate TASK-0026 only through the guarded transaction path."
 }

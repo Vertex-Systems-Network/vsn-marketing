@@ -40,6 +40,30 @@ jobs:
             --next TASK-0025 \
             --evidence "TASK-0024 AC-1 through AC-7 are true; approved v7 threshold manifest and canonical SLO closeout are merged; clean-checkout TASK-0024 final certification and exact-head acceptance gates passed; TASK-0025 research successor is registered on main." \
             --tests "TASK-0024 Final Certification PASS; AI Continuity Guard PASS; Application Foundation CI PASS; Security Supply Chain CI PASS; Release Integrity PASS on accepted main heads."
+      - name: Reconcile completed TASK-0024 parallel cycle
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          workstreams_path = Path('.ai/parallel/WORKSTREAMS.yaml')
+          leases_path = Path('.ai/parallel/AGENT-LEASES.yaml')
+          registry = json.loads(workstreams_path.read_text(encoding='utf-8'))
+          registry['mode'] = 'staged'
+          terminal_ids = {
+              'WS-0024-THRESHOLD-CLOSEOUT',
+              'WS-0024-CONTROL-ACTIVATION',
+          }
+          for row in registry.get('workstreams', []):
+              if row.get('id') in terminal_ids:
+                  row['status'] = 'merged'
+                  row['start_status'] = 'completed'
+          workstreams_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          leases = json.loads(leases_path.read_text(encoding='utf-8'))
+          leases['leases'] = []
+          leases_path.write_text(json.dumps(leases, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
       - name: Validate transaction result
         run: |
           python tools/ai_txn.py validate

@@ -2,8 +2,9 @@ name: Application Foundation CI
 
 on:
   pull_request:
-  push:
     branches: [main]
+  push:
+    branches: [main, ship/week-1]
 
 permissions:
   contents: read

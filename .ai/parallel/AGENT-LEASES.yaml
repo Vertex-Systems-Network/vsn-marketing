@@ -1,4 +1,98 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0026-SUPERVISOR-FOUNDATION",
+      "branch": "supervisor/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_16_000013_create_sender_identity_foundation_tables.php"
+      ]
+    },
+    {
+      "agent": "worker-task0026-domain",
+      "workstream": "WS-0026-DOMAIN-AGGREGATES",
+      "branch": "worker-1/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Domain/SenderIdentity/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-auth-evidence",
+      "workstream": "WS-0026-AUTH-EVIDENCE",
+      "branch": "worker-2/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Domain/SenderAuthentication/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-provider-policy",
+      "workstream": "WS-0026-PROVIDER-POLICY",
+      "branch": "worker-3/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Providers/Domain/SenderPolicy/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-persistence",
+      "workstream": "WS-0026-PERSISTENCE",
+      "branch": "worker-4/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Infrastructure/SenderIdentity/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-verification",
+      "workstream": "WS-0026-VERIFICATION",
+      "branch": "worker-5/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Application/SenderVerification/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-sync",
+      "workstream": "WS-0026-SYNCHRONIZATION",
+      "branch": "worker-6/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Application/SenderSync/**"
+      ]
+    },
+    {
+      "agent": "worker-task0026-security",
+      "workstream": "WS-0026-SECURITY-ADVERSARIAL",
+      "branch": "worker-7/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "tests/Feature/Security/Task0026SenderIdentitySecurityTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0026-domain-tests",
+      "workstream": "WS-0026-DOMAIN-TESTS",
+      "branch": "worker-8/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "tests/Unit/DeliveryEngine/Task0026SenderDomainTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0026-integration-tests",
+      "workstream": "WS-0026-INTEGRATION-TESTS",
+      "branch": "worker-9/TASK-0026",
+      "status": "active",
+      "write_paths": [
+        "tests/Integration/DeliveryEngine/Task0026SenderIdentityTest.php"
+      ]
+    }
+  ]
 }

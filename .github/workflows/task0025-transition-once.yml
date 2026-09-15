@@ -35,7 +35,12 @@ jobs:
           python tools/ai_parallel.py validate
 
       - name: Execute guarded transition
-        run: python tools/ai_txn.py transition --complete TASK-0025 --next TASK-0026
+        run: |
+          python tools/ai_txn.py transition \
+            --complete TASK-0025 \
+            --next TASK-0026 \
+            --evidence "TASK-0025 official-source research certification merged via PR 181 at 89e52a5512e9dc3150f2f7e736ef0c9b265b958d; TASK-0026 explicitly registered via PR 182 at dd23003ae3d5541175501a611732a657e37b6347 after exact-head acceptance." \
+            --tests "Resulting-main acceptance on dd23003ae3d5541175501a611732a657e37b6347: AI Continuity Guard 34954715711, Application Foundation CI 34954715720, Security Supply Chain CI 34954715646, Release Integrity 34954715660, OpenSSF Scorecard 34954715641 all passed."
 
       - name: Validate transaction result
         run: |

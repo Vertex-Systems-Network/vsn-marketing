@@ -43,7 +43,7 @@ return new class extends Migration
             $table->foreign(['sender_domain_id', 'workspace_id'], 'sender_identity_domain_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('sender_domains')->cascadeOnDelete();
             $table->foreign(['provider_connection_id', 'workspace_id'], 'sender_identity_provider_conn_workspace_fk')
-                ->references(['id', 'workspace_id'])->on('provider_connections')->nullOnDelete();
+                ->references(['id', 'workspace_id'])->on('provider_connections')->restrictOnDelete();
             $table->unique(['id', 'workspace_id'], 'sender_identities_id_workspace_uq');
             $table->unique(['workspace_id', 'email_address'], 'sender_identities_workspace_email_uq');
             $table->unique(['workspace_id', 'idempotency_key'], 'sender_identities_workspace_idem_uq');

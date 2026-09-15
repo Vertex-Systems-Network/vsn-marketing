@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Research current deliverability, sender-authentication, provider, and jurisdictional requirements",
-  "status": "ready",
+  "status": "completed",
   "objective": "Freeze an evidence-backed PHASE-05 sender-authentication, suppression, deliverability and jurisdiction policy contract from current official sources before any production-capable sender-domain implementation begins.",
   "dependencies": [
     "TASK-0024"

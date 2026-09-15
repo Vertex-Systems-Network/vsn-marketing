@@ -33,6 +33,7 @@ final class SenderRecordGuard
 
             if (is_array($value)) {
                 self::assertNoSecretMaterial($value, $currentPath);
+
                 continue;
             }
 

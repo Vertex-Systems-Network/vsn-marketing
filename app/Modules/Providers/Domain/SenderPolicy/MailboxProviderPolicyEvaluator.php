@@ -8,7 +8,7 @@ use InvalidArgumentException;
 final readonly class MailboxProviderPolicyEvaluator
 {
     /**
-     * @param list<MailboxProviderPolicy> $policies
+     * @param  list<MailboxProviderPolicy>  $policies
      */
     public function decide(
         string $workspaceId,

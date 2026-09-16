@@ -1,4 +1,61 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0027-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0027",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
+      ]
+    },
+    {
+      "agent": "worker-task0027-suppression",
+      "workstream": "WS-0027-SUPPRESSION-CORE",
+      "branch": "worker-1/TASK-0027",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Consent/Domain/Suppression/**",
+        "app/Modules/Consent/Infrastructure/Suppression/**",
+        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php",
+        "tests/Unit/Consent/Task0027SuppressionDomainTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0027-rfc8058",
+      "workstream": "WS-0027-RFC8058",
+      "branch": "worker-2/TASK-0027",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Consent/Domain/Unsubscribe/**",
+        "app/Modules/Consent/Application/Unsubscribe/**",
+        "tests/Feature/Consent/Task0027OneClickUnsubscribeTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0027-eligibility",
+      "workstream": "WS-0027-ELIGIBILITY-POLICY",
+      "branch": "worker-3/TASK-0027",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Domain/Eligibility/**",
+        "app/Modules/DeliveryEngine/Application/Eligibility/**",
+        "tests/Unit/DeliveryEngine/Task0027EligibilityPolicyTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0027-provider-feedback",
+      "workstream": "WS-0027-PROVIDER-FEEDBACK",
+      "branch": "worker-4/TASK-0027",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Providers/Domain/Feedback/**",
+        "app/Modules/DeliveryEngine/Application/SuppressionSync/**",
+        "tests/Unit/Providers/Task0027ProviderFeedbackTest.php"
+      ]
+    }
+  ]
 }

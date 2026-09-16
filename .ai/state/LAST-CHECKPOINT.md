@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-15T23:43:49+00:00`
+- Timestamp: `2026-09-16T11:30:00+00:00`
 - Active task: `TASK-0026`
 - Next task: `none`
 - Current phase: `PHASE-05`
 - Execution status: `ready`
-- State fingerprint: `01afceca9e6e3c50898648fbef967ac7ac0d24eb2684acf0c5574f811c22597d`
+- State fingerprint: `67aa5bbac752115586f81534eb4c83df4d437063749e2ef14e89e4391b5f6e7d`
 
 ## Completed / observed this session
 
-Activated the Week-1 shipping fast path around `ship/week-1`, kept the five-writer cap, and landed TASK-0026 Wave 1 authentication-evidence and mailbox-provider-policy lanes through PRs #186 and #187 after their Shipping Fast Gates passed. Reordered the Shipping Fast Gate so PHP formatting runs immediately after the locked Composer install and before Node/npm setup, preserving all later static-analysis, backend, frontend and dependency-audit checks while failing cheaper on PHP style defects.
+Promoted the certified Week-1 integration baseline to trusted `main` at `e3e8207c4bfe6e02e9ff0bf8617c29b1fd0287b5`, verified post-merge Application Foundation, AI Continuity, Security Supply Chain, Release Integrity and OpenSSF Scorecard, and fast-forwarded `ship/week-1` to that trusted baseline. Then merged PR #192 as `84a0676960c8a6caadccafd85c454e91d969a948`, hardening sender-domain/sender-identity persistence bounds and adding focused TASK-0026 domain tests without enabling DNS mutation or production sender activation.
 
 ## Tests
 
-PR #186 Shipping Fast Gate run `35036645054` passed on head `67c108097d574cd6d5da1e60a2c086476af28006`. PR #187 Shipping Fast Gate run `35036613733` passed on head `f275570aa195cf5f489f9011182df0f2f354d8c1`. Combined `ship/week-1` integration commit `a5e5ff679ae4ba61e60563ca5c36f45bbe243c61` has Application Foundation CI run `35036763927` in progress at this checkpoint; its integration and PHP 8.3 compatibility-floor jobs have passed while E2E/foundation completion is still required before promotion.
+PR #192 exact-head Shipping Fast Gate run `35090258089` passed all continuity, formatting, static-analysis, backend/Pest, frontend and dependency-audit checks on `ee5fb7f973ebd212e1e5a246698da3bbaaf5cf1d`. The resulting `ship/week-1` integration push is running Application Foundation CI `35090449097`; PHP 8.3 compatibility has passed. AI Continuity push `35090449193` passed all state/journal/policy tests and failed only the product-change global-ledger gate because this synchronized checkpoint/state update was not yet present in the merge range.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ PR #186 Shipping Fast Gate run `35036645054` passed on head `67c108097d574cd6d5d
 
 ## Exact next action
 
-Require the combined TASK-0026 Wave 1 state on `ship/week-1`—authentication evidence, mailbox-provider policy, and fail-fast Shipping Fast Gate ordering—to pass the Shipping Fast Gate and Application Foundation CI; then promote the green integration branch to `main` as one merge wave and admit only dependency-unblocked TASK-0026 work under the five-writer cap.
+Require TASK-0026 Wave A domain-invariant hardening on `ship/week-1` at `84a0676960c8a6caadccafd85c454e91d969a948` to pass full integration evidence; then broadcast the certified integration baseline and implement workspace-isolated, idempotent sender-domain/sender-identity persistence as the next dependency-unblocked lane while keeping verification/synchronization dependent on that persistence contract.

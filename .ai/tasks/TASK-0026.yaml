@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement sender domains and sender identities",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement a workspace-scoped, provider-aware sender-domain and sender-identity foundation that preserves separately versioned authentication evidence, deterministic verification state, secret-reference boundaries, and fail-closed policy context without performing unapproved live DNS or production sending activation.",
   "dependencies": [
     "TASK-0025"

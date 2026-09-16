@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement suppression, unsubscribe/preferences, bounce, and complaint processing",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement workspace-scoped deterministic suppression and objection authority, RFC 8058-compatible one-click unsubscribe, evidence-preserving preference/bounce/complaint processing, and separately reconciled provider synchronization so accepted opt-out evidence becomes effective inside VSN immediately without allowing AI, provider failover, reputation signals, campaign configuration, or admin convenience to recreate permission.",
   "dependencies": [
     "TASK-0026"

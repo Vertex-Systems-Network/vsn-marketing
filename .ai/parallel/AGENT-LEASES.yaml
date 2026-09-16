@@ -9,7 +9,8 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php"
       ]
     },
     {
@@ -20,7 +21,6 @@
       "write_paths": [
         "app/Modules/Consent/Domain/Suppression/**",
         "app/Modules/Consent/Infrastructure/Suppression/**",
-        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php",
         "tests/Unit/Consent/Task0027SuppressionDomainTest.php"
       ]
     },

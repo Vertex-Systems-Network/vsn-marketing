@@ -4,57 +4,56 @@
     {
       "agent": "supervisor-main",
       "workstream": "WS-0027-SUPERVISOR-CONTROL",
-      "branch": "supervisor/TASK-0027",
+      "branch": "supervisor/TASK-0027-wave-b",
       "status": "active",
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php"
+        "routes/api.php"
       ]
     },
     {
-      "agent": "worker-task0027-suppression",
-      "workstream": "WS-0027-SUPPRESSION-CORE",
-      "branch": "worker-1/TASK-0027",
+      "agent": "worker-task0027-oneclick-http",
+      "workstream": "WS-0027-ONECLICK-HTTP",
+      "branch": "worker-5/TASK-0027",
       "status": "active",
       "write_paths": [
-        "app/Modules/Consent/Domain/Suppression/**",
-        "app/Modules/Consent/Infrastructure/Suppression/**",
-        "tests/Unit/Consent/Task0027SuppressionDomainTest.php"
+        "app/Modules/Consent/Presentation/Http/Controllers/OneClickUnsubscribeController.php",
+        "app/Modules/Consent/Application/Unsubscribe/ProcessOneClickUnsubscribe.php",
+        "app/Modules/Consent/Application/Unsubscribe/OneClickUnsubscribeResult.php",
+        "tests/Feature/Consent/Task0027OneClickHttpEndpointTest.php"
       ]
     },
     {
-      "agent": "worker-task0027-rfc8058",
-      "workstream": "WS-0027-RFC8058",
-      "branch": "worker-2/TASK-0027",
+      "agent": "worker-task0027-persistence",
+      "workstream": "WS-0027-PERSISTENCE-INTEGRATION",
+      "branch": "worker-6/TASK-0027",
       "status": "active",
       "write_paths": [
-        "app/Modules/Consent/Domain/Unsubscribe/**",
-        "app/Modules/Consent/Application/Unsubscribe/**",
-        "tests/Feature/Consent/Task0027OneClickUnsubscribeTest.php"
+        "app/Modules/Consent/Infrastructure/Unsubscribe/**",
+        "tests/Integration/Task0027SuppressionPersistenceTest.php"
       ]
     },
     {
-      "agent": "worker-task0027-eligibility",
-      "workstream": "WS-0027-ELIGIBILITY-POLICY",
-      "branch": "worker-3/TASK-0027",
+      "agent": "worker-task0027-security",
+      "workstream": "WS-0027-ADVERSARIAL-SECURITY",
+      "branch": "worker-7/TASK-0027",
       "status": "active",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Eligibility/**",
-        "app/Modules/DeliveryEngine/Application/Eligibility/**",
-        "tests/Unit/DeliveryEngine/Task0027EligibilityPolicyTest.php"
+        "tests/Feature/Security/Task0027SuppressionSecurityTest.php"
       ]
     },
     {
-      "agent": "worker-task0027-provider-feedback",
-      "workstream": "WS-0027-PROVIDER-FEEDBACK",
-      "branch": "worker-4/TASK-0027",
+      "agent": "worker-task0027-eligibility-wiring",
+      "workstream": "WS-0027-ELIGIBILITY-WIRING",
+      "branch": "worker-8/TASK-0027",
       "status": "active",
       "write_paths": [
-        "app/Modules/Providers/Domain/Feedback/**",
-        "app/Modules/DeliveryEngine/Application/SuppressionSync/**",
-        "tests/Unit/Providers/Task0027ProviderFeedbackTest.php"
+        "app/Modules/DeliveryEngine/Application/Eligibility/EvaluateSuppressionAwareEligibility.php",
+        "app/Modules/DeliveryEngine/Application/Eligibility/SuppressionAwareEligibilityRequest.php",
+        "app/Modules/DeliveryEngine/Application/Eligibility/SuppressionAwareEligibilityResult.php",
+        "tests/Unit/DeliveryEngine/Task0027SuppressionAwareEligibilityTest.php"
       ]
     }
   ]

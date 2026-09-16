@@ -10,7 +10,7 @@
       "id": "WS-0027-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0027 five-writer Shipping Mode coordination, dependency-safe merge waves, integration admission and final acceptance without implementing TASK-0028 reputation or frequency policy",
+      "capability": "Own TASK-0027 five-writer Shipping Mode coordination, Supervisor-only suppression schema foundation, dependency-safe merge waves, integration admission and final acceptance without implementing TASK-0028 reputation or frequency policy",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0027",
       "worktree": "worktrees/task-0027-supervisor",
@@ -24,14 +24,15 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php"
       ]
     },
     {
       "id": "WS-0027-SUPPRESSION-CORE",
       "role": "worker",
       "module": "Consent",
-      "capability": "Implement canonical workspace-scoped suppression, objection, preference, bounce and complaint evidence primitives plus idempotent persistence boundaries without provider synchronization or routing overrides",
+      "capability": "Implement canonical workspace-scoped suppression, objection, preference, bounce and complaint evidence primitives plus idempotent persistence boundaries against the Supervisor-owned schema without provider synchronization or routing overrides",
       "assigned_agent": "worker-task0027-suppression",
       "branch": "worker-1/TASK-0027",
       "worktree": "worktrees/task-0027-worker-1",
@@ -45,7 +46,6 @@
       "write_paths": [
         "app/Modules/Consent/Domain/Suppression/**",
         "app/Modules/Consent/Infrastructure/Suppression/**",
-        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php",
         "tests/Unit/Consent/Task0027SuppressionDomainTest.php"
       ]
     },

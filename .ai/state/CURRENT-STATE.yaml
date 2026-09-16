@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0024_control_pr_145_exact_head_passed_run_34833443215",
-    "application_test_status": "task_0024_control_pr_145_exact_head_passed_run_34833443241",
+    "continuity_validation": "task_0026_ship_week_1_reconciliation_pending_after_run_35090449193",
+    "application_test_status": "task_0026_ship_week_1_passed_run_35090449097",
     "security_supply_chain_status": "task_0024_control_pr_145_exact_head_passed_run_34833443262",
     "release_integrity_status": "task_0101_main_push_passed_run_34522847562",
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },
   "blockers": [],
-  "exact_next_action": "Require TASK-0026 Wave A domain-invariant hardening on `ship/week-1` at `84a0676960c8a6caadccafd85c454e91d969a948` to pass full integration evidence; then broadcast the certified integration baseline and implement workspace-isolated, idempotent sender-domain/sender-identity persistence as the next dependency-unblocked lane while keeping verification/synchronization dependent on that persistence contract."
+  "exact_next_action": "Require the combined TASK-0026 Wave 1 state on `ship/week-1`—authentication evidence, mailbox-provider policy, and fail-fast Shipping Fast Gate ordering—to pass the Shipping Fast Gate and Application Foundation CI; then promote the green integration branch to `main` as one merge wave and admit only dependency-unblocked TASK-0026 work under the five-writer cap."
 }

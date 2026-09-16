@@ -307,8 +307,8 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
     $evaluatedAt = new DateTimeImmutable('2026-09-16T13:10:00+00:00');
 
     $verification = (new VerifySenderDomain(
-        new AuthenticationEvidenceEvaluator(),
-        new MailboxProviderPolicyEvaluator(),
+        new AuthenticationEvidenceEvaluator,
+        new MailboxProviderPolicyEvaluator,
     ))->handle(new SenderVerificationRequest(
         operationKey: 'verify-sync-domain',
         workspaceId: $workspaceId,
@@ -324,7 +324,7 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
     expect($verification->eligibleForLaterSendingEvaluation)->toBeTrue()
         ->and($verification->productionActivationAllowed)->toBeFalse();
 
-    $synchronizer = new SynchronizeSenderDomain();
+    $synchronizer = new SynchronizeSenderDomain;
     $confirmedRequest = new SenderSynchronizationRequest(
         operationKey: 'sync-domain-operation',
         workspaceId: $workspaceId,

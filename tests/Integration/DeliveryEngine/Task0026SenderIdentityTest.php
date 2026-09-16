@@ -18,6 +18,7 @@ use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderIdentity;
 use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderIdentityLifecycle;
 use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderPurpose;
 use App\Modules\DeliveryEngine\Infrastructure\SenderIdentity\DatabaseSenderIdentityRepository;
+use App\Modules\DeliveryEngine\Infrastructure\SenderIdentity\DatabaseSenderOperationRecorder;
 use App\Modules\Providers\Domain\SenderPolicy\MailboxProviderPolicy;
 use App\Modules\Providers\Domain\SenderPolicy\MailboxProviderPolicyEvaluator;
 use DateTimeImmutable;
@@ -72,6 +73,11 @@ function task0026IntegrationWorkspace(string $suffix): array
 function task0026IntegrationRepository(): DatabaseSenderIdentityRepository
 {
     return new DatabaseSenderIdentityRepository(app(DatabaseManager::class));
+}
+
+function task0026IntegrationOperationRecorder(): DatabaseSenderOperationRecorder
+{
+    return new DatabaseSenderOperationRecorder(app(DatabaseManager::class));
 }
 
 function task0026IntegrationDomain(
@@ -300,16 +306,20 @@ it('certifies authentication evidence is versioned immutable and fail-closed acr
         ->toThrow(AuthorizationException::class);
 });
 
-it('certifies verification and synchronization replay preserve ambiguity and never activate production sending', function () {
+it('certifies verification and synchronization operations are replay-safe, auditable, ambiguity-aware and never activate production sending', function () {
     $fixture = task0026IntegrationWorkspace('sync');
     $workspaceId = $fixture['workspace_id'];
-    $domainId = (string) Str::uuid();
+    $repository = task0026IntegrationRepository();
+    $recorder = task0026IntegrationOperationRecorder();
+    $domain = task0026IntegrationDomain($workspaceId, 'sync.example', idempotencyKey: 'sync-domain-record');
+    $repository->createDomain($domain);
+    $domainId = $domain->id;
     $evaluatedAt = new DateTimeImmutable('2026-09-16T13:10:00+00:00');
-
-    $verification = (new VerifySenderDomain(
+    $verifier = new VerifySenderDomain(
         new AuthenticationEvidenceEvaluator,
         new MailboxProviderPolicyEvaluator,
-    ))->handle(new SenderVerificationRequest(
+    );
+    $verificationRequest = new SenderVerificationRequest(
         operationKey: 'verify-sync-domain',
         workspaceId: $workspaceId,
         senderDomainId: $domainId,
@@ -319,10 +329,57 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
         evaluatedAt: $evaluatedAt,
         observationOutcome: SenderVerificationObservationOutcome::Completed,
         observedVolume: 1500,
-    ));
+    );
+    $verification = $verifier->handle($verificationRequest);
 
     expect($verification->eligibleForLaterSendingEvaluation)->toBeTrue()
         ->and($verification->productionActivationAllowed)->toBeFalse();
+
+    $recorder->recordVerification($verificationRequest, $verification);
+    $recorder->recordVerification($verificationRequest, $verification);
+
+    $verificationRow = DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $verificationRequest->operationKey)
+        ->first();
+
+    expect($verificationRow)->not->toBeNull()
+        ->and(DB::table('sender_verification_operations')
+            ->where('workspace_id', $workspaceId)
+            ->where('idempotency_key', $verificationRequest->operationKey)
+            ->count())->toBe(1)
+        ->and($verificationRow->operation_type)->toBe('verification')
+        ->and($verificationRow->operation_state)->toBe('completed')
+        ->and($verificationRow->outcome_class)->toBe('completed')
+        ->and($verificationRow->mutation_mode)->toBe('read_only')
+        ->and((bool) $verificationRow->production_activation_permitted)->toBeFalse()
+        ->and((bool) $verificationRow->ambiguous_outcome)->toBeFalse();
+
+    $verificationTimeoutRequest = new SenderVerificationRequest(
+        operationKey: 'verify-sync-domain-timeout',
+        workspaceId: $workspaceId,
+        senderDomainId: $domainId,
+        providerKey: 'integration-provider',
+        authenticationEvidence: $verificationRequest->authenticationEvidence,
+        providerPolicies: $verificationRequest->providerPolicies,
+        evaluatedAt: $evaluatedAt->modify('+30 seconds'),
+        observationOutcome: SenderVerificationObservationOutcome::Timeout,
+        observedVolume: 1500,
+    );
+    $verificationTimeout = $verifier->handle($verificationTimeoutRequest);
+    $recorder->recordVerification($verificationTimeoutRequest, $verificationTimeout);
+
+    $verificationTimeoutRow = DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $verificationTimeoutRequest->operationKey)
+        ->first();
+
+    expect($verificationTimeoutRow)->not->toBeNull()
+        ->and($verificationTimeoutRow->operation_state)->toBe('timed_out')
+        ->and($verificationTimeoutRow->outcome_class)->toBe('timeout')
+        ->and($verificationTimeoutRow->timeout_at)->not->toBeNull()
+        ->and($verificationTimeoutRow->completed_at)->toBeNull()
+        ->and((bool) $verificationTimeoutRow->production_activation_permitted)->toBeFalse();
 
     $synchronizer = new SynchronizeSenderDomain;
     $confirmedRequest = new SenderSynchronizationRequest(
@@ -346,6 +403,25 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
         ->and($first->reconciliationRequired)->toBeFalse()
         ->and($first->productionActivationAllowed)->toBeFalse();
 
+    $recorder->recordSynchronization($confirmedRequest, $first);
+    $recorder->recordSynchronization($confirmedRequest, $replayed);
+
+    $confirmedRow = DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $confirmedRequest->operationKey)
+        ->first();
+
+    expect($confirmedRow)->not->toBeNull()
+        ->and(DB::table('sender_verification_operations')
+            ->where('workspace_id', $workspaceId)
+            ->where('idempotency_key', $confirmedRequest->operationKey)
+            ->count())->toBe(1)
+        ->and($confirmedRow->operation_type)->toBe('synchronization')
+        ->and($confirmedRow->outcome_class)->toBe('confirmed')
+        ->and($confirmedRow->provider_operation_reference)->toBe('provider-operation-123')
+        ->and($confirmedRow->mutation_mode)->toBe('read_only')
+        ->and((bool) $confirmedRow->production_activation_permitted)->toBeFalse();
+
     $ambiguousRequest = new SenderSynchronizationRequest(
         operationKey: 'sync-domain-ambiguous',
         workspaceId: $workspaceId,
@@ -365,6 +441,46 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
         ->and($ambiguous->eligibleForLaterSendingEvaluation)->toBeFalse()
         ->and($ambiguous->productionActivationAllowed)->toBeFalse();
 
+    $recorder->recordSynchronization($ambiguousRequest, $ambiguous);
+
+    $ambiguousRow = DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $ambiguousRequest->operationKey)
+        ->first();
+
+    expect($ambiguousRow)->not->toBeNull()
+        ->and($ambiguousRow->operation_state)->toBe('completed')
+        ->and($ambiguousRow->outcome_class)->toBe('ambiguous')
+        ->and((bool) $ambiguousRow->ambiguous_outcome)->toBeTrue()
+        ->and((bool) $ambiguousRow->production_activation_permitted)->toBeFalse();
+
+    $timeoutRequest = new SenderSynchronizationRequest(
+        operationKey: 'sync-domain-timeout',
+        workspaceId: $workspaceId,
+        senderDomainId: $domainId,
+        providerKey: 'integration-provider',
+        verification: $verification,
+        providerOutcome: SenderSynchronizationOutcome::Timeout,
+        publicEvidence: ['provider_status' => 'timeout'],
+        observedAt: $evaluatedAt->modify('+3 minutes'),
+        providerReference: null,
+        sourceVersion: 'sync-source-v1',
+    );
+    $timeout = $synchronizer->handle($timeoutRequest);
+    $recorder->recordSynchronization($timeoutRequest, $timeout);
+
+    $timeoutRow = DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $timeoutRequest->operationKey)
+        ->first();
+
+    expect($timeoutRow)->not->toBeNull()
+        ->and($timeoutRow->operation_state)->toBe('timed_out')
+        ->and($timeoutRow->outcome_class)->toBe('timeout')
+        ->and($timeoutRow->timeout_at)->not->toBeNull()
+        ->and($timeoutRow->completed_at)->toBeNull()
+        ->and((bool) $timeoutRow->production_activation_permitted)->toBeFalse();
+
     $changedReplay = new SenderSynchronizationRequest(
         operationKey: $confirmedRequest->operationKey,
         workspaceId: $workspaceId,
@@ -380,4 +496,14 @@ it('certifies verification and synchronization replay preserve ambiguity and nev
 
     expect(fn () => $synchronizer->handle($changedReplay, $first))
         ->toThrow(InvalidArgumentException::class, 'conflicts with a different replay outcome');
+
+    $changedReplayResult = $synchronizer->handle($changedReplay);
+
+    expect(fn () => $recorder->recordSynchronization($changedReplay, $changedReplayResult))
+        ->toThrow(InvalidArgumentException::class, 'idempotency key conflicts');
+
+    expect(DB::table('sender_verification_operations')
+        ->where('workspace_id', $workspaceId)
+        ->where('idempotency_key', $confirmedRequest->operationKey)
+        ->count())->toBe(1);
 });

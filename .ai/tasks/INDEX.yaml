@@ -268,6 +268,16 @@
       "dependencies": [
         "TASK-0025"
       ]
+    },
+    {
+      "id": "TASK-0027",
+      "phase": "PHASE-05",
+      "title": "Implement suppression, unsubscribe/preferences, bounce, and complaint processing",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0026"
+      ]
     }
   ]
 }

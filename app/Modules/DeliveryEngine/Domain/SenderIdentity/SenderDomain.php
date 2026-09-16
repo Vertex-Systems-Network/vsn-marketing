@@ -23,6 +23,10 @@ final readonly class SenderDomain
             }
         }
 
+        if (mb_strlen($this->idempotencyKey) > 191) {
+            throw new InvalidArgumentException('Sender domain idempotency key must not exceed 191 characters.');
+        }
+
         if ($this->updatedAt < $this->createdAt) {
             throw new InvalidArgumentException('Sender domain updatedAt must not precede createdAt.');
         }

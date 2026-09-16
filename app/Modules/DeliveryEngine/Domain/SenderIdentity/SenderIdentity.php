@@ -35,6 +35,22 @@ final readonly class SenderIdentity
             }
         }
 
+        if (mb_strlen($this->localPart) > 64) {
+            throw new InvalidArgumentException('Sender identity local part must not exceed 64 characters.');
+        }
+
+        if ($this->displayName !== null && mb_strlen($this->displayName) > 191) {
+            throw new InvalidArgumentException('Sender identity display name must not exceed 191 characters.');
+        }
+
+        if ($this->replyToAddress !== null && mb_strlen($this->replyToAddress) > 320) {
+            throw new InvalidArgumentException('Reply-to address must not exceed 320 characters.');
+        }
+
+        if (mb_strlen($this->idempotencyKey) > 191) {
+            throw new InvalidArgumentException('Sender identity idempotency key must not exceed 191 characters.');
+        }
+
         if ($this->updatedAt < $this->createdAt) {
             throw new InvalidArgumentException('Sender identity updatedAt must not precede createdAt.');
         }

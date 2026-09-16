@@ -25,5 +25,5 @@
     "scorecard_status": "task_0101_main_push_passed_run_34522847785"
   },
   "blockers": [],
-  "exact_next_action": "Land the TASK-0026 Supervisor foundation in PR #184 after its exact-head continuity, application and security gates pass; then fast-forward all nine registered worker branches to the resulting main and execute Wave 1 domain, authentication-evidence and provider-policy contracts in parallel without live DNS mutation or production sender activation."
+  "exact_next_action": "Require the combined TASK-0026 Wave 1 state on `ship/week-1`—authentication evidence, mailbox-provider policy, and fail-fast Shipping Fast Gate ordering—to pass the Shipping Fast Gate and Application Foundation CI; then promote the green integration branch to `main` as one merge wave and admit only dependency-unblocked TASK-0026 work under the five-writer cap."
 }

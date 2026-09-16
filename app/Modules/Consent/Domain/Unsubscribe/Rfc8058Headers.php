@@ -7,10 +7,13 @@ use InvalidArgumentException;
 final readonly class Rfc8058Headers
 {
     public const LIST_UNSUBSCRIBE = 'List-Unsubscribe';
+
     public const LIST_UNSUBSCRIBE_POST = 'List-Unsubscribe-Post';
+
     public const ONE_CLICK_POST_VALUE = 'List-Unsubscribe=One-Click';
 
     public string $listUnsubscribe;
+
     public string $listUnsubscribePost;
 
     public function __construct(string $httpsEndpoint, OpaqueUnsubscribeToken $token)

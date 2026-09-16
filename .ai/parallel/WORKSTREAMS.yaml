@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "mode": "staged",
-  "parent_task": "TASK-0026",
-  "branch_creation_baseline_sha": "91589bcae6faf1defee58e52d058223d7cc612ee",
+  "mode": "active",
+  "parent_task": "TASK-0027",
+  "branch_creation_baseline_sha": "ea9d86a473cb96f7d74fe1cb5186a3ed823f841c",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0026-SUPERVISOR-FOUNDATION",
+      "id": "WS-0027-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0026 parallel control, Supervisor-only schema foundation and merge/acceptance coordination without live DNS mutation or production sender activation",
+      "capability": "Own TASK-0027 five-writer Shipping Mode coordination, dependency-safe merge waves, integration admission and final acceptance without implementing TASK-0028 reputation or frequency policy",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0026",
-      "worktree": "worktrees/task-0026-supervisor",
-      "status": "merged",
+      "branch": "supervisor/TASK-0027",
+      "worktree": "worktrees/task-0027-supervisor",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 5,
@@ -24,201 +24,92 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_16_000013_create_sender_identity_foundation_tables.php"
+        ".ai/parallel/AGENT-LEASES.yaml"
       ]
     },
     {
-      "id": "WS-0026-DOMAIN-AGGREGATES",
+      "id": "WS-0027-SUPPRESSION-CORE",
       "role": "worker",
-      "module": "Delivery",
-      "capability": "Implement workspace-scoped sender-domain and sender-identity aggregates, deterministic lifecycle transitions, immutable identity keys and explicit purpose/provider/policy context",
-      "assigned_agent": "worker-task0026-domain",
-      "branch": "worker-1/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-1",
-      "status": "merged",
+      "module": "Consent",
+      "capability": "Implement canonical workspace-scoped suppression, objection, preference, bounce and complaint evidence primitives plus idempotent persistence boundaries without provider synchronization or routing overrides",
+      "assigned_agent": "worker-task0027-suppression",
+      "branch": "worker-1/TASK-0027",
+      "worktree": "worktrees/task-0027-worker-1",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/SenderIdentity/**"
+        "app/Modules/Consent/Domain/Suppression/**",
+        "app/Modules/Consent/Infrastructure/Suppression/**",
+        "database/migrations/2026_09_17_000014_create_suppression_foundation_tables.php",
+        "tests/Unit/Consent/Task0027SuppressionDomainTest.php"
       ]
     },
     {
-      "id": "WS-0026-AUTH-EVIDENCE",
+      "id": "WS-0027-RFC8058",
       "role": "worker",
-      "module": "Delivery",
-      "capability": "Implement separate timestamped/versioned SPF, DKIM, DMARC, From-alignment, forward/reverse-DNS and TLS evidence with deterministic stale/unknown/contradictory fail-closed evaluation",
-      "assigned_agent": "worker-task0026-auth-evidence",
-      "branch": "worker-2/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-2",
-      "status": "merged",
+      "module": "Consent",
+      "capability": "Implement RFC 8058 one-click unsubscribe contracts with opaque scoped tokens, HTTPS List-Unsubscribe and List-Unsubscribe-Post eligibility semantics, no browser-session, cookie or HTTP-auth dependency, and independently testable DKIM/header inputs",
+      "assigned_agent": "worker-task0027-rfc8058",
+      "branch": "worker-2/TASK-0027",
+      "worktree": "worktrees/task-0027-worker-2",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/SenderAuthentication/**"
+        "app/Modules/Consent/Domain/Unsubscribe/**",
+        "app/Modules/Consent/Application/Unsubscribe/**",
+        "tests/Feature/Consent/Task0027OneClickUnsubscribeTest.php"
       ]
     },
     {
-      "id": "WS-0026-PROVIDER-POLICY",
+      "id": "WS-0027-ELIGIBILITY-POLICY",
       "role": "worker",
-      "module": "Providers",
-      "capability": "Implement effective-dated and provider-versioned mailbox-provider sender policy data with provenance, provider-specific Gmail/Outlook threshold semantics and configurable Yahoo classification",
-      "assigned_agent": "worker-task0026-provider-policy",
-      "branch": "worker-3/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-3",
-      "status": "merged",
+      "module": "Delivery",
+      "capability": "Implement provider-neutral delivery eligibility inputs and deterministic allow, deny, review or unknown outcomes for explicit purpose, jurisdiction, subscriber or person type, relationship basis, consent or soft-opt-in evidence and suppression or objection context without reputation/frequency policy",
+      "assigned_agent": "worker-task0027-eligibility",
+      "branch": "worker-3/TASK-0027",
+      "worktree": "worktrees/task-0027-worker-3",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 30,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Providers/Domain/SenderPolicy/**"
+        "app/Modules/DeliveryEngine/Domain/Eligibility/**",
+        "app/Modules/DeliveryEngine/Application/Eligibility/**",
+        "tests/Unit/DeliveryEngine/Task0027EligibilityPolicyTest.php"
       ]
     },
     {
-      "id": "WS-0026-PERSISTENCE",
+      "id": "WS-0027-PROVIDER-FEEDBACK",
       "role": "worker",
-      "module": "Delivery",
-      "capability": "Implement workspace-isolated sender persistence, idempotent create/update behavior, versioned evidence storage and deterministic repository hydration against the Supervisor-owned schema",
-      "assigned_agent": "worker-task0026-persistence",
-      "branch": "worker-4/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-4",
-      "status": "merged",
+      "module": "Providers",
+      "capability": "Implement provider-neutral bounce, complaint and unsubscribe feedback evidence normalization, provenance, replay identity and separate reconciliation state primitives whose timeout, failure or ambiguity cannot imply restored eligibility",
+      "assigned_agent": "worker-task0027-provider-feedback",
+      "branch": "worker-4/TASK-0027",
+      "worktree": "worktrees/task-0027-worker-4",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "active",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-DOMAIN-AGGREGATES",
-        "WS-0026-AUTH-EVIDENCE"
-      ],
+      "dependencies": [],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Infrastructure/SenderIdentity/**"
-      ]
-    },
-    {
-      "id": "WS-0026-VERIFICATION",
-      "role": "worker",
-      "module": "Delivery",
-      "capability": "Implement deterministic idempotent sender verification orchestration with timeout, ambiguous-outcome, audit-evidence and explicit activation-gate semantics; no implicit DNS writes",
-      "assigned_agent": "worker-task0026-verification",
-      "branch": "worker-5/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-5",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-DOMAIN-AGGREGATES",
-        "WS-0026-AUTH-EVIDENCE",
-        "WS-0026-PROVIDER-POLICY"
-      ],
-      "merge_group": 50,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Application/SenderVerification/**"
-      ]
-    },
-    {
-      "id": "WS-0026-SYNCHRONIZATION",
-      "role": "worker",
-      "module": "Delivery",
-      "capability": "Implement replay-safe sender synchronization/reconciliation commands and results that preserve ambiguous provider outcomes and never imply production activation",
-      "assigned_agent": "worker-task0026-sync",
-      "branch": "worker-6/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-6",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-DOMAIN-AGGREGATES",
-        "WS-0026-PERSISTENCE",
-        "WS-0026-VERIFICATION"
-      ],
-      "merge_group": 60,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Application/SenderSync/**"
-      ]
-    },
-    {
-      "id": "WS-0026-SECURITY-ADVERSARIAL",
-      "role": "worker",
-      "module": "Security",
-      "capability": "Add adversarial security coverage for cross-workspace access, secret leakage, unknown/stale/contradictory evidence and malformed provider-policy fail-closed behavior",
-      "assigned_agent": "worker-task0026-security",
-      "branch": "worker-7/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-7",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-DOMAIN-AGGREGATES",
-        "WS-0026-AUTH-EVIDENCE",
-        "WS-0026-PROVIDER-POLICY"
-      ],
-      "merge_group": 70,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "tests/Feature/Security/Task0026SenderIdentitySecurityTest.php"
-      ]
-    },
-    {
-      "id": "WS-0026-DOMAIN-TESTS",
-      "role": "worker",
-      "module": "Delivery",
-      "capability": "Add deterministic unit coverage for sender lifecycle, purpose/provider context and authentication-evidence freshness/contradiction rules",
-      "assigned_agent": "worker-task0026-domain-tests",
-      "branch": "worker-8/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-8",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-DOMAIN-AGGREGATES",
-        "WS-0026-AUTH-EVIDENCE"
-      ],
-      "merge_group": 80,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "tests/Unit/DeliveryEngine/Task0026SenderDomainTest.php"
-      ]
-    },
-    {
-      "id": "WS-0026-INTEGRATION-TESTS",
-      "role": "worker",
-      "module": "Delivery",
-      "capability": "Add integration/adversarial coverage for persistence isolation, idempotency, replay, ambiguous verification outcomes and separate activation gating",
-      "assigned_agent": "worker-task0026-integration-tests",
-      "branch": "worker-9/TASK-0026",
-      "worktree": "worktrees/task-0026-worker-9",
-      "status": "merged",
-      "slot_status": "occupied",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0026-PERSISTENCE",
-        "WS-0026-VERIFICATION",
-        "WS-0026-SYNCHRONIZATION"
-      ],
-      "merge_group": 90,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "tests/Integration/DeliveryEngine/Task0026SenderIdentityTest.php"
+        "app/Modules/Providers/Domain/Feedback/**",
+        "app/Modules/DeliveryEngine/Application/SuppressionSync/**",
+        "tests/Unit/Providers/Task0027ProviderFeedbackTest.php"
       ]
     }
   ]

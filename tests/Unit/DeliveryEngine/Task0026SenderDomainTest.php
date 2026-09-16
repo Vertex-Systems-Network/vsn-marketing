@@ -1,5 +1,10 @@
 <?php
 
+use App\Modules\DeliveryEngine\Domain\SenderAuthentication\AuthenticationDimension;
+use App\Modules\DeliveryEngine\Domain\SenderAuthentication\AuthenticationEvidence;
+use App\Modules\DeliveryEngine\Domain\SenderAuthentication\AuthenticationEvidenceEvaluator;
+use App\Modules\DeliveryEngine\Domain\SenderAuthentication\AuthenticationEvidenceStatus;
+use App\Modules\DeliveryEngine\Domain\SenderAuthentication\AuthenticationReadiness;
 use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderDomain;
 use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderDomainLifecycle;
 use App\Modules\DeliveryEngine\Domain\SenderIdentity\SenderDomainName;
@@ -52,6 +57,37 @@ function task0026Identity(
         metadata: $metadata,
         createdAt: $createdAt,
         updatedAt: $updatedAt,
+    );
+}
+
+function task0026AuthenticationEvidence(
+    AuthenticationDimension $dimension,
+    AuthenticationEvidenceStatus $status = AuthenticationEvidenceStatus::Pass,
+    string $version = 'v1',
+    ?DateTimeImmutable $observedAt = null,
+    ?DateTimeImmutable $freshUntil = null,
+    ?DateTimeImmutable $recordedAt = null,
+): AuthenticationEvidence {
+    $observedAt ??= new DateTimeImmutable('2026-09-16T10:00:00+00:00');
+    $freshUntil ??= new DateTimeImmutable('2026-09-17T10:00:00+00:00');
+    $recordedAt ??= new DateTimeImmutable('2026-09-16T10:01:00+00:00');
+
+    return new AuthenticationEvidence(
+        id: 'evidence-'.$dimension->value.'-'.$version.'-'.$status->value,
+        workspaceId: 'workspace-1',
+        senderDomainId: 'sender-domain-1',
+        dimension: $dimension,
+        status: $status,
+        evidenceVersion: $version,
+        sourceType: 'dns_observation',
+        providerKey: 'ses',
+        publicMaterial: ['record' => $dimension->value],
+        redactedEvidence: ['source' => 'official'],
+        sourceUrl: 'https://example.com/evidence/'.$dimension->value,
+        sourceVersion: '2026-09',
+        observedAt: $observedAt,
+        freshUntil: $freshUntil,
+        recordedAt: $recordedAt,
     );
 }
 
@@ -172,4 +208,80 @@ it('keeps sender identity lifecycle and update timestamps monotonic', function (
         task0026Eligibility(policyVersion: '2026-02'),
         new DateTimeImmutable('2026-09-16T09:59:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'update time must not move backwards');
+});
+
+it('marks authentication ready only when every required dimension has fresh passing evidence', function () {
+    $evidence = array_map(
+        static fn (AuthenticationDimension $dimension): AuthenticationEvidence => task0026AuthenticationEvidence($dimension),
+        AuthenticationDimension::cases(),
+    );
+
+    $decision = (new AuthenticationEvidenceEvaluator)->evaluate(
+        workspaceId: 'workspace-1',
+        senderDomainId: 'sender-domain-1',
+        evidence: $evidence,
+        at: new DateTimeImmutable('2026-09-16T12:00:00+00:00'),
+    );
+
+    expect($decision->readiness)->toBe(AuthenticationReadiness::Ready)
+        ->and($decision->isReady())->toBeTrue()
+        ->and($decision->reasons)->toBe([])
+        ->and(array_keys($decision->evidenceVersions))->toHaveCount(count(AuthenticationDimension::cases()));
+});
+
+it('keeps future and stale authentication evidence fail closed', function () {
+    $evaluator = new AuthenticationEvidenceEvaluator;
+    $at = new DateTimeImmutable('2026-09-16T12:00:00+00:00');
+
+    $future = array_map(
+        static fn (AuthenticationDimension $dimension): AuthenticationEvidence => task0026AuthenticationEvidence(
+            dimension: $dimension,
+            observedAt: new DateTimeImmutable('2026-09-16T13:00:00+00:00'),
+            freshUntil: new DateTimeImmutable('2026-09-17T13:00:00+00:00'),
+            recordedAt: new DateTimeImmutable('2026-09-16T13:01:00+00:00'),
+        ),
+        AuthenticationDimension::cases(),
+    );
+    $futureDecision = $evaluator->evaluate('workspace-1', 'sender-domain-1', $future, $at);
+
+    $stale = array_map(
+        static fn (AuthenticationDimension $dimension): AuthenticationEvidence => task0026AuthenticationEvidence(
+            dimension: $dimension,
+            observedAt: new DateTimeImmutable('2026-09-15T09:00:00+00:00'),
+            freshUntil: new DateTimeImmutable('2026-09-16T09:00:00+00:00'),
+            recordedAt: new DateTimeImmutable('2026-09-15T09:01:00+00:00'),
+        ),
+        AuthenticationDimension::cases(),
+    );
+    $staleDecision = $evaluator->evaluate('workspace-1', 'sender-domain-1', $stale, $at);
+
+    expect($futureDecision->readiness)->toBe(AuthenticationReadiness::Unknown)
+        ->and($futureDecision->isReady())->toBeFalse()
+        ->and($futureDecision->reasons)->toContain('spf:future_observation')
+        ->and($staleDecision->readiness)->toBe(AuthenticationReadiness::Stale)
+        ->and($staleDecision->isReady())->toBeFalse()
+        ->and($staleDecision->reasons)->toContain('spf:stale');
+});
+
+it('treats conflicting latest authentication observations as contradictory regardless of version ordering', function () {
+    $evidence = array_map(
+        static fn (AuthenticationDimension $dimension): AuthenticationEvidence => task0026AuthenticationEvidence($dimension),
+        AuthenticationDimension::cases(),
+    );
+    $evidence[] = task0026AuthenticationEvidence(
+        dimension: AuthenticationDimension::Dkim,
+        status: AuthenticationEvidenceStatus::Fail,
+        version: 'v2',
+    );
+
+    $decision = (new AuthenticationEvidenceEvaluator)->evaluate(
+        workspaceId: 'workspace-1',
+        senderDomainId: 'sender-domain-1',
+        evidence: $evidence,
+        at: new DateTimeImmutable('2026-09-16T12:00:00+00:00'),
+    );
+
+    expect($decision->readiness)->toBe(AuthenticationReadiness::Contradictory)
+        ->and($decision->isReady())->toBeFalse()
+        ->and($decision->reasons)->toContain('dkim:contradictory');
 });

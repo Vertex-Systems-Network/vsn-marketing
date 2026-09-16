@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-16T11:46:00+00:00`
+- Timestamp: `2026-09-16T14:01:00+00:00`
 - Active task: `TASK-0026`
 - Next task: `none`
 - Current phase: `PHASE-05`
@@ -11,11 +11,11 @@
 
 ## Completed / observed this session
 
-Promoted the prior certified Week-1 integration baseline to trusted `main` at `e3e8207c4bfe6e02e9ff0bf8617c29b1fd0287b5`, verified its protected-main Application Foundation, AI Continuity, Security Supply Chain, Release Integrity and OpenSSF Scorecard evidence, and synchronized `ship/week-1` to that trusted baseline. TASK-0026 PR #192 then merged as `84a0676960c8a6caadccafd85c454e91d969a948`, hardening sender-domain/sender-identity persistence bounds and adding focused domain tests without enabling DNS mutation or production sender activation. The append-only execution journal has been restored byte-for-byte to the trusted `ship/week-1` history after a reconciliation-branch transcription defect was detected before PR submission.
+Completed the dependency-safe TASK-0026 Week-1 implementation wave through PR #202 and certified exact `ship/week-1` head `169f6fa9e9e412dc81790342da9524a970f39e93`. The integrated capability now includes workspace-scoped sender domains and identities, separately versioned authentication evidence, provider-versioned mailbox policy, idempotent persistence, deterministic verification, replay-safe synchronization, auditable sender-operation persistence, adversarial security coverage and PostgreSQL-backed replay/ambiguity/timeout certification. Production DNS/provider mutation and sender activation remain disabled and outside TASK-0026.
 
 ## Tests
 
-PR #192 exact-head Shipping Fast Gate run `35090258089` passed all continuity, formatting, static-analysis, backend/Pest, frontend and dependency-audit checks on `ee5fb7f973ebd212e1e5a246698da3bbaaf5cf1d`. The resulting `ship/week-1` Application Foundation CI run `35090449097` is fully green: `foundation`, PHP 8.3 `php-floor`, PostgreSQL/Redis `integration`, and Playwright `e2e` all passed. AI Continuity push run `35090449193` passed state, journal, policy, transaction and parallel-development validations and failed only the global-ledger range rule because the product merge did not yet include synchronized `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`; this reconciliation branch supplies those two required ledger updates without changing product behavior or rewriting journal history.
+Exact `ship/week-1` head `169f6fa9e9e412dc81790342da9524a970f39e93` passed Shipping Fast Gate run `35104960843`, AI Continuity Guard run `35104961206`, and Application Foundation CI run `35104960813`: foundation, PHP 8.3 compatibility floor, real PostgreSQL/Redis infrastructure integration and critical Playwright smoke all passed. Promotion PR #203 triggered default-branch Security Supply Chain run `35105396504`; its first continuity run correctly required synchronized global ledger files for the product merge wave, and this checkpoint supplies those ledger updates without changing the fingerprinted TASK-0026 execution state or rewriting journal history.
 
 ## Blockers
 

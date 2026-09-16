@@ -17,6 +17,10 @@ final readonly class SenderEligibilityContext
             throw new InvalidArgumentException('Provider key must not be blank when supplied.');
         }
 
+        if ($this->providerKey !== null && mb_strlen($this->providerKey) > 120) {
+            throw new InvalidArgumentException('Provider key must not exceed 120 characters.');
+        }
+
         if (($this->policyKey === null) !== ($this->policyVersion === null)) {
             throw new InvalidArgumentException('Policy key and policy version must be supplied together.');
         }
@@ -25,8 +29,16 @@ final readonly class SenderEligibilityContext
             throw new InvalidArgumentException('Policy key must not be blank when supplied.');
         }
 
+        if ($this->policyKey !== null && mb_strlen($this->policyKey) > 120) {
+            throw new InvalidArgumentException('Policy key must not exceed 120 characters.');
+        }
+
         if ($this->policyVersion !== null && trim($this->policyVersion) === '') {
             throw new InvalidArgumentException('Policy version must not be blank when supplied.');
+        }
+
+        if ($this->policyVersion !== null && mb_strlen($this->policyVersion) > 120) {
+            throw new InvalidArgumentException('Policy version must not exceed 120 characters.');
         }
 
         SenderRecordGuard::assertNoSecretMaterial($this->policyContext, 'policy_context');

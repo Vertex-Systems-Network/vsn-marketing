@@ -38,6 +38,7 @@ final class SuppressionRecordGuard
 
             if (is_array($value)) {
                 self::assertSafe($value, $currentPath);
+
                 continue;
             }
 

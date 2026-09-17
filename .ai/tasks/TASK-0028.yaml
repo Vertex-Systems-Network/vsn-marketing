@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement frequency caps, reputation/health signals, and safe sending policy",
-  "status": "completed",
+  "status": "ready",
   "objective": "Implement deterministic workspace-scoped safe-sending evaluation that combines explicit frequency-cap state with provider-versioned reputation and deliverability-health evidence while preserving consent, suppression, objection, authorization and sender-identity requirements as higher-order authority. Unknown, stale, contradictory or unsupported policy evidence must fail closed to deny or review rather than silently allow, and the implementation must not introduce anti-abuse evasion, provider-limit circumvention, fake-account rotation, deceptive headers or automated consent creation.",
   "dependencies": [
     "TASK-0027"

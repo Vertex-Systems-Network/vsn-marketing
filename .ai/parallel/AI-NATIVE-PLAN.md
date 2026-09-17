@@ -8,7 +8,8 @@ Parent task: `TASK-0028`
 Branch baseline: `6593e6f6fd57adadaf80c2d84613a07b7a469a2b`  
 Active writers: `3` (1 Supervisor + 2 independent foundation workers)  
 Repository hard cap: `12`  
-Merge strategy: `squash`
+Merge strategy: `squash`  
+Completion signal: `Work Done and Submitted`
 
 ## Frozen invariants
 

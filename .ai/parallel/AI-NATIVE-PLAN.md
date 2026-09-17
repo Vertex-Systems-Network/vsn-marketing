@@ -1,12 +1,13 @@
 # AI-Native Parallel Plan — TASK-0028 Safe Sending Policy
 
-Status: **active — foundation wave**. TASK-0027 suppression and objection authority is certified on protected `main` at `6593e6f6fd57adadaf80c2d84613a07b7a469a2b`. TASK-0028 now implements deterministic frequency caps plus provider-versioned reputation/deliverability-health evidence before composing the final safe-sending boundary.
+Status: **active — composition wave**. TASK-0027 suppression and objection authority remains certified on protected `main`. TASK-0028 frequency-cap and provider-versioned reputation/deliverability-health foundations are now merged on protected `main` at `6897f1f6e360a30ccf1aae49bfc27628a72449af`; safe-sending composition is the only active worker lane.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0028`  
 Parent task: `TASK-0028`  
 Branch baseline: `6593e6f6fd57adadaf80c2d84613a07b7a469a2b`  
-Active writers: `3` (1 Supervisor + 2 independent foundation workers)  
+Composition baseline: `6897f1f6e360a30ccf1aae49bfc27628a72449af`  
+Active writers: `2` (1 Supervisor + 1 safe-sending worker)  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
 Completion signal: `Work Done and Submitted`
@@ -24,12 +25,12 @@ Completion signal: `Work Done and Submitted`
 
 ## Workstreams and merge order
 
-1. **Foundation A — Frequency policy (`worker-1/TASK-0028`)**: domain/application contracts and focused unit tests for explicit windows, thresholds, counters, workspace/purpose/recipient scope, deterministic replay and fail-closed missing/invalid policy.
-2. **Foundation B — Reputation/health (`worker-2/TASK-0028`)**: provider/source/version/effective-date evidence contracts and focused unit tests for freshness, trust, contradiction, workspace isolation and fail-closed evidence evaluation.
-3. **Composition — Safe sending (`worker-3/TASK-0028`)**: starts only after both foundations merge to protected main; composes base eligibility, TASK-0027 suppression authority, sender readiness, frequency and reputation/health into stable outcomes/reasons.
-4. **Certification — Adversarial/PostgreSQL (`worker-4/TASK-0028`)**: starts only after safe-sending composition lands; proves replay/concurrency, failover resistance, cross-workspace isolation, stale/contradictory evidence and suppression precedence.
+1. **Foundation A — Frequency policy (`worker-1/TASK-0028`)**: merged to protected main after exact-head continuity, application and security gates passed.
+2. **Foundation B — Reputation/health (`worker-2/TASK-0028`)**: merged to protected main after exact-head continuity, application and security gates passed.
+3. **Composition — Safe sending (`worker-3/TASK-0028`)**: active from the combined protected-main foundation baseline; composes base eligibility, TASK-0027 suppression authority, sender readiness, frequency and reputation/health into stable outcomes/reasons.
+4. **Certification — Adversarial/PostgreSQL (`worker-4/TASK-0028`)**: remains staged and starts only after safe-sending composition lands; proves replay/concurrency, failover resistance, cross-workspace isolation, stale/contradictory evidence and suppression precedence.
 5. **Final acceptance**: exact-head AI Continuity, Application Foundation and Security Supply Chain must pass before TASK-0028 acceptance or TASK-0029 activation.
 
 ## Exact next action
 
-Land this control admission, then execute the two independent foundation workers from the certified baseline. Merge only exact-head green foundation PRs. Rebase/sync the dependent safe-sending branch to the resulting protected main before beginning composition.
+Land this control activation, then implement the safe-sending composition only on `worker-3/TASK-0028` from protected main `6897f1f6e360a30ccf1aae49bfc27628a72449af`. Preserve TASK-0027 canonical suppression/objection authority and sender-authentication evidence semantics; combine them with frequency and reputation outcomes without ever promoting deny, review or unknown to allow. Merge only after exact-head continuity, application and security gates pass, then activate the adversarial certification lane.

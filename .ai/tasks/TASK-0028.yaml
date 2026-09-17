@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement frequency caps, reputation/health signals, and safe sending policy",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement deterministic workspace-scoped safe-sending evaluation that combines explicit frequency-cap state with provider-versioned reputation and deliverability-health evidence while preserving consent, suppression, objection, authorization and sender-identity requirements as higher-order authority. Unknown, stale, contradictory or unsupported policy evidence must fail closed to deny or review rather than silently allow, and the implementation must not introduce anti-abuse evasion, provider-limit circumvention, fake-account rotation, deceptive headers or automated consent creation.",
   "dependencies": [
     "TASK-0027"
@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "Canonical workspace-scoped frequency policy exists for explicit message purpose and recipient scope with deterministic windows, counters, thresholds, replay/idempotency semantics and auditable evaluation timestamps; missing or invalid policy never becomes implicit allow",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Reputation and deliverability-health evidence is provider/source/version/effective-date scoped, preserves provenance and observation time, and treats stale, contradictory, malformed, foreign-workspace or untrusted evidence as deny/review/unknown rather than allow",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Safe-sending evaluation composes sender identity readiness, consent/authorization, TASK-0027 suppression/objection authority, frequency limits and provider policy deterministically; suppression, objection or missing authorization cannot be overridden by reputation, health, routing, AI recommendations, campaign settings or admin convenience",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Provider bulk/high-volume semantics remain effective-dated provider policy rather than global constants; Google, Microsoft/Outlook, Yahoo or other provider thresholds are not invented or generalized beyond versioned evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Evaluation outcomes are explicit allow, deny or review/unknown with stable reason codes suitable for audit and observability; transactional versus marketing purpose remains explicit and cannot be inferred from reputation score or route selection",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Persistence and concurrency handling prevent duplicate delivery attempts, retries, failover or race conditions from bypassing frequency authority; counters and decisions remain workspace isolated and replay safe",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Adversarial coverage proves cross-workspace isolation, stale/contradictory provider evidence, replay and concurrency behavior, provider-failover attempts, missing policy context, suppression precedence and resistance to anti-abuse evasion or provider-limit circumvention",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "AI continuity, architecture, unit, PostgreSQL integration, application, static-analysis, security-supply-chain and exact-head acceptance gates are green before TASK-0029 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -63,5 +63,5 @@
     "npm test",
     "npm run build"
   ],
-  "exact_next_action": "Freeze TASK-0028 deterministic frequency-cap, provider-versioned reputation/health, and safe-sending policy contracts on top of TASK-0027 suppression authority; implement fail-closed evaluation without anti-abuse evasion, provider-limit circumvention, consent creation, or suppression override, then certify with unit, PostgreSQL integration, adversarial security, continuity, application and supply-chain gates."
+  "exact_next_action": "TASK-0028 acceptance is certified by merged frequency, reputation/health, safe-sending composition and adversarial PostgreSQL/security evidence; after this acceptance lands on protected main with exact-head continuity, application and security gates green, the guarded successor transition may release TASK-0028 leases and advance state without weakening TASK-0027 or TASK-0028 authority."
 }

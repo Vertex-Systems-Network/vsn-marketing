@@ -13,14 +13,14 @@
       ]
     },
     {
-      "agent": "worker-task0029-telemetry",
-      "workstream": "WS-0029-TELEMETRY-EVIDENCE",
-      "branch": "worker-1/TASK-0029",
+      "agent": "worker-task0029-diagnostics",
+      "workstream": "WS-0029-DIAGNOSTICS",
+      "branch": "worker-2/TASK-0029",
       "status": "active",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Deliverability/**",
-        "app/Modules/DeliveryEngine/Infrastructure/Deliverability/**",
-        "tests/Unit/DeliveryEngine/Task0029DeliverabilityTelemetryTest.php"
+        "app/Modules/DeliveryEngine/Application/Deliverability/EvaluateDeliverabilityDiagnostics.php",
+        "app/Modules/DeliveryEngine/Application/Deliverability/DeliverabilityDiagnosticResult.php",
+        "tests/Unit/DeliveryEngine/Task0029DeliverabilityDiagnosticsTest.php"
       ]
     }
   ]

@@ -10,7 +10,7 @@ use InvalidArgumentException;
 
 final class EvaluateReputationHealth
 {
-    /** @param list<ReputationHealthEvidence> $evidence */
+    /** @param list<mixed> $evidence */
     public function evaluate(
         string $workspaceId,
         string $providerKey,
@@ -137,6 +137,16 @@ final class EvaluateReputationHealth
 
         $status = reset($statuses);
 
+        if (! $status instanceof ReputationHealthStatus) {
+            return $this->result(
+                EligibilityOutcome::Unknown,
+                ['reputation_health_unknown'],
+                $evaluatedAt,
+                $providerKey,
+                $evidenceIds,
+            );
+        }
+
         return match ($status) {
             ReputationHealthStatus::Healthy => $this->result(
                 EligibilityOutcome::Allow,
@@ -160,13 +170,6 @@ final class EvaluateReputationHealth
                 $evidenceIds,
             ),
             ReputationHealthStatus::Unknown => $this->result(
-                EligibilityOutcome::Unknown,
-                ['reputation_health_unknown'],
-                $evaluatedAt,
-                $providerKey,
-                $evidenceIds,
-            ),
-            default => $this->result(
                 EligibilityOutcome::Unknown,
                 ['reputation_health_unknown'],
                 $evaluatedAt,

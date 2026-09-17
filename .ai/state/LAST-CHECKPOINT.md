@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-16T18:46:30+00:00`
+- Timestamp: `2026-09-17T11:52:30+00:00`
 - Active task: `TASK-0027`
 - Next task: `none`
 - Current phase: `PHASE-05`
@@ -11,13 +11,13 @@
 
 ## Completed / observed this session
 
-Completed `TASK-0026` and activated `TASK-0027`.
+TASK-0027 Wave A and Wave B product/acceptance implementation are integrated on `ship/week-1`. Wave B merged the public RFC 8058 one-click HTTP boundary (#216), database-backed opaque-token persistence and PostgreSQL certification (#214), adversarial suppression/security acceptance (#217), suppression-aware delivery eligibility (#215), and Supervisor-owned public API route wiring (#218). The resulting promotion head `dbbec6890c73e559b3d552c1f2508fe0997018cf` is 12 commits ahead and 0 behind protected `main`.
 
-Transition evidence: TASK-0026 AC-1 through AC-8 are true; certification PR #205 exact head 9d6200bbc74bec9e1f6e68c3f1d0ad2624a41776 passed AI Continuity Guard 35136044164, Application Foundation CI 35136044131 including foundation, PHP 8.3 compatibility, PostgreSQL/Redis integration and Playwright E2E, and Security Supply Chain CI 35136044150; TASK-0027 is explicitly registered via PR #204 on protected main.
+Promotion PR #219 is open against `main`. Security Supply Chain CI run `35217680167` passed. Application Foundation run `35217680205` had already passed PHP 8.3 compatibility, PostgreSQL/Redis integration and Playwright E2E at this checkpoint while its foundation job was still completing. AI Continuity run `35217680268` passed transactional state, journal, policy, parallel Supervisor, branch, submission and append-only checks and failed only the global-ledger range rule because the product integration range had not yet synchronized `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`. This checkpoint supplies those required Supervisor-owned ledger updates without rewriting `EXECUTION-JOURNAL.jsonl` or changing product behavior.
 
 ## Tests
 
-PR #205 exact head 9d6200bbc74bec9e1f6e68c3f1d0ad2624a41776: AI Continuity Guard 35136044164 PASS; Application Foundation CI 35136044131 PASS (foundation, PHP 8.3 floor, PostgreSQL/Redis integration, Playwright E2E); Security Supply Chain CI 35136044150 PASS including security-gates.
+Wave-B exact-head Shipping Fast Gates passed for #216 head `186520de6a51a7e78741a7352b84de0e3a5c002a`, #214 head `6342fa3e35fce1f31025070459bcb0eff8963a67`, #217 head `d7260ac37f638ac895b1145ce1a75b4a36c2b748`, #215 head `f3fc5837f966c55b5b6e4c3641a068cfcde9b8a2`, and Supervisor route #218 head `4a85aa99084b9c04ef014711fd946bfaac678fa6`. Promotion Security Supply Chain run `35217680167` PASS. Promotion Application Foundation run `35217680205`: PHP 8.3 floor PASS, PostgreSQL/Redis integration PASS, Playwright E2E PASS, foundation completion pending at checkpoint. Promotion AI Continuity run `35217680268`: all guards PASS except the expected global-ledger reconciliation rule now addressed by this state-only reconciliation.
 
 ## Blockers
 

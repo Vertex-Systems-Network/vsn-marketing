@@ -2,22 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-17T11:52:30+00:00`
-- Active task: `TASK-0027`
+- Timestamp: `2026-09-17T12:12:00+00:00`
+- Active task: `TASK-0028`
 - Next task: `none`
 - Current phase: `PHASE-05`
 - Execution status: `ready`
-- State fingerprint: `09be68448d09986b0acadde1dfdcdbc64b5926b95454dde5753e1f8dc7b64f9c`
+- State fingerprint: `97a1f60ceb4a1aab77dbcb4defb9eafb08025868b9e5c29ef9494e4c4b812449`
 
 ## Completed / observed this session
 
-TASK-0027 Wave A and Wave B product/acceptance implementation are integrated on `ship/week-1`. Wave B merged the public RFC 8058 one-click HTTP boundary (#216), database-backed opaque-token persistence and PostgreSQL certification (#214), adversarial suppression/security acceptance (#217), suppression-aware delivery eligibility (#215), and Supervisor-owned public API route wiring (#218). The resulting promotion head `dbbec6890c73e559b3d552c1f2508fe0997018cf` is 12 commits ahead and 0 behind protected `main`.
-
-Promotion PR #219 is open against `main`. Security Supply Chain CI run `35217680167` passed. Application Foundation run `35217680205` had already passed PHP 8.3 compatibility, PostgreSQL/Redis integration and Playwright E2E at this checkpoint while its foundation job was still completing. AI Continuity run `35217680268` passed transactional state, journal, policy, parallel Supervisor, branch, submission and append-only checks and failed only the global-ledger range rule because the product integration range had not yet synchronized `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`. This checkpoint supplies those required Supervisor-owned ledger updates without rewriting `EXECUTION-JOURNAL.jsonl` or changing product behavior.
+TASK-0027 is certified complete on protected `main`. Certification PR #220 merged as `0d49b5a9aab72e51a128a3897e6d54a4ee7abc8b` after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI passed. TASK-0028 is now explicitly registered as the PHASE-05 successor with deterministic frequency-cap, provider-versioned reputation/health, and safe-sending policy acceptance contracts. The transition preserves TASK-0027 suppression and objection state as higher-order delivery authority.
 
 ## Tests
 
-Wave-B exact-head Shipping Fast Gates passed for #216 head `186520de6a51a7e78741a7352b84de0e3a5c002a`, #214 head `6342fa3e35fce1f31025070459bcb0eff8963a67`, #217 head `d7260ac37f638ac895b1145ce1a75b4a36c2b748`, #215 head `f3fc5837f966c55b5b6e4c3641a068cfcde9b8a2`, and Supervisor route #218 head `4a85aa99084b9c04ef014711fd946bfaac678fa6`. Promotion Security Supply Chain run `35217680167` PASS. Promotion Application Foundation run `35217680205`: PHP 8.3 floor PASS, PostgreSQL/Redis integration PASS, Playwright E2E PASS, foundation completion pending at checkpoint. Promotion AI Continuity run `35217680268`: all guards PASS except the expected global-ledger reconciliation rule now addressed by this state-only reconciliation.
+TASK-0027 certification head `5583ece5694e4e6811a406d5b0d2b178c1089f9a`: AI Continuity Guard run `35218414440` PASS; Application Foundation CI run `35218414442` PASS; Security Supply Chain CI run `35218414462` PASS. Protected-main release-integrity and scorecard evidence referenced by PR #220 remained green. TASK-0028 product implementation has not started in this control transition.
 
 ## Blockers
 
@@ -25,4 +23,4 @@ Wave-B exact-head Shipping Fast Gates passed for #216 head `186520de6a51a7e78741
 
 ## Exact next action
 
-Map the accepted TASK-0025 suppression, RFC 8058, jurisdiction and objection evidence onto existing Consent, Delivery, Providers, Events, Audit and tenancy boundaries; freeze canonical suppression/opt-out/bounce/complaint and provider-reconciliation contracts; then register dependency-safe TASK-0027 parallel workstreams before product implementation, without weakening immediate suppression authority or pulling TASK-0028 reputation/frequency policy forward.
+Freeze TASK-0028 deterministic frequency-cap, provider-versioned reputation/health, and safe-sending policy contracts on top of TASK-0027 suppression authority; implement fail-closed evaluation without anti-abuse evasion, provider-limit circumvention, consent creation, or suppression override, then certify with unit, PostgreSQL integration, adversarial security, continuity, application and supply-chain gates.

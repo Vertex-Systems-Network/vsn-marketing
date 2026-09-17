@@ -7,8 +7,9 @@ use DateTimeImmutable;
 
 final readonly class ReputationHealthEvaluationResult
 {
-    /** @param list<string> $reasons
-     *  @param list<string> $evidenceIds
+    /**
+     * @param  list<string>  $reasons
+     * @param  list<string>  $evidenceIds
      */
     public function __construct(
         public EligibilityOutcome $outcome,

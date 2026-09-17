@@ -62,16 +62,14 @@ final class DeliverabilityObservationRepository
 
         $observations = array_values(array_filter(
             $this->byId,
-            static fn (DeliverabilityObservation $observation): bool =>
-                $observation->workspaceId === $workspaceId
+            static fn (DeliverabilityObservation $observation): bool => $observation->workspaceId === $workspaceId
                 && ($providerKey === null || $observation->providerKey === $providerKey)
                 && ($messagePurpose === null || $observation->messagePurpose === $messagePurpose),
         ));
 
         usort(
             $observations,
-            static fn (DeliverabilityObservation $left, DeliverabilityObservation $right): int =>
-                [$left->observedAt->getTimestamp(), $left->recordedAt->getTimestamp(), $left->id]
+            static fn (DeliverabilityObservation $left, DeliverabilityObservation $right): int => [$left->observedAt->getTimestamp(), $left->recordedAt->getTimestamp(), $left->id]
                 <=> [$right->observedAt->getTimestamp(), $right->recordedAt->getTimestamp(), $right->id],
         );
 

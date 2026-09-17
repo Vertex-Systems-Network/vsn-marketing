@@ -1,53 +1,55 @@
-# AI-Native Parallel Plan — TASK-0026 Sender Domain & Identity Foundation
+# AI-Native Parallel Plan — TASK-0027 Suppression & Objection Authority
 
-Status: **active — dependency-safe parallel implementation**. TASK-0026 is the canonical active task. This cycle implements workspace-scoped sender domains and identities, separately versioned authentication evidence, provider-versioned mailbox policy context, deterministic verification/synchronization and adversarial fail-closed coverage. It must not perform live DNS mutation or production sender activation.
+Status: **active — Wave B five-writer Shipping Mode integration/acceptance**. Wave A is merged and certified at `df163673f004196c718326e1ad3cbb4362234bf3` with Shipping Fast Gate, AI Continuity and Application Foundation green. Wave B closes the public one-click HTTP, persistence/integration, adversarial security and suppression-aware eligibility wiring gaps without implementing TASK-0028 frequency caps, reputation scoring or deliverability-health policy.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/TASK-0026`  
-Branch creation baseline: `91589bcae6faf1defee58e52d058223d7cc612ee`  
-Parent task: `TASK-0026`  
-Dependency evidence: accepted `TASK-0025` provider/authentication research  
-Writer target: `10` logical lanes (1 Supervisor + 9 workers)  
-Hard cap: `12`  
+Control branch: `supervisor/TASK-0027-wave-b`  
+Shipping integration branch: `ship/week-1`  
+Wave-B branch creation baseline: `df163673f004196c718326e1ad3cbb4362234bf3`  
+Parent task: `TASK-0027`  
+Dependency evidence: certified `TASK-0026`, accepted `TASK-0025` research, and certified TASK-0027 Wave-A contracts/schema at `df163673...`  
+Writer target and Shipping Mode cap: `5` (1 Supervisor + 4 workers)  
+Repository hard cap: `12`  
 Merge strategy: `squash`  
 Completion signal: `Work Done and Submitted`
 
 ## Frozen implementation invariants
 
-- Sender-domain and sender-identity state is workspace scoped; composite persistence boundaries must prevent cross-workspace references.
-- No canonical `verified` boolean exists. SPF, DKIM, DMARC, From-domain alignment, forward DNS, reverse DNS and TLS are independent evidence dimensions with version, observation time and freshness.
-- Unknown, stale, contradictory or malformed evidence fails closed; absence of negative evidence is never equivalent to verified.
-- Mailbox-provider policy is effective-dated, provider-versioned and provenance-bearing. Gmail and Outlook thresholds remain provider-specific; Yahoo classification remains configurable when official evidence does not publish a universal numeric threshold.
-- Canonical sender records never contain DNS credentials or private signing material. Existing approved secret-reference/provider-connection boundaries are reused.
-- Verification and synchronization are deterministic and idempotent, preserve timeout/ambiguous outcomes, and emit auditable evidence.
-- Record creation, evidence refresh and verification do not mutate production DNS and do not activate production sending implicitly.
-- Sender eligibility may expose purpose/provider/policy context for later safe-sending evaluation but must not create consent or bypass suppression/objection authority reserved for later tasks.
+- Suppression and direct-marketing objection are deterministic authority. AI, provider failover, deliverability/reputation signals, campaign configuration and admin convenience cannot recreate permission.
+- Accepted unsubscribe or objection evidence becomes effective inside VSN immediately; provider synchronization is separate reconciliation state and its delay, failure, timeout or ambiguity cannot restore eligibility.
+- Canonical suppression/feedback state is workspace scoped, idempotent/replay-safe and evidence preserving. Cross-workspace references fail closed.
+- Marketing versus transactional purpose is explicit. Eligibility also carries jurisdiction, subscriber/person type, solicitation/relationship basis, consent or soft-opt-in evidence and applicable suppression/objection context.
+- Missing or unsupported policy context yields deny, review or unknown; absence of a suppression is never by itself permission to send.
+- UK ordinary commercial soft opt-in and the 2026 charitable-purposes soft opt-in remain distinct effective-dated policy inputs.
+- Applicable one-click unsubscribe follows RFC 8058: HTTPS `List-Unsubscribe`, `List-Unsubscribe-Post: List-Unsubscribe=One-Click`, independently testable DKIM/header eligibility, opaque scoped tokens, and no cookie, HTTP-auth or prior browser-session dependency.
+- The public one-click endpoint consumes only opaque scoped token material plus the RFC 8058 POST contract; browser auth/session/cookie state is never an identity source.
+- Raw unsubscribe tokens, provider credentials and private signing material are never stored in canonical/audit payloads. Persistence uses digest/scope/version/expiry/consumption evidence only.
+- Duplicate and concurrent opt-out/replay paths remain deterministic and idempotent; conflicting replay fails closed.
+- Bounce, complaint and unsubscribe provider feedback preserves source/provider provenance, observation time, version/classification and replay identity. Malformed, contradictory, stale, foreign-workspace or untrusted evidence fails closed.
+- Provider reconciliation cannot remove or bypass an internally accepted suppression.
+- Bought/public-list provenance never becomes generic permission. No scraping authorization, anti-abuse evasion, account rotation, deceptive-header behavior or provider-limit circumvention is introduced.
+- TASK-0028 frequency/reputation/health policy is explicitly out of scope.
+- Shared paths (`routes/**`, migrations, control files) remain Supervisor-owned.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 5 | WS-0026-SUPERVISOR-FOUNDATION | TASK-0026 control plane + Supervisor-only sender schema foundation | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0026` | squash | merge latest main before resume |
-| 10 | WS-0026-DOMAIN-AGGREGATES | Sender-domain/identity aggregates and lifecycle/purpose context | `occupied` | `worker-task0026-domain` | `active` | `worker-1/TASK-0026` | squash | merge latest main before resume |
-| 20 | WS-0026-AUTH-EVIDENCE | Separate versioned SPF/DKIM/DMARC/alignment/DNS/TLS evidence | `occupied` | `worker-task0026-auth-evidence` | `active` | `worker-2/TASK-0026` | squash | merge latest main before resume |
-| 30 | WS-0026-PROVIDER-POLICY | Effective-dated provider-versioned mailbox policy | `occupied` | `worker-task0026-provider-policy` | `active` | `worker-3/TASK-0026` | squash | merge latest main before resume |
-| 40 | WS-0026-PERSISTENCE | Workspace-isolated sender repositories and evidence persistence | `occupied` | `worker-task0026-persistence` | `active` | `worker-4/TASK-0026` | squash | merge latest main before resume |
-| 50 | WS-0026-VERIFICATION | Idempotent verification with timeout/ambiguous outcome and explicit activation gate | `occupied` | `worker-task0026-verification` | `active` | `worker-5/TASK-0026` | squash | merge latest main before resume |
-| 60 | WS-0026-SYNCHRONIZATION | Replay-safe synchronization/reconciliation without implicit activation | `occupied` | `worker-task0026-sync` | `active` | `worker-6/TASK-0026` | squash | merge latest main before resume |
-| 70 | WS-0026-SECURITY-ADVERSARIAL | Cross-workspace, secret-leakage and fail-closed adversarial tests | `occupied` | `worker-task0026-security` | `active` | `worker-7/TASK-0026` | squash | merge latest main before resume |
-| 80 | WS-0026-DOMAIN-TESTS | Lifecycle/authentication evidence deterministic unit coverage | `occupied` | `worker-task0026-domain-tests` | `active` | `worker-8/TASK-0026` | squash | merge latest main before resume |
-| 90 | WS-0026-INTEGRATION-TESTS | Persistence/idempotency/replay/ambiguous-outcome integration coverage | `occupied` | `worker-task0026-integration-tests` | `active` | `worker-9/TASK-0026` | squash | merge latest main before resume |
+| 5 | WS-0027-SUPERVISOR-CONTROL | Wave-B control, shared API route wiring, merge-wave coordination and final acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0027-wave-b` | squash | merge latest ship/week-1 before resume |
+| 50 | WS-0027-ONECLICK-HTTP | Public RFC 8058 HTTP/controller boundary and immediate internal opt-out acceptance | `occupied` | `worker-task0027-oneclick-http` | `active` | `worker-5/TASK-0027` | squash | merge latest ship/week-1 before resume |
+| 60 | WS-0027-PERSISTENCE-INTEGRATION | Digest-only unsubscribe-token persistence plus PostgreSQL replay/cross-tenant certification | `occupied` | `worker-task0027-persistence` | `active` | `worker-6/TASK-0027` | squash | merge latest ship/week-1 before resume |
+| 70 | WS-0027-ADVERSARIAL-SECURITY | Token/replay/cross-workspace/provider/PII adversarial acceptance coverage | `occupied` | `worker-task0027-security` | `active` | `worker-7/TASK-0027` | squash | merge latest ship/week-1 before resume |
+| 80 | WS-0027-ELIGIBILITY-WIRING | Immediate suppression-aware pre-routing eligibility authority | `occupied` | `worker-task0027-eligibility-wiring` | `active` | `worker-8/TASK-0027` | squash | merge latest ship/week-1 before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Dependency-safe merge waves
 
-1. **Wave 0 — Supervisor foundation:** merge the control-plane reconciliation and sender schema only after parallel validation and exact-head CI are green.
-2. **Wave 1 — independent contracts:** merge domain aggregates, authentication evidence and provider-policy data after each branch merges latest main and passes its own tests.
-3. **Wave 2 — persistence:** merge the repository layer after Wave 1 contracts are present on main.
-4. **Wave 3 — verification:** merge deterministic verification after domain/auth/policy dependencies are present.
-5. **Wave 4 — synchronization:** merge replay-safe sync/reconciliation after persistence and verification are present.
-6. **Wave 5 — adversarial acceptance:** merge security, unit and integration coverage after their dependencies are present; no test may weaken fail-closed semantics to pass.
-7. **Final acceptance:** require AI continuity, architecture, application, security/supply-chain, parallel validation and exact-head acceptance before any TASK-0027 activation.
+1. **Wave A — certified foundation (complete):** schema, canonical suppression/preference persistence, RFC 8058 contracts, fail-closed eligibility policy and provider feedback/reconciliation primitives are merged at `df163673...`; exact-head Shipping Fast Gate, AI Continuity and Application Foundation are green.
+2. **Wave B1 — persistence + public application boundary:** implement digest-only token scope/consumption persistence and the public one-click application/controller boundary in parallel. Supervisor owns the final `routes/api.php` registration after the controller contract is present.
+3. **Wave B2 — eligibility integration + adversarial acceptance:** wire immediate suppression authority into pre-routing eligibility while independently adding cross-workspace, replay, duplicate/concurrent opt-out, provider contradiction, secret/PII and unknown-context adversarial coverage.
+4. **Wave B3 — combined integration certification:** merge only exact-head green PRs into `ship/week-1`, then require latest-head Shipping Fast Gate, AI Continuity and full Application Foundation including PostgreSQL/Redis and Playwright. Fix only the affected chain.
+5. **Wave B4 — acceptance reconciliation:** verify AC-1 through AC-7 against merged evidence, add any missing integration/security coverage, and keep TASK-0028 out of scope.
+6. **Final promotion:** promote the certified integration baseline to protected `main` and require AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, OpenSSF Scorecard and Persistent Supervisor evidence before marking TASK-0027 complete or activating TASK-0028.
 
 ## Exact next action
 
-Merge this Supervisor foundation after green exact-head checks, fast-forward all nine worker branches to the resulting `main`, then implement/submit Wave 1 contracts in parallel. Do not perform live DNS mutation, use production credentials, activate a sender, create consent, or bypass suppression/objection controls.
+Merge the Wave-B control admission into `ship/week-1` after an exact-head green Shipping Fast Gate/AI Continuity check, fast-forward `supervisor/TASK-0027-wave-b` and `worker-5/TASK-0027` through `worker-8/TASK-0027` to the resulting certified control baseline, then execute the four non-overlapping Wave-B product/acceptance lanes. Supervisor adds the shared one-click API route only after the worker HTTP contract lands. Do not implement TASK-0028 reputation/frequency policy or weaken immediate suppression/objection authority.

@@ -60,19 +60,39 @@ final readonly class EvaluateSafeSendingEligibility
             );
         }
 
-        if ($authentication->readiness !== AuthenticationReadiness::Ready) {
-            $outcome = match ($authentication->readiness) {
-                AuthenticationReadiness::Failed => EligibilityOutcome::Deny,
-                AuthenticationReadiness::Unknown => EligibilityOutcome::Unknown,
-                AuthenticationReadiness::Stale, AuthenticationReadiness::Contradictory => EligibilityOutcome::Review,
-                AuthenticationReadiness::Ready => EligibilityOutcome::Allow,
-            };
-
+        if ($authentication->readiness === AuthenticationReadiness::Failed) {
             return $this->result(
                 $request,
                 $baseResult,
-                $outcome,
-                ['sender_authentication_'.$authentication->readiness->value],
+                EligibilityOutcome::Deny,
+                ['sender_authentication_failed'],
+            );
+        }
+
+        if ($authentication->readiness === AuthenticationReadiness::Unknown) {
+            return $this->result(
+                $request,
+                $baseResult,
+                EligibilityOutcome::Unknown,
+                ['sender_authentication_unknown'],
+            );
+        }
+
+        if ($authentication->readiness === AuthenticationReadiness::Stale) {
+            return $this->result(
+                $request,
+                $baseResult,
+                EligibilityOutcome::Review,
+                ['sender_authentication_stale'],
+            );
+        }
+
+        if ($authentication->readiness === AuthenticationReadiness::Contradictory) {
+            return $this->result(
+                $request,
+                $baseResult,
+                EligibilityOutcome::Review,
+                ['sender_authentication_contradictory'],
             );
         }
 

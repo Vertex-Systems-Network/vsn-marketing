@@ -1,4 +1,27 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0029-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0029",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
+      ]
+    },
+    {
+      "agent": "worker-task0029-telemetry",
+      "workstream": "WS-0029-TELEMETRY-EVIDENCE",
+      "branch": "worker-1/TASK-0029",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/DeliveryEngine/Domain/Deliverability/**",
+        "app/Modules/DeliveryEngine/Infrastructure/Deliverability/**",
+        "tests/Unit/DeliveryEngine/Task0029DeliverabilityTelemetryTest.php"
+      ]
+    }
+  ]
 }

@@ -1,36 +1,34 @@
-# AI-Native Parallel Plan — TASK-0028 Safe Sending Policy
+# AI-Native Parallel Plan — TASK-0029 Deliverability Observability
 
-Status: **active — certification wave**. TASK-0027 suppression and objection authority remains certified on protected `main`. TASK-0028 frequency, reputation/health and safe-sending composition are merged on protected `main` at `c7d531f010433f3a245d5d9896d3bc63878d8317`; adversarial/PostgreSQL certification is the only active worker lane.
+Status: **active — telemetry evidence wave**. TASK-0028 frequency, reputation/health and safe-sending policy is certified on protected `main`; TASK-0029 is the active PHASE-05 successor. Only the telemetry/evidence foundation is active alongside Supervisor control. Diagnostics, remediation recommendations and adversarial certification remain dependency-gated.
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/TASK-0028`  
-Parent task: `TASK-0028`  
-Branch baseline: `6593e6f6fd57adadaf80c2d84613a07b7a469a2b`  
-Certification baseline: `c7d531f010433f3a245d5d9896d3bc63878d8317`  
-Active writers: `2` (1 Supervisor + 1 adversarial certification worker)  
+Control branch: `supervisor/TASK-0029`  
+Parent task: `TASK-0029`  
+Branch baseline: `72216c79f8c997af816f8bec6d2ad6372097a7f5`  
+Active writers: `2` (1 Supervisor + 1 telemetry worker)  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
 Completion signal: `Work Done and Submitted`
 
 ## Frozen invariants
 
-- Consent/authorization, sender-identity readiness, canonical suppression and direct-marketing objection remain higher-order authority; reputation, routing or campaign configuration cannot recreate permission.
-- Missing, invalid, stale, contradictory, malformed, foreign-workspace or unsupported policy/evidence never becomes implicit allow.
-- Marketing versus transactional purpose is explicit input and cannot be inferred from score, provider, route or campaign metadata.
-- Frequency policy is workspace scoped and explicit for message purpose plus recipient scope. Windows, thresholds, counters, evaluation time and replay/idempotency semantics are deterministic.
-- Provider reputation/health evidence preserves provider, source, version, effective date and observation time. Provider-specific bulk/high-volume semantics remain versioned evidence, never global invented constants.
-- Outcomes are explicit allow, deny, review or unknown with stable reason codes suitable for audit/observability.
-- Retry, failover or concurrency must not bypass frequency authority or suppression/objection authority.
-- No anti-abuse evasion, provider-limit circumvention, fake-account rotation, deceptive headers, automated consent creation or scraping authorization is introduced.
+- TASK-0027 suppression/objection and TASK-0028 consent/authorization, sender readiness, frequency and safe-sending outcomes remain higher-order authority.
+- Deliverability telemetry, diagnostics and recommendations cannot create permission, erase suppression, bypass a frequency/provider-policy decision, or promote deny/review/unknown to allow.
+- Observations are workspace scoped and preserve provider, source, version, effective/observed time and provenance. Missing, stale, contradictory, malformed, foreign-workspace or untrusted evidence must remain explicit rather than being silently treated as healthy.
+- Provider-specific thresholds and semantics remain versioned policy/evidence; no universal provider threshold is invented.
+- Replay/duplicate observations are deterministic and idempotent. Cross-workspace reuse is forbidden.
+- Recommendations are bounded, auditable proposals only. Risky DNS, sender, routing or provider changes require explicit human/policy approval and are never self-executed by this task.
+- No anti-abuse evasion, spam-rate gaming, fake-account rotation, deceptive headers, provider-limit circumvention, automated consent creation or scraping authorization is introduced.
 
 ## Workstreams and merge order
 
-1. **Foundation A — Frequency policy (`worker-1/TASK-0028`)**: merged to protected main after exact-head continuity, application and security gates passed.
-2. **Foundation B — Reputation/health (`worker-2/TASK-0028`)**: merged to protected main after exact-head continuity, application and security gates passed.
-3. **Composition — Safe sending (`worker-3/TASK-0028`)**: merged to protected main after exact-head continuity, application and security gates passed; TASK-0027 authority remains upstream and downstream health signals cannot promote non-allow outcomes.
-4. **Certification — Adversarial/PostgreSQL (`worker-4/TASK-0028`)**: active from protected main `c7d531f010433f3a245d5d9896d3bc63878d8317`; prove replay/concurrency, failover resistance, cross-workspace isolation, stale/contradictory evidence, missing context and suppression precedence.
-5. **Final acceptance**: exact-head AI Continuity, Application Foundation and Security Supply Chain must pass before TASK-0028 acceptance or TASK-0029 activation.
+1. **Telemetry/evidence (`worker-1/TASK-0029`)** — active. Implement provider-versioned, workspace-isolated deliverability observations/evidence and persistence contracts with replay-safe identity and no authorization semantics.
+2. **Diagnostics (`worker-2/TASK-0029`)** — staged until telemetry/evidence is merged. Produce deterministic explainable diagnostics with stable reason codes and explicit unknown/review states.
+3. **Remediation recommendations (`worker-3/TASK-0029`)** — staged until diagnostics is merged. Produce bounded auditable recommendations with explicit approval requirements and no self-execution.
+4. **Adversarial/PostgreSQL certification (`worker-4/TASK-0029`)** — staged until remediation contracts are merged. Prove cross-workspace isolation, replay/duplicate behavior, stale/contradictory telemetry handling, recommendation non-execution and upstream authority precedence.
+5. **Final acceptance** — exact-head AI Continuity, Application Foundation and Security Supply Chain must pass before TASK-0029 acceptance or TASK-0030 activation.
 
 ## Exact next action
 
-Land this certification control activation, then add only the allocated PostgreSQL integration and adversarial security coverage on `worker-4/TASK-0028` from protected main `c7d531f010433f3a245d5d9896d3bc63878d8317`. Exercise cross-workspace isolation, replay/concurrency, provider-failover attempts, stale/contradictory evidence, missing policy context and canonical suppression precedence without adding evasion or provider-limit bypass behavior. Merge only after exact-head continuity, application and security gates pass, then perform TASK-0028 final acceptance and release all remaining leases.
+Merge this control activation after exact-head continuity, application and security gates pass. Then implement only the allocated telemetry/evidence foundation on `worker-1/TASK-0029` from protected main, preserving provider/source/version/time provenance, workspace isolation and replay safety while keeping telemetry non-authoritative for sending permission. Merge that worker only after its exact-head required suites pass, then activate diagnostics as the next dependency-safe wave.

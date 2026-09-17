@@ -13,25 +13,15 @@
       ]
     },
     {
-      "agent": "worker-task0028-frequency",
-      "workstream": "WS-0028-FREQUENCY-POLICY",
-      "branch": "worker-1/TASK-0028",
+      "agent": "worker-task0028-safe-sending",
+      "workstream": "WS-0028-SAFE-SENDING",
+      "branch": "worker-3/TASK-0028",
       "status": "active",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Frequency/**",
-        "app/Modules/DeliveryEngine/Application/Frequency/**",
-        "tests/Unit/DeliveryEngine/Task0028FrequencyPolicyTest.php"
-      ]
-    },
-    {
-      "agent": "worker-task0028-reputation",
-      "workstream": "WS-0028-REPUTATION-HEALTH",
-      "branch": "worker-2/TASK-0028",
-      "status": "active",
-      "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Reputation/**",
-        "app/Modules/DeliveryEngine/Application/Reputation/**",
-        "tests/Unit/DeliveryEngine/Task0028ReputationHealthTest.php"
+        "app/Modules/DeliveryEngine/Application/Eligibility/EvaluateSafeSendingEligibility.php",
+        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityRequest.php",
+        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityResult.php",
+        "tests/Unit/DeliveryEngine/Task0028SafeSendingEligibilityTest.php"
       ]
     }
   ]

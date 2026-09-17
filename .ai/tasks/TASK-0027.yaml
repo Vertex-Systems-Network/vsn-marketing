@@ -4,52 +4,20 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement suppression, unsubscribe/preferences, bounce, and complaint processing",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement workspace-scoped deterministic suppression and objection authority, RFC 8058-compatible one-click unsubscribe, evidence-preserving preference/bounce/complaint processing, and separately reconciled provider synchronization so accepted opt-out evidence becomes effective inside VSN immediately without allowing AI, provider failover, reputation signals, campaign configuration, or admin convenience to recreate permission.",
   "dependencies": [
     "TASK-0026"
   ],
   "acceptance_criteria": [
-    {
-      "id": "AC-1",
-      "text": "Canonical workspace-scoped suppression, unsubscribe/preference, objection, bounce and complaint evidence/state exists with deterministic lifecycle semantics, idempotent/replay-safe mutation, immutable audit evidence where required, and persistence/authorization boundaries that fail closed across workspaces",
-      "done": true
-    },
-    {
-      "id": "AC-2",
-      "text": "Applicable one-click unsubscribe implements RFC 8058 semantics with HTTPS List-Unsubscribe plus List-Unsubscribe-Post=One-Click, opaque scoped recipient/list tokens, no cookie or HTTP-auth dependency, and independently testable DKIM/header eligibility inputs without requiring an authenticated browser session",
-      "done": true
-    },
-    {
-      "id": "AC-3",
-      "text": "Accepted unsubscribe or direct-marketing objection evidence becomes effective in VSN eligibility immediately and deterministically, while downstream provider synchronization is represented as separate idempotent reconciliation state whose delay, failure, timeout or ambiguity cannot restore sending eligibility",
-      "done": true
-    },
-    {
-      "id": "AC-4",
-      "text": "Bounce and complaint evidence preserves provider/source provenance, version, observation time, classification and replay identity; malformed, contradictory, stale, foreign-workspace or untrusted provider evidence fails closed and cannot silently remove an existing suppression or authorize sending",
-      "done": true
-    },
-    {
-      "id": "AC-5",
-      "text": "Eligibility inputs expose explicit marketing/transactional purpose plus jurisdiction, subscriber/person type, solicitation or relationship basis, consent/soft-opt-in evidence and applicable objection/suppression context; unsupported or missing policy context yields deny/review/unknown rather than implicit allow, and UK commercial versus charitable-purposes soft-opt-in bases remain distinct effective-dated policy inputs",
-      "done": true
-    },
-    {
-      "id": "AC-6",
-      "text": "Suppression and objection remain deterministic authority: AI recommendations, provider failover, deliverability or reputation scoring, campaign settings, admin convenience, bought/public-list provenance, or later optimization logic cannot override them; TASK-0028 frequency/reputation policy is not implemented early",
-      "done": true
-    },
-    {
-      "id": "AC-7",
-      "text": "Adversarial coverage proves cross-workspace isolation, opaque-token scoping and replay safety, concurrent duplicate opt-out handling, webhook/provider replay and contradiction handling, immediate internal suppression before provider reconciliation, secret/PII leakage resistance, and fail-closed unknown jurisdiction/provider context without anti-abuse evasion behavior",
-      "done": true
-    },
-    {
-      "id": "AC-8",
-      "text": "AI continuity, architecture, application, PostgreSQL integration, RFC 8058 acceptance, security-supply-chain, parallel-development and exact-head acceptance gates are green before TASK-0028 activation",
-      "done": true
-    }
+    {"id":"AC-1","text":"Canonical workspace-scoped suppression, unsubscribe/preference, objection, bounce and complaint evidence/state exists with deterministic lifecycle semantics, idempotent/replay-safe mutation, immutable audit evidence where required, and persistence/authorization boundaries that fail closed across workspaces","done":true},
+    {"id":"AC-2","text":"Applicable one-click unsubscribe implements RFC 8058 semantics with HTTPS List-Unsubscribe plus List-Unsubscribe-Post=One-Click, opaque scoped recipient/list tokens, no cookie or HTTP-auth dependency, and independently testable DKIM/header eligibility inputs without requiring an authenticated browser session","done":true},
+    {"id":"AC-3","text":"Accepted unsubscribe or direct-marketing objection evidence becomes effective in VSN eligibility immediately and deterministically, while downstream provider synchronization is represented as separate idempotent reconciliation state whose delay, failure, timeout or ambiguity cannot restore sending eligibility","done":true},
+    {"id":"AC-4","text":"Bounce and complaint evidence preserves provider/source provenance, version, observation time, classification and replay identity; malformed, contradictory, stale, foreign-workspace or untrusted provider evidence fails closed and cannot silently remove an existing suppression or authorize sending","done":true},
+    {"id":"AC-5","text":"Eligibility inputs expose explicit marketing/transactional purpose plus jurisdiction, subscriber/person type, solicitation or relationship basis, consent/soft-opt-in evidence and applicable objection/suppression context; unsupported or missing policy context yields deny/review/unknown rather than implicit allow, and UK commercial versus charitable-purposes soft-opt-in bases remain distinct effective-dated policy inputs","done":true},
+    {"id":"AC-6","text":"Suppression and objection remain deterministic authority: AI recommendations, provider failover, deliverability or reputation scoring, campaign settings, admin convenience, bought/public-list provenance, or later optimization logic cannot override them; TASK-0028 frequency/reputation policy is not implemented early","done":true},
+    {"id":"AC-7","text":"Adversarial coverage proves cross-workspace isolation, opaque-token scoping and replay safety, concurrent duplicate opt-out handling, webhook/provider replay and contradiction handling, immediate internal suppression before provider reconciliation, secret/PII leakage resistance, and fail-closed unknown jurisdiction/provider context without anti-abuse evasion behavior","done":true},
+    {"id":"AC-8","text":"AI continuity, architecture, application, PostgreSQL integration, RFC 8058 acceptance, security-supply-chain, parallel-development and exact-head acceptance gates are green before TASK-0028 activation","done":true}
   ],
   "required_tests": [
     "python tools/ai_txn.py validate",
@@ -63,5 +31,5 @@
     "npm test",
     "npm run build"
   ],
-  "exact_next_action": "Map the accepted TASK-0025 suppression, RFC 8058, jurisdiction and objection evidence onto existing Consent, Delivery, Providers, Events, Audit and tenancy boundaries; freeze canonical suppression/opt-out/bounce/complaint and provider-reconciliation contracts; then register dependency-safe TASK-0027 parallel workstreams before product implementation, without weakening immediate suppression authority or pulling TASK-0028 reputation/frequency policy forward."
+  "exact_next_action": "TASK-0027 is certified complete on protected main by PR #220 after application, security, continuity, release-integrity and scorecard evidence passed; TASK-0028 may now become the guarded active successor."
 }

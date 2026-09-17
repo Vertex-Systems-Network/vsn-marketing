@@ -10,6 +10,7 @@ use App\Modules\Consent\Infrastructure\Suppression\DatabaseSuppressionRepository
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
 use InvalidArgumentException;
+use stdClass;
 
 final readonly class ProcessOneClickUnsubscribe
 {
@@ -30,60 +31,84 @@ final readonly class ProcessOneClickUnsubscribe
         }
 
         $digest = hash('sha256', $rawToken);
-        $rows = $this->database->connection()->table('unsubscribe_token_scopes')
-            ->where('token_digest', $digest)
-            ->orderBy('workspace_id')
-            ->limit(2)
-            ->get();
 
-        if ($rows->count() !== 1) {
-            throw new InvalidArgumentException('Invalid one-click unsubscribe request.');
-        }
+        return $this->database->connection()->transaction(function () use (
+            $rawToken,
+            $method,
+            $body,
+            $acceptedAt,
+            $digest,
+        ): OneClickUnsubscribeResult {
+            $rows = $this->database->connection()->table('unsubscribe_token_scopes')
+                ->where('token_digest', $digest)
+                ->orderBy('workspace_id')
+                ->limit(2)
+                ->lockForUpdate()
+                ->get();
 
-        $row = $rows->first();
-        $token = new OpaqueUnsubscribeToken(
-            value: $rawToken,
-            scope: new UnsubscribeScope(
-                workspaceId: (string) $row->workspace_id,
-                contactId: (string) $row->contact_id,
-                channel: (string) $row->channel,
-                purpose: (string) $row->purpose,
-                scopeType: (string) $row->scope_type,
-                scopeKey: $row->scope_key === null ? null : (string) $row->scope_key,
-            ),
-            issuedAt: new DateTimeImmutable((string) $row->issued_at),
-            expiresAt: $row->expires_at === null ? null : new DateTimeImmutable((string) $row->expires_at),
-        );
+            if ($rows->count() !== 1) {
+                throw new InvalidArgumentException('Invalid one-click unsubscribe request.');
+            }
 
-        $accepted = $this->acceptOneClick->handle($token, $method, $body, $acceptedAt);
-        $stored = $this->suppressions->appendSuppression(new SuppressionRecord(
-            id: (string) $row->id,
-            workspaceId: $accepted->scope->workspaceId,
-            contactId: $accepted->scope->contactId,
-            channel: $accepted->scope->channel,
-            purpose: $accepted->scope->purpose,
-            authorityType: SuppressionAuthorityType::Unsubscribe,
-            sourceType: 'rfc8058_one_click',
-            sourceVersion: 'RFC8058',
-            providerKey: null,
-            idempotencyKey: $accepted->idempotencyKey,
-            observedAt: $accepted->acceptedAt,
-            effectiveAt: $accepted->acceptedAt,
-            freshUntil: null,
-            immutableEvidence: [
-                'protocol' => 'RFC8058',
-                'token_digest' => $accepted->tokenDigest,
-                'scope_type' => $accepted->scope->scopeType,
-                'scope_key' => $accepted->scope->scopeKey,
-            ],
-            metadata: ['ingress' => 'public_one_click'],
-        ));
+            $row = $rows->first();
+            $token = new OpaqueUnsubscribeToken(
+                value: $rawToken,
+                scope: new UnsubscribeScope(
+                    workspaceId: (string) $row->workspace_id,
+                    contactId: (string) $row->contact_id,
+                    channel: (string) $row->channel,
+                    purpose: (string) $row->purpose,
+                    scopeType: (string) $row->scope_type,
+                    scopeKey: $row->scope_key === null ? null : (string) $row->scope_key,
+                ),
+                issuedAt: new DateTimeImmutable((string) $row->issued_at),
+                expiresAt: $row->expires_at === null ? null : new DateTimeImmutable((string) $row->expires_at),
+            );
 
-        return new OneClickUnsubscribeResult(
-            suppressionRecordId: $stored->id,
-            tokenDigest: $accepted->tokenDigest,
-            idempotencyKey: $accepted->idempotencyKey,
-            acceptedAt: $accepted->acceptedAt,
-        );
+            $accepted = $this->acceptOneClick->handle($token, $method, $body, $acceptedAt);
+            $existing = $this->database->connection()->table('suppression_records')
+                ->where('workspace_id', $accepted->scope->workspaceId)
+                ->where('idempotency_key', $accepted->idempotencyKey)
+                ->first();
+
+            if ($existing instanceof stdClass) {
+                return new OneClickUnsubscribeResult(
+                    suppressionRecordId: (string) $existing->id,
+                    tokenDigest: $accepted->tokenDigest,
+                    idempotencyKey: $accepted->idempotencyKey,
+                    acceptedAt: new DateTimeImmutable((string) $existing->effective_at),
+                );
+            }
+
+            $stored = $this->suppressions->appendSuppression(new SuppressionRecord(
+                id: (string) $row->id,
+                workspaceId: $accepted->scope->workspaceId,
+                contactId: $accepted->scope->contactId,
+                channel: $accepted->scope->channel,
+                purpose: $accepted->scope->purpose,
+                authorityType: SuppressionAuthorityType::Unsubscribe,
+                sourceType: 'rfc8058_one_click',
+                sourceVersion: 'RFC8058',
+                providerKey: null,
+                idempotencyKey: $accepted->idempotencyKey,
+                observedAt: $accepted->acceptedAt,
+                effectiveAt: $accepted->acceptedAt,
+                freshUntil: null,
+                immutableEvidence: [
+                    'protocol' => 'RFC8058',
+                    'token_digest' => $accepted->tokenDigest,
+                    'scope_type' => $accepted->scope->scopeType,
+                    'scope_key' => $accepted->scope->scopeKey,
+                ],
+                metadata: ['ingress' => 'public_one_click'],
+            ));
+
+            return new OneClickUnsubscribeResult(
+                suppressionRecordId: $stored->id,
+                tokenDigest: $accepted->tokenDigest,
+                idempotencyKey: $accepted->idempotencyKey,
+                acceptedAt: $accepted->acceptedAt,
+            );
+        });
     }
 }

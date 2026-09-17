@@ -179,8 +179,9 @@ final class EvaluateReputationHealth
         };
     }
 
-    /** @param list<string> $reasons
-     *  @param list<string> $evidenceIds
+    /**
+     * @param  list<string>  $reasons
+     * @param  list<string>  $evidenceIds
      */
     private function result(
         EligibilityOutcome $outcome,

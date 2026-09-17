@@ -13,15 +13,13 @@
       ]
     },
     {
-      "agent": "worker-task0028-safe-sending",
-      "workstream": "WS-0028-SAFE-SENDING",
-      "branch": "worker-3/TASK-0028",
+      "agent": "worker-task0028-adversarial",
+      "workstream": "WS-0028-ADVERSARIAL-CERT",
+      "branch": "worker-4/TASK-0028",
       "status": "active",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Application/Eligibility/EvaluateSafeSendingEligibility.php",
-        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityRequest.php",
-        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityResult.php",
-        "tests/Unit/DeliveryEngine/Task0028SafeSendingEligibilityTest.php"
+        "tests/Integration/Task0028SafeSendingPersistenceTest.php",
+        "tests/Feature/Security/Task0028SafeSendingSecurityTest.php"
       ]
     }
   ]

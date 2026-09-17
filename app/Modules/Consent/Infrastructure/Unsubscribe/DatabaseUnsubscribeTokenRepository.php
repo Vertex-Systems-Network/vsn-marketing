@@ -96,9 +96,6 @@ final readonly class DatabaseUnsubscribeTokenRepository
         }
 
         $row = $rows->first();
-        if (! $row instanceof stdClass) {
-            throw new InvalidArgumentException('Stored unsubscribe token scope is invalid.');
-        }
 
         return new OpaqueUnsubscribeToken(
             value: $rawToken,

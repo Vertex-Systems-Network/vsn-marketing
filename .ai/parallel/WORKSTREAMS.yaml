@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "mode": "active",
-  "parent_task": "TASK-0028",
-  "branch_creation_baseline_sha": "6593e6f6fd57adadaf80c2d84613a07b7a469a2b",
+  "mode": "staged",
+  "parent_task": "TASK-0029",
+  "branch_creation_baseline_sha": "e312cb16eb28ed3beab9926f07849683f2fb9bca",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0028-SUPERVISOR-CONTROL",
+      "id": "WS-0029-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0028 contract integration, shared-path coordination, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression and objection authority.",
+      "capability": "Own TASK-0029 contract integration, shared-path coordination, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0028",
-      "worktree": "worktrees/task-0028-supervisor",
-      "status": "in_progress",
+      "branch": "supervisor/TASK-0029",
+      "worktree": "worktrees/task-0029-supervisor",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "active",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
@@ -28,92 +28,92 @@
       ]
     },
     {
-      "id": "WS-0028-FREQUENCY-POLICY",
+      "id": "WS-0029-TELEMETRY-EVIDENCE",
       "role": "worker",
       "module": "Delivery",
-      "capability": "Implement deterministic workspace-scoped frequency-cap policy and evaluation contracts with explicit purpose, recipient scope, windows, thresholds and fail-closed missing-policy semantics.",
+      "capability": "Implement workspace-scoped provider-versioned deliverability observation/evidence contracts and persistence with provenance, replay safety and no authorization semantics.",
       "assigned_agent": null,
-      "branch": "worker-1/TASK-0028",
-      "worktree": "worktrees/task-0028-worker-1",
-      "status": "completed",
+      "branch": "worker-1/TASK-0029",
+      "worktree": "worktrees/task-0029-worker-1",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Frequency/**",
-        "app/Modules/DeliveryEngine/Application/Frequency/**",
-        "tests/Unit/DeliveryEngine/Task0028FrequencyPolicyTest.php"
+        "app/Modules/DeliveryEngine/Domain/Deliverability/**",
+        "app/Modules/DeliveryEngine/Infrastructure/Deliverability/**",
+        "tests/Unit/DeliveryEngine/Task0029DeliverabilityTelemetryTest.php"
       ]
     },
     {
-      "id": "WS-0028-REPUTATION-HEALTH",
+      "id": "WS-0029-DIAGNOSTICS",
       "role": "worker",
       "module": "Delivery",
-      "capability": "Implement provider/source/version/effective-date scoped reputation and deliverability-health evidence with stale, contradictory, malformed and untrusted evidence failing closed.",
+      "capability": "Implement deterministic explainable deliverability diagnostics with stable reason codes and explicit unknown/review outcomes from trusted evidence only.",
       "assigned_agent": null,
-      "branch": "worker-2/TASK-0028",
-      "worktree": "worktrees/task-0028-worker-2",
-      "status": "completed",
+      "branch": "worker-2/TASK-0029",
+      "worktree": "worktrees/task-0029-worker-2",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
-      "dependencies": [],
+      "dependencies": [
+        "WS-0029-TELEMETRY-EVIDENCE"
+      ],
       "merge_group": 30,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Domain/Reputation/**",
-        "app/Modules/DeliveryEngine/Application/Reputation/**",
-        "tests/Unit/DeliveryEngine/Task0028ReputationHealthTest.php"
+        "app/Modules/DeliveryEngine/Application/Deliverability/EvaluateDeliverabilityDiagnostics.php",
+        "app/Modules/DeliveryEngine/Application/Deliverability/DeliverabilityDiagnosticResult.php",
+        "tests/Unit/DeliveryEngine/Task0029DeliverabilityDiagnosticsTest.php"
       ]
     },
     {
-      "id": "WS-0028-SAFE-SENDING",
+      "id": "WS-0029-REMEDIATION-RECOMMENDATIONS",
       "role": "worker",
       "module": "Delivery",
-      "capability": "Compose sender identity readiness, consent/authorization, TASK-0027 suppression and objection authority, frequency limits and reputation/health into explicit allow, deny or review safe-sending outcomes without override or provider-limit circumvention.",
+      "capability": "Implement bounded auditable remediation recommendations that require explicit human/policy approval for risky actions and can never create permission or self-execute provider/DNS/sending changes.",
       "assigned_agent": null,
-      "branch": "worker-3/TASK-0028",
-      "worktree": "worktrees/task-0028-worker-3",
-      "status": "completed",
+      "branch": "worker-3/TASK-0029",
+      "worktree": "worktrees/task-0029-worker-3",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0028-FREQUENCY-POLICY",
-        "WS-0028-REPUTATION-HEALTH"
+        "WS-0029-DIAGNOSTICS"
       ],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Application/Eligibility/EvaluateSafeSendingEligibility.php",
-        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityRequest.php",
-        "app/Modules/DeliveryEngine/Application/Eligibility/SafeSendingEligibilityResult.php",
-        "tests/Unit/DeliveryEngine/Task0028SafeSendingEligibilityTest.php"
+        "app/Modules/DeliveryEngine/Application/Deliverability/BuildRemediationRecommendations.php",
+        "app/Modules/DeliveryEngine/Application/Deliverability/RemediationRecommendation.php",
+        "tests/Unit/DeliveryEngine/Task0029RemediationRecommendationTest.php"
       ]
     },
     {
-      "id": "WS-0028-ADVERSARIAL-CERT",
+      "id": "WS-0029-ADVERSARIAL-CERT",
       "role": "worker",
       "module": "Security",
-      "capability": "Add PostgreSQL, concurrency and adversarial acceptance coverage for cross-workspace isolation, replay safety, failover attempts, stale provider evidence, missing context and suppression precedence.",
-      "assigned_agent": "worker-task0028-adversarial",
-      "branch": "worker-4/TASK-0028",
-      "worktree": "worktrees/task-0028-worker-4",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "active",
+      "capability": "Certify cross-workspace isolation, duplicate/replayed observations, stale/contradictory telemetry, recommendation non-execution and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
+      "assigned_agent": null,
+      "branch": "worker-4/TASK-0029",
+      "worktree": "worktrees/task-0029-worker-4",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0028-SAFE-SENDING"
+        "WS-0029-REMEDIATION-RECOMMENDATIONS"
       ],
       "merge_group": 50,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Integration/Task0028SafeSendingPersistenceTest.php",
-        "tests/Feature/Security/Task0028SafeSendingSecurityTest.php"
+        "tests/Integration/Task0029DeliverabilityObservabilityPersistenceTest.php",
+        "tests/Feature/Security/Task0029DeliverabilityObservabilitySecurityTest.php"
       ]
     }
   ]

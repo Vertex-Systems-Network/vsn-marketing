@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement frequency caps, reputation/health signals, and safe sending policy",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement deterministic workspace-scoped safe-sending evaluation that combines explicit frequency-cap state with provider-versioned reputation and deliverability-health evidence while preserving consent, suppression, objection, authorization and sender-identity requirements as higher-order authority. Unknown, stale, contradictory or unsupported policy evidence must fail closed to deny or review rather than silently allow, and the implementation must not introduce anti-abuse evasion, provider-limit circumvention, fake-account rotation, deceptive headers or automated consent creation.",
   "dependencies": [
     "TASK-0027"
@@ -63,5 +63,5 @@
     "npm test",
     "npm run build"
   ],
-  "exact_next_action": "TASK-0028 acceptance is certified by merged frequency, reputation/health, safe-sending composition and adversarial PostgreSQL/security evidence; after this acceptance lands on protected main with exact-head continuity, application and security gates green, the guarded successor transition may release TASK-0028 leases and advance state without weakening TASK-0027 or TASK-0028 authority."
+  "exact_next_action": "TASK-0028 is certified complete on protected main by PR #229 after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI passed; TASK-0029 may now become the guarded active successor without weakening TASK-0027 suppression/objection or TASK-0028 safe-sending authority."
 }

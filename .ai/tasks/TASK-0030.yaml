@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "TASK-0025 through TASK-0029 acceptance evidence remains valid and every PHASE-05 exit criterion maps to concrete exact-head tests/evidence without weakening prior provider or delivery-engine safety guarantees",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Phase-wide adversarial certification proves zero suppression or objection bypass across sender readiness, frequency, reputation, deliverability telemetry, route/provider choice, recommendations, admin convenience and missing or unsupported policy context",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Cross-workspace isolation is proven across sender domains/identities, authentication evidence, suppression/unsubscribe state, provider feedback, reputation/health evidence and deliverability observations; foreign-workspace IDs or evidence fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "SPF, DKIM, DMARC and mailbox-provider/bulk-sender policy remain provider/version/effective-date evidence with explicit stale, contradictory, unknown and unsupported outcomes; no universal provider threshold or healthy boolean is invented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Applicable RFC 8058 one-click unsubscribe, bounce, complaint and unsubscribe replay/reconciliation behavior is correct and idempotent; accepted canonical suppression/objection authority is immediate while downstream provider synchronization remains separate reconciled state",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Frequency, reputation and deliverability controls fail closed and preserve a deterministic distinction between permission authority and deliverability diagnostics/recommendations; no spam-rate gaming, fake-account rotation, deceptive headers or provider-limit circumvention is introduced",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "PostgreSQL-backed integration and adversarial phase-certification matrices cover replay, duplicate, stale/contradictory evidence and tenant boundaries, and no PHASE-06 content/asset, PHASE-07 campaign/publishing, PHASE-09 journey or later-phase product capability is pulled into PHASE-05 certification",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "AI continuity, backend, PostgreSQL integration, architecture, static analysis, formatting, frontend, Playwright and security/supply-chain gates are green on the exact PHASE-05 acceptance head and canonical state/checkpoint/journal are synchronized before phase completion",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Activate the staged TASK-0030 PHASE-05 certification worker from protected main; certify zero suppression/objection bypass, tenant isolation, provider-versioned sender policy, RFC 8058/reconciliation safety, frequency/reputation fail-closed behavior and the permission-versus-deliverability boundary, then run exact-head continuity, application and security acceptance gates before PHASE-05 completion."
+  "exact_next_action": "Run TASK-0030 final acceptance on a Supervisor-only control PR; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete PHASE-05 and explicitly register/activate TASK-0031 in a separate guarded transition."
 }

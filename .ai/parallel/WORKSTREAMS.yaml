@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0030",
-  "branch_creation_baseline_sha": "4f105d5c124b64e57f67bb79f952c5d95393639c",
+  "branch_creation_baseline_sha": "aadf465104c448e4569dfb941292410bb95dc7d6",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -10,7 +10,7 @@
       "id": "WS-0030-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own PHASE-05 certification integration, shared-path coordination, dependency-safe merge sequencing, exact-head acceptance and terminal phase closeout without weakening TASK-0027 suppression/objection or TASK-0028/TASK-0029 safe-sending and deliverability authority.",
+      "capability": "Own TASK-0030 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded PHASE-05 closeout/TASK-0031 handoff.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0030",
       "worktree": "worktrees/task-0030-supervisor",
@@ -24,7 +24,11 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0030.yaml"
       ]
     },
     {
@@ -32,12 +36,12 @@
       "role": "worker",
       "module": "Security",
       "capability": "Certify the PHASE-05 sender, suppression, one-click unsubscribe, bounce/complaint, frequency, reputation and deliverability policy matrix end to end with zero suppression bypass, tenant isolation and fail-closed provider-versioned behavior.",
-      "assigned_agent": "worker-task0030-certification",
+      "assigned_agent": null,
       "branch": "worker-1/TASK-0030",
       "worktree": "worktrees/task-0030-worker-1",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "active",
+      "status": "completed",
+      "slot_status": "open",
+      "start_status": "completed",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 20,

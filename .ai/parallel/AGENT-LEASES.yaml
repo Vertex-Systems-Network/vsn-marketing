@@ -14,15 +14,15 @@
       ]
     },
     {
-      "agent": "worker-task0032-bindings",
-      "workstream": "WS-0032-BINDINGS-CANONICALIZATION",
-      "branch": "worker-3/TASK-0032",
+      "agent": "worker-task0032-persistence",
+      "workstream": "WS-0032-PERSISTENCE-CERTIFICATION",
+      "branch": "worker-4/TASK-0032",
       "status": "active",
       "write_paths": [
-        "app/Modules/Content/Domain/Binding/**",
-        "app/Modules/Content/Application/Canonicalization/**",
-        "app/Modules/Content/Application/DependencyResolution/**",
-        "tests/Unit/Content/Task0032CanonicalizationBindingTest.php"
+        "app/Modules/Content/Infrastructure/Persistence/**",
+        "app/Modules/Templates/Infrastructure/Persistence/**",
+        "tests/Integration/Task0032CanonicalContentPersistenceTest.php",
+        "tests/Feature/Security/Task0032CanonicalContentSecurityTest.php"
       ]
     }
   ]

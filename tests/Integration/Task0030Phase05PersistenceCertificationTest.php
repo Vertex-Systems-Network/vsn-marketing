@@ -14,6 +14,7 @@ use App\Modules\DeliveryEngine\Application\Eligibility\EvaluateDeliveryEligibili
 use App\Modules\DeliveryEngine\Application\Eligibility\EvaluateSafeSendingEligibility;
 use App\Modules\DeliveryEngine\Application\Eligibility\EvaluateSuppressionAwareEligibility;
 use App\Modules\DeliveryEngine\Application\Eligibility\SafeSendingEligibilityRequest;
+use App\Modules\DeliveryEngine\Application\Eligibility\SafeSendingEligibilityResult;
 use App\Modules\DeliveryEngine\Application\Eligibility\SuppressionAwareEligibilityRequest;
 use App\Modules\DeliveryEngine\Application\Frequency\FrequencyEvaluationResult;
 use App\Modules\DeliveryEngine\Application\Reputation\ReputationHealthEvaluationResult;
@@ -150,7 +151,7 @@ function task0030PersistenceObservation(
 function task0030PersistenceSafeSending(
     bool $suppressed,
     string $workspaceId,
-): \App\Modules\DeliveryEngine\Application\Eligibility\SafeSendingEligibilityResult {
+): SafeSendingEligibilityResult {
     $at = new DateTimeImmutable('2026-09-18T12:00:00+00:00');
     $context = new EligibilityContext(
         messagePurpose: MessageIntentType::Marketing,

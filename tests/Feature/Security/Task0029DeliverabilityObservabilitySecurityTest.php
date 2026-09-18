@@ -49,7 +49,7 @@ function task0029SecurityObservation(
         replayKey: 'replay-'.$id,
         effectiveAt: new DateTimeImmutable('2026-09-18T09:00:00+00:00'),
         observedAt: new DateTimeImmutable($observedAt),
-        recordedAt: new DateTimeImmutable($observedAt)->modify('+1 minute'),
+        recordedAt: (new DateTimeImmutable($observedAt))->modify('+1 minute'),
         freshUntil: $freshUntil === null ? null : new DateTimeImmutable($freshUntil),
         trusted: $trusted,
     );

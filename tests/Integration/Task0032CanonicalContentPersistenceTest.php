@@ -29,7 +29,7 @@ use InvalidArgumentException;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    if (! filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL)) {
+    if (!filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL)) {
         $this->markTestSkipped('Set RUN_INFRA_INTEGRATION=true to run TASK-0032 PostgreSQL persistence tests.');
     }
 });

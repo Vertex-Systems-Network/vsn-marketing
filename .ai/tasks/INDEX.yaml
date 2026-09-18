@@ -314,7 +314,7 @@
       "phase": "PHASE-06",
       "title": "Research current content editors, template formats, asset workflows, rendering security, and channel media requirements",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0030"
       ]
@@ -324,7 +324,7 @@
       "phase": "PHASE-06",
       "title": "Implement canonical content/template/version/component model",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0031"
       ]

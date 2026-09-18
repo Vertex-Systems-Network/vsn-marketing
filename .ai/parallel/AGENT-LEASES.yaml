@@ -14,14 +14,13 @@
       ]
     },
     {
-      "agent": "worker-task0033-storage",
-      "workstream": "WS-0033-STORAGE-PERSISTENCE",
-      "branch": "worker-3/TASK-0033",
+      "agent": "worker-task0033-certification",
+      "workstream": "WS-0033-CERTIFICATION",
+      "branch": "worker-4/TASK-0033",
       "status": "active",
       "write_paths": [
-        "app/Modules/Assets/Infrastructure/Persistence/**",
-        "app/Modules/Assets/Infrastructure/Storage/**",
-        "tests/Integration/Task0033AssetStoragePersistenceTest.php"
+        "tests/Integration/Task0033AssetPipelineCertificationTest.php",
+        "tests/Feature/Security/Task0033AssetSecurityCertificationTest.php"
       ]
     }
   ]

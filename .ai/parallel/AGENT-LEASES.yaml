@@ -12,7 +12,8 @@
         ".ai/parallel/AGENT-LEASES.yaml",
         "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
         ".ai/state/CURRENT-STATE.yaml",
-        ".ai/state/LAST-CHECKPOINT.md"
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl"
       ]
     },
     {

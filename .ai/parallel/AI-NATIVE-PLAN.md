@@ -28,9 +28,9 @@ Completion signal: `Work Done and Submitted`
 1. **Telemetry/evidence (`worker-1/TASK-0029`)** — completed and merged.
 2. **Diagnostics (`worker-2/TASK-0029`)** — completed and merged.
 3. **Remediation recommendations (`worker-3/TASK-0029`)** — completed and merged.
-4. **Persistence + adversarial/PostgreSQL certification (`worker-4/TASK-0029`)** — active. Add durable deliverability observation persistence and prove PostgreSQL workspace isolation, replay/conflict behavior, stale/contradictory telemetry handling, recommendation non-execution and upstream suppression/frequency/provider-policy precedence.
+4. **Persistence + adversarial/PostgreSQL certification (`worker-4/TASK-0029`)** — active. Supervisor owns and lands the shared-path deliverability observation schema; worker-4 implements the database repository and proves PostgreSQL workspace isolation, replay/conflict behavior, stale/contradictory telemetry handling, recommendation non-execution and upstream suppression/frequency/provider-policy precedence.
 5. **Final acceptance** — exact-head AI Continuity, Application Foundation and Security Supply Chain must pass before TASK-0029 acceptance or TASK-0030 activation.
 
 ## Exact next action
 
-Merge this certification activation after exact-head continuity, application and security gates pass. Then implement only the allocated worker-4 files on `worker-4/TASK-0029`: one append-only deliverability observations migration, one database-backed observation repository, one PostgreSQL integration certification test, and one adversarial security test. Do not modify suppression, safe-sending, consent, frequency or provider-policy authority. Merge worker-4 only after exact-head required suites pass, then run TASK-0029 acceptance certification.
+Merge this certification activation, including the Supervisor-owned append-only deliverability observations migration, after exact-head continuity, application and security gates pass. Then implement only the three allocated worker-4 files on `worker-4/TASK-0029`: the database-backed observation repository, PostgreSQL integration certification test, and adversarial security test. Do not modify suppression, safe-sending, consent, frequency or provider-policy authority. Merge worker-4 only after exact-head required suites pass, then run TASK-0029 acceptance certification.

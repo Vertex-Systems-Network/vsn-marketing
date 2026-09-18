@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "A dated market and official-source evidence pack benchmarks mature drag-and-drop, reusable-module, brand-library, custom-code, preview/test, revision and asset-library workflows without copying a provider-specific data model into the VSN core",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Research freezes requirements for a canonical provider-neutral content/template/component/version model with immutable published versions, explicit variables/localization, dependency provenance and deterministic rendering inputs",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Asset workflow requirements cover workspace isolation, immutable originals, content hashes, MIME/dimension metadata, rights/provenance, derived variants and transformation lineage without destructive source mutation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Rendering-security requirements explicitly address untrusted HTML sanitization, script/event-handler rejection, renderer/version pinning, include/path controls, isolated preview execution and safe handling of external resources before any code editor or compiler is activated",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Accessibility requirements map WCAG 2.2-relevant semantics, text alternatives, contrast/reflow and text-as-image constraints into editor validation and certification expectations rather than relying on visual review alone",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Email and social/channel media findings are modeled as provider/version/effective-date capabilities, including differing content types and asset-upload semantics, so no single global media-format rule is invented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "No PHASE-07 campaign/publishing engine, PHASE-08 segmentation, PHASE-09 journeys, later AI-autonomy, live provider posting or arbitrary executable user code is introduced by this research task; exact-head continuity, research, policy and security gates are required before TASK-0032 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -54,5 +54,5 @@
     "python tools/ai_parallel.py validate",
     "python tools/ai_context.py manifest"
   ],
-  "exact_next_action": "Review and freeze the dated TASK-0031 research into provider-neutral canonical content/template/component/version, asset provenance/variant, secure rendering/preview, accessibility and provider-versioned media capability contracts; then complete TASK-0031 and activate TASK-0032 only after exact-head continuity, research, policy and security gates pass."
+  "exact_next_action": "Require this TASK-0031 research acceptance head to pass AI Continuity Guard, Application Foundation CI and Security Supply Chain CI again. If green, merge the research certification, explicitly register TASK-0032 from the frozen PHASE-06 contract, then complete TASK-0031 and activate TASK-0032 only through the guarded transition path."
 }

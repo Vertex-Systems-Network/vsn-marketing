@@ -304,7 +304,7 @@
       "phase": "PHASE-05",
       "title": "Certify PHASE-05 sender safety, suppression and deliverability gates",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0029"
       ]
@@ -314,7 +314,7 @@
       "phase": "PHASE-06",
       "title": "Research current content editors, template formats, asset workflows, rendering security, and channel media requirements",
       "weight": 15,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0030"
       ]

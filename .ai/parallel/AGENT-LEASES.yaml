@@ -9,7 +9,8 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php"
       ]
     },
     {
@@ -18,7 +19,6 @@
       "branch": "worker-4/TASK-0029",
       "status": "active",
       "write_paths": [
-        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
         "app/Modules/DeliveryEngine/Infrastructure/Deliverability/DatabaseDeliverabilityObservationRepository.php",
         "tests/Integration/Task0029DeliverabilityObservabilityPersistenceTest.php",
         "tests/Feature/Security/Task0029DeliverabilityObservabilitySecurityTest.php"

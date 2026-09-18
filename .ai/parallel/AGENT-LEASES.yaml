@@ -1,4 +1,26 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0030-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0030",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
+      ]
+    },
+    {
+      "agent": "worker-task0030-certification",
+      "workstream": "WS-0030-PHASE-CERTIFICATION",
+      "branch": "worker-1/TASK-0030",
+      "status": "active",
+      "write_paths": [
+        "tests/Feature/Security/Task0030Phase05SecurityCertificationTest.php",
+        "tests/Integration/Task0030Phase05PersistenceCertificationTest.php"
+      ]
+    }
+  ]
 }

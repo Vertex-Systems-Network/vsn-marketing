@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0033",
+  "phase": "PHASE-06",
+  "module": "Assets",
+  "title": "Implement canonical asset library and variant pipeline",
+  "status": "planned",
+  "objective": "Implement the workspace-scoped canonical media/creative asset library with immutable originals, hash-verifiable metadata, rights/provenance, isolated object-storage references, deterministic derived variants and safe transformation lineage that later content/editor/render/provider workflows can reference without provider-specific media payloads becoming canonical state.",
+  "dependencies": [
+    "TASK-0032"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped canonical asset identities and immutable originals persist content hash, observed media type, byte size, dimensions/duration where applicable, storage identity, authorship/audit provenance and rights/source metadata with authorization boundaries that fail closed across workspaces",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Asset ingestion is replay/idempotency safe and validates observed content against declared metadata with bounded size/media constraints; duplicate content and retry behavior are deterministic, unsafe or malformed inputs fail closed, and original binary content is never silently overwritten",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Original assets are immutable and hash-verifiable; replacement or editing creates a new original/version or derived variant with explicit lineage rather than mutating historical content referenced by canonical versions or execution snapshots",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Derived variants use normalized typed transformation specifications pinned to an exact source asset plus processor/version identity; outputs persist deterministic lineage, output hash and media metadata, and equivalent requests are replay-safe without hidden floating changes",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Transformation execution is allowlisted and resource-bounded and cannot gain arbitrary filesystem/network/secret access, path traversal, shell/code execution or uncontrolled remote fetch; failure never mutates the immutable source asset",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Canonical content/render-input references resolve exact workspace-safe asset/original/variant identities and fail on missing, foreign-workspace or incompatible references; TASK-0033 does not implement TASK-0034 editor/compiler/render execution",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Provider/channel media requirements are consumed only as versioned/effective-dated capability evidence for deterministic validation or variant selection; provider upload identifiers, posting payloads and publishing workflows do not become canonical asset state",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "PostgreSQL plus S3-compatible object-storage integration/adversarial tests prove tenant isolation, immutable originals, hash/metadata integrity, idempotent ingestion and transforms, deterministic variant lineage, concurrency/failure behavior and safe storage access; exact-head continuity, architecture, backend, static-analysis, formatting and security/supply-chain gates are green before TASK-0034 activation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build"
+  ],
+  "exact_next_action": "After guarded activation, map the frozen TASK-0031 asset research onto the existing Assets module, tenancy, audit and S3-compatible object-storage boundaries; implement immutable asset originals, provenance/rights metadata, deterministic variant/transform contracts and production-parity isolation tests without pulling TASK-0034 editor/compiler/render execution or provider publishing forward."
+}

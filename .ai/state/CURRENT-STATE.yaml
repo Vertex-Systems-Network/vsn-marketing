@@ -10,20 +10,20 @@
     "current_phase": "PHASE-06",
     "active_task": "TASK-0032",
     "last_completed_task": "TASK-0031",
-    "next_task": null
+    "next_task": "TASK-0033"
   },
   "progress": {
-    "roadmap_percent": 40.57,
-    "phase_percent": 42.86,
+    "roadmap_percent": 39.64,
+    "phase_percent": 27.27,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634375",
-    "application_test_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634427",
-    "security_supply_chain_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634220",
-    "release_integrity_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634276",
-    "scorecard_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634293"
+    "continuity_validation": "task_0032_final_acceptance_main_head_ea82a0a34653c0789dbdf89e1401c30d5a719af9_passed_run_35401269372",
+    "application_test_status": "task_0032_final_acceptance_main_head_ea82a0a34653c0789dbdf89e1401c30d5a719af9_passed_run_35401269382",
+    "security_supply_chain_status": "task_0032_final_acceptance_main_head_ea82a0a34653c0789dbdf89e1401c30d5a719af9_passed_run_35401269371",
+    "release_integrity_status": "task_0032_final_acceptance_main_head_ea82a0a34653c0789dbdf89e1401c30d5a719af9_passed_run_35401269495",
+    "scorecard_status": "task_0032_final_acceptance_main_head_ea82a0a34653c0789dbdf89e1401c30d5a719af9_passed_run_35401269341"
   },
   "blockers": [],
-  "exact_next_action": "Run TASK-0032 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete TASK-0032 and explicitly register/activate TASK-0033 in a separate guarded transition. Do not start TASK-0033 asset processing before that transition."
+  "exact_next_action": "Merge the TASK-0033 successor registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0032 and activates TASK-0033. Do not start asset transforms, editor/compiler rendering, or provider publishing before that transition."
 }

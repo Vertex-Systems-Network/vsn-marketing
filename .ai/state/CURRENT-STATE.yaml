@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0029_final_acceptance_head_1c83902eff31159904203d597e28f20282b3bedf_passed_run_35338864576",
-    "application_test_status": "task_0029_final_acceptance_head_1c83902eff31159904203d597e28f20282b3bedf_passed_run_35338864373",
-    "security_supply_chain_status": "task_0029_final_acceptance_head_1c83902eff31159904203d597e28f20282b3bedf_passed_run_35338864452",
+    "continuity_validation": "task_0030_certification_head_58accc5eda07c91fd61e6ed752e493d5df45523f_passed_run_35350595679",
+    "application_test_status": "task_0030_certification_head_58accc5eda07c91fd61e6ed752e493d5df45523f_passed_run_35350595613",
+    "security_supply_chain_status": "task_0030_certification_head_58accc5eda07c91fd61e6ed752e493d5df45523f_passed_run_35350595658",
     "release_integrity_status": "task_0027_main_passed_run_35218151757",
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "Activate the staged TASK-0030 PHASE-05 certification worker from protected main; certify zero suppression/objection bypass, tenant isolation, provider-versioned sender policy, RFC 8058/reconciliation safety, frequency/reputation fail-closed behavior and the permission-versus-deliverability boundary, then run exact-head continuity, application and security acceptance gates before PHASE-05 completion."
+  "exact_next_action": "Run TASK-0030 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete PHASE-05 and explicitly register/activate TASK-0031 in a separate guarded transition."
 }

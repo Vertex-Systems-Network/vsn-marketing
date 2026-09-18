@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0029",
-  "branch_creation_baseline_sha": "5befc8ddefc640f5e73910966ce5ec3c4dba3991",
+  "branch_creation_baseline_sha": "4bb6dd29c8fd0bb7d7ea87b6227c752affce2301",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -10,7 +10,7 @@
       "id": "WS-0029-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0029 contract integration, shared-path coordination, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
+      "capability": "Own TASK-0029 contract integration, shared-path coordination, the Supervisor-owned deliverability observation schema migration, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0029",
       "worktree": "worktrees/task-0029-supervisor",
@@ -24,7 +24,11 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl"
       ]
     },
     {
@@ -76,12 +80,12 @@
       "role": "worker",
       "module": "Delivery",
       "capability": "Implement bounded auditable remediation recommendations that require explicit human/policy approval for risky actions and can never create permission or self-execute provider/DNS/sending changes.",
-      "assigned_agent": "worker-task0029-remediation",
+      "assigned_agent": null,
       "branch": "worker-3/TASK-0029",
       "worktree": "worktrees/task-0029-worker-3",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "active",
+      "status": "completed",
+      "slot_status": "open",
+      "start_status": "completed",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0029-DIAGNOSTICS"
@@ -98,13 +102,13 @@
       "id": "WS-0029-ADVERSARIAL-CERT",
       "role": "worker",
       "module": "Security",
-      "capability": "Certify cross-workspace isolation, duplicate/replayed observations, stale/contradictory telemetry, recommendation non-execution and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
-      "assigned_agent": null,
+      "capability": "Implement the database-backed deliverability observation repository on the Supervisor-owned schema and certify PostgreSQL workspace isolation, replay/idempotency, stale/contradictory telemetry, recommendation non-execution, and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
+      "assigned_agent": "worker-task0029-certification",
       "branch": "worker-4/TASK-0029",
       "worktree": "worktrees/task-0029-worker-4",
-      "status": "planned",
-      "slot_status": "open",
-      "start_status": "staged",
+      "status": "in_progress",
+      "slot_status": "occupied",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0029-REMEDIATION-RECOMMENDATIONS"
@@ -112,6 +116,7 @@
       "merge_group": 50,
       "merge_strategy": "squash",
       "write_paths": [
+        "app/Modules/DeliveryEngine/Infrastructure/Deliverability/DatabaseDeliverabilityObservationRepository.php",
         "tests/Integration/Task0029DeliverabilityObservabilityPersistenceTest.php",
         "tests/Feature/Security/Task0029DeliverabilityObservabilitySecurityTest.php"
       ]

@@ -13,7 +13,7 @@
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 37.0,
+    "roadmap_percent": 37,
     "phase_percent": 83.33,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
@@ -25,5 +25,5 @@
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "Freeze TASK-0029 provider-versioned deliverability telemetry, diagnostic evidence and bounded remediation recommendation contracts on top of TASK-0028 safe-sending authority; implement workspace-isolated observability that cannot create consent, erase suppression, bypass frequency/provider policy, or autonomously execute risky remediation, then certify unit, PostgreSQL integration, adversarial security, continuity, application and supply-chain gates."
+  "exact_next_action": "Merge the TASK-0029 persistence-certification activation with the Supervisor-owned append-only deliverability observations schema after exact-head continuity, application and security gates pass; then implement the database-backed deliverability observation repository plus PostgreSQL/adversarial certification on worker-4 without changing TASK-0027 suppression or TASK-0028 safe-sending authority."
 }

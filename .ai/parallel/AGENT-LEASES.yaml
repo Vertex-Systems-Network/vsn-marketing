@@ -14,14 +14,14 @@
       ]
     },
     {
-      "agent": "worker-task0033-variants",
-      "workstream": "WS-0033-VARIANT-CONTRACTS",
-      "branch": "worker-2/TASK-0033",
+      "agent": "worker-task0033-storage",
+      "workstream": "WS-0033-STORAGE-PERSISTENCE",
+      "branch": "worker-3/TASK-0033",
       "status": "active",
       "write_paths": [
-        "app/Modules/Assets/Domain/Variant/**",
-        "app/Modules/Assets/Application/Transformation/**",
-        "tests/Unit/Assets/Task0033VariantContractTest.php"
+        "app/Modules/Assets/Infrastructure/Persistence/**",
+        "app/Modules/Assets/Infrastructure/Storage/**",
+        "tests/Integration/Task0033AssetStoragePersistenceTest.php"
       ]
     }
   ]

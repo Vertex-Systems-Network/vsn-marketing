@@ -218,9 +218,6 @@ final readonly class DatabaseTemplateRepository
         return $this->database->connection()->transaction(function () use ($version, $definition, $variableSchema, $localizationSchema): VersionedDefinition {
             $this->assertCanonicalDefinition($definition);
             $this->assertOwnerScope($version);
-            $this->assertParentLineage($version);
-            $this->assertGlobalVersionIdAvailable($version);
-            $this->assertDependenciesAndCycles($version);
 
             [$table] = $this->versionStorage($version->kind);
             $existing = $this->database->connection()->table($table)
@@ -236,6 +233,10 @@ final readonly class DatabaseTemplateRepository
 
                 return $stored;
             }
+
+            $this->assertParentLineage($version);
+            $this->assertGlobalVersionIdAvailable($version);
+            $this->assertDependenciesAndCycles($version);
 
             [$table, $ownerColumn] = $this->versionStorage($version->kind);
 

@@ -35,6 +35,7 @@ final class BuildRemediationRecommendations
                     riskLevel: RemediationRecommendation::RISK_LOW,
                 ),
             ],
+            default => throw new InvalidArgumentException('Unsupported deliverability diagnostic status.'),
         };
     }
 

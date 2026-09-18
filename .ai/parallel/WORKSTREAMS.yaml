@@ -25,7 +25,9 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php"
+        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md"
       ]
     },
     {

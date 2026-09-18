@@ -13,14 +13,14 @@
       ]
     },
     {
-      "agent": "worker-task0029-diagnostics",
-      "workstream": "WS-0029-DIAGNOSTICS",
-      "branch": "worker-2/TASK-0029",
+      "agent": "worker-task0029-remediation",
+      "workstream": "WS-0029-REMEDIATION-RECOMMENDATIONS",
+      "branch": "worker-3/TASK-0029",
       "status": "active",
       "write_paths": [
-        "app/Modules/DeliveryEngine/Application/Deliverability/EvaluateDeliverabilityDiagnostics.php",
-        "app/Modules/DeliveryEngine/Application/Deliverability/DeliverabilityDiagnosticResult.php",
-        "tests/Unit/DeliveryEngine/Task0029DeliverabilityDiagnosticsTest.php"
+        "app/Modules/DeliveryEngine/Application/Deliverability/BuildRemediationRecommendations.php",
+        "app/Modules/DeliveryEngine/Application/Deliverability/RemediationRecommendation.php",
+        "tests/Unit/DeliveryEngine/Task0029RemediationRecommendationTest.php"
       ]
     }
   ]

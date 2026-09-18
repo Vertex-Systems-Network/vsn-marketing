@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-06",
-    "active_task": "TASK-0031",
-    "last_completed_task": "TASK-0030",
-    "next_task": "TASK-0032"
+    "active_task": "TASK-0032",
+    "last_completed_task": "TASK-0031",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 38,
-    "phase_percent": 0,
+    "roadmap_percent": 40.57,
+    "phase_percent": 42.86,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -25,5 +25,5 @@
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "TASK-0032 is explicitly registered as the PHASE-06 canonical-model successor; perform the guarded TASK-0031 to TASK-0032 transition before any TASK-0032 product implementation, then register dependency-safe workstreams from the frozen research contract."
+  "exact_next_action": "After guarded activation, map the frozen TASK-0031 research onto existing tenancy, audit, event and persistence boundaries; implement the canonical content/template/component/version schemas, repositories and deterministic dependency/variable contracts with PostgreSQL isolation tests, without pulling TASK-0033 asset processing or TASK-0034 editor/render execution forward."
 }

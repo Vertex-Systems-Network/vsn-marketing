@@ -10,7 +10,7 @@
     "current_phase": "PHASE-06",
     "active_task": "TASK-0031",
     "last_completed_task": "TASK-0030",
-    "next_task": null
+    "next_task": "TASK-0032"
   },
   "progress": {
     "roadmap_percent": 38,
@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0030_final_acceptance_head_506d31545a2469d92859afe948e1278a3f28d4a8_passed_run_35351392469",
-    "application_test_status": "task_0030_final_acceptance_head_506d31545a2469d92859afe948e1278a3f28d4a8_passed_run_35351392000",
-    "security_supply_chain_status": "task_0030_final_acceptance_head_506d31545a2469d92859afe948e1278a3f28d4a8_passed_run_35351392140",
+    "continuity_validation": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077251",
+    "application_test_status": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077270",
+    "security_supply_chain_status": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077308",
     "release_integrity_status": "task_0027_main_passed_run_35218151757",
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "Review and freeze the dated TASK-0031 research into provider-neutral canonical content/template/component/version, asset provenance/variant, secure rendering/preview, accessibility and provider-versioned media capability contracts; then complete TASK-0031 and activate TASK-0032 only after exact-head continuity, research, policy and security gates pass."
+  "exact_next_action": "TASK-0032 is explicitly registered as the PHASE-06 canonical-model successor; perform the guarded TASK-0031 to TASK-0032 transition before any TASK-0032 product implementation, then register dependency-safe workstreams from the frozen research contract."
 }

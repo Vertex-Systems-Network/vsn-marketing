@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0032",
+  "phase": "PHASE-06",
+  "module": "Assets",
+  "title": "Implement canonical content/template/version/component model",
+  "status": "planned",
+  "objective": "Implement the workspace-scoped provider-neutral canonical content, template, immutable version, reusable component, variable/localization and deterministic dependency model that becomes the single validated source for later asset, editor, renderer and provider-channel compilation work without storing provider-specific render payloads as canonical state.",
+  "dependencies": [
+    "TASK-0031"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped canonical content documents, templates and reusable components have stable identities plus explicit immutable version records, schema/version metadata, lifecycle status, authorship/audit provenance and authorization boundaries that fail closed across workspaces",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Published, approved or execution-pinned content/template/component versions are immutable; edits create new versions with deterministic parent lineage, idempotent/replay-safe creation and conflict handling instead of rewriting historical execution inputs",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Canonical content uses a provider-neutral typed component/tree representation with explicit schema versioning, deterministic canonicalization/hash semantics and validated node/property contracts; provider HTML, MIME or social-provider payloads do not become the canonical source of truth",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Template and reusable-component dependencies are explicit and version-aware, cycle-safe and workspace-safe; deterministic dependency resolution and impact visibility prevent hidden floating changes from altering an execution-pinned version",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Variables, personalization slots and localization inputs use typed schemas with deterministic binding/fallback rules; missing, incompatible or unresolved values fail validation and variable data cannot implicitly execute code or bypass canonical validation",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "A deterministic render-input snapshot contract can identify the exact content, template, component, variable/localization and future asset/brand references needed by later rendering while keeping TASK-0033 asset processing and TASK-0034 editor/compiler/runtime execution out of scope",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "PostgreSQL-backed persistence and adversarial tests prove tenant isolation, immutable-version enforcement, uniqueness/foreign-key invariants, transaction and optimistic-concurrency behavior, idempotent retries, dependency-cycle rejection and deterministic canonical hashes on real database paths",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "AI continuity, architecture, backend, PostgreSQL integration, static analysis, formatting, security/supply-chain and exact-head acceptance gates are green before TASK-0033 activation; no asset transformation pipeline, arbitrary authored-code execution, production renderer/editor, provider publishing or PHASE-07+ capability is implemented early",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build"
+  ],
+  "exact_next_action": "After guarded activation, map the frozen TASK-0031 research onto existing tenancy, audit, event and persistence boundaries; implement the canonical content/template/component/version schemas, repositories and deterministic dependency/variable contracts with PostgreSQL isolation tests, without pulling TASK-0033 asset processing or TASK-0034 editor/render execution forward."
+}

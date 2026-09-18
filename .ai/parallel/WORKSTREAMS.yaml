@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0029",
-  "branch_creation_baseline_sha": "c49a5e4ae7af3a94265ef0846f2ea9428fbeb2e5",
+  "branch_creation_baseline_sha": "5befc8ddefc640f5e73910966ce5ec3c4dba3991",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -53,12 +53,12 @@
       "role": "worker",
       "module": "Delivery",
       "capability": "Implement deterministic explainable deliverability diagnostics with stable reason codes and explicit unknown/review outcomes from trusted evidence only.",
-      "assigned_agent": "worker-task0029-diagnostics",
+      "assigned_agent": null,
       "branch": "worker-2/TASK-0029",
       "worktree": "worktrees/task-0029-worker-2",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "active",
+      "status": "completed",
+      "slot_status": "open",
+      "start_status": "completed",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0029-TELEMETRY-EVIDENCE"
@@ -76,12 +76,12 @@
       "role": "worker",
       "module": "Delivery",
       "capability": "Implement bounded auditable remediation recommendations that require explicit human/policy approval for risky actions and can never create permission or self-execute provider/DNS/sending changes.",
-      "assigned_agent": null,
+      "assigned_agent": "worker-task0029-remediation",
       "branch": "worker-3/TASK-0029",
       "worktree": "worktrees/task-0029-worker-3",
-      "status": "planned",
-      "slot_status": "open",
-      "start_status": "staged",
+      "status": "in_progress",
+      "slot_status": "occupied",
+      "start_status": "active",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0029-DIAGNOSTICS"

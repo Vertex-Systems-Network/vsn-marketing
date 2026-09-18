@@ -7,8 +7,8 @@ use InvalidArgumentException;
 final readonly class ContentNode
 {
     /**
-     * @param array<string, mixed> $properties
-     * @param list<ContentNode> $children
+     * @param  array<string, mixed>  $properties
+     * @param  list<ContentNode>  $children
      */
     public function __construct(
         public string $nodeId,

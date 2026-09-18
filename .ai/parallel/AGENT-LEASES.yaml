@@ -1,4 +1,38 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0032-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0032",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_19_000001_create_content_template_foundation_tables.php"
+      ]
+    },
+    {
+      "agent": "worker-task0032-content",
+      "workstream": "WS-0032-CONTENT-MODEL",
+      "branch": "worker-1/TASK-0032",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Content/Domain/Document/**",
+        "app/Modules/Content/Domain/Version/**",
+        "tests/Unit/Content/Task0032ContentModelTest.php"
+      ]
+    },
+    {
+      "agent": "worker-task0032-templates",
+      "workstream": "WS-0032-TEMPLATE-COMPONENTS",
+      "branch": "worker-2/TASK-0032",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Templates/Domain/**",
+        "tests/Unit/Templates/Task0032TemplateComponentModelTest.php"
+      ]
+    }
+  ]
 }

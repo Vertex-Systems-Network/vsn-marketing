@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-17T19:16:17+00:00`
+- Timestamp: `2026-09-18T11:02:00+00:00`
 - Active task: `TASK-0029`
 - Next task: `none`
 - Current phase: `PHASE-05`
 - Execution status: `ready`
-- State fingerprint: `b05044acbbf8553f1b961e7b5fc1fa9ceeb0167ae1e2acc7e0036ff9021cc923`
+- State fingerprint: `0f61105e8296d1ba4e0b372212e907d6277606fbb80e8b2521b7e241e8fbe94e`
 
 ## Completed / observed this session
 
-TASK-0028 is certified complete on protected `main`. Certification PR #229 merged as `e312cb16eb28ed3beab9926f07849683f2fb9bca` after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI passed. TASK-0029 is now explicitly registered as the PHASE-05 successor for provider-versioned deliverability observability, diagnostics and bounded human/policy-gated remediation recommendations. TASK-0027 suppression/objection and TASK-0028 safe-sending/frequency authority remain higher-order controls.
+TASK-0029 telemetry/evidence, deterministic diagnostics and bounded proposal-only remediation recommendations are merged on protected `main` through PR #238 at `4bb6dd29c8fd0bb7d7ea87b6227c752affce2301`. The remaining durable PostgreSQL persistence gap is now explicitly handled by PR #239: the append-only `deliverability_observations` schema is Supervisor-owned because `database/migrations/**` is a protected shared path, while worker-4 is scoped to the database repository plus PostgreSQL/adversarial certification tests. TASK-0027 suppression/objection and TASK-0028 safe-sending/frequency authority remain higher-order controls.
 
 ## Tests
 
-TASK-0028 certification head `0b6ead1d4269148687f40ba2b94795cf07604314`: AI Continuity Guard run `35260228257` PASS; Application Foundation CI run `35260228236` PASS; Security Supply Chain CI run `35260228343` PASS. TASK-0028 adversarial certification PR #228 also passed PostgreSQL integration, PHP 8.3, E2E, static analysis and formatting before merge. TASK-0029 product implementation has not started in this transition.
+TASK-0029 remediation PR #238 exact head `a095e02c2fc66c60fafd824d1681cb9e397f39ed` passed AI Continuity Guard run `35324536861`, Application Foundation CI run `35324536772`, and Security Supply Chain CI run `35324536880`. On PR #239 head `9b518c3b22952ef51a05a9b4dd05dbc81dfe7ccc`, PHP 8.3 compatibility, PostgreSQL integration and Playwright E2E passed; Application foundation was interrupted by external PECL Redis HTTP 504, and Continuity correctly required this Supervisor-owned migration to synchronize CURRENT-STATE and LAST-CHECKPOINT before merge. Fresh exact-head gates are required after this ledger sync.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ TASK-0028 certification head `0b6ead1d4269148687f40ba2b94795cf07604314`: AI Cont
 
 ## Exact next action
 
-Freeze TASK-0029 provider-versioned deliverability telemetry, diagnostic evidence and bounded remediation recommendation contracts on top of TASK-0028 safe-sending authority; implement workspace-isolated observability that cannot create consent, erase suppression, bypass frequency/provider policy, or autonomously execute risky remediation, then certify unit, PostgreSQL integration, adversarial security, continuity, application and supply-chain gates.
+Merge the TASK-0029 persistence-certification activation with the Supervisor-owned append-only deliverability observations schema after exact-head continuity, application and security gates pass; then implement the database-backed deliverability observation repository plus PostgreSQL/adversarial certification on worker-4 without changing TASK-0027 suppression or TASK-0028 safe-sending authority.

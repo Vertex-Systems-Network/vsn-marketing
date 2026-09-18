@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "mode": "active",
-  "parent_task": "TASK-0032",
-  "branch_creation_baseline_sha": "1bfaeabd70325e7fea2c8acaaf5dea4860a095ae",
+  "mode": "staged",
+  "parent_task": "TASK-0033",
+  "branch_creation_baseline_sha": "d3528de5bf1d6b6ef4e590d6c8c19d9f8a63f1af",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0032-SUPERVISOR-CONTROL",
+      "id": "WS-0033-SUPERVISOR-CONTROL",
       "role": "supervisor",
-      "module": "Content",
-      "capability": "Own TASK-0032 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0033 handoff without activating asset processing early.",
+      "module": "Assets",
+      "capability": "Own TASK-0033 staged activation, shared asset persistence schema, dependency-safe merge sequencing and final acceptance without pulling TASK-0034 editor/compiler/render execution or provider publishing forward.",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0032",
-      "worktree": "worktrees/task-0032-supervisor",
-      "status": "in_progress",
+      "branch": "supervisor/TASK-0033",
+      "worktree": "worktrees/task-0033-supervisor",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "active",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 5,
@@ -25,102 +25,99 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        ".ai/state/CURRENT-STATE.yaml",
-        ".ai/state/LAST-CHECKPOINT.md",
-        ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/TASK-0032.yaml"
+        "database/migrations/2026_09_19_000002_create_asset_foundation_tables.php"
       ]
     },
     {
-      "id": "WS-0032-CONTENT-MODEL",
+      "id": "WS-0033-ASSET-ORIGINALS",
       "role": "worker",
-      "module": "Content",
-      "capability": "Implement workspace-scoped canonical content document identity, lifecycle and immutable content-version domain contracts plus provider-neutral typed document/component-tree primitives; no persistence, renderer or provider payloads.",
+      "module": "Assets",
+      "capability": "Implement workspace-scoped canonical asset identity, immutable original metadata, hash/media validation, provenance/rights and ingestion domain contracts without persistence or transform execution.",
       "assigned_agent": null,
-      "branch": "worker-1/TASK-0032",
-      "worktree": "worktrees/task-0032-worker-1",
-      "status": "completed",
+      "branch": "worker-1/TASK-0033",
+      "worktree": "worktrees/task-0033-worker-1",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Content/Domain/Document/**",
-        "app/Modules/Content/Domain/Version/**",
-        "tests/Unit/Content/Task0032ContentModelTest.php"
+        "app/Modules/Assets/Domain/Asset/**",
+        "app/Modules/Assets/Domain/Ingestion/**",
+        "tests/Unit/Assets/Task0033AssetOriginalModelTest.php"
       ]
     },
     {
-      "id": "WS-0032-TEMPLATE-COMPONENTS",
+      "id": "WS-0033-VARIANT-CONTRACTS",
       "role": "worker",
-      "module": "Templates",
-      "capability": "Implement workspace-scoped template, immutable template version, reusable component/version and explicit version-aware dependency reference contracts with cycle-safe graph primitives; no persistence or rendering.",
+      "module": "Assets",
+      "capability": "Implement normalized deterministic variant/transformation specifications, lineage, processor identity and replay-safe transformation planning contracts without executing external processors.",
       "assigned_agent": null,
-      "branch": "worker-2/TASK-0032",
-      "worktree": "worktrees/task-0032-worker-2",
-      "status": "completed",
+      "branch": "worker-2/TASK-0033",
+      "worktree": "worktrees/task-0033-worker-2",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
-      "dependencies": [],
+      "dependencies": [
+        "WS-0033-ASSET-ORIGINALS"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Templates/Domain/**",
-        "tests/Unit/Templates/Task0032TemplateComponentModelTest.php"
+        "app/Modules/Assets/Domain/Variant/**",
+        "app/Modules/Assets/Application/Transformation/**",
+        "tests/Unit/Assets/Task0033VariantContractTest.php"
       ]
     },
     {
-      "id": "WS-0032-BINDINGS-CANONICALIZATION",
+      "id": "WS-0033-STORAGE-PERSISTENCE",
       "role": "worker",
-      "module": "Content",
-      "capability": "After the content and template contracts merge, implement typed variables/localization binding, deterministic canonicalization/hash semantics, dependency resolution and render-input snapshot identity without executing renderer/editor code.",
+      "module": "Assets",
+      "capability": "Implement PostgreSQL repositories and S3-compatible object-storage adapters for immutable originals and deterministic variants with workspace isolation, idempotency and bounded storage access.",
       "assigned_agent": null,
-      "branch": "worker-3/TASK-0032",
-      "worktree": "worktrees/task-0032-worker-3",
-      "status": "completed",
+      "branch": "worker-3/TASK-0033",
+      "worktree": "worktrees/task-0033-worker-3",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0032-CONTENT-MODEL",
-        "WS-0032-TEMPLATE-COMPONENTS"
+        "WS-0033-ASSET-ORIGINALS",
+        "WS-0033-VARIANT-CONTRACTS"
       ],
       "merge_group": 30,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Content/Domain/Binding/**",
-        "app/Modules/Content/Application/Canonicalization/**",
-        "app/Modules/Content/Application/DependencyResolution/**",
-        "tests/Unit/Content/Task0032CanonicalizationBindingTest.php"
+        "app/Modules/Assets/Infrastructure/Persistence/**",
+        "app/Modules/Assets/Infrastructure/Storage/**",
+        "tests/Integration/Task0033AssetStoragePersistenceTest.php"
       ]
     },
     {
-      "id": "WS-0032-PERSISTENCE-CERTIFICATION",
+      "id": "WS-0033-CERTIFICATION",
       "role": "worker",
-      "module": "Content",
-      "capability": "After canonical contracts and binding semantics merge, implement database repositories and PostgreSQL/adversarial certification for workspace isolation, immutable versions, idempotent retries, optimistic concurrency, dependency-cycle rejection and deterministic hashes.",
+      "module": "Assets",
+      "capability": "Certify tenant isolation, immutable originals, content/metadata integrity, idempotent ingestion/transforms, variant lineage, failure/concurrency behavior and safe S3-compatible storage boundaries.",
       "assigned_agent": null,
-      "branch": "worker-4/TASK-0032",
-      "worktree": "worktrees/task-0032-worker-4",
-      "status": "completed",
+      "branch": "worker-4/TASK-0033",
+      "worktree": "worktrees/task-0033-worker-4",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0032-CONTENT-MODEL",
-        "WS-0032-TEMPLATE-COMPONENTS",
-        "WS-0032-BINDINGS-CANONICALIZATION"
+        "WS-0033-ASSET-ORIGINALS",
+        "WS-0033-VARIANT-CONTRACTS",
+        "WS-0033-STORAGE-PERSISTENCE"
       ],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Content/Infrastructure/Persistence/**",
-        "app/Modules/Templates/Infrastructure/Persistence/**",
-        "tests/Integration/Task0032CanonicalContentPersistenceTest.php",
-        "tests/Feature/Security/Task0032CanonicalContentSecurityTest.php"
+        "tests/Integration/Task0033AssetPipelineCertificationTest.php",
+        "tests/Feature/Security/Task0033AssetSecurityCertificationTest.php"
       ]
     }
   ]

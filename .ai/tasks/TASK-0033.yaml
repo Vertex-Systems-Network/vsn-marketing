@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Assets",
   "title": "Implement canonical asset library and variant pipeline",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement the workspace-scoped canonical media/creative asset library with immutable originals, hash-verifiable metadata, rights/provenance, isolated object-storage references, deterministic derived variants and safe transformation lineage that later content/editor/render/provider workflows can reference without provider-specific media payloads becoming canonical state.",
   "dependencies": [
     "TASK-0032"

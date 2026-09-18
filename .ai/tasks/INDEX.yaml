@@ -324,7 +324,7 @@
       "phase": "PHASE-06",
       "title": "Implement canonical content/template/version/component model",
       "weight": 20,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0031"
       ]
@@ -334,7 +334,7 @@
       "phase": "PHASE-06",
       "title": "Implement canonical asset library and variant pipeline",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0032"
       ]

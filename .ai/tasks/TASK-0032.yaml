@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Assets",
   "title": "Implement canonical content/template/version/component model",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement the workspace-scoped provider-neutral canonical content, template, immutable version, reusable component, variable/localization and deterministic dependency model that becomes the single validated source for later asset, editor, renderer and provider-channel compilation work without storing provider-specific render payloads as canonical state.",
   "dependencies": [
     "TASK-0031"

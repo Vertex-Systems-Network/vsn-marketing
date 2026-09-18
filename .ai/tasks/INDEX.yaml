@@ -30,6 +30,7 @@
     {"id":"TASK-0026","phase":"PHASE-05","title":"Implement sender domains and sender identities","weight":20,"status":"completed","dependencies":["TASK-0025"]},
     {"id":"TASK-0027","phase":"PHASE-05","title":"Implement suppression, unsubscribe/preferences, bounce, and complaint processing","weight":20,"status":"completed","dependencies":["TASK-0026"]},
     {"id":"TASK-0028","phase":"PHASE-05","title":"Implement frequency caps, reputation/health signals, and safe sending policy","weight":20,"status":"completed","dependencies":["TASK-0027"]},
-    {"id":"TASK-0029","phase":"PHASE-05","title":"Implement deliverability observability and bounded remediation recommendations","weight":15,"status":"ready","dependencies":["TASK-0028"]}
+    {"id":"TASK-0029","phase":"PHASE-05","title":"Implement deliverability observability and bounded remediation recommendations","weight":15,"status":"completed","dependencies":["TASK-0028"]},
+    {"id":"TASK-0030","phase":"PHASE-05","title":"Certify PHASE-05 sender safety, suppression and deliverability gates","weight":10,"status":"ready","dependencies":["TASK-0029"]}
   ]
 }

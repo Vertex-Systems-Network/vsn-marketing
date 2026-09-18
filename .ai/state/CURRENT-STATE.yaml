@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0028_certified_pr_229_merged_e312cb16eb28ed3beab9926f07849683f2fb9bca",
-    "application_test_status": "task_0028_certification_head_0b6ead1d4269148687f40ba2b94795cf07604314_passed_run_35260228236",
-    "security_supply_chain_status": "task_0028_certification_head_0b6ead1d4269148687f40ba2b94795cf07604314_passed_run_35260228343",
+    "continuity_validation": "task_0029_certification_head_7cf690b0cf1066cbad10755e6d0dc028853e5483_passed_run_35338462834",
+    "application_test_status": "task_0029_certification_head_7cf690b0cf1066cbad10755e6d0dc028853e5483_passed_run_35338462788",
+    "security_supply_chain_status": "task_0029_certification_head_7cf690b0cf1066cbad10755e6d0dc028853e5483_passed_run_35338462837",
     "release_integrity_status": "task_0027_main_passed_run_35218151757",
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "Merge the TASK-0029 persistence-certification activation with the Supervisor-owned append-only deliverability observations schema after exact-head continuity, application and security gates pass; then implement the database-backed deliverability observation repository plus PostgreSQL/adversarial certification on worker-4 without changing TASK-0027 suppression or TASK-0028 safe-sending authority."
+  "exact_next_action": "Run TASK-0029 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then transition TASK-0029 to completed and explicitly register/activate TASK-0030 in a separate guarded state change."
 }

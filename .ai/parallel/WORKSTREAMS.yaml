@@ -10,7 +10,7 @@
       "id": "WS-0029-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0029 contract integration, shared-path coordination, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
+      "capability": "Own TASK-0029 contract integration, shared-path coordination, the Supervisor-owned deliverability observation schema migration, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0029",
       "worktree": "worktrees/task-0029-supervisor",
@@ -24,7 +24,8 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php"
       ]
     },
     {
@@ -98,7 +99,7 @@
       "id": "WS-0029-ADVERSARIAL-CERT",
       "role": "worker",
       "module": "Security",
-      "capability": "Close TASK-0029 durable PostgreSQL persistence gap and certify workspace isolation, replay/idempotency, stale/contradictory telemetry, recommendation non-execution, and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
+      "capability": "Implement the database-backed deliverability observation repository on the Supervisor-owned schema and certify PostgreSQL workspace isolation, replay/idempotency, stale/contradictory telemetry, recommendation non-execution, and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
       "assigned_agent": "worker-task0029-certification",
       "branch": "worker-4/TASK-0029",
       "worktree": "worktrees/task-0029-worker-4",
@@ -112,7 +113,6 @@
       "merge_group": 50,
       "merge_strategy": "squash",
       "write_paths": [
-        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
         "app/Modules/DeliveryEngine/Infrastructure/Deliverability/DatabaseDeliverabilityObservationRepository.php",
         "tests/Integration/Task0029DeliverabilityObservabilityPersistenceTest.php",
         "tests/Feature/Security/Task0029DeliverabilityObservabilitySecurityTest.php"

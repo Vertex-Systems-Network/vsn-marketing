@@ -51,10 +51,6 @@ final readonly class VariableDefinition
 
         if (is_array($value)) {
             foreach ($value as $key => $nested) {
-                if (is_int($key) === false && is_string($key) === false) {
-                    throw new InvalidArgumentException("Variable data contains an unsupported key: {$path}");
-                }
-
                 self::assertJsonSafe($nested, $path.'.'.(string) $key);
             }
 

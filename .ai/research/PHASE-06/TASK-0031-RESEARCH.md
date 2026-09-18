@@ -1,7 +1,7 @@
 # TASK-0031 Research Evidence — Content Editors, Templates, Assets, Rendering Security, Accessibility, and Channel Media
 
 Date: 2026-09-19
-Status: staged official/product-source research for PHASE-06 activation
+Status: acceptance candidate for PHASE-06 research-first gate
 Task: TASK-0031
 Scope: provider-neutral content/template authoring, reusable components, creative asset lifecycle, responsive email rendering, safe custom-code pathways, accessibility, previews/testing, and versioned channel media capabilities.
 
@@ -98,7 +98,7 @@ LinkedIn's versioned API distinguishes organic and sponsored support for text, i
 
 **VSN requirement:** content semantics stay canonical while provider/channel capability records describe supported media kinds, cardinality, size/format/aspect constraints, upload prerequisites and effective API versions. Unsupported mappings produce deterministic validation/fallback errors rather than silent content loss.
 
-## Proposed PHASE-06 invariant set
+## Frozen PHASE-06 invariant set
 
 1. Canonical content/template/component data is provider-neutral and versioned.
 2. Published/execution-pinned versions are immutable; edits create new versions.
@@ -150,6 +150,6 @@ LinkedIn's versioned API distinguishes organic and sponsored support for text, i
 
 Plan confirmation: PHASE-06 sequencing remains valid.
 
-New hard acceptance requirements: immutable canonical versions, scoped reusable dependencies, immutable asset originals with variant lineage, deterministic renderer provenance, deny-by-default rendering security, accessibility-aware component contracts and provider-versioned media capabilities.
+Frozen hard acceptance requirements: immutable canonical versions, scoped reusable dependencies, immutable asset originals with variant lineage, deterministic renderer provenance, deny-by-default rendering security, accessibility-aware component contracts and provider-versioned media capabilities.
 
 No ADR is required at this staging point because the evidence confirms the already-planned Assets/provider-neutral boundary. An ADR becomes necessary if TASK-0031 chooses a renderer/storage architecture that changes established module boundaries or introduces a new privileged execution service.

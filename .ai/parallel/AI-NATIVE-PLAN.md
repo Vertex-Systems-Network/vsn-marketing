@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0029 Deliverability Observability
 
-Status: **active — remediation recommendations wave**. TASK-0029 telemetry/evidence and deterministic diagnostics are merged on protected `main`; bounded remediation recommendations are now the only active worker stream alongside Supervisor control. Adversarial/PostgreSQL certification remains dependency-gated.
+Status: **active — persistence and adversarial certification wave**. TASK-0029 telemetry/evidence, deterministic diagnostics, and bounded remediation recommendations are merged on protected `main`. The final worker wave now closes the durable PostgreSQL persistence gap and certifies adversarial behavior before acceptance.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0029`  
 Parent task: `TASK-0029`  
-Branch baseline: `5befc8ddefc640f5e73910966ce5ec3c4dba3991`  
-Active writers: `2` (1 Supervisor + 1 remediation worker)  
+Branch baseline: `4bb6dd29c8fd0bb7d7ea87b6227c752affce2301`  
+Active writers: `2` (1 Supervisor + 1 persistence/certification worker)  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
 Completion signal: `Work Done and Submitted`
@@ -18,18 +18,19 @@ Completion signal: `Work Done and Submitted`
 - Observations remain workspace scoped and preserve provider, source, version, effective/observed time and provenance. Missing, stale, contradictory, malformed, foreign-workspace or untrusted evidence stays explicit.
 - Provider-specific thresholds and semantics remain versioned policy/evidence; no universal provider threshold is invented.
 - Diagnostics remain deterministic and explainable with stable reason codes and explicit Unknown/Review states.
-- Remediation output is proposal-only and side-effect free. Risky DNS, sender identity, routing/provider, suppression, frequency or provider-policy changes require explicit human/policy approval before any separate execution path may act.
+- Remediation remains proposal-only and side-effect free. Risky DNS, sender identity, routing/provider, suppression, frequency or provider-policy changes require explicit human/policy approval before any separate execution path may act.
 - Recommendations cannot create consent, recreate authorization, erase suppression, increase sending authority, rotate accounts to evade provider controls, or bypass provider/frequency policy.
+- Durable observation persistence must be append-only, workspace isolated, replay/idempotency safe, race safe and provenance preserving. Exact replay returns canonical stored evidence; conflicting replay or foreign-workspace identity reuse fails closed.
 - No anti-abuse evasion, spam-rate gaming, fake-account rotation, deceptive headers, provider-limit circumvention, automated consent creation or scraping authorization is introduced.
 
 ## Workstreams and merge order
 
 1. **Telemetry/evidence (`worker-1/TASK-0029`)** — completed and merged.
 2. **Diagnostics (`worker-2/TASK-0029`)** — completed and merged.
-3. **Remediation recommendations (`worker-3/TASK-0029`)** — active. Produce bounded auditable proposals with explicit scope, rationale, evidence, risk and approval requirements; no self-execution.
-4. **Adversarial/PostgreSQL certification (`worker-4/TASK-0029`)** — staged until remediation contracts are merged. Prove cross-workspace isolation, replay/duplicate behavior, stale/contradictory telemetry handling, recommendation non-execution and upstream authority precedence.
+3. **Remediation recommendations (`worker-3/TASK-0029`)** — completed and merged.
+4. **Persistence + adversarial/PostgreSQL certification (`worker-4/TASK-0029`)** — active. Add durable deliverability observation persistence and prove PostgreSQL workspace isolation, replay/conflict behavior, stale/contradictory telemetry handling, recommendation non-execution and upstream suppression/frequency/provider-policy precedence.
 5. **Final acceptance** — exact-head AI Continuity, Application Foundation and Security Supply Chain must pass before TASK-0029 acceptance or TASK-0030 activation.
 
 ## Exact next action
 
-Merge this remediation activation control after exact-head continuity, application and security gates pass. Then implement only the allocated remediation recommendation files on `worker-3/TASK-0029` from protected main. Recommendations must be deterministic, bounded, auditable, evidence-backed and side-effect free; risky categories must carry explicit human/policy approval requirements, while unknown/review diagnostics produce investigation or evidence-refresh proposals rather than direct infrastructure or sending mutations. Merge that worker only after exact-head required suites pass, then activate adversarial/PostgreSQL certification.
+Merge this certification activation after exact-head continuity, application and security gates pass. Then implement only the allocated worker-4 files on `worker-4/TASK-0029`: one append-only deliverability observations migration, one database-backed observation repository, one PostgreSQL integration certification test, and one adversarial security test. Do not modify suppression, safe-sending, consent, frequency or provider-policy authority. Merge worker-4 only after exact-head required suites pass, then run TASK-0029 acceptance certification.

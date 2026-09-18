@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Assets",
   "title": "Research current content editors, template formats, asset workflows, rendering security, and channel media requirements",
-  "status": "planned",
+  "status": "ready",
   "objective": "Freeze an evidence-backed PHASE-06 contract for canonical content, reusable templates/components, creative assets, secure rendering/preview, accessibility and provider-versioned channel media capabilities before any production editor or renderer implementation begins.",
   "dependencies": [
     "TASK-0030"

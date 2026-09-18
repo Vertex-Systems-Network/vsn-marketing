@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Certify PHASE-05 sender safety, suppression and deliverability gates",
-  "status": "ready",
+  "status": "completed",
   "objective": "Close PHASE-05 only after sender identity, authentication evidence, provider-versioned policy, suppression/objection authority, RFC 8058 one-click unsubscribe, bounce/complaint processing, frequency/reputation safe-sending controls and deliverability observability/remediation are jointly proven workspace-safe, replay-safe, fail-closed and unable to recreate or bypass permission to send.",
   "dependencies": [
     "TASK-0029"
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Run TASK-0030 final acceptance on a Supervisor-only control PR; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete PHASE-05 and explicitly register/activate TASK-0031 in a separate guarded transition."
+  "exact_next_action": "TASK-0030 is certified complete on protected main by final acceptance PR #245 after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI passed; TASK-0031 is the active PHASE-06 research-first successor."
 }

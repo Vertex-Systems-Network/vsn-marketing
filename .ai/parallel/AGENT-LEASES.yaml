@@ -14,14 +14,14 @@
       ]
     },
     {
-      "agent": "worker-task0033-originals",
-      "workstream": "WS-0033-ASSET-ORIGINALS",
-      "branch": "worker-1/TASK-0033",
+      "agent": "worker-task0033-variants",
+      "workstream": "WS-0033-VARIANT-CONTRACTS",
+      "branch": "worker-2/TASK-0033",
       "status": "active",
       "write_paths": [
-        "app/Modules/Assets/Domain/Asset/**",
-        "app/Modules/Assets/Domain/Ingestion/**",
-        "tests/Unit/Assets/Task0033AssetOriginalModelTest.php"
+        "app/Modules/Assets/Domain/Variant/**",
+        "app/Modules/Assets/Application/Transformation/**",
+        "tests/Unit/Assets/Task0033VariantContractTest.php"
       ]
     }
   ]

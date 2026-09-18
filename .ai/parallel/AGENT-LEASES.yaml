@@ -1,21 +1,4 @@
 {
   "schema_version": 2,
-  "leases": [
-    {
-      "agent": "supervisor-main",
-      "workstream": "WS-0029-SUPERVISOR-CONTROL",
-      "branch": "supervisor/TASK-0029",
-      "status": "active",
-      "write_paths": [
-        ".ai/parallel/AI-NATIVE-PLAN.md",
-        ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
-        ".ai/state/CURRENT-STATE.yaml",
-        ".ai/state/LAST-CHECKPOINT.md",
-        ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/TASK-0029.yaml"
-      ]
-    }
-  ]
+  "leases": []
 }

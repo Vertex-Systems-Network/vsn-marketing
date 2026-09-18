@@ -4,7 +4,7 @@
   "phase": "PHASE-05",
   "module": "Delivery",
   "title": "Implement deliverability observability and bounded remediation recommendations",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement workspace-scoped, provider-versioned deliverability observability and diagnostic evidence that explains authentication, complaint, bounce, reputation and delivery-health signals without converting telemetry into permission to send. Recommendations must be bounded, auditable and human/policy-gated for risky changes; suppression, objection, consent/authorization, sender readiness, frequency authority and provider policy remain higher-order controls, and no anti-abuse evasion, spam-rate gaming, fake-account rotation, deceptive headers or provider-limit circumvention may be introduced.",
   "dependencies": [
     "TASK-0028"
@@ -63,5 +63,5 @@
     "npm test",
     "npm run build"
   ],
-  "exact_next_action": "Run TASK-0029 final acceptance on a Supervisor-only control PR; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then transition TASK-0029 to completed and explicitly register/activate TASK-0030 in a separate guarded state change."
+  "exact_next_action": "TASK-0029 is certified complete on protected main by final acceptance PR #241 after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI passed; TASK-0030 is the guarded PHASE-05 certification successor."
 }

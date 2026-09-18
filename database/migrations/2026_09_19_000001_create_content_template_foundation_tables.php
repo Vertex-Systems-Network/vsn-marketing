@@ -41,9 +41,9 @@ return new class extends Migration
             $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
             $table->foreign(['document_id', 'workspace_id'], 'content_version_document_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('content_documents')->restrictOnDelete();
+            $table->unique(['id', 'workspace_id'], 'content_version_id_workspace_uq');
             $table->foreign(['parent_version_id', 'workspace_id'], 'content_version_parent_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('content_versions')->restrictOnDelete();
-            $table->unique(['id', 'workspace_id'], 'content_version_id_workspace_uq');
             $table->unique(['document_id', 'version_number'], 'content_version_document_number_uq');
             $table->unique(['workspace_id', 'idempotency_key'], 'content_version_workspace_idempotency_uq');
             $table->index(['workspace_id', 'document_id', 'status'], 'content_version_workspace_document_status_idx');
@@ -82,9 +82,9 @@ return new class extends Migration
             $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
             $table->foreign(['template_id', 'workspace_id'], 'content_template_version_owner_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('content_templates')->restrictOnDelete();
+            $table->unique(['id', 'workspace_id'], 'content_template_version_id_workspace_uq');
             $table->foreign(['parent_version_id', 'workspace_id'], 'content_template_version_parent_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('content_template_versions')->restrictOnDelete();
-            $table->unique(['id', 'workspace_id'], 'content_template_version_id_workspace_uq');
             $table->unique(['template_id', 'version_number'], 'content_template_version_owner_number_uq');
             $table->unique(['workspace_id', 'idempotency_key'], 'content_template_version_workspace_idempotency_uq');
             $table->index(['workspace_id', 'template_id', 'status'], 'content_template_version_owner_status_idx');
@@ -123,9 +123,9 @@ return new class extends Migration
             $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
             $table->foreign(['component_id', 'workspace_id'], 'reusable_component_version_owner_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('reusable_components')->restrictOnDelete();
+            $table->unique(['id', 'workspace_id'], 'reusable_component_version_id_workspace_uq');
             $table->foreign(['parent_version_id', 'workspace_id'], 'reusable_component_version_parent_workspace_fk')
                 ->references(['id', 'workspace_id'])->on('reusable_component_versions')->restrictOnDelete();
-            $table->unique(['id', 'workspace_id'], 'reusable_component_version_id_workspace_uq');
             $table->unique(['component_id', 'version_number'], 'reusable_component_version_owner_number_uq');
             $table->unique(['workspace_id', 'idempotency_key'], 'reusable_component_version_workspace_idempotency_uq');
             $table->index(['workspace_id', 'component_id', 'status'], 'reusable_component_version_owner_status_idx');

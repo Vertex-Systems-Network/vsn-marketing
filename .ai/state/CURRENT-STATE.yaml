@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077251",
-    "application_test_status": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077270",
+    "continuity_validation": "task_0032_wave2_ship_head_4dbdff7fe838f630afa1b9ee50e78dbae55deef4_failed_run_35394284117_pending_supervisor_ledger_reconciliation",
+    "application_test_status": "task_0032_wave2_ship_head_4dbdff7fe838f630afa1b9ee50e78dbae55deef4_run_35394284160_postgresql_integration_e2e_php83_passed_foundation_in_progress",
     "security_supply_chain_status": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077308",
     "release_integrity_status": "task_0027_main_passed_run_35218151757",
     "scorecard_status": "task_0027_main_passed_run_35218151835"
   },
   "blockers": [],
-  "exact_next_action": "After guarded activation, map the frozen TASK-0031 research onto existing tenancy, audit, event and persistence boundaries; implement the canonical content/template/component/version schemas, repositories and deterministic dependency/variable contracts with PostgreSQL isolation tests, without pulling TASK-0033 asset processing or TASK-0034 editor/render execution forward."
+  "exact_next_action": "Reconcile the Supervisor continuity ledger for TASK-0032 PostgreSQL self-FK ordering hotfix 4dbdff7fe838f630afa1b9ee50e78dbae55deef4; require AI Continuity Guard and Application Foundation CI on ship/week-1 to pass on the same exact head before activating WS-0032-PERSISTENCE-CERTIFICATION. Do not start TASK-0033 asset processing or TASK-0034 editor/compiler/render execution."
 }

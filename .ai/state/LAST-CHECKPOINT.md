@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-18T11:02:00+00:00`
+- Timestamp: `2026-09-18T11:16:00+00:00`
 - Active task: `TASK-0029`
 - Next task: `none`
 - Current phase: `PHASE-05`
 - Execution status: `ready`
-- State fingerprint: `1c0948cf724759d2f5ce2513ad47df823e4c45670540b26e5c4438f8767ca600`
+- State fingerprint: `c473e356a9311c0fc93d6935b2bb31e607d8fc8a7c084656ad6b9c4946fed899`
 
 ## Completed / observed this session
 
-TASK-0029 telemetry/evidence, deterministic diagnostics and bounded proposal-only remediation recommendations are merged on protected `main` through PR #238 at `4bb6dd29c8fd0bb7d7ea87b6227c752affce2301`. The remaining durable PostgreSQL persistence gap is now explicitly handled by PR #239: the append-only `deliverability_observations` schema is Supervisor-owned because `database/migrations/**` is a protected shared path, while worker-4 is scoped to the database repository plus PostgreSQL/adversarial certification tests. TASK-0027 suppression/objection and TASK-0028 safe-sending/frequency authority remain higher-order controls.
+TASK-0029 implementation and certification evidence is merged on protected `main`. PR #240 merged as `2e0a001e4b710f3216ebbd0b0db14fd3469ed437` after provider-versioned telemetry, deterministic diagnostics, proposal-only remediation, the Supervisor-owned append-only PostgreSQL observation schema, the database repository, PostgreSQL replay/isolation certification and adversarial security coverage were all in place. All worker lanes are completed and released. AC-1 through AC-8 are reconciled true against merged evidence, while TASK-0029 intentionally remains `ready` until this final acceptance PR passes its own exact-head gates and merges.
 
 ## Tests
 
-TASK-0029 remediation PR #238 exact head `a095e02c2fc66c60fafd824d1681cb9e397f39ed` passed AI Continuity Guard run `35324536861`, Application Foundation CI run `35324536772`, and Security Supply Chain CI run `35324536880`. On PR #239 head `9b518c3b22952ef51a05a9b4dd05dbc81dfe7ccc`, PHP 8.3 compatibility, PostgreSQL integration and Playwright E2E passed; Application foundation was interrupted by external PECL Redis HTTP 504, and Continuity correctly required this Supervisor-owned migration to synchronize CURRENT-STATE and LAST-CHECKPOINT before merge. Fresh exact-head gates are required after this ledger sync.
+Certification PR #240 exact head `7cf690b0cf1066cbad10755e6d0dc028853e5483`: AI Continuity Guard run `35338462834` PASS; Application Foundation CI run `35338462788` PASS including PHP 8.3, PostgreSQL integration, backend/architecture tests, static analysis, PHP formatting, frontend tests/build and Playwright E2E; Security Supply Chain CI run `35338462837` PASS including aggregate security gates. Fresh exact-head Continuity, Application and Security gates are still required on this final acceptance PR before merge.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ TASK-0029 remediation PR #238 exact head `a095e02c2fc66c60fafd824d1681cb9e397f39
 
 ## Exact next action
 
-Merge the TASK-0029 persistence-certification activation with the Supervisor-owned append-only deliverability observations schema after exact-head continuity, application and security gates pass; then implement the database-backed deliverability observation repository plus PostgreSQL/adversarial certification on worker-4 without changing TASK-0027 suppression or TASK-0028 safe-sending authority.
+Run TASK-0029 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then transition TASK-0029 to completed and explicitly register/activate TASK-0030 in a separate guarded state change.

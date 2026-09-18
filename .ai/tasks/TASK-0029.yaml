@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "Canonical workspace-scoped deliverability telemetry and diagnostic evidence preserve provider/source/version, effective/observed timestamps, message purpose and provenance; malformed, stale, contradictory, foreign-workspace or unsupported evidence is explicit and never becomes permission to send",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Observability represents sender-authentication, complaint, bounce, delivery, reputation and health signals as evidence/diagnostics without collapsing provider-specific semantics into invented global thresholds or a universal healthy boolean",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Diagnostic evaluation is deterministic and explainable with stable reason codes and evidence references suitable for audit; unknown or unavailable provider data remains unknown/review rather than being fabricated or silently normalized",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Remediation recommendations are bounded proposals with explicit scope, rationale, evidence, risk and approval requirements; risky DNS, sender, routing, suppression, frequency or provider-policy changes cannot execute autonomously from recommendation output",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "TASK-0027 suppression/objection and TASK-0028 consent/authorization, sender-readiness, frequency and safe-sending authority remain higher-order controls; observability, reputation trends, route choice, AI recommendations or admin convenience cannot recreate permission or override a deny/review/unknown decision",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Persistence and queries are workspace isolated, replay/idempotency safe and provenance preserving; duplicate telemetry ingestion, provider retries, delayed observations or reconciliation races cannot erase stronger evidence or mutate another workspace's diagnostics",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Adversarial coverage proves cross-workspace isolation, stale/contradictory telemetry, missing provider context, duplicate/replayed observations, recommendation non-execution, suppression/frequency precedence and resistance to spam-rate gaming, fake-account rotation or provider-limit circumvention",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "AI continuity, architecture, unit, PostgreSQL integration, application, static-analysis, security-supply-chain and exact-head acceptance gates are green before TASK-0030 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -63,5 +63,5 @@
     "npm test",
     "npm run build"
   ],
-  "exact_next_action": "Freeze TASK-0029 provider-versioned deliverability telemetry, diagnostic evidence and bounded remediation recommendation contracts on top of TASK-0028 safe-sending authority; implement workspace-isolated observability that cannot create consent, erase suppression, bypass frequency/provider policy, or autonomously execute risky remediation, then certify unit, PostgreSQL integration, adversarial security, continuity, application and supply-chain gates."
+  "exact_next_action": "Run TASK-0029 final acceptance on a Supervisor-only control PR; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then transition TASK-0029 to completed and explicitly register/activate TASK-0030 in a separate guarded state change."
 }

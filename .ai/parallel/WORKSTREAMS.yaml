@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0029",
-  "branch_creation_baseline_sha": "4bb6dd29c8fd0bb7d7ea87b6227c752affce2301",
+  "branch_creation_baseline_sha": "2e0a001e4b710f3216ebbd0b0db14fd3469ed437",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -10,7 +10,7 @@
       "id": "WS-0029-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Delivery",
-      "capability": "Own TASK-0029 contract integration, shared-path coordination, the Supervisor-owned deliverability observation schema migration, dependency-safe merge sequencing and acceptance while preserving TASK-0027 suppression/objection and TASK-0028 safe-sending authority.",
+      "capability": "Own TASK-0029 final acceptance, shared-path continuity/task-state reconciliation, dependency-safe closeout and the separate guarded handoff to TASK-0030 while preserving TASK-0027/TASK-0028 higher-order sending authority.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0029",
       "worktree": "worktrees/task-0029-supervisor",
@@ -28,7 +28,8 @@
         "database/migrations/2026_09_18_235959_create_deliverability_observations_table.php",
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
-        ".ai/state/EXECUTION-JOURNAL.jsonl"
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0029.yaml"
       ]
     },
     {
@@ -103,12 +104,12 @@
       "role": "worker",
       "module": "Security",
       "capability": "Implement the database-backed deliverability observation repository on the Supervisor-owned schema and certify PostgreSQL workspace isolation, replay/idempotency, stale/contradictory telemetry, recommendation non-execution, and suppression/frequency/provider-policy precedence without anti-abuse evasion.",
-      "assigned_agent": "worker-task0029-certification",
+      "assigned_agent": null,
       "branch": "worker-4/TASK-0029",
       "worktree": "worktrees/task-0029-worker-4",
-      "status": "in_progress",
-      "slot_status": "occupied",
-      "start_status": "active",
+      "status": "completed",
+      "slot_status": "open",
+      "start_status": "completed",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0029-REMEDIATION-RECOMMENDATIONS"

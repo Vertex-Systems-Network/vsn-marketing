@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0032 Canonical Content/Template Model
 
-Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0032 Waves 1 through 3 are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
+Status: **final acceptance**. TASK-0032 canonical content/template/version/component implementation is promoted to protected `main`. All worker lanes are completed and released; Supervisor is the only active writer for final acceptance and the later guarded TASK-0033 handoff.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0032`  
 Shipping integration branch: `ship/week-1`  
 Parent task: `TASK-0032`  
-Branch creation baseline: `3bdc9e797cdded1073600dc7945381baa53a9e0f`  
+Branch creation baseline: `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae`  
 Active writers: `1` (Supervisor only)  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
@@ -29,7 +29,7 @@ Completion signal: `Work Done and Submitted`
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 5 | WS-0032-SUPERVISOR-CONTROL | TASK-0032 control + Supervisor-owned canonical persistence schema + merge coordination | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0032` | squash | merge latest ship/week-1 before resume |
+| 5 | WS-0032-SUPERVISOR-CONTROL | TASK-0032 final acceptance + continuity/task-state reconciliation + guarded successor handoff | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0032` | squash | use trusted protected-main baseline |
 | 10 | WS-0032-CONTENT-MODEL | Canonical content identities, immutable versions and typed provider-neutral document tree | `open` | — | `completed` | `worker-1/TASK-0032` | squash | merged as PR #255 |
 | 20 | WS-0032-TEMPLATE-COMPONENTS | Template/component identities, immutable versions and explicit dependency references | `open` | — | `completed` | `worker-2/TASK-0032` | squash | merged as PR #257 |
 | 30 | WS-0032-BINDINGS-CANONICALIZATION | Typed variables/localization, canonical hashes, dependency resolution and snapshot identity | `open` | — | `completed` | `worker-3/TASK-0032` | squash | merged as PR #259 |
@@ -58,7 +58,10 @@ Completion signal: `Work Done and Submitted`
 - The first Wave 3 integration run exposed an exact-replay ordering regression: global version-ID conflict validation ran before the workspace-scoped idempotency replay path. PR #264 corrected only that ordering and merged as `29692360c4a425864fd638129e95ed6b13b46c7c` after exact-head Shipping Fast Gate `35397548286` passed.
 - Certified final ship head `29692360c4a425864fd638129e95ed6b13b46c7c` passed AI Continuity Guard `35397658336`, Shipping Fast Gate `35397658293`, and Application Foundation CI `35397658347`, including PostgreSQL/Redis integration, E2E, PHP 8.3 floor, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - Merge group 40 is dependency-complete; the persistence worker lease is released.
+- PR #266 promoted the certified Shipping Mode baseline to protected `main` as `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae`; its exact source head `094e91793ab4a977412180edd28c572ce6c04bba` passed AI Continuity Guard `35398429953`, Application Foundation CI `35398429929`, and Security Supply Chain CI `35398429945`.
+- Post-merge protected-main head `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae` passed AI Continuity Guard `35398634375`, Application Foundation CI `35398634427`, Security Supply Chain CI `35398634220`, Release Integrity `35398634276`, and OpenSSF Scorecard `35398634293`.
+- AC-1 through AC-8 are reconciled true while TASK-0032 intentionally remains `ready` until this Supervisor-only final acceptance PR passes its own exact-head acceptance gates and merges.
 
 ## Exact next action
 
-Promote certified TASK-0032 ship baseline 29692360c4a425864fd638129e95ed6b13b46c7c to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0032 acceptance. Do not activate TASK-0033 asset processing or TASK-0034 editor/compiler/render execution early.
+Run TASK-0032 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete TASK-0032 and explicitly register/activate TASK-0033 in a separate guarded transition. Do not start TASK-0033 asset processing before that transition.

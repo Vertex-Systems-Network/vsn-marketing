@@ -2,22 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-18T20:04:41+00:00`
+- Timestamp: `2026-09-18T21:42:00+00:00`
 - Active task: `TASK-0032`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `f92e0074e00e6b806760b031d80883734e1d69b18d0e9eb775ca3f21b14ba712`
+- State fingerprint: `d790b8842348ea62325215c8d28e994e16d02fbf6878affc84b18bce0a3e3a36`
 
 ## Completed / observed this session
 
-Completed `TASK-0031` and activated `TASK-0032`.
-
-Transition evidence: TASK-0031 research certification PR #248 merged on protected main as 29166385bd32c96bc597cb55c4b588a968ebe84b after exact head 121dbfcd028124876cc5ae69a16aba4c25eec504 passed AI Continuity Guard 35388077251, Application Foundation CI 35388077270 and Security Supply Chain CI 35388077308; TASK-0032 registration PR #249 merged on protected main as a4d421aecab6b792c297db526f2bbcb3c01087de after exact head 4598a3e2910bba05112ed47e3131d404a35cc492 passed AI Continuity Guard 35388475325, Application Foundation CI 35388475222 and Security Supply Chain CI 35388475264. This transition changes canonical task state only and does not introduce TASK-0032 product implementation.
+Reconciled TASK-0032 Wave 3 final ship certification. PR #263 merged persistence repositories plus PostgreSQL/adversarial certification into ship/week-1 as 0d245a5fd14f85bb1005eed5133277429a241596 after exact-head Shipping Fast Gate 35397233418 passed. Its first integration push exposed an exact-replay ordering regression in DatabaseTemplateRepository: a global version-id conflict check ran before the workspace-scoped idempotency replay check. PR #264 moved exact replay validation ahead of new-insert lineage/version/dependency checks and merged as 29692360c4a425864fd638129e95ed6b13b46c7c after exact-head Shipping Fast Gate 35397548286 passed. Certified ship head 29692360c4a425864fd638129e95ed6b13b46c7c then passed AI Continuity Guard 35397658336, Shipping Fast Gate 35397658293 and Application Foundation CI 35397658347, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build. All TASK-0032 worker lanes are now completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
 
 ## Tests
 
-TASK-0031 research acceptance and TASK-0032 registration exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI all passed. This transition must pass fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI before merge.
+PR #263 exact-head Shipping Fast Gate 35397233418 passed. The first ship integration at 0d245a5fd14f85bb1005eed5133277429a241596 failed only the TASK-0032 exact-replay PostgreSQL case and directly produced hotfix PR #264. PR #264 exact-head Shipping Fast Gate 35397548286 passed. Final ship head 29692360c4a425864fd638129e95ed6b13b46c7c passed AI Continuity Guard 35397658336, Shipping Fast Gate 35397658293 and Application Foundation CI 35397658347, including PostgreSQL/Redis integration, E2E, PHP 8.3 floor, foundation, architecture/backend tests, static analysis, formatting, frontend tests and build.
 
 ## Blockers
 
@@ -25,4 +23,4 @@ TASK-0031 research acceptance and TASK-0032 registration exact-head AI Continuit
 
 ## Exact next action
 
-After guarded activation, map the frozen TASK-0031 research onto existing tenancy, audit, event and persistence boundaries; implement the canonical content/template/component/version schemas, repositories and deterministic dependency/variable contracts with PostgreSQL isolation tests, without pulling TASK-0033 asset processing or TASK-0034 editor/render execution forward.
+Promote certified TASK-0032 ship baseline 29692360c4a425864fd638129e95ed6b13b46c7c to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0032 acceptance. Do not activate TASK-0033 asset processing or TASK-0034 editor/compiler/render execution early.

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0032",
-  "branch_creation_baseline_sha": "3bdc9e797cdded1073600dc7945381baa53a9e0f",
+  "branch_creation_baseline_sha": "1bfaeabd70325e7fea2c8acaaf5dea4860a095ae",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -10,7 +10,7 @@
       "id": "WS-0032-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Content",
-      "capability": "Own TASK-0032 Shipping Mode coordination, shared migration/schema foundation, dependency-safe merge waves and final acceptance without pulling TASK-0033 asset processing or TASK-0034 editor/render execution forward.",
+      "capability": "Own TASK-0032 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0033 handoff without activating asset processing early.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0032",
       "worktree": "worktrees/task-0032-supervisor",
@@ -25,7 +25,10 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_19_000001_create_content_template_foundation_tables.php"
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0032.yaml"
       ]
     },
     {

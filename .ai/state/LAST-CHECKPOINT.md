@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-18T21:42:00+00:00`
+- Timestamp: `2026-09-18T21:55:00+00:00`
 - Active task: `TASK-0032`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `d790b8842348ea62325215c8d28e994e16d02fbf6878affc84b18bce0a3e3a36`
+- State fingerprint: `9d72d2e4345aa1a822e28a634047f0fa18c9718ccc60fdc9a9f8ce69ac7da120`
 
 ## Completed / observed this session
 
-Reconciled TASK-0032 Wave 3 final ship certification. PR #263 merged persistence repositories plus PostgreSQL/adversarial certification into ship/week-1 as 0d245a5fd14f85bb1005eed5133277429a241596 after exact-head Shipping Fast Gate 35397233418 passed. Its first integration push exposed an exact-replay ordering regression in DatabaseTemplateRepository: a global version-id conflict check ran before the workspace-scoped idempotency replay check. PR #264 moved exact replay validation ahead of new-insert lineage/version/dependency checks and merged as 29692360c4a425864fd638129e95ed6b13b46c7c after exact-head Shipping Fast Gate 35397548286 passed. Certified ship head 29692360c4a425864fd638129e95ed6b13b46c7c then passed AI Continuity Guard 35397658336, Shipping Fast Gate 35397658293 and Application Foundation CI 35397658347, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build. All TASK-0032 worker lanes are now completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
+TASK-0032 canonical content/template/version/component implementation is promoted to protected `main`. PR #266 merged as `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae` after its exact source head `094e91793ab4a977412180edd28c572ce6c04bba` passed AI Continuity Guard `35398429953`, Application Foundation CI `35398429929`, and Security Supply Chain CI `35398429945`. Post-merge protected-main head `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae` passed AI Continuity Guard `35398634375`, Application Foundation CI `35398634427`, Security Supply Chain CI `35398634220`, Release Integrity `35398634276`, and OpenSSF Scorecard `35398634293`. All TASK-0032 worker lanes are completed and released. AC-1 through AC-8 are reconciled true, while TASK-0032 intentionally remains `ready` until this final acceptance PR passes fresh exact-head acceptance gates and merges.
 
 ## Tests
 
-PR #263 exact-head Shipping Fast Gate 35397233418 passed. The first ship integration at 0d245a5fd14f85bb1005eed5133277429a241596 failed only the TASK-0032 exact-replay PostgreSQL case and directly produced hotfix PR #264. PR #264 exact-head Shipping Fast Gate 35397548286 passed. Final ship head 29692360c4a425864fd638129e95ed6b13b46c7c passed AI Continuity Guard 35397658336, Shipping Fast Gate 35397658293 and Application Foundation CI 35397658347, including PostgreSQL/Redis integration, E2E, PHP 8.3 floor, foundation, architecture/backend tests, static analysis, formatting, frontend tests and build.
+Protected-main head `1bfaeabd70325e7fea2c8acaaf5dea4860a095ae`: AI Continuity Guard `35398634375` PASS; Application Foundation CI `35398634427` PASS including PostgreSQL/Redis integration, PHP 8.3 compatibility, backend/architecture tests, static analysis, formatting, frontend tests/build and Playwright E2E; Security Supply Chain CI `35398634220` PASS including aggregate security gates; Release Integrity `35398634276` PASS; OpenSSF Scorecard `35398634293` PASS. Fresh exact-head Continuity, Application and Security gates are still required on this final acceptance PR before TASK-0032 completion.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ PR #263 exact-head Shipping Fast Gate 35397233418 passed. The first ship integra
 
 ## Exact next action
 
-Promote certified TASK-0032 ship baseline 29692360c4a425864fd638129e95ed6b13b46c7c to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0032 acceptance. Do not activate TASK-0033 asset processing or TASK-0034 editor/compiler/render execution early.
+Run TASK-0032 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete TASK-0032 and explicitly register/activate TASK-0033 in a separate guarded transition. Do not start TASK-0033 asset processing before that transition.

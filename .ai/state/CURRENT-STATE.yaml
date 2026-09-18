@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0032_wave3_ship_head_29692360c4a425864fd638129e95ed6b13b46c7c_passed_run_35397658336",
-    "application_test_status": "task_0032_wave3_ship_head_29692360c4a425864fd638129e95ed6b13b46c7c_passed_run_35397658347",
-    "security_supply_chain_status": "task_0031_research_acceptance_head_121dbfcd028124876cc5ae69a16aba4c25eec504_passed_run_35388077308",
-    "release_integrity_status": "task_0027_main_passed_run_35218151757",
-    "scorecard_status": "task_0027_main_passed_run_35218151835"
+    "continuity_validation": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634375",
+    "application_test_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634427",
+    "security_supply_chain_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634220",
+    "release_integrity_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634276",
+    "scorecard_status": "task_0032_main_head_1bfaeabd70325e7fea2c8acaaf5dea4860a095ae_passed_run_35398634293"
   },
   "blockers": [],
-  "exact_next_action": "Promote certified TASK-0032 ship baseline 29692360c4a425864fd638129e95ed6b13b46c7c to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0032 acceptance. Do not activate TASK-0033 asset processing or TASK-0034 editor/compiler/render execution early."
+  "exact_next_action": "Run TASK-0032 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then complete TASK-0032 and explicitly register/activate TASK-0033 in a separate guarded transition. Do not start TASK-0033 asset processing before that transition."
 }

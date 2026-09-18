@@ -2,6 +2,8 @@
 
 namespace App\Modules\DeliveryEngine\Application\Deliverability;
 
+use InvalidArgumentException;
+
 final class BuildRemediationRecommendations
 {
     /** @return list<RemediationRecommendation> */

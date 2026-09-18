@@ -1,13 +1,13 @@
 # AI-Native Parallel Plan — TASK-0032 Canonical Content/Template Model
 
-Status: **active — Wave 1 contract foundation**. TASK-0032 is the canonical PHASE-06 active task. Shipping Mode is limited to three current writers: Supervisor plus independent Content and Templates domain lanes. Binding/canonicalization and PostgreSQL certification remain dependency-gated and unleased.
+Status: **active — Wave 2 binding/canonicalization**. TASK-0032 Wave 1 schema, Content and Templates/Component contracts are integrated on `ship/week-1`. Shipping Mode now has two current writers: Supervisor plus the dependency-unlocked binding/canonicalization lane. PostgreSQL persistence certification remains dependency-gated and unleased.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0032`  
 Shipping integration branch: `ship/week-1`  
 Parent task: `TASK-0032`  
 Branch creation baseline: `3bdc9e797cdded1073600dc7945381baa53a9e0f`  
-Active writers: `3` (1 Supervisor + 2 independent workers)  
+Active writers: `2` (1 Supervisor + 1 dependency-unlocked worker)  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -30,9 +30,9 @@ Completion signal: `Work Done and Submitted`
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 5 | WS-0032-SUPERVISOR-CONTROL | TASK-0032 control + Supervisor-owned canonical persistence schema + merge coordination | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0032` | squash | merge latest ship/week-1 before resume |
-| 10 | WS-0032-CONTENT-MODEL | Canonical content identities, immutable versions and typed provider-neutral document tree | `occupied` | `worker-task0032-content` | `active` | `worker-1/TASK-0032` | squash | merge latest ship/week-1 before resume |
-| 20 | WS-0032-TEMPLATE-COMPONENTS | Template/component identities, immutable versions and explicit dependency references | `occupied` | `worker-task0032-templates` | `active` | `worker-2/TASK-0032` | squash | merge latest ship/week-1 before resume |
-| 30 | WS-0032-BINDINGS-CANONICALIZATION | Typed variables/localization, canonical hashes, dependency resolution and snapshot identity | **OPEN** | — | `staged` | `worker-3/TASK-0032` | squash | start only after merge groups 10 and 20 |
+| 10 | WS-0032-CONTENT-MODEL | Canonical content identities, immutable versions and typed provider-neutral document tree | `open` | — | `completed` | `worker-1/TASK-0032` | squash | merged as PR #255 |
+| 20 | WS-0032-TEMPLATE-COMPONENTS | Template/component identities, immutable versions and explicit dependency references | `open` | — | `completed` | `worker-2/TASK-0032` | squash | merged as PR #257 |
+| 30 | WS-0032-BINDINGS-CANONICALIZATION | Typed variables/localization, canonical hashes, dependency resolution and snapshot identity | `occupied` | `worker-task0032-bindings` | `active` | `worker-3/TASK-0032` | squash | merge latest ship/week-1 before implementation |
 | 40 | WS-0032-PERSISTENCE-CERTIFICATION | Database repositories plus PostgreSQL/adversarial isolation and immutability certification | **OPEN** | — | `staged` | `worker-4/TASK-0032` | squash | start only after merge groups 10, 20 and 30 |
 <!-- WORKSTREAM_TABLE_END -->
 
@@ -45,6 +45,13 @@ Completion signal: `Work Done and Submitted`
 5. **Wave 4 — integration certification:** `ship/week-1` must pass full Application Foundation CI and AI Continuity after every integration push. Dependency-chain failures freeze only affected lanes.
 6. **Final promotion:** promote a green `ship/week-1` baseline to protected `main`; require full protected-main Continuity, Application and Security Supply Chain evidence before TASK-0032 acceptance or TASK-0033 activation.
 
+## Wave 1 integrated evidence
+
+- PR #254 merged the Supervisor-owned canonical schema foundation as `da8a1844fc326a0396af14fa5070bc054c86acd3` after Shipping Fast Gate run `35391424318` passed.
+- PR #255 merged the canonical Content model as `bca543f960f45ef1a1adb62a151789539f15aa80` after exact-head Shipping Fast Gate run `35392209129` passed.
+- PR #257 merged the Templates/Component model as `471cf7155fb260b104fb938d2391298b5d16d02e` after exact-head Shipping Fast Gate run `35392426901` passed.
+- Merge groups 10 and 20 are dependency-complete and their worker leases are released.
+
 ## Exact next action
 
-Merge this registry-only TASK-0032 workstream activation into `ship/week-1` after a green Shipping Fast Gate. Then merge the latest integration baseline into `supervisor/TASK-0032`, `worker-1/TASK-0032` and `worker-2/TASK-0032`; implement only the Supervisor-owned shared schema, Content model and Templates/Component contracts in parallel. Keep binding/canonicalization and PostgreSQL certification unleased until their declared dependencies are integrated.
+Merge this Wave 2 control transition into `ship/week-1` after a green exact-head Shipping Fast Gate. Then fast-forward/reset `worker-3/TASK-0032` to that integration head and implement only typed variables/localization binding, deterministic canonicalization/hash semantics, exact version dependency resolution and render-input snapshot identity. Keep `WS-0032-PERSISTENCE-CERTIFICATION` unleased until Wave 2 is integrated and green.

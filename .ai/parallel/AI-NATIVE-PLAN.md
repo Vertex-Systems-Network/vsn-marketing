@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0033 Canonical Asset Library
 
-Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0033 schema, immutable originals, deterministic variant contracts, PostgreSQL/object-storage persistence and final adversarial/security certification are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
+Status: **final acceptance**. TASK-0033 canonical asset-library implementation is promoted to protected `main`; all worker lanes are completed and released, and Supervisor is the only active writer for final acceptance.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0033`  
@@ -55,6 +55,9 @@ Completion signal: `Work Done and Submitted`
 - PR #280 isolated each expected trigger violation in its own rollback-safe transaction and merged as `78f9ed14aa0d31de52dac6c452ea2021947903df` after exact-head Shipping Fast Gate `35408517036` passed.
 - Certified final ship head `78f9ed14aa0d31de52dac6c452ea2021947903df` passed AI Continuity Guard `35408582560`, Shipping Fast Gate `35408582576`, and Application Foundation CI `35408582540`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - Merge group 40 is dependency-complete; the certification worker lease is released.
+- PR #282 promoted the certified TASK-0033 implementation to protected `main` as `093a211ff0d155b93e1a50d695e05d1981f2ae2d` after exact source head `3033a2272d23870234e8cc385f8c8d1b94538548` passed AI Continuity Guard `35409033042`, Application Foundation CI `35409033028`, and Security Supply Chain CI `35409033022`.
+- Post-merge main head `093a211ff0d155b93e1a50d695e05d1981f2ae2d` passed AI Continuity Guard `35409193987`, Application Foundation CI `35409193986`, Security Supply Chain CI `35409193957`, Release Integrity `35409193974`, and OpenSSF Scorecard `35409193966`.
+- AC-1 through AC-8 are reconciled true while TASK-0033 intentionally remains `ready` until this final acceptance PR passes its own exact-head gates.
 
 ## Dependency-safe waves
 
@@ -66,4 +69,4 @@ Completion signal: `Work Done and Submitted`
 
 ## Exact next action
 
-Promote certified TASK-0033 ship baseline 78f9ed14aa0d31de52dac6c452ea2021947903df to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0033 acceptance. Do not activate TASK-0034 editor/compiler/render execution or provider publishing early.
+Run TASK-0033 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0034 in a separate guarded transition without pulling editor/compiler/render execution forward before that transition.

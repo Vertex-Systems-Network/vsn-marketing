@@ -10,7 +10,7 @@
       "id": "WS-0033-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Assets",
-      "capability": "Own TASK-0033 staged activation, shared asset persistence schema, dependency-safe merge sequencing and final acceptance without pulling TASK-0034 editor/compiler/render execution or provider publishing forward.",
+      "capability": "Own TASK-0033 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0034 registration/activation handoff without pulling editor/compiler/render execution or provider publishing forward.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0033",
       "worktree": "worktrees/task-0033-supervisor",
@@ -25,7 +25,11 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_19_000002_create_asset_foundation_tables.php"
+        "database/migrations/2026_09_19_000002_create_asset_foundation_tables.php",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0033.yaml"
       ]
     },
     {

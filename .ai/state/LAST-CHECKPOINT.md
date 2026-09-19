@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-19T00:17:00+00:00`
+- Timestamp: `2026-09-19T00:29:00+00:00`
 - Active task: `TASK-0033`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `798fdadec6bf3e216ffbf0b46095671f8cc0f79075f979829e8b54faedf4b2a9`
+- State fingerprint: `f4ffc32a4c2bce1903050f9164b4c58379eff969dbc5489015d1d335b51f9f09`
 
 ## Completed / observed this session
 
-TASK-0033 final ship certification is complete. PR #279 merged the final PostgreSQL/adversarial and Security certification lane into `ship/week-1` as `0bc43e9d76f1d694ddb299bbcd6926ae37b34a17` after exact-head Shipping Fast Gate `35407721380` passed. Its first full integration push exposed a certification-test transaction-isolation defect: expected PostgreSQL immutability-trigger failures left the test transaction aborted and a later repository read failed with SQLSTATE 25P02 even though product repository/schema behavior was correct. PR #280 isolated each expected trigger violation in its own rollback-safe transaction and merged as `78f9ed14aa0d31de52dac6c452ea2021947903df` after exact-head Shipping Fast Gate `35408517036` passed. Final ship head `78f9ed14aa0d31de52dac6c452ea2021947903df` then passed AI Continuity Guard `35408582560`, Shipping Fast Gate `35408582576`, and Application Foundation CI `35408582540`. All TASK-0033 worker lanes are completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
+TASK-0033 is promoted and post-merge certified on protected `main`. PR #282 promoted the canonical asset library, immutable originals, deterministic variant contracts, PostgreSQL persistence and bounded object-storage boundary as `093a211ff0d155b93e1a50d695e05d1981f2ae2d`. Its exact source head `3033a2272d23870234e8cc385f8c8d1b94538548` passed AI Continuity Guard `35409033042`, Application Foundation CI `35409033028` and Security Supply Chain CI `35409033022`. Post-merge main head `093a211ff0d155b93e1a50d695e05d1981f2ae2d` then passed AI Continuity Guard `35409193987`, Application Foundation CI `35409193986`, Security Supply Chain CI `35409193957`, Release Integrity `35409193974` and OpenSSF Scorecard `35409193966`. AC-1 through AC-8 are reconciled true, all workers remain released, and TASK-0033 intentionally remains ready until this Supervisor-only final acceptance PR itself passes exact-head gates.
 
 ## Tests
 
-PR #279 exact-head Shipping Fast Gate `35407721380` PASS. Initial certification ship head `0bc43e9d76f1d694ddb299bbcd6926ae37b34a17`: Continuity `35407795595` PASS, Fast Gate `35407795566` PASS, Application `35407795511` failed only the test-transaction SQLSTATE 25P02 case fixed by PR #280. PR #280 exact-head Shipping Fast Gate `35408517036` PASS. Final ship head `78f9ed14aa0d31de52dac6c452ea2021947903df`: AI Continuity Guard `35408582560` PASS; Shipping Fast Gate `35408582576` PASS; Application Foundation CI `35408582540` PASS including PostgreSQL/Redis integration, PHP 8.3, E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+Protected-main promotion source head `3033a2272d23870234e8cc385f8c8d1b94538548`: AI Continuity Guard `35409033042` PASS; Application Foundation CI `35409033028` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests/build; Security Supply Chain CI `35409033022` PASS including aggregate security gates. Post-merge main head `093a211ff0d155b93e1a50d695e05d1981f2ae2d`: AI Continuity Guard `35409193987` PASS; Application Foundation CI `35409193986` PASS; Security Supply Chain CI `35409193957` PASS; Release Integrity `35409193974` PASS; OpenSSF Scorecard `35409193966` PASS.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ PR #279 exact-head Shipping Fast Gate `35407721380` PASS. Initial certification 
 
 ## Exact next action
 
-Promote certified TASK-0033 ship baseline 78f9ed14aa0d31de52dac6c452ea2021947903df to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0033 acceptance. Do not activate TASK-0034 editor/compiler/render execution or provider publishing early.
+Run TASK-0033 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0034 in a separate guarded transition without pulling editor/compiler/render execution forward before that transition.

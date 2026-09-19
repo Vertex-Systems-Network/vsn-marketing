@@ -12,16 +12,6 @@
         ".ai/parallel/AGENT-LEASES.yaml",
         "database/migrations/2026_09_19_000002_create_asset_foundation_tables.php"
       ]
-    },
-    {
-      "agent": "worker-task0033-certification",
-      "workstream": "WS-0033-CERTIFICATION",
-      "branch": "worker-4/TASK-0033",
-      "status": "active",
-      "write_paths": [
-        "tests/Integration/Task0033AssetPipelineCertificationTest.php",
-        "tests/Feature/Security/Task0033AssetSecurityCertificationTest.php"
-      ]
     }
   ]
 }

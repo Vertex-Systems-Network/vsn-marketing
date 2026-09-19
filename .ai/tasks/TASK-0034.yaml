@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0034",
+  "phase": "PHASE-06",
+  "module": "Content",
+  "title": "Implement safe editor/render/compiler pipeline",
+  "status": "planned",
+  "objective": "Implement provider-neutral visual/code authoring pathways, deterministic sanitizer and renderer/compiler contracts, isolated preview execution and reproducible render/test artifacts that consume exact canonical content/template/component/asset inputs without allowing untrusted authored markup, renderer side effects or provider publishing concerns to become canonical state.",
+  "dependencies": [
+    "TASK-0033"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Visual editing, bounded safe-code/import pathways and future AI-assisted authoring converge on the same validated canonical content/template/component version model; published or execution-pinned source versions remain immutable and editor changes create explicit new versions rather than mutating historical inputs",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "User-authored HTML/CSS and equivalent imported markup are treated as untrusted input with explicit schema/target validation and sanitization that rejects executable script, event handlers, unsafe URLs, unsupported markup and post-sanitization mutation that could reintroduce unsafe behavior",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Render/compiler artifacts are deterministic and reproducible from exact content, template, component, asset, variable/localization and future brand references plus pinned renderer/compiler identity, version and configuration; artifact identity/hash and provenance are persisted without provider output becoming canonical source state",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Renderer/compiler execution is asynchronous or otherwise bounded and replay/idempotency safe, with deterministic failure semantics and resource limits; no arbitrary shell/code execution, ambient secrets, unrestricted filesystem access, path traversal, live remote include/fetch or uncontrolled network access is available to authored content",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Preview execution is isolated from privileged application/provider credentials and production publishing, uses exact pinned render inputs and bounded resources, and cannot execute arbitrary authored JavaScript or mutate canonical source state; preview/test artifacts are explicitly non-authoritative derivatives",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Render targets consume provider/channel requirements only as versioned/effective-dated capability evidence and produce deterministic validation, compilation or fallback errors for unsupported mappings; provider credentials, upload identifiers, MIME/social posting payloads and publication lifecycle remain outside canonical editor/render state",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Editor and renderer validation preserve accessibility semantics required by the canonical model, including meaningful text alternatives, semantic structure and target-appropriate contrast/reflow/text-as-image checks, with deterministic findings attached to exact source/render identities",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Backend/integration/browser/adversarial tests prove sanitizer bypass resistance, preview isolation, deterministic rendering and hashes, replay/idempotency, workspace-safe dependency/asset resolution, bounded renderer resources and representative responsive/client regression behavior; exact-head continuity, architecture, static-analysis, formatting and security/supply-chain gates are green before TASK-0035 activation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After guarded activation, map the frozen TASK-0031 editor/rendering research onto the canonical content/template/component and asset contracts; implement safe visual/code authoring boundaries, sanitizer policy, deterministic renderer/compiler provenance, isolated preview/test infrastructure and adversarial/browser coverage without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward."
+}

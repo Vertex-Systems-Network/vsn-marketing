@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "mode": "active",
-  "parent_task": "TASK-0033",
-  "branch_creation_baseline_sha": "539199cb6a698dfc4fe1bc84980ca5b77257822f",
+  "mode": "staged",
+  "parent_task": "TASK-0034",
+  "branch_creation_baseline_sha": "b57193c428138ba867608a46fdbd9dcf29dd50f6",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0033-SUPERVISOR-CONTROL",
+      "id": "WS-0034-SUPERVISOR-CONTROL",
       "role": "supervisor",
-      "module": "Assets",
-      "capability": "Own TASK-0033 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0034 registration/activation handoff without pulling editor/compiler/render execution or provider publishing forward.",
+      "module": "Content",
+      "capability": "Own TASK-0034 staged activation, shared editor/render contracts, dependency-safe merge sequencing and final acceptance without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward.",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0033",
-      "worktree": "worktrees/task-0033-supervisor",
-      "status": "in_progress",
+      "branch": "supervisor/TASK-0034",
+      "worktree": "worktrees/task-0034-supervisor",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "active",
+      "start_status": "assigned_waiting_for_task_activation",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 5,
@@ -24,104 +24,98 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        "database/migrations/2026_09_19_000002_create_asset_foundation_tables.php",
-        ".ai/state/CURRENT-STATE.yaml",
-        ".ai/state/LAST-CHECKPOINT.md",
-        ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/TASK-0033.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml"
       ]
     },
     {
-      "id": "WS-0033-ASSET-ORIGINALS",
+      "id": "WS-0034-AUTHORING-SANITIZER",
       "role": "worker",
-      "module": "Assets",
-      "capability": "Implement workspace-scoped canonical asset identity, immutable original metadata, hash/media validation, provenance/rights and ingestion domain contracts without persistence or transform execution.",
+      "module": "Content",
+      "capability": "Implement provider-neutral visual/safe-code authoring contracts and target-aware untrusted markup validation/sanitization over canonical content versions; no renderer execution or provider publishing.",
       "assigned_agent": null,
-      "branch": "worker-1/TASK-0033",
-      "worktree": "worktrees/task-0033-worker-1",
-      "status": "completed",
+      "branch": "worker-1/TASK-0034",
+      "worktree": "worktrees/task-0034-worker-1",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Assets/Domain/Asset/**",
-        "app/Modules/Assets/Domain/Ingestion/**",
-        "tests/Unit/Assets/Task0033AssetOriginalModelTest.php"
+        "app/Modules/Content/Domain/Authoring/**",
+        "app/Modules/Content/Application/Sanitization/**",
+        "tests/Unit/Content/Task0034AuthoringSanitizerTest.php"
       ]
     },
     {
-      "id": "WS-0033-VARIANT-CONTRACTS",
+      "id": "WS-0034-RENDER-COMPILER",
       "role": "worker",
-      "module": "Assets",
-      "capability": "Implement normalized deterministic variant/transformation specifications, lineage, processor identity and replay-safe transformation planning contracts without executing external processors.",
+      "module": "Content",
+      "capability": "Implement deterministic renderer/compiler contracts and artifact provenance pinned to exact canonical inputs plus renderer identity/version/configuration; no preview privilege or publication execution.",
       "assigned_agent": null,
-      "branch": "worker-2/TASK-0033",
-      "worktree": "worktrees/task-0033-worker-2",
-      "status": "completed",
+      "branch": "worker-2/TASK-0034",
+      "worktree": "worktrees/task-0034-worker-2",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0033-ASSET-ORIGINALS"
+        "WS-0034-AUTHORING-SANITIZER"
       ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Assets/Domain/Variant/**",
-        "app/Modules/Assets/Application/Transformation/**",
-        "tests/Unit/Assets/Task0033VariantContractTest.php"
+        "app/Modules/Content/Domain/Render/**",
+        "app/Modules/Content/Application/Rendering/**",
+        "tests/Unit/Content/Task0034RendererCompilerTest.php"
       ]
     },
     {
-      "id": "WS-0033-STORAGE-PERSISTENCE",
+      "id": "WS-0034-PREVIEW-REGRESSION",
       "role": "worker",
-      "module": "Assets",
-      "capability": "Implement PostgreSQL repositories and S3-compatible object-storage adapters for immutable originals and deterministic variants with workspace isolation, idempotency and bounded storage access.",
+      "module": "Content",
+      "capability": "Implement isolated bounded preview/test orchestration and deterministic validation/regression result contracts over pinned render inputs without ambient credentials or canonical-state mutation.",
       "assigned_agent": null,
-      "branch": "worker-3/TASK-0033",
-      "worktree": "worktrees/task-0033-worker-3",
-      "status": "completed",
+      "branch": "worker-3/TASK-0034",
+      "worktree": "worktrees/task-0034-worker-3",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0033-ASSET-ORIGINALS",
-        "WS-0033-VARIANT-CONTRACTS"
+        "WS-0034-AUTHORING-SANITIZER",
+        "WS-0034-RENDER-COMPILER"
       ],
       "merge_group": 30,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Assets/Infrastructure/Persistence/**",
-        "app/Modules/Assets/Infrastructure/Storage/**",
-        "tests/Integration/Task0033AssetStoragePersistenceTest.php"
+        "app/Modules/Content/Application/Preview/**",
+        "tests/Feature/Content/Task0034PreviewIsolationTest.php"
       ]
     },
     {
-      "id": "WS-0033-CERTIFICATION",
+      "id": "WS-0034-CERTIFICATION",
       "role": "worker",
-      "module": "Assets",
-      "capability": "Certify tenant isolation, immutable originals, content/metadata integrity, idempotent ingestion/transforms, variant lineage, failure/concurrency behavior and safe S3-compatible storage boundaries.",
+      "module": "Security",
+      "capability": "Certify sanitizer bypass resistance, deterministic renderer provenance, preview isolation, replay/idempotency, workspace-safe dependencies/assets, accessibility findings and bounded execution before TASK-0035.",
       "assigned_agent": null,
-      "branch": "worker-4/TASK-0033",
-      "worktree": "worktrees/task-0033-worker-4",
-      "status": "completed",
+      "branch": "worker-4/TASK-0034",
+      "worktree": "worktrees/task-0034-worker-4",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [
-        "WS-0033-ASSET-ORIGINALS",
-        "WS-0033-VARIANT-CONTRACTS",
-        "WS-0033-STORAGE-PERSISTENCE"
+        "WS-0034-AUTHORING-SANITIZER",
+        "WS-0034-RENDER-COMPILER",
+        "WS-0034-PREVIEW-REGRESSION"
       ],
       "merge_group": 40,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Integration/Task0033AssetPipelineCertificationTest.php",
-        "tests/Feature/Security/Task0033AssetSecurityCertificationTest.php"
+        "tests/Integration/Task0034RenderPipelineCertificationTest.php",
+        "tests/Feature/Security/Task0034RenderSecurityCertificationTest.php"
       ]
     }
   ]

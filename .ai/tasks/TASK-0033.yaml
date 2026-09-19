@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Assets",
   "title": "Implement canonical asset library and variant pipeline",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement the workspace-scoped canonical media/creative asset library with immutable originals, hash-verifiable metadata, rights/provenance, isolated object-storage references, deterministic derived variants and safe transformation lineage that later content/editor/render/provider workflows can reference without provider-specific media payloads becoming canonical state.",
   "dependencies": [
     "TASK-0032"
@@ -66,5 +66,5 @@
     "npm run test",
     "npm run build"
   ],
-  "exact_next_action": "Merge the TASK-0034 successor registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0033 and activates TASK-0034. Do not start editor/compiler/render execution, preview runtime, provider publishing or PHASE-07 capability before that transition."
+  "exact_next_action": "TASK-0033 is certified complete on protected main; TASK-0034 is the active PHASE-06 safe editor/render/compiler successor."
 }

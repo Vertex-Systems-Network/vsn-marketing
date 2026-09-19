@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0033_schema_ship_head_1b696c61834e9400e91d47c8336b1f6a0386a714_failed_run_35403814571_pending_supervisor_ledger_reconciliation",
-    "application_test_status": "task_0033_schema_ship_head_1b696c61834e9400e91d47c8336b1f6a0386a714_passed_run_35403814622",
+    "continuity_validation": "task_0033_final_ship_head_78f9ed14aa0d31de52dac6c452ea2021947903df_passed_run_35408582560",
+    "application_test_status": "task_0033_final_ship_head_78f9ed14aa0d31de52dac6c452ea2021947903df_passed_run_35408582540",
     "security_supply_chain_status": "task_0033_registration_main_head_d3528de5bf1d6b6ef4e590d6c8c19d9f8a63f1af_passed_run_35401823786",
     "release_integrity_status": "task_0033_registration_main_head_d3528de5bf1d6b6ef4e590d6c8c19d9f8a63f1af_passed_run_35401823790",
     "scorecard_status": "task_0033_registration_main_head_d3528de5bf1d6b6ef4e590d6c8c19d9f8a63f1af_passed_run_35401823806"
   },
   "blockers": [],
-  "exact_next_action": "Merge the TASK-0033 asset-schema continuity reconciliation into ship/week-1 after an exact-head Shipping Fast Gate passes; require fresh ship AI Continuity Guard and Application Foundation CI on the reconciled head, then synchronize and merge the WS-0033-ASSET-ORIGINALS worker only after its exact-head Shipping Fast Gate passes. Keep variant execution, storage persistence, certification, TASK-0034 editor/compiler/render runtime and provider publishing staged until their dependencies are explicitly unlocked."
+  "exact_next_action": "Promote certified TASK-0033 ship baseline 78f9ed14aa0d31de52dac6c452ea2021947903df to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0033 acceptance. Do not activate TASK-0034 editor/compiler/render execution or provider publishing early."
 }

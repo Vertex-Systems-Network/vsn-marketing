@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0033 Canonical Asset Library
 
-Status: **active — Wave 4 adversarial/security certification**. TASK-0033 schema, immutable originals, deterministic variant contracts and PostgreSQL/object-storage persistence are integrated and certified on `ship/week-1`. Two bounded writers remain active: Supervisor control plus the final certification lane.
+Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0033 schema, immutable originals, deterministic variant contracts, PostgreSQL/object-storage persistence and final adversarial/security certification are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0033`  
 Parent task: `TASK-0033`  
 Branch creation baseline: `539199cb6a698dfc4fe1bc84980ca5b77257822f`  
-Active leases: `2`  
+Active leases: `1`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -30,7 +30,7 @@ Completion signal: `Work Done and Submitted`
 | 10 | WS-0033-ASSET-ORIGINALS | Implement workspace-scoped canonical asset identity, immutable original metadata, hash/media validation, provenance/rights and ingestion domain contracts without persistence or transform execution. | `open` | — | `completed` | `worker-1/TASK-0033` | squash | merged as PR #271 |
 | 20 | WS-0033-VARIANT-CONTRACTS | Implement normalized deterministic variant/transformation specifications, lineage, processor identity and replay-safe transformation planning contracts without executing external processors. | `open` | — | `completed` | `worker-2/TASK-0033` | squash | merged as PR #275 |
 | 30 | WS-0033-STORAGE-PERSISTENCE | Implement PostgreSQL repositories and S3-compatible object-storage adapters for immutable originals and deterministic variants with workspace isolation, idempotency and bounded storage access. | `open` | — | `completed` | `worker-3/TASK-0033` | squash | merged as PR #277 |
-| 40 | WS-0033-CERTIFICATION | Certify tenant isolation, immutable originals, content/metadata integrity, idempotent ingestion/transforms, variant lineage, failure/concurrency behavior and safe S3-compatible storage boundaries. | `occupied` | `worker-task0033-certification` | `active` | `worker-4/TASK-0033` | squash | merge latest ship/week-1 before implementation |
+| 40 | WS-0033-CERTIFICATION | Certify tenant isolation, immutable originals, content/metadata integrity, idempotent ingestion/transforms, variant lineage, failure/concurrency behavior and safe S3-compatible storage boundaries. | `open` | — | `completed` | `worker-4/TASK-0033` | squash | merged as PR #279; transaction-isolation fix PR #280 |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Integrated evidence
@@ -50,6 +50,11 @@ Completion signal: `Work Done and Submitted`
 - Merge-triggered ship certification on `b021af967fe8175ed41db842e9b4009cdd7bbe0e` passed AI Continuity Guard `35407258325`, Shipping Fast Gate `35407258283`, and Application Foundation CI `35407258219`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - PostgreSQL integration proved immutable original/variant guards, workspace isolation, lineage, replay/idempotency and deterministic variant reuse. The storage boundary proved workspace-prefixed immutable object writes, hash verification and fail-closed unsafe/foreign key handling.
 - Merge group 30 is dependency-complete and the storage worker lease is released.
+- PR #279 merged final PostgreSQL/adversarial and Security certification as `0bc43e9d76f1d694ddb299bbcd6926ae37b34a17` after exact-head Shipping Fast Gate `35407721380` passed.
+- The first final-certification integration run exposed a test-only PostgreSQL transaction isolation defect: expected immutable-trigger failures left the certification test transaction aborted, causing SQLSTATE 25P02 on a later repository read although product schema/repository behavior was correct.
+- PR #280 isolated each expected trigger violation in its own rollback-safe transaction and merged as `78f9ed14aa0d31de52dac6c452ea2021947903df` after exact-head Shipping Fast Gate `35408517036` passed.
+- Certified final ship head `78f9ed14aa0d31de52dac6c452ea2021947903df` passed AI Continuity Guard `35408582560`, Shipping Fast Gate `35408582576`, and Application Foundation CI `35408582540`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- Merge group 40 is dependency-complete; the certification worker lease is released.
 
 ## Dependency-safe waves
 
@@ -61,4 +66,4 @@ Completion signal: `Work Done and Submitted`
 
 ## Exact next action
 
-Merge this Wave 4 activation after a green exact-head Shipping Fast Gate. Then fast-forward `worker-4/TASK-0033` to the certified integration head and add only the registered PostgreSQL/adversarial and Security certification tests. Prove tenant isolation, immutable originals/variants, content/hash/metadata integrity, replay/idempotency, exact variant lineage, storage-boundary safety, malformed/foreign input rejection and failure behavior without adding arbitrary transform execution, TASK-0034 editor/compiler/render runtime, provider publishing or later-phase behavior.
+Promote certified TASK-0033 ship baseline 78f9ed14aa0d31de52dac6c452ea2021947903df to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0033 acceptance. Do not activate TASK-0034 editor/compiler/render execution or provider publishing early.

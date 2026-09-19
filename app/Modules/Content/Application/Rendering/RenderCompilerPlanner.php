@@ -58,6 +58,14 @@ final readonly class RenderCompilerPlanner
     private static function assertSafeConfiguration(mixed $value, string $path): void
     {
         if (is_array($value)) {
+            if (array_is_list($value)) {
+                foreach ($value as $index => $nested) {
+                    self::assertSafeConfiguration($nested, $path.'['.$index.']');
+                }
+
+                return;
+            }
+
             foreach ($value as $key => $nested) {
                 if (is_string($key) === false) {
                     throw new InvalidArgumentException("Renderer configuration keys must be strings: {$path}");

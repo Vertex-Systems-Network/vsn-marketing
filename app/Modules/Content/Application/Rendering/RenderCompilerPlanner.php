@@ -98,7 +98,7 @@ final readonly class RenderCompilerPlanner
                 $pathCandidate = $decoded;
             }
 
-            $pathCandidate = str_replace('\\\\', '/', $pathCandidate);
+            $pathCandidate = str_replace('\\', '/', $pathCandidate);
 
             if (
                 preg_match('/^(?:https?|ftp|file|data):/i', $normalized) === 1

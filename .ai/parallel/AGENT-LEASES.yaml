@@ -1,4 +1,27 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0034-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0034",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
+      ]
+    },
+    {
+      "agent": "worker-task0034-authoring",
+      "workstream": "WS-0034-AUTHORING-SANITIZER",
+      "branch": "worker-1/TASK-0034",
+      "status": "active",
+      "write_paths": [
+        "app/Modules/Content/Domain/Authoring/**",
+        "app/Modules/Content/Application/Sanitization/**",
+        "tests/Unit/Content/Task0034AuthoringSanitizerTest.php"
+      ]
+    }
+  ]
 }

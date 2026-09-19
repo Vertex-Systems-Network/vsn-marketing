@@ -280,9 +280,12 @@ it('proves database immutability and detects object-store tampering without dele
         createdAt: $at,
     );
 
-    expect(fn () => DB::table('asset_originals')->where('id', $original->id)->update(['byte_size' => 999]))
-        ->toThrow(QueryException::class)
-        ->and(fn () => DB::table('asset_variants')->where('id', $variant->id)->delete())
+    expect(fn () => DB::connection()->transaction(
+        fn () => DB::table('asset_originals')->where('id', $original->id)->update(['byte_size' => 999]),
+    ))->toThrow(QueryException::class)
+        ->and(fn () => DB::connection()->transaction(
+            fn () => DB::table('asset_variants')->where('id', $variant->id)->delete(),
+        ))
         ->toThrow(QueryException::class);
 
     Storage::fake('local');

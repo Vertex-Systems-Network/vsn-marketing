@@ -86,12 +86,26 @@ final readonly class RenderCompilerPlanner
 
         if (is_string($value)) {
             $normalized = strtolower(trim($value));
+            $pathCandidate = $normalized;
+
+            for ($attempt = 0; $attempt < 3; $attempt++) {
+                $decoded = rawurldecode($pathCandidate);
+
+                if ($decoded === $pathCandidate) {
+                    break;
+                }
+
+                $pathCandidate = $decoded;
+            }
+
+            $pathCandidate = str_replace('\\\\', '/', $pathCandidate);
 
             if (
                 preg_match('/^(?:https?|ftp|file|data):/i', $normalized) === 1
                 || str_starts_with($normalized, '//')
                 || str_starts_with($normalized, '/')
-                || preg_match('/^[a-z]:[\\\\\/]/i', $normalized) === 1
+                || preg_match('/^[a-z]:[\\\\\\\\\\/]/i', $normalized) === 1
+                || preg_match('~(?:^|/)\\.\\.(?:/|$)~', $pathCandidate) === 1
             ) {
                 throw new InvalidArgumentException("Renderer configuration cannot reference external or filesystem resources: {$path}");
             }

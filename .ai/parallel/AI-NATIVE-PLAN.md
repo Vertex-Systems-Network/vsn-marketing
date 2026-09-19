@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0034 Safe Editor/Render/Compiler Pipeline
 
-Status: **active — Wave 3 isolated preview/regression contracts**. TASK-0034 is the active PHASE-06 task. Waves 1 and 2 are integrated and certified on `ship/week-1`; Supervisor plus the dependency-unlocked preview/regression lane are active while final certification remains staged.
+Status: **active — Wave 4 final adversarial/security certification**. TASK-0034 is the active PHASE-06 task. Waves 1 through 3 are integrated and certified on `ship/week-1`; Supervisor plus the final certification lane are active.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0034`  
@@ -30,8 +30,8 @@ Completion signal: `Work Done and Submitted`
 | 5 | WS-0034-SUPERVISOR-CONTROL | TASK-0034 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0034` | squash | merge latest ship/week-1 before resume |
 | 10 | WS-0034-AUTHORING-SANITIZER | Canonical visual/safe-code authoring boundaries plus target-aware sanitization | `open` | — | `completed` | `worker-1/TASK-0034` | squash | merged as PR #287 |
 | 20 | WS-0034-RENDER-COMPILER | Deterministic pinned renderer/compiler contracts and artifact provenance | `open` | — | `completed` | `worker-2/TASK-0034` | squash | merged as PR #289 |
-| 30 | WS-0034-PREVIEW-REGRESSION | Isolated bounded preview/test orchestration and regression-result contracts | `occupied` | `worker-task0034-preview` | `active` | `worker-3/TASK-0034` | squash | merge latest ship/week-1 before resume |
-| 40 | WS-0034-CERTIFICATION | Adversarial/browser certification for sanitizer, render determinism, isolation and accessibility | **OPEN** | — | `staged` | `worker-4/TASK-0034` | squash | merge latest main before resume |
+| 30 | WS-0034-PREVIEW-REGRESSION | Isolated bounded preview/test orchestration and regression-result contracts | `open` | — | `completed` | `worker-3/TASK-0034` | squash | merged as PR #291 |
+| 40 | WS-0034-CERTIFICATION | Adversarial/browser certification for sanitizer, render determinism, isolation and accessibility | `occupied` | `worker-task0034-certification` | `active` | `worker-4/TASK-0034` | squash | merge latest ship/week-1 before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Dependency-safe waves
@@ -52,7 +52,11 @@ Completion signal: `Work Done and Submitted`
 - PR #289 merged deterministic renderer/compiler contracts and artifact provenance as `df214a96a62990df5ee54cb3631cc9e1af9b5d0b` after exact-head Shipping Fast Gate `35432097812` passed.
 - Ship head `df214a96a62990df5ee54cb3631cc9e1af9b5d0b` passed AI Continuity Guard `35436326456`, Shipping Fast Gate `35436326437`, and Application Foundation CI `35436326451`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0034-RENDER-COMPILER is completed and released.
+- PR #290 activated TASK-0034 Wave 3 preview/regression work and merged as `93226d56ee4f1cc98bc272c8ba5ca0fb5af3ee87`.
+- PR #291 merged isolated deterministic preview/regression contracts as `5ddff4271f63edc1ccd1aacdf6debe2fc4b1a35b` after exact-head Shipping Fast Gate `35436808787` passed.
+- Ship head `5ddff4271f63edc1ccd1aacdf6debe2fc4b1a35b` passed AI Continuity Guard `35436893625`, Shipping Fast Gate `35436893600`, and Application Foundation CI `35436893614`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- WS-0034-PREVIEW-REGRESSION is completed and released.
 
 ## Exact next action
 
-Merge this Wave 3 control activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-3/TASK-0034` to the resulting certified integration head and implement only isolated bounded preview/test orchestration plus deterministic validation/regression result contracts over exact pinned render inputs. Keep preview non-authoritative and credential-free; do not add ambient secrets, network/filesystem/shell access, canonical-state mutation, provider publishing, TASK-0035 brand/provider-template synchronization or PHASE-07 behavior.
+Merge this Wave 4 control activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-4/TASK-0034` to the resulting certified integration head and add only adversarial/integration certification tests that prove sanitizer bypass resistance, deterministic renderer and preview identities, isolation/resource bounds, workspace-safe pinned inputs, accessibility findings, replay/idempotency and absence of provider publishing or privileged execution. Do not add product behavior merely to satisfy certification, and do not activate TASK-0035 before final protected-main acceptance.

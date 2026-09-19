@@ -338,6 +338,16 @@
       "dependencies": [
         "TASK-0032"
       ]
+    },
+    {
+      "id": "TASK-0034",
+      "phase": "PHASE-06",
+      "title": "Implement safe editor/render/compiler pipeline",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0033"
+      ]
     }
   ]
 }

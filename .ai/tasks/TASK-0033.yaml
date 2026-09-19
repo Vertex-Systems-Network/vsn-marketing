@@ -66,5 +66,5 @@
     "npm run test",
     "npm run build"
   ],
-  "exact_next_action": "Run TASK-0033 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0034 in a separate guarded transition without pulling editor/compiler/render execution forward before that transition."
+  "exact_next_action": "Merge the TASK-0034 successor registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0033 and activates TASK-0034. Do not start editor/compiler/render execution, preview runtime, provider publishing or PHASE-07 capability before that transition."
 }

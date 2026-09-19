@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0034 Safe Editor/Render/Compiler Pipeline
 
-Status: **staged — task transition only**. TASK-0034 is the active PHASE-06 task after guarded transition, but product work remains unleased until a separate bounded activation passes its own gates.
+Status: **active — Wave 1 authoring/sanitizer**. TASK-0034 is the active PHASE-06 task. Two bounded writers are active: Supervisor control plus the canonical authoring/sanitizer lane; renderer/compiler, preview/regression and certification lanes remain staged.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0034`  
 Parent task: `TASK-0034`  
-Branch creation baseline: `b57193c428138ba867608a46fdbd9dcf29dd50f6`  
-Active leases: `0`  
+Branch creation baseline: `59c79c28ea3a26a8960e393666f6c799050065fd`  
+Active leases: `2`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -27,8 +27,8 @@ Completion signal: `Work Done and Submitted`
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 5 | WS-0034-SUPERVISOR-CONTROL | TASK-0034 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `assigned_waiting_for_task_activation` | `supervisor/TASK-0034` | squash | merge latest main before resume |
-| 10 | WS-0034-AUTHORING-SANITIZER | Canonical visual/safe-code authoring boundaries plus target-aware sanitization | **OPEN** | — | `staged` | `worker-1/TASK-0034` | squash | merge latest main before resume |
+| 5 | WS-0034-SUPERVISOR-CONTROL | TASK-0034 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0034` | squash | merge latest ship/week-1 before resume |
+| 10 | WS-0034-AUTHORING-SANITIZER | Canonical visual/safe-code authoring boundaries plus target-aware sanitization | `occupied` | `worker-task0034-authoring` | `active` | `worker-1/TASK-0034` | squash | merge latest ship/week-1 before resume |
 | 20 | WS-0034-RENDER-COMPILER | Deterministic pinned renderer/compiler contracts and artifact provenance | **OPEN** | — | `staged` | `worker-2/TASK-0034` | squash | merge latest main before resume |
 | 30 | WS-0034-PREVIEW-REGRESSION | Isolated bounded preview/test orchestration and regression-result contracts | **OPEN** | — | `staged` | `worker-3/TASK-0034` | squash | merge latest main before resume |
 | 40 | WS-0034-CERTIFICATION | Adversarial/browser certification for sanitizer, render determinism, isolation and accessibility | **OPEN** | — | `staged` | `worker-4/TASK-0034` | squash | merge latest main before resume |
@@ -44,4 +44,4 @@ Completion signal: `Work Done and Submitted`
 
 ## Exact next action
 
-After guarded activation, map the frozen TASK-0031 editor/rendering research onto the canonical content/template/component and asset contracts; implement safe visual/code authoring boundaries, sanitizer policy, deterministic renderer/compiler provenance, isolated preview/test infrastructure and adversarial/browser coverage without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward.
+Merge this bounded Wave 1 activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `supervisor/TASK-0034` and `worker-1/TASK-0034` to the certified integration head and implement only the canonical authoring/safe-code boundary plus target-aware sanitization contracts and unit tests. Keep renderer/compiler execution, preview runtime, TASK-0035 brand/provider-template synchronization and PHASE-07 publishing out of scope until dependencies are explicitly unlocked.

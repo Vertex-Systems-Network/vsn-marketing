@@ -199,6 +199,29 @@ it('rejects privileged provider-specific remote and filesystem renderer configur
     }
 });
 
+it('rejects relative plain windows and encoded renderer path traversal', function () {
+    $planner = task0034RendererPlanner();
+    $input = task0034RenderInput();
+    $renderer = new RendererIdentity('vsn-email-compiler', '1.2.3');
+    $policy = new RendererExecutionPolicy;
+
+    foreach ([
+        ['template' => '../../etc/passwd'],
+        ['template' => 'partials/../../secrets.env'],
+        ['template' => '..\\..\\Windows\\System32\\config'],
+        ['template' => '%2e%2e/%2e%2e/secrets.env'],
+        ['template' => '%252e%252e%252fsecret'],
+    ] as $configuration) {
+        expect(fn () => $planner->plan(
+            input: $input,
+            target: RenderTarget::EmailHtml,
+            renderer: $renderer,
+            executionPolicy: $policy,
+            configuration: $configuration,
+        ))->toThrow(InvalidArgumentException::class, 'external or filesystem resources');
+    }
+});
+
 it('keeps render plans derivative and free of provider payloads credentials and raw rendered output', function () {
     $plan = task0034RendererPlanner()->plan(
         input: task0034RenderInput(),

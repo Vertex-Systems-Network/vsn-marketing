@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Content",
   "title": "Implement safe editor/render/compiler pipeline",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement provider-neutral visual/code authoring pathways, deterministic sanitizer and renderer/compiler contracts, isolated preview execution and reproducible render/test artifacts that consume exact canonical content/template/component/asset inputs without allowing untrusted authored markup, renderer side effects or provider publishing concerns to become canonical state.",
   "dependencies": [
     "TASK-0033"

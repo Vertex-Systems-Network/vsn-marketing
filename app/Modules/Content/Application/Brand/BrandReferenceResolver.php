@@ -36,6 +36,13 @@ final class BrandReferenceResolver
         }
 
         $references = array_values($references);
+
+        foreach ($references as $reference) {
+            if ($reference instanceof BrandReference === false) {
+                throw new InvalidArgumentException('Brand references must contain BrandReference values.');
+            }
+        }
+
         usort(
             $references,
             static fn (BrandReference $left, BrandReference $right): int => $left->key() <=> $right->key(),
@@ -45,9 +52,6 @@ final class BrandReferenceResolver
         $resolved = [];
 
         foreach ($references as $reference) {
-            if ($reference instanceof BrandReference === false) {
-                throw new InvalidArgumentException('Brand references must contain BrandReference values.');
-            }
 
             if ($reference->workspaceId !== $workspaceId) {
                 throw new InvalidArgumentException('Brand reference resolution cannot cross workspaces.');

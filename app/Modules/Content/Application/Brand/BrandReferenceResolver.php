@@ -9,8 +9,8 @@ use InvalidArgumentException;
 final class BrandReferenceResolver
 {
     /**
-     * @param list<BrandReference> $references
-     * @param list<BrandVersion> $availableVersions
+     * @param  list<BrandReference>  $references
+     * @param  list<BrandVersion>  $availableVersions
      */
     public function resolve(
         string $workspaceId,

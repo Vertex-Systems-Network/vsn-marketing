@@ -354,7 +354,7 @@
       "phase": "PHASE-06",
       "title": "Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0034"
       ]
@@ -364,7 +364,7 @@
       "phase": "PHASE-06",
       "title": "Certify PHASE-06",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0035"
       ]

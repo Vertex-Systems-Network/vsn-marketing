@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Content",
   "title": "Certify PHASE-06",
-  "status": "planned",
+  "status": "ready",
   "objective": "Close PHASE-06 only after canonical content/template/component versioning, asset originals/variants, safe rendering and preview, brand/reusable-component governance, and provider-template synchronization are jointly proven reproducible, workspace-isolated, accessible, security-bounded and provider-neutral on the exact acceptance head without pulling PHASE-07 campaign publishing forward.",
   "dependencies": [
     "TASK-0035"
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After a separate guarded transition activates TASK-0036, run only phase-wide certification work that proves PHASE-06 reproducibility, workspace isolation, rendering/preview security, asset provenance/variant safety, accessibility plus visual/client regression, and provider-template synchronization boundaries; do not implement PHASE-07 campaign approval, scheduling, publishing or execution."
+  "exact_next_action": "After this TASK-0035 to TASK-0036 transition merges and its post-merge protected-main gates pass, audit and realign `ship/week-1` to the trusted TASK-0036 baseline, then activate only the staged PHASE-06 certification worker with test-only leases. Do not add product behavior or activate PHASE-07 campaign approval, scheduling, publishing or execution."
 }

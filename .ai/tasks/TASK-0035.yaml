@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Content",
   "title": "Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement workspace-scoped, versioned brand knowledge and brand-kit references, reusable approved content/component contracts, bounded approval/readiness semantics, and provider-template synchronization/reconciliation that keeps VSN canonical content authoritative while treating provider templates and channel mappings as versioned derivatives or capability evidence without pulling PHASE-07 campaign publishing forward.",
   "dependencies": [
     "TASK-0034"

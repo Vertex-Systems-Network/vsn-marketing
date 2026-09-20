@@ -37,7 +37,7 @@
     },
     {
       "id": "AC-6",
-      "text": "Accessibility plus representative responsive visual/client regression coverage validates semantic structure, meaningful text alternatives, contrast/reflow and text-as-image concerns against exact source/render identities with deterministic findings and bounded target-specific fallbacks",
+      "text": "Accessibility plus representative responsive visual and client regression coverage validates semantic structure, meaningful text alternatives, contrast/reflow and text-as-image concerns against exact source/render identities with deterministic findings and bounded target-specific fallbacks",
       "done": false
     },
     {
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After a separate guarded transition activates TASK-0036, run only phase-wide certification work that proves PHASE-06 reproducibility, workspace isolation, rendering/preview security, asset provenance/variant safety, accessibility/visual-client regression and provider-template synchronization boundaries; do not implement PHASE-07 campaign approval, scheduling, publishing or execution."
+  "exact_next_action": "After a separate guarded transition activates TASK-0036, run only phase-wide certification work that proves PHASE-06 reproducibility, workspace isolation, rendering/preview security, asset provenance/variant safety, accessibility plus visual/client regression, and provider-template synchronization boundaries; do not implement PHASE-07 campaign approval, scheduling, publishing or execution."
 }

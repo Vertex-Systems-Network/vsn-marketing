@@ -10,7 +10,7 @@
       "id": "WS-0035-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Content",
-      "capability": "Own TASK-0035 staged activation, shared brand/reusable-component/provider-template synchronization boundaries, dependency-safe merge sequencing and final acceptance without pulling provider publishing or PHASE-07 campaign execution forward.",
+      "capability": "Own TASK-0035 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0036 registration/activation handoff without pulling PHASE-07 campaign publishing, scheduling or execution forward.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0035",
       "worktree": "worktrees/task-0035-supervisor",
@@ -24,7 +24,11 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0035.yaml"
       ]
     },
     {

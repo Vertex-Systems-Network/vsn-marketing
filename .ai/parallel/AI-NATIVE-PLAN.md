@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0035 Brand Knowledge/Kit and Provider Template Synchronization
 
-Status: **staged — task transition only**. TASK-0035 is the active PHASE-06 task after guarded transition, but product work remains unleased until a separate bounded activation passes its own gates.
+Status: **active — Wave 1 versioned brand knowledge/kit**. TASK-0035 is the active PHASE-06 task. Two bounded writers are active: Supervisor control plus the Brand Kit lane; reusable approval, provider-template synchronization and certification remain staged.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0035`  
 Parent task: `TASK-0035`  
-Branch creation baseline: `0f282d732a79c5838f2424fb3b2641245060b8ad`  
-Active leases: `0`  
+Branch creation baseline: `760be505c8ae1893f18209b580b859f87d7ac7e0`  
+Active leases: `2`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -28,8 +28,8 @@ Completion signal: `Work Done and Submitted`
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 5 | WS-0035-SUPERVISOR-CONTROL | TASK-0035 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `assigned_waiting_for_task_activation` | `supervisor/TASK-0035` | squash | merge latest main before resume |
-| 10 | WS-0035-BRAND-KIT | Versioned workspace brand knowledge/kit and deterministic token/reference resolution | **OPEN** | — | `staged` | `worker-1/TASK-0035` | squash | merge latest main before resume |
+| 5 | WS-0035-SUPERVISOR-CONTROL | TASK-0035 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0035` | squash | merge latest ship/week-1 before resume |
+| 10 | WS-0035-BRAND-KIT | Versioned workspace brand knowledge/kit and deterministic token/reference resolution | `occupied` | `worker-task0035-brand` | `active` | `worker-1/TASK-0035` | squash | merge latest ship/week-1 before resume |
 | 20 | WS-0035-REUSABLE-APPROVAL | Reusable component scope/dependency impact plus PHASE-06 approval/readiness governance | **OPEN** | — | `staged` | `worker-2/TASK-0035` | squash | merge latest main before resume |
 | 30 | WS-0035-PROVIDER-TEMPLATE-SYNC | Provider-template mappings, derivative identity, drift/reconciliation and replay-safe sync | **OPEN** | — | `staged` | `worker-3/TASK-0035` | squash | merge latest main before resume |
 | 40 | WS-0035-CERTIFICATION | Adversarial/integration certification for brand/component/provider-template synchronization | **OPEN** | — | `staged` | `worker-4/TASK-0035` | squash | merge latest main before resume |
@@ -48,7 +48,9 @@ Completion signal: `Work Done and Submitted`
 - TASK-0034 final acceptance PR #300 merged on protected `main` as `d967a3ccd3f6acf27b5c2b959bfd2f93629398f3`; that head passed AI Continuity Guard `35507577279`, Application Foundation CI `35507577233`, Security Supply Chain CI `35507577248`, Release Integrity `35507577264`, and OpenSSF Scorecard `35507577241`.
 - TASK-0035 registration PR #301 merged on protected `main` as `0f282d732a79c5838f2424fb3b2641245060b8ad`; that head passed AI Continuity Guard `35507944337`, Application Foundation CI `35507944240`, Security Supply Chain CI `35507944265`, Release Integrity `35507944211`, and OpenSSF Scorecard `35507944309`.
 - Supervisor plus four worker branches were pre-created from the trusted TASK-0035 registration main head. No TASK-0035 product lease is active.
+- TASK-0034 → TASK-0035 transition PR #302 merged on protected `main` as `760be505c8ae1893f18209b580b859f87d7ac7e0`; post-merge AI Continuity Guard `35509003689`, Application Foundation CI `35509003709`, Security Supply Chain CI `35509003690`, Release Integrity `35509003659`, and OpenSSF Scorecard `35509003650` all passed.
+- `ship/week-1` was tree-audited against protected main after TASK-0034 promotion; product trees were identical and only superseded AI control/state files differed, so the shipping baseline was safely realigned to `760be505c8ae1893f18209b580b859f87d7ac7e0` before Wave 1 activation.
 
 ## Exact next action
 
-After guarded activation, map the frozen TASK-0031 brand/reusable-component/provider-template research onto the canonical content, asset and renderer contracts; implement versioned brand knowledge/kit references, reusable approved components and provider-template synchronization/reconciliation while keeping VSN canonical versions authoritative and leaving PHASE-07 campaign publishing, scheduling and execution out of scope.
+Merge this bounded Wave 1 activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `supervisor/TASK-0035` and `worker-1/TASK-0035` to the resulting certified integration head and implement only workspace-scoped versioned brand knowledge/kit contracts, immutable style tokens/defaults/provenance and deterministic exact brand reference resolution. Keep reusable approval governance, provider-template synchronization, provider publishing and PHASE-07 campaign execution staged until their dependencies are explicitly unlocked.

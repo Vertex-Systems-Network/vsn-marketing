@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **final PHASE-06 ship certification — Supervisor-only promotion preparation**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated and certified on `ship/week-1`. The certification worker is completed and released; Supervisor is the only active writer before protected-main promotion and final PHASE-06 acceptance.
+Status: **security remediation before final PHASE-06 promotion**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated on `ship/week-1`, but exact-head Security Supply Chain CI exposed a moderate Vitest/@vitest/mocker path-traversal advisory that the prior high-only npm threshold did not block. Supervisor remains the sole active writer and temporarily owns the bounded dependency-security remediation because dependency manifests and GitHub workflows are Supervisor-owned shared paths.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
@@ -40,8 +40,10 @@ Completion signal: `Work Done and Submitted`
 - PR #317 activated the focused TASK-0036 certification lane and merged into `ship/week-1` as `fc6f34bdf19ae64cda8ae0451486fa4f7a1aa8f3` after exact-head Shipping Fast Gate `35541696540` passed.
 - PR #318 merged the phase-wide integration/security certification tests as `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` after exact-head Shipping Fast Gate `35542440490` passed.
 - Certified final ship head `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` passed AI Continuity Guard `35542490944`, Shipping Fast Gate `35542490931`, and Application Foundation CI `35542490958`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
-- WS-0036-PHASE-CERTIFICATION is completed and released; only Supervisor remains active for protected-main promotion and final PHASE-06 acceptance.
+- WS-0036-PHASE-CERTIFICATION is completed and released.
+- Promotion head `1b6273711f0c51449b1fbe4aa39923e10571ae84` passed Security Supply Chain CI `35542862212`, but its dependency-audit log reported two moderate npm vulnerabilities. The material advisory is `GHSA-82fw-gwwq-j7x9` affecting Vitest/@vitest/mocker 3.x with path traversal / arbitrary file read; the job stayed green only because the repository used `npm audit --audit-level=high`.
+- The Supervisor-owned remediation upgrades the affected Vitest dependency using the already reviewable Dependabot lockfile delta and raises both Shipping Fast Gate and Security Supply Chain CI npm audit thresholds to `moderate`; dependency manifests and `.github/**` stay under their reserved Supervisor ownership, and no product behavior or PHASE-07 capability is authorized.
 
 ## Exact next action
 
-Promote certified TASK-0036 PHASE-06 ship baseline `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` to protected `main` after this Supervisor reconciliation passes exact-head Shipping Fast Gate. Require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.
+Merge this security-remediation activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then perform the reserved-path remediation under `WS-0036-SUPERVISOR-CONTROL`: upgrade Vitest to a patched 5.x release using the reviewed deterministic lockfile delta, change both npm audit gates to `--audit-level=moderate`, update the security operations contract, and require frontend/application/security gates to pass with zero remaining npm vulnerabilities before protected-main promotion resumes.

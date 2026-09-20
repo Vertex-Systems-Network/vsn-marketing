@@ -10,7 +10,7 @@
       "id": "WS-0036-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Content",
-      "capability": "Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward.",
+      "capability": "Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward. Also own the bounded Vitest dependency security remediation and npm audit-threshold hardening because dependency manifests and .github workflows are Supervisor-owned shared paths.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0036",
       "worktree": "worktrees/task-0036-supervisor",
@@ -24,7 +24,12 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/security-ci.yml",
+        ".github/workflows/shipping-fast-gate.yml",
+        "docs/operations/security-supply-chain.md"
       ]
     },
     {

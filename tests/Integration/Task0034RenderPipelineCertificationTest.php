@@ -69,7 +69,7 @@ function task0034CertificationWorkspace(string $suffix): string
     return $workspaceId;
 }
 
-/** @param list<DependencyReference> $dependencies */
+/** @param  list<DependencyReference>  $dependencies */
 function task0034CertificationDefinition(
     string $id,
     DefinitionKind $kind,
@@ -93,8 +93,8 @@ function task0034CertificationDefinition(
 }
 
 /**
- * @param list<string> $dependencyVersionIds
- * @param list<string> $assetReferences
+ * @param  list<string>  $dependencyVersionIds
+ * @param  list<string>  $assetReferences
  */
 function task0034CertificationSnapshot(
     string $workspaceId,
@@ -118,7 +118,7 @@ function task0034CertificationSnapshot(
     );
 }
 
-/** @param array<string, mixed> $configuration */
+/** @param  array<string, mixed>  $configuration */
 function task0034CertificationRenderPlan(
     RenderInputSnapshot $snapshot,
     array $configuration = ['minify' => true, 'doctype' => 'html5'],

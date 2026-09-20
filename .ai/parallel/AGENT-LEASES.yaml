@@ -9,12 +9,7 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        "package.json",
-        "package-lock.json",
-        ".github/workflows/security-ci.yml",
-        ".github/workflows/shipping-fast-gate.yml",
-        "docs/operations/security-supply-chain.md"
+        ".ai/parallel/AGENT-LEASES.yaml"
       ]
     }
   ]

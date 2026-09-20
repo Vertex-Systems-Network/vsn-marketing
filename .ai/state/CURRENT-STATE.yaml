@@ -10,20 +10,20 @@
     "current_phase": "PHASE-06",
     "active_task": "TASK-0035",
     "last_completed_task": "TASK-0034",
-    "next_task": null
+    "next_task": "TASK-0036"
   },
   "progress": {
-    "roadmap_percent": 43,
-    "phase_percent": 83.33,
+    "roadmap_percent": 42.5,
+    "phase_percent": 75.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567839",
-    "application_test_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567860",
-    "security_supply_chain_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567875",
-    "release_integrity_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567831",
-    "scorecard_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567834"
+    "continuity_validation": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912213",
+    "application_test_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912226",
+    "security_supply_chain_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912282",
+    "release_integrity_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912277",
+    "scorecard_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912322"
   },
   "blockers": [],
-  "exact_next_action": "Run TASK-0035 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0036 in a separate guarded transition without pulling PHASE-07 campaign publishing, scheduling or execution forward."
+  "exact_next_action": "Merge the TASK-0036 PHASE-06 certification registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0035 and activates TASK-0036. Do not begin PHASE-06 certification writes or any PHASE-07 campaign/publishing capability before that transition."
 }

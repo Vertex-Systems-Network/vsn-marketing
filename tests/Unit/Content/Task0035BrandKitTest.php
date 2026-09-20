@@ -25,11 +25,11 @@ function task0035BrandKit(string $id = 'brand-kit-1', string $workspaceId = 'wor
 }
 
 /**
- * @param list<BrandStyleToken>|null $styleTokens
- * @param list<string> $assetReferences
- * @param array<string, mixed> $identityMetadata
- * @param array<string, mixed> $defaults
- * @param array<string, mixed> $auditProvenance
+ * @param  list<BrandStyleToken>|null  $styleTokens
+ * @param  list<string>  $assetReferences
+ * @param  array<string, mixed>  $identityMetadata
+ * @param  array<string, mixed>  $defaults
+ * @param  array<string, mixed>  $auditProvenance
  */
 function task0035BrandVersion(
     string $id = 'brand-v1',
@@ -113,12 +113,12 @@ it('forks brand versions without mutating the published source version', functio
         ->and($published->versionNumber)->toBe(1)
         ->and($published->parentVersionId)->toBeNull()
         ->and($published->status)->toBe(BrandVersionStatus::Published)
-        ->and($published->toArray()['style_tokens'][0]['value'])->toBe('#006039')
+        ->and($published->styleTokenMap()['color.primary'])->toBe('#006039')
         ->and($draft->id)->toBe('brand-v2')
         ->and($draft->parentVersionId)->toBe('brand-v1')
         ->and($draft->versionNumber)->toBe(2)
         ->and($draft->status)->toBe(BrandVersionStatus::Draft)
-        ->and($draft->toArray()['style_tokens'][0]['value'])->toBe('#111111');
+        ->and($draft->styleTokenMap()['color.primary'])->toBe('#111111');
 
     expect(fn () => $published->fork(
         id: 'brand-invalid',

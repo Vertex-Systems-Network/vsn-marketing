@@ -85,7 +85,7 @@ CI invokes Semgrep with `--disable-nosem --error --severity ERROR`. Inline `nose
 `dependency-audit` is lockfile based:
 
 - `composer audit --locked` fails on known Composer security advisories; abandoned-package information is reported but does not redefine an advisory into a vulnerability.
-- `npm audit --audit-level=high` fails on HIGH or CRITICAL npm advisories, including build/development dependencies because those dependencies execute inside CI and are part of the software supply chain.
+- `npm audit --audit-level=moderate` fails on MODERATE, HIGH, or CRITICAL npm advisories, including build/development dependencies because those dependencies execute inside CI and are part of the software supply chain. This threshold is intentionally fail-closed after `GHSA-82fw-gwwq-j7x9` demonstrated that a path-traversal/arbitrary-file-read issue in the test toolchain could otherwise remain visible in audit output while the aggregate gate stayed green.
 
 No Composer audit ignore list is allowed outside the canonical exception process.
 

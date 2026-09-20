@@ -110,8 +110,8 @@ jobs:
           node-version: '24'
       - name: Audit locked Composer dependencies
         run: composer audit --locked --no-interaction --abandoned=report
-      - name: Audit locked npm dependencies at high-or-critical severity
-        run: npm audit --audit-level=high
+      - name: Audit locked npm dependencies at moderate-or-higher severity
+        run: npm audit --audit-level=moderate
 
   secret-scan:
     name: secret-scan

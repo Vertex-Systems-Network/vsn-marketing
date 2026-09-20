@@ -23,4 +23,4 @@ PR #310 exact-head Shipping Fast Gate `35511757496` PASS. PR #311 exact-head Shi
 
 ## Exact next action
 
-Promote certified TASK-0035 ship baseline `a54c8cb318ad70ca102ae5c7aab654aca85f919f` to protected `main` after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early.
+Promote certified TASK-0035 ship baseline a54c8cb318ad70ca102ae5c7aab654aca85f919f to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early.

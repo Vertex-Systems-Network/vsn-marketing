@@ -11,16 +11,6 @@
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml"
       ]
-    },
-    {
-      "agent": "worker-task0036-certification",
-      "workstream": "WS-0036-PHASE-CERTIFICATION",
-      "branch": "worker-1/TASK-0036",
-      "status": "active",
-      "write_paths": [
-        "tests/Integration/Task0036Phase06CertificationTest.php",
-        "tests/Feature/Security/Task0036Phase06SecurityCertificationTest.php"
-      ]
     }
   ]
 }

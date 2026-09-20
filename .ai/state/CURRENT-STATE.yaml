@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932113",
-    "application_test_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932125",
-    "security_supply_chain_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932115",
+    "continuity_validation": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171867",
+    "application_test_status": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171851",
+    "security_supply_chain_status": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171748",
     "release_integrity_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932147",
     "scorecard_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932123"
   },
   "blockers": [],
-  "exact_next_action": "After this TASK-0035 to TASK-0036 transition merges and its post-merge protected-main gates pass, audit and realign `ship/week-1` to the trusted TASK-0036 baseline, then activate only the staged PHASE-06 certification worker with test-only leases. Do not add product behavior or activate PHASE-07 campaign approval, scheduling, publishing or execution."
+  "exact_next_action": "Promote the security-remediated TASK-0036 PHASE-06 ship baseline dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation."
 }

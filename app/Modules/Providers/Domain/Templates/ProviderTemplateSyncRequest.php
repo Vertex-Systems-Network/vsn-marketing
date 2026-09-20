@@ -77,6 +77,15 @@ final readonly class ProviderTemplateSyncRequest
         ];
     }
 
+    /** @return array<string, mixed> */
+    public function derivativeInput(): array
+    {
+        $payload = $this->toArray();
+        unset($payload['idempotency_key']);
+
+        return $payload;
+    }
+
     /** @param list<string> $values */
     private static function assertStableReferences(array $values, string $label): void
     {

@@ -15,7 +15,6 @@ use App\Modules\Content\Domain\Render\RenderCompilationPlan;
 use App\Modules\Content\Domain\Render\RendererExecutionPolicy;
 use App\Modules\Content\Domain\Render\RendererIdentity;
 use App\Modules\Content\Domain\Render\RenderTarget;
-use InvalidArgumentException;
 
 function task0034SecurityInput(string $workspaceId = 'workspace-security'): RenderInputSnapshot
 {
@@ -193,7 +192,7 @@ it('certifies accessibility evidence and rejects inaccessible image authoring', 
     $preview = (new PreviewPlanner($hasher))->plan(
         task0034SecurityRenderPlan(),
         new PreviewViewport('reflow-320', 320, 720),
-        new PreviewIsolationPolicy(maxFindings: 20),
+        new PreviewIsolationPolicy(maxOutputBytes: 1000000, maxFindings: 20),
         'task0034-a11y-v1',
     );
 
@@ -237,7 +236,7 @@ it('keeps derivative provenance free of credentials provider payloads and raw re
     $preview = (new PreviewPlanner($hasher))->plan(
         $render,
         new PreviewViewport('desktop', 1280, 720),
-        new PreviewIsolationPolicy,
+        new PreviewIsolationPolicy(maxOutputBytes: 1000000),
         'task0034-security-v1',
     );
     $result = PreviewRegressionResult::fromFindings(

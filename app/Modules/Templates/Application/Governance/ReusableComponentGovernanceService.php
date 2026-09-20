@@ -4,6 +4,7 @@ namespace App\Modules\Templates\Application\Governance;
 
 use App\Modules\Templates\Domain\ComponentLifecycle;
 use App\Modules\Templates\Domain\DefinitionKind;
+use App\Modules\Templates\Domain\DependencyReference;
 use App\Modules\Templates\Domain\Governance\ReusableApprovalStatus;
 use App\Modules\Templates\Domain\Governance\ReusableComponentGovernance;
 use App\Modules\Templates\Domain\Governance\ReusableComponentScope;
@@ -145,7 +146,7 @@ final class ReusableComponentGovernanceService
     }
 
     /**
-     * @param  list<\App\Modules\Templates\Domain\DependencyReference>  $dependencies
+     * @param  list<DependencyReference>  $dependencies
      */
     public function forkForEdit(
         ReusableComponentGovernance $governance,

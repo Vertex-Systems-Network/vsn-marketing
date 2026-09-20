@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-20T12:58:00+00:00`
+- Timestamp: `2026-09-20T13:10:00+00:00`
 - Active task: `TASK-0035`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `172b7537c6ccdce83b39e35f6c903c3206effc0a25da0f2584677acf8f4ff81d`
+- State fingerprint: `f559d93e0c11fee2c473c74683a567949d3f4e91f74709b70ac5feb188db0673`
 
 ## Completed / observed this session
 
-TASK-0035 final ship certification is complete. PR #310 activated Wave 4 certification and merged into `ship/week-1` as `6be416527aba881a316217ac255ac281983c5da9` after exact-head Shipping Fast Gate `35511757496` passed. PR #311 then merged the final integration/security certification tests as `a54c8cb318ad70ca102ae5c7aab654aca85f919f` after exact-head Shipping Fast Gate `35511976905` passed. Certified final ship head `a54c8cb318ad70ca102ae5c7aab654aca85f919f` passed AI Continuity Guard `35512031735`, Shipping Fast Gate `35512031731`, and Application Foundation CI `35512031752`. All TASK-0035 worker lanes are completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
+TASK-0035 is promoted and post-merge certified on protected `main`. PR #313 promoted the certified brand knowledge/kit, reusable-component governance and provider-template synchronization implementation as `d956a416d90d78387e96f8164c6134c596d45bac` after exact source head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8` passed AI Continuity Guard `35512463028`, Application Foundation CI `35512463013` and Security Supply Chain CI `35512463052`. Post-merge main head `d956a416d90d78387e96f8164c6134c596d45bac` then passed AI Continuity Guard `35512567839`, Application Foundation CI `35512567860`, Security Supply Chain CI `35512567875`, Release Integrity `35512567831` and OpenSSF Scorecard `35512567834`. AC-1 through AC-8 are reconciled true, all TASK-0035 workers remain completed and released, and TASK-0035 intentionally remains ready until this Supervisor-only final acceptance PR itself passes exact-head acceptance gates.
 
 ## Tests
 
-PR #310 exact-head Shipping Fast Gate `35511757496` PASS. PR #311 exact-head Shipping Fast Gate `35511976905` PASS. Final ship head `a54c8cb318ad70ca102ae5c7aab654aca85f919f`: AI Continuity Guard `35512031735` PASS; Shipping Fast Gate `35512031731` PASS; Application Foundation CI `35512031752` PASS including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+Protected-main promotion source head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8`: AI Continuity Guard `35512463028` PASS; Application Foundation CI `35512463013` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests/build; Security Supply Chain CI `35512463052` PASS including aggregate security gates. Post-merge main head `d956a416d90d78387e96f8164c6134c596d45bac`: AI Continuity Guard `35512567839` PASS; Application Foundation CI `35512567860` PASS; Security Supply Chain CI `35512567875` PASS; Release Integrity `35512567831` PASS; OpenSSF Scorecard `35512567834` PASS.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ PR #310 exact-head Shipping Fast Gate `35511757496` PASS. PR #311 exact-head Shi
 
 ## Exact next action
 
-Promote certified TASK-0035 ship baseline a54c8cb318ad70ca102ae5c7aab654aca85f919f to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early.
+Run TASK-0035 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0036 in a separate guarded transition without pulling PHASE-07 campaign publishing, scheduling or execution forward.

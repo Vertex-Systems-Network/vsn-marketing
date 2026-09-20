@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0035 Brand Knowledge/Kit and Provider Template Synchronization
 
-Status: **active — Wave 4 final adversarial/integration certification**. TASK-0035 is the active PHASE-06 task. Waves 1 through 3 are integrated and certified on `ship/week-1`; Supervisor plus the final certification lane are active.
+Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0035 brand kit, reusable-component governance, provider-template synchronization/reconciliation and final adversarial/integration certification are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0035`  
 Parent task: `TASK-0035`  
 Branch creation baseline: `760be505c8ae1893f18209b580b859f87d7ac7e0`  
-Active leases: `2`  
+Active leases: `1`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -32,7 +32,7 @@ Completion signal: `Work Done and Submitted`
 | 10 | WS-0035-BRAND-KIT | Versioned workspace brand knowledge/kit and deterministic token/reference resolution | `open` | — | `completed` | `worker-1/TASK-0035` | squash | merged as PR #304; PHP 8.3 fixture fix PR #305 |
 | 20 | WS-0035-REUSABLE-APPROVAL | Reusable component scope/dependency impact plus PHASE-06 approval/readiness governance | `open` | — | `completed` | `worker-2/TASK-0035` | squash | merged as PR #307 |
 | 30 | WS-0035-PROVIDER-TEMPLATE-SYNC | Provider-template mappings, derivative identity, drift/reconciliation and replay-safe sync | `open` | — | `completed` | `worker-3/TASK-0035` | squash | merged as PR #309 |
-| 40 | WS-0035-CERTIFICATION | Adversarial/integration certification for brand/component/provider-template synchronization | `occupied` | `worker-task0035-certification` | `active` | `worker-4/TASK-0035` | squash | merge latest ship/week-1 before resume |
+| 40 | WS-0035-CERTIFICATION | Adversarial/integration certification for brand/component/provider-template synchronization | `open` | — | `completed` | `worker-4/TASK-0035` | squash | merged as PR #311 |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Dependency-safe waves
@@ -61,7 +61,11 @@ Completion signal: `Work Done and Submitted`
 - PR #309 merged provider-template synchronization/reconciliation contracts as `1c72aab370fa5adf1c5380eea33d222a872841c3` after exact-head Shipping Fast Gate `35511535565` passed.
 - Wave 3 ship head `1c72aab370fa5adf1c5380eea33d222a872841c3` passed AI Continuity Guard `35511599038`, Shipping Fast Gate `35511599039`, and Application Foundation CI `35511599029`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0035-PROVIDER-TEMPLATE-SYNC is completed and released.
+- PR #310 activated Wave 4 certification and merged as `6be416527aba881a316217ac255ac281983c5da9` after exact-head Shipping Fast Gate `35511757496` passed.
+- PR #311 merged the final TASK-0035 integration/security certification tests as `a54c8cb318ad70ca102ae5c7aab654aca85f919f` after exact-head Shipping Fast Gate `35511976905` passed.
+- Certified final ship head `a54c8cb318ad70ca102ae5c7aab654aca85f919f` passed AI Continuity Guard `35512031735`, Shipping Fast Gate `35512031731`, and Application Foundation CI `35512031752`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- Merge group 40 is dependency-complete; WS-0035-CERTIFICATION is completed and its worker lease is released.
 
 ## Exact next action
 
-Merge this Wave 4 activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-4/TASK-0035` to the resulting certified integration head and add only the two registered certification files proving brand-version immutability and exact deterministic resolution, shared/global component approval integrity and dependency impact, provider-template derivative authority/drift/fallback/replay safety, workspace isolation, versioned capability evidence and credential/publishing boundaries. Do not add product behavior merely to satisfy certification, and do not activate TASK-0036 before protected-main promotion and final TASK-0035 acceptance.
+Promote certified TASK-0035 ship baseline `a54c8cb318ad70ca102ae5c7aab654aca85f919f` to protected `main` after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early.

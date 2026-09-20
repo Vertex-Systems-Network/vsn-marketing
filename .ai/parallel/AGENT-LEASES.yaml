@@ -13,14 +13,14 @@
       ]
     },
     {
-      "agent": "worker-task0035-brand",
-      "workstream": "WS-0035-BRAND-KIT",
-      "branch": "worker-1/TASK-0035",
+      "agent": "worker-task0035-reusable",
+      "workstream": "WS-0035-REUSABLE-APPROVAL",
+      "branch": "worker-2/TASK-0035",
       "status": "active",
       "write_paths": [
-        "app/Modules/Content/Domain/Brand/**",
-        "app/Modules/Content/Application/Brand/**",
-        "tests/Unit/Content/Task0035BrandKitTest.php"
+        "app/Modules/Templates/Domain/Governance/**",
+        "app/Modules/Templates/Application/Governance/**",
+        "tests/Unit/Templates/Task0035ReusableApprovalTest.php"
       ]
     }
   ]

@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-19T01:09:00+00:00`
+- Timestamp: `2026-09-20T10:47:00+00:00`
 - Active task: `TASK-0034`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `eaf2027a25abd427732b6f5889fd782771e0417214e5f4da699457a4577deb79`
+- State fingerprint: `bd736af318b859733719e4ce0de7e3b45aee87c49e071cc4915c2bed6b94bcff`
 
 ## Completed / observed this session
 
-TASK-0033 is completed and TASK-0034 is canonically activated for staged execution. TASK-0033 final acceptance PR #283 merged on protected `main` as `df17d69a9365e803eb332979bcfd907caae68bfc` and its post-merge AI Continuity Guard `35411016006`, Application Foundation CI `35411015982`, Security Supply Chain CI `35411016009`, Release Integrity `35411016001` and OpenSSF Scorecard `35411016002` all passed. TASK-0034 registration PR #284 then merged on protected `main` as `b57193c428138ba867608a46fdbd9dcf29dd50f6`; its post-merge AI Continuity Guard `35411414704`, Application Foundation CI `35411414739`, Security Supply Chain CI `35411414643`, Release Integrity `35411414686` and OpenSSF Scorecard `35411414664` all passed. TASK-0034 branches are pre-created and the parallel registry is staged with zero active leases. No TASK-0034 product implementation is introduced by this transition.
+TASK-0034 final ship certification is complete. PR #296 merged the final adversarial/integration certification tests into `ship/week-1` as `9554ee15d8a898fe3d130fa62fa1532ee0af21be` after corrected exact-head Shipping Fast Gate `35505699663` passed. Certification gating and the first post-merge PostgreSQL integration run exposed only certification-fixture bound mismatches: preview defaults exceeded the pinned renderer output limit and `PreviewPlanner` correctly failed closed, confirming the bounded-execution contract rather than a product defect. PR #297 aligned the remaining integration fixture to the exact pinned renderer limit and merged as `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` after exact-head Shipping Fast Gate `35505872547` passed. Final ship head `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` then passed AI Continuity Guard `35505933980`, Shipping Fast Gate `35505933967`, and Application Foundation CI `35505933975`. All TASK-0034 worker lanes are completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
 
 ## Tests
 
-Protected-main TASK-0033 acceptance head `df17d69a9365e803eb332979bcfd907caae68bfc`: all five trusted-main gates PASS. TASK-0034 registration main head `b57193c428138ba867608a46fdbd9dcf29dd50f6`: AI Continuity Guard `35411414704` PASS; Application Foundation CI `35411414739` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E and foundation; Security Supply Chain CI `35411414643` PASS including aggregate security gates; Release Integrity `35411414686` PASS; OpenSSF Scorecard `35411414664` PASS. This transition itself must pass fresh exact-head Continuity, Application and Security gates before merge.
+PR #296 corrected exact-head Shipping Fast Gate `35505699663` PASS. First post-merge ship head `9554ee15d8a898fe3d130fa62fa1532ee0af21be`: Continuity `35505756596` PASS; Fast Gate `35505756539` PASS; Application `35505756609` failed only the remaining integration certification preview-bound fixture corrected by PR #297. PR #297 exact-head Shipping Fast Gate `35505872547` PASS. Final ship head `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5`: AI Continuity Guard `35505933980` PASS; Shipping Fast Gate `35505933967` PASS; Application Foundation CI `35505933975` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ Protected-main TASK-0033 acceptance head `df17d69a9365e803eb332979bcfd907caae68b
 
 ## Exact next action
 
-After guarded activation, map the frozen TASK-0031 editor/rendering research onto the canonical content/template/component and asset contracts; implement safe visual/code authoring boundaries, sanitizer policy, deterministic renderer/compiler provenance, isolated preview/test infrastructure and adversarial/browser coverage without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward.
+Promote certified TASK-0034 ship baseline 4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5 to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0034 acceptance. Do not activate TASK-0035 brand/provider-template synchronization or PHASE-07 publishing early.

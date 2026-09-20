@@ -1,127 +1,50 @@
 {
   "schema_version": 2,
-  "mode": "active",
-  "parent_task": "TASK-0035",
-  "branch_creation_baseline_sha": "760be505c8ae1893f18209b580b859f87d7ac7e0",
+  "mode": "staged",
+  "parent_task": "TASK-0036",
+  "branch_creation_baseline_sha": "b1d73ccf16aa8e2977738d8a4dca89441d455c78",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0035-SUPERVISOR-CONTROL",
+      "id": "WS-0036-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Content",
-      "capability": "Own TASK-0035 final acceptance, shared-path continuity/task-state reconciliation, exact-head acceptance and the separate guarded TASK-0036 registration/activation handoff without pulling PHASE-07 campaign publishing, scheduling or execution forward.",
+      "capability": "Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward.",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0035",
-      "worktree": "worktrees/task-0035-supervisor",
-      "status": "in_progress",
+      "branch": "supervisor/TASK-0036",
+      "worktree": "worktrees/task-0036-supervisor",
+      "status": "planned",
       "slot_status": "occupied",
-      "start_status": "active",
-      "onboarded_from_branch": "main",
-      "dependencies": [],
-      "merge_group": 5,
-      "merge_strategy": "squash",
-      "write_paths": [
-        ".ai/parallel/AI-NATIVE-PLAN.md",
-        ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml",
-        ".ai/state/CURRENT-STATE.yaml",
-        ".ai/state/LAST-CHECKPOINT.md",
-        ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/TASK-0035.yaml"
-      ]
-    },
-    {
-      "id": "WS-0035-BRAND-KIT",
-      "role": "worker",
-      "module": "Content",
-      "capability": "Implement workspace-scoped versioned brand knowledge/kit contracts, immutable style tokens/defaults/provenance and deterministic brand reference resolution without provider synchronization or publication.",
-      "assigned_agent": null,
-      "branch": "worker-1/TASK-0035",
-      "worktree": "worktrees/task-0035-worker-1",
-      "status": "completed",
-      "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Content/Domain/Brand/**",
-        "app/Modules/Content/Application/Brand/**",
-        "tests/Unit/Content/Task0035BrandKitTest.php"
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
       ]
     },
     {
-      "id": "WS-0035-REUSABLE-APPROVAL",
+      "id": "WS-0036-PHASE-CERTIFICATION",
       "role": "worker",
-      "module": "Templates",
-      "capability": "Implement reusable component local/global scope, exact dependency impact and PHASE-06 approval/readiness contracts with immutable version transitions and audit provenance; no campaign approval or publishing.",
+      "module": "Security",
+      "capability": "Certify PHASE-06 exact-version reproducibility, workspace isolation, asset provenance and variant safety, rendering and preview security, accessibility and representative visual/client regression, and provider-template synchronization/drift boundaries without adding product behavior.",
       "assigned_agent": null,
-      "branch": "worker-2/TASK-0035",
-      "worktree": "worktrees/task-0035-worker-2",
-      "status": "completed",
+      "branch": "worker-1/TASK-0036",
+      "worktree": "worktrees/task-0036-worker-1",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "staged",
       "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0035-BRAND-KIT"
-      ],
+      "dependencies": [],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "app/Modules/Templates/Domain/Governance/**",
-        "app/Modules/Templates/Application/Governance/**",
-        "tests/Unit/Templates/Task0035ReusableApprovalTest.php"
-      ]
-    },
-    {
-      "id": "WS-0035-PROVIDER-TEMPLATE-SYNC",
-      "role": "worker",
-      "module": "Providers",
-      "capability": "Implement workspace-scoped provider-template mappings, deterministic derivative identities, drift/reconciliation and replay-safe synchronization while keeping VSN canonical versions authoritative and provider credentials outside canonical state.",
-      "assigned_agent": null,
-      "branch": "worker-3/TASK-0035",
-      "worktree": "worktrees/task-0035-worker-3",
-      "status": "completed",
-      "slot_status": "open",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0035-BRAND-KIT",
-        "WS-0035-REUSABLE-APPROVAL"
-      ],
-      "merge_group": 30,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "app/Modules/Providers/Domain/Templates/**",
-        "app/Modules/Providers/Application/TemplateSync/**",
-        "app/Modules/Providers/Infrastructure/TemplateSync/**",
-        "tests/Integration/Providers/Task0035ProviderTemplateSyncTest.php"
-      ]
-    },
-    {
-      "id": "WS-0035-CERTIFICATION",
-      "role": "worker",
-      "module": "Security",
-      "capability": "Certify brand-version immutability, deterministic brand/component resolution, approval integrity, provider-template drift/reconciliation, idempotent synchronization, workspace isolation and provider-neutral canonical authority before TASK-0036.",
-      "assigned_agent": null,
-      "branch": "worker-4/TASK-0035",
-      "worktree": "worktrees/task-0035-worker-4",
-      "status": "completed",
-      "slot_status": "open",
-      "start_status": "completed",
-      "onboarded_from_branch": "main",
-      "dependencies": [
-        "WS-0035-BRAND-KIT",
-        "WS-0035-REUSABLE-APPROVAL",
-        "WS-0035-PROVIDER-TEMPLATE-SYNC"
-      ],
-      "merge_group": 40,
-      "merge_strategy": "squash",
-      "write_paths": [
-        "tests/Integration/Task0035BrandProviderSyncCertificationTest.php",
-        "tests/Feature/Security/Task0035BrandProviderSyncSecurityTest.php"
+        "tests/Integration/Task0036Phase06CertificationTest.php",
+        "tests/Feature/Security/Task0036Phase06SecurityCertificationTest.php"
       ]
     }
   ]

@@ -111,7 +111,7 @@ final class ProviderTemplateSyncPlanner
         if ($capabilityReason !== null) {
             return [
                 ProviderTemplateDrift::CapabilityUnavailable,
-                ProviderTemplateSyncAction::Blocked,
+                ProviderTemplateSyncAction::UseFallback,
                 $capabilityReason,
             ];
         }

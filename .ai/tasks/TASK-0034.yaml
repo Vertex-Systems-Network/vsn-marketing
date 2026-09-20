@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "Visual editing, bounded safe-code/import pathways and future AI-assisted authoring converge on the same validated canonical content/template/component version model; published or execution-pinned source versions remain immutable and editor changes create explicit new versions rather than mutating historical inputs",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "User-authored HTML/CSS and equivalent imported markup are treated as untrusted input with explicit schema/target validation and sanitization that rejects executable script, event handlers, unsafe URLs, unsupported markup and post-sanitization mutation that could reintroduce unsafe behavior",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Render/compiler artifacts are deterministic and reproducible from exact content, template, component, asset, variable/localization and future brand references plus pinned renderer/compiler identity, version and configuration; artifact identity/hash and provenance are persisted without provider output becoming canonical source state",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Renderer/compiler execution is asynchronous or otherwise bounded and replay/idempotency safe, with deterministic failure semantics and resource limits; no arbitrary shell/code execution, ambient secrets, unrestricted filesystem access, path traversal, live remote include/fetch or uncontrolled network access is available to authored content",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Preview execution is isolated from privileged application/provider credentials and production publishing, uses exact pinned render inputs and bounded resources, and cannot execute arbitrary authored JavaScript or mutate canonical source state; preview/test artifacts are explicitly non-authoritative derivatives",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Render targets consume provider/channel requirements only as versioned/effective-dated capability evidence and produce deterministic validation, compilation or fallback errors for unsupported mappings; provider credentials, upload identifiers, MIME/social posting payloads and publication lifecycle remain outside canonical editor/render state",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Editor and renderer validation preserve accessibility semantics required by the canonical model, including meaningful text alternatives, semantic structure and target-appropriate contrast/reflow/text-as-image checks, with deterministic findings attached to exact source/render identities",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "Backend/integration/browser/adversarial tests prove sanitizer bypass resistance, preview isolation, deterministic rendering and hashes, replay/idempotency, workspace-safe dependency/asset resolution, bounded renderer resources and representative responsive/client regression behavior; exact-head continuity, architecture, static-analysis, formatting and security/supply-chain gates are green before TASK-0035 activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After guarded activation, map the frozen TASK-0031 editor/rendering research onto the canonical content/template/component and asset contracts; implement safe visual/code authoring boundaries, sanitizer policy, deterministic renderer/compiler provenance, isolated preview/test infrastructure and adversarial/browser coverage without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward."
+  "exact_next_action": "Run TASK-0034 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0035 in a separate guarded transition without pulling PHASE-07 publishing forward."
 }

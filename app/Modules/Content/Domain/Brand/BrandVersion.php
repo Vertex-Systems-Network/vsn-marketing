@@ -10,11 +10,11 @@ final readonly class BrandVersion
     public const int SCHEMA_VERSION = 1;
 
     /**
-     * @param list<BrandStyleToken> $styleTokens
-     * @param array<string, mixed> $identityMetadata
-     * @param list<string> $assetReferences
-     * @param array<string, mixed> $defaults
-     * @param array<string, mixed> $auditProvenance
+     * @param  list<BrandStyleToken>  $styleTokens
+     * @param  array<string, mixed>  $identityMetadata
+     * @param  list<string>  $assetReferences
+     * @param  array<string, mixed>  $defaults
+     * @param  array<string, mixed>  $auditProvenance
      */
     public function __construct(
         public string $id,
@@ -81,11 +81,11 @@ final readonly class BrandVersion
     }
 
     /**
-     * @param list<BrandStyleToken> $styleTokens
-     * @param array<string, mixed> $identityMetadata
-     * @param list<string> $assetReferences
-     * @param array<string, mixed> $defaults
-     * @param array<string, mixed> $auditProvenance
+     * @param  list<BrandStyleToken>  $styleTokens
+     * @param  array<string, mixed>  $identityMetadata
+     * @param  list<string>  $assetReferences
+     * @param  array<string, mixed>  $defaults
+     * @param  array<string, mixed>  $auditProvenance
      */
     public static function initialFor(
         BrandKit $brandKit,
@@ -120,11 +120,11 @@ final readonly class BrandVersion
     }
 
     /**
-     * @param list<BrandStyleToken> $styleTokens
-     * @param array<string, mixed> $identityMetadata
-     * @param list<string> $assetReferences
-     * @param array<string, mixed> $defaults
-     * @param array<string, mixed> $auditProvenance
+     * @param  list<BrandStyleToken>  $styleTokens
+     * @param  array<string, mixed>  $identityMetadata
+     * @param  list<string>  $assetReferences
+     * @param  array<string, mixed>  $defaults
+     * @param  array<string, mixed>  $auditProvenance
      */
     public function fork(
         string $id,
@@ -161,6 +161,24 @@ final readonly class BrandVersion
         );
     }
 
+    /** @return array<string, string|int|float|bool> */
+    public function styleTokenMap(): array
+    {
+        $styleTokens = $this->styleTokens;
+        usort(
+            $styleTokens,
+            static fn (BrandStyleToken $left, BrandStyleToken $right): int => $left->key <=> $right->key,
+        );
+
+        $resolved = [];
+
+        foreach ($styleTokens as $token) {
+            $resolved[$token->key] = $token->value;
+        }
+
+        return $resolved;
+    }
+
     /** @return array<string, mixed> */
     public function toArray(): array
     {
@@ -191,7 +209,7 @@ final readonly class BrandVersion
         ];
     }
 
-    /** @param list<string> $references */
+    /** @param  list<string>  $references */
     private static function assertStableReferences(array $references): void
     {
         $seen = [];

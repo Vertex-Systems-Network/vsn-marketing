@@ -358,6 +358,16 @@
       "dependencies": [
         "TASK-0034"
       ]
+    },
+    {
+      "id": "TASK-0036",
+      "phase": "PHASE-06",
+      "title": "Certify PHASE-06",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0035"
+      ]
     }
   ]
 }

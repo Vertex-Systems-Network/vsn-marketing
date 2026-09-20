@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932113",
-    "application_test_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932125",
+    "continuity_validation": "task_0036_final_ship_head_87da7f71aa4d75d865ad9a01fbeb54b940ea5f98_passed_run_35542490944",
+    "application_test_status": "task_0036_final_ship_head_87da7f71aa4d75d865ad9a01fbeb54b940ea5f98_passed_run_35542490958",
     "security_supply_chain_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932115",
     "release_integrity_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932147",
     "scorecard_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932123"
   },
   "blockers": [],
-  "exact_next_action": "After this TASK-0035 to TASK-0036 transition merges and its post-merge protected-main gates pass, audit and realign `ship/week-1` to the trusted TASK-0036 baseline, then activate only the staged PHASE-06 certification worker with test-only leases. Do not add product behavior or activate PHASE-07 campaign approval, scheduling, publishing or execution."
+  "exact_next_action": "Promote certified TASK-0036 PHASE-06 ship baseline 87da7f71aa4d75d865ad9a01fbeb54b940ea5f98 to protected main after this Supervisor reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation."
 }

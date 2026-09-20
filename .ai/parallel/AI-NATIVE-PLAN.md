@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **security remediation before final PHASE-06 promotion**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated on `ship/week-1`, but exact-head Security Supply Chain CI exposed a moderate Vitest/@vitest/mocker path-traversal advisory that the prior high-only npm threshold did not block. Supervisor plus one bounded dependency-security remediation worker are active before protected-main promotion.
+Status: **security remediation before final PHASE-06 promotion**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated on `ship/week-1`, but exact-head Security Supply Chain CI exposed a moderate Vitest/@vitest/mocker path-traversal advisory that the prior high-only npm threshold did not block. Supervisor remains the sole active writer and temporarily owns the bounded dependency-security remediation because dependency manifests and GitHub workflows are Supervisor-owned shared paths.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
 Parent task: `TASK-0036`  
 Branch creation baseline: `36120709c4d8e63160871894ea61fca67a386934`  
-Active leases: `2`  
+Active leases: `1`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -28,7 +28,6 @@ Completion signal: `Work Done and Submitted`
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0036-SUPERVISOR-CONTROL | Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward. | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0036` | squash | merge latest ship/week-1 before resume |
 | 20 | WS-0036-PHASE-CERTIFICATION | Certify PHASE-06 exact-version reproducibility, workspace isolation, asset provenance and variant safety, rendering and preview security, accessibility and representative visual/client regression, and provider-template synchronization/drift boundaries without adding product behavior. | `open` | — | `completed` | `worker-1/TASK-0036` | squash | merged as PR #318 |
-| 30 | WS-0036-DEPENDENCY-SECURITY-REMEDIATION | Remediate GHSA-82fw-gwwq-j7x9 in Vitest/@vitest/mocker and make moderate-or-higher npm advisories fail closed in shipping/main security gates. | `occupied` | `worker-task0036-dependency-security` | `active` | `worker-security/TASK-0036-vitest` | squash | merge latest ship/week-1 before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Certified activation baseline
@@ -43,8 +42,8 @@ Completion signal: `Work Done and Submitted`
 - Certified final ship head `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` passed AI Continuity Guard `35542490944`, Shipping Fast Gate `35542490931`, and Application Foundation CI `35542490958`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0036-PHASE-CERTIFICATION is completed and released.
 - Promotion head `1b6273711f0c51449b1fbe4aa39923e10571ae84` passed Security Supply Chain CI `35542862212`, but its dependency-audit log reported two moderate npm vulnerabilities. The material advisory is `GHSA-82fw-gwwq-j7x9` affecting Vitest/@vitest/mocker 3.x with path traversal / arbitrary file read; the job stayed green only because the repository used `npm audit --audit-level=high`.
-- The bounded remediation lane upgrades the affected Vitest dependency using the already reviewable Dependabot lockfile delta and raises both Shipping Fast Gate and Security Supply Chain CI npm audit thresholds to `moderate`; no product behavior or PHASE-07 capability is authorized.
+- The Supervisor-owned remediation upgrades the affected Vitest dependency using the already reviewable Dependabot lockfile delta and raises both Shipping Fast Gate and Security Supply Chain CI npm audit thresholds to `moderate`; dependency manifests and `.github/**` stay under their reserved Supervisor ownership, and no product behavior or PHASE-07 capability is authorized.
 
 ## Exact next action
 
-Merge this security-remediation activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-security/TASK-0036-vitest` to the activated ship head, upgrade Vitest to a patched 5.x release using a deterministic lockfile, change both npm audit gates to `--audit-level=moderate`, update the security operations contract, and require frontend/application/security gates to pass with zero remaining npm vulnerabilities before protected-main promotion resumes.
+Merge this security-remediation activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then perform the reserved-path remediation under `WS-0036-SUPERVISOR-CONTROL`: upgrade Vitest to a patched 5.x release using the reviewed deterministic lockfile delta, change both npm audit gates to `--audit-level=moderate`, update the security operations contract, and require frontend/application/security gates to pass with zero remaining npm vulnerabilities before protected-main promotion resumes.

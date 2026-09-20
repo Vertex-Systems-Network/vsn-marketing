@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0034_registration_main_head_b57193c428138ba867608a46fdbd9dcf29dd50f6_passed_run_35411414704",
-    "application_test_status": "task_0034_registration_main_head_b57193c428138ba867608a46fdbd9dcf29dd50f6_passed_run_35411414739",
+    "continuity_validation": "task_0034_final_ship_head_4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5_passed_run_35505933980",
+    "application_test_status": "task_0034_final_ship_head_4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5_passed_run_35505933975",
     "security_supply_chain_status": "task_0034_registration_main_head_b57193c428138ba867608a46fdbd9dcf29dd50f6_passed_run_35411414643",
     "release_integrity_status": "task_0034_registration_main_head_b57193c428138ba867608a46fdbd9dcf29dd50f6_passed_run_35411414686",
     "scorecard_status": "task_0034_registration_main_head_b57193c428138ba867608a46fdbd9dcf29dd50f6_passed_run_35411414664"
   },
   "blockers": [],
-  "exact_next_action": "After guarded activation, map the frozen TASK-0031 editor/rendering research onto the canonical content/template/component and asset contracts; implement safe visual/code authoring boundaries, sanitizer policy, deterministic renderer/compiler provenance, isolated preview/test infrastructure and adversarial/browser coverage without pulling TASK-0035 brand/provider-template synchronization or PHASE-07 publishing forward."
+  "exact_next_action": "Promote certified TASK-0034 ship baseline 4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5 to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0034 acceptance. Do not activate TASK-0035 brand/provider-template synchronization or PHASE-07 publishing early."
 }

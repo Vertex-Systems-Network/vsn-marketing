@@ -9,15 +9,7 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
-      ]
-    },
-    {
-      "agent": "worker-task0036-dependency-security",
-      "workstream": "WS-0036-DEPENDENCY-SECURITY-REMEDIATION",
-      "branch": "worker-security/TASK-0036-vitest",
-      "status": "active",
-      "write_paths": [
+        ".ai/parallel/AGENT-LEASES.yaml",
         "package.json",
         "package-lock.json",
         ".github/workflows/security-ci.yml",

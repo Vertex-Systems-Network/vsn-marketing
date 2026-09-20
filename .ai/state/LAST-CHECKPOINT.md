@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-20T11:38:00+00:00`
+- Timestamp: `2026-09-20T12:58:00+00:00`
 - Active task: `TASK-0035`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `98f3365f246c5c2db0daada9eb2da6dbfb3459ed5fd6222e82f42662245970c7`
+- State fingerprint: `172b7537c6ccdce83b39e35f6c903c3206effc0a25da0f2584677acf8f4ff81d`
 
 ## Completed / observed this session
 
-TASK-0034 is completed and TASK-0035 is canonically activated for staged execution. TASK-0034 final acceptance PR #300 merged on protected `main` as `d967a3ccd3f6acf27b5c2b959bfd2f93629398f3` and its post-merge AI Continuity Guard `35507577279`, Application Foundation CI `35507577233`, Security Supply Chain CI `35507577248`, Release Integrity `35507577264` and OpenSSF Scorecard `35507577241` all passed. TASK-0035 registration PR #301 then merged on protected `main` as `0f282d732a79c5838f2424fb3b2641245060b8ad`; its post-merge AI Continuity Guard `35507944337`, Application Foundation CI `35507944240`, Security Supply Chain CI `35507944265`, Release Integrity `35507944211` and OpenSSF Scorecard `35507944309` all passed. TASK-0035 branches are pre-created and the parallel registry is staged with zero active product leases. No TASK-0035 implementation or provider publishing is introduced by this transition.
+TASK-0035 final ship certification is complete. PR #310 activated Wave 4 certification and merged into `ship/week-1` as `6be416527aba881a316217ac255ac281983c5da9` after exact-head Shipping Fast Gate `35511757496` passed. PR #311 then merged the final integration/security certification tests as `a54c8cb318ad70ca102ae5c7aab654aca85f919f` after exact-head Shipping Fast Gate `35511976905` passed. Certified final ship head `a54c8cb318ad70ca102ae5c7aab654aca85f919f` passed AI Continuity Guard `35512031735`, Shipping Fast Gate `35512031731`, and Application Foundation CI `35512031752`. All TASK-0035 worker lanes are completed and released; Supervisor alone remains active for protected-main promotion and final acceptance.
 
 ## Tests
 
-Protected-main TASK-0034 acceptance head `d967a3ccd3f6acf27b5c2b959bfd2f93629398f3`: all five trusted-main gates PASS. TASK-0035 registration main head `0f282d732a79c5838f2424fb3b2641245060b8ad`: AI Continuity Guard `35507944337` PASS; Application Foundation CI `35507944240` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E and foundation; Security Supply Chain CI `35507944265` PASS including aggregate security gates; Release Integrity `35507944211` PASS; OpenSSF Scorecard `35507944309` PASS. This transition itself must pass fresh exact-head Continuity, Application and Security gates before merge.
+PR #310 exact-head Shipping Fast Gate `35511757496` PASS. PR #311 exact-head Shipping Fast Gate `35511976905` PASS. Final ship head `a54c8cb318ad70ca102ae5c7aab654aca85f919f`: AI Continuity Guard `35512031735` PASS; Shipping Fast Gate `35512031731` PASS; Application Foundation CI `35512031752` PASS including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ Protected-main TASK-0034 acceptance head `d967a3ccd3f6acf27b5c2b959bfd2f93629398
 
 ## Exact next action
 
-After guarded activation, map the frozen TASK-0031 brand/reusable-component/provider-template research onto the canonical content, asset and renderer contracts; implement versioned brand knowledge/kit references, reusable approved components and provider-template synchronization/reconciliation while keeping VSN canonical versions authoritative and leaving PHASE-07 campaign publishing, scheduling and execution out of scope.
+Promote certified TASK-0035 ship baseline `a54c8cb318ad70ca102ae5c7aab654aca85f919f` to protected `main` after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early.

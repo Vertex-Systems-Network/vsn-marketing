@@ -1,4 +1,16 @@
 {
   "schema_version": 2,
-  "leases": []
+  "leases": [
+    {
+      "agent": "supervisor-main",
+      "workstream": "WS-0035-SUPERVISOR-CONTROL",
+      "branch": "supervisor/TASK-0035",
+      "status": "active",
+      "write_paths": [
+        ".ai/parallel/AI-NATIVE-PLAN.md",
+        ".ai/parallel/WORKSTREAMS.yaml",
+        ".ai/parallel/AGENT-LEASES.yaml"
+      ]
+    }
+  ]
 }

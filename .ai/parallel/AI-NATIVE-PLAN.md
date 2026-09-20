@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **active — PHASE-06 certification wave**. TASK-0031 through TASK-0035 are completed on protected `main`; TASK-0036 is the only active PHASE-06 task. Supervisor plus one focused certification worker are active on the certified `ship/week-1` baseline.
+Status: **final PHASE-06 ship certification — Supervisor-only promotion preparation**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated and certified on `ship/week-1`. The certification worker is completed and released; Supervisor is the only active writer before protected-main promotion and final PHASE-06 acceptance.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
 Parent task: `TASK-0036`  
 Branch creation baseline: `36120709c4d8e63160871894ea61fca67a386934`  
-Active leases: `2`  
+Active leases: `1`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -27,7 +27,7 @@ Completion signal: `Work Done and Submitted`
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0036-SUPERVISOR-CONTROL | Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward. | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0036` | squash | merge latest ship/week-1 before resume |
-| 20 | WS-0036-PHASE-CERTIFICATION | Certify PHASE-06 exact-version reproducibility, workspace isolation, asset provenance and variant safety, rendering and preview security, accessibility and representative visual/client regression, and provider-template synchronization/drift boundaries without adding product behavior. | `occupied` | `worker-task0036-certification` | `active` | `worker-1/TASK-0036` | squash | merge latest ship/week-1 before resume |
+| 20 | WS-0036-PHASE-CERTIFICATION | Certify PHASE-06 exact-version reproducibility, workspace isolation, asset provenance and variant safety, rendering and preview security, accessibility and representative visual/client regression, and provider-template synchronization/drift boundaries without adding product behavior. | `open` | — | `completed` | `worker-1/TASK-0036` | squash | merged as PR #318 |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Certified activation baseline
@@ -37,7 +37,11 @@ Completion signal: `Work Done and Submitted`
 - A recursive Git-tree audit between prior certified ship head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8` and transition main `36120709c4d8e63160871894ea61fca67a386934` found zero non-`.ai/**` differences; only nine canonical AI control/state files differed.
 - `ship/week-1` was therefore safely realigned to `36120709c4d8e63160871894ea61fca67a386934`. The historical certified ship head is preserved at `archive/task-0035-final-ship` so append-only push verification retains an addressable base.
 - Exact ship head `36120709c4d8e63160871894ea61fca67a386934` passed AI Continuity Guard `35541535176` after the historical-base reachability repair, Shipping Fast Gate `35541535218`, and Application Foundation CI `35541535198`, including PostgreSQL/Redis integration, PHP floor, Playwright E2E, foundation, static analysis, formatting, frontend tests and build.
+- PR #317 activated the focused TASK-0036 certification lane and merged into `ship/week-1` as `fc6f34bdf19ae64cda8ae0451486fa4f7a1aa8f3` after exact-head Shipping Fast Gate `35541696540` passed.
+- PR #318 merged the phase-wide integration/security certification tests as `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` after exact-head Shipping Fast Gate `35542440490` passed.
+- Certified final ship head `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` passed AI Continuity Guard `35542490944`, Shipping Fast Gate `35542490931`, and Application Foundation CI `35542490958`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- WS-0036-PHASE-CERTIFICATION is completed and released; only Supervisor remains active for protected-main promotion and final PHASE-06 acceptance.
 
 ## Exact next action
 
-Merge this activation into `ship/week-1` only after the activation PR exact head passes Shipping Fast Gate. Then fast-forward `worker-1/TASK-0036` to the resulting certified ship head and add only the two leased certification test files. Reuse accepted TASK-0032 through TASK-0035 contracts; do not add product behavior merely to satisfy certification, and do not activate PHASE-07.
+Promote certified TASK-0036 PHASE-06 ship baseline `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` to protected `main` after this Supervisor reconciliation passes exact-head Shipping Fast Gate. Require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.

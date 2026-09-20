@@ -13,15 +13,13 @@
       ]
     },
     {
-      "agent": "worker-task0035-provider-sync",
-      "workstream": "WS-0035-PROVIDER-TEMPLATE-SYNC",
-      "branch": "worker-3/TASK-0035",
+      "agent": "worker-task0035-certification",
+      "workstream": "WS-0035-CERTIFICATION",
+      "branch": "worker-4/TASK-0035",
       "status": "active",
       "write_paths": [
-        "app/Modules/Providers/Domain/Templates/**",
-        "app/Modules/Providers/Application/TemplateSync/**",
-        "app/Modules/Providers/Infrastructure/TemplateSync/**",
-        "tests/Integration/Providers/Task0035ProviderTemplateSyncTest.php"
+        "tests/Integration/Task0035BrandProviderSyncCertificationTest.php",
+        "tests/Feature/Security/Task0035BrandProviderSyncSecurityTest.php"
       ]
     }
   ]

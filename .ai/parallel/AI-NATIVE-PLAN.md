@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0035 Brand Knowledge/Kit and Provider Template Synchronization
 
-Status: **active — Wave 3 provider-template synchronization and reconciliation**. TASK-0035 is the active PHASE-06 task. Waves 1 and 2 are integrated and certified on `ship/week-1`; Supervisor plus the dependency-unlocked provider-template synchronization lane are active while final certification remains staged.
+Status: **active — Wave 4 final adversarial/integration certification**. TASK-0035 is the active PHASE-06 task. Waves 1 through 3 are integrated and certified on `ship/week-1`; Supervisor plus the final certification lane are active.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0035`  
@@ -31,8 +31,8 @@ Completion signal: `Work Done and Submitted`
 | 5 | WS-0035-SUPERVISOR-CONTROL | TASK-0035 staged activation, shared contract coordination and final acceptance | `occupied` | `supervisor-main` | `active` | `supervisor/TASK-0035` | squash | merge latest ship/week-1 before resume |
 | 10 | WS-0035-BRAND-KIT | Versioned workspace brand knowledge/kit and deterministic token/reference resolution | `open` | — | `completed` | `worker-1/TASK-0035` | squash | merged as PR #304; PHP 8.3 fixture fix PR #305 |
 | 20 | WS-0035-REUSABLE-APPROVAL | Reusable component scope/dependency impact plus PHASE-06 approval/readiness governance | `open` | — | `completed` | `worker-2/TASK-0035` | squash | merged as PR #307 |
-| 30 | WS-0035-PROVIDER-TEMPLATE-SYNC | Provider-template mappings, derivative identity, drift/reconciliation and replay-safe sync | `occupied` | `worker-task0035-provider-sync` | `active` | `worker-3/TASK-0035` | squash | merge latest ship/week-1 before resume |
-| 40 | WS-0035-CERTIFICATION | Adversarial/integration certification for brand/component/provider-template synchronization | **OPEN** | — | `staged` | `worker-4/TASK-0035` | squash | merge latest main before resume |
+| 30 | WS-0035-PROVIDER-TEMPLATE-SYNC | Provider-template mappings, derivative identity, drift/reconciliation and replay-safe sync | `open` | — | `completed` | `worker-3/TASK-0035` | squash | merged as PR #309 |
+| 40 | WS-0035-CERTIFICATION | Adversarial/integration certification for brand/component/provider-template synchronization | `occupied` | `worker-task0035-certification` | `active` | `worker-4/TASK-0035` | squash | merge latest ship/week-1 before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Dependency-safe waves
@@ -58,7 +58,10 @@ Completion signal: `Work Done and Submitted`
 - PR #307 merged reusable component governance as `2795791b00d8b0cb9ea7a91152d7af9bbc73007b` after exact-head Shipping Fast Gate `35510872075` passed.
 - Wave 2 ship head `2795791b00d8b0cb9ea7a91152d7af9bbc73007b` passed AI Continuity Guard `35510933087`, Shipping Fast Gate `35510933084`, and Application Foundation CI `35510933098`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0035-REUSABLE-APPROVAL is completed and released.
+- PR #309 merged provider-template synchronization/reconciliation contracts as `1c72aab370fa5adf1c5380eea33d222a872841c3` after exact-head Shipping Fast Gate `35511535565` passed.
+- Wave 3 ship head `1c72aab370fa5adf1c5380eea33d222a872841c3` passed AI Continuity Guard `35511599038`, Shipping Fast Gate `35511599039`, and Application Foundation CI `35511599029`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- WS-0035-PROVIDER-TEMPLATE-SYNC is completed and released.
 
 ## Exact next action
 
-Merge this Wave 3 activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `supervisor/TASK-0035` and `worker-3/TASK-0035` to the resulting certified integration head and implement only workspace-scoped provider-template mappings, deterministic canonical-to-provider derivative identities, version/effective-date drift detection, replay/idempotency-safe reconciliation and versioned capability-evidence validation/fallbacks. Keep VSN canonical content/brand/component versions authoritative; provider credentials, upload identifiers, live remote fetch, publication lifecycle, campaign scheduling and PHASE-07 execution remain out of scope.
+Merge this Wave 4 activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-4/TASK-0035` to the resulting certified integration head and add only the two registered certification files proving brand-version immutability and exact deterministic resolution, shared/global component approval integrity and dependency impact, provider-template derivative authority/drift/fallback/replay safety, workspace isolation, versioned capability evidence and credential/publishing boundaries. Do not add product behavior merely to satisfy certification, and do not activate TASK-0036 before protected-main promotion and final TASK-0035 acceptance.

@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0035_final_ship_head_a54c8cb318ad70ca102ae5c7aab654aca85f919f_passed_run_35512031735",
-    "application_test_status": "task_0035_final_ship_head_a54c8cb318ad70ca102ae5c7aab654aca85f919f_passed_run_35512031752",
-    "security_supply_chain_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944265",
-    "release_integrity_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944211",
-    "scorecard_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944309"
+    "continuity_validation": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567839",
+    "application_test_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567860",
+    "security_supply_chain_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567875",
+    "release_integrity_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567831",
+    "scorecard_status": "task_0035_main_head_d956a416d90d78387e96f8164c6134c596d45bac_passed_run_35512567834"
   },
   "blockers": [],
-  "exact_next_action": "Promote certified TASK-0035 ship baseline a54c8cb318ad70ca102ae5c7aab654aca85f919f to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early."
+  "exact_next_action": "Run TASK-0035 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0036 in a separate guarded transition without pulling PHASE-07 campaign publishing, scheduling or execution forward."
 }

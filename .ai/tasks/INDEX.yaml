@@ -348,6 +348,16 @@
       "dependencies": [
         "TASK-0033"
       ]
+    },
+    {
+      "id": "TASK-0035",
+      "phase": "PHASE-06",
+      "title": "Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0034"
+      ]
     }
   ]
 }

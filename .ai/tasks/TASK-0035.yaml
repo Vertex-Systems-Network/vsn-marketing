@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0035",
+  "phase": "PHASE-06",
+  "module": "Content",
+  "title": "Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization",
+  "status": "planned",
+  "objective": "Implement workspace-scoped, versioned brand knowledge and brand-kit references, reusable approved content/component contracts, bounded approval/readiness semantics, and provider-template synchronization/reconciliation that keeps VSN canonical content authoritative while treating provider templates and channel mappings as versioned derivatives or capability evidence without pulling PHASE-07 campaign publishing forward.",
+  "dependencies": [
+    "TASK-0034"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped brand knowledge and brand-kit records persist immutable/versioned style tokens, identity metadata, reusable asset references and defaults with explicit provenance; published or execution-pinned brand versions are not mutated in place and cross-workspace access fails closed",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Canonical templates/components consume exact brand/version references deterministically and reusable components expose explicit local/global scope plus dependency/impact visibility; editing shared or approved components creates new versions rather than silently rewriting existing dependents",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Shared/global reusable components support explicit approval/readiness state, actor/audit provenance and deterministic transitions appropriate to PHASE-06 content governance without introducing PHASE-07 campaign approval, scheduling or publication semantics",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Provider-template synchronization uses explicit workspace/provider/template mappings and deterministic canonical-to-provider derivative identities/provenance; provider-owned templates never become the authoritative VSN canonical source and provider credentials or upload identifiers remain outside canonical content state",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Provider-template reconciliation detects version/effective-date drift, missing or incompatible mappings and external changes with deterministic conflict/fallback outcomes; synchronization is replay/idempotency safe and cannot silently overwrite canonical VSN versions or approved reusable components",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Provider/channel template and media requirements are consumed as versioned/effective-dated capability evidence, with deterministic validation or fallback errors for unsupported mappings; one provider's template model, dimensions, media limits or API lifecycle does not become a global canonical constant",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Brand/component/provider-template synchronization preserves workspace isolation, authorization, secret boundaries and auditability; browser/editor surfaces never receive ambient provider credentials and synchronization cannot perform unrestricted remote fetch, arbitrary code execution or live campaign publication",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Backend/integration/adversarial tests prove brand-version immutability, deterministic token/reference resolution, shared-component dependency impact, approval-state integrity, provider-template drift/reconciliation, idempotent synchronization, workspace isolation and provider-neutral canonical authority; exact-head continuity, architecture, static-analysis, formatting and security/supply-chain gates are green before TASK-0036 certification activation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After guarded activation, map the frozen TASK-0031 brand/reusable-component/provider-template research onto the canonical content, asset and renderer contracts; implement versioned brand knowledge/kit references, reusable approved components and provider-template synchronization/reconciliation while keeping VSN canonical versions authoritative and leaving PHASE-07 campaign publishing, scheduling and execution out of scope."
+}

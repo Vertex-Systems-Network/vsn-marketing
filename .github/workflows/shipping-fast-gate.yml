@@ -109,4 +109,4 @@ jobs:
         run: composer audit --locked --no-interaction --abandoned=report
 
       - name: Audit locked npm dependencies
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=moderate

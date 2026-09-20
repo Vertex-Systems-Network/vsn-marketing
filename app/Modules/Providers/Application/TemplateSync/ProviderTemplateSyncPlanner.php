@@ -41,13 +41,13 @@ final class ProviderTemplateSyncPlanner
 
         $desiredDerivativeIdentity = $this->hash([
             'schema_version' => 1,
-            'canonical' => $request->toArray(),
+            'canonical' => $request->derivativeInput(),
             'provider' => [
                 'provider_id' => $request->providerId,
                 'provider_template_reference' => $providerTemplateReference,
                 'capability_operation' => $capability->operation,
                 'capability_source_version' => $capability->sourceVersion,
-                'capability_constraints' => $capability->constraints,
+                'capability_constraints' => $this->normalizedCapabilityConstraints($capability->constraints),
             ],
         ]);
 
@@ -68,7 +68,7 @@ final class ProviderTemplateSyncPlanner
                 'source_version' => $capability->sourceVersion,
                 'observed_at' => $capability->observedAt->format(DATE_ATOM),
                 'fresh_until' => $capability->freshUntil?->format(DATE_ATOM),
-                'constraints' => $capability->constraints,
+                'constraints' => $this->normalizedCapabilityConstraints($capability->constraints),
             ],
             'observation' => $observation?->toArray(),
             'desired_derivative_identity' => $desiredDerivativeIdentity,
@@ -274,6 +274,20 @@ final class ProviderTemplateSyncPlanner
         }
 
         throw new InvalidArgumentException("Provider template capability constraints must be JSON-compatible: {$path}");
+    }
+
+    /** @param array<string, mixed> $constraints @return array<string, mixed> */
+    private function normalizedCapabilityConstraints(array $constraints): array
+    {
+        foreach (['template_kinds', 'media_kinds'] as $key) {
+            if (isset($constraints[$key]) && is_array($constraints[$key])) {
+                $values = $constraints[$key];
+                sort($values, SORT_STRING);
+                $constraints[$key] = $values;
+            }
+        }
+
+        return $constraints;
     }
 
     /**

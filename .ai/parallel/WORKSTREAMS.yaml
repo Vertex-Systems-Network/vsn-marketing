@@ -46,6 +46,31 @@
         "tests/Integration/Task0036Phase06CertificationTest.php",
         "tests/Feature/Security/Task0036Phase06SecurityCertificationTest.php"
       ]
+    },
+    {
+      "id": "WS-0036-DEPENDENCY-SECURITY-REMEDIATION",
+      "role": "worker",
+      "module": "Security",
+      "capability": "Remediate the exact-head Vitest/@vitest/mocker path-traversal advisory GHSA-82fw-gwwq-j7x9 and harden npm dependency-audit thresholds so moderate-or-higher advisories fail closed, without adding product behavior or PHASE-07 capability.",
+      "assigned_agent": "worker-task0036-dependency-security",
+      "branch": "worker-security/TASK-0036-vitest",
+      "worktree": "worktrees/task-0036-security-vitest",
+      "status": "in_progress",
+      "slot_status": "occupied",
+      "start_status": "active",
+      "onboarded_from_branch": "main",
+      "dependencies": [
+        "WS-0036-PHASE-CERTIFICATION"
+      ],
+      "merge_group": 30,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/security-ci.yml",
+        ".github/workflows/shipping-fast-gate.yml",
+        "docs/operations/security-supply-chain.md"
+      ]
     }
   ]
 }

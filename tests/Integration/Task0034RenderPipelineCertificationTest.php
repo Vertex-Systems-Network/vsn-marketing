@@ -209,7 +209,7 @@ it('changes derivative identities when exact source workspace or asset inputs ch
     $basePreview = (new PreviewPlanner($hasher))->plan(
         $baseRender,
         new PreviewViewport('desktop', 1280, 720),
-        new PreviewIsolationPolicy,
+        new PreviewIsolationPolicy(maxOutputBytes: 1000000),
         'task0034-regression-v1',
     );
 

@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-20T13:10:00+00:00`
+- Timestamp: `2026-09-20T22:00:00+00:00`
 - Active task: `TASK-0035`
-- Next task: `none`
+- Next task: `TASK-0036`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `f559d93e0c11fee2c473c74683a567949d3f4e91f74709b70ac5feb188db0673`
+- State fingerprint: `a9d4de8d2193699e155e2f0a1145b8b473ef4eb0dc9ac8d378bb93d215b5a63b`
 
 ## Completed / observed this session
 
-TASK-0035 is promoted and post-merge certified on protected `main`. PR #313 promoted the certified brand knowledge/kit, reusable-component governance and provider-template synchronization implementation as `d956a416d90d78387e96f8164c6134c596d45bac` after exact source head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8` passed AI Continuity Guard `35512463028`, Application Foundation CI `35512463013` and Security Supply Chain CI `35512463052`. Post-merge main head `d956a416d90d78387e96f8164c6134c596d45bac` then passed AI Continuity Guard `35512567839`, Application Foundation CI `35512567860`, Security Supply Chain CI `35512567875`, Release Integrity `35512567831` and OpenSSF Scorecard `35512567834`. AC-1 through AC-8 are reconciled true, all TASK-0035 workers remain completed and released, and TASK-0035 intentionally remains ready until this Supervisor-only final acceptance PR itself passes exact-head acceptance gates.
+TASK-0035 final acceptance PR #314 merged on protected `main` as `00821175143b6c41e66e2544b968ef8098524773`. That trusted main head passed AI Continuity Guard `35512912213`, Application Foundation CI `35512912226` including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E and foundation, Security Supply Chain CI `35512912282` including aggregate security gates, Release Integrity `35512912277`, and OpenSSF Scorecard `35512912322`. TASK-0036 is now registered only as the planned PHASE-06 certification successor. TASK-0035 remains active/ready and TASK-0036 is not executable until a separate guarded transition.
 
 ## Tests
 
-Protected-main promotion source head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8`: AI Continuity Guard `35512463028` PASS; Application Foundation CI `35512463013` PASS including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests/build; Security Supply Chain CI `35512463052` PASS including aggregate security gates. Post-merge main head `d956a416d90d78387e96f8164c6134c596d45bac`: AI Continuity Guard `35512567839` PASS; Application Foundation CI `35512567860` PASS; Security Supply Chain CI `35512567875` PASS; Release Integrity `35512567831` PASS; OpenSSF Scorecard `35512567834` PASS.
+Protected-main TASK-0035 final acceptance head `00821175143b6c41e66e2544b968ef8098524773`: AI Continuity Guard `35512912213` PASS; Application Foundation CI `35512912226` PASS; Security Supply Chain CI `35512912282` PASS; Release Integrity `35512912277` PASS; OpenSSF Scorecard `35512912322` PASS. This TASK-0036 registration PR must pass fresh exact-head Continuity, Application and Security gates before merge.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ Protected-main promotion source head `affad05aa50c3ca105cc0a3cd8940a37079cd0a8`:
 
 ## Exact next action
 
-Run TASK-0035 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0036 in a separate guarded transition without pulling PHASE-07 campaign publishing, scheduling or execution forward.
+Merge the TASK-0036 PHASE-06 certification registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0035 and activates TASK-0036. Do not begin PHASE-06 certification writes or any PHASE-07 campaign/publishing capability before that transition.

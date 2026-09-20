@@ -8,22 +8,22 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-06",
-    "active_task": "TASK-0035",
-    "last_completed_task": "TASK-0034",
-    "next_task": "TASK-0036"
+    "active_task": "TASK-0036",
+    "last_completed_task": "TASK-0035",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 42.5,
-    "phase_percent": 75.0,
+    "roadmap_percent": 43.4,
+    "phase_percent": 90,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912213",
-    "application_test_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912226",
-    "security_supply_chain_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912282",
-    "release_integrity_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912277",
-    "scorecard_status": "task_0035_final_acceptance_main_head_00821175143b6c41e66e2544b968ef8098524773_passed_run_35512912322"
+    "continuity_validation": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932113",
+    "application_test_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932125",
+    "security_supply_chain_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932115",
+    "release_integrity_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932147",
+    "scorecard_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932123"
   },
   "blockers": [],
-  "exact_next_action": "Merge the TASK-0036 PHASE-06 certification registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0035 and activates TASK-0036. Do not begin PHASE-06 certification writes or any PHASE-07 campaign/publishing capability before that transition."
+  "exact_next_action": "After this TASK-0035 to TASK-0036 transition merges and its post-merge protected-main gates pass, audit and realign `ship/week-1` to the trusted TASK-0036 baseline, then activate only the staged PHASE-06 certification worker with test-only leases. Do not add product behavior or activate PHASE-07 campaign approval, scheduling, publishing or execution."
 }

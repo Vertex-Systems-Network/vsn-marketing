@@ -9,7 +9,7 @@ use JsonException;
 
 final readonly class ResolvedBrandReferences
 {
-    /** @param list<BrandVersion> $versions */
+    /** @param  list<BrandVersion>  $versions */
     public function __construct(
         public string $workspaceId,
         public array $versions,
@@ -64,14 +64,7 @@ final readonly class ResolvedBrandReferences
         $resolved = [];
 
         foreach ($versions as $version) {
-            $tokens = [];
-
-            foreach ($version->toArray()['style_tokens'] as $token) {
-                $tokens[$token['key']] = $token['value'];
-            }
-
-            ksort($tokens, SORT_STRING);
-            $resolved[$version->brandKitId] = $tokens;
+            $resolved[$version->brandKitId] = $version->styleTokenMap();
         }
 
         return $resolved;

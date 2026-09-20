@@ -273,9 +273,9 @@ it('validates typed style tokens without permitting executable objects', functio
     expect(fn () => new BrandStyleToken('bad key', BrandTokenKind::Text, 'value'))
         ->toThrow(InvalidArgumentException::class, 'bounded stable identifier');
 
-    expect(new BrandStyleToken('number.scale', BrandTokenKind::Number, 1.5)->toArray())
+    expect((new BrandStyleToken('number.scale', BrandTokenKind::Number, 1.5))->toArray())
         ->toBe(['key' => 'number.scale', 'kind' => 'number', 'value' => 1.5])
-        ->and(new BrandStyleToken('feature.flag', BrandTokenKind::Boolean, true)->toArray())
+        ->and((new BrandStyleToken('feature.flag', BrandTokenKind::Boolean, true))->toArray())
         ->toBe(['key' => 'feature.flag', 'kind' => 'boolean', 'value' => true]);
 });
 

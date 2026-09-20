@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944337",
-    "application_test_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944240",
+    "continuity_validation": "task_0035_final_ship_head_a54c8cb318ad70ca102ae5c7aab654aca85f919f_passed_run_35512031735",
+    "application_test_status": "task_0035_final_ship_head_a54c8cb318ad70ca102ae5c7aab654aca85f919f_passed_run_35512031752",
     "security_supply_chain_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944265",
     "release_integrity_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944211",
     "scorecard_status": "task_0035_registration_main_head_0f282d732a79c5838f2424fb3b2641245060b8ad_passed_run_35507944309"
   },
   "blockers": [],
-  "exact_next_action": "After guarded activation, map the frozen TASK-0031 brand/reusable-component/provider-template research onto the canonical content, asset and renderer contracts; implement versioned brand knowledge/kit references, reusable approved components and provider-template synchronization/reconciliation while keeping VSN canonical versions authoritative and leaving PHASE-07 campaign publishing, scheduling and execution out of scope."
+  "exact_next_action": "Promote certified TASK-0035 ship baseline a54c8cb318ad70ca102ae5c7aab654aca85f919f to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0035 acceptance. Do not register or activate TASK-0036 or PHASE-07 campaign publishing, scheduling or execution early."
 }

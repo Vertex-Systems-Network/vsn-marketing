@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0034 Safe Editor/Render/Compiler Pipeline
 
-Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0034 authoring/sanitizer, deterministic renderer/compiler, isolated preview/regression, traversal remediation and final adversarial/integration certification are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
+Status: **final acceptance**. TASK-0034 safe editor/render/compiler implementation is promoted to protected `main`; all worker lanes are completed and released, and Supervisor is the only active writer for final acceptance.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0034`  
@@ -67,7 +67,11 @@ Completion signal: `Work Done and Submitted`
 - PR #297 aligned the remaining integration fixture to the exact pinned renderer output limit and merged as `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` after exact-head Shipping Fast Gate `35505872547` passed.
 - Certified final ship head `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` passed AI Continuity Guard `35505933980`, Shipping Fast Gate `35505933967`, and Application Foundation CI `35505933975`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - Merge group 40 is dependency-complete; the certification worker lease is released.
+- PR #298 reconciled final ship certification and merged as `c79295b07c93daf7e164d8932b76f6d5bfc0e888`; that exact source head passed AI Continuity Guard `35506384437`, Application Foundation CI `35506384449`, and Security Supply Chain CI `35506384438` during protected-main promotion.
+- PR #299 promoted the certified TASK-0034 implementation to protected `main` as `97038ee4f133c4231b61dbf9fcef2f08483e21ba`.
+- Post-merge main head `97038ee4f133c4231b61dbf9fcef2f08483e21ba` passed AI Continuity Guard `35506533580`, Application Foundation CI `35506533578`, Security Supply Chain CI `35506533582`, Release Integrity `35506533591`, and OpenSSF Scorecard `35506533600`.
+- AC-1 through AC-8 are reconciled true while TASK-0034 intentionally remains `ready` until this final acceptance PR passes its own exact-head gates.
 
 ## Exact next action
 
-Promote certified TASK-0034 ship baseline 4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5 to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0034 acceptance. Do not activate TASK-0035 brand/provider-template synchronization or PHASE-07 publishing early.
+Run TASK-0034 final acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass, then register and activate TASK-0035 in a separate guarded transition without pulling PHASE-07 publishing forward.

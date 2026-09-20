@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **security remediation before final PHASE-06 promotion**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification is integrated on `ship/week-1`, but exact-head Security Supply Chain CI exposed a moderate Vitest/@vitest/mocker path-traversal advisory that the prior high-only npm threshold did not block. Supervisor remains the sole active writer and temporarily owns the bounded dependency-security remediation because dependency manifests and GitHub workflows are Supervisor-owned shared paths.
+Status: **security-remediated final PHASE-06 promotion preparation**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification plus the bounded Vitest dependency remediation are integrated and certified on `ship/week-1`. Supervisor alone remains active for protected-main promotion and final PHASE-06 acceptance.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
@@ -42,8 +42,10 @@ Completion signal: `Work Done and Submitted`
 - Certified final ship head `87da7f71aa4d75d865ad9a01fbeb54b940ea5f98` passed AI Continuity Guard `35542490944`, Shipping Fast Gate `35542490931`, and Application Foundation CI `35542490958`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0036-PHASE-CERTIFICATION is completed and released.
 - Promotion head `1b6273711f0c51449b1fbe4aa39923e10571ae84` passed Security Supply Chain CI `35542862212`, but its dependency-audit log reported two moderate npm vulnerabilities. The material advisory is `GHSA-82fw-gwwq-j7x9` affecting Vitest/@vitest/mocker 3.x with path traversal / arbitrary file read; the job stayed green only because the repository used `npm audit --audit-level=high`.
-- The Supervisor-owned remediation upgrades the affected Vitest dependency using the already reviewable Dependabot lockfile delta and raises both Shipping Fast Gate and Security Supply Chain CI npm audit thresholds to `moderate`; dependency manifests and `.github/**` stay under their reserved Supervisor ownership, and no product behavior or PHASE-07 capability is authorized.
+- PR #321 activated the bounded security remediation under Supervisor-owned dependency/workflow paths and merged as `8cca66b7c05e53e0e9eb8b1a82cfd3e3a90ec985` after Shipping Fast Gate `35543969770` passed.
+- PR #322 upgraded Vitest/@vitest/mocker to 5.0.0 with the reviewed lockfile delta, raised both npm audit gates to `moderate`, and merged as `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` after exact-head Shipping Fast Gate `35544109634` passed with `found 0 vulnerabilities`.
+- Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` passed AI Continuity Guard `35544171867`, Application Foundation CI `35544171851`, and Security Supply Chain CI `35544171748`; exact-head Composer audit found no advisories and npm audit at the MODERATE threshold found zero vulnerabilities. The temporary dependency/workflow Supervisor lease is now released.
 
 ## Exact next action
 
-Merge this security-remediation activation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then perform the reserved-path remediation under `WS-0036-SUPERVISOR-CONTROL`: upgrade Vitest to a patched 5.x release using the reviewed deterministic lockfile delta, change both npm audit gates to `--audit-level=moderate`, update the security operations contract, and require frontend/application/security gates to pass with zero remaining npm vulnerabilities before protected-main promotion resumes.
+Promote the security-remediated TASK-0036 PHASE-06 ship baseline `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.

@@ -1,12 +1,12 @@
 # AI-Native Parallel Plan — TASK-0034 Safe Editor/Render/Compiler Pipeline
 
-Status: **active — Wave 4 final adversarial/security certification after renderer remediation**. TASK-0034 is the active PHASE-06 task. Waves 1 through 3 plus the bounded path-traversal remediation are integrated and certified on `ship/week-1`; Supervisor plus the final certification lane are active.
+Status: **final ship certification — Supervisor-only promotion preparation**. TASK-0034 authoring/sanitizer, deterministic renderer/compiler, isolated preview/regression, traversal remediation and final adversarial/integration certification are integrated and certified on `ship/week-1`. All worker lanes are completed and released; Supervisor is the only active writer before protected-main promotion.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0034`  
 Parent task: `TASK-0034`  
 Branch creation baseline: `59c79c28ea3a26a8960e393666f6c799050065fd`  
-Active leases: `2`  
+Active leases: `1`  
 Shipping Mode writer cap: `5`  
 Repository hard cap: `12`  
 Merge strategy: `squash`  
@@ -31,7 +31,7 @@ Completion signal: `Work Done and Submitted`
 | 10 | WS-0034-AUTHORING-SANITIZER | Canonical visual/safe-code authoring boundaries plus target-aware sanitization | `open` | — | `completed` | `worker-1/TASK-0034` | squash | merged as PR #287 |
 | 20 | WS-0034-RENDER-COMPILER | Deterministic pinned renderer/compiler contracts and artifact provenance | `open` | — | `completed` | `worker-2/TASK-0034` | squash | merged as PR #289; traversal remediation PR #294 |
 | 30 | WS-0034-PREVIEW-REGRESSION | Isolated bounded preview/test orchestration and regression-result contracts | `open` | — | `completed` | `worker-3/TASK-0034` | squash | merged as PR #291 |
-| 40 | WS-0034-CERTIFICATION | Adversarial/browser certification for sanitizer, render determinism, isolation and accessibility | `occupied` | `worker-task0034-certification` | `active` | `worker-4/TASK-0034` | squash | merge latest ship/week-1 before certification writes |
+| 40 | WS-0034-CERTIFICATION | Adversarial/browser certification for sanitizer, render determinism, isolation and accessibility | `open` | — | `completed` | `worker-4/TASK-0034` | squash | merged as PR #296; preview-bound certification fix PR #297 |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Dependency-safe waves
@@ -61,7 +61,13 @@ Completion signal: `Work Done and Submitted`
 - PR #294 closed relative POSIX/Windows plus encoded/double-encoded traversal handling and merged as `5bb0c0539d9a340fc67409df1e86f6ffe701af1b` after exact-head Shipping Fast Gate `35449184862` passed.
 - Remediated ship head `5bb0c0539d9a340fc67409df1e86f6ffe701af1b` passed AI Continuity Guard `35449253920`, Shipping Fast Gate `35449253905`, and Application Foundation CI `35449253893`, including PostgreSQL/Redis integration, PHP 8.3, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
 - WS-0034-RENDER-COMPILER is completed and released again; Wave 4 certification may resume.
+- PR #295 reactivated Wave 4 certification on the remediated ship baseline and merged as `ea8d5548861bfa5db4b60fdf79e8973db5a6a086`; that head passed AI Continuity Guard `35449589074`, Shipping Fast Gate `35449589102`, and Application Foundation CI `35449589038`.
+- PR #296 merged the final adversarial/integration certification tests as `9554ee15d8a898fe3d130fa62fa1532ee0af21be` after corrected exact-head Shipping Fast Gate `35505699663` passed.
+- Certification gating and the first post-merge PostgreSQL run proved the preview-vs-renderer resource bound by correctly failing closed where test fixtures used a preview default output limit above the pinned renderer limit; no product behavior defect was found.
+- PR #297 aligned the remaining integration fixture to the exact pinned renderer output limit and merged as `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` after exact-head Shipping Fast Gate `35505872547` passed.
+- Certified final ship head `4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5` passed AI Continuity Guard `35505933980`, Shipping Fast Gate `35505933967`, and Application Foundation CI `35505933975`, including PostgreSQL/Redis integration, PHP 8.3 compatibility, Playwright E2E, foundation, backend/architecture tests, static analysis, formatting, frontend tests and build.
+- Merge group 40 is dependency-complete; the certification worker lease is released.
 
 ## Exact next action
 
-Merge this certification reactivation into `ship/week-1` only after exact-head Shipping Fast Gate passes. Then fast-forward `worker-4/TASK-0034` to the resulting certified integration head and add only the two registered adversarial/integration certification test files proving sanitizer bypass resistance, deterministic renderer and preview identities, workspace-safe exact dependencies/assets, accessibility findings, replay/idempotency, isolation/resource bounds, traversal denial and absence of provider publishing or privileged execution. Do not add product behavior merely to satisfy certification and do not activate TASK-0035 before final protected-main acceptance.
+Promote certified TASK-0034 ship baseline 4839f85cd8d453dd1f95cca3fc686bdbc5c2b0f5 to protected main after this Supervisor reconciliation is green; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the promotion before final TASK-0034 acceptance. Do not activate TASK-0035 brand/provider-template synchronization or PHASE-07 publishing early.

@@ -13,14 +13,15 @@
       ]
     },
     {
-      "agent": "worker-task0035-reusable",
-      "workstream": "WS-0035-REUSABLE-APPROVAL",
-      "branch": "worker-2/TASK-0035",
+      "agent": "worker-task0035-provider-sync",
+      "workstream": "WS-0035-PROVIDER-TEMPLATE-SYNC",
+      "branch": "worker-3/TASK-0035",
       "status": "active",
       "write_paths": [
-        "app/Modules/Templates/Domain/Governance/**",
-        "app/Modules/Templates/Application/Governance/**",
-        "tests/Unit/Templates/Task0035ReusableApprovalTest.php"
+        "app/Modules/Providers/Domain/Templates/**",
+        "app/Modules/Providers/Application/TemplateSync/**",
+        "app/Modules/Providers/Infrastructure/TemplateSync/**",
+        "tests/Integration/Providers/Task0035ProviderTemplateSyncTest.php"
       ]
     }
   ]

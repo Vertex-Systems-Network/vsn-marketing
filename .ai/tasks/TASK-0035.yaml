@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Content",
   "title": "Implement brand knowledge/kit, reusable components, approvals, and provider template synchronization",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement workspace-scoped, versioned brand knowledge and brand-kit references, reusable approved content/component contracts, bounded approval/readiness semantics, and provider-template synchronization/reconciliation that keeps VSN canonical content authoritative while treating provider templates and channel mappings as versioned derivatives or capability evidence without pulling PHASE-07 campaign publishing forward.",
   "dependencies": [
     "TASK-0034"
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Merge the TASK-0036 PHASE-06 certification registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main acceptance and perform a separate guarded transition that completes TASK-0035 and activates TASK-0036. Do not begin PHASE-06 certification writes or any PHASE-07 campaign/publishing capability before that transition."
+  "exact_next_action": "TASK-0035 is certified complete on protected main after final acceptance PR #314 and trusted TASK-0036 registration PR #315; TASK-0036 is the guarded PHASE-06 certification successor."
 }

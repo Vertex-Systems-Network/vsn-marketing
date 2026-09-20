@@ -11,16 +11,6 @@
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml"
       ]
-    },
-    {
-      "agent": "worker-task0034-certification",
-      "workstream": "WS-0034-CERTIFICATION",
-      "branch": "worker-4/TASK-0034",
-      "status": "active",
-      "write_paths": [
-        "tests/Integration/Task0034RenderPipelineCertificationTest.php",
-        "tests/Feature/Security/Task0034RenderSecurityCertificationTest.php"
-      ]
     }
   ]
 }

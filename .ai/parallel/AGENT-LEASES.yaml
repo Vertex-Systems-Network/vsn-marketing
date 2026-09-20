@@ -11,6 +11,19 @@
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml"
       ]
+    },
+    {
+      "agent": "worker-task0036-dependency-security",
+      "workstream": "WS-0036-DEPENDENCY-SECURITY-REMEDIATION",
+      "branch": "worker-security/TASK-0036-vitest",
+      "status": "active",
+      "write_paths": [
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/security-ci.yml",
+        ".github/workflows/shipping-fast-gate.yml",
+        "docs/operations/security-supply-chain.md"
+      ]
     }
   ]
 }

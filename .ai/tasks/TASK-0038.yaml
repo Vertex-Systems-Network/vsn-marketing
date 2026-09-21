@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history",
-  "status": "in_progress",
+  "status": "ready",
   "objective": "Implement the provider-neutral, workspace-scoped canonical campaign domain for governed cross-channel work: deterministic campaign lifecycle, immutable campaign/publication snapshots, exact recipient/target bindings, snapshot-bound approvals and append-oriented audit history, while keeping provider publication attempts, production scheduling execution and credential activation outside this task.",
   "dependencies": [
     "TASK-0037"
@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "Workspace-scoped campaign aggregates persist deterministic lifecycle state and guarded transitions for draft/review/needs-approval/approved/ready-or-scheduled-intent/cancelled/completed semantics; invalid, stale or unauthorized transitions fail closed and every accepted transition records actor, reason, prior state and resulting state without invoking provider publication or a production scheduler",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Every approval-eligible campaign revision resolves to an immutable snapshot that pins exact content/template/component/brand/media versions, canonical target/recipient identity, intended execution metadata and required capability-evidence references; material edits create a new snapshot instead of mutating an approved or execution-pinned snapshot",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Recipient and target bindings are canonical, workspace-isolated and provider-neutral: exact channel/account/recipient selections or materialized sets are reproducible from stable VSN identities, cannot cross workspace boundaries, and never treat temporary provider upload/container/post identifiers as canonical authority",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Approval decisions bind to the exact immutable campaign snapshot, authorized target set, approver identity/role and current required capability evidence; material content/target edits, revoked authorization, stale/incompatible capability evidence or approval expiry invalidate or re-evaluate approval deterministically rather than silently inheriting stale authority",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Campaign and approval history is append-oriented and auditable: lifecycle transitions, snapshot creation, approval/rejection/revocation, target changes and cancellation/completion decisions preserve immutable actor/time/reason/evidence provenance and can reconstruct the authoritative history without rewriting prior facts",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Campaign-domain mutations are transaction-safe, concurrency-safe and idempotent where replay is possible; duplicate commands, stale versions and partial failures cannot create conflicting canonical snapshots, duplicate approvals or cross-workspace references, and migration/data-safety requirements are explicitly covered where schema changes are introduced",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "The implementation preserves prior consent, suppression, sender-safety, content/version, asset, provider-capability and workspace-security boundaries; provider credentials/secrets remain referenced outside canonical campaign records, capability/app-review/account-role evidence fails closed when missing or stale, and no live provider API call, media upload, publication attempt or production scheduling worker is activated by TASK-0038",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "Backend, PostgreSQL integration and adversarial tests prove lifecycle guards, snapshot immutability, approval invalidation, target/recipient isolation, append-only auditability, transaction/idempotency behavior and provider-neutral authority; exact-head AI continuity, architecture/static-analysis/formatting, application, integration and security/supply-chain gates are green before TASK-0039 registration",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform one consolidated exact-head verification for PR #349. Merge the TASK-0038 scheduled-intent and canonical target certification milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, and the exact head is unchanged. Treat scheduled-intent authority/timestamp/replay failures, stale approval inheritance, canonical materialized-set drift, target-hash instability, cross-workspace identity/list/tag access, transaction safety regressions, or any scheduler/provider side effect as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive."
+  "exact_next_action": "Run TASK-0038 final acceptance on this Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that marks TASK-0038 completed and registers TASK-0039 as planned before any calendar/scheduler implementation. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority and the deferred Runner benchmark batch inactive."
 }

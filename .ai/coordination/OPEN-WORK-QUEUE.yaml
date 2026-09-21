@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "aed56d384d6a5a1c6f111f234426ede455963920",
-  "active_work_path": null,
+  "reconciled_main_sha": "e67c2401ff2cfa09adf914075cc89bc73371db96",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 338,
+    "branch": "control/register-task-0038-phase07",
+    "milestone": "TASK-0038-REGISTRATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 338,
+      "title": "plan(phase07): register TASK-0038 campaign domain",
+      "disposition": "active_task_registration_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-009",
+      "branch": "control/register-task-0038-phase07"
     }
   ]
 }

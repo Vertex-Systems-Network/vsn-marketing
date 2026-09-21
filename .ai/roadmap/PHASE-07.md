@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0037 research complete; TASK-0038 campaign-domain implementation active under the frozen provider-neutral contract; no live provider publication or production scheduling execution active yet.**
+Status: **IN PROGRESS — TASK-0037 research complete; TASK-0038 implementation evidence is staged for final acceptance with AC-1 through AC-8 reconciled true; no live provider publication or production scheduling execution active yet.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 is complete. TASK-0038 is the active PHASE-07 implementation task under the frozen research contract. TASK-0039 and later tasks remain non-executable until their dependencies are explicitly satisfied, separately registered and guarded by exact-head checks.
+TASK-0037 is complete. TASK-0038 is in final acceptance under the frozen research contract. TASK-0039 and later tasks remain non-executable until TASK-0038 acceptance merges, a separate guarded transition marks TASK-0038 completed, and TASK-0039 is explicitly registered.
 
 ## Staged research direction
 

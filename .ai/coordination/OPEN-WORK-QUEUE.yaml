@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3e5212d6a97312f3ea2434a4b7ce1a682f2164bb",
-  "active_work_path": null,
+  "reconciled_main_sha": "b05153240dfe45cf7236b55b43acaf03394541e9",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 349,
+    "branch": "task/0038-scheduled-target-certification",
+    "milestone": "TASK-0038-SCHEDULED-TARGET-CERTIFICATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 349,
+      "title": "feat(publishing): certify scheduled intent and canonical targets",
+      "disposition": "active_task_implementation_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-015",
+      "branch": "task/0038-scheduled-target-certification"
     }
   ]
 }

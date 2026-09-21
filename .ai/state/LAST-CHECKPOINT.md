@@ -2,34 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-09-21T15:06:38Z`
-- Observed main: `aed56d384d6a5a1c6f111f234426ede455963920`
+- Timestamp: `2026-09-21T15:24:42Z`
+- Observed main: `e67c2401ff2cfa09adf914075cc89bc73371db96`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `NONRECURSIVE-MAIN-OBSERVATION`
-- Milestone status: `COMPLETE`
+- Active PR: `338`
+- Active branch: `control/register-task-0038-phase07`
+- Current milestone: `TASK-0038-REGISTRATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0037`
-- Next task: `none`
+- Next task: `TASK-0038`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-009`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `160a22ec0f76d0a8ab292c0854ec5bc715128b885dfe4cf96d81ed484b3d7105`
+- State fingerprint: `fe9b71f7337463d450626c9b9769534cbaf0a49c94193e472ec2af090617148f`
 
 ## Completed / observed this session
 
-Non-recursive protected-main observation merged through PR #336 as `aed56d384d6a5a1c6f111f234426ede455963920`. Exact source `fd594bc19f71eaecce26ec2fe54f43336be77b35` passed AI Continuity Guard `35615993805`, Application Foundation CI `35615993706`, and Security Supply Chain CI `35615993876`. The Security run initially hit an upstream checksum-verified Trivy download HTTP 504; a bounded same-head recovery rerun passed without source, checksum, scanner, threshold, or gate weakening.
+TASK-0038 is staged on PR #338 as a planned successor only, dependent on TASK-0037. The frozen contract covers provider-neutral workspace-scoped campaign lifecycle, immutable snapshots, canonical target/recipient bindings, snapshot-bound approvals, append-oriented audit history, transaction/idempotency safety and prior consent/security/provider-capability boundaries.
 
-`observed_main_sha` is now anchored to the material merge `aed56d384d6a5a1c6f111f234426ede455963920`. The state-only reconciliation transport that carries this checkpoint is intentionally not represented as a new active work path or benchmark task. After that transport merges, the live main descendant must classify `self_reconciliation_descendant`; no recursive state-only reconciliation is allowed.
-
-TASK-0038 remains unactivated. RBT-004 remains authorization-blocked and all non-blocking Runner optimization work remains deferred.
+TASK-0037 remains the active PHASE-07 task. TASK-0038 is not activated. Live provider posting, production scheduling/provider credential activation, deployment/release execution and the deferred Runner benchmark batch remain forbidden.
 
 ## Tests
 
-PR #336 exact-head AI Continuity Guard `35615993805` PASS; Application Foundation CI `35615993706` PASS; Security Supply Chain CI `35615993876` PASS.
-
-RBT-008 is terminal PASS with immutable source, merge and workflow-run evidence.
+Exact-head external CI is pending. RBT-009 is registered as the immediate merge-required validation workload for the TASK-0038 registration head. RBT-004 remains authorization-blocked.
 
 ## Blockers
 
@@ -37,4 +33,4 @@ RBT-008 is terminal PASS with immutable source, merge and workflow-run evidence.
 
 ## Exact next action
 
-Register TASK-0038 from the frozen PHASE-07 research contract and the current 2026-09-21 no-material-drift revalidation on a fresh branch from current protected main. Require its registration head to pass the repository-mandated exact-head gates before merge. Only after that registration merge, complete TASK-0037 and activate TASK-0038 through a separate guarded transition. Do not activate live provider publishing, production/provider credentials, deployment/release authority, or the deferred Runner benchmark batch.
+Perform one consolidated exact-head CI/status refresh for PR #338. Merge TASK-0038 registration only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After that registration merge, perform a terminal registration reconciliation that records RBT-009 immutable evidence, then in a separate guarded milestone complete TASK-0037 and activate TASK-0038. Do not activate live provider publishing, production scheduling/provider credentials, deployment/release authority or the deferred Runner benchmark batch.

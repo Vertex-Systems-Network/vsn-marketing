@@ -145,6 +145,30 @@ def validate() -> list[str]:
         errors.append("onboarding no-slot message must be exactly Go Home Come Back Next Time")
     if not control.get("new_agent_must_start_from_main"):
         errors.append("new_agent_must_start_from_main must be true")
+    if control.get("strict_plan_following") is not True:
+        errors.append("strict_plan_following must be true")
+    if control.get("change_aware_ci_enabled") is not True:
+        errors.append("change_aware_ci_enabled must be true")
+    if control.get("runner_benchmark_batch_deferred") is not True:
+        errors.append("runner_benchmark_batch_deferred must be true")
+    if control.get("runner_benchmark_batch_requires_explicit_activation") is not True:
+        errors.append("runner_benchmark_batch_requires_explicit_activation must be true")
+    if control.get("ci_force_full_marker") != "CI-Mode: full":
+        errors.append("ci_force_full_marker must be exactly CI-Mode: full")
+    expected_order = [
+        "recover_validate",
+        "read_canonical_state_task_plan",
+        "verify_exact_branch_sha",
+        "classify_change",
+        "execute_one_milestone",
+        "run_change_class_checks",
+        "require_exact_head_pr_gates",
+        "merge_verified_head",
+        "reread_repository_state",
+        "separate_successor_registration_transition",
+    ]
+    if control.get("strict_execution_order") != expected_order:
+        errors.append("strict_execution_order drift")
     hard = int(control.get("hard_cap_writers", 0) or 0)
     default = int(control.get("default_max_concurrent_writers", 0) or 0)
     target = int(control.get("scale_target_writers", 0) or 0)

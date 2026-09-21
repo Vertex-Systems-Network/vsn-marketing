@@ -61,6 +61,7 @@ final readonly class CampaignTargetBinding
         $metadata = $this->metadata;
 
         if (in_array($this->kind, [CampaignTargetKind::ContactList, CampaignTargetKind::Tag], true)) {
+            /** @var list<string> $materializedContactIds */
             $materializedContactIds = $metadata['materialized_contact_ids'];
             sort($materializedContactIds, SORT_STRING);
             $metadata['materialized_contact_ids'] = $materializedContactIds;

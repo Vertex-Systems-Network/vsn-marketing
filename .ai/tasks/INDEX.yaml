@@ -364,7 +364,7 @@
       "phase": "PHASE-06",
       "title": "Certify PHASE-06",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0035"
       ]
@@ -374,7 +374,7 @@
       "phase": "PHASE-07",
       "title": "Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows",
       "weight": 15,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0036"
       ]

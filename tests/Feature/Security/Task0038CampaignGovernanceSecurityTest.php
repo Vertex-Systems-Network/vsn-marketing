@@ -568,13 +568,26 @@ it('records immutable target-change provenance, invalidates stale approval, and 
         createdAt: new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
     );
 
+    $revisionSnapshotEventId = (string) Str::uuid();
+    $revisionInvalidationEventId = (string) Str::uuid();
     $persisted = $service->appendMaterialRevision(
         $editor['user'],
         $editor['context'],
         $revision,
-        (string) Str::uuid(),
+        $revisionSnapshotEventId,
         'revision-snapshot-event-v2',
-        (string) Str::uuid(),
+        $revisionInvalidationEventId,
+        'revision-invalidation-v2',
+        'Changed the canonical target set.',
+        new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
+    );
+    $replayed = $service->appendMaterialRevision(
+        $editor['user'],
+        $editor['context'],
+        $revision,
+        $revisionSnapshotEventId,
+        'revision-snapshot-event-v2',
+        $revisionInvalidationEventId,
         'revision-invalidation-v2',
         'Changed the canonical target set.',
         new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
@@ -587,7 +600,12 @@ it('records immutable target-change provenance, invalidates stale approval, and 
     );
 
     expect($persisted->parentSnapshotId)->toBe($fixture['snapshot']->id)
+        ->and($replayed->id)->toBe($persisted->id)
+        ->and($replayed->snapshotHash)->toBe($persisted->snapshotHash)
         ->and($persisted->targetSetHash)->not->toBe($fixture['snapshot']->targetSetHash)
+        ->and(DB::table('campaign_snapshots')->where('id', $persisted->id)->count())->toBe(1)
+        ->and(DB::table('campaign_events')->where('idempotency_key', 'revision-snapshot-event-v2')->count())->toBe(1)
+        ->and(DB::table('campaign_events')->where('idempotency_key', 'revision-invalidation-v2')->count())->toBe(1)
         ->and($repository->findCampaign($workspaceId, $approvedV1->id)?->status)->toBe(CampaignStatus::NeedsApproval)
         ->and($revisionEvent)->not->toBeNull()
         ->and($revisionEvent->evidence['revision_kind'] ?? null)->toBe('material')

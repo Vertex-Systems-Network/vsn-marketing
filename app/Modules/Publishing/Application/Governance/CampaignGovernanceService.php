@@ -11,7 +11,6 @@ use App\Modules\Publishing\Domain\Campaign\CampaignApprovalDecision;
 use App\Modules\Publishing\Domain\Campaign\CampaignApprovalEvaluation;
 use App\Modules\Publishing\Domain\Campaign\CampaignApprovalOutcome;
 use App\Modules\Publishing\Domain\Campaign\CampaignEvent;
-use App\Modules\Publishing\Domain\Campaign\CampaignPayloadGuard;
 use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
@@ -414,25 +413,25 @@ final readonly class CampaignGovernanceService
         }
 
         $snapshot = $this->requireLatestSnapshot($context, $campaign);
-        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
-        $this->assertEffectiveApproval($evaluation);
-        $this->assertSchedulableIntendedExecution($snapshot, $at);
-
-        $evidence = $this->scheduledIntentEvidence($snapshot, $evaluation);
 
         if ($campaign->status === CampaignStatus::ScheduledIntent) {
             $this->assertScheduledIntentReplay(
                 context: $context,
                 campaign: $campaign,
+                snapshot: $snapshot,
                 eventId: $eventId,
                 eventIdempotencyKey: $eventIdempotencyKey,
                 reason: $reason,
-                evidence: $evidence,
-                at: $at,
             );
 
             return $campaign;
         }
+
+        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
+        $this->assertEffectiveApproval($evaluation);
+        $this->assertSchedulableIntendedExecution($snapshot, $at);
+
+        $evidence = $this->scheduledIntentEvidence($snapshot, $evaluation);
 
         $next = $campaign->transitionTo(CampaignStatus::ScheduledIntent, $at);
         $event = CampaignEvent::transitioned(
@@ -810,17 +809,13 @@ final readonly class CampaignGovernanceService
         }
     }
 
-    /**
-     * @param  array<string, mixed>  $evidence
-     */
     private function assertScheduledIntentReplay(
         TenantContext $context,
         Campaign $campaign,
+        CampaignSnapshot $snapshot,
         string $eventId,
         string $eventIdempotencyKey,
         ?string $reason,
-        array $evidence,
-        DateTimeImmutable $at,
     ): void {
         $matches = array_values(array_filter(
             $this->campaigns->history($context->workspaceId, $campaign->id),
@@ -832,6 +827,9 @@ final readonly class CampaignGovernanceService
         }
 
         $event = $matches[0];
+        $approvalId = $event->evidence['approval_id'] ?? null;
+        $intendedExecution = $event->evidence['intended_execution'] ?? null;
+
         if (
             $event->id !== $eventId
             || $event->type !== CampaignEvent::LIFECYCLE_TRANSITIONED
@@ -839,10 +837,30 @@ final readonly class CampaignGovernanceService
             || $event->reason !== $reason
             || $event->fromStatus !== CampaignStatus::Approved
             || $event->toStatus !== CampaignStatus::ScheduledIntent
-            || CampaignPayloadGuard::hash($event->evidence) !== CampaignPayloadGuard::hash($evidence)
-            || $event->occurredAt->format('U.u') !== $at->format('U.u')
+            || ($event->evidence['intent_kind'] ?? null) !== 'scheduled'
+            || ($event->evidence['snapshot_id'] ?? null) !== $snapshot->id
+            || ($event->evidence['snapshot_hash'] ?? null) !== $snapshot->snapshotHash
+            || ($event->evidence['target_set_hash'] ?? null) !== $snapshot->targetSetHash
+            || $intendedExecution !== $snapshot->intendedExecution
+            || ($event->evidence['scheduler_execution'] ?? null) !== false
+            || ! is_string($approvalId)
+            || trim($approvalId) === ''
         ) {
             throw new InvalidArgumentException('Campaign scheduled-intent replay conflicts with existing history.');
+        }
+
+        $approvalExists = array_any(
+            $this->campaigns->approvalDecisions(
+                $context->workspaceId,
+                $campaign->id,
+                $snapshot->id,
+            ),
+            static fn ($decision): bool => $decision->id === $approvalId
+                && $decision->outcome === CampaignApprovalOutcome::Approved,
+        );
+
+        if (! $approvalExists) {
+            throw new InvalidArgumentException('Campaign scheduled-intent replay approval provenance is invalid.');
         }
     }
 

@@ -5,7 +5,8 @@ Status: **deferred registry — collect now, execute as one coordinated runner b
 Owner: Supervisor control plane  
 Workstream: `WS-0036-SUPERVISOR-CONTROL`  
 Execution policy: runner tasks are deferred by default and executed in one coordinated batch; only the explicit blocker-escalation exception below permits earlier execution.  
-Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.\nInteraction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.\n
+Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
+Interaction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.\n
 ## Purpose
 
 This file is the persistent benchmark/backlog for work whose primary subject is a CI/automation runner, runner resource profile, runner/toolchain performance, or production-representative benchmark runner. Product and security development continue normally while runner work accumulates here. When the runner batch is explicitly activated, items are executed together so measurements are comparable and changes do not drift across unrelated feature work.

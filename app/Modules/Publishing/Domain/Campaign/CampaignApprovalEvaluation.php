@@ -46,12 +46,18 @@ final readonly class CampaignApprovalEvaluation
 
     public function withDecisionId(string $decisionId): self
     {
-        return $this->valid
-            ? self::valid($decisionId)
-            : self::invalid(
-                reason: $this->reason,
-                decisionId: $decisionId,
-                detail: $this->detail,
-            );
+        if ($this->valid) {
+            return self::valid($decisionId);
+        }
+
+        if ($this->reason === null) {
+            throw new InvalidArgumentException('Invalid campaign approval evaluation is missing its reason.');
+        }
+
+        return self::invalid(
+            reason: $this->reason,
+            decisionId: $decisionId,
+            detail: $this->detail,
+        );
     }
 }

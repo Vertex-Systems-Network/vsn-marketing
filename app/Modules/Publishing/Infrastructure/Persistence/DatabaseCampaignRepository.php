@@ -239,6 +239,53 @@ final readonly class DatabaseCampaignRepository
         return null;
     }
 
+    public function latestSnapshot(string $workspaceId, string $campaignId): ?CampaignSnapshot
+    {
+        $this->assertCampaignScope($workspaceId, $campaignId);
+
+        $row = $this->database->connection()->table('campaign_snapshots')
+            ->where('workspace_id', $workspaceId)
+            ->where('campaign_id', $campaignId)
+            ->orderByDesc('version_number')
+            ->first();
+
+        return $row instanceof stdClass ? $this->hydrateSnapshot($row) : null;
+    }
+
+    /** @return list<CampaignApprovalDecision> */
+    public function approvalDecisions(
+        string $workspaceId,
+        string $campaignId,
+        string $snapshotId,
+    ): array {
+        $this->assertCampaignScope($workspaceId, $campaignId);
+
+        $snapshot = $this->database->connection()->table('campaign_snapshots')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', $snapshotId)
+            ->first();
+
+        if (! $snapshot instanceof stdClass) {
+            $this->denyIfForeignSnapshotIdExists($workspaceId, $snapshotId);
+            throw new InvalidArgumentException('Campaign approval snapshot does not exist in this workspace.');
+        }
+
+        if ((string) $snapshot->campaign_id !== $campaignId) {
+            throw new InvalidArgumentException('Campaign approval snapshot belongs to a different campaign.');
+        }
+
+        return $this->database->connection()->table('campaign_approval_decisions')
+            ->where('workspace_id', $workspaceId)
+            ->where('campaign_id', $campaignId)
+            ->where('snapshot_id', $snapshotId)
+            ->orderBy('occurred_at')
+            ->orderBy('id')
+            ->get()
+            ->map(fn (stdClass $row): CampaignApprovalDecision => $this->hydrateApproval($row))
+            ->values()
+            ->all();
+    }
+
     public function appendApproval(
         CampaignApprovalDecision $decision,
         CampaignEvent $event,

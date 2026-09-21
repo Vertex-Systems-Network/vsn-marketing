@@ -317,18 +317,33 @@
       "source": "PR #345 / README progress synchronization control protocol v2.4.2",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #345 exact-head status/comment"
+        "git_sha": "875c01c8cc7549486296e01110d3704f74260695",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #345 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/readme-progress-sync-v2; instruction fingerprint + supervisor/parallel validators + README canonical progress mirror + non-recursive observation",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:readme-progress-sync-v2:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 345,
+        "source_sha": "875c01c8cc7549486296e01110d3704f74260695",
+        "merge_sha": "5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1",
+        "workflow_runs": {
+          "ai_continuity_guard": 35654800644,
+          "application_foundation_ci": 35654800643,
+          "security_supply_chain_ci": 35654800691
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Initial exact-head continuity validation exposed an execution-journal event-109 hash mismatch. The journal hash chain was repaired without weakening README synchronization, application, security, continuity, or change-classification gates; the corrected exact head then passed all three required workflows."
+      }
     }
   ]
 }

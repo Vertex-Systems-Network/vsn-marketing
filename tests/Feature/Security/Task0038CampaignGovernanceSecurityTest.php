@@ -750,7 +750,6 @@ it('records cancellation provenance and keeps terminal campaign history append-o
     ))->toThrow(InvalidArgumentException::class, 'Terminal campaigns cannot create');
 });
 
-
 it('creates a replay-safe scheduled intent from an exact approved snapshot without executing a scheduler', function () {
     $editor = task0038GovernanceActor('scheduled-intent-editor');
     $workspaceId = (string) $editor['workspace']->getKey();

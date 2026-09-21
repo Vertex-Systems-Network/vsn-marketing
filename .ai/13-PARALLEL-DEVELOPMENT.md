@@ -92,6 +92,18 @@ When canonical agent-working behavior changes, the same PR must:
 5. copy the same revision/fingerprint into README;
 6. pass `python tools/ai_parallel.py validate`.
 
+## README progress synchronization
+
+README progress synchronization is mandatory durable state, not optional dashboard polish.
+
+- Every PR that changes `.ai/state/CURRENT-STATE.yaml` MUST update `README.md` in the same PR.
+- The README machine marker `AI_PROGRESS_SNAPSHOT` MUST mirror canonical `roadmap_percent`, `phase_percent`, current phase, active task, current milestone, and milestone status from `CURRENT-STATE.yaml`.
+- Human-readable README progress, phase/task labels and progress bars MUST be refreshed from canonical repository state; agents may not invent or manually estimate percentages.
+- CI/status-only interactions that make no repository state write do not create artificial README commits. The next durable state-changing milestone performs the required sync.
+- `README.md` is an approved self-reconciliation surface so a terminal state+README reconciliation does not create an infinite protected-main observation loop.
+- `python tools/supervisor_contract.py validate` fails closed when the README snapshot drifts, and PR-event validation fails when a durable state change omits README.
+- The README churn guard applies only to non-durable prose/dashboard churn; it MUST NOT suppress this required progress sync.
+
 ## Strict AI execution order and change-aware CI
 
 The following order is **mandatory** for every AI/Supervisor development interaction. It is not advisory and may not be reordered for convenience:
@@ -146,7 +158,7 @@ Compact state is a resume index and never overrides live repository/runtime trut
 On every resume, compare the live protected-main SHA with the anchor:
 
 - exact equality is current;
-- if live main is a descendant and the entire anchor-to-main diff is limited to approved durable reconciliation surfaces (`CURRENT-STATE.yaml`, `LAST-CHECKPOINT.md`, rolling/archived execution journal files, coordination queue, and Runner Benchmark), classify it as `self_reconciliation_descendant` and **do not create another state-only reconciliation PR**;
+- if live main is a descendant and the entire anchor-to-main diff is limited to approved durable reconciliation surfaces (`CURRENT-STATE.yaml`, `LAST-CHECKPOINT.md`, rolling/archived execution journal files, coordination queue, Runner Benchmark, and the README progress snapshot), classify it as `self_reconciliation_descendant` and **do not create another state-only reconciliation PR**;
 - if the anchor is not an ancestor, or any product/task/tool/workflow/instruction/other material path changed, classify it as material/conflicting drift and reconcile that evidence before new writable work.
 
 This single-hop rule prevents recursive “update observed SHA -> merge -> SHA changed again” loops while still failing closed on real repository drift. `python tools/supervisor_contract.py validate-main-observation --current-main <sha>` is the machine check.
@@ -191,7 +203,7 @@ Security is fail-closed: never weaken auth/authorization, CSRF/nonces, validatio
 
 Migration changes require explicit review of idempotency, transaction boundaries, apply-success/marker-failure recovery, retries, rollback/restore, destructive recovery, concurrency, partial execution and backup/snapshot requirements. Destructive migration authority remains separate and explicit.
 
-Large README/progress dashboards change only when public/module lifecycle truth materially changes or at terminal product/integration closeout. Governance/security/coordination cycles update compact state and relevant governance surfaces without dashboard churn.
+Every durable milestone PR that changes `CURRENT-STATE.yaml` must synchronize the README progress snapshot in the same PR. CI/status-only turns with no repository state write do not fabricate README churn. Other large README prose/dashboard changes remain limited to material public/module lifecycle truth or terminal closeout.
 
 Third-party CI actions remain immutably pinned; credential persistence stays disabled unless reviewed; permissions are least-privilege; dangerous `pull_request_target` use requires separate review; dependency and distributable supply-chain audits remain fail-closed.
 

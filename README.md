@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=README-PROGRESS-SYNC-V2 status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-REVISION-HISTORY status=VERIFYING -->
 
 > Last verified protected-main baseline: **2026-09-22** at `5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1` after README progress-sync protocol PR #345 merged. Exact source `875c01c8cc7549486296e01110d3704f74260695` passed AI Continuity Guard `35654800644`, Application Foundation CI `35654800643`, and Security Supply Chain CI `35654800691`. Product capability remains TASK-0038 approval/lifecycle orchestration plus campaign foundation; this control merge adds no provider publication or scheduler authority.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: README-PROGRESS-SYNC-V2 — COMPLETE**
+**Current milestone: TASK-0038-REVISION-HISTORY — VERIFYING**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -55,7 +55,7 @@ TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live p
 
 The next bounded product milestone closes remaining revision/history certification gaps: material content/target edits must create new immutable snapshots, target-change plus cancellation/completion provenance must remain append-oriented, and adversarial transaction/replay/workspace-isolation tests must cover the remaining acceptance surface.
 
-README progress-sync protocol v2.4.2 is merged and terminally reconciled. Product progress remains canonical at 47% / PHASE-07 42.86%; the next bounded TASK-0038 milestone enforces immutable material revisions, append-oriented target/cancellation/completion provenance, and adversarial replay/transaction/workspace-isolation coverage.
+README progress-sync protocol v2.4.2 is merged and terminally reconciled. PR #347 now stages the bounded TASK-0038 immutable revision/history milestone: governed cancellation/completion provenance, previous/new immutable snapshot and target-set evidence, fresh approval after material target changes, terminal-history protection, and adversarial replay/workspace-isolation coverage. Product progress remains canonical at 47% / PHASE-07 42.86% while this partial TASK-0038 milestone is under exact-head verification.
 
 ### README progress-sync contract
 

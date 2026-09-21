@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-APPROVAL-ORCHESTRATION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=README-PROGRESS-SYNC-V2 status=VERIFYING -->
 
 > Last verified product baseline: **2026-09-22** from protected `main` at `09ea7cd36faae43620024788fa39af2e2847e77b` after TASK-0038 approval-orchestration PR #344 merged. Exact source `b8810ff578432d35a10306ed9c83f3ae7b4b2eb0` passed AI Continuity Guard `35652184734`, Application Foundation CI `35652185080`, and Security Supply Chain CI `35652185065`.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0038-APPROVAL-ORCHESTRATION — COMPLETE**
+**Current milestone: README-PROGRESS-SYNC-V2 — VERIFYING**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -54,6 +54,8 @@ The canonical implementation now includes workspace-scoped campaign lifecycle pe
 TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
 
 The next bounded product milestone closes remaining revision/history certification gaps: material content/target edits must create new immutable snapshots, target-change plus cancellation/completion provenance must remain append-oriented, and adversarial transaction/replay/workspace-isolation tests must cover the remaining acceptance surface.
+
+README progress-sync protocol PR #345 is currently under exact-head verification. Product progress remains canonical at 47% / PHASE-07 42.86%; the active control milestone changes reporting enforcement, not roadmap weight.
 
 ### README progress-sync contract
 

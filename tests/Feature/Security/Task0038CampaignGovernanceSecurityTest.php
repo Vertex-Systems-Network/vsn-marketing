@@ -848,7 +848,7 @@ it('creates a replay-safe scheduled intent from an exact approved snapshot witho
         $scheduleEventId,
         'scheduled-intent-transition',
         'Record schedule intent only.',
-        new DateTimeImmutable('2026-09-22T05:03:00+00:00'),
+        new DateTimeImmutable('2026-09-22T13:00:00+00:00'),
     );
 
     $repository = app(DatabaseCampaignRepository::class);

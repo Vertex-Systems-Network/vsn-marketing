@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-07",
     "active_task": "TASK-0038",
     "last_completed_task": "TASK-0037",
@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0038_revision_history_pr347_head_8fe4204fedf3ef7c25e63df8acbd9816af74f96f_passed_run_35657562769",
-    "application_test_status": "task0038_revision_history_pr347_head_8fe4204fedf3ef7c25e63df8acbd9816af74f96f_passed_run_35657562758",
-    "security_supply_chain_status": "task0038_revision_history_pr347_head_8fe4204fedf3ef7c25e63df8acbd9816af74f96f_passed_run_35657562762",
+    "continuity_validation": "task0038_scheduled_target_pr349_head_bd17a7b3211764f3720979e9ced6607b7d1a27fb_passed_run_35660352758",
+    "application_test_status": "task0038_scheduled_target_pr349_head_bd17a7b3211764f3720979e9ced6607b7d1a27fb_passed_run_35660352747",
+    "security_supply_chain_status": "task0038_scheduled_target_pr349_head_bd17a7b3211764f3720979e9ced6607b7d1a27fb_passed_run_35660352748",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "b05153240dfe45cf7236b55b43acaf03394541e9",
+  "observed_main_sha": "74215790f1e7c70908c9da3e0bcb24251c8d6c02",
   "active_issue": null,
-  "active_pr": 349,
-  "active_branch": "task/0038-scheduled-target-certification",
-  "current_milestone": "TASK-0038-SCHEDULED-TARGET-CERTIFICATION",
+  "active_pr": 350,
+  "active_branch": "control/task0038-final-acceptance",
+  "current_milestone": "TASK-0038-FINAL-ACCEPTANCE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0038 immutable revision/history milestone merged via PR #347 as 3e5212d6a97312f3ea2434a4b7ce1a682f2164bb; exact source 8fe4204fedf3ef7c25e63df8acbd9816af74f96f passed AI Continuity Guard 35657562769, Application Foundation CI 35657562758 and Security Supply Chain CI 35657562762 after formatting recovery and AC-6 material-revision replay hardening without weakening any gate.",
-  "exact_next_safe_action": "Perform one consolidated exact-head verification for PR #349. Merge the TASK-0038 scheduled-intent and canonical target certification milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, and the exact head is unchanged. Treat scheduled-intent authority/timestamp/replay failures, stale approval inheritance, canonical materialized-set drift, target-hash instability, cross-workspace identity/list/tag access, transaction safety regressions, or any scheduler/provider side effect as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive.",
+  "last_completed_milestone": "TASK-0038 scheduled-intent and canonical target certification merged via PR #349 as 74215790f1e7c70908c9da3e0bcb24251c8d6c02; exact source bd17a7b3211764f3720979e9ced6607b7d1a27fb passed AI Continuity Guard 35660352758, Application Foundation CI 35660352747 and Security Supply Chain CI 35660352748 after formatting recovery, scheduled-intent replay hardening and PHP 8.3 compatibility repair without weakening any gate.",
+  "exact_next_safe_action": "Run TASK-0038 final acceptance on PR #350 with AC-1 through AC-8 true while task/index status remains ready. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact acceptance head with no blocking review findings. After merge, perform a separate guarded transition that marks TASK-0038 completed, recalculates deterministic progress, and registers TASK-0039 as planned before any calendar/scheduler implementation. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority and the deferred Runner benchmark batch inactive.",
   "pending_runner_ids": [
-    "RBT-015"
+    "RBT-016"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform one consolidated exact-head verification for PR #349. Merge the TASK-0038 scheduled-intent and canonical target certification milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, and the exact head is unchanged. Treat scheduled-intent authority/timestamp/replay failures, stale approval inheritance, canonical materialized-set drift, target-hash instability, cross-workspace identity/list/tag access, transaction safety regressions, or any scheduler/provider side effect as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive."
+  "exact_next_action": "Run TASK-0038 final acceptance on PR #350 with AC-1 through AC-8 true while task/index status remains ready. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact acceptance head with no blocking review findings. After merge, perform a separate guarded transition that marks TASK-0038 completed, recalculates deterministic progress, and registers TASK-0039 as planned before any calendar/scheduler implementation. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority and the deferred Runner benchmark batch inactive."
 }

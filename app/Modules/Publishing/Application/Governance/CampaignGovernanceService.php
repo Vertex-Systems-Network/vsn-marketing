@@ -638,7 +638,7 @@ final readonly class CampaignGovernanceService
     private function assertEffectiveApproval(CampaignApprovalEvaluation $evaluation): void
     {
         if (! $evaluation->valid) {
-            $reason = $evaluation->reason?->value ?? 'unknown';
+            $reason = $evaluation->reason->value;
 
             throw new InvalidArgumentException("Campaign approval is not effective: {$reason}.");
         }

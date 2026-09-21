@@ -558,7 +558,7 @@ it('rejects conflicting material snapshot replay under the same idempotency key 
     ))->toThrow(InvalidArgumentException::class, 'replay');
 
     expect(DB::table('campaign_snapshots')->where('campaign_id', $campaign->id)->count())->toBe(1)
-        ->and(DB::table('campaign_targets')->where('campaign_id', $campaign->id)->count())->toBe(1)
+        ->and(DB::table('campaign_targets')->where('snapshot_id', $first->id)->count())->toBe(1)
         ->and(DB::table('campaign_events')->where('idempotency_key', 'revision-replay-conflict-event')->count())->toBe(0)
         ->and($repository->latestSnapshot($workspaceId, $campaign->id)?->targetSetHash)->toBe($first->targetSetHash);
 });

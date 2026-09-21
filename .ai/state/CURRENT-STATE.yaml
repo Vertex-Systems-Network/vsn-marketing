@@ -7,23 +7,23 @@
   },
   "execution": {
     "status": "ready",
-    "current_phase": "PHASE-06",
-    "active_task": "TASK-0036",
-    "last_completed_task": "TASK-0035",
-    "next_task": "TASK-0037"
+    "current_phase": "PHASE-07",
+    "active_task": "TASK-0037",
+    "last_completed_task": "TASK-0036",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 43.4,
-    "phase_percent": 90,
+    "roadmap_percent": 44,
+    "phase_percent": 0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542980",
-    "application_test_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597543088",
-    "security_supply_chain_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542911",
-    "release_integrity_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542905",
-    "scorecard_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597543131"
+    "continuity_validation": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908300",
+    "application_test_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908254",
+    "security_supply_chain_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908410",
+    "release_integrity_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908268",
+    "scorecard_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908267"
   },
   "blockers": [],
-  "exact_next_action": "Merge the TASK-0037 PHASE-07 research registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main evidence and perform a separate guarded transition that completes TASK-0036/PHASE-06 and activates TASK-0037 as research-only PHASE-07 work. Keep all Runner benchmark items deferred unless the documented blocker-escalation exception applies."
+  "exact_next_action": "Revalidate and certify the staged TASK-0037 PHASE-07 research pack against current official provider and market-workflow sources, reconcile any material change into the PHASE-07 contract, and mark AC-1 through AC-8 true only on an exact-head research acceptance PR. Do not activate TASK-0038 or any live provider publication/scheduler execution until that research acceptance is merged and trusted; keep Runner benchmark work deferred under the persistent registry."
 }

@@ -12,6 +12,7 @@ permissions:
 
 env:
   TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
 concurrency:
   group: ai-continuity-${{ github.workflow }}-${{ github.ref }}
@@ -32,6 +33,16 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.13'
+      - name: Validate strict change-aware CI classification
+        env:
+          CI_FORCE_FULL: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+        run: >-
+          python tools/ci_change_policy.py classify
+          --base "${BASE_SHA}"
+          --head "${TARGET_SHA}"
+          --event-path "${GITHUB_EVENT_PATH}"
+      - name: Test strict change-aware CI policy
+        run: python tools/test_ci_change_policy.py
       - name: Require immutable GitHub Actions dependencies
         run: python tools/check_action_pins.py
       - name: Validate transactional continuity state

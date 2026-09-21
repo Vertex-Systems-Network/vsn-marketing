@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.2.1",
-  "instruction_revision": "parallel-v2.2.1-week1-shipping",
+  "protocol_version": "2.3.0",
+  "instruction_revision": "parallel-v2.3.0-strict-change-aware-ci",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "5418c6b0b04076a29687bc05ab12e4c4ce392091b47b06b106c3ae9f4f82c5bc",
+  "instruction_fingerprint": "ffcf941c9cf80a96c2d80756f64c58656fb6f377b8ce3341e737692912648202",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -33,5 +33,29 @@
   "shipping_grandfathered_existing_slots_only": true,
   "shipping_fast_gate_workflow": "Shipping Fast Gate",
   "shipping_full_application_on_integration_push": true,
-  "shipping_full_security_on_main_promotion": true
+  "shipping_full_security_on_main_promotion": true,
+  "strict_plan_following": true,
+  "strict_execution_order": [
+    "recover_validate",
+    "read_canonical_state_task_plan",
+    "verify_exact_branch_sha",
+    "classify_change",
+    "execute_one_milestone",
+    "run_change_class_checks",
+    "require_exact_head_pr_gates",
+    "merge_verified_head",
+    "reread_repository_state",
+    "separate_successor_registration_transition"
+  ],
+  "change_aware_ci_enabled": true,
+  "ci_force_full_marker": "CI-Mode: full",
+  "control_only_paths": [
+    ".ai/**",
+    "docs/**",
+    "README.md",
+    "AGENTS.md"
+  ],
+  "unknown_paths_fail_closed_to_full_ci": true,
+  "runner_benchmark_batch_deferred": true,
+  "runner_benchmark_batch_requires_explicit_activation": true
 }

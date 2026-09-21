@@ -65,6 +65,18 @@ Resume authority is canonical state first: `.ai/state/CURRENT-STATE.yaml`, `.ai/
 - Security/correctness/release blockers may exceed the normal interaction budget for bounded diagnosis/remediation, but required gates may never be weakened for speed.
 - Runner performance/size/cache/concurrency/toolchain work remains in the separate persistent Runner benchmark registry and is not activated merely to reduce message/tool timeout risk.
 
+## Persistent strict plan-following / change-aware CI directive
+
+This directive is cross-phase, non-optional, and survives every task transition. The Supervisor and all agents MUST follow the canonical execution order in `.ai/13-PARALLEL-DEVELOPMENT.md` before taking the next repository action.
+
+- Recover/validate -> read canonical state/task/plan -> classify change -> execute one allowed milestone -> run class-appropriate checks -> exact-head PR gates -> merge -> re-read state -> only then register/transition the successor.
+- `tools/ci_change_policy.py` is the machine classifier. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight governance/control CI; unknown or non-control paths fail closed to full Application + Security CI.
+- `CI-Mode: full` as a standalone PR-body line is mandatory whenever a control-only diff is nevertheless a certification, release/promotion, security-sensitive acceptance, or other milestone whose contract explicitly requires full exact-head Application + Security gates.
+- Required PR checks must not be disabled with workflow-level path filters. Heavy required jobs may be conditionally skipped at job level only after the fail-closed classifier succeeds.
+- Product, dependency, workflow, tool, Docker, route, config, migration, test, and security-sensitive changes always run the full relevant gates.
+- Runner benchmark work is never substituted for CI. Runner sizing/performance/cache/concurrency/toolchain optimization is appended to the persistent RBT backlog and executed only in the explicit coordinated final Runner batch, except for the documented blocker-escalation rule.
+- Agents may not improvise a faster order, silently activate a later task, repeatedly poll CI, or opportunistically execute Runner benchmark items. A bounded security/correctness exception must be evidence-backed and recorded.
+
 ## Deferred runner benchmark registry
 
 Runner work is intentionally separated from product/certification development and tracked in `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.

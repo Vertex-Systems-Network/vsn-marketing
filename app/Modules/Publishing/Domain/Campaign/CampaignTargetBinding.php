@@ -39,18 +39,40 @@ final readonly class CampaignTargetBinding
         }
 
         CampaignPayloadGuard::assertPublicJson($this->metadata, 'target.metadata');
+
+        if (in_array($this->kind, [CampaignTargetKind::ContactList, CampaignTargetKind::Tag], true)) {
+            $materializedContactIds = $this->metadata['materialized_contact_ids'] ?? null;
+            if (! is_array($materializedContactIds)) {
+                throw new InvalidArgumentException('Campaign list/tag target must pin materialized_contact_ids.');
+            }
+
+            CampaignPayloadGuard::assertIdentifierList(
+                $materializedContactIds,
+                'target.metadata.materialized_contact_ids',
+            );
+        } elseif (array_key_exists('materialized_contact_ids', $this->metadata)) {
+            throw new InvalidArgumentException('Campaign materialized_contact_ids are valid only for list/tag targets.');
+        }
     }
 
     /** @return array<string, mixed> */
     public function canonicalPayload(): array
     {
+        $metadata = $this->metadata;
+
+        if (in_array($this->kind, [CampaignTargetKind::ContactList, CampaignTargetKind::Tag], true)) {
+            $materializedContactIds = $metadata['materialized_contact_ids'];
+            sort($materializedContactIds, SORT_STRING);
+            $metadata['materialized_contact_ids'] = $materializedContactIds;
+        }
+
         return [
             'kind' => $this->kind->value,
             'canonical_reference_id' => $this->canonicalReferenceId,
             'channel' => $this->channel,
             'provider_connection_id' => $this->providerConnectionId,
             'capability_evidence_id' => $this->capabilityEvidenceId,
-            'metadata' => $this->metadata,
+            'metadata' => $metadata,
         ];
     }
 

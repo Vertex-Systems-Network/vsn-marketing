@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=README-PROGRESS-SYNC-V2 status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=README-PROGRESS-SYNC-V2 status=COMPLETE -->
 
-> Last verified product baseline: **2026-09-22** from protected `main` at `09ea7cd36faae43620024788fa39af2e2847e77b` after TASK-0038 approval-orchestration PR #344 merged. Exact source `b8810ff578432d35a10306ed9c83f3ae7b4b2eb0` passed AI Continuity Guard `35652184734`, Application Foundation CI `35652185080`, and Security Supply Chain CI `35652185065`.
+> Last verified protected-main baseline: **2026-09-22** at `5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1` after README progress-sync protocol PR #345 merged. Exact source `875c01c8cc7549486296e01110d3704f74260695` passed AI Continuity Guard `35654800644`, Application Foundation CI `35654800643`, and Security Supply Chain CI `35654800691`. Product capability remains TASK-0038 approval/lifecycle orchestration plus campaign foundation; this control merge adds no provider publication or scheduler authority.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: README-PROGRESS-SYNC-V2 — VERIFYING**
+**Current milestone: README-PROGRESS-SYNC-V2 — COMPLETE**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -55,7 +55,7 @@ TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live p
 
 The next bounded product milestone closes remaining revision/history certification gaps: material content/target edits must create new immutable snapshots, target-change plus cancellation/completion provenance must remain append-oriented, and adversarial transaction/replay/workspace-isolation tests must cover the remaining acceptance surface.
 
-README progress-sync protocol PR #345 is currently under exact-head verification. Product progress remains canonical at 47% / PHASE-07 42.86%; the active control milestone changes reporting enforcement, not roadmap weight.
+README progress-sync protocol v2.4.2 is merged and terminally reconciled. Product progress remains canonical at 47% / PHASE-07 42.86%; the next bounded TASK-0038 milestone enforces immutable material revisions, append-oriented target/cancellation/completion provenance, and adversarial replay/transaction/workspace-isolation coverage.
 
 ### README progress-sync contract
 

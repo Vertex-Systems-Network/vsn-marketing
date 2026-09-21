@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+"""Validate the durable AI Engineering Supervisor resume contract."""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+
+import runner_benchmark
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE = ROOT / ".ai" / "state" / "CURRENT-STATE.yaml"
+CHECKPOINT = ROOT / ".ai" / "state" / "LAST-CHECKPOINT.md"
+JOURNAL = ROOT / ".ai" / "state" / "EXECUTION-JOURNAL.jsonl"
+QUEUE = ROOT / ".ai" / "coordination" / "OPEN-WORK-QUEUE.yaml"
+RUNNER = ROOT / ".ai" / "runner" / "RUNNER-BENCHMARK.yaml"
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+LIMITS = {STATE: 12 * 1024, CHECKPOINT: 16 * 1024, JOURNAL: 32 * 1024}
+MILESTONE_STATUSES = {"READY", "IN_PROGRESS", "VERIFYING", "WAITING_EXTERNAL", "BLOCKED", "COMPLETE"}
+REQUIRED_STATE_FIELDS = {
+    "observed_main_sha", "active_issue", "active_pr", "active_branch",
+    "current_milestone", "milestone_status", "last_completed_milestone",
+    "exact_next_safe_action", "pending_runner_ids", "blocked_runner_ids",
+    "current_blockers", "timeout_control",
+}
+MIGRATION_MARKERS = [
+    "Migration-Idempotency: reviewed",
+    "Migration-Transactions: reviewed",
+    "Migration-Apply-Marker-Recovery: reviewed",
+    "Migration-Retry: reviewed",
+    "Migration-Rollback-Restore: reviewed",
+    "Migration-Destructive-Recovery: reviewed",
+    "Migration-Concurrency: reviewed",
+    "Migration-Partial-Execution: reviewed",
+    "Migration-Backup-Snapshot: reviewed",
+]
+
+
+def load(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ValueError(f"missing required Supervisor file: {path.relative_to(ROOT)}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"invalid JSON-compatible YAML {path.relative_to(ROOT)}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"{path.relative_to(ROOT)} must contain an object")
+    return value
+
+
+def standalone(body: str, marker: str) -> bool:
+    return any(line.strip() == marker for line in body.splitlines())
+
+
+def migration_review_errors(changed: set[str], body: str) -> list[str]:
+    if not any(path.startswith("database/migrations/") for path in changed):
+        return []
+    return [f"migration PR missing standalone review marker: {marker}" for marker in MIGRATION_MARKERS if not standalone(body, marker)]
+
+
+def git_changed_files(base: str, head: str) -> set[str]:
+    proc = subprocess.run(
+        ["git", "diff", "--name-only", "--diff-filter=ACMRTUXB", base, head],
+        cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    if proc.returncode != 0:
+        raise ValueError(f"git diff failed: {proc.stderr.strip()}")
+    return {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+
+
+def validate() -> list[str]:
+    errors: list[str] = []
+    for path, limit in LIMITS.items():
+        if not path.exists():
+            errors.append(f"missing compact state file: {path.relative_to(ROOT)}")
+        elif path.stat().st_size > limit:
+            errors.append(f"{path.relative_to(ROOT)} exceeds compact limit {limit} bytes")
+
+    try:
+        state = load(STATE)
+        queue = load(QUEUE)
+        runner = load(RUNNER)
+    except ValueError as exc:
+        return errors + [str(exc)]
+
+    missing = sorted(REQUIRED_STATE_FIELDS - set(state))
+    if missing:
+        errors.append("CURRENT-STATE missing Supervisor fields: " + ", ".join(missing))
+    sha = state.get("observed_main_sha")
+    if not isinstance(sha, str) or not SHA_RE.fullmatch(sha):
+        errors.append("observed_main_sha must be an exact 40-char lowercase Git SHA")
+    for field in ("active_issue", "active_pr"):
+        value = state.get(field)
+        if value is not None and not isinstance(value, int):
+            errors.append(f"{field} must be an integer or null")
+    if not str(state.get("active_branch", "")).strip():
+        errors.append("active_branch is required")
+    if state.get("milestone_status") not in MILESTONE_STATUSES:
+        errors.append("invalid milestone_status")
+    for field in ("current_milestone", "last_completed_milestone", "exact_next_safe_action"):
+        if not str(state.get(field, "")).strip():
+            errors.append(f"{field} is required")
+    for field in ("pending_runner_ids", "blocked_runner_ids", "current_blockers"):
+        if not isinstance(state.get(field), list):
+            errors.append(f"{field} must be a list")
+
+    if state.get("current_blockers") != state.get("blockers", []):
+        errors.append("current_blockers must mirror canonical blockers")
+    if state.get("exact_next_safe_action") != state.get("exact_next_action"):
+        errors.append("exact_next_safe_action must mirror exact_next_action")
+
+    timeout = state.get("timeout_control")
+    expected_timeout = {
+        "default_ci_status_refreshes_per_milestone": 1,
+        "max_ci_status_refreshes_with_recorded_exception": 2,
+        "tight_polling_forbidden": True,
+        "pending_ci_state_only_commit_forbidden": True,
+    }
+    if timeout != expected_timeout:
+        errors.append("timeout_control drift")
+
+    if queue.get("schema_version") != 1:
+        errors.append("coordination queue schema_version must be 1")
+    if queue.get("reconciled_main_sha") != state.get("observed_main_sha"):
+        errors.append("coordination queue reconciled_main_sha must match observed_main_sha")
+    items = queue.get("items")
+    if not isinstance(items, list):
+        errors.append("coordination queue items must be a list")
+        items = []
+    keys: set[tuple[str, int]] = set()
+    actionable: list[dict[str, Any]] = []
+    for row in items:
+        if not isinstance(row, dict):
+            errors.append("coordination queue row must be an object")
+            continue
+        key = (str(row.get("kind")), int(row.get("number", -1)))
+        if key in keys:
+            errors.append(f"duplicate coordination item {key}")
+        keys.add(key)
+        if row.get("accepted_actionable") is True:
+            actionable.append(row)
+    if len(actionable) > 1:
+        errors.append("only one accepted actionable work path may be active")
+    active_pr = state.get("active_pr")
+    if active_pr is not None:
+        match = [row for row in actionable if row.get("kind") == "pr" and row.get("number") == active_pr]
+        if len(match) != 1:
+            errors.append("active_pr must be the accepted actionable coordination item")
+        active = queue.get("active_work_path")
+        if not isinstance(active, dict) or active.get("kind") != "pr" or active.get("number") != active_pr:
+            errors.append("coordination active_work_path must match active_pr")
+
+    runner_errors = runner_benchmark.validate_registry(runner)
+    errors.extend(f"Runner Benchmark: {error}" for error in runner_errors)
+    runner_ids = {str(row.get("id")) for row in runner.get("tasks", []) if isinstance(row, dict)}
+    for field in ("pending_runner_ids", "blocked_runner_ids"):
+        for rid in state.get(field, []) if isinstance(state.get(field), list) else []:
+            if rid not in runner_ids:
+                errors.append(f"{field} references unknown Runner ID {rid}")
+
+    checkpoint = CHECKPOINT.read_text(encoding="utf-8") if CHECKPOINT.exists() else ""
+    for value, label in (
+        (state.get("current_milestone"), "current milestone"),
+        (state.get("milestone_status"), "milestone status"),
+        (state.get("exact_next_safe_action"), "exact next safe action"),
+    ):
+        if value and str(value) not in checkpoint:
+            errors.append(f"LAST-CHECKPOINT does not contain {label}")
+
+    return errors
+
+
+def validate_pr_event(path: Path, base: str, head: str) -> list[str]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"cannot read PR event: {exc}"]
+    pr = payload.get("pull_request")
+    if not isinstance(pr, dict):
+        return []
+    body = pr.get("body") or ""
+    try:
+        changed = git_changed_files(base, head)
+    except ValueError as exc:
+        return [str(exc)]
+    return migration_review_errors(changed, body)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="command", required=True)
+    sub.add_parser("validate")
+    pr = sub.add_parser("validate-pr-event")
+    pr.add_argument("--event-path", required=True)
+    pr.add_argument("--base", required=True)
+    pr.add_argument("--head", required=True)
+    args = parser.parse_args()
+    if args.command == "validate":
+        errors = validate()
+    else:
+        errors = validate_pr_event(Path(args.event_path), args.base, args.head)
+    if errors:
+        print("Supervisor contract validation FAILED:", file=sys.stderr)
+        for error in errors:
+            print(f"- {error}", file=sys.stderr)
+        return 1
+    print("Supervisor contract validation PASSED")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

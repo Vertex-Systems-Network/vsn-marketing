@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-REVISION-HISTORY status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-REVISION-HISTORY status=COMPLETE -->
 
-> Last verified protected-main baseline: **2026-09-22** at `5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1` after README progress-sync protocol PR #345 merged. Exact source `875c01c8cc7549486296e01110d3704f74260695` passed AI Continuity Guard `35654800644`, Application Foundation CI `35654800643`, and Security Supply Chain CI `35654800691`. Product capability remains TASK-0038 approval/lifecycle orchestration plus campaign foundation; this control merge adds no provider publication or scheduler authority.
+> Last verified protected-main product baseline: **2026-09-22** at `3e5212d6a97312f3ea2434a4b7ce1a682f2164bb` after TASK-0038 revision/history PR #347 merged. Exact source `8fe4204fedf3ef7c25e63df8acbd9816af74f96f` passed AI Continuity Guard `35657562769`, Application Foundation CI `35657562758`, and Security Supply Chain CI `35657562762`. Product capability now includes governed cancellation/completion provenance and replay-safe immutable material revisions; no live provider publication or production scheduler authority is activated.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0038-REVISION-HISTORY — VERIFYING**
+**Current milestone: TASK-0038-REVISION-HISTORY — COMPLETE**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -47,15 +47,15 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 
 ### Current execution snapshot
 
-TASK-0038 is active in PHASE-07. Campaign persistence/domain foundation is trusted on main through PR #342, its terminal reconciliation through PR #343, and lifecycle/approval orchestration through PR #344.
+TASK-0038 is active in PHASE-07. Campaign persistence/domain foundation is trusted on main through PR #342, lifecycle/approval orchestration through PR #344, and immutable revision/history hardening through PR #347.
 
-The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, and append-only stale-approval revocation.
+The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
 TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
 
-The next bounded product milestone closes remaining revision/history certification gaps: material content/target edits must create new immutable snapshots, target-change plus cancellation/completion provenance must remain append-oriented, and adversarial transaction/replay/workspace-isolation tests must cover the remaining acceptance surface.
+The next bounded product milestone adds governed scheduled-intent creation without executing a scheduler/provider, revalidates exact-snapshot approval at scheduling intent, and certifies canonical ContactList, Tag and ContactIdentity target bindings for deterministic reproducibility, materialized-set evidence, workspace isolation, replay and adversarial transaction safety.
 
-README progress-sync protocol v2.4.2 is merged and terminally reconciled. PR #347 now stages the bounded TASK-0038 immutable revision/history milestone: governed cancellation/completion provenance, previous/new immutable snapshot and target-set evidence, fresh approval after material target changes, terminal-history protection, and adversarial replay/workspace-isolation coverage. Product progress remains canonical at 47% / PHASE-07 42.86% while this partial TASK-0038 milestone is under exact-head verification.
+README progress-sync protocol v2.4.2 remains enforced. PR #347 is merged and terminally reconciled; product progress remains canonical at 47% / PHASE-07 42.86% while TASK-0038 continues into scheduled-intent and canonical recipient/target certification.
 
 ### README progress-sync contract
 

@@ -91,6 +91,17 @@ The machine coordination queue is `.ai/coordination/OPEN-WORK-QUEUE.yaml`; the m
 
 No agent may report COMPLETE/BLOCKED/VERIFYING/WAITING without durable reconciliation. No agent may bypass an accepted actionable open Issue/PR, reuse authorization, infer PASS from pending/skipped work, or repeat an operation after a message timeout without repository verification.
 
+## Persistent README progress synchronization directive
+
+This directive is cross-phase, non-optional, and survives every task transition.
+
+- Every durable bounded milestone PR that changes `.ai/state/CURRENT-STATE.yaml` also changes `README.md`.
+- README progress values come only from canonical state/roadmap data; percentages are never estimated from conversational activity.
+- The machine marker `AI_PROGRESS_SNAPSHOT` mirrors roadmap %, phase %, current phase, active task, current milestone and milestone status.
+- CI/poll-only interactions with no repository state mutation do not create fake README commits; the next durable milestone syncs it.
+- README progress sync is compatible with the non-recursive main-observation model because `README.md` is an approved self-reconciliation surface.
+- Supervisor validation and PR-event validation fail closed on stale/missing README progress synchronization.
+
 ## Deferred runner benchmark registry
 
 Runner work is intentionally separated from product/certification development and tracked in `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.

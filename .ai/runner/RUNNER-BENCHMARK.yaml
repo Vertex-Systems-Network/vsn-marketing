@@ -344,6 +344,24 @@
         },
         "recovery_note": "Initial exact-head continuity validation exposed an execution-journal event-109 hash mismatch. The journal hash chain was repaired without weakening README synchronization, application, security, continuity, or change-classification gates; the corrected exact head then passed all three required workflows."
       }
+    },
+    {
+      "id": "RBT-014",
+      "source": "PR #347 / TASK-0038 immutable revision and append-oriented history",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #347 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0038-revision-history; immutable material revisions + target-change provenance + cancellation/completion audit + replay/workspace-isolation guards",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-revision-history:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

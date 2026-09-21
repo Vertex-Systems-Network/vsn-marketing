@@ -10,12 +10,12 @@ final readonly class CampaignSnapshot
     public const int SCHEMA_VERSION = 1;
 
     /**
-     * @param list<string> $componentVersionIds
-     * @param list<string> $assetReferenceIds
-     * @param list<string> $capabilityEvidenceIds
-     * @param array<string, mixed> $brandReference
-     * @param array<string, mixed> $intendedExecution
-     * @param list<CampaignTargetBinding> $targets
+     * @param  list<string>  $componentVersionIds
+     * @param  list<string>  $assetReferenceIds
+     * @param  list<string>  $capabilityEvidenceIds
+     * @param  array<string, mixed>  $brandReference
+     * @param  array<string, mixed>  $intendedExecution
+     * @param  list<CampaignTargetBinding>  $targets
      */
     public function __construct(
         public string $id,
@@ -103,12 +103,12 @@ final readonly class CampaignSnapshot
     }
 
     /**
-     * @param list<string> $componentVersionIds
-     * @param list<string> $assetReferenceIds
-     * @param list<string> $capabilityEvidenceIds
-     * @param array<string, mixed> $brandReference
-     * @param array<string, mixed> $intendedExecution
-     * @param list<CampaignTargetBinding> $targets
+     * @param  list<string>  $componentVersionIds
+     * @param  list<string>  $assetReferenceIds
+     * @param  list<string>  $capabilityEvidenceIds
+     * @param  array<string, mixed>  $brandReference
+     * @param  array<string, mixed>  $intendedExecution
+     * @param  list<CampaignTargetBinding>  $targets
      */
     public static function create(
         string $id,
@@ -186,7 +186,7 @@ final readonly class CampaignSnapshot
         );
     }
 
-    /** @param list<CampaignTargetBinding> $targets */
+    /** @param  list<CampaignTargetBinding>  $targets */
     private static function calculateTargetSetHash(array $targets): string
     {
         $payloads = array_map(
@@ -203,11 +203,11 @@ final readonly class CampaignSnapshot
     }
 
     /**
-     * @param list<string> $componentVersionIds
-     * @param list<string> $assetReferenceIds
-     * @param list<string> $capabilityEvidenceIds
-     * @param array<string, mixed> $brandReference
-     * @param array<string, mixed> $intendedExecution
+     * @param  list<string>  $componentVersionIds
+     * @param  list<string>  $assetReferenceIds
+     * @param  list<string>  $capabilityEvidenceIds
+     * @param  array<string, mixed>  $brandReference
+     * @param  array<string, mixed>  $intendedExecution
      * @return array<string, mixed>
      */
     private static function canonicalPayloadFor(

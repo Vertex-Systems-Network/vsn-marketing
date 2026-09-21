@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.4.0",
-  "instruction_revision": "parallel-v2.4.0-durable-supervisor-resume",
+  "protocol_version": "2.4.1",
+  "instruction_revision": "parallel-v2.4.1-nonrecursive-main-observation",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
@@ -93,5 +93,18 @@
   "runtime_authority_must_be_current_explicit_and_unconsumed": true,
   "migration_safety_review_required": true,
   "readme_dashboard_churn_guard": true,
-  "security_fail_closed": true
+  "security_fail_closed": true,
+  "observed_main_semantics": "snapshot_basis_anchor",
+  "self_reconciliation_descendant_is_current": true,
+  "self_reconciliation_recursive_commit_forbidden": true,
+  "self_reconciliation_exact_paths": [
+    ".ai/state/CURRENT-STATE.yaml",
+    ".ai/state/LAST-CHECKPOINT.md",
+    ".ai/state/EXECUTION-JOURNAL.jsonl",
+    ".ai/coordination/OPEN-WORK-QUEUE.yaml",
+    ".ai/runner/RUNNER-BENCHMARK.yaml"
+  ],
+  "self_reconciliation_prefixes": [
+    ".ai/state/archive/"
+  ]
 }

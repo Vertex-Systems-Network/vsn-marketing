@@ -121,6 +121,68 @@ Change-aware CI is fail-closed and implemented by `tools/ci_change_policy.py`:
 
 The AI must follow the canonical plan/order above even when chat context suggests a shortcut. Repository state and these machine-validated instructions override conversational momentum.
 
+## Durable AI Engineering Supervisor contract
+
+This contract is mandatory, cross-phase, and stricter than conversational context. Repository/runtime evidence always outranks chat memory.
+
+### Resume source of truth
+
+On every start, `continue`, resume, interruption, connector/tool failure, or message-delivery timeout:
+
+1. read `.ai/state/CURRENT-STATE.yaml` and `.ai/state/LAST-CHECKPOINT.md`;
+2. resolve the exact current default/protected `main` SHA;
+3. reconcile open Issues;
+4. reconcile open PRs/MRs;
+5. re-read deterministic task/research claims, `.ai/coordination/OPEN-WORK-QUEUE.yaml`, and `.ai/runner/RUNNER-BENCHMARK.yaml`;
+6. read large historical checkpoints/archives only for a specific evidence conflict;
+7. never repeat a write/merge/runtime action merely because a prior response was not delivered.
+
+Compact state is a resume index and never overrides live repository/runtime truth.
+
+### One turn, one logical milestone
+
+One user `continue`/resume turn normally advances exactly one bounded milestone: one PR reconciliation, one coherent persisted implementation, one exact-head verify/merge decision, or one post-merge durable reconciliation. Do not chain audit -> multiple implementations -> repeated polling -> merge -> post-merge audit -> unrelated next task.
+
+### Remote-call and timeout budget
+
+Batch related reads. Read only evidence required by the active milestone. Perform at most one consolidated CI/status refresh per milestone by default. Tight polling and repeated unchanged reads are forbidden. A second refresh is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.
+
+Before final exact-head CI observation, persist the milestone as `VERIFYING` or `WAITING_EXTERNAL`. If CI remains running, do not create a source/state-only commit merely to record pending CI; record run IDs externally when possible and end the milestone.
+
+### Issues and PRs first — hard gate
+
+New development is forbidden while an accepted actionable open Issue or PR is bypassed. An Issue already represented by an accepted PR is one work path; finish/review/fix that PR instead of duplicating work.
+
+Required order before new development:
+
+`Compact State -> Exact Main -> Open Issues -> Open PRs -> Claims/Queue -> Runner Benchmark -> New Work`
+
+Deferred Runner items, standing governance ledgers, and explicitly authorization-blocked work are not silently promoted into actionable product work.
+
+### Durable state before reporting
+
+Before reporting a meaningful milestone complete, blocked, verifying, or waiting, reconcile compact state, checkpoint, rolling journal, coordination queue when changed, and Runner Benchmark when changed. `CURRENT-STATE.yaml` must record observed main SHA, active Issue/PR/branch, milestone/status, last completed milestone, exact next safe action, pending/blocked runner IDs, blockers, and timeout controls.
+
+Limits are fail-closed: current state <= 12 KiB, checkpoint <= 16 KiB, active rolling journal <= 32 KiB. Historical journal segments are archived under `.ai/state/archive/`; archives are evidence and are not part of the normal resume read path.
+
+### Runner Benchmark authority
+
+`.ai/runner/RUNNER-BENCHMARK.yaml` is the machine-readable registry. Every material remote/container/browser/runtime/full-regression/performance workload records stable ID, source work package, workflow/command, exact source identity requirement, environment/matrix/input/fixture identity, authorization state, security-critical/merge-blocking flags, expected runner time, dedup key, status, and immutable terminal evidence.
+
+Registration never grants execution authority. Safe non-blocking work defaults to the final coordinated batch. Security-critical, exact-head merge-required, migration/auth/secrets/data-safety, current-change integration-safety, and incident/recovery checks remain immediate. Consumed/expired/historical/destructive/provider/production/deployment/release authorization is never inferred or silently reused.
+
+### Drift, security, migration, and public-status rules
+
+At every resume reconcile stale main observations, merged/closed Issues/PRs, queue entries, Runner status and relevant commits since the recorded anchor. A merged item may not remain pending-merge.
+
+Security is fail-closed: never weaken auth/authorization, CSRF/nonces, validation/escaping, required checks, tests, branch protection, secret handling, shared history, or execution authority to get green CI. A timeout or connector failure grants zero additional authority.
+
+Migration changes require explicit review of idempotency, transaction boundaries, apply-success/marker-failure recovery, retries, rollback/restore, destructive recovery, concurrency, partial execution and backup/snapshot requirements. Destructive migration authority remains separate and explicit.
+
+Large README/progress dashboards change only when public/module lifecycle truth materially changes or at terminal product/integration closeout. Governance/security/coordination cycles update compact state and relevant governance surfaces without dashboard churn.
+
+Third-party CI actions remain immutably pinned; credential persistence stays disabled unless reviewed; permissions are least-privilege; dangerous `pull_request_target` use requires separate review; dependency and distributable supply-chain audits remain fail-closed.
+
 ## Merge strategy
 
 Registered workstream PRs target `main` and default to squash merge. Merge groups express ordering constraints. Independent lanes in the same group may develop in parallel but are merged one at a time; after each merge, all remaining active lanes synchronize latest `main` before continuing.

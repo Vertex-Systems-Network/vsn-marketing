@@ -449,3 +449,285 @@ it('rejects approval requests when provider capability evidence is not effective
         ->findCampaign($workspaceId, $fixture['campaign']->id)?->status)
         ->toBe(CampaignStatus::Review);
 });
+
+
+it('records immutable target-change provenance, invalidates stale approval, and requires fresh approval before completion', function () {
+    $editor = task0038GovernanceActor('revision-history-editor');
+    $workspaceId = (string) $editor['workspace']->getKey();
+    task0038GovernanceGrant(
+        $editor['user'],
+        $workspaceId,
+        'campaign-revision-editor',
+        [PermissionCatalog::CAMPAIGN_CREATE, PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $approver = User::query()->create([
+        'name' => 'Revision approver',
+        'email' => 'revision-approver@task0038.test',
+        'password' => Hash::make('secret-pass'),
+    ]);
+    task0038GovernanceGrant(
+        $approver,
+        $workspaceId,
+        'campaign-revision-approver',
+        [PermissionCatalog::CAMPAIGN_APPROVE],
+    );
+    $approverContext = new TenantContext(
+        organizationId: (string) $editor['organization']->getKey(),
+        workspaceId: $workspaceId,
+        brandId: null,
+        actorId: (string) $approver->getKey(),
+    );
+
+    $inputs = task0038GovernanceCanonicalInputs($workspaceId, 'revision-history');
+    $secondContactId = (string) Str::uuid();
+    $at = new DateTimeImmutable('2026-09-22T02:00:00+00:00');
+    DB::table('contacts')->insert([
+        'id' => $secondContactId,
+        'workspace_id' => $workspaceId,
+        'brand_id' => null,
+        'company_id' => null,
+        'first_name' => 'Revision',
+        'last_name' => 'Target',
+        'display_name' => 'Revision Target',
+        'created_at' => $at,
+        'updated_at' => $at,
+    ]);
+
+    $firstTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $inputs['contact_id'],
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: ['selection' => 'initial'],
+        createdAt: new DateTimeImmutable('2026-09-22T02:01:00+00:00'),
+    );
+    $fixture = task0038GovernanceCampaign(
+        $workspaceId,
+        $inputs['content_version_id'],
+        $firstTarget,
+    );
+
+    $service = app(CampaignGovernanceService::class);
+    $needsApproval = $service->requestApproval(
+        $editor['user'],
+        $editor['context'],
+        $fixture['campaign']->id,
+        $fixture['snapshot']->id,
+        (string) Str::uuid(),
+        'revision-request-v1',
+        'Approve first target set.',
+        new DateTimeImmutable('2026-09-22T02:02:00+00:00'),
+    );
+    $approvedV1 = $service->approve(
+        $approver,
+        $approverContext,
+        $needsApproval->id,
+        $fixture['snapshot']->id,
+        'campaign-revision-approver',
+        (string) Str::uuid(),
+        'revision-approval-v1',
+        (string) Str::uuid(),
+        'revision-approval-event-v1',
+        (string) Str::uuid(),
+        'revision-approved-transition-v1',
+        'Approved initial immutable target set.',
+        new DateTimeImmutable('2026-09-22T04:00:00+00:00'),
+        new DateTimeImmutable('2026-09-22T02:03:00+00:00'),
+    );
+
+    $secondTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $secondContactId,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: ['selection' => 'replacement'],
+        createdAt: new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
+    );
+    $revision = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        campaignId: $approvedV1->id,
+        parentSnapshotId: $fixture['snapshot']->id,
+        versionNumber: 2,
+        contentVersionId: $inputs['content_version_id'],
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'intent_only'],
+        targets: [$secondTarget],
+        idempotencyKey: 'revision-snapshot-v2',
+        createdByActorId: (string) $editor['user']->getKey(),
+        createdAt: new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
+    );
+
+    $persisted = $service->appendMaterialRevision(
+        $editor['user'],
+        $editor['context'],
+        $revision,
+        (string) Str::uuid(),
+        'revision-snapshot-event-v2',
+        (string) Str::uuid(),
+        'revision-invalidation-v2',
+        'Changed the canonical target set.',
+        new DateTimeImmutable('2026-09-22T02:04:00+00:00'),
+    );
+
+    $repository = app(DatabaseCampaignRepository::class);
+    $history = $repository->history($workspaceId, $approvedV1->id);
+    $revisionEvent = collect($history)->first(
+        static fn (CampaignEvent $event): bool => $event->idempotencyKey === 'revision-snapshot-event-v2',
+    );
+
+    expect($persisted->parentSnapshotId)->toBe($fixture['snapshot']->id)
+        ->and($persisted->targetSetHash)->not->toBe($fixture['snapshot']->targetSetHash)
+        ->and($repository->findCampaign($workspaceId, $approvedV1->id)?->status)->toBe(CampaignStatus::NeedsApproval)
+        ->and($revisionEvent)->not->toBeNull()
+        ->and($revisionEvent->evidence['revision_kind'] ?? null)->toBe('material')
+        ->and($revisionEvent->evidence['previous_target_set_hash'] ?? null)->toBe($fixture['snapshot']->targetSetHash)
+        ->and($revisionEvent->evidence['target_set_hash'] ?? null)->toBe($persisted->targetSetHash)
+        ->and($revisionEvent->evidence['target_set_changed'] ?? null)->toBeTrue()
+        ->and($repository->approvalDecisions($workspaceId, $approvedV1->id, $fixture['snapshot']->id))->toHaveCount(1)
+        ->and($repository->approvalDecisions($workspaceId, $approvedV1->id, $persisted->id))->toHaveCount(0);
+
+    expect(fn () => $service->complete(
+        $editor['user'],
+        $editor['context'],
+        $approvedV1->id,
+        (string) Str::uuid(),
+        'revision-premature-complete',
+        'Must not complete stale approval.',
+        new DateTimeImmutable('2026-09-22T02:05:00+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'requires ready or scheduled_intent');
+
+    $approvedV2 = $service->approve(
+        $approver,
+        $approverContext,
+        $approvedV1->id,
+        $persisted->id,
+        'campaign-revision-approver',
+        (string) Str::uuid(),
+        'revision-approval-v2',
+        (string) Str::uuid(),
+        'revision-approval-event-v2',
+        (string) Str::uuid(),
+        'revision-approved-transition-v2',
+        'Approved revised immutable target set.',
+        new DateTimeImmutable('2026-09-22T04:00:00+00:00'),
+        new DateTimeImmutable('2026-09-22T02:06:00+00:00'),
+    );
+    $ready = $service->markReady(
+        $editor['user'],
+        $editor['context'],
+        $approvedV2->id,
+        (string) Str::uuid(),
+        'revision-ready-v2',
+        'Ready after fresh approval.',
+        new DateTimeImmutable('2026-09-22T02:07:00+00:00'),
+    );
+    $completed = $service->complete(
+        $editor['user'],
+        $editor['context'],
+        $ready->id,
+        (string) Str::uuid(),
+        'revision-complete-v2',
+        'Canonical work completed; no provider execution is performed here.',
+        new DateTimeImmutable('2026-09-22T02:08:00+00:00'),
+    );
+
+    $completion = collect($repository->history($workspaceId, $completed->id))->first(
+        static fn (CampaignEvent $event): bool => $event->idempotencyKey === 'revision-complete-v2',
+    );
+
+    expect($completed->status)->toBe(CampaignStatus::Completed)
+        ->and($completion)->not->toBeNull()
+        ->and($completion->evidence['decision'] ?? null)->toBe('completed')
+        ->and($completion->evidence['snapshot_id'] ?? null)->toBe($persisted->id)
+        ->and($completion->evidence['target_set_hash'] ?? null)->toBe($persisted->targetSetHash)
+        ->and($completion->evidence['approval_id'] ?? null)->not->toBeNull();
+});
+
+it('records cancellation provenance and keeps terminal campaign history append-only', function () {
+    $editor = task0038GovernanceActor('cancel-history-editor');
+    $workspaceId = (string) $editor['workspace']->getKey();
+    task0038GovernanceGrant(
+        $editor['user'],
+        $workspaceId,
+        'campaign-cancel-editor',
+        [PermissionCatalog::CAMPAIGN_CREATE],
+    );
+
+    $inputs = task0038GovernanceCanonicalInputs($workspaceId, 'cancel-history');
+    $target = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $inputs['contact_id'],
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: new DateTimeImmutable('2026-09-22T03:00:00+00:00'),
+    );
+    $fixture = task0038GovernanceCampaign($workspaceId, $inputs['content_version_id'], $target);
+    $service = app(CampaignGovernanceService::class);
+
+    $cancelled = $service->cancel(
+        $editor['user'],
+        $editor['context'],
+        $fixture['campaign']->id,
+        (string) Str::uuid(),
+        'cancel-history-event',
+        'Operator cancelled before approval.',
+        new DateTimeImmutable('2026-09-22T03:01:00+00:00'),
+    );
+
+    $repository = app(DatabaseCampaignRepository::class);
+    $cancelEvent = collect($repository->history($workspaceId, $cancelled->id))->first(
+        static fn (CampaignEvent $event): bool => $event->idempotencyKey === 'cancel-history-event',
+    );
+
+    expect($cancelled->status)->toBe(CampaignStatus::Cancelled)
+        ->and($cancelEvent)->not->toBeNull()
+        ->and($cancelEvent->evidence['decision'] ?? null)->toBe('cancelled')
+        ->and($cancelEvent->evidence['snapshot_id'] ?? null)->toBe($fixture['snapshot']->id)
+        ->and($cancelEvent->evidence['snapshot_hash'] ?? null)->toBe($fixture['snapshot']->snapshotHash)
+        ->and($cancelEvent->evidence['target_set_hash'] ?? null)->toBe($fixture['snapshot']->targetSetHash);
+
+    expect(fn () => $service->appendMaterialRevision(
+        $editor['user'],
+        $editor['context'],
+        CampaignSnapshot::create(
+            id: (string) Str::uuid(),
+            workspaceId: $workspaceId,
+            campaignId: $cancelled->id,
+            parentSnapshotId: $fixture['snapshot']->id,
+            versionNumber: 2,
+            contentVersionId: $inputs['content_version_id'],
+            templateVersionId: null,
+            componentVersionIds: [],
+            assetReferenceIds: [],
+            capabilityEvidenceIds: [],
+            brandReference: [],
+            intendedExecution: ['mode' => 'intent_only'],
+            targets: [$target],
+            idempotencyKey: 'cancelled-revision',
+            createdByActorId: (string) $editor['user']->getKey(),
+            createdAt: new DateTimeImmutable('2026-09-22T03:02:00+00:00'),
+        ),
+        (string) Str::uuid(),
+        'cancelled-revision-event',
+        (string) Str::uuid(),
+        'cancelled-invalidation-event',
+        'Should fail closed.',
+        new DateTimeImmutable('2026-09-22T03:02:00+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'Terminal campaigns cannot create');
+});

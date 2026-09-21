@@ -18,6 +18,8 @@ CHECKPOINT = ROOT / ".ai" / "state" / "LAST-CHECKPOINT.md"
 JOURNAL = ROOT / ".ai" / "state" / "EXECUTION-JOURNAL.jsonl"
 QUEUE = ROOT / ".ai" / "coordination" / "OPEN-WORK-QUEUE.yaml"
 RUNNER = ROOT / ".ai" / "runner" / "RUNNER-BENCHMARK.yaml"
+README = ROOT / "README.md"
+README_SYNC_TRIGGER = ".ai/state/CURRENT-STATE.yaml"
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 LIMITS = {STATE: 12 * 1024, CHECKPOINT: 16 * 1024, JOURNAL: 32 * 1024}
 MILESTONE_STATUSES = {"READY", "IN_PROGRESS", "VERIFYING", "WAITING_EXTERNAL", "BLOCKED", "COMPLETE"}
@@ -27,6 +29,7 @@ SELF_RECONCILIATION_EXACT = {
     ".ai/state/EXECUTION-JOURNAL.jsonl",
     ".ai/coordination/OPEN-WORK-QUEUE.yaml",
     ".ai/runner/RUNNER-BENCHMARK.yaml",
+    "README.md",
 }
 SELF_RECONCILIATION_PREFIXES = (".ai/state/archive/",)
 REQUIRED_STATE_FIELDS = {
@@ -68,6 +71,44 @@ def migration_review_errors(changed: set[str], body: str) -> list[str]:
     if not any(path.startswith("database/migrations/") for path in changed):
         return []
     return [f"migration PR missing standalone review marker: {marker}" for marker in MIGRATION_MARKERS if not standalone(body, marker)]
+
+
+def canonical_percent(value: Any) -> str:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError("canonical progress values must be numeric")
+    return f"{float(value):.2f}".rstrip("0").rstrip(".")
+
+
+def readme_progress_marker(state: dict[str, Any]) -> str:
+    progress = state.get("progress")
+    execution = state.get("execution")
+    if not isinstance(progress, dict) or not isinstance(execution, dict):
+        raise ValueError("CURRENT-STATE progress/execution must be objects")
+    return (
+        "<!-- AI_PROGRESS_SNAPSHOT "
+        f"roadmap={canonical_percent(progress.get('roadmap_percent'))} "
+        f"phase={canonical_percent(progress.get('phase_percent'))} "
+        f"current_phase={execution.get('current_phase')} "
+        f"active_task={execution.get('active_task')} "
+        f"milestone={state.get('current_milestone')} "
+        f"status={state.get('milestone_status')} -->"
+    )
+
+
+def readme_progress_errors(state: dict[str, Any], readme: str) -> list[str]:
+    try:
+        marker = readme_progress_marker(state)
+    except ValueError as exc:
+        return [str(exc)]
+    if marker not in readme:
+        return [f"README progress snapshot is stale; expected exact marker: {marker}"]
+    return []
+
+
+def readme_progress_pr_errors(changed: set[str]) -> list[str]:
+    if README_SYNC_TRIGGER in changed and "README.md" not in changed:
+        return ["durable milestone state change requires README.md progress synchronization in the same PR"]
+    return []
 
 
 def git_changed_files(base: str, head: str) -> set[str]:
@@ -221,6 +262,12 @@ def validate() -> list[str]:
             if rid not in runner_ids:
                 errors.append(f"{field} references unknown Runner ID {rid}")
 
+    try:
+        readme = README.read_text(encoding="utf-8")
+        errors.extend(readme_progress_errors(state, readme))
+    except OSError as exc:
+        errors.append(f"cannot read README progress snapshot: {exc}")
+
     checkpoint = CHECKPOINT.read_text(encoding="utf-8") if CHECKPOINT.exists() else ""
     for value, label in (
         (state.get("current_milestone"), "current milestone"),
@@ -246,7 +293,7 @@ def validate_pr_event(path: Path, base: str, head: str) -> list[str]:
         changed = git_changed_files(base, head)
     except ValueError as exc:
         return [str(exc)]
-    return migration_review_errors(changed, body)
+    return migration_review_errors(changed, body) + readme_progress_pr_errors(changed)
 
 
 def main() -> int:

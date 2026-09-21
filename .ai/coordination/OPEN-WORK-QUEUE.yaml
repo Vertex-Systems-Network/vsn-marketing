@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8f0f1c48e604f5835256cb3bba96a91aa83ec50c",
+  "reconciled_main_sha": "09ea7cd36faae43620024788fa39af2e2847e77b",
   "active_work_path": {
     "kind": "pr",
-    "number": 344,
-    "branch": "task/0038-approval-orchestration",
-    "milestone": "TASK-0038-APPROVAL-ORCHESTRATION"
+    "number": 345,
+    "branch": "control/readme-progress-sync-v2",
+    "milestone": "README-PROGRESS-SYNC-V2"
   },
   "items": [
     {
@@ -55,12 +55,12 @@
     },
     {
       "kind": "pr",
-      "number": 344,
-      "title": "feat(publishing): orchestrate TASK-0038 campaign approvals",
-      "disposition": "active_task_implementation_verification",
+      "number": 345,
+      "title": "control: enforce README progress synchronization",
+      "disposition": "active_control_protocol_verification",
       "accepted_actionable": true,
-      "runner_id": "RBT-012",
-      "branch": "task/0038-approval-orchestration"
+      "runner_id": "RBT-013",
+      "branch": "control/readme-progress-sync-v2"
     }
   ]
 }

@@ -4,28 +4,24 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-10** from trusted `main` at `c6dab8eff0e8284a1e39d3105429ba5931fec9da` after TASK-0101 Persistent Supervisor merged. Post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard passed; Persistent Supervisor default-branch run `34523049920` passed and status issue #102 reached `HEALTHY`.
->
-> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=README-PROGRESS-SYNC-V2 status=VERIFYING -->
 
-**Overall roadmap progress: 30.25%**  
-**Current phase: PHASE-04 — 75.00%**  
-**Active task: TASK-0023 — Delivery SLO/load/saturation/fault-injection and PostgreSQL/Redis production-parity gates**  
-**Last completed task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
-**Next task: TASK-0024 — PHASE-04 certification**  
-**Parallel execution: TASK-0023 activation is Supervisor-owned on `supervisor/task-0023-delivery-slo`; one QA capacity branch is pre-created but remains OPEN, unassigned and unleased**
+> Last verified product baseline: **2026-09-22** from protected `main` at `09ea7cd36faae43620024788fa39af2e2847e77b` after TASK-0038 approval-orchestration PR #344 merged. Exact source `b8810ff578432d35a10306ed9c83f3ae7b4b2eb0` passed AI Continuity Guard `35652184734`, Application Foundation CI `35652185080`, and Security Supply Chain CI `35652185065`.
+>
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
+
+**Overall roadmap progress: 47%**  
+**Current phase: PHASE-07 — 42.86%**  
+**Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
+**Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
+**Current milestone: README-PROGRESS-SYNC-V2 — VERIFYING**
 
 ```text
-Overall  [██████░░░░░░░░░░░░░░] 30.25%
-Phase 04 [███████████████░░░░░] 75.00%
+Overall  [█████████░░░░░░░░░░░] 47%
+Phase 07 [█████████░░░░░░░░░░░] 42.86%
 ```
 
-```mermaid
-pie showData
-    title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 30.25
-    "Remaining roadmap weight" : 69.75
-```
+The deterministic roadmap percentage advances from completed task weights, so partial TASK-0038 milestones can land substantial product code while the canonical roadmap percentage remains 47%. The README still updates on every durable milestone state change so the active milestone, evidence, task and phase never remain stale.
 
 ### Phase / module progress
 
@@ -35,10 +31,10 @@ pie showData
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
 | PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
 | PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
-| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress — TASK-0023** | **75.00%** |
-| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
-| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
-| PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
+| PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
+| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
+| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0038** | **42.86%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -51,38 +47,19 @@ pie showData
 
 ### Current execution snapshot
 
-TASK-0101 is complete. The repository-native Persistent Supervisor is now standing infrastructure on `main`; no external ChatGPT schedule is part of repository supervision. Its GitHub Actions workflow combines event-driven reconciliation with a five-minute heartbeat, maintains the durable `[Supervisor] Persistent Control Plane Status` issue, verifies current-main ancestry and exact-head required CI for registered submissions, and does not auto-merge or mutate canonical/product state.
+TASK-0038 is active in PHASE-07. Campaign persistence/domain foundation is trusted on main through PR #342, its terminal reconciliation through PR #343, and lifecycle/approval orchestration through PR #344.
 
-Product execution has returned to the preserved PHASE-04 roadmap. TASK-0023 and TASK-0024 use the preplanned specifications originally reserved before TASK-0101 was inserted. TASK-0023 carries the remaining delivery SLO/load/fault-injection work and TASK-0024 is the final PHASE-04 certification task.
+The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, and append-only stale-approval revocation.
 
-TASK-0023 requires measured production-representative evidence rather than scale claims by assumption. Its scope includes queue-age/throughput/saturation/reconciliation-lag and meaningful p95/p99 SLIs/SLOs, PostgreSQL/Redis normal/burst/quota/saturation workloads, worker/Redis/PostgreSQL/provider fault injection, duplicate and retry-amplification evidence, recovery behavior, hotspot telemetry, and automated deterministic regression thresholds where stable.
+TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
 
-The current activation control-plane workstream is `WS-0023-ACTIVATION`. Its standalone completion signal refers only to TASK-0023 registration/activation and parallel handoff; it does **not** claim TASK-0023 performance acceptance is complete. After activation reaches `main`, fresh implementation lanes must synchronize from that main before performance/load/fault work begins.
+The next bounded product milestone closes remaining revision/history certification gaps: material content/target edits must create new immutable snapshots, target-change plus cancellation/completion provenance must remain append-oriented, and adversarial transaction/replay/workspace-isolation tests must cover the remaining acceptance surface.
 
-Current canonical PHASE-04 calculation:
+README progress-sync protocol PR #345 is currently under exact-head verification. Product progress remains canonical at 47% / PHASE-07 42.86%; the active control milestone changes reporting enforcement, not roadmap weight.
 
-```text
-TASK-0019  15 / 15  completed
-TASK-0020  20 / 20  completed
-TASK-0021  20 / 20  completed
-TASK-0022  20 / 20  completed
-TASK-0023   0 / 15  ready
-TASK-0024   0 / 10  planned
-TASK-0101   0 /  0  completed governance insertion
------------------------------------------------
-PHASE-04   75 / 100 = 75.00%
-ROADMAP                30.25%
-```
+### README progress-sync contract
 
-Trusted-main evidence before TASK-0023 activation:
-
-- AI Continuity Guard `34522847507` — PASS
-- Application Foundation CI `34522847451` — PASS
-- Security Supply Chain CI `34522847473` — PASS
-- Release Integrity `34522847562` — PASS
-- OpenSSF Scorecard `34522847785` — PASS
-- Persistent Supervisor `34523049920` — PASS
-- Persistent status issue #102 — `HEALTHY`, no blockers
+Every durable milestone PR that changes `.ai/state/CURRENT-STATE.yaml` must update this README in the same PR. `tools/supervisor_contract.py` validates the machine progress marker against canonical state and rejects a durable state-changing PR that omits README. CI/status-only interactions without repository state mutation do not fabricate README commits.
 
 ## Delivery estimate assumptions
 
@@ -90,8 +67,8 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.4.1-nonrecursive-main-observation`  
-Agent instruction fingerprint: `18a8831dffa521454d62908c3cb50edb2b127b4cfb40ba930ee9f5648768429f`
+Agent instruction revision: `parallel-v2.4.2-readme-progress-sync`  
+Agent instruction fingerprint: `4918ea8be1f1ea1d2e1b7b439c5cd35d04c06daa7200602bb5245149a19afa38`
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 

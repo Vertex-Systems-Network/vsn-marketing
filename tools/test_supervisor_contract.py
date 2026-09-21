@@ -21,6 +21,7 @@ self_paths={
     ".ai/state/archive/EXECUTION-JOURNAL-0001-0080.jsonl",
     ".ai/coordination/OPEN-WORK-QUEUE.yaml",
     ".ai/runner/RUNNER-BENCHMARK.yaml",
+    "README.md",
 }
 assert m.main_observation_class("a"*40, "b"*40, ancestor=True, changed=self_paths) == "self_reconciliation_descendant"
 assert m.main_observation_errors("a"*40, "b"*40, ancestor=True, changed=self_paths) == []
@@ -28,4 +29,18 @@ assert m.main_observation_class("a"*40, "b"*40, ancestor=True, changed={"app/Ser
 assert any("material protected-main drift" in e for e in m.main_observation_errors("a"*40, "b"*40, ancestor=True, changed={"app/Services/X.php"}))
 assert m.main_observation_class("a"*40, "b"*40, ancestor=False, changed=set()) == "conflict"
 assert any("not a descendant" in e for e in m.main_observation_errors("a"*40, "b"*40, ancestor=False, changed=set()))
+
+state={
+    "progress": {"roadmap_percent": 47, "phase_percent": 42.86},
+    "execution": {"current_phase": "PHASE-07", "active_task": "TASK-0038"},
+    "current_milestone": "TASK-0038-APPROVAL-ORCHESTRATION",
+    "milestone_status": "COMPLETE",
+}
+marker=m.readme_progress_marker(state)
+assert marker == "<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-APPROVAL-ORCHESTRATION status=COMPLETE -->"
+assert m.readme_progress_errors(state, marker) == []
+assert m.readme_progress_errors(state, "<!-- stale -->")
+assert m.readme_progress_pr_errors({".ai/state/CURRENT-STATE.yaml"}) == ["durable milestone state change requires README.md progress synchronization in the same PR"]
+assert m.readme_progress_pr_errors({".ai/state/CURRENT-STATE.yaml", "README.md"}) == []
+assert m.readme_progress_pr_errors({"docs/x.md"}) == []
 print("supervisor_contract tests: PASS")

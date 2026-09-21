@@ -187,6 +187,9 @@ def validate() -> list[str]:
         "runtime_authority_must_be_current_explicit_and_unconsumed": True,
         "migration_safety_review_required": True,
         "readme_dashboard_churn_guard": True,
+        "readme_progress_sync_required": True,
+        "readme_progress_sync_trigger_path": ".ai/state/CURRENT-STATE.yaml",
+        "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT",
         "security_fail_closed": True,
         "observed_main_semantics": "snapshot_basis_anchor",
         "self_reconciliation_descendant_is_current": True,
@@ -201,6 +204,7 @@ def validate() -> list[str]:
         ".ai/state/EXECUTION-JOURNAL.jsonl",
         ".ai/coordination/OPEN-WORK-QUEUE.yaml",
         ".ai/runner/RUNNER-BENCHMARK.yaml",
+        "README.md",
     ]
     if control.get("self_reconciliation_exact_paths") != expected_self_exact:
         errors.append("self_reconciliation_exact_paths drift")

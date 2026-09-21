@@ -377,6 +377,24 @@
         },
         "recovery_note": "Initial product head required two Pint no-extra-blank-line fixes. A subsequent acceptance audit found and repaired AC-6 material-revision command replay handling so exact latest-snapshot replay resolves immutable parent provenance and remains repository-idempotent. Final exact head passed all required gates without weakening security, authorization, migration, continuity or change-classification policy."
       }
+    },
+    {
+      "id": "RBT-015",
+      "source": "PR #349 / TASK-0038 scheduled-intent and canonical target certification",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #349 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0038-scheduled-target-certification; Approved->ScheduledIntent authority/replay + ContactIdentity/List/Tag canonical materialization/isolation",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-scheduled-target-certification:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

@@ -188,10 +188,24 @@ def validate() -> list[str]:
         "migration_safety_review_required": True,
         "readme_dashboard_churn_guard": True,
         "security_fail_closed": True,
+        "observed_main_semantics": "snapshot_basis_anchor",
+        "self_reconciliation_descendant_is_current": True,
+        "self_reconciliation_recursive_commit_forbidden": True,
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
+    expected_self_exact = [
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/coordination/OPEN-WORK-QUEUE.yaml",
+        ".ai/runner/RUNNER-BENCHMARK.yaml",
+    ]
+    if control.get("self_reconciliation_exact_paths") != expected_self_exact:
+        errors.append("self_reconciliation_exact_paths drift")
+    if control.get("self_reconciliation_prefixes") != [".ai/state/archive/"]:
+        errors.append("self_reconciliation_prefixes drift")
     if control.get("compact_state_limits_bytes") != {
         "current_state": 12288,
         "last_checkpoint": 16384,

@@ -90,14 +90,16 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.4.0-durable-supervisor-resume`  
-Agent instruction fingerprint: `16e9673274c96ba7737b6633ded37837ffab187c718d13c9de9c83d21462b92a`
+Agent instruction revision: `parallel-v2.4.1-nonrecursive-main-observation`  
+Agent instruction fingerprint: `18a8831dffa521454d62908c3cb50edb2b127b4cfb40ba930ee9f5648768429f`
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
 **Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, must pass `Shipping Fast Gate`, and are promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
 
 **Strict plan-following and change-aware CI are mandatory.** Every agent follows recover/validate -> canonical state/task/plan -> exact head -> change classification -> one logical milestone -> class-appropriate checks -> exact-head PR gates -> merge -> repository re-read -> separate successor registration/transition. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
+
+**Protected-main observation is non-recursive.** `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. An anchor descendant containing only approved durable reconciliation surfaces is already current and must not trigger another state-only PR; material drift still fails closed.
 
 Before modifying the repository, read this README, [`AGENTS.md`](AGENTS.md), [`.ai/13-PARALLEL-DEVELOPMENT.md`](.ai/13-PARALLEL-DEVELOPMENT.md), and the machine registries under [`.ai/parallel/`](.ai/parallel/). Then run the full startup sequence from `AGENTS.md`, including:
 

@@ -148,6 +148,24 @@
           "security_supply_chain_ci": "success"
         }
       }
+    },
+    {
+      "id": "RBT-008",
+      "source": "PR #336 / non-recursive protected-main observation control milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #336 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/nonrecursive-main-observation; workflow/tool/control exact-head verification",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:nonrecursive-main-observation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

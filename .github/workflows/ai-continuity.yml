@@ -53,6 +53,11 @@ jobs:
         run: python tools/ai_journal.py validate
       - name: Validate durable Supervisor resume contract
         run: python tools/supervisor_contract.py validate
+      - name: Validate protected-main snapshot anchor
+        if: github.event_name == 'pull_request'
+        run: >-
+          python tools/supervisor_contract.py validate-main-observation
+          --current-main "${{ github.event.pull_request.base.sha }}"
       - name: Validate machine Runner Benchmark
         run: python tools/runner_benchmark.py validate
       - name: Validate AI policy registries

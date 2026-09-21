@@ -139,6 +139,18 @@ On every start, `continue`, resume, interruption, connector/tool failure, or mes
 
 Compact state is a resume index and never overrides live repository/runtime truth.
 
+### Non-recursive protected-main observation
+
+`observed_main_sha` is the exact protected-main **snapshot-basis anchor** used when the durable state was computed. It is not a promise that the field must equal the future protected-main HEAD after the state itself is merged.
+
+On every resume, compare the live protected-main SHA with the anchor:
+
+- exact equality is current;
+- if live main is a descendant and the entire anchor-to-main diff is limited to approved durable reconciliation surfaces (`CURRENT-STATE.yaml`, `LAST-CHECKPOINT.md`, rolling/archived execution journal files, coordination queue, and Runner Benchmark), classify it as `self_reconciliation_descendant` and **do not create another state-only reconciliation PR**;
+- if the anchor is not an ancestor, or any product/task/tool/workflow/instruction/other material path changed, classify it as material/conflicting drift and reconcile that evidence before new writable work.
+
+This single-hop rule prevents recursive “update observed SHA -> merge -> SHA changed again” loops while still failing closed on real repository drift. `python tools/supervisor_contract.py validate-main-observation --current-main <sha>` is the machine check.
+
 ### One turn, one logical milestone
 
 One user `continue`/resume turn normally advances exactly one bounded milestone: one PR reconciliation, one coherent persisted implementation, one exact-head verify/merge decision, or one post-merge durable reconciliation. Do not chain audit -> multiple implementations -> repeated polling -> merge -> post-merge audit -> unrelated next task.

@@ -2,32 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-09-21T14:46:46Z`
-- Observed main: `065b4da5cba4f610d5473e41ddb9fc3089e5c305`
+- Timestamp: `2026-09-21T15:02:00+00:00`
+- Observed main: `b2d5eb41cf2610ae65aa35a6ac187cce32bfc55e`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `SUPERVISOR-CONTRACT-V2-INTEGRATION`
-- Milestone status: `COMPLETE`
+- Active PR: `336`
+- Active branch: `control/nonrecursive-main-observation`
+- Current milestone: `NONRECURSIVE-MAIN-OBSERVATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0037`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-008`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `78bc74fe349ed51f9c5926573ae7f0591909ae4a9a9d09003453bb58bc6eea0e`
+- State fingerprint: `354552bb4b5177ffd801ec9ae33963831edf096e4edb41d3858a8c6005599e70`
 
 ## Completed / observed this session
 
-Durable AI Engineering Supervisor contract v2 merged through PR #334 as protected-main head `065b4da5cba4f610d5473e41ddb9fc3089e5c305`. The verified source head `6a2ad96e74f394b9d41752f517c6a08cc18500d7` passed AI Continuity Guard `35613079867`, Application Foundation CI `35613079738`, and Security Supply Chain CI `35613079745`.
+Protected main `b2d5eb41cf2610ae65aa35a6ac187cce32bfc55e` is a state-only descendant of the prior snapshot-basis anchor `065b4da5cba4f610d5473e41ddb9fc3089e5c305`. The new non-recursive observation model is staged on PR #336: exact equality is current; a descendant containing only approved durable reconciliation surfaces is also current and must not trigger another state-only PR; material/non-ancestor drift remains fail-closed.
 
-The compact-first recovery order, Issues/PRs-first hard gate, one-turn/one-milestone execution, bounded external-status refreshes, machine coordination queue, machine Runner Benchmark, rolling journal limits, migration/data-safety review, fail-closed authority, README churn control and timeout-safe replay prevention are protected-main policy. TASK-0038 remains unactivated.
+Instruction revision is `parallel-v2.4.1-nonrecursive-main-observation`. TASK-0038 remains unactivated and non-blocking Runner optimization work remains deferred.
 
 ## Tests
 
-PR #334 exact-head AI Continuity Guard `35613079867` PASS; Application Foundation CI `35613079738` PASS; Security Supply Chain CI `35613079745` PASS.
-
-RBT-007 is terminal PASS with immutable source/merge/run evidence. RBT-004 remains authorization-blocked/deferred; RBT-005 and all other non-blocking Runner optimization items remain deferred.
+Exact-head external CI is pending. RBT-008 is registered as the immediate merge-required validation workload for this workflow/tool/control change. RBT-004 remains authorization-blocked.
 
 ## Blockers
 
@@ -35,4 +33,4 @@ RBT-007 is terminal PASS with immutable source/merge/run evidence. RBT-004 remai
 
 ## Exact next action
 
-Register TASK-0038 from the frozen PHASE-07 research contract and the current 2026-09-21 no-material-drift revalidation, then require the registration head to pass AI Continuity Guard, Application Foundation CI and Security Supply Chain CI. After that merge, complete TASK-0037 and activate TASK-0038 only through a separate guarded transition. Do not activate live provider publishing or the deferred Runner benchmark batch.
+Perform one consolidated exact-head CI/status refresh for PR #336. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean; otherwise record WAITING_EXTERNAL or BLOCKED evidence on the PR without a source-head state-only commit. After a successful merge, perform exactly one material post-merge durable reconciliation anchored to that merge SHA; the reconciliation commit's own state-only merge must then classify as self_reconciliation_descendant and MUST NOT trigger another recursive reconciliation. Do not activate TASK-0038 or the deferred Runner benchmark batch in this milestone.

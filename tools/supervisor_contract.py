@@ -21,6 +21,14 @@ RUNNER = ROOT / ".ai" / "runner" / "RUNNER-BENCHMARK.yaml"
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 LIMITS = {STATE: 12 * 1024, CHECKPOINT: 16 * 1024, JOURNAL: 32 * 1024}
 MILESTONE_STATUSES = {"READY", "IN_PROGRESS", "VERIFYING", "WAITING_EXTERNAL", "BLOCKED", "COMPLETE"}
+SELF_RECONCILIATION_EXACT = {
+    ".ai/state/CURRENT-STATE.yaml",
+    ".ai/state/LAST-CHECKPOINT.md",
+    ".ai/state/EXECUTION-JOURNAL.jsonl",
+    ".ai/coordination/OPEN-WORK-QUEUE.yaml",
+    ".ai/runner/RUNNER-BENCHMARK.yaml",
+}
+SELF_RECONCILIATION_PREFIXES = (".ai/state/archive/",)
 REQUIRED_STATE_FIELDS = {
     "observed_main_sha", "active_issue", "active_pr", "active_branch",
     "current_milestone", "milestone_status", "last_completed_milestone",
@@ -70,6 +78,57 @@ def git_changed_files(base: str, head: str) -> set[str]:
     if proc.returncode != 0:
         raise ValueError(f"git diff failed: {proc.stderr.strip()}")
     return {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+
+
+def is_self_reconciliation_path(path: str) -> bool:
+    value = path.strip().replace("\\", "/")
+    while value.startswith("./"):
+        value = value[2:]
+    return value in SELF_RECONCILIATION_EXACT or any(value.startswith(prefix) for prefix in SELF_RECONCILIATION_PREFIXES)
+
+
+def main_observation_class(observed: str, current: str, *, ancestor: bool, changed: set[str]) -> str:
+    if observed == current:
+        return "exact"
+    if not ancestor:
+        return "conflict"
+    if all(is_self_reconciliation_path(path) for path in changed):
+        return "self_reconciliation_descendant"
+    return "material_drift"
+
+
+def main_observation_errors(observed: str, current: str, *, ancestor: bool, changed: set[str]) -> list[str]:
+    if not SHA_RE.fullmatch(observed or ""):
+        return ["observed_main_sha must be an exact 40-char lowercase Git SHA"]
+    if not SHA_RE.fullmatch(current or ""):
+        return ["current protected-main SHA must be an exact 40-char lowercase Git SHA"]
+    classification = main_observation_class(observed, current, ancestor=ancestor, changed=changed)
+    if classification in {"exact", "self_reconciliation_descendant"}:
+        return []
+    if classification == "conflict":
+        return [f"protected main {current} is not a descendant of observed snapshot-basis anchor {observed}; reconcile repository truth before writable work"]
+    material = sorted(path for path in changed if not is_self_reconciliation_path(path))
+    preview = ", ".join(material[:20]) or "<unknown>"
+    return [f"material protected-main drift exists since observed snapshot-basis anchor {observed}: {preview}"]
+
+
+def validate_main_observation(current_main: str) -> tuple[list[str], str]:
+    try:
+        state = load(STATE)
+    except ValueError as exc:
+        return [str(exc)], "invalid"
+    observed = str(state.get("observed_main_sha", ""))
+    verify = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", observed, current_main],
+        cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    ancestor = verify.returncode == 0
+    try:
+        changed = set() if observed == current_main else git_changed_files(observed, current_main)
+    except ValueError as exc:
+        return [str(exc)], "invalid"
+    classification = main_observation_class(observed, current_main, ancestor=ancestor, changed=changed)
+    return main_observation_errors(observed, current_main, ancestor=ancestor, changed=changed), classification
 
 
 def validate() -> list[str]:
@@ -198,9 +257,15 @@ def main() -> int:
     pr.add_argument("--event-path", required=True)
     pr.add_argument("--base", required=True)
     pr.add_argument("--head", required=True)
+    main_obs = sub.add_parser("validate-main-observation")
+    main_obs.add_argument("--current-main", required=True)
     args = parser.parse_args()
     if args.command == "validate":
         errors = validate()
+    elif args.command == "validate-main-observation":
+        errors, classification = validate_main_observation(args.current_main)
+        if not errors:
+            print(f"Protected-main observation: {classification}")
     else:
         errors = validate_pr_event(Path(args.event_path), args.base, args.head)
     if errors:

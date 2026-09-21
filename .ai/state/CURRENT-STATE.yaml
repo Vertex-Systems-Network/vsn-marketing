@@ -18,11 +18,11 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908300",
-    "application_test_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908254",
-    "security_supply_chain_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908410",
-    "release_integrity_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908268",
-    "scorecard_status": "task_0037_registration_main_head_98d8915b72226317ada81e3a9d787d99d47f38d5_passed_run_35598908267"
+    "continuity_validation": "timeout_resilience_main_head_44e8a0bf8c23f0e9919f268158fd1ba9240d5515_passed_run_35603389093",
+    "application_test_status": "timeout_resilience_main_head_44e8a0bf8c23f0e9919f268158fd1ba9240d5515_passed_run_35603389099",
+    "security_supply_chain_status": "timeout_resilience_main_head_44e8a0bf8c23f0e9919f268158fd1ba9240d5515_passed_run_35603389076",
+    "release_integrity_status": "timeout_resilience_main_head_44e8a0bf8c23f0e9919f268158fd1ba9240d5515_passed_run_35603389072",
+    "scorecard_status": "timeout_resilience_main_head_44e8a0bf8c23f0e9919f268158fd1ba9240d5515_passed_run_35603389058"
   },
   "blockers": [],
   "exact_next_action": "Revalidate and certify the staged TASK-0037 PHASE-07 research pack against current official provider and market-workflow sources, reconcile any material change into the PHASE-07 contract, and mark AC-1 through AC-8 true only on an exact-head research acceptance PR. Do not activate TASK-0038 or any live provider publication/scheduler execution until that research acceptance is merged and trusted; keep Runner benchmark work deferred under the persistent registry."

@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-21T12:22:30+00:00`
+- Timestamp: `2026-09-21T13:08:00+00:00`
 - Active task: `TASK-0037`
 - Next task: `none`
 - Current phase: `PHASE-07`
@@ -11,11 +11,11 @@
 
 ## Completed / observed this session
 
-TASK-0036 and PHASE-06 are complete. TASK-0037 research staging PR #327 merged on protected `main` as `98d8915b72226317ada81e3a9d787d99d47f38d5`; that exact protected-main head passed all five trusted gates. TASK-0037 is now the active PHASE-07 research-first task, with its dated provider/calendar evidence pack and PHASE-07 contract already staged. No live publication, production scheduler execution or provider credential activation is introduced by this transition. The completed TASK-0036 parallel cycle is staged and its active lease is released. Runner benchmark work remains persistent and deferred.
+PR #330 merged the persistent AI execution-resilience and timeout-avoidance policy on protected `main` as `44e8a0bf8c23f0e9919f268158fd1ba9240d5515`. The policy now makes short logical milestones, canonical repository-state recovery, bounded CI polling, timeout-safe resume verification, compact handoffs, and separately deferred Runner benchmark work durable across future AI-Native task/phase transitions. TASK-0037 remains the active PHASE-07 research-first task; no TASK-0038 activation, live provider publication, production scheduler execution, provider credential activation, or Runner benchmark batch was introduced by this control milestone.
 
 ## Tests
 
-Protected-main TASK-0037 registration head `98d8915b72226317ada81e3a9d787d99d47f38d5`: AI Continuity Guard `35598908300` PASS; Application Foundation CI `35598908254` PASS; Security Supply Chain CI `35598908410` PASS; Release Integrity `35598908268` PASS; OpenSSF Scorecard `35598908267` PASS. This transition head must pass fresh exact-head Continuity, Application and Security gates before merge.
+Protected-main timeout-resilience head `44e8a0bf8c23f0e9919f268158fd1ba9240d5515`: AI Continuity Guard `35603389093` PASS; Application Foundation CI `35603389099` PASS; Security Supply Chain CI `35603389076` PASS; Release Integrity `35603389072` PASS; OpenSSF Scorecard `35603389058` PASS.
 
 ## Blockers
 

@@ -10,7 +10,7 @@
       "id": "WS-0036-SUPERVISOR-CONTROL",
       "role": "supervisor",
       "module": "Content",
-      "capability": "Own PHASE-06 certification integration, shared-path coordination, shipping-baseline realignment, exact-head acceptance and terminal phase closeout without weakening TASK-0031 through TASK-0035 canonical, asset, rendering, brand or provider-neutral authority and without pulling PHASE-07 forward.",
+      "capability": "Own TASK-0036 final PHASE-06 acceptance, canonical task/state/checkpoint/journal reconciliation, persistent deferred runner-registry continuity, and the separate guarded PHASE-07 handoff without activating campaign publishing early.",
       "assigned_agent": "supervisor-main",
       "branch": "supervisor/TASK-0036",
       "worktree": "worktrees/task-0036-supervisor",
@@ -25,7 +25,11 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md"
+        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0036.yaml"
       ]
     },
     {

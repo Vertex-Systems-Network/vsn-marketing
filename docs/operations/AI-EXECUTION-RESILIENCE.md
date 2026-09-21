@@ -134,7 +134,30 @@ If a user receives a message-delivery timeout and sends `continue`:
 5. do not duplicate a completed merge/write;
 6. report any already-completed milestone succinctly before starting the next one.
 
-## 8. Runner benchmark integration
+## 8. Strict plan following and change-aware CI
+
+The repository uses change-aware CI to reduce unnecessary hosted-runner work without weakening required checks.
+
+Mandatory order:
+
+1. recover and validate canonical state;
+2. read current task/plan/checkpoint and exact repository head;
+3. classify the exact change set;
+4. execute one approved milestone;
+5. run the change-class checks;
+6. require the exact-head PR gates selected by policy;
+7. merge only that verified head;
+8. re-read repository state before any successor registration/transition.
+
+`tools/ci_change_policy.py` fails closed. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs may skip heavy Application/Security jobs at job level while required check contexts remain reported. Any other/unknown path runs full Application + Security CI.
+
+A standalone `CI-Mode: full` line in the PR body forces full heavy gates for control-only certification, release/promotion, security-sensitive acceptance, or any task contract that explicitly requires those gates. Agents MUST add this marker when the milestone requires full exact-head gates despite a control-only diff.
+
+Non-required post-merge Release Integrity and push-triggered OpenSSF Scorecard may use control-only path filters; scheduled/manual Scorecard and manual Release Integrity remain available. Workflow/dependency/tool/security changes never qualify as control-only.
+
+Runner benchmarking remains a separate deferred optimization batch. Normal CI may still execute on GitHub-hosted runners when the change class requires it; that does not activate an RBT item.
+
+## 9. Runner benchmark integration
 
 Runner sizing, cache, concurrency, architecture, toolchain-performance and benchmark-environment work remains governed by `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.
 
@@ -147,7 +170,7 @@ Runner work remains deferred unless:
 
 CI timeout avoidance must not be used as justification to change runner size, disable jobs, lower audit thresholds, reduce scanners, or bypass benchmark governance.
 
-## 9. Security and correctness precedence
+## 10. Security and correctness precedence
 
 Timeout optimization is subordinate to repository safety.
 
@@ -159,7 +182,7 @@ A security/correctness/release blocker may require extra tool calls in the same 
 - do not weaken required checks;
 - leave a durable checkpoint after the bounded fix.
 
-## 10. Success criteria
+## 11. Success criteria
 
 This standard is working when:
 

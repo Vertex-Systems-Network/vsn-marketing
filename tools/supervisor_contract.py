@@ -81,7 +81,9 @@ def git_changed_files(base: str, head: str) -> set[str]:
 
 
 def is_self_reconciliation_path(path: str) -> bool:
-    value = path.strip().replace("\\", "/").lstrip("./")
+    value = path.strip().replace("\\", "/")
+    while value.startswith("./"):
+        value = value[2:]
     return value in SELF_RECONCILIATION_EXACT or any(value.startswith(prefix) for prefix in SELF_RECONCILIATION_PREFIXES)
 
 

@@ -49,6 +49,20 @@ Completion signal: `Work Done and Submitted`
 - PR #324 registered the persistent deferred runner benchmark backlog and merged as protected-main head `62add6effb833ee6d0835c41400e0daec4878ebf` after exact-head governance/application/security checks. That post-merge head passed AI Continuity Guard `35580129231`, Application Foundation CI `35580129198`, Security Supply Chain CI `35580129321`, Release Integrity `35580129191`, and OpenSSF Scorecard `35580129253`.
 
 
+## Persistent execution resilience / timeout-avoidance policy
+
+This policy is cross-phase and survives task transitions. The full standard is `docs/operations/AI-EXECUTION-RESILIENCE.md`; every future AI-Native plan revision must preserve or explicitly supersede it.
+
+- Default interaction budget is **one logical milestone**: for example change+PR, gate diagnosis/fix, gate verification+merge, post-merge reconciliation, successor registration, or guarded transition. Do not chain several milestone classes merely because tools are available.
+- External CI is a durable boundary, not a tight polling loop. After starting required gates, record PR/branch/exact SHA, read status, and normally perform at most one additional refresh in the same interaction unless a changed state requires diagnosis or one final read can close the milestone.
+- If required CI remains in progress, stop at the durable branch/PR/SHA checkpoint. On the next `continue`, re-read GitHub state before doing any write.
+- After a delivery timeout/interruption, never blindly replay branch/file/PR/merge/transition operations. Verify whether the prior operation already succeeded, then resume from actual repository state.
+- Group related reads and avoid fetching logs unless a failed/ambiguous gate needs diagnosis.
+- Preserve `.ai/state/CURRENT-STATE.yaml`, `.ai/state/LAST-CHECKPOINT.md`, journal/task/workstream state, branch/PR exact heads, and the Supervisor status as recovery evidence. Do not rewrite canonical state only to say that an external CI job is still running.
+- End development interactions with a compact handoff: repo, active task/phase, completed milestone, PR/SHA, gate state, exact next action, and canonical progress when available.
+- Security/correctness/release blockers may exceed the normal interaction budget for bounded diagnosis/remediation, but required gates may never be weakened for speed.
+- Runner performance/size/cache/concurrency/toolchain work remains in the separate persistent Runner benchmark registry and is not activated merely to reduce message/tool timeout risk.
+
 ## Deferred runner benchmark registry
 
 Runner work is intentionally separated from product/certification development and tracked in `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.

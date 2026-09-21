@@ -284,18 +284,33 @@
       "source": "PR #344 / TASK-0038 lifecycle and approval orchestration",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #344 exact-head status/comment"
+        "git_sha": "b8810ff578432d35a10306ed9c83f3ae7b4b2eb0",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #344 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0038-approval-orchestration; workspace RBAC + exact snapshot approvals + stale capability/authorization invalidation + append-only revocation",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0038-approval-orchestration:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 344,
+        "source_sha": "b8810ff578432d35a10306ed9c83f3ae7b4b2eb0",
+        "merge_sha": "09ea7cd36faae43620024788fa39af2e2847e77b",
+        "workflow_runs": {
+          "ai_continuity_guard": 35652184734,
+          "application_foundation_ci": 35652185080,
+          "security_supply_chain_ci": 35652185065
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application verification exposed bounded PHPStan/Pint findings after functional/security tests passed. Repairs removed only statically impossible nullsafe access, an unused helper and final formatter whitespace; lifecycle, authorization, capability freshness, append-only revocation, security gates and acceptance semantics were not weakened."
+      }
     }
   ]
 }

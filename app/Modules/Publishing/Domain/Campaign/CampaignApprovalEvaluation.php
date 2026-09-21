@@ -43,4 +43,15 @@ final readonly class CampaignApprovalEvaluation
             detail: $detail,
         );
     }
+
+    public function withDecisionId(string $decisionId): self
+    {
+        return $this->valid
+            ? self::valid($decisionId)
+            : self::invalid(
+                reason: $this->reason,
+                decisionId: $decisionId,
+                detail: $this->detail,
+            );
+    }
 }

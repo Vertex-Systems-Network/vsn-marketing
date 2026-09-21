@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "09ea7cd36faae43620024788fa39af2e2847e77b",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 345,
-    "branch": "control/readme-progress-sync-v2",
-    "milestone": "README-PROGRESS-SYNC-V2"
-  },
+  "reconciled_main_sha": "5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -52,15 +47,6 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
-    },
-    {
-      "kind": "pr",
-      "number": 345,
-      "title": "control: enforce README progress synchronization",
-      "disposition": "active_control_protocol_verification",
-      "accepted_actionable": true,
-      "runner_id": "RBT-013",
-      "branch": "control/readme-progress-sync-v2"
     }
   ]
 }

@@ -488,50 +488,111 @@ final readonly class CampaignGovernanceService
         User $actor,
         TenantContext $context,
         string $campaignId,
-        string $eventId,
-        string $eventIdempotencyKey,
+        string $roleKey,
+        string $revocationDecisionId,
+        string $revocationDecisionIdempotencyKey,
+        string $revocationEventId,
+        string $revocationEventIdempotencyKey,
+        string $transitionEventId,
+        string $transitionEventIdempotencyKey,
         DateTimeImmutable $at,
     ): CampaignApprovalEvaluation {
-        $this->assertAnyPermission($actor, $context, [
-            PermissionCatalog::CAMPAIGN_CREATE,
-            PermissionCatalog::CAMPAIGN_SEND,
-        ]);
+        $this->assertApprovalAuthority($actor, $context, $roleKey);
 
-        $campaign = $this->requireCampaign($context, $campaignId);
-        $snapshot = $this->requireLatestSnapshot($context, $campaign);
-        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
+        return $this->database->connection()->transaction(function () use (
+            $context,
+            $campaignId,
+            $roleKey,
+            $revocationDecisionId,
+            $revocationDecisionIdempotencyKey,
+            $revocationEventId,
+            $revocationEventIdempotencyKey,
+            $transitionEventId,
+            $transitionEventIdempotencyKey,
+            $at,
+        ): CampaignApprovalEvaluation {
+            $campaign = $this->requireCampaign($context, $campaignId);
+            $snapshot = $this->requireLatestSnapshot($context, $campaign);
+            $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
 
-        if (
-            $evaluation->valid
-            || ! in_array($campaign->status, [
-                CampaignStatus::Approved,
-                CampaignStatus::Ready,
-                CampaignStatus::ScheduledIntent,
-            ], true)
-        ) {
+            if (
+                $evaluation->valid
+                || ! in_array($campaign->status, [
+                    CampaignStatus::Approved,
+                    CampaignStatus::Ready,
+                    CampaignStatus::ScheduledIntent,
+                ], true)
+            ) {
+                return $evaluation;
+            }
+
+            $decisions = $this->campaigns->approvalDecisions(
+                $context->workspaceId,
+                $campaign->id,
+                $snapshot->id,
+            );
+            $active = $decisions === [] ? null : $decisions[array_key_last($decisions)];
+            $revocation = null;
+
+            if (
+                $active !== null
+                && $active->outcome === CampaignApprovalOutcome::Approved
+                && $evaluation->decisionId === $active->id
+            ) {
+                $revocation = new CampaignApprovalDecision(
+                    id: $revocationDecisionId,
+                    workspaceId: $context->workspaceId,
+                    campaignId: $campaign->id,
+                    snapshotId: $snapshot->id,
+                    targetSetHash: $snapshot->targetSetHash,
+                    outcome: CampaignApprovalOutcome::Revoked,
+                    actorId: $context->actorId,
+                    actorRole: $roleKey,
+                    reason: 'Campaign approval invalidated: '.($evaluation->reason?->value ?? 'unknown').'.',
+                    capabilityEvidenceIds: $snapshot->capabilityEvidenceIds,
+                    supersedesDecisionId: $active->id,
+                    expiresAt: null,
+                    idempotencyKey: $revocationDecisionIdempotencyKey,
+                    occurredAt: $at,
+                );
+                $revocationEvent = CampaignEvent::approvalRecorded(
+                    decision: $revocation,
+                    id: $revocationEventId,
+                    evidence: [
+                        'supersedes_approval_id' => $active->id,
+                        'snapshot_hash' => $snapshot->snapshotHash,
+                        'target_set_hash' => $snapshot->targetSetHash,
+                        'invalidation_reason' => $evaluation->reason?->value,
+                        'invalidation_detail' => $evaluation->detail,
+                    ],
+                    idempotencyKey: $revocationEventIdempotencyKey,
+                );
+
+                $this->campaigns->appendApproval($revocation, $revocationEvent);
+            }
+
+            $next = $campaign->transitionTo(CampaignStatus::NeedsApproval, $at);
+            $transitionEvent = CampaignEvent::transitioned(
+                before: $campaign,
+                after: $next,
+                id: $transitionEventId,
+                actorId: $context->actorId,
+                reason: 'Campaign approval is no longer effective.',
+                evidence: [
+                    'approval_id' => $evaluation->decisionId,
+                    'revocation_decision_id' => $revocation?->id,
+                    'snapshot_id' => $snapshot->id,
+                    'invalidation_reason' => $evaluation->reason?->value,
+                    'invalidation_detail' => $evaluation->detail,
+                ],
+                idempotencyKey: $transitionEventIdempotencyKey,
+                occurredAt: $at,
+            );
+
+            $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $transitionEvent);
+
             return $evaluation;
-        }
-
-        $next = $campaign->transitionTo(CampaignStatus::NeedsApproval, $at);
-        $event = CampaignEvent::transitioned(
-            before: $campaign,
-            after: $next,
-            id: $eventId,
-            actorId: $context->actorId,
-            reason: 'Campaign approval is no longer effective.',
-            evidence: [
-                'approval_id' => $evaluation->decisionId,
-                'snapshot_id' => $snapshot->id,
-                'invalidation_reason' => $evaluation->reason?->value,
-                'invalidation_detail' => $evaluation->detail,
-            ],
-            idempotencyKey: $eventIdempotencyKey,
-            occurredAt: $at,
-        );
-
-        $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
-
-        return $evaluation;
+        });
     }
 
     private function requireCampaign(TenantContext $context, string $campaignId): Campaign

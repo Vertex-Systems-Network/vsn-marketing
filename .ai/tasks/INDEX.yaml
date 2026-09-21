@@ -368,6 +368,16 @@
       "dependencies": [
         "TASK-0035"
       ]
+    },
+    {
+      "id": "TASK-0037",
+      "phase": "PHASE-07",
+      "title": "Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0036"
+      ]
     }
   ]
 }

@@ -10,7 +10,7 @@
     "current_phase": "PHASE-06",
     "active_task": "TASK-0036",
     "last_completed_task": "TASK-0035",
-    "next_task": null
+    "next_task": "TASK-0037"
   },
   "progress": {
     "roadmap_percent": 43.4,
@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129231",
-    "application_test_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129198",
-    "security_supply_chain_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129321",
-    "release_integrity_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129191",
-    "scorecard_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129253"
+    "continuity_validation": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542980",
+    "application_test_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597543088",
+    "security_supply_chain_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542911",
+    "release_integrity_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597542905",
+    "scorecard_status": "task_0036_runner_policy_main_head_4cafc041c7ac10058a68ab1d1a5e14377bcd2384_passed_run_35597543131"
   },
   "blockers": [],
-  "exact_next_action": "Run TASK-0036 final PHASE-06 acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that completes PHASE-06 and explicitly registers/activates TASK-0037 as the PHASE-07 research-first successor. Keep all runner benchmark tasks deferred in the persistent runner registry until the coordinated runner batch is explicitly activated."
+  "exact_next_action": "Merge the TASK-0037 PHASE-07 research registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main evidence and perform a separate guarded transition that completes TASK-0036/PHASE-06 and activates TASK-0037 as research-only PHASE-07 work. Keep all Runner benchmark items deferred unless the documented blocker-escalation exception applies."
 }

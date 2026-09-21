@@ -122,18 +122,32 @@
       "source": "PR #334 / Supervisor durable-resume contract v2 control milestone",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #334 exact-head status/comment"
+        "git_sha": "6a2ad96e74f394b9d41752f517c6a08cc18500d7",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #334 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/supervisor-durable-resume-v2; full exact-head governance/application/security verification",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:supervisor-contract-v2:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 334,
+        "source_sha": "6a2ad96e74f394b9d41752f517c6a08cc18500d7",
+        "merge_sha": "065b4da5cba4f610d5473e41ddb9fc3089e5c305",
+        "workflow_runs": {
+          "ai_continuity_guard": 35613079867,
+          "application_foundation_ci": 35613079738,
+          "security_supply_chain_ci": 35613079745
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
     }
   ]
 }

@@ -1,16 +1,18 @@
 # Recovery Protocol
 
-Use this when a previous AI/developer session ended unexpectedly or the ledger may be stale.
+Use this on every fresh Supervisor session, `continue`/resume, interruption, tool/connector failure, or message-delivery timeout.
 
-1. Run `python tools/ai_state.py recover` first. It validates the ledger, inspects the working tree, and reports unsynchronized product changes.
-2. Read `CURRENT-STATE.yaml`, `LAST-CHECKPOINT.md`, active task, and test state.
-3. Confirm the checkpoint `State fingerprint` matches the current execution ledger. `python tools/ai_state.py validate` enforces this automatically.
-4. Inspect current branch/HEAD/diff and compare modified files/commits with the checkpoint.
-5. Run the smallest reliable test set for the active task, then broader required tests if possible.
-6. If code contains unrecorded progress, update task acceptance evidence and create a synchronized checkpoint; do not discard valid work just to match old text.
-7. If checkpoint claims completion not supported by code/tests, downgrade task status and document the mismatch.
-8. If architecture/contracts changed without ADR, stop feature work, create a reconciliation blocker, and restore or formally propose the change.
-9. Clear `needs_reconciliation` only when state, task registry, repository evidence, checkpoint fingerprint, and tests agree.
-10. Before handing off, run `python tools/ai_state.py validate` and resume only from the newly recorded exact next action.
+1. Run `python tools/ai_txn.py recover`, then validate compact state.
+2. Read only `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md` first.
+3. Resolve the exact current default/protected `main` SHA and compare it with `observed_main_sha`.
+4. Reconcile all open Issues, then all open PRs/MRs. Accepted actionable work cannot be bypassed.
+5. Re-read the active task/research claims, `.ai/coordination/OPEN-WORK-QUEUE.yaml`, and `.ai/runner/RUNNER-BENCHMARK.yaml`.
+6. Inspect relevant commits since the recorded anchor. Reconcile merged/closed work and stale queue/Runner states.
+7. Read archived journal/checkpoint history only when a specific evidence conflict requires it.
+8. Never replay a branch/file/PR/merge/migration/provider/deployment/destructive/runtime action because a prior chat response was missing.
+9. If evidence conflicts, set/reconcile a blocked or needs-reconciliation state, persist the conflict, and stop the affected action.
+10. Before handoff run `python tools/supervisor_contract.py validate`, `python tools/runner_benchmark.py validate`, continuity validators, and resume only from `exact_next_safe_action`.
 
-Never solve uncertain recovery state by guessing what the previous model intended. Never manually force a task transition to bypass false acceptance criteria or incomplete dependencies.
+CI is a durable external boundary: default to one consolidated refresh per milestone. If checks remain running, preserve the already-persisted VERIFYING/WAITING_EXTERNAL state, write run IDs to a PR/Issue status surface when possible, and end the milestone without a source-head state-only commit.
+
+Repository/runtime evidence outranks chat memory. Compact state is only a resume index.

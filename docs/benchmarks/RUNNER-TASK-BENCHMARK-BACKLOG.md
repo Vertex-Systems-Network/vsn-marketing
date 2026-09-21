@@ -6,10 +6,24 @@ Owner: Supervisor control plane
 Workstream: `WS-0036-SUPERVISOR-CONTROL`  
 Execution policy: runner tasks are deferred by default and executed in one coordinated batch; only the explicit blocker-escalation exception below permits earlier execution.  
 Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
-Interaction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.\n
+Interaction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.
+
 ## Purpose
 
 This file is the persistent benchmark/backlog for work whose primary subject is a CI/automation runner, runner resource profile, runner/toolchain performance, or production-representative benchmark runner. Product and security development continue normally while runner work accumulates here. When the runner batch is explicitly activated, items are executed together so measurements are comparable and changes do not drift across unrelated feature work.
+
+## CI execution is not Runner benchmark execution
+
+A normal GitHub Actions job running on a hosted runner is **not** an RBT task. Required CI verifies correctness/security; RBT items measure or optimize runner size, architecture, cache, concurrency, topology, toolchain performance, or benchmark environments.
+
+The strict change-aware policy is:
+
+- control/docs/research-only diffs use lightweight governance and job-level skipped-success for heavy required jobs unless `CI-Mode: full` is present;
+- product/dependency/workflow/tool/security-sensitive diffs run the full required CI set;
+- certification/release/security acceptance may force full CI with `CI-Mode: full` even when its diff is control-only;
+- running required CI never changes an RBT row from `deferred`;
+- discovering a runner optimization during normal CI appends/updates an RBT item instead of executing the optimization;
+- the coordinated Runner batch remains dormant until explicitly activated, and unrelated RBT items must not be pulled forward.
 
 ## Measurement contract
 

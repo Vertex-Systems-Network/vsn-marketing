@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b2d5eb41cf2610ae65aa35a6ac187cce32bfc55e",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 336,
-    "branch": "control/nonrecursive-main-observation",
-    "milestone": "NONRECURSIVE-MAIN-OBSERVATION"
-  },
+  "reconciled_main_sha": "aed56d384d6a5a1c6f111f234426ede455963920",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -52,15 +47,6 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
-    },
-    {
-      "kind": "pr",
-      "number": 336,
-      "title": "control: prevent recursive main-observation reconciliation",
-      "disposition": "active_governance_verification",
-      "accepted_actionable": true,
-      "runner_id": "RBT-008",
-      "branch": "control/nonrecursive-main-observation"
     }
   ]
 }

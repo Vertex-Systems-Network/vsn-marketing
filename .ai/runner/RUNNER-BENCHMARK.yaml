@@ -154,18 +154,33 @@
       "source": "PR #336 / non-recursive protected-main observation control milestone",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #336 exact-head status/comment"
+        "git_sha": "fd594bc19f71eaecce26ec2fe54f43336be77b35",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #336 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/nonrecursive-main-observation; workflow/tool/control exact-head verification",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:nonrecursive-main-observation:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 336,
+        "source_sha": "fd594bc19f71eaecce26ec2fe54f43336be77b35",
+        "merge_sha": "aed56d384d6a5a1c6f111f234426ede455963920",
+        "workflow_runs": {
+          "ai_continuity_guard": 35615993805,
+          "application_foundation_ci": 35615993706,
+          "security_supply_chain_ci": 35615993876
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Security run initially failed on upstream HTTP 504 while installing checksum-verified Trivy; same-head failed-job rerun passed with no security weakening."
+      }
     }
   ]
 }

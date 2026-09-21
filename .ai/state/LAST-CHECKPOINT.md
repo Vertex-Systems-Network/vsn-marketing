@@ -2,32 +2,32 @@
 
 ## State
 
-- Timestamp: `2026-09-21T15:39:12Z`
-- Observed main: `32b81753c44cf2a3e285c3423b4a26c13a8f6afc`
+- Timestamp: `2026-09-21T16:52:41Z`
+- Observed main: `8a816f5a0e3bb421c6e9c783f0c3163f03e8ac59`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0037-TO-TASK-0038-TRANSITION`
-- Milestone status: `COMPLETE`
+- Active PR: `342`
+- Active branch: `task/0038-campaign-foundation`
+- Current milestone: `TASK-0038-CAMPAIGN-FOUNDATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0038`
 - Next task: `none`
 - Current phase: `PHASE-07`
-- Execution status: `ready`
-- Pending Runner IDs: `none`
+- Execution status: `in_progress`
+- Pending Runner IDs: `RBT-011`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `49081e17a330f5089eb3ad60ef02d1f8b68b408de094b506c325d085b898f8c7`
+- State fingerprint: `6fa05f441b443d70f54a3151c770a05cc4fa5757957315fde88d326b4dedfefb`
 
 ## Completed / observed this session
 
-The guarded TASK-0037 -> TASK-0038 transition is trusted on protected main through PR #340 merged as `32b81753c44cf2a3e285c3423b4a26c13a8f6afc`. Exact source `8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e` passed AI Continuity Guard `35620231528`, Application Foundation CI `35620231349`, and Security Supply Chain CI `35620231323`.
+PR #342 stages the first bounded TASK-0038 product milestone: a workspace-scoped canonical campaign persistence/domain foundation. It adds deterministic lifecycle state with optimistic versions; immutable campaign snapshots and canonical target bindings; snapshot-bound approval decision records; append-only campaign event history; workspace-scoped replay/idempotency behavior; and fail-closed cross-workspace reference checks.
 
-TASK-0037 is complete. TASK-0038 is active/ready under its frozen AC-1 through AC-8 contract. Deterministic progress remains PHASE-07 `42.86%` and roadmap `47%`. RBT-010 is terminal PASS with immutable source, merge and workflow-run evidence. RBT-004 remains authorization-blocked; all non-blocking Runner optimization work remains deferred.
+The migration is additive and re-entrant, guards immutable history against update/delete on PostgreSQL and SQLite, and is covered by focused domain, PostgreSQL integration, rollback-on-failure, optimistic-concurrency and default security regression tests. TASK-0038 is now in progress; AC-1 through AC-8 remain open because this milestone is not full TASK-0038 completion.
 
-This state-only reconciliation transport is not a new engineering work path or Runner benchmark task. After it merges, the live main descendant must be treated as a self-reconciliation descendant of material anchor `32b81753c44cf2a3e285c3423b4a26c13a8f6afc`; recursive cleanup is forbidden.
+Live provider publication/media upload, production scheduling workers, provider credential activation, deployment/release authority, TASK-0039 registration and the deferred Runner optimization batch remain out of scope.
 
 ## Tests
 
-PR #340 exact-head AI Continuity Guard `35620231528` PASS; Application Foundation CI `35620231349` PASS; Security Supply Chain CI `35620231323` PASS.
+Exact-head external CI is pending. RBT-011 is registered as the immediate merge-required migration/data-safety, current-change integration and security validation workload for PR #342. RBT-004 remains authorization-blocked.
 
 ## Blockers
 
@@ -35,4 +35,4 @@ PR #340 exact-head AI Continuity Guard `35620231528` PASS; Application Foundatio
 
 ## Exact next action
 
-Begin TASK-0038 implementation as a separate bounded milestone from current protected main, starting with the workspace-scoped persistence/domain contract for canonical campaigns, immutable snapshots, canonical target/recipient bindings, approval decisions and append-oriented audit events. Any schema migration must be additive, transaction-safe, crash/retry/concurrency tested and rollback/restore aware before merge. Do not implement live provider API publication, media upload, production scheduler execution, provider credential activation, deployment/release authority or the deferred Runner benchmark batch.
+Perform one consolidated exact-head CI/status refresh for PR #342. Merge the TASK-0038 campaign foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. Treat migration/data-safety failures as merge blockers. After a trusted merge, perform terminal durable reconciliation before starting the next TASK-0038 lifecycle/approval orchestration milestone. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch.

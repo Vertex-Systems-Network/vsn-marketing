@@ -100,12 +100,12 @@ final readonly class CampaignApprovalEvaluator
 
         $authority = $this->evaluateApproverAuthority($decision);
         if (! $authority->valid) {
-            return new CampaignApprovalEvaluationProxy($authority, $decision->id)->value();
+            return $authority->withDecisionId($decision->id);
         }
 
         $snapshotAuthority = $this->evaluateSnapshotAuthority($snapshot, $at);
         if (! $snapshotAuthority->valid) {
-            return new CampaignApprovalEvaluationProxy($snapshotAuthority, $decision->id)->value();
+            return $snapshotAuthority->withDecisionId($decision->id);
         }
 
         return CampaignApprovalEvaluation::valid($decision->id);

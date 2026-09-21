@@ -5,6 +5,7 @@
 - phase: PHASE-07
 - scope: current cross-channel publishing APIs, account/app eligibility, app review/scopes, scheduling ownership, media transfer/processing constraints, and mature campaign/calendar approval workflows
 - researcher: OpenAI development agent under Supervisor control
+- status: acceptance candidate for PHASE-07 research-first gate
 
 ## Sources
 
@@ -165,6 +166,21 @@ TikTok audit policy, Meta scope names/Graph versions, LinkedIn Marketing API ver
 
 Do not infer support from old SDK examples or third-party blog posts when current official docs differ. Any provider-native scheduling feature not present in this pack must enter VSN only as newly researched, versioned capability evidence.
 
-## Research disposition
+## Acceptance revalidation
+
+The material provider/API and market-workflow claims in this pack were revalidated in the active 2026-09-21 research session against the current official sources listed above. No material conflict was found that requires a new PHASE-07 task before TASK-0038. The provider-specific scope, app-review/audit, media-processing and scheduling differences remain mandatory versioned capability evidence.
+
+The research gate therefore freezes the following non-negotiable PHASE-07 boundaries:
+
+1. canonical campaign, approval, immutable snapshot and intended execution time remain VSN authority;
+2. provider-native scheduling is optional capability evidence and never a universal contract;
+3. approval authority binds to the exact immutable content/target snapshot and must be re-evaluated after material edits;
+4. provider upload/container/media references remain derivative and reconcilable;
+5. media preparation and publication attempts are separate asynchronous lifecycle states;
+6. publication attempts are idempotent, workspace-scoped and reconciliation-safe under retries, partial success and delayed/duplicate provider events;
+7. provider app-review/audit, write scopes, target-account roles and media constraints fail closed when missing, stale or incompatible;
+8. live provider posting, production schedule execution and provider credential activation remain outside TASK-0037.
+
+## Frozen research disposition
 
 The PHASE-07 preplanned sequence is confirmed with stricter acceptance boundaries. TASK-0037 can be registered as the research-first successor, but no publishing implementation is authorized until a separate guarded TASK-0036 -> TASK-0037 transition and exact-head research acceptance.

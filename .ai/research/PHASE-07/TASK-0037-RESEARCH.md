@@ -1,11 +1,13 @@
 # TASK-0037 Research Pack
 
 - researched_at: 2026-09-21T12:14:00+00:00
+- revalidated_at: 2026-09-21 (current official-source refresh; no material drift)
+- accepted_via: PR #329 / merge `793e84568f2da014ecd7cd0e23ab43dd7a7c6bd8`
 - task: TASK-0037
 - phase: PHASE-07
 - scope: current cross-channel publishing APIs, account/app eligibility, app review/scopes, scheduling ownership, media transfer/processing constraints, and mature campaign/calendar approval workflows
 - researcher: OpenAI development agent under Supervisor control
-- status: acceptance candidate for PHASE-07 research-first gate
+- status: accepted research contract; current-source revalidation complete
 
 ## Sources
 
@@ -165,6 +167,20 @@ Disposition: `NEW_ACCEPTANCE_CRITERION` for TASK-0038 through TASK-0042, not `NE
 TikTok audit policy, Meta scope names/Graph versions, LinkedIn Marketing API versions/roles, YouTube quota/audit rules, X API products/scopes and provider media limits can change quickly. Revalidate material claims on the exact TASK-0037 acceptance session and again before each concrete connector is production-enabled.
 
 Do not infer support from old SDK examples or third-party blog posts when current official docs differ. Any provider-native scheduling feature not present in this pack must enter VSN only as newly researched, versioned capability evidence.
+
+## Current-source refresh after execution-resilience rollout
+
+A fresh 2026-09-21 official-source review after the execution-resilience rollout found **no material drift** from the accepted PR #329 contract.
+
+- TikTok still requires runtime creator-info evidence and `video.publish`; unaudited Direct Post clients remain constrained and provider pull URLs remain ownership-verified capability evidence.
+- Meta's current Instagram material still distinguishes Professional accounts and login permission models, including `instagram_business_content_publish` for Instagram Login; Reels remains a create-container -> processing/status -> publish flow. Facebook Page Reels continues to expose provider-specific draft/scheduled/published states rather than a universal cross-provider scheduler contract.
+- LinkedIn still requires versioned Marketing API headers and target-role/write-scope evidence such as `w_organization_social` / `w_member_social`.
+- YouTube still restricts `status.publishAt` to private, never-published videos and keeps unverified-project uploads private until audit; media upload/processing remains separate from publication readiness.
+- X's current Manage Posts and official media-v2 material still uses user-context create-Post plus pre-uploaded media. Current attachment limits vary by posting-account capability, reinforcing the existing rule that media limits are versioned provider evidence rather than global constants.
+- Buffer still distinguishes per-channel timezone/queue-slot scheduling from custom fixed date/time scheduling, with DST-aware timezone behavior.
+- Sprout still treats missed approval as fail-closed: an item not approved before its scheduled time is not published and must be rescheduled/resubmitted; approval workflow history remains auditable.
+
+Disposition remains `CONFIRMS_PLAN`. No new prerequisite task, ADR, module boundary, live provider test, or Runner benchmark activation is required before TASK-0038. The next canonical action is TASK-0038 registration from this frozen contract, followed by a separate guarded TASK-0037 -> TASK-0038 transition only after trusted registration gates pass.
 
 ## Acceptance revalidation
 

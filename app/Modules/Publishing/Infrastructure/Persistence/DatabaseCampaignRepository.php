@@ -245,7 +245,22 @@ final readonly class DatabaseCampaignRepository
     ): CampaignApprovalDecision {
         return $this->database->connection()->transaction(function () use ($decision, $event): CampaignApprovalDecision {
             $this->assertApprovalEvent($decision, $event);
-            $this->lockCampaign($decision->workspaceId, $decision->campaignId);
+            $campaignRow = $this->lockCampaign($decision->workspaceId, $decision->campaignId);
+            $campaignStatus = CampaignStatus::from((string) $campaignRow->status);
+
+            if (
+                in_array($decision->outcome, [CampaignApprovalOutcome::Approved, CampaignApprovalOutcome::Rejected], true)
+                && $campaignStatus !== CampaignStatus::NeedsApproval
+            ) {
+                throw new InvalidArgumentException('Campaign approval or rejection requires needs_approval lifecycle state.');
+            }
+
+            if (
+                $decision->outcome === CampaignApprovalOutcome::Revoked
+                && ! in_array($campaignStatus, [CampaignStatus::Approved, CampaignStatus::Ready, CampaignStatus::ScheduledIntent], true)
+            ) {
+                throw new InvalidArgumentException('Campaign approval revocation requires an approved or execution-intent lifecycle state.');
+            }
 
             $existing = $this->approvalByIdempotency($decision->workspaceId, $decision->idempotencyKey, true);
             if ($existing instanceof stdClass) {

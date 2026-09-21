@@ -15,9 +15,11 @@ enum CampaignApprovalInvalidReason: string
     case CapabilityMissing = 'capability_missing';
     case CapabilityUnsupported = 'capability_unsupported';
     case CapabilityStale = 'capability_stale';
+    case CapabilityNotEffective = 'capability_not_effective';
     case CapabilityIncompatible = 'capability_incompatible';
     case ConnectionUnavailable = 'connection_unavailable';
     case ConnectionStale = 'connection_stale';
+    case ConnectionNotEffective = 'connection_not_effective';
     case ConnectionScopeRevoked = 'connection_scope_revoked';
     case ConnectionRoleRevoked = 'connection_role_revoked';
 }

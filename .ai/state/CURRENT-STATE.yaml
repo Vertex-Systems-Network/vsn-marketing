@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0038_registration_pr338_head_73068a7e8b58f13d3d78d12d1cfc66d6bb113089_passed_run_35618889918",
-    "application_test_status": "task0038_registration_pr338_head_73068a7e8b58f13d3d78d12d1cfc66d6bb113089_passed_run_35618889939",
-    "security_supply_chain_status": "task0038_registration_pr338_head_73068a7e8b58f13d3d78d12d1cfc66d6bb113089_passed_run_35618889946",
+    "continuity_validation": "task0038_transition_pr340_head_8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e_passed_run_35620231528",
+    "application_test_status": "task0038_transition_pr340_head_8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e_passed_run_35620231349",
+    "security_supply_chain_status": "task0038_transition_pr340_head_8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e_passed_run_35620231323",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "fae11a93941ee084d43783ef66ae3e24f230cc0d",
+  "observed_main_sha": "32b81753c44cf2a3e285c3423b4a26c13a8f6afc",
   "active_issue": null,
-  "active_pr": 340,
-  "active_branch": "control/transition-task-0037-to-0038",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "TASK-0037-TO-TASK-0038-TRANSITION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0038 registration is trusted on protected main and terminally reconciled; TASK-0037 research acceptance remains frozen and all AC-1 through AC-8 are satisfied.",
-  "exact_next_safe_action": "Perform one consolidated exact-head CI/status refresh for PR #340. Merge the TASK-0037 -> TASK-0038 transition only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After that merge, perform one terminal transition reconciliation that records RBT-010 immutable evidence and clears the transition PR/work path. Only after terminal reconciliation is trusted may TASK-0038 application implementation begin as a separate milestone. Do not activate live provider publication, production scheduling/provider credentials, deployment/release authority or the deferred Runner benchmark batch.",
-  "pending_runner_ids": [
-    "RBT-010"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "TASK-0037 -> TASK-0038 guarded transition merged via PR #340 as 32b81753c44cf2a3e285c3423b4a26c13a8f6afc; exact source 8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e passed AI Continuity Guard 35620231528, Application Foundation CI 35620231349 and Security Supply Chain CI 35620231323.",
+  "exact_next_safe_action": "Begin TASK-0038 implementation as a separate bounded milestone from current protected main, starting with the workspace-scoped persistence/domain contract for canonical campaigns, immutable snapshots, canonical target/recipient bindings, approval decisions and append-oriented audit events. Any schema migration must be additive, transaction-safe, crash/retry/concurrency tested and rollback/restore aware before merge. Do not implement live provider API publication, media upload, production scheduler execution, provider credential activation, deployment/release authority or the deferred Runner benchmark batch.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform one consolidated exact-head CI/status refresh for PR #340. Merge the TASK-0037 -> TASK-0038 transition only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After that merge, perform one terminal transition reconciliation that records RBT-010 immutable evidence and clears the transition PR/work path. Only after terminal reconciliation is trusted may TASK-0038 application implementation begin as a separate milestone. Do not activate live provider publication, production scheduling/provider credentials, deployment/release authority or the deferred Runner benchmark batch."
+  "exact_next_action": "Begin TASK-0038 implementation as a separate bounded milestone from current protected main, starting with the workspace-scoped persistence/domain contract for canonical campaigns, immutable snapshots, canonical target/recipient bindings, approval decisions and append-oriented audit events. Any schema migration must be additive, transaction-safe, crash/retry/concurrency tested and rollback/restore aware before merge. Do not implement live provider API publication, media upload, production scheduler execution, provider credential activation, deployment/release authority or the deferred Runner benchmark batch."
 }

@@ -457,7 +457,6 @@ it('rejects approval before needs-approval state without leaving approval or eve
         ->and(DB::table('campaign_events')->where('idempotency_key', 'event-approval-too-early')->count())->toBe(0);
 });
 
-
 it('rejects conflicting material snapshot replay under the same idempotency key without rewriting canonical history', function () {
     $workspaceId = task0038PersistenceWorkspace('revision-replay');
     $contentVersionId = task0038PersistenceContentVersion($workspaceId, 'revision-replay');

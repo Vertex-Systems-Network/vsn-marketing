@@ -849,15 +849,21 @@ final readonly class CampaignGovernanceService
             throw new InvalidArgumentException('Campaign scheduled-intent replay conflicts with existing history.');
         }
 
-        $approvalExists = array_any(
-            $this->campaigns->approvalDecisions(
-                $context->workspaceId,
-                $campaign->id,
-                $snapshot->id,
-            ),
-            static fn ($decision): bool => $decision->id === $approvalId
-                && $decision->outcome === CampaignApprovalOutcome::Approved,
-        );
+        $approvalExists = false;
+        foreach ($this->campaigns->approvalDecisions(
+            $context->workspaceId,
+            $campaign->id,
+            $snapshot->id,
+        ) as $decision) {
+            if (
+                $decision->id === $approvalId
+                && $decision->outcome === CampaignApprovalOutcome::Approved
+            ) {
+                $approvalExists = true;
+
+                break;
+            }
+        }
 
         if (! $approvalExists) {
             throw new InvalidArgumentException('Campaign scheduled-intent replay approval provenance is invalid.');

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -21,6 +22,12 @@ TEST_PATH = AI / "state" / "TEST-STATE.yaml"
 INDEX_PATH = AI / "tasks" / "INDEX.yaml"
 ROADMAP_PATH = AI / "roadmap" / "ROADMAP.yaml"
 CHECKPOINT_PATH = AI / "state" / "LAST-CHECKPOINT.md"
+JOURNAL_PATH = AI / "state" / "EXECUTION-JOURNAL.jsonl"
+STATE_SIZE_LIMIT = 12 * 1024
+CHECKPOINT_SIZE_LIMIT = 16 * 1024
+JOURNAL_SIZE_LIMIT = 32 * 1024
+MILESTONE_STATUSES = {"READY", "IN_PROGRESS", "VERIFYING", "WAITING_EXTERNAL", "BLOCKED", "COMPLETE"}
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
 REQUIRED_FILES = [
     ROOT / "AGENTS.md",
@@ -69,6 +76,18 @@ def state_fingerprint(state: dict) -> str:
         "progress": state.get("progress", {}),
         "blockers": state.get("blockers", []),
         "exact_next_action": state.get("exact_next_action", ""),
+        "observed_main_sha": state.get("observed_main_sha"),
+        "active_issue": state.get("active_issue"),
+        "active_pr": state.get("active_pr"),
+        "active_branch": state.get("active_branch"),
+        "current_milestone": state.get("current_milestone"),
+        "milestone_status": state.get("milestone_status"),
+        "last_completed_milestone": state.get("last_completed_milestone"),
+        "exact_next_safe_action": state.get("exact_next_safe_action"),
+        "pending_runner_ids": state.get("pending_runner_ids", []),
+        "blocked_runner_ids": state.get("blocked_runner_ids", []),
+        "current_blockers": state.get("current_blockers", []),
+        "timeout_control": state.get("timeout_control", {}),
     }
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
@@ -85,10 +104,18 @@ def checkpoint_body(state: dict, *, summary: str, tests: str, next_action: str, 
 ## State
 
 - Timestamp: `{stamp}`
+- Observed main: `{state.get('observed_main_sha')}`
+- Active issue: `{state.get('active_issue') if state.get('active_issue') is not None else 'none'}`
+- Active PR: `{state.get('active_pr') if state.get('active_pr') is not None else 'none'}`
+- Active branch: `{state.get('active_branch')}`
+- Current milestone: `{state.get('current_milestone')}`
+- Milestone status: `{state.get('milestone_status')}`
 - Active task: `{active_id}`
 - Next task: `{next_id or 'none'}`
 - Current phase: `{state['execution']['current_phase']}`
 - Execution status: `{state['execution']['status']}`
+- Pending Runner IDs: `{', '.join(state.get('pending_runner_ids', [])) or 'none'}`
+- Blocked Runner IDs: `{', '.join(state.get('blocked_runner_ids', [])) or 'none'}`
 - State fingerprint: `{fingerprint}`
 
 ## Completed / observed this session
@@ -188,6 +215,43 @@ def validate() -> list[str]:
         test_state = load_json_yaml(TEST_PATH)
     except ValueError as exc:
         return [str(exc)]
+
+    if STATE_PATH.stat().st_size > STATE_SIZE_LIMIT:
+        errors.append(f"CURRENT-STATE.yaml exceeds {STATE_SIZE_LIMIT} bytes")
+    if CHECKPOINT_PATH.stat().st_size > CHECKPOINT_SIZE_LIMIT:
+        errors.append(f"LAST-CHECKPOINT.md exceeds {CHECKPOINT_SIZE_LIMIT} bytes")
+    if JOURNAL_PATH.exists() and JOURNAL_PATH.stat().st_size > JOURNAL_SIZE_LIMIT:
+        errors.append(f"active EXECUTION-JOURNAL.jsonl exceeds {JOURNAL_SIZE_LIMIT} bytes")
+
+    required_supervisor_fields = {
+        "observed_main_sha", "active_issue", "active_pr", "active_branch",
+        "current_milestone", "milestone_status", "last_completed_milestone",
+        "exact_next_safe_action", "pending_runner_ids", "blocked_runner_ids",
+        "current_blockers", "timeout_control",
+    }
+    missing_supervisor = sorted(required_supervisor_fields - set(state))
+    if missing_supervisor:
+        errors.append("CURRENT-STATE missing Supervisor fields: " + ", ".join(missing_supervisor))
+    if not isinstance(state.get("observed_main_sha"), str) or not SHA_RE.fullmatch(str(state.get("observed_main_sha", ""))):
+        errors.append("observed_main_sha must be an exact 40-char lowercase Git SHA")
+    if state.get("milestone_status") not in MILESTONE_STATUSES:
+        errors.append(f"invalid milestone_status: {state.get('milestone_status')!r}")
+    if state.get("exact_next_safe_action") != state.get("exact_next_action"):
+        errors.append("exact_next_safe_action must mirror exact_next_action")
+    if state.get("current_blockers") != state.get("blockers", []):
+        errors.append("current_blockers must mirror blockers")
+    timeout = state.get("timeout_control")
+    expected_timeout = {
+        "default_ci_status_refreshes_per_milestone": 1,
+        "max_ci_status_refreshes_with_recorded_exception": 2,
+        "tight_polling_forbidden": True,
+        "pending_ci_state_only_commit_forbidden": True,
+    }
+    if timeout != expected_timeout:
+        errors.append("timeout_control drift")
+    for field in ("pending_runner_ids", "blocked_runner_ids", "current_blockers"):
+        if not isinstance(state.get(field), list):
+            errors.append(f"{field} must be a list")
 
     execution = state.get("execution", {})
     if execution.get("status") not in EXEC_STATUSES:
@@ -325,6 +389,9 @@ def print_status() -> None:
     print(f"TASK           {task['id']} — {task['title']}")
     print(f"TASK STATUS    {task['status']}")
     print(f"EXECUTION      {state['execution']['status']}")
+    print(f"MILESTONE      {state.get('current_milestone')}")
+    print(f"MILESTONE ST   {state.get('milestone_status')}")
+    print(f"OBSERVED MAIN  {state.get('observed_main_sha')}")
     print(f"PHASE          {p['phase_percent']:.2f}%")
     print(f"ROADMAP        {p['roadmap_percent']:.2f}%")
     blockers = state.get("blockers", [])
@@ -338,6 +405,7 @@ def print_status() -> None:
 def checkpoint(summary: str, next_action: str, tests: str) -> None:
     state = load_json_yaml(STATE_PATH)
     state["exact_next_action"] = next_action.strip()
+    state["exact_next_safe_action"] = next_action.strip()
     write_json_yaml(STATE_PATH, state)
     CHECKPOINT_PATH.write_text(checkpoint_body(state, summary=summary, tests=tests, next_action=state["exact_next_action"]), encoding="utf-8")
     print(f"Checkpoint updated for {state['execution']['active_task']}")
@@ -477,11 +545,13 @@ def transition_task(complete_id: str, next_id: str | None, evidence: str, tests:
         new_state["execution"]["last_completed_task"] = complete_id
         new_state["execution"]["next_task"] = None
         new_state["blockers"] = [f"No successor task is registered after {complete_id}; explicit roadmap staging is required before further implementation."]
+        new_state["current_blockers"] = list(new_state["blockers"])
         phase_percent, roadmap_percent = calculate_progress(new_index, new_roadmap, old_phase)
         new_state["progress"]["phase_percent"] = phase_percent
         new_state["progress"]["roadmap_percent"] = roadmap_percent
         new_state["progress"]["calculation"] = "Calculated deterministically from task weights and completed task statuses."
         new_state["exact_next_action"] = "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
+        new_state["exact_next_safe_action"] = new_state["exact_next_action"]
         if dry_run:
             print(f"Terminal transition valid: {complete_id}; phase={old_phase}; roadmap={roadmap_percent:.2f}%; successor=none")
             return []
@@ -555,11 +625,13 @@ def transition_task(complete_id: str, next_id: str | None, evidence: str, tests:
     new_state["execution"]["last_completed_task"] = complete_id
     new_state["execution"]["next_task"] = next_registry_task(new_index, next_id)
     new_state["blockers"] = []
+    new_state["current_blockers"] = []
     phase_percent, roadmap_percent = calculate_progress(new_index, new_roadmap, new_phase)
     new_state["progress"]["phase_percent"] = phase_percent
     new_state["progress"]["roadmap_percent"] = roadmap_percent
     new_state["progress"]["calculation"] = "Calculated deterministically from task weights and completed task statuses."
     new_state["exact_next_action"] = str(next_task.get("exact_next_action", "")).strip()
+    new_state["exact_next_safe_action"] = new_state["exact_next_action"]
     if not new_state["exact_next_action"]:
         return [f"{next_id} must contain exact_next_action before transition"]
     if dry_run:

@@ -283,11 +283,18 @@ it('persists replay-safe campaign lifecycle snapshots approvals and append-only 
     expect(fn () => $repository->transitionCampaign($stale, 3, $staleEvent))
         ->toThrow(InvalidArgumentException::class, 'optimistic concurrency conflict');
 
-    expect(fn () => DB::table('campaign_snapshots')->where('id', $snapshot->id)->update(['snapshot_hash' => str_repeat('a', 64)]))
+    expect(fn () => DB::connection()->transaction(
+        fn () => DB::table('campaign_snapshots')
+            ->where('id', $snapshot->id)
+            ->update(['snapshot_hash' => str_repeat('a', 64)]),
+    ))->toThrow(QueryException::class)
+        ->and(fn () => DB::connection()->transaction(
+            fn () => DB::table('campaign_approval_decisions')->where('id', $decision->id)->delete(),
+        ))
         ->toThrow(QueryException::class)
-        ->and(fn () => DB::table('campaign_approval_decisions')->where('id', $decision->id)->delete())
-        ->toThrow(QueryException::class)
-        ->and(fn () => DB::table('campaign_events')->where('campaign_id', $campaign->id)->delete())
+        ->and(fn () => DB::connection()->transaction(
+            fn () => DB::table('campaign_events')->where('campaign_id', $campaign->id)->delete(),
+        ))
         ->toThrow(QueryException::class);
 
     $migration = require database_path('migrations/2026_09_21_000001_create_campaign_foundation_tables.php');

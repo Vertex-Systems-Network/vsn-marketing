@@ -5,7 +5,7 @@
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "16e9673274c96ba7737b6633ded37837ffab187c718d13c9de9c83d21462b92a",
+  "instruction_fingerprint": "18a8831dffa521454d62908c3cb50edb2b127b4cfb40ba930ee9f5648768429f",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,

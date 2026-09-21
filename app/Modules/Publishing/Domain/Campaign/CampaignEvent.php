@@ -8,8 +8,11 @@ use InvalidArgumentException;
 final readonly class CampaignEvent
 {
     public const string CREATED = 'campaign.created';
+
     public const string LIFECYCLE_TRANSITIONED = 'campaign.lifecycle.transitioned';
+
     public const string SNAPSHOT_CREATED = 'campaign.snapshot.created';
+
     public const string APPROVAL_RECORDED = 'campaign.approval.recorded';
 
     /** @param array<string, mixed> $evidence */

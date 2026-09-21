@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0037",
+  "phase": "PHASE-07",
+  "module": "Publishing",
+  "title": "Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows",
+  "status": "planned",
+  "objective": "Freeze a current, evidence-backed PHASE-07 contract for governed cross-channel campaign/publication workflows, approval authority, provider app-review/scopes, scheduling ownership, media transfer/processing constraints, canonical calendar semantics, idempotency and reconciliation before any live publishing implementation begins.",
+  "dependencies": [
+    "TASK-0036"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "A dated official-source provider matrix covers current Meta/Instagram/Facebook, TikTok, LinkedIn, YouTube and X publishing surfaces, account/app eligibility, app-review or audit requirements, user/organization roles and required write scopes without assuming one provider contract applies globally",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Scheduling research distinguishes VSN-owned canonical due-time/calendar semantics from provider-native scheduling capabilities and records provider/version/effective-date support, restrictions, timezone/DST behavior and fail-closed fallback rules instead of inventing a universal provider publish-at field",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Media research captures provider-specific content types, size/duration/format limits, remote-URL ownership/public-access rules, resumable/chunked upload, asynchronous processing/status polling, expiring provider media references and retry/re-initialization requirements as capability evidence",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Approval and authorization findings require publication to be tied to an exact immutable campaign/content snapshot, authorized target account and current provider capability evidence; edits after approval must not silently inherit stale approval authority",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Market workflow benchmarking covers draft/review/needs-approval/approved/scheduled/queued/failed/sent states, fixed-time versus queue scheduling, per-channel timezones, reschedule/cancel/edit behavior, approval expiry/missed-time behavior and partial provider failure without copying proprietary data models",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Security/reliability requirements cover workspace isolation, token/secret references, SSRF-safe remote media fetch boundaries, idempotent publication attempts, webhook/status reconciliation, duplicate/out-of-order events, provider disconnects and the rule that temporary provider upload IDs never become canonical authority",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Research-to-plan reconciliation classifies every material finding under the Research-First Standard, confirms or extends TASK-0038 through TASK-0042 without silently weakening dependencies, and introduces no live publication, production scheduling execution or provider credential use",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "AI continuity, research-first, policy, parallel-development, context-manifest and security/supply-chain gates are green on the exact TASK-0037 acceptance head before TASK-0038 registration; the persistent Runner benchmark registry remains deferred and separate",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest"
+  ],
+  "exact_next_action": "After a separate guarded transition activates TASK-0037, revalidate the staged official-source research pack against current provider documentation, reconcile any material changes into PHASE-07/TASK-0038+ planning, mark TASK-0037 acceptance criteria true only with exact evidence, and do not implement or execute live publishing before the research gate is accepted."
+}

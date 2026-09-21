@@ -134,6 +134,20 @@ final readonly class CampaignApprovalEvaluator
                 );
             }
 
+            if ($capability->sourceVersion === null || trim($capability->sourceVersion) === '') {
+                return CampaignApprovalEvaluation::invalid(
+                    CampaignApprovalInvalidReason::CapabilityIncompatible,
+                    detail: $capabilityId,
+                );
+            }
+
+            if ($capability->observedAt > $at) {
+                return CampaignApprovalEvaluation::invalid(
+                    CampaignApprovalInvalidReason::CapabilityNotEffective,
+                    detail: $capabilityId,
+                );
+            }
+
             if ($capability->freshUntil !== null && $capability->freshUntil <= $at) {
                 return CampaignApprovalEvaluation::invalid(
                     CampaignApprovalInvalidReason::CapabilityStale,
@@ -302,6 +316,13 @@ final readonly class CampaignApprovalEvaluator
         ) {
             return CampaignApprovalEvaluation::invalid(
                 CampaignApprovalInvalidReason::ConnectionUnavailable,
+                detail: $connectionId,
+            );
+        }
+
+        if ($connection->observedAt > $at) {
+            return CampaignApprovalEvaluation::invalid(
+                CampaignApprovalInvalidReason::ConnectionNotEffective,
                 detail: $connectionId,
             );
         }

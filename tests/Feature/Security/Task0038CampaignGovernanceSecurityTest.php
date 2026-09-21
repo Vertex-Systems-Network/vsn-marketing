@@ -130,6 +130,7 @@ function task0038GovernanceCampaign(
     string $contentVersionId,
     CampaignTargetBinding $target,
     array $capabilityIds = [],
+    array $intendedExecution = ['mode' => 'intent_only'],
 ): array {
     $repository = app(DatabaseCampaignRepository::class);
     $createdAt = new DateTimeImmutable('2026-09-22T00:05:00+00:00');
@@ -183,7 +184,7 @@ function task0038GovernanceCampaign(
         assetReferenceIds: [],
         capabilityEvidenceIds: $capabilityIds,
         brandReference: [],
-        intendedExecution: ['mode' => 'intent_only'],
+        intendedExecution: $intendedExecution,
         targets: [$target],
         idempotencyKey: 'snapshot-'.Str::uuid(),
         createdByActorId: 'task0038-author',
@@ -747,4 +748,134 @@ it('records cancellation provenance and keeps terminal campaign history append-o
         'Should fail closed.',
         new DateTimeImmutable('2026-09-22T03:02:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'Terminal campaigns cannot create');
+});
+
+
+it('creates a replay-safe scheduled intent from an exact approved snapshot without executing a scheduler', function () {
+    $editor = task0038GovernanceActor('scheduled-intent-editor');
+    $workspaceId = (string) $editor['workspace']->getKey();
+
+    task0038GovernanceGrant(
+        $editor['user'],
+        $workspaceId,
+        'scheduled-intent-editor',
+        [PermissionCatalog::CAMPAIGN_CREATE, PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $approver = User::query()->create([
+        'name' => 'Scheduled intent approver',
+        'email' => 'scheduled-intent-approver@task0038.test',
+        'password' => Hash::make('secret-pass'),
+    ]);
+    task0038GovernanceGrant(
+        $approver,
+        $workspaceId,
+        'scheduled-intent-approver',
+        [PermissionCatalog::CAMPAIGN_APPROVE],
+    );
+    $approverContext = new TenantContext(
+        organizationId: (string) $editor['organization']->getKey(),
+        workspaceId: $workspaceId,
+        brandId: null,
+        actorId: (string) $approver->getKey(),
+    );
+
+    $inputs = task0038GovernanceCanonicalInputs($workspaceId, 'scheduled-intent');
+    $target = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $inputs['contact_id'],
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: new DateTimeImmutable('2026-09-22T05:00:00+00:00'),
+    );
+    $intendedExecution = [
+        'mode' => 'fixed_instant',
+        'timezone' => 'UTC',
+        'at' => '2026-09-22T09:00:00Z',
+    ];
+    $fixture = task0038GovernanceCampaign(
+        $workspaceId,
+        $inputs['content_version_id'],
+        $target,
+        intendedExecution: $intendedExecution,
+    );
+
+    $service = app(CampaignGovernanceService::class);
+    $needsApproval = $service->requestApproval(
+        $editor['user'],
+        $editor['context'],
+        $fixture['campaign']->id,
+        $fixture['snapshot']->id,
+        (string) Str::uuid(),
+        'scheduled-intent-request',
+        'Request exact scheduled snapshot approval.',
+        new DateTimeImmutable('2026-09-22T05:01:00+00:00'),
+    );
+    $approved = $service->approve(
+        $approver,
+        $approverContext,
+        $needsApproval->id,
+        $fixture['snapshot']->id,
+        'scheduled-intent-approver',
+        (string) Str::uuid(),
+        'scheduled-intent-approval',
+        (string) Str::uuid(),
+        'scheduled-intent-approval-event',
+        (string) Str::uuid(),
+        'scheduled-intent-approved-transition',
+        'Approved exact future schedule intent.',
+        new DateTimeImmutable('2026-09-22T12:00:00+00:00'),
+        new DateTimeImmutable('2026-09-22T05:02:00+00:00'),
+    );
+
+    $scheduleEventId = (string) Str::uuid();
+    $scheduled = $service->scheduleIntent(
+        $editor['user'],
+        $editor['context'],
+        $approved->id,
+        $scheduleEventId,
+        'scheduled-intent-transition',
+        'Record schedule intent only.',
+        new DateTimeImmutable('2026-09-22T05:03:00+00:00'),
+    );
+    $replayed = $service->scheduleIntent(
+        $editor['user'],
+        $editor['context'],
+        $scheduled->id,
+        $scheduleEventId,
+        'scheduled-intent-transition',
+        'Record schedule intent only.',
+        new DateTimeImmutable('2026-09-22T05:03:00+00:00'),
+    );
+
+    $repository = app(DatabaseCampaignRepository::class);
+    $event = collect($repository->history($workspaceId, $scheduled->id))->first(
+        static fn (CampaignEvent $candidate): bool => $candidate->idempotencyKey === 'scheduled-intent-transition',
+    );
+
+    expect($scheduled->status)->toBe(CampaignStatus::ScheduledIntent)
+        ->and($replayed->status)->toBe(CampaignStatus::ScheduledIntent)
+        ->and($replayed->stateVersion)->toBe($scheduled->stateVersion)
+        ->and(DB::table('campaign_events')->where('idempotency_key', 'scheduled-intent-transition')->count())->toBe(1)
+        ->and($event)->not->toBeNull()
+        ->and($event->evidence['intent_kind'] ?? null)->toBe('scheduled')
+        ->and($event->evidence['snapshot_id'] ?? null)->toBe($fixture['snapshot']->id)
+        ->and($event->evidence['snapshot_hash'] ?? null)->toBe($fixture['snapshot']->snapshotHash)
+        ->and($event->evidence['target_set_hash'] ?? null)->toBe($fixture['snapshot']->targetSetHash)
+        ->and($event->evidence['intended_execution'] ?? null)->toBe($intendedExecution)
+        ->and($event->evidence['scheduler_execution'] ?? null)->toBeFalse();
+
+    expect(fn () => $service->scheduleIntent(
+        $editor['user'],
+        $editor['context'],
+        $scheduled->id,
+        (string) Str::uuid(),
+        'scheduled-intent-conflict',
+        'Conflicting duplicate command.',
+        new DateTimeImmutable('2026-09-22T05:04:00+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'replay');
 });

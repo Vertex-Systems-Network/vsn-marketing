@@ -3,6 +3,7 @@
 Status: **deferred registry — collect now, execute as one coordinated runner batch later**
 
 Owner: Supervisor control plane  
+Workstream: `WS-0036-SUPERVISOR-CONTROL`  
 Execution policy: no runner task is executed merely because it is recorded here.  
 Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
 

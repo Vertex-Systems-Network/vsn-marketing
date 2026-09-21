@@ -311,6 +311,24 @@
         },
         "recovery_note": "Application verification exposed bounded PHPStan/Pint findings after functional/security tests passed. Repairs removed only statically impossible nullsafe access, an unused helper and final formatter whitespace; lifecycle, authorization, capability freshness, append-only revocation, security gates and acceptance semantics were not weakened."
       }
+    },
+    {
+      "id": "RBT-013",
+      "source": "PR #345 / README progress synchronization control protocol v2.4.2",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #345 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/readme-progress-sync-v2; instruction fingerprint + supervisor/parallel validators + README canonical progress mirror + non-recursive observation",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:readme-progress-sync-v2:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

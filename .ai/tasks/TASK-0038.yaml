@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement the provider-neutral, workspace-scoped canonical campaign domain for governed cross-channel work: deterministic campaign lifecycle, immutable campaign/publication snapshots, exact recipient/target bindings, snapshot-bound approvals and append-oriented audit history, while keeping provider publication attempts, production scheduling execution and credential activation outside this task.",
   "dependencies": [
     "TASK-0037"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "When TASK-0038 is separately activated, begin with the workspace-scoped persistence/domain contract for campaigns, immutable snapshots, canonical target bindings, approval decisions and audit events, with migration crash-safety/concurrency tests first. Do not implement live provider publication, production scheduler execution, provider credential activation or the deferred Runner benchmark batch."
+  "exact_next_action": "Verify the TASK-0038 campaign foundation exact head: additive/re-entrant migration, workspace-scoped campaign lifecycle persistence, immutable snapshot/target/approval/event history, replay/idempotency behavior, optimistic concurrency and fail-closed tenant isolation. Merge only after required exact-head continuity/application/security gates pass. After trusted merge and terminal reconciliation, continue TASK-0038 with lifecycle/approval orchestration and stale-approval invalidation; do not activate live provider publication, production scheduler execution, provider credentials, deployment/release authority or the deferred Runner benchmark batch."
 }

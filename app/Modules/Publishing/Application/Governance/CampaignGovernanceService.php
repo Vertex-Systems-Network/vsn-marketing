@@ -548,7 +548,7 @@ final readonly class CampaignGovernanceService
                     outcome: CampaignApprovalOutcome::Revoked,
                     actorId: $context->actorId,
                     actorRole: $roleKey,
-                    reason: 'Campaign approval invalidated: '.($evaluation->reason?->value ?? 'unknown').'.',
+                    reason: 'Campaign approval invalidated: '.$evaluation->reason->value.'.',
                     capabilityEvidenceIds: $snapshot->capabilityEvidenceIds,
                     supersedesDecisionId: $active->id,
                     expiresAt: null,
@@ -562,7 +562,7 @@ final readonly class CampaignGovernanceService
                         'supersedes_approval_id' => $active->id,
                         'snapshot_hash' => $snapshot->snapshotHash,
                         'target_set_hash' => $snapshot->targetSetHash,
-                        'invalidation_reason' => $evaluation->reason?->value,
+                        'invalidation_reason' => $evaluation->reason->value,
                         'invalidation_detail' => $evaluation->detail,
                     ],
                     idempotencyKey: $revocationEventIdempotencyKey,
@@ -629,7 +629,7 @@ final readonly class CampaignGovernanceService
         $evaluation = $this->approvals->evaluateSnapshotAuthority($snapshot, $at);
 
         if (! $evaluation->valid) {
-            $reason = $evaluation->reason?->value ?? 'unknown';
+            $reason = $evaluation->reason->value;
 
             throw new InvalidArgumentException("Campaign snapshot authority is not current: {$reason}.");
         }
@@ -689,18 +689,4 @@ final readonly class CampaignGovernanceService
         }
     }
 
-    /** @param list<string> $permissions */
-    private function assertAnyPermission(
-        User $user,
-        TenantContext $context,
-        array $permissions,
-    ): void {
-        foreach ($permissions as $permission) {
-            if ($this->authorizer->allows($user, $context, $permission)) {
-                return;
-            }
-        }
-
-        throw new AuthorizationException('Campaign governance permission denied.');
-    }
 }

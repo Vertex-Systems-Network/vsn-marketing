@@ -24,15 +24,17 @@
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1",
+  "observed_main_sha": "ac7d78476fff9ce1ddfca95eccf368afb0c492f4",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "README-PROGRESS-SYNC-V2",
-  "milestone_status": "COMPLETE",
+  "active_pr": 347,
+  "active_branch": "task/0038-revision-history",
+  "current_milestone": "TASK-0038-REVISION-HISTORY",
+  "milestone_status": "VERIFYING",
   "last_completed_milestone": "README progress synchronization protocol v2.4.2 merged via PR #345 as 5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1; exact source 875c01c8cc7549486296e01110d3704f74260695 passed AI Continuity Guard 35654800644, Application Foundation CI 35654800643 and Security Supply Chain CI 35654800691 after repairing the execution-journal hash chain without weakening any gate.",
-  "exact_next_safe_action": "Begin the next bounded TASK-0038 revision/history milestone from current protected main. Enforce material content/target edits through new immutable snapshots, preserve append-oriented target-change and cancellation/completion provenance, and extend adversarial transaction/replay/workspace-isolation tests. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive.",
-  "pending_runner_ids": [],
+  "exact_next_safe_action": "Perform one consolidated exact-head verification for PR #347. Merge the TASK-0038 immutable revision/history milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, focused campaign governance/PostgreSQL/security tests pass, review is clean, and the exact head is unchanged. Treat immutable snapshot lineage, stale-approval inheritance, workspace isolation, idempotency/replay, cancellation/completion provenance, transaction safety or authority failures as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch.",
+  "pending_runner_ids": [
+    "RBT-014"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the next bounded TASK-0038 revision/history milestone from current protected main. Enforce material content/target edits through new immutable snapshots, preserve append-oriented target-change and cancellation/completion provenance, and extend adversarial transaction/replay/workspace-isolation tests. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive."
+  "exact_next_action": "Perform one consolidated exact-head verification for PR #347. Merge the TASK-0038 immutable revision/history milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, focused campaign governance/PostgreSQL/security tests pass, review is clean, and the exact head is unchanged. Treat immutable snapshot lineage, stale-approval inheritance, workspace isolation, idempotency/replay, cancellation/completion provenance, transaction safety or authority failures as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch."
 }

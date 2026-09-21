@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1",
-  "active_work_path": null,
+  "reconciled_main_sha": "ac7d78476fff9ce1ddfca95eccf368afb0c492f4",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 347,
+    "branch": "task/0038-revision-history",
+    "milestone": "TASK-0038-REVISION-HISTORY"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 347,
+      "title": "feat(publishing): enforce campaign revision history",
+      "disposition": "active_task_implementation_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-014",
+      "branch": "task/0038-revision-history"
     }
   ]
 }

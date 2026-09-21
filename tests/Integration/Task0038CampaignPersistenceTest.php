@@ -456,3 +456,108 @@ it('rejects approval before needs-approval state without leaving approval or eve
     expect(DB::table('campaign_approval_decisions')->where('id', $decision->id)->count())->toBe(0)
         ->and(DB::table('campaign_events')->where('idempotency_key', 'event-approval-too-early')->count())->toBe(0);
 });
+
+it('rejects conflicting material snapshot replay under the same idempotency key without rewriting canonical history', function () {
+    $workspaceId = task0038PersistenceWorkspace('revision-replay');
+    $contentVersionId = task0038PersistenceContentVersion($workspaceId, 'revision-replay');
+    $firstContact = task0038PersistenceContact($workspaceId, 'revision-replay-a');
+    $secondContact = task0038PersistenceContact($workspaceId, 'revision-replay-b');
+    $repository = app(DatabaseCampaignRepository::class);
+    $at = new DateTimeImmutable('2026-09-22T04:00:00+00:00');
+
+    $campaign = task0038PersistenceCampaign($workspaceId, 'revision-replay', $at);
+    $repository->createCampaign(
+        $campaign,
+        CampaignEvent::created($campaign, (string) Str::uuid(), 'author', null, [], 'revision-replay-create', $at),
+    );
+
+    $firstTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $firstContact,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: new DateTimeImmutable('2026-09-22T04:01:00+00:00'),
+    );
+    $first = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        campaignId: $campaign->id,
+        parentSnapshotId: null,
+        versionNumber: 1,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'none'],
+        targets: [$firstTarget],
+        idempotencyKey: 'revision-replay-snapshot',
+        createdByActorId: 'author',
+        createdAt: new DateTimeImmutable('2026-09-22T04:01:00+00:00'),
+    );
+    $repository->appendSnapshot(
+        $first,
+        CampaignEvent::snapshotCreated(
+            $first,
+            (string) Str::uuid(),
+            'author',
+            null,
+            [],
+            'revision-replay-event',
+            new DateTimeImmutable('2026-09-22T04:01:00+00:00'),
+        ),
+    );
+
+    $secondTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $secondContact,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: new DateTimeImmutable('2026-09-22T04:02:00+00:00'),
+    );
+    $conflicting = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        campaignId: $campaign->id,
+        parentSnapshotId: null,
+        versionNumber: 1,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'none'],
+        targets: [$secondTarget],
+        idempotencyKey: 'revision-replay-snapshot',
+        createdByActorId: 'author',
+        createdAt: new DateTimeImmutable('2026-09-22T04:02:00+00:00'),
+    );
+
+    expect(fn () => $repository->appendSnapshot(
+        $conflicting,
+        CampaignEvent::snapshotCreated(
+            $conflicting,
+            (string) Str::uuid(),
+            'author',
+            null,
+            [],
+            'revision-replay-conflict-event',
+            new DateTimeImmutable('2026-09-22T04:02:00+00:00'),
+        ),
+    ))->toThrow(InvalidArgumentException::class, 'replay');
+
+    expect(DB::table('campaign_snapshots')->where('campaign_id', $campaign->id)->count())->toBe(1)
+        ->and(DB::table('campaign_targets')->where('snapshot_id', $first->id)->count())->toBe(1)
+        ->and(DB::table('campaign_events')->where('idempotency_key', 'revision-replay-conflict-event')->count())->toBe(0)
+        ->and($repository->latestSnapshot($workspaceId, $campaign->id)?->targetSetHash)->toBe($first->targetSetHash);
+});

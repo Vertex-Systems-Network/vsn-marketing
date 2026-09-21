@@ -517,8 +517,14 @@ final readonly class CampaignGovernanceService
                 throw new InvalidArgumentException('Terminal campaigns cannot create a new approval snapshot.');
             }
 
-            $previous = $this->campaigns->latestSnapshot($context->workspaceId, $campaign->id);
-            if ($previous !== null && $snapshot->parentSnapshotId !== $previous->id) {
+            $latest = $this->campaigns->latestSnapshot($context->workspaceId, $campaign->id);
+            $previous = $latest;
+
+            if ($latest !== null && $latest->id === $snapshot->id) {
+                $previous = $snapshot->parentSnapshotId === null
+                    ? null
+                    : $this->campaigns->findSnapshot($context->workspaceId, $snapshot->parentSnapshotId);
+            } elseif ($latest !== null && $snapshot->parentSnapshotId !== $latest->id) {
                 throw new InvalidArgumentException('Campaign material revision must fork from the latest canonical snapshot.');
             }
 

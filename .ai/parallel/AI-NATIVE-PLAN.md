@@ -57,6 +57,7 @@ Rules:
 
 - Any task whose primary scope is GitHub Actions runner sizing/architecture, CI runner performance, runner cache/concurrency tuning, production-representative benchmark runner setup, or runner/toolchain optimization is appended to the registry instead of being executed opportunistically.
 - Runner tasks remain `deferred` until an explicit coordinated runner-benchmark batch is activated. Normal product/security development continues independently.
+- Immediate-execution exception: if a runner task is demonstrated to block security remediation, product correctness, a required exact-head verification gate, or protected-main/release acceptance, the Supervisor may explicitly promote that single item out of the deferred batch. The promotion must be narrow, evidence-backed, recorded in the runner registry with its reason/status, and must not be used for performance, convenience, or speculative optimization work.
 - The batch must establish baselines before changing runner size, architecture, cache, concurrency, or workflow topology, and must compare before/after evidence on pinned source/workflow revisions.
 - Security gates, branch protection, exact-head checks, secret handling, and benchmark environment isolation may not be weakened to improve runner numbers.
 - GitHub-hosted CI timing must not be substituted for production SLO evidence. TASK-0024 production-representative benchmark evidence remains a distinct controlled environment.

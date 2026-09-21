@@ -4,7 +4,7 @@ Status: **deferred registry — collect now, execute as one coordinated runner b
 
 Owner: Supervisor control plane  
 Workstream: `WS-0036-SUPERVISOR-CONTROL`  
-Execution policy: no runner task is executed merely because it is recorded here.  
+Execution policy: runner tasks are deferred by default and executed in one coordinated batch; only the explicit blocker-escalation exception below permits earlier execution.  
 Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
 
 ## Purpose
@@ -30,7 +30,13 @@ Sensitive values, credentials, recipient data, provider tokens, private payloads
 
 ## Append rule
 
-Add every newly discovered runner-related task as the next `RBT-###` row. Record its source/trigger and dependencies immediately, but leave it deferred unless the user explicitly activates the coordinated runner batch.
+Add every newly discovered runner-related task as the next `RBT-###` row. Record its source/trigger and dependencies immediately, and leave it deferred unless the user explicitly activates the coordinated runner batch or the blocker-escalation exception below applies.
+
+## Immediate blocker-escalation exception
+
+A Runner item may be executed before the coordinated batch only when it is demonstrated to block at least one of: security remediation, product correctness, a required exact-head verification gate, or protected-main/release acceptance. The Supervisor must record the evidence and reason on the item, change its status to `escalated-immediate`, keep the scope limited to the blocking condition, and return the item to `completed-immediate` only after the relevant correctness/security gates pass. Performance tuning, convenience, cost optimization, speculative architecture changes, and ordinary CI speed work never qualify for this exception.
+
+An immediate escalation does not activate the rest of the Runner batch. All unrelated `RBT-###` items remain deferred and continue accumulating for the final coordinated execution wave.
 
 ## Batch activation gate
 

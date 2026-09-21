@@ -374,7 +374,7 @@
       "phase": "PHASE-07",
       "title": "Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0036"
       ]
@@ -384,7 +384,7 @@
       "phase": "PHASE-07",
       "title": "Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0037"
       ]

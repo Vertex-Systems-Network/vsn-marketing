@@ -44,6 +44,18 @@ python tools/ai_parallel.py sync-check
 
 ## Execution rules
 
+### Strict plan-following order
+
+AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> perform one approved milestone -> run class-appropriate checks -> exact-head PR gates -> merge -> re-read state -> only then register/transition the successor.
+
+`tools/ci_change_policy.py` is authoritative for CI class selection. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight control CI. Any unknown/non-control path fails closed to full Application + Security CI. If a control-only milestone is a certification, release/promotion, security-sensitive acceptance, or its task contract explicitly demands full gates, the PR body MUST contain this exact standalone line:
+
+`CI-Mode: full`
+
+Runner benchmarking/optimization is never part of ordinary task execution. Add runner sizing/cache/concurrency/architecture/toolchain work to the persistent Runner benchmark backlog and leave it deferred unless the coordinated Runner batch is explicitly activated or the documented blocker exception applies.
+
+No agent may skip/reorder this plan for convenience. Only a bounded, evidence-backed security/correctness/release blocker may interrupt the order, and that exception must be recorded.
+
 - Work only on the active task unless the user explicitly changes priority and the state is updated first.
 - Do not silently change architecture, stack, module boundaries, canonical contracts, security policy, or product terminology. Create an ADR and mark it `PROPOSED` first.
 - Do not start a task whose dependencies are incomplete.

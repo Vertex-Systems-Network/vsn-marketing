@@ -688,5 +688,4 @@ final readonly class CampaignGovernanceService
             throw new AuthorizationException("Campaign permission denied: {$permission}.");
         }
     }
-
 }

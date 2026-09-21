@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0037 research accepted; TASK-0038 registration staged as planned only; no PHASE-07 live publication or scheduling execution active yet.**
+Status: **IN PROGRESS — TASK-0037 research complete; TASK-0038 campaign-domain implementation active under the frozen provider-neutral contract; no live provider publication or production scheduling execution active yet.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 remains the active task until a separate guarded transition. TASK-0038 may be registered as `planned` from the accepted research contract, but it remains non-executable until its registration is trusted on protected main and TASK-0037 is completed through a separate guarded transition. TASK-0039 and later tasks remain non-executable until their dependencies are explicitly satisfied and registered.
+TASK-0037 is complete. TASK-0038 is the active PHASE-07 implementation task under the frozen research contract. TASK-0039 and later tasks remain non-executable until their dependencies are explicitly satisfied, separately registered and guarded by exact-head checks.
 
 ## Staged research direction
 
@@ -55,7 +55,7 @@ TASK-0042 must ultimately prove at minimum:
 
 ## TASK-0038 registration boundary
 
-TASK-0038 registration freezes the provider-neutral campaign lifecycle/snapshot/target/approval/audit contract only. Registration does not authorize application migrations to run in production, live provider posting, production scheduling, provider credential activation, deployment/release execution or Runner benchmark batch execution.
+TASK-0038 is active only for the provider-neutral campaign lifecycle/snapshot/target/approval/audit implementation contract. It does not authorize live provider posting, production scheduling workers, provider credential activation, deployment/release execution or Runner benchmark batch execution. Any schema migration introduced by TASK-0038 must satisfy the repository migration/data-safety contract before merge or execution.
 
 ## Explicitly out of scope for TASK-0037
 

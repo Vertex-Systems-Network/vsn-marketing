@@ -396,6 +396,95 @@ final readonly class CampaignGovernanceService
         return $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
     }
 
+    public function cancel(
+        User $actor,
+        TenantContext $context,
+        string $campaignId,
+        string $eventId,
+        string $eventIdempotencyKey,
+        ?string $reason,
+        DateTimeImmutable $at,
+    ): Campaign {
+        $campaign = $this->requireCampaign($context, $campaignId);
+
+        if (in_array($campaign->status, [
+            CampaignStatus::Approved,
+            CampaignStatus::Ready,
+            CampaignStatus::ScheduledIntent,
+        ], true)) {
+            $this->assertPermission($actor, $context, PermissionCatalog::CAMPAIGN_SEND);
+        } else {
+            $this->assertPermission($actor, $context, PermissionCatalog::CAMPAIGN_CREATE);
+        }
+
+        if ($campaign->status->isTerminal()) {
+            throw new InvalidArgumentException('Terminal campaigns cannot be cancelled again.');
+        }
+
+        $snapshot = $this->campaigns->latestSnapshot($context->workspaceId, $campaign->id);
+        $next = $campaign->transitionTo(CampaignStatus::Cancelled, $at);
+        $event = CampaignEvent::transitioned(
+            before: $campaign,
+            after: $next,
+            id: $eventId,
+            actorId: $context->actorId,
+            reason: $reason,
+            evidence: [
+                'decision' => 'cancelled',
+                'previous_state_version' => $campaign->stateVersion,
+                'snapshot_id' => $snapshot?->id,
+                'snapshot_hash' => $snapshot?->snapshotHash,
+                'target_set_hash' => $snapshot?->targetSetHash,
+            ],
+            idempotencyKey: $eventIdempotencyKey,
+            occurredAt: $at,
+        );
+
+        return $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
+    }
+
+    public function complete(
+        User $actor,
+        TenantContext $context,
+        string $campaignId,
+        string $eventId,
+        string $eventIdempotencyKey,
+        ?string $reason,
+        DateTimeImmutable $at,
+    ): Campaign {
+        $this->assertPermission($actor, $context, PermissionCatalog::CAMPAIGN_SEND);
+
+        $campaign = $this->requireCampaign($context, $campaignId);
+        if (! in_array($campaign->status, [CampaignStatus::Ready, CampaignStatus::ScheduledIntent], true)) {
+            throw new InvalidArgumentException('Campaign completion requires ready or scheduled_intent lifecycle state.');
+        }
+
+        $snapshot = $this->requireLatestSnapshot($context, $campaign);
+        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
+        $this->assertEffectiveApproval($evaluation);
+
+        $next = $campaign->transitionTo(CampaignStatus::Completed, $at);
+        $event = CampaignEvent::transitioned(
+            before: $campaign,
+            after: $next,
+            id: $eventId,
+            actorId: $context->actorId,
+            reason: $reason,
+            evidence: [
+                'decision' => 'completed',
+                'previous_state_version' => $campaign->stateVersion,
+                'approval_id' => $evaluation->decisionId,
+                'snapshot_id' => $snapshot->id,
+                'snapshot_hash' => $snapshot->snapshotHash,
+                'target_set_hash' => $snapshot->targetSetHash,
+            ],
+            idempotencyKey: $eventIdempotencyKey,
+            occurredAt: $at,
+        );
+
+        return $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
+    }
+
     public function appendMaterialRevision(
         User $actor,
         TenantContext $context,
@@ -433,15 +522,25 @@ final readonly class CampaignGovernanceService
                 throw new InvalidArgumentException('Campaign material revision must fork from the latest canonical snapshot.');
             }
 
+            $targetSetChanged = $previous !== null
+                && ! hash_equals($previous->targetSetHash, $snapshot->targetSetHash);
+            $contentVersionChanged = $previous !== null
+                && $previous->contentVersionId !== $snapshot->contentVersionId;
+
             $snapshotEvent = CampaignEvent::snapshotCreated(
                 snapshot: $snapshot,
                 id: $snapshotEventId,
                 actorId: $context->actorId,
                 reason: $reason,
                 evidence: [
+                    'revision_kind' => 'material',
                     'parent_snapshot_id' => $previous?->id,
+                    'previous_snapshot_hash' => $previous?->snapshotHash,
+                    'previous_target_set_hash' => $previous?->targetSetHash,
                     'snapshot_hash' => $snapshot->snapshotHash,
                     'target_set_hash' => $snapshot->targetSetHash,
+                    'target_set_changed' => $targetSetChanged,
+                    'content_version_changed' => $contentVersionChanged,
                 ],
                 idempotencyKey: $snapshotEventIdempotencyKey,
                 occurredAt: $at,
@@ -466,9 +565,13 @@ final readonly class CampaignGovernanceService
                 evidence: [
                     'invalidation_reason' => 'material_revision',
                     'previous_snapshot_id' => $previous?->id,
+                    'previous_snapshot_hash' => $previous?->snapshotHash,
+                    'previous_target_set_hash' => $previous?->targetSetHash,
                     'new_snapshot_id' => $persisted->id,
                     'new_snapshot_hash' => $persisted->snapshotHash,
                     'new_target_set_hash' => $persisted->targetSetHash,
+                    'target_set_changed' => $targetSetChanged,
+                    'content_version_changed' => $contentVersionChanged,
                 ],
                 idempotencyKey: $invalidationEventIdempotencyKey,
                 occurredAt: $at,

@@ -2,34 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-09-21T18:26:50Z`
-- Observed main: `ae1f98dc4b6060941d7d44de52817f89dfbd10c7`
+- Timestamp: `2026-09-21T20:00:58Z`
+- Observed main: `8f0f1c48e604f5835256cb3bba96a91aa83ec50c`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0038-CAMPAIGN-FOUNDATION`
-- Milestone status: `COMPLETE`
+- Active PR: `344`
+- Active branch: `task/0038-approval-orchestration`
+- Current milestone: `TASK-0038-APPROVAL-ORCHESTRATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0038`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-012`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `231b3921a82d0dba69eac5c8f80096db65bdcfe74589500284256abe9f904de4`
+- State fingerprint: `c5e6131fb71ef2ea4812f7dd226aa2132c0b1579f007cc43c3a348a2a2e86f76`
 
 ## Completed / observed this session
 
-The first bounded TASK-0038 product milestone is trusted on protected main through PR #342 merged as `ae1f98dc4b6060941d7d44de52817f89dfbd10c7`. Exact source `901a06378977f396df19c4cacaff942090f2c19e` passed AI Continuity Guard `35630716774`, Application Foundation CI `35630716746`, and Security Supply Chain CI `35630716764`.
+PR #344 stages the next bounded TASK-0038 milestone: provider-neutral lifecycle/approval orchestration and deterministic stale-approval re-evaluation. The work reuses existing workspace RBAC, provider capability/connection evidence and append-only campaign persistence; it adds authorized approval/rejection/revocation flows, current-approval guards before ready state, material-revision invalidation, future/stale capability fail-closed checks, and explicit append-only revocation when a same-snapshot approval loses authority.
 
-The merged foundation provides workspace-scoped lifecycle persistence, immutable campaign snapshots and canonical targets, snapshot-bound approval decision persistence, append-only campaign history, replay/idempotency, optimistic concurrency, fail-closed tenant isolation and additive/re-entrant migration safety. RBT-011 is terminal PASS with immutable source, merge and workflow-run evidence.
-
-TASK-0038 remains in progress and AC-1 through AC-8 remain open. Deterministic progress remains PHASE-07 `42.86%` and roadmap `47%`. RBT-004 remains authorization-blocked; deferred Runner/toolchain work remains unchanged.
-
-This state-only reconciliation transport is not a new engineering work path or Runner benchmark task. After merge it must be treated as a self-reconciliation descendant of material anchor `ae1f98dc4b6060941d7d44de52817f89dfbd10c7`; recursive cleanup is forbidden.
+No schema migration, live provider API call, media upload, production scheduler worker, credential activation, deployment/release authority or TASK-0039 registration is introduced. TASK-0038 remains in progress and AC-1 through AC-8 remain open until full task certification.
 
 ## Tests
 
-PR #342 exact-head AI Continuity Guard `35630716774` PASS; Application Foundation CI `35630716746` PASS; Security Supply Chain CI `35630716764` PASS.
+Exact-head external CI is pending. Focused security regression coverage is staged for approver authorization revocation, explicit revocation history, lifecycle fallback to needs_approval and future provider capability evidence. RBT-012 is the immediate merge-required exact-head governance/application/security validation workload. RBT-004 remains authorization-blocked.
 
 ## Blockers
 
@@ -37,4 +33,4 @@ PR #342 exact-head AI Continuity Guard `35630716774` PASS; Application Foundatio
 
 ## Exact next action
 
-Begin the next bounded TASK-0038 milestone from protected main: implement lifecycle/approval orchestration and deterministic stale-approval invalidation/re-evaluation on material snapshot or target changes, authorization revocation, stale/incompatible capability evidence and approval expiry. Preserve the merged campaign persistence/domain foundation and all consent, suppression, sender-safety, content/version, asset, provider-capability and workspace-security boundaries. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch.
+Perform one consolidated exact-head status review for PR #344. Merge the TASK-0038 lifecycle/approval orchestration milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, focused governance/security tests pass, and review is clean. Treat authorization, stale-capability, append-only revocation, idempotency/concurrency or workspace-isolation failures as merge blockers. After trusted merge, perform terminal durable reconciliation before starting any successor TASK-0038 milestone. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch.

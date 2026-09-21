@@ -278,6 +278,24 @@
         },
         "recovery_note": "Initial verification exposed missing migration review markers, three Pint formatting issues, stale pull-request event metadata and PostgreSQL immutability-test transaction poisoning. All were repaired without weakening migration semantics, immutable triggers, security gates, thresholds, idempotency, concurrency or workspace isolation."
       }
+    },
+    {
+      "id": "RBT-012",
+      "source": "PR #344 / TASK-0038 lifecycle and approval orchestration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #344 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0038-approval-orchestration; workspace RBAC + exact snapshot approvals + stale capability/authorization invalidation + append-only revocation",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-approval-orchestration:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

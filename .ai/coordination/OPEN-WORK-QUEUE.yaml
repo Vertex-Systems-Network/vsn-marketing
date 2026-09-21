@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ae1f98dc4b6060941d7d44de52817f89dfbd10c7",
-  "active_work_path": null,
+  "reconciled_main_sha": "8f0f1c48e604f5835256cb3bba96a91aa83ec50c",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 344,
+    "branch": "task/0038-approval-orchestration",
+    "milestone": "TASK-0038-APPROVAL-ORCHESTRATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 344,
+      "title": "feat(publishing): orchestrate TASK-0038 campaign approvals",
+      "disposition": "active_task_implementation_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-012",
+      "branch": "task/0038-approval-orchestration"
     }
   ]
 }

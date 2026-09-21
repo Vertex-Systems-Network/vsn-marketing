@@ -9,7 +9,8 @@
       "write_paths": [
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
-        ".ai/parallel/AGENT-LEASES.yaml"
+        ".ai/parallel/AGENT-LEASES.yaml",
+        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md"
       ]
     }
   ]

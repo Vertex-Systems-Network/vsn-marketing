@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **security-remediated final PHASE-06 promotion preparation**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification plus the bounded Vitest dependency remediation are integrated and certified on `ship/week-1`. Supervisor alone remains active for protected-main promotion and final PHASE-06 acceptance.
+Status: **protected-main promotion complete; final PHASE-06 acceptance reconciliation in progress**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification and the bounded Vitest dependency remediation are promoted to protected `main`. Supervisor remains active only for final acceptance reconciliation and maintenance-plan registration. Runner-related work is recorded but intentionally deferred to one coordinated benchmark batch.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
@@ -45,7 +45,25 @@ Completion signal: `Work Done and Submitted`
 - PR #321 activated the bounded security remediation under Supervisor-owned dependency/workflow paths and merged as `8cca66b7c05e53e0e9eb8b1a82cfd3e3a90ec985` after Shipping Fast Gate `35543969770` passed.
 - PR #322 upgraded Vitest/@vitest/mocker to 5.0.0 with the reviewed lockfile delta, raised both npm audit gates to `moderate`, and merged as `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` after exact-head Shipping Fast Gate `35544109634` passed with `found 0 vulnerabilities`.
 - Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` passed AI Continuity Guard `35544171867`, Application Foundation CI `35544171851`, and Security Supply Chain CI `35544171748`; exact-head Composer audit found no advisories and npm audit at the MODERATE threshold found zero vulnerabilities. The temporary dependency/workflow Supervisor lease is now released.
+- PR #320 promoted the fully certified/security-remediated TASK-0036 PHASE-06 baseline to protected `main` as `9b068a7b8b9abdd70dbfff6dbe1685a3099f5849`. The persistent Supervisor status reports AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI successful on that exact protected-main head with no actionable blockers.
+
+
+## Deferred runner benchmark registry
+
+Runner work is intentionally separated from product/certification development and tracked in `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.
+
+Rules:
+
+- Any task whose primary scope is GitHub Actions runner sizing/architecture, CI runner performance, runner cache/concurrency tuning, production-representative benchmark runner setup, or runner/toolchain optimization is appended to the registry instead of being executed opportunistically.
+- Runner tasks remain `deferred` until an explicit coordinated runner-benchmark batch is activated. Normal product/security development continues independently.
+- The batch must establish baselines before changing runner size, architecture, cache, concurrency, or workflow topology, and must compare before/after evidence on pinned source/workflow revisions.
+- Security gates, branch protection, exact-head checks, secret handling, and benchmark environment isolation may not be weakened to improve runner numbers.
+- GitHub-hosted CI timing must not be substituted for production SLO evidence. TASK-0024 production-representative benchmark evidence remains a distinct controlled environment.
+- New runner-related tasks discovered in future work are appended to the registry with source, dependencies, measurements, and acceptance criteria. They are not silently executed.
+- The runner registry is persistent across task/phase transitions; closing TASK-0036 does not discard or auto-execute it.
+
+Current registry is seeded with application-CI, security-CI, Shipping Fast Gate, TASK-0024 production-representative benchmark-runner evidence, pending CodeQL runner/toolchain updates, and post-baseline runner-size/architecture/cache/concurrency evaluation.
 
 ## Exact next action
 
-Promote the security-remediated TASK-0036 PHASE-06 ship baseline `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.
+Merge this control-only runner-registry update after exact-head governance/application/security checks, then reconcile TASK-0036 final PHASE-06 acceptance on protected `main`. Do not execute runner benchmark tasks in this step; keep them deferred in the registry for one coordinated batch.

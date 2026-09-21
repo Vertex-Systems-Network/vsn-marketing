@@ -47,6 +47,15 @@ Never weaken, skip, cancel, or replace a required gate merely to avoid a timeout
 
 Conversation state is never authoritative for resumption.
 
+Canonical recovery precedence is:
+
+1. `.ai/state/CURRENT-STATE.yaml` for the current phase, active task, execution status, progress, blockers, and exact next action;
+2. `.ai/state/LAST-CHECKPOINT.md` for the last accepted milestone, exact-head/gate evidence, and resume handoff;
+3. `.ai/state/EXECUTION-JOURNAL.jsonl` for append-only transition/history verification;
+4. current GitHub branch/PR/exact-SHA and CI state for live external execution evidence.
+
+If static plan/header prose conflicts with those canonical sources, do not resume from the stale prose. Resume from canonical state plus current GitHub evidence, then reconcile the descriptive plan separately.
+
 Before repeating any write after a timeout, interrupted response, reconnect, or `continue`:
 
 - read protected `main` or the relevant integration branch head;

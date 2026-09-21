@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.4.1",
-  "instruction_revision": "parallel-v2.4.1-nonrecursive-main-observation",
+  "protocol_version": "2.4.2",
+  "instruction_revision": "parallel-v2.4.2-readme-progress-sync",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "18a8831dffa521454d62908c3cb50edb2b127b4cfb40ba930ee9f5648768429f",
+  "instruction_fingerprint": "4918ea8be1f1ea1d2e1b7b439c5cd35d04c06daa7200602bb5245149a19afa38",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -102,9 +102,13 @@
     ".ai/state/LAST-CHECKPOINT.md",
     ".ai/state/EXECUTION-JOURNAL.jsonl",
     ".ai/coordination/OPEN-WORK-QUEUE.yaml",
-    ".ai/runner/RUNNER-BENCHMARK.yaml"
+    ".ai/runner/RUNNER-BENCHMARK.yaml",
+    "README.md"
   ],
   "self_reconciliation_prefixes": [
     ".ai/state/archive/"
-  ]
+  ],
+  "readme_progress_sync_required": true,
+  "readme_progress_sync_trigger_path": ".ai/state/CURRENT-STATE.yaml",
+  "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT"
 }

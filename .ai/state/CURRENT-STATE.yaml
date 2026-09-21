@@ -26,13 +26,15 @@
   },
   "observed_main_sha": "09ea7cd36faae43620024788fa39af2e2847e77b",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0038-APPROVAL-ORCHESTRATION",
-  "milestone_status": "COMPLETE",
+  "active_pr": 345,
+  "active_branch": "control/readme-progress-sync-v2",
+  "current_milestone": "README-PROGRESS-SYNC-V2",
+  "milestone_status": "VERIFYING",
   "last_completed_milestone": "TASK-0038 lifecycle/approval orchestration merged via PR #344 as 09ea7cd36faae43620024788fa39af2e2847e77b; exact source b8810ff578432d35a10306ed9c83f3ae7b4b2eb0 passed AI Continuity Guard 35652184734, Application Foundation CI 35652185080 and Security Supply Chain CI 35652185065 after non-weakening static-analysis/formatting recovery.",
-  "exact_next_safe_action": "Begin the next bounded TASK-0038 milestone from protected main: close the remaining campaign revision/history certification gaps by enforcing material content/target edits through new immutable snapshots, recording target-change and cancellation/completion provenance, and extending adversarial transaction/replay/workspace-isolation tests. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority and TASK-0039 inactive until TASK-0038 AC-1 through AC-8 are fully certified on an exact green head.",
-  "pending_runner_ids": [],
+  "exact_next_safe_action": "Perform one consolidated exact-head verification for PR #345. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, README progress synchronization tests/validators pass, instruction fingerprint is current, review is clean, and the exact head is unchanged. After trusted merge, perform one terminal state+README reconciliation, then resume the next bounded TASK-0038 revision/history product milestone.",
+  "pending_runner_ids": [
+    "RBT-013"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the next bounded TASK-0038 milestone from protected main: close the remaining campaign revision/history certification gaps by enforcing material content/target edits through new immutable snapshots, recording target-change and cancellation/completion provenance, and extending adversarial transaction/replay/workspace-isolation tests. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority and TASK-0039 inactive until TASK-0038 AC-1 through AC-8 are fully certified on an exact green head."
+  "exact_next_action": "Perform one consolidated exact-head verification for PR #345. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, README progress synchronization tests/validators pass, instruction fingerprint is current, review is clean, and the exact head is unchanged. After trusted merge, perform one terminal state+README reconciliation, then resume the next bounded TASK-0038 revision/history product milestone."
 }

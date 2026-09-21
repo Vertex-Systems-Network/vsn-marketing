@@ -34,12 +34,12 @@
     {
       "id": "PHASE-06",
       "weight": 6,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "PHASE-07",
       "weight": 7,
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "PHASE-08",

@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0037_revalidation_pr332_head_bfa17b84bea854ceb13b15d6eb4be18f95b00e31_passed_run_35608485672",
-    "application_test_status": "task0037_revalidation_pr332_head_bfa17b84bea854ceb13b15d6eb4be18f95b00e31_passed_run_35608485630",
-    "security_supply_chain_status": "task0037_revalidation_pr332_head_bfa17b84bea854ceb13b15d6eb4be18f95b00e31_passed_run_35608485590",
+    "continuity_validation": "supervisor_contract_v2_pr334_head_6a2ad96e74f394b9d41752f517c6a08cc18500d7_passed_run_35613079867",
+    "application_test_status": "supervisor_contract_v2_pr334_head_6a2ad96e74f394b9d41752f517c6a08cc18500d7_passed_run_35613079738",
+    "security_supply_chain_status": "supervisor_contract_v2_pr334_head_6a2ad96e74f394b9d41752f517c6a08cc18500d7_passed_run_35613079745",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "cd9b882b01e1bce2e0f97b650028b992b58988b6",
+  "observed_main_sha": "065b4da5cba4f610d5473e41ddb9fc3089e5c305",
   "active_issue": null,
-  "active_pr": 334,
-  "active_branch": "control/supervisor-durable-resume-v2",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "SUPERVISOR-CONTRACT-V2-INTEGRATION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0037 current-source revalidation PR #332 merged as cd9b882b01e1bce2e0f97b650028b992b58988b6 after exact-head Continuity/Application/Security gates passed",
-  "exact_next_safe_action": "Perform one consolidated exact-head CI/status refresh for PR #334. Merge only if required review and CI gates are green; otherwise record WAITING_EXTERNAL or BLOCKED evidence on the PR without a source-head state-only commit. After merge, re-read compact state, exact main, open Issues, open PRs, deterministic claims, coordination queue and Runner Benchmark before TASK-0038 registration.",
-  "pending_runner_ids": [
-    "RBT-007"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "Durable Supervisor contract v2 merged via PR #334 as 065b4da5cba4f610d5473e41ddb9fc3089e5c305 after exact-head AI Continuity Guard 35613079867, Application Foundation CI 35613079738 and Security Supply Chain CI 35613079745 passed.",
+  "exact_next_safe_action": "Register TASK-0038 from the frozen PHASE-07 research contract and the current 2026-09-21 no-material-drift revalidation, then require the registration head to pass AI Continuity Guard, Application Foundation CI and Security Supply Chain CI. After that merge, complete TASK-0037 and activate TASK-0038 only through a separate guarded transition. Do not activate live provider publishing or the deferred Runner benchmark batch.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform one consolidated exact-head CI/status refresh for PR #334. Merge only if required review and CI gates are green; otherwise record WAITING_EXTERNAL or BLOCKED evidence on the PR without a source-head state-only commit. After merge, re-read compact state, exact main, open Issues, open PRs, deterministic claims, coordination queue and Runner Benchmark before TASK-0038 registration."
+  "exact_next_action": "Register TASK-0038 from the frozen PHASE-07 research contract and the current 2026-09-21 no-material-drift revalidation, then require the registration head to pass AI Continuity Guard, Application Foundation CI and Security Supply Chain CI. After that merge, complete TASK-0037 and activate TASK-0038 only through a separate guarded transition. Do not activate live provider publishing or the deferred Runner benchmark batch."
 }

@@ -708,6 +708,12 @@ final readonly class DatabaseCampaignRepository
 
         $this->assertWorkspaceRow($table, $workspaceId, $target->canonicalReferenceId, 'Campaign target');
 
+        if (in_array($target->kind, [CampaignTargetKind::ContactList, CampaignTargetKind::Tag], true)) {
+            $this->assertMaterializedRecipientSet($workspaceId, $target);
+
+            return;
+        }
+
         if ($target->kind !== CampaignTargetKind::ProviderConnection) {
             return;
         }
@@ -736,6 +742,43 @@ final readonly class DatabaseCampaignRepository
             || ($capability->connection_id !== null && (string) $capability->connection_id !== $target->providerConnectionId)
         ) {
             throw new AuthorizationException('Campaign capability evidence does not authorize the provider target.');
+        }
+    }
+
+    private function assertMaterializedRecipientSet(
+        string $workspaceId,
+        CampaignTargetBinding $target,
+    ): void {
+        $materializedContactIds = $target->metadata['materialized_contact_ids'];
+
+        foreach ($materializedContactIds as $contactId) {
+            $this->assertWorkspaceRow(
+                'contacts',
+                $workspaceId,
+                $contactId,
+                'Campaign materialized target contact',
+            );
+        }
+
+        [$membershipTable, $targetColumn] = match ($target->kind) {
+            CampaignTargetKind::ContactList => ['contact_list_memberships', 'list_id'],
+            CampaignTargetKind::Tag => ['contact_tag_assignments', 'tag_id'],
+            default => throw new InvalidArgumentException('Campaign materialized recipient validation requires list/tag target.'),
+        };
+
+        $canonicalContactIds = $this->database->connection()->table($membershipTable)
+            ->where('workspace_id', $workspaceId)
+            ->where($targetColumn, $target->canonicalReferenceId)
+            ->pluck('contact_id')
+            ->map(static fn (mixed $contactId): string => (string) $contactId)
+            ->all();
+
+        $expectedContactIds = $materializedContactIds;
+        sort($canonicalContactIds, SORT_STRING);
+        sort($expectedContactIds, SORT_STRING);
+
+        if ($canonicalContactIds !== $expectedContactIds) {
+            throw new InvalidArgumentException('Campaign materialized target set does not match canonical membership.');
         }
     }
 

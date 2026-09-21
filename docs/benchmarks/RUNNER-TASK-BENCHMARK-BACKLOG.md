@@ -8,6 +8,12 @@ Execution policy: runner tasks are deferred by default and executed in one coord
 Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
 Interaction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.
 
+## Machine-readable authority
+
+The canonical machine registry is `.ai/runner/RUNNER-BENCHMARK.yaml`; this Markdown file is its human-readable backlog/context. The machine registry carries authorization, merge/security classification, deduplication, source-identity requirements, status and terminal-evidence fields. A registry entry never grants execution authority.
+
+Every material remote/container/browser/runtime/full-regression/performance workload must be represented before execution. Exact-head required CI can execute immediately under its existing merge/security authority; safe non-blocking optimization/performance work remains deferred to the final coordinated batch. Runtime run IDs may be recorded on PR/Issue status surfaces to avoid mutating the exact source head under verification.
+
 ## Purpose
 
 This file is the persistent benchmark/backlog for work whose primary subject is a CI/automation runner, runner resource profile, runner/toolchain performance, or production-representative benchmark runner. Product and security development continue normally while runner work accumulates here. When the runner batch is explicitly activated, items are executed together so measurements are comparable and changes do not drift across unrelated feature work.

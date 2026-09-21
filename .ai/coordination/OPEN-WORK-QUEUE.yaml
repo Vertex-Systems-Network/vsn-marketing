@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b0c701b46be8699eacce8b97e7af9f1505b78c09",
-  "active_work_path": null,
+  "reconciled_main_sha": "fae11a93941ee084d43783ef66ae3e24f230cc0d",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 340,
+    "branch": "control/transition-task-0037-to-0038",
+    "milestone": "TASK-0037-TO-TASK-0038-TRANSITION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 340,
+      "title": "control: transition TASK-0037 to TASK-0038",
+      "disposition": "active_task_transition_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-010",
+      "branch": "control/transition-task-0037-to-0038"
     }
   ]
 }

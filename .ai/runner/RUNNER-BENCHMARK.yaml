@@ -213,6 +213,24 @@
           "security_supply_chain_ci": "success"
         }
       }
+    },
+    {
+      "id": "RBT-010",
+      "source": "PR #340 / guarded TASK-0037 -> TASK-0038 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #340 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0037-to-0038; PHASE-07 task-transition exact-head verification",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0037-task0038-transition:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

@@ -2,32 +2,32 @@
 
 ## State
 
-- Timestamp: `2026-09-21T15:28:04Z`
-- Observed main: `b0c701b46be8699eacce8b97e7af9f1505b78c09`
+- Timestamp: `2026-09-21T15:36:33Z`
+- Observed main: `fae11a93941ee084d43783ef66ae3e24f230cc0d`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0038-REGISTRATION`
-- Milestone status: `COMPLETE`
-- Active task: `TASK-0037`
-- Next task: `TASK-0038`
+- Active PR: `340`
+- Active branch: `control/transition-task-0037-to-0038`
+- Current milestone: `TASK-0037-TO-TASK-0038-TRANSITION`
+- Milestone status: `VERIFYING`
+- Active task: `TASK-0038`
+- Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-010`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `4705c5c41f0ce194beb4ed233f0799e53283ddc67edb7a85acbd8863333c0ba3`
+- State fingerprint: `2c55a654322d2c026035c366a8f2b55b4eb78ee60d5e9dedd13387a829cbc5fb`
 
 ## Completed / observed this session
 
-TASK-0038 registration is trusted on protected main through PR #338 merged as `b0c701b46be8699eacce8b97e7af9f1505b78c09`. Exact registration source `73068a7e8b58f13d3d78d12d1cfc66d6bb113089` passed AI Continuity Guard `35618889918`, Application Foundation CI `35618889939`, and Security Supply Chain CI `35618889946`.
+The guarded TASK-0037 -> TASK-0038 transition is staged on PR #340. TASK-0037 is marked completed only after its accepted research contract and trusted TASK-0038 registration evidence. TASK-0038 is marked ready/active without changing its frozen AC-1 through AC-8 implementation contract.
 
-TASK-0038 remains `planned` and TASK-0037 remains active/ready until a separate guarded transition. RBT-009 is terminal PASS with immutable source, merge and workflow-run evidence. RBT-004 remains authorization-blocked and all non-blocking Runner optimization work remains deferred.
+Deterministic progress after the transition is PHASE-07 `42.86%` (15 completed weight out of 35 currently registered PHASE-07 weight) and roadmap `47%` (44 completed prior-phase weight plus 3 percentage points from PHASE-07).
 
-This state-only reconciliation transport is not a new engineering work path or Runner benchmark task. After it merges, the live main descendant should be treated as a self-reconciliation descendant of material anchor `b0c701b46be8699eacce8b97e7af9f1505b78c09`; no recursive cleanup is permitted.
+No TASK-0038 application code, schema migration, live provider publication, production scheduling/provider credential activation, deployment/release execution or Runner optimization batch is included in this transition.
 
 ## Tests
 
-PR #338 exact-head AI Continuity Guard `35618889918` PASS; Application Foundation CI `35618889939` PASS; Security Supply Chain CI `35618889946` PASS.
+Exact-head external CI is pending. RBT-010 is registered as the immediate merge-required validation workload for the transition head. RBT-004 remains authorization-blocked.
 
 ## Blockers
 
@@ -35,4 +35,4 @@ PR #338 exact-head AI Continuity Guard `35618889918` PASS; Application Foundatio
 
 ## Exact next action
 
-Perform a separate guarded TASK-0037 -> TASK-0038 transition from current protected main. That transition must mark TASK-0037 completed, mark TASK-0038 ready/active, preserve the frozen TASK-0038 acceptance contract, recalculate deterministic progress, and require repository-mandated exact-head gates before merge. Do not implement TASK-0038 application code, live provider publication, production scheduling/provider credentials, deployment/release authority or the deferred Runner benchmark batch in the transition milestone.
+Perform one consolidated exact-head CI/status refresh for PR #340. Merge the TASK-0037 -> TASK-0038 transition only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After that merge, perform one terminal transition reconciliation that records RBT-010 immutable evidence and clears the transition PR/work path. Only after terminal reconciliation is trusted may TASK-0038 application implementation begin as a separate milestone. Do not activate live provider publication, production scheduling/provider credentials, deployment/release authority or the deferred Runner benchmark batch.

@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Additive and re-entrant by design.
+     *
+     * Every TASK-0038 table is guarded independently so a retry after an
+     * interrupted apply can complete only the missing surfaces. No existing
+     * application table is rewritten or backfilled by this migration.
+     */
     public function up(): void
     {
         if (! Schema::hasTable('campaigns')) {
@@ -155,6 +162,13 @@ return new class extends Migration
         $this->createImmutabilityGuards();
     }
 
+    /**
+     * Rollback removes only TASK-0038-owned tables and trigger/function guards.
+     *
+     * Restoring application data after an intentionally destructive rollback
+     * remains an operator backup/restore decision; this migration never claims
+     * production restore authority.
+     */
     public function down(): void
     {
         $this->dropImmutabilityGuards();

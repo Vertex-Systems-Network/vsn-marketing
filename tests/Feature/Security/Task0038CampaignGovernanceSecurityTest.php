@@ -450,7 +450,6 @@ it('rejects approval requests when provider capability evidence is not effective
         ->toBe(CampaignStatus::Review);
 });
 
-
 it('records immutable target-change provenance, invalidates stale approval, and requires fresh approval before completion', function () {
     $editor = task0038GovernanceActor('revision-history-editor');
     $workspaceId = (string) $editor['workspace']->getKey();

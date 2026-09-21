@@ -811,7 +811,7 @@ final readonly class CampaignGovernanceService
     }
 
     /**
-     * @param array<string, mixed> $evidence
+     * @param  array<string, mixed>  $evidence
      */
     private function assertScheduledIntentReplay(
         TenantContext $context,

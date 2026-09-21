@@ -7,9 +7,7 @@ use InvalidArgumentException;
 
 final readonly class CampaignApprovalDecision
 {
-    /**
-     * @param list<string> $capabilityEvidenceIds
-     */
+    /** @param list<string> $capabilityEvidenceIds */
     public function __construct(
         public string $id,
         public string $workspaceId,

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "registry": "VSN Runner Benchmark",
+  "policy": {
+    "registration_grants_execution_authority": false,
+    "default_non_blocking_execution": "deferred_final_batch",
+    "immediate_classes": [
+      "security-critical validation",
+      "exact-head merge-required checks",
+      "migration/auth/secrets/data-safety checks",
+      "current-change integration-safety checks",
+      "incident/recovery checks"
+    ],
+    "terminal_evidence_required": true,
+    "exact_source_identity_required_before_execution": true
+  },
+  "tasks": [
+    {
+      "id": "RBT-001",
+      "source": "Application Foundation CI benchmark backlog",
+      "command_workflow": ".github/workflows/application-ci.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ubuntu-latest; PHP 8.5/8.3; Node 24; PostgreSQL 18; Redis 8; Playwright Chromium; repository fixtures",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:application-foundation:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-002",
+      "source": "Security Supply Chain CI benchmark backlog",
+      "command_workflow": ".github/workflows/security-ci.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ubuntu-latest; CodeQL; Semgrep; Composer/npm audit; Trivy secret/container; SBOM reproducibility",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": true,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:security-supply-chain:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-003",
+      "source": "Shipping Fast Gate benchmark backlog",
+      "command_workflow": ".github/workflows/shipping-fast-gate.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ship/week-1 exact-head fast-gate workload",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:shipping-fast-gate:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-004",
+      "source": "Issue #134 / TASK-0024 production-representative delivery benchmark",
+      "command_workflow": "tools/task0024_benchmark_capture.php / authorized external benchmark environment",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis delivery + reconciliation environment; exact fixture/threshold identity required",
+      "authorization_state": "awaiting_explicit_runtime_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_external_runtime",
+      "dedup_key": "runner:task0024:production-representative:v7",
+      "status": "deferred_authorization_required",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-005",
+      "source": "PR #235 + PR #236 CodeQL runner/toolchain maintenance",
+      "command_workflow": "github/codeql-action init/analyze maintenance review",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "current security-ci CodeQL javascript-typescript/actions matrix",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": true,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_RBT-002",
+      "dedup_key": "runner:codeql-toolchain:235-236",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-006",
+      "source": "Runner size/architecture/cache/concurrency evaluation",
+      "command_workflow": "cross-workflow benchmark batch",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "variants frozen only after RBT-001..005 baselines",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baselines",
+      "dedup_key": "runner:topology-optimization:post-baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-007",
+      "source": "Supervisor durable-resume contract v2 control milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "active PR exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/supervisor-durable-resume-v2; full exact-head governance/application/security verification",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:supervisor-contract-v2:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
+    }
+  ]
+}

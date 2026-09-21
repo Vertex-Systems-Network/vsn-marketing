@@ -37,7 +37,9 @@ function task0038DomainTarget(
         channel: $channel,
         providerConnectionId: $kind === CampaignTargetKind::ProviderConnection ? $reference : null,
         capabilityEvidenceId: null,
-        metadata: ['source' => 'task0038-unit'],
+        metadata: in_array($kind, [CampaignTargetKind::ContactList, CampaignTargetKind::Tag], true)
+            ? ['source' => 'task0038-unit', 'materialized_contact_ids' => ['contact-1']]
+            : ['source' => 'task0038-unit'],
         createdAt: new DateTimeImmutable('2026-09-21T16:01:00+00:00'),
     );
 }
@@ -113,6 +115,39 @@ it('builds order-independent immutable campaign snapshot hashes from canonical t
     expect($first->targetSetHash)->toBe($second->targetSetHash)
         ->and($first->snapshotHash)->toBe($second->snapshotHash)
         ->and($first->snapshotHash)->toMatch('/^[0-9a-f]{64}$/');
+});
+
+it('canonicalizes materialized list recipient ordering into one stable target fingerprint', function () {
+    $first = new CampaignTargetBinding(
+        id: 'list-target-a',
+        workspaceId: 'workspace-1',
+        kind: CampaignTargetKind::ContactList,
+        canonicalReferenceId: 'list-1',
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [
+            'source' => 'task0038-unit',
+            'materialized_contact_ids' => ['contact-2', 'contact-1'],
+        ],
+        createdAt: new DateTimeImmutable('2026-09-21T16:01:00+00:00'),
+    );
+    $second = new CampaignTargetBinding(
+        id: 'list-target-b',
+        workspaceId: 'workspace-1',
+        kind: CampaignTargetKind::ContactList,
+        canonicalReferenceId: 'list-1',
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [
+            'materialized_contact_ids' => ['contact-1', 'contact-2'],
+            'source' => 'task0038-unit',
+        ],
+        createdAt: new DateTimeImmutable('2026-09-21T16:02:00+00:00'),
+    );
+
+    expect($first->fingerprint())->toBe($second->fingerprint());
 });
 
 it('rejects provider-transient identifiers and provider routing on canonical recipient targets', function () {

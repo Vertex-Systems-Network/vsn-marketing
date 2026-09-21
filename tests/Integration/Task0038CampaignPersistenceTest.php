@@ -105,6 +105,87 @@ function task0038PersistenceContact(string $workspaceId, string $suffix): string
     return $contactId;
 }
 
+function task0038PersistenceContactIdentity(
+    string $workspaceId,
+    string $contactId,
+    string $suffix,
+): string {
+    $identityId = (string) Str::uuid();
+    $now = now();
+
+    DB::table('contact_identities')->insert([
+        'id' => $identityId,
+        'workspace_id' => $workspaceId,
+        'contact_id' => $contactId,
+        'type' => 'email',
+        'value' => $suffix.'@task0038.test',
+        'normalized_value' => $suffix.'@task0038.test',
+        'provider' => null,
+        'provider_reference' => null,
+        'verified_at' => $now,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+
+    return $identityId;
+}
+
+function task0038PersistenceList(
+    string $workspaceId,
+    array $contactIds,
+    string $suffix,
+): string {
+    $listId = (string) Str::uuid();
+    $now = now();
+
+    DB::table('contact_lists')->insert([
+        'id' => $listId,
+        'workspace_id' => $workspaceId,
+        'name' => 'Task0038 list '.$suffix,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+
+    foreach ($contactIds as $contactId) {
+        DB::table('contact_list_memberships')->insert([
+            'workspace_id' => $workspaceId,
+            'list_id' => $listId,
+            'contact_id' => $contactId,
+            'created_at' => $now,
+        ]);
+    }
+
+    return $listId;
+}
+
+function task0038PersistenceTag(
+    string $workspaceId,
+    array $contactIds,
+    string $suffix,
+): string {
+    $tagId = (string) Str::uuid();
+    $now = now();
+
+    DB::table('tags')->insert([
+        'id' => $tagId,
+        'workspace_id' => $workspaceId,
+        'name' => 'Task0038 tag '.$suffix,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+
+    foreach ($contactIds as $contactId) {
+        DB::table('contact_tag_assignments')->insert([
+            'workspace_id' => $workspaceId,
+            'tag_id' => $tagId,
+            'contact_id' => $contactId,
+            'created_at' => $now,
+        ]);
+    }
+
+    return $tagId;
+}
+
 function task0038PersistenceCampaign(string $workspaceId, string $suffix, DateTimeImmutable $at): Campaign
 {
     return Campaign::draft(
@@ -560,4 +641,206 @@ it('rejects conflicting material snapshot replay under the same idempotency key 
         ->and(DB::table('campaign_targets')->where('snapshot_id', $first->id)->count())->toBe(1)
         ->and(DB::table('campaign_events')->where('idempotency_key', 'revision-replay-conflict-event')->count())->toBe(0)
         ->and($repository->latestSnapshot($workspaceId, $campaign->id)?->targetSetHash)->toBe($first->targetSetHash);
+});
+
+it('pins canonical identity list and tag targets to exact workspace-isolated materialized membership', function () {
+    $inside = task0038PersistenceWorkspace('canonical-targets-inside');
+    $outside = task0038PersistenceWorkspace('canonical-targets-outside');
+    $contentVersionId = task0038PersistenceContentVersion($inside, 'canonical-targets');
+    $contactA = task0038PersistenceContact($inside, 'canonical-a');
+    $contactB = task0038PersistenceContact($inside, 'canonical-b');
+    $foreignContact = task0038PersistenceContact($outside, 'canonical-foreign');
+    $identityId = task0038PersistenceContactIdentity($inside, $contactA, 'canonical-a');
+    $listId = task0038PersistenceList($inside, [$contactA, $contactB], 'canonical');
+    $tagId = task0038PersistenceTag($inside, [$contactB], 'canonical');
+
+    $repository = app(DatabaseCampaignRepository::class);
+    $at = new DateTimeImmutable('2026-09-22T06:00:00+00:00');
+    $campaign = task0038PersistenceCampaign($inside, 'canonical-targets', $at);
+    $repository->createCampaign(
+        $campaign,
+        CampaignEvent::created(
+            $campaign,
+            (string) Str::uuid(),
+            'task0038-author',
+            'Canonical target certification.',
+            [],
+            'canonical-targets-create',
+            $at,
+        ),
+    );
+
+    $identityTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        kind: CampaignTargetKind::ContactIdentity,
+        canonicalReferenceId: $identityId,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: ['selection' => 'exact-identity'],
+        createdAt: new DateTimeImmutable('2026-09-22T06:01:00+00:00'),
+    );
+    $listTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        kind: CampaignTargetKind::ContactList,
+        canonicalReferenceId: $listId,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [
+            'selection' => 'materialized-list',
+            'materialized_contact_ids' => [$contactB, $contactA],
+        ],
+        createdAt: new DateTimeImmutable('2026-09-22T06:01:00+00:00'),
+    );
+    $tagTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        kind: CampaignTargetKind::Tag,
+        canonicalReferenceId: $tagId,
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [
+            'selection' => 'materialized-tag',
+            'materialized_contact_ids' => [$contactB],
+        ],
+        createdAt: new DateTimeImmutable('2026-09-22T06:01:00+00:00'),
+    );
+
+    $snapshot = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        campaignId: $campaign->id,
+        parentSnapshotId: null,
+        versionNumber: 1,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'none'],
+        targets: [$tagTarget, $identityTarget, $listTarget],
+        idempotencyKey: 'canonical-targets-v1',
+        createdByActorId: 'task0038-author',
+        createdAt: new DateTimeImmutable('2026-09-22T06:01:00+00:00'),
+    );
+    $repository->appendSnapshot(
+        $snapshot,
+        CampaignEvent::snapshotCreated(
+            $snapshot,
+            (string) Str::uuid(),
+            'task0038-author',
+            'Pin exact canonical target set.',
+            [],
+            'canonical-targets-snapshot',
+            new DateTimeImmutable('2026-09-22T06:01:00+00:00'),
+        ),
+    );
+
+    expect(DB::table('campaign_targets')->where('snapshot_id', $snapshot->id)->count())->toBe(3)
+        ->and($repository->latestSnapshot($inside, $campaign->id)?->targetSetHash)->toBe($snapshot->targetSetHash);
+
+    $foreignRevision = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        campaignId: $campaign->id,
+        parentSnapshotId: $snapshot->id,
+        versionNumber: 2,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'none'],
+        targets: [
+            new CampaignTargetBinding(
+                id: (string) Str::uuid(),
+                workspaceId: $inside,
+                kind: CampaignTargetKind::ContactList,
+                canonicalReferenceId: $listId,
+                channel: 'email',
+                providerConnectionId: null,
+                capabilityEvidenceId: null,
+                metadata: [
+                    'selection' => 'foreign-materialization',
+                    'materialized_contact_ids' => [$contactA, $foreignContact],
+                ],
+                createdAt: new DateTimeImmutable('2026-09-22T06:02:00+00:00'),
+            ),
+        ],
+        idempotencyKey: 'canonical-targets-foreign-v2',
+        createdByActorId: 'task0038-author',
+        createdAt: new DateTimeImmutable('2026-09-22T06:02:00+00:00'),
+    );
+
+    expect(fn () => $repository->appendSnapshot(
+        $foreignRevision,
+        CampaignEvent::snapshotCreated(
+            $foreignRevision,
+            (string) Str::uuid(),
+            'task0038-author',
+            null,
+            [],
+            'canonical-targets-foreign-event',
+            new DateTimeImmutable('2026-09-22T06:02:00+00:00'),
+        ),
+    ))->toThrow(AuthorizationException::class, 'materialized target contact access denied');
+
+    $driftRevision = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $inside,
+        campaignId: $campaign->id,
+        parentSnapshotId: $snapshot->id,
+        versionNumber: 2,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: ['mode' => 'none'],
+        targets: [
+            new CampaignTargetBinding(
+                id: (string) Str::uuid(),
+                workspaceId: $inside,
+                kind: CampaignTargetKind::ContactList,
+                canonicalReferenceId: $listId,
+                channel: 'email',
+                providerConnectionId: null,
+                capabilityEvidenceId: null,
+                metadata: [
+                    'selection' => 'incomplete-materialization',
+                    'materialized_contact_ids' => [$contactA],
+                ],
+                createdAt: new DateTimeImmutable('2026-09-22T06:03:00+00:00'),
+            ),
+        ],
+        idempotencyKey: 'canonical-targets-drift-v2',
+        createdByActorId: 'task0038-author',
+        createdAt: new DateTimeImmutable('2026-09-22T06:03:00+00:00'),
+    );
+
+    expect(fn () => $repository->appendSnapshot(
+        $driftRevision,
+        CampaignEvent::snapshotCreated(
+            $driftRevision,
+            (string) Str::uuid(),
+            'task0038-author',
+            null,
+            [],
+            'canonical-targets-drift-event',
+            new DateTimeImmutable('2026-09-22T06:03:00+00:00'),
+        ),
+    ))->toThrow(InvalidArgumentException::class, 'materialized target set does not match canonical membership');
+
+    expect(DB::table('campaign_snapshots')->where('campaign_id', $campaign->id)->count())->toBe(1)
+        ->and(DB::table('campaign_events')->whereIn('idempotency_key', [
+            'canonical-targets-foreign-event',
+            'canonical-targets-drift-event',
+        ])->count())->toBe(0);
 });

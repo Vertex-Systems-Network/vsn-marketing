@@ -396,6 +396,58 @@ final readonly class CampaignGovernanceService
         return $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
     }
 
+    public function scheduleIntent(
+        User $actor,
+        TenantContext $context,
+        string $campaignId,
+        string $eventId,
+        string $eventIdempotencyKey,
+        ?string $reason,
+        DateTimeImmutable $at,
+    ): Campaign {
+        $this->assertPermission($actor, $context, PermissionCatalog::CAMPAIGN_SEND);
+
+        $campaign = $this->requireCampaign($context, $campaignId);
+        if (! in_array($campaign->status, [CampaignStatus::Approved, CampaignStatus::ScheduledIntent], true)) {
+            throw new InvalidArgumentException('Campaign scheduling intent requires approved lifecycle state.');
+        }
+
+        $snapshot = $this->requireLatestSnapshot($context, $campaign);
+
+        if ($campaign->status === CampaignStatus::ScheduledIntent) {
+            $this->assertScheduledIntentReplay(
+                context: $context,
+                campaign: $campaign,
+                snapshot: $snapshot,
+                eventId: $eventId,
+                eventIdempotencyKey: $eventIdempotencyKey,
+                reason: $reason,
+            );
+
+            return $campaign;
+        }
+
+        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
+        $this->assertEffectiveApproval($evaluation);
+        $this->assertSchedulableIntendedExecution($snapshot, $at);
+
+        $evidence = $this->scheduledIntentEvidence($snapshot, $evaluation);
+
+        $next = $campaign->transitionTo(CampaignStatus::ScheduledIntent, $at);
+        $event = CampaignEvent::transitioned(
+            before: $campaign,
+            after: $next,
+            id: $eventId,
+            actorId: $context->actorId,
+            reason: $reason,
+            evidence: $evidence,
+            idempotencyKey: $eventIdempotencyKey,
+            occurredAt: $at,
+        );
+
+        return $this->campaigns->transitionCampaign($next, $campaign->stateVersion, $event);
+    }
+
     public function cancel(
         User $actor,
         TenantContext $context,
@@ -702,6 +754,120 @@ final readonly class CampaignGovernanceService
 
             return $evaluation;
         });
+    }
+
+    /** @return array<string, mixed> */
+    private function scheduledIntentEvidence(
+        CampaignSnapshot $snapshot,
+        CampaignApprovalEvaluation $evaluation,
+    ): array {
+        return [
+            'intent_kind' => 'scheduled',
+            'approval_id' => $evaluation->decisionId,
+            'snapshot_id' => $snapshot->id,
+            'snapshot_hash' => $snapshot->snapshotHash,
+            'target_set_hash' => $snapshot->targetSetHash,
+            'intended_execution' => $snapshot->intendedExecution,
+            'scheduler_execution' => false,
+        ];
+    }
+
+    private function assertSchedulableIntendedExecution(
+        CampaignSnapshot $snapshot,
+        DateTimeImmutable $at,
+    ): void {
+        $execution = $snapshot->intendedExecution;
+
+        if (($execution['mode'] ?? null) !== 'fixed_instant') {
+            throw new InvalidArgumentException('Campaign scheduled intent requires fixed_instant intended execution.');
+        }
+
+        $timezone = $execution['timezone'] ?? null;
+        $scheduledAtValue = $execution['at'] ?? null;
+
+        if (
+            ! is_string($timezone)
+            || trim($timezone) === ''
+            || ! is_string($scheduledAtValue)
+            || trim($scheduledAtValue) === ''
+        ) {
+            throw new InvalidArgumentException('Campaign scheduled intent must pin timezone and at.');
+        }
+
+        try {
+            $scheduledTimezone = new \DateTimeZone($timezone);
+            $scheduledAt = new DateTimeImmutable($scheduledAtValue, $scheduledTimezone);
+        } catch (\Throwable $exception) {
+            throw new InvalidArgumentException(
+                'Campaign scheduled intent must contain a valid timezone and timestamp.',
+                previous: $exception,
+            );
+        }
+
+        if ($scheduledAt <= $at) {
+            throw new InvalidArgumentException('Campaign scheduled intent time must be in the future.');
+        }
+    }
+
+    private function assertScheduledIntentReplay(
+        TenantContext $context,
+        Campaign $campaign,
+        CampaignSnapshot $snapshot,
+        string $eventId,
+        string $eventIdempotencyKey,
+        ?string $reason,
+    ): void {
+        $matches = array_values(array_filter(
+            $this->campaigns->history($context->workspaceId, $campaign->id),
+            static fn (CampaignEvent $event): bool => $event->idempotencyKey === $eventIdempotencyKey,
+        ));
+
+        if (count($matches) !== 1) {
+            throw new InvalidArgumentException('Campaign scheduled-intent replay does not match canonical history.');
+        }
+
+        $event = $matches[0];
+        $approvalId = $event->evidence['approval_id'] ?? null;
+        $intendedExecution = $event->evidence['intended_execution'] ?? null;
+
+        if (
+            $event->id !== $eventId
+            || $event->type !== CampaignEvent::LIFECYCLE_TRANSITIONED
+            || $event->actorId !== $context->actorId
+            || $event->reason !== $reason
+            || $event->fromStatus !== CampaignStatus::Approved
+            || $event->toStatus !== CampaignStatus::ScheduledIntent
+            || ($event->evidence['intent_kind'] ?? null) !== 'scheduled'
+            || ($event->evidence['snapshot_id'] ?? null) !== $snapshot->id
+            || ($event->evidence['snapshot_hash'] ?? null) !== $snapshot->snapshotHash
+            || ($event->evidence['target_set_hash'] ?? null) !== $snapshot->targetSetHash
+            || $intendedExecution !== $snapshot->intendedExecution
+            || ($event->evidence['scheduler_execution'] ?? null) !== false
+            || ! is_string($approvalId)
+            || trim($approvalId) === ''
+        ) {
+            throw new InvalidArgumentException('Campaign scheduled-intent replay conflicts with existing history.');
+        }
+
+        $approvalExists = false;
+        foreach ($this->campaigns->approvalDecisions(
+            $context->workspaceId,
+            $campaign->id,
+            $snapshot->id,
+        ) as $decision) {
+            if (
+                $decision->id === $approvalId
+                && $decision->outcome === CampaignApprovalOutcome::Approved
+            ) {
+                $approvalExists = true;
+
+                break;
+            }
+        }
+
+        if (! $approvalExists) {
+            throw new InvalidArgumentException('Campaign scheduled-intent replay approval provenance is invalid.');
+        }
     }
 
     private function requireCampaign(TenantContext $context, string $campaignId): Campaign

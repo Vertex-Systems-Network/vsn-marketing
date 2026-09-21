@@ -53,6 +53,8 @@ Completion signal: `Work Done and Submitted`
 
 This policy is cross-phase and survives task transitions. The full standard is `docs/operations/AI-EXECUTION-RESILIENCE.md`; every future AI-Native plan revision must preserve or explicitly supersede it.
 
+Resume authority is canonical state first: `.ai/state/CURRENT-STATE.yaml`, `.ai/state/LAST-CHECKPOINT.md`, `.ai/state/EXECUTION-JOURNAL.jsonl`, then current GitHub branch/PR/exact-SHA and CI evidence. Historical task/phase wording elsewhere in this plan is descriptive only and must never override those recovery sources on `continue` or after a timeout.
+
 - Default interaction budget is **one logical milestone**: for example change+PR, gate diagnosis/fix, gate verification+merge, post-merge reconciliation, successor registration, or guarded transition. Do not chain several milestone classes merely because tools are available.
 - External CI is a durable boundary, not a tight polling loop. After starting required gates, record PR/branch/exact SHA, read status, and normally perform at most one additional refresh in the same interaction unless a changed state requires diagnosis or one final read can close the milestone.
 - If required CI remains in progress, stop at the durable branch/PR/SHA checkpoint. On the next `continue`, re-read GitHub state before doing any write.

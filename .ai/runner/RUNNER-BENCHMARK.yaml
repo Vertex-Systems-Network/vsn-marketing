@@ -119,12 +119,12 @@
     },
     {
       "id": "RBT-007",
-      "source": "Supervisor durable-resume contract v2 control milestone",
+      "source": "PR #334 / Supervisor durable-resume contract v2 control milestone",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
         "git_sha": null,
         "resolution_required_before_execution": true,
-        "evidence_surface": "active PR exact-head status/comment"
+        "evidence_surface": "PR #334 exact-head status/comment"
       },
       "environment_matrix_input_fixture": "control/supervisor-durable-resume-v2; full exact-head governance/application/security verification",
       "authorization_state": "authorized_required_exact_head_ci",

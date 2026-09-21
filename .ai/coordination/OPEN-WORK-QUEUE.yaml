@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
   "reconciled_main_sha": "cd9b882b01e1bce2e0f97b650028b992b58988b6",
-  "active_work_path": null,
+  "active_work_path": {
+    "kind": "pr",
+    "number": 334,
+    "branch": "control/supervisor-durable-resume-v2",
+    "milestone": "SUPERVISOR-CONTRACT-V2-INTEGRATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 334,
+      "title": "control: enforce durable Supervisor resume contract",
+      "disposition": "active_governance_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-007",
+      "branch": "control/supervisor-durable-resume-v2"
     }
   ]
 }

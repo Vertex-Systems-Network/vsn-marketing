@@ -2,30 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-09-21T21:16:25Z`
-- Observed main: `ac7d78476fff9ce1ddfca95eccf368afb0c492f4`
+- Timestamp: `2026-09-21T21:35:20Z`
+- Observed main: `3e5212d6a97312f3ea2434a4b7ce1a682f2164bb`
 - Active issue: `none`
-- Active PR: `347`
-- Active branch: `task/0038-revision-history`
+- Active PR: `none`
+- Active branch: `main`
 - Current milestone: `TASK-0038-REVISION-HISTORY`
-- Milestone status: `VERIFYING`
+- Milestone status: `COMPLETE`
 - Active task: `TASK-0038`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-014`
+- Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `fa282850e4fefc86bc30980b602e971265bf5674eefa3c121d56851f432e2f1b`
+- State fingerprint: `f8ec3a4d540aea1705eac7682439ac81c4d60cffad86f89e75f6f4fa72de13f6`
 
 ## Completed / observed this session
 
-PR #347 stages the next bounded TASK-0038 product milestone from protected main `ac7d78476fff9ce1ddfca95eccf368afb0c492f4`. The implementation adds governed cancellation and completion provenance, enriches material revision history with previous/new immutable snapshot and target-set identities, records target/content material-change flags, requires fresh exact-snapshot approval after material target changes, keeps terminal campaigns immutable, and adds conflicting snapshot replay coverage.
+TASK-0038 immutable revision/history merged through PR #347 as `3e5212d6a97312f3ea2434a4b7ce1a682f2164bb`. Exact source `8fe4204fedf3ef7c25e63df8acbd9816af74f96f` passed AI Continuity Guard `35657562769`, Application Foundation CI `35657562758`, and Security Supply Chain CI `35657562762`. The milestone adds governed cancellation/completion provenance, previous/new immutable snapshot and target-set lineage, deterministic stale-approval invalidation, terminal-history protection, replay-safe material revisions, and adversarial replay coverage. A formatting-only recovery and a service-level AC-6 replay defect were repaired on the same PR without weakening any gate.
 
-No schema migration, live provider API call, media upload, publication attempt, production scheduler execution, provider credential activation, deployment/release authority, TASK-0039 activation or deferred Runner optimization is introduced.
+README remains synchronized to canonical roadmap `47%`, PHASE-07 `42.86%`, active TASK-0038 and terminal milestone status. RBT-014 is terminal PASS with immutable source/merge/workflow evidence. RBT-004 remains authorization-blocked.
 
 ## Tests
 
-Exact-head external CI is pending. RBT-014 is the merge-required continuity/application/security workload for PR #347. Focused tests cover material target revision invalidation, fresh approval before completion, cancellation provenance, terminal-history protection and conflicting idempotency replay.
+PR #347 exact-head AI Continuity Guard `35657562769` PASS; Application Foundation CI `35657562758` PASS including foundation, PHP-floor, integration and E2E tail; Security Supply Chain CI `35657562762` PASS.
 
 ## Blockers
 
@@ -33,4 +33,4 @@ Exact-head external CI is pending. RBT-014 is the merge-required continuity/appl
 
 ## Exact next action
 
-Perform one consolidated exact-head verification for PR #347. Merge the TASK-0038 immutable revision/history milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, focused campaign governance/PostgreSQL/security tests pass, review is clean, and the exact head is unchanged. Treat immutable snapshot lineage, stale-approval inheritance, workspace isolation, idempotency/replay, cancellation/completion provenance, transaction safety or authority failures as merge blockers. After trusted merge, perform terminal durable reconciliation before starting another TASK-0038 milestone. Do not activate live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039, or the deferred Runner benchmark batch.
+Begin the next bounded TASK-0038 scheduled-intent and canonical recipient/target certification milestone from current protected main. Add an authorized Approved -> ScheduledIntent application command that revalidates the latest exact snapshot and effective approval, records intended-execution, approval, snapshot and target-set provenance, and never executes a production scheduler or provider call. Extend canonical ContactList, Tag and ContactIdentity target coverage for workspace isolation, deterministic reproducibility/materialized-set evidence, replay and adversarial transaction safety. Keep live provider publication, media upload, production scheduler execution, provider credentials, deployment/release authority, TASK-0039 and the deferred Runner benchmark batch inactive.

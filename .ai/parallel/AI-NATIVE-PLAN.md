@@ -77,6 +77,14 @@ This directive is cross-phase, non-optional, and survives every task transition.
 - Runner benchmark work is never substituted for CI. Runner sizing/performance/cache/concurrency/toolchain optimization is appended to the persistent RBT backlog and executed only in the explicit coordinated final Runner batch, except for the documented blocker-escalation rule.
 - Agents may not improvise a faster order, silently activate a later task, repeatedly poll CI, or opportunistically execute Runner benchmark items. A bounded security/correctness exception must be evidence-backed and recorded.
 
+## Persistent durable Supervisor resume directive
+
+The Durable AI Engineering Supervisor contract in `.ai/13-PARALLEL-DEVELOPMENT.md` is mandatory across every task and phase. On every resume: compact state -> exact main -> open Issues -> open PRs -> deterministic claims/coordination queue -> machine Runner Benchmark -> only then new work. One user turn advances one logical milestone by default. CI/status polling is bounded to one consolidated refresh unless a recorded safety exception applies.
+
+The machine coordination queue is `.ai/coordination/OPEN-WORK-QUEUE.yaml`; the machine Runner Benchmark is `.ai/runner/RUNNER-BENCHMARK.yaml`. These registries never override live GitHub/runtime evidence and never grant production/provider/destructive execution authority. Compact state is bounded and the hash-chained execution journal is rolling with immutable historical archives.
+
+No agent may report COMPLETE/BLOCKED/VERIFYING/WAITING without durable reconciliation. No agent may bypass an accepted actionable open Issue/PR, reuse authorization, infer PASS from pending/skipped work, or repeat an operation after a message timeout without repository verification.
+
 ## Deferred runner benchmark registry
 
 Runner work is intentionally separated from product/certification development and tracked in `docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md`.

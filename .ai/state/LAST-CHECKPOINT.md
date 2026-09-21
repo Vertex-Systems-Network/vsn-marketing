@@ -2,24 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-09-21T13:20:00+00:00`
+- Timestamp: `2026-09-21T14:30:00+00:00`
+- Observed main: `cd9b882b01e1bce2e0f97b650028b992b58988b6`
+- Active issue: `none`
+- Active PR: `334`
+- Active branch: `control/supervisor-durable-resume-v2`
+- Current milestone: `SUPERVISOR-CONTRACT-V2-INTEGRATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0037`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- State fingerprint: `2289abdad4c5bc33b6dff42faf3709e36b65732b38c277bee508ba029b2ee646`
+- Pending Runner IDs: `RBT-007`
+- Blocked Runner IDs: `RBT-004`
+- State fingerprint: `5c087230ee4d5958f58b43f57bf1a45df5e2b8831cec332bc2300d581afeda3f`
 
 ## Completed / observed this session
 
-TASK-0037's accepted PHASE-07 research contract was freshly revalidated on 2026-09-21 against current official TikTok, Meta/Instagram/Facebook, LinkedIn, YouTube, X, Buffer and Sprout material. No material drift was found. Research acceptance PR #329 had already merged as `793e84568f2da014ecd7cd0e23ab43dd7a7c6bd8` after its exact-head Continuity/Application/Security gates passed, so no duplicate acceptance PR is required. The current source refresh confirms the existing provider-specific capability, canonical scheduling, snapshot-bound approval, asynchronous media-processing, idempotency/reconciliation and fail-closed security boundaries. No live publication, production scheduler execution, provider credential activation or Runner benchmark batch is activated.
+PR #332 merged the current TASK-0037 research revalidation as protected-main head `cd9b882b01e1bce2e0f97b650028b992b58988b6` after exact-head AI Continuity Guard `35608485672`, Application Foundation CI `35608485630`, and Security Supply Chain CI `35608485590` passed.
 
-The execution-resilience reconciliation head `da33e57012f0f2027bfcd8be50bae31bf65f1e6e` is also fully trusted: AI Continuity Guard `35604333473`, Application Foundation CI `35604333417`, Security Supply Chain CI `35604333420`, Release Integrity `35604333452`, and OpenSSF Scorecard `35604333412` all passed.
+The durable AI Engineering Supervisor contract is staged on PR #334. It integrates compact-first recovery, exact-main/Issues/PRs hard-gate reconciliation, one-turn/one-milestone execution, bounded CI refreshes, state-drift recovery, machine coordination queue, machine Runner Benchmark, rolling journal limits, migration/data-safety review, fail-closed authority, README churn control, and timeout-safe replay prevention. TASK-0038 remains unactivated.
 
 ## Tests
 
-Historical TASK-0037 research acceptance head `d1cc9140165bcaaaa79cd4cd1d08e727c599b462`: AI Continuity Guard `35599878286` PASS; Application Foundation CI `35599878382` PASS; Security Supply Chain CI `35599878270` PASS.
-
-Current protected-main reconciliation head `da33e57012f0f2027bfcd8be50bae31bf65f1e6e`: AI Continuity Guard `35604333473` PASS; Application Foundation CI `35604333417` PASS; Security Supply Chain CI `35604333420` PASS; Release Integrity `35604333452` PASS; OpenSSF Scorecard `35604333412` PASS.
+Exact-head external CI is pending. RBT-007 is the registered immediate merge-required validation workload. RBT-004 remains authorization-blocked/deferred; all other non-blocking Runner benchmark work remains deferred.
 
 ## Blockers
 
@@ -27,4 +33,4 @@ Current protected-main reconciliation head `da33e57012f0f2027bfcd8be50bae31bf65f
 
 ## Exact next action
 
-Register TASK-0038 from the frozen PHASE-07 research contract and the current 2026-09-21 no-material-drift revalidation, then require the registration head to pass AI Continuity Guard, Application Foundation CI and Security Supply Chain CI. After that merge, complete TASK-0037 and activate TASK-0038 only through a separate guarded transition. Do not activate live provider publishing or the deferred Runner benchmark batch.
+Perform one consolidated exact-head CI/status refresh for PR #334. Merge only if required review and CI gates are green; otherwise record WAITING_EXTERNAL or BLOCKED evidence on the PR without a source-head state-only commit. After merge, re-read compact state, exact main, open Issues, open PRs, deterministic claims, coordination queue and Runner Benchmark before TASK-0038 registration.

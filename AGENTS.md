@@ -44,6 +44,16 @@ python tools/ai_parallel.py sync-check
 
 ## Execution rules
 
+### Durable Supervisor resume and authority rules
+
+Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. One user turn is one logical milestone by default. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
+
+Before reporting a milestone complete/blocked/verifying/waiting, durable state must already reflect that status. Pending CI must not cause a state-only source commit that invalidates the exact head under test. Open accepted actionable work is a hard gate against unrelated new development.
+
+Run `python tools/supervisor_contract.py validate` and `python tools/runner_benchmark.py validate` as part of normal startup/CI. The rolling journal may archive immutable historical segments, but the active resume journal must remain <=32 KiB. Runtime/provider/deployment/release/destructive authority is never inferred from `continue`, old grants, prior chat, registration, or a timeout.
+
+Migration changes require the explicit safety review contract enforced by `tools/supervisor_contract.py validate-pr-event`. Public README dashboards are not rewritten for governance-only churn.
+
 ### Strict plan-following order
 
 AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> perform one approved milestone -> run class-appropriate checks -> exact-head PR gates -> merge -> re-read state -> only then register/transition the successor.

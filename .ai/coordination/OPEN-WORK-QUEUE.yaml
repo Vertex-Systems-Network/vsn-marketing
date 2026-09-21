@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "reconciled_main_sha": "cd9b882b01e1bce2e0f97b650028b992b58988b6",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 334,
+    "branch": "control/supervisor-durable-resume-v2",
+    "milestone": "SUPERVISOR-CONTRACT-V2-INTEGRATION"
+  },
+  "items": [
+    {
+      "kind": "issue",
+      "number": 134,
+      "title": "[TASK-0024] Capture production benchmark evidence and approve numeric SLO thresholds",
+      "disposition": "deferred_runner_authorization_required",
+      "accepted_actionable": false,
+      "runner_id": "RBT-004"
+    },
+    {
+      "kind": "issue",
+      "number": 102,
+      "title": "[Supervisor] Persistent Control Plane Status",
+      "disposition": "standing_governance_surface",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "issue",
+      "number": 43,
+      "title": "Multi-Agent Supervisor Broadcast",
+      "disposition": "standing_coordination_surface",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "issue",
+      "number": 6,
+      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "disposition": "standing_governance_ledger",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 235,
+      "title": "chore(deps): bump github/codeql-action/analyze from 4.37.9 to 4.38.0",
+      "disposition": "deferred_runner_batch",
+      "accepted_actionable": false,
+      "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 236,
+      "title": "chore(deps): bump github/codeql-action/init from 4.37.9 to 4.38.0",
+      "disposition": "deferred_runner_batch",
+      "accepted_actionable": false,
+      "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 334,
+      "title": "control: enforce durable Supervisor resume contract",
+      "disposition": "active_governance_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-007",
+      "branch": "control/supervisor-durable-resume-v2"
+    }
+  ]
+}

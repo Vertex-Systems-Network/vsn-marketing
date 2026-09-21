@@ -51,6 +51,10 @@ jobs:
         run: python tools/ai_state.py validate
       - name: Validate hash-chained execution journal
         run: python tools/ai_journal.py validate
+      - name: Validate durable Supervisor resume contract
+        run: python tools/supervisor_contract.py validate
+      - name: Validate machine Runner Benchmark
+        run: python tools/runner_benchmark.py validate
       - name: Validate AI policy registries
         run: python tools/ai_policy.py
       - name: Validate parallel Supervisor control plane
@@ -61,6 +65,10 @@ jobs:
         run: python tools/test_ai_txn.py
       - name: Test AI continuity integrity guards
         run: python tools/test_ai_continuity.py
+      - name: Test durable Supervisor resume contract
+        run: python tools/test_supervisor_contract.py
+      - name: Test machine Runner Benchmark
+        run: python tools/test_runner_benchmark.py
       - name: Test deterministic AI context packs
         run: python tools/test_ai_context.py
       - name: Test AI policy negative guards
@@ -76,6 +84,13 @@ jobs:
       - name: Validate registered workstream PR submission signal
         if: github.event_name == 'pull_request'
         run: python tools/ai_parallel.py validate-pr-event --event-path "$GITHUB_EVENT_PATH"
+      - name: Enforce migration/data-safety review markers
+        if: github.event_name == 'pull_request'
+        run: >-
+          python tools/supervisor_contract.py validate-pr-event
+          --event-path "$GITHUB_EVENT_PATH"
+          --base "${{ github.event.pull_request.base.sha }}"
+          --head "${{ env.TARGET_SHA }}"
       - name: Require registered workstream branch to contain current main
         if: github.event_name == 'pull_request'
         run: python tools/ai_parallel.py sync-check --branch "${{ github.event.pull_request.head.ref }}"

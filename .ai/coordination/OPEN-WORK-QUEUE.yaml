@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8a816f5a0e3bb421c6e9c783f0c3163f03e8ac59",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 342,
-    "branch": "task/0038-campaign-foundation",
-    "milestone": "TASK-0038-CAMPAIGN-FOUNDATION"
-  },
+  "reconciled_main_sha": "ae1f98dc4b6060941d7d44de52817f89dfbd10c7",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -52,15 +47,6 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
-    },
-    {
-      "kind": "pr",
-      "number": 342,
-      "title": "feat(publishing): add TASK-0038 campaign foundation",
-      "disposition": "active_task_implementation_verification",
-      "accepted_actionable": true,
-      "runner_id": "RBT-011",
-      "branch": "task/0038-campaign-foundation"
     }
   ]
 }

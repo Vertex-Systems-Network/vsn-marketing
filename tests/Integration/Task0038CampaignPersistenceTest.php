@@ -643,7 +643,6 @@ it('rejects conflicting material snapshot replay under the same idempotency key 
         ->and($repository->latestSnapshot($workspaceId, $campaign->id)?->targetSetHash)->toBe($first->targetSetHash);
 });
 
-
 it('pins canonical identity list and tag targets to exact workspace-isolated materialized membership', function () {
     $inside = task0038PersistenceWorkspace('canonical-targets-inside');
     $outside = task0038PersistenceWorkspace('canonical-targets-outside');

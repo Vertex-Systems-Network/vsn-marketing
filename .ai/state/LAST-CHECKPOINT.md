@@ -2,20 +2,20 @@
 
 ## State
 
-- Timestamp: `2026-09-20T23:20:00+00:00`
+- Timestamp: `2026-09-21T08:57:00+00:00`
 - Active task: `TASK-0036`
 - Next task: `none`
 - Current phase: `PHASE-06`
 - Execution status: `ready`
-- State fingerprint: `ed571f61dec0bbc33467c6285b924789d3352ca3d31096f0aea9eb11b8fb3ded`
+- State fingerprint: `b42b6dfa22e71f06a9cc4a265149cef043309caa07e109000a0c82bfe02cfbe9`
 
 ## Completed / observed this session
 
-TASK-0036 security remediation is reconciled before protected-main promotion. Exact-head Security Supply Chain CI `35542862212` on promotion head `1b6273711f0c51449b1fbe4aa39923e10571ae84` exposed two moderate npm findings, including `GHSA-82fw-gwwq-j7x9` in the Vitest 3.x / `@vitest/mocker` chain, while the prior HIGH-only npm threshold allowed the aggregate gate to remain green. PR #321 activated bounded remediation under Supervisor-owned dependency/workflow paths. PR #322 upgraded Vitest/@vitest/mocker to 5.0.0 using the reviewed Dependabot lockfile delta, reconciled it onto the current lockfile, changed both Shipping Fast Gate and Security Supply Chain CI to fail on MODERATE-or-higher npm advisories, and updated the security operations contract. PR #322 exact-head Shipping Fast Gate `35544109634` passed with hardened npm audit reporting zero vulnerabilities. Merged ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` then passed fresh AI Continuity, full application, and full security certification.
+TASK-0036 final PHASE-06 acceptance is reconciled against protected-main evidence. PR #320 promoted the fully certified and security-remediated PHASE-06 baseline to protected `main` as `9b068a7b8b9abdd70dbfff6dbe1685a3099f5849`; that head passed AI Continuity Guard `35544603993`, Application Foundation CI `35544603884`, Security Supply Chain CI `35544603880`, Release Integrity `35544603927`, and OpenSSF Scorecard `35544603916`. PR #324 then registered the persistent deferred runner benchmark backlog and merged as `62add6effb833ee6d0835c41400e0daec4878ebf`; its post-merge protected-main head passed all five trusted gates. AC-1 through AC-8 are reconciled true. TASK-0036 intentionally remains `ready` until this Supervisor-only final acceptance PR passes fresh exact-head gates. Runner benchmark items remain deferred and no PHASE-07 campaign/publishing capability is activated.
 
 ## Tests
 
-Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e`: AI Continuity Guard `35544171867` PASS; Application Foundation CI `35544171851` PASS including foundation, PHP 8.3 floor, PostgreSQL/Redis integration, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build; Security Supply Chain CI `35544171748` PASS including action integrity, CodeQL Actions + JavaScript/TypeScript, PHP taint SAST, secret scan, container vulnerability/secret scan, reproducible SBOM and aggregate security gates. Exact-head dependency audit reports no Composer security advisories and `found 0 vulnerabilities` from `npm audit --audit-level=moderate`.
+Protected-main runner-registry head `62add6effb833ee6d0835c41400e0daec4878ebf`: AI Continuity Guard `35580129231` PASS; Application Foundation CI `35580129198` PASS including PHP 8.3 floor, PostgreSQL/Redis integration, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build; Security Supply Chain CI `35580129321` PASS including action integrity, CodeQL Actions + JavaScript/TypeScript, PHP taint SAST, dependency audit, secret scan, container vulnerability/secret scan, reproducible SBOM and aggregate security gates; Release Integrity `35580129191` PASS; OpenSSF Scorecard `35580129253` PASS. Fresh exact-head Continuity, Application and Security checks are still required on this final acceptance PR before merge.
 
 ## Blockers
 
@@ -23,4 +23,4 @@ Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e`: AI Con
 
 ## Exact next action
 
-Promote the security-remediated TASK-0036 PHASE-06 ship baseline dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.
+Run TASK-0036 final PHASE-06 acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that completes PHASE-06 and explicitly registers/activates TASK-0037 as the PHASE-07 research-first successor. Keep all runner benchmark tasks deferred in the persistent runner registry until the coordinated runner batch is explicitly activated.

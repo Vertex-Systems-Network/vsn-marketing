@@ -18,12 +18,12 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171867",
-    "application_test_status": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171851",
-    "security_supply_chain_status": "task_0036_security_remediation_ship_head_dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e_passed_run_35544171748",
-    "release_integrity_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932147",
-    "scorecard_status": "task_0036_registration_main_head_b1d73ccf16aa8e2977738d8a4dca89441d455c78_passed_run_35540932123"
+    "continuity_validation": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129231",
+    "application_test_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129198",
+    "security_supply_chain_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129321",
+    "release_integrity_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129191",
+    "scorecard_status": "task_0036_runner_registry_main_head_62add6effb833ee6d0835c41400e0daec4878ebf_passed_run_35580129253"
   },
   "blockers": [],
-  "exact_next_action": "Promote the security-remediated TASK-0036 PHASE-06 ship baseline dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation."
+  "exact_next_action": "Run TASK-0036 final PHASE-06 acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that completes PHASE-06 and explicitly registers/activates TASK-0037 as the PHASE-07 research-first successor. Keep all runner benchmark tasks deferred in the persistent runner registry until the coordinated runner batch is explicitly activated."
 }

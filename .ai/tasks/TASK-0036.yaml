@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "TASK-0031 through TASK-0035 acceptance evidence remains valid and every PHASE-06 exit criterion maps to concrete exact-head tests/evidence without weakening canonical version immutability, provider neutrality or prior security boundaries",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Phase-wide certification proves immutable/reproducible content, template, component, brand, render and dependency identities resolve from exact pinned versions and replay deterministically without silently floating defaults or mutating historical published/execution-pinned inputs",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Cross-workspace isolation is proven across content, templates, reusable components, brand versions, asset originals/variants, render/preview inputs and provider-template mappings/observations; foreign-workspace references fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Adversarial rendering and preview certification proves authored markup cannot execute script/event handlers, traverse filesystem paths, perform unrestricted remote/network fetches, access ambient secrets or provider credentials, escape bounded renderer/preview resources, or mutate canonical source state",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Asset certification proves immutable originals, rights/provenance metadata, content-addressable or hash-verifiable identity, deterministic transform lineage, MIME/dimension constraints and safe workspace-scoped variant generation without destructive overwrite or untracked derivatives",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Accessibility plus representative responsive visual and client regression coverage validates semantic structure, meaningful text alternatives, contrast/reflow and text-as-image concerns against exact source/render identities with deterministic findings and bounded target-specific fallbacks",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Provider/channel template and media synchronization remains version/effective-date capability-driven and replay/idempotency safe; external provider drift yields deterministic conflict/fallback outcomes and provider-owned templates never become authoritative VSN canonical source",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "AI continuity, backend, PostgreSQL/Redis integration, architecture, static analysis, formatting, frontend, Playwright, security/supply-chain and phase-certification gates are green on the exact PHASE-06 acceptance head; canonical state/checkpoint/journal are synchronized before PHASE-07 registration or activation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After this TASK-0035 to TASK-0036 transition merges and its post-merge protected-main gates pass, audit and realign `ship/week-1` to the trusted TASK-0036 baseline, then activate only the staged PHASE-06 certification worker with test-only leases. Do not add product behavior or activate PHASE-07 campaign approval, scheduling, publishing or execution."
+  "exact_next_action": "Run TASK-0036 final PHASE-06 acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that completes PHASE-06 and explicitly registers/activates TASK-0037 as the PHASE-07 research-first successor. Keep all runner benchmark tasks deferred in the persistent runner registry until the coordinated runner batch is explicitly activated."
 }

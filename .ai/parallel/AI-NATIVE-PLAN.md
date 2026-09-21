@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0036 PHASE-06 Certification
 
-Status: **protected-main promotion complete; final PHASE-06 acceptance reconciliation in progress**. TASK-0031 through TASK-0035 remain accepted on protected `main`; TASK-0036 phase-wide certification and the bounded Vitest dependency remediation are promoted to protected `main`. Supervisor remains active only for final acceptance reconciliation and maintenance-plan registration. Runner-related work is recorded but intentionally deferred to one coordinated benchmark batch.
+Status: **final PHASE-06 acceptance**. TASK-0036 certification, security remediation, protected-main promotion, and the persistent deferred runner registry are all integrated on protected `main`. AC-1 through AC-8 are reconciled true while TASK-0036 intentionally remains `ready` until this Supervisor-only acceptance head passes its own exact-head gates. Runner work remains deferred to one coordinated benchmark batch.
 
 Supervisor: `supervisor-main`  
 Control branch: `supervisor/TASK-0036`  
@@ -45,7 +45,8 @@ Completion signal: `Work Done and Submitted`
 - PR #321 activated the bounded security remediation under Supervisor-owned dependency/workflow paths and merged as `8cca66b7c05e53e0e9eb8b1a82cfd3e3a90ec985` after Shipping Fast Gate `35543969770` passed.
 - PR #322 upgraded Vitest/@vitest/mocker to 5.0.0 with the reviewed lockfile delta, raised both npm audit gates to `moderate`, and merged as `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` after exact-head Shipping Fast Gate `35544109634` passed with `found 0 vulnerabilities`.
 - Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` passed AI Continuity Guard `35544171867`, Application Foundation CI `35544171851`, and Security Supply Chain CI `35544171748`; exact-head Composer audit found no advisories and npm audit at the MODERATE threshold found zero vulnerabilities. The temporary dependency/workflow Supervisor lease is now released.
-- PR #320 promoted the fully certified/security-remediated TASK-0036 PHASE-06 baseline to protected `main` as `9b068a7b8b9abdd70dbfff6dbe1685a3099f5849`. The persistent Supervisor status reports AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI successful on that exact protected-main head with no actionable blockers.
+- PR #320 promoted the fully certified/security-remediated TASK-0036 PHASE-06 baseline to protected `main` as `9b068a7b8b9abdd70dbfff6dbe1685a3099f5849`. That protected-main head passed AI Continuity Guard `35544603993`, Application Foundation CI `35544603884`, Security Supply Chain CI `35544603880`, Release Integrity `35544603927`, and OpenSSF Scorecard `35544603916`.
+- PR #324 registered the persistent deferred runner benchmark backlog and merged as protected-main head `62add6effb833ee6d0835c41400e0daec4878ebf` after exact-head governance/application/security checks. That post-merge head passed AI Continuity Guard `35580129231`, Application Foundation CI `35580129198`, Security Supply Chain CI `35580129321`, Release Integrity `35580129191`, and OpenSSF Scorecard `35580129253`.
 
 
 ## Deferred runner benchmark registry
@@ -66,4 +67,4 @@ Current registry is seeded with application-CI, security-CI, Shipping Fast Gate,
 
 ## Exact next action
 
-Merge this control-only runner-registry update after exact-head governance/application/security checks, then reconcile TASK-0036 final PHASE-06 acceptance on protected `main`. Do not execute runner benchmark tasks in this step; keep them deferred in the registry for one coordinated batch.
+Run TASK-0036 final PHASE-06 acceptance on a Supervisor-only control PR with AC-1 through AC-8 true while task status remains ready; merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass. After merge, perform a separate guarded transition that completes PHASE-06 and explicitly registers/activates TASK-0037 as the PHASE-07 research-first successor. Keep all runner benchmark tasks deferred in the persistent runner registry until the coordinated runner batch is explicitly activated.

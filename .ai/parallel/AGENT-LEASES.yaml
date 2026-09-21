@@ -10,7 +10,11 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md"
+        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md",
+        ".ai/state/CURRENT-STATE.yaml",
+        ".ai/state/LAST-CHECKPOINT.md",
+        ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ".ai/tasks/TASK-0036.yaml"
       ]
     }
   ]

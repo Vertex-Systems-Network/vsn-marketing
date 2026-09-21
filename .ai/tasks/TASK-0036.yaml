@@ -4,7 +4,7 @@
   "phase": "PHASE-06",
   "module": "Content",
   "title": "Certify PHASE-06",
-  "status": "ready",
+  "status": "completed",
   "objective": "Close PHASE-06 only after canonical content/template/component versioning, asset originals/variants, safe rendering and preview, brand/reusable-component governance, and provider-template synchronization are jointly proven reproducible, workspace-isolated, accessible, security-bounded and provider-neutral on the exact acceptance head without pulling PHASE-07 campaign publishing forward.",
   "dependencies": [
     "TASK-0035"
@@ -67,5 +67,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Merge the TASK-0037 PHASE-07 research registration only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass; then require post-merge trusted-main evidence and perform a separate guarded transition that completes TASK-0036/PHASE-06 and activates TASK-0037 as research-only PHASE-07 work. Keep all Runner benchmark items deferred unless the documented blocker-escalation exception applies."
+  "exact_next_action": "TASK-0036 and PHASE-06 are certified complete on protected main; TASK-0037 is the active PHASE-07 research-first successor. The persistent Runner benchmark registry remains deferred."
 }

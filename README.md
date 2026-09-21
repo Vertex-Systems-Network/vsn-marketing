@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-REVISION-HISTORY status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-SCHEDULED-TARGET-CERTIFICATION status=VERIFYING -->
 
 > Last verified protected-main product baseline: **2026-09-22** at `3e5212d6a97312f3ea2434a4b7ce1a682f2164bb` after TASK-0038 revision/history PR #347 merged. Exact source `8fe4204fedf3ef7c25e63df8acbd9816af74f96f` passed AI Continuity Guard `35657562769`, Application Foundation CI `35657562758`, and Security Supply Chain CI `35657562762`. Product capability now includes governed cancellation/completion provenance and replay-safe immutable material revisions; no live provider publication or production scheduler authority is activated.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0038-REVISION-HISTORY — COMPLETE**
+**Current milestone: TASK-0038-SCHEDULED-TARGET-CERTIFICATION — VERIFYING**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -53,9 +53,9 @@ The canonical implementation now includes workspace-scoped campaign lifecycle pe
 
 TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
 
-The next bounded product milestone adds governed scheduled-intent creation without executing a scheduler/provider, revalidates exact-snapshot approval at scheduling intent, and certifies canonical ContactList, Tag and ContactIdentity target bindings for deterministic reproducibility, materialized-set evidence, workspace isolation, replay and adversarial transaction safety.
+PR #349 now stages the bounded scheduled-intent and canonical target certification milestone. It records authorized Approved -> ScheduledIntent state without executing a scheduler/provider, revalidates current exact-snapshot approval, pins fixed-instant execution intent in append-oriented evidence, and makes duplicate schedule-intent commands replay-safe. ContactList/Tag targets now pin materialized contact IDs into immutable target hashes and validate exact same-workspace canonical membership; ContactIdentity/List/Tag PostgreSQL and adversarial coverage is included.
 
-README progress-sync protocol v2.4.2 remains enforced. PR #347 is merged and terminally reconciled; product progress remains canonical at 47% / PHASE-07 42.86% while TASK-0038 continues into scheduled-intent and canonical recipient/target certification.
+README progress-sync protocol v2.4.2 remains enforced. PR #347 is merged and terminally reconciled; PR #349 is under exact-head verification. Product progress remains canonical at 47% / PHASE-07 42.86% while this partial TASK-0038 milestone is not yet accepted.
 
 ### README progress-sync contract
 

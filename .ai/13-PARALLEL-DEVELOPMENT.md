@@ -92,6 +92,35 @@ When canonical agent-working behavior changes, the same PR must:
 5. copy the same revision/fingerprint into README;
 6. pass `python tools/ai_parallel.py validate`.
 
+## Strict AI execution order and change-aware CI
+
+The following order is **mandatory** for every AI/Supervisor development interaction. It is not advisory and may not be reordered for convenience:
+
+1. recover interrupted transactions and validate canonical repository state;
+2. read `CURRENT-STATE.yaml`, `LAST-CHECKPOINT.md`, the active task, this control plane, and the AI-Native Plan;
+3. confirm the exact active task/milestone and current protected/integration branch head before any write;
+4. classify the intended change with the repository change-aware CI policy;
+5. create/use only the registered branch/workstream allowed for that milestone;
+6. execute one logical milestone and only its approved write scope;
+7. run the local/fast checks required by that change class;
+8. open/update the scoped PR and use the exact standalone `CI-Mode: full` marker whenever a certification, release/promotion, security-sensitive acceptance, or explicit exact-head contract requires the full Application + Security gate set even if the file diff is control-only;
+9. wait for the required exact-head gates; never replace a required gate with Runner benchmarking;
+10. merge only the verified exact head, then re-read repository state before any next write;
+11. perform successor registration/task transition only as a separate guarded milestone unless repository safety requires an atomic coupled repair.
+
+Deviation is permitted only for a demonstrated security/correctness/release blocker. The Supervisor must keep that exception bounded, preserve exact-head evidence, and record why the normal order could not safely be followed.
+
+Change-aware CI is fail-closed and implemented by `tools/ci_change_policy.py`:
+
+- changes limited to `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` are classified `control-only` unless explicitly forced full;
+- any unknown, product, test, dependency, tool, Docker, configuration, migration, route, or workflow path defaults to full Application + Security CI;
+- the exact standalone PR marker `CI-Mode: full` overrides a control-only classification and forces the heavy gate set;
+- required check contexts are skipped only at **job level**, never by workflow-level PR path filtering, so GitHub still reports the required check;
+- AI Continuity validates the classifier and its negative/positive tests on every governed PR/push;
+- Runner sizing/cache/concurrency/architecture/toolchain benchmarking is not a required CI gate and stays deferred in the persistent Runner backlog until explicit coordinated batch activation.
+
+The AI must follow the canonical plan/order above even when chat context suggests a shortcut. Repository state and these machine-validated instructions override conversational momentum.
+
 ## Merge strategy
 
 Registered workstream PRs target `main` and default to squash merge. Merge groups express ordering constraints. Independent lanes in the same group may develop in parallel but are merged one at a time; after each merge, all remaining active lanes synchronize latest `main` before continuing.

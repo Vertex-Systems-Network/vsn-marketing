@@ -90,8 +90,8 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.3.0-strict-change-aware-ci`  
-Agent instruction fingerprint: `ffcf941c9cf80a96c2d80756f64c58656fb6f377b8ce3341e737692912648202`
+Agent instruction revision: `parallel-v2.4.0-durable-supervisor-resume`  
+Agent instruction fingerprint: `16e9673274c96ba7737b6633ded37837ffab187c718d13c9de9c83d21462b92a`
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
@@ -107,6 +107,8 @@ python tools/ai_txn.py validate
 python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_journal.py validate
+python tools/supervisor_contract.py validate
+python tools/runner_benchmark.py validate
 python tools/ai_policy.py
 python tools/ai_parallel.py validate
 python tools/ai_context.py manifest

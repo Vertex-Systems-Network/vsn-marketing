@@ -749,6 +749,7 @@ final readonly class DatabaseCampaignRepository
         string $workspaceId,
         CampaignTargetBinding $target,
     ): void {
+        /** @var list<string> $materializedContactIds */
         $materializedContactIds = $target->metadata['materialized_contact_ids'];
 
         foreach ($materializedContactIds as $contactId) {

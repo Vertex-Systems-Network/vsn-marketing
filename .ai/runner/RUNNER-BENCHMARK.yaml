@@ -350,18 +350,33 @@
       "source": "PR #347 / TASK-0038 immutable revision and append-oriented history",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #347 exact-head status/comment"
+        "git_sha": "8fe4204fedf3ef7c25e63df8acbd9816af74f96f",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #347 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0038-revision-history; immutable material revisions + target-change provenance + cancellation/completion audit + replay/workspace-isolation guards",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0038-revision-history:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 347,
+        "source_sha": "8fe4204fedf3ef7c25e63df8acbd9816af74f96f",
+        "merge_sha": "3e5212d6a97312f3ea2434a4b7ce1a682f2164bb",
+        "workflow_runs": {
+          "ai_continuity_guard": 35657562769,
+          "application_foundation_ci": 35657562758,
+          "security_supply_chain_ci": 35657562762
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Initial product head required two Pint no-extra-blank-line fixes. A subsequent acceptance audit found and repaired AC-6 material-revision command replay handling so exact latest-snapshot replay resolves immutable parent provenance and remains repository-idempotent. Final exact head passed all required gates without weakening security, authorization, migration, continuity or change-classification policy."
+      }
     }
   ]
 }

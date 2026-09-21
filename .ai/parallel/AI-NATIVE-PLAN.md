@@ -77,6 +77,12 @@ This directive is cross-phase, non-optional, and survives every task transition.
 - Runner benchmark work is never substituted for CI. Runner sizing/performance/cache/concurrency/toolchain optimization is appended to the persistent RBT backlog and executed only in the explicit coordinated final Runner batch, except for the documented blocker-escalation rule.
 - Agents may not improvise a faster order, silently activate a later task, repeatedly poll CI, or opportunistically execute Runner benchmark items. A bounded security/correctness exception must be evidence-backed and recorded.
 
+## Non-recursive protected-main observation directive
+
+`observed_main_sha` is a snapshot-basis anchor. It MUST NOT be recursively rewritten merely because a durable state reconciliation PR changed protected-main HEAD.
+
+At resume, validate live main against the anchor. Exact equality is current. A descendant whose entire diff is limited to approved durable reconciliation surfaces is `self_reconciliation_descendant`, is also current, and MUST NOT trigger another reconciliation PR. Any non-ancestor relationship or material path drift is fail-closed and must be reconciled before writable work.
+
 ## Persistent durable Supervisor resume directive
 
 The Durable AI Engineering Supervisor contract in `.ai/13-PARALLEL-DEVELOPMENT.md` is mandatory across every task and phase. On every resume: compact state -> exact main -> open Issues -> open PRs -> deterministic claims/coordination queue -> machine Runner Benchmark -> only then new work. One user turn advances one logical milestone by default. CI/status polling is bounded to one consolidated refresh unless a recorded safety exception applies.

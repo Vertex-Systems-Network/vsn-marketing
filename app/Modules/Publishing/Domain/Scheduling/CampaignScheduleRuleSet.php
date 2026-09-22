@@ -105,7 +105,8 @@ final readonly class CampaignScheduleRuleSet
     }
 
     /** @return array<string, mixed> */
-    public function canonicalPayload(): array {
+    public function canonicalPayload(): array
+    {
         return self::canonicalPayloadFor(
             workspaceId: $this->workspaceId,
             parentRuleSetId: $this->parentRuleSetId,
@@ -120,7 +121,8 @@ final readonly class CampaignScheduleRuleSet
      * @param  list<array{weekday: int, local_time: string}>  $slots
      * @return list<array{weekday: int, local_time: string}>
      */
-    private static function canonicalizeSlots(array $slots): array {
+    private static function canonicalizeSlots(array $slots): array
+    {
         if (! array_is_list($slots)) {
             throw new InvalidArgumentException('Campaign schedule rule slots must be a list.');
         }

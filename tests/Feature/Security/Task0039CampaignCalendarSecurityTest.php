@@ -907,7 +907,8 @@ it('records expired approval as missed needs-reschedule at the exact due boundar
         at: new DateTimeImmutable('2026-07-15T14:00:00+00:00'),
     );
 
-    expect($outcome->missedReason->value)->toBe('approval_invalid')
+    expect($outcome->state->value)->toBe('missed_needs_reschedule')
+        ->and($outcome->missedReason->value)->toBe('approval_invalid')
         ->and($outcome->approvalInvalidReason?->value)->toBe('approval_expired')
         ->and($outcome->scheduledApprovalId)->toBe($schedule->approvalId)
         ->and($outcome->observedAt->format('Y-m-d\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
@@ -995,7 +996,8 @@ it('records a valid but late occurrence as missed instead of silently publishing
         at: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
     );
 
-    expect($outcome->missedReason->value)->toBe('execution_deadline_missed')
+    expect($outcome->state->value)->toBe('missed_needs_reschedule')
+        ->and($outcome->missedReason->value)->toBe('execution_deadline_missed')
         ->and($outcome->approvalInvalidReason)->toBeNull()
         ->and($outcome->evaluatedDecisionId)->toBe($schedule->approvalId)
         ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);

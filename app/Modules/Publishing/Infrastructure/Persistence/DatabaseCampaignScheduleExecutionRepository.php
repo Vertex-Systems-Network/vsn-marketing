@@ -10,6 +10,7 @@ use DateTimeZone;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\DatabaseManager;
 use InvalidArgumentException;
+use JsonException;
 use stdClass;
 
 final readonly class DatabaseCampaignScheduleExecutionRepository
@@ -66,6 +67,18 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             );
         }
 
+        $campaign = $this->database->connection()->table('campaigns')
+            ->where('workspace_id', $claim->workspaceId)
+            ->where('id', $claim->campaignId)
+            ->lockForUpdate()
+            ->first();
+
+        if (! $campaign instanceof stdClass || (string) $campaign->status !== 'scheduled_intent') {
+            throw new InvalidArgumentException(
+                'Campaign schedule due claim requires scheduled_intent lifecycle state.',
+            );
+        }
+
         $approval = $this->database->connection()->table('campaign_approval_decisions')
             ->where('workspace_id', $claim->workspaceId)
             ->where('id', $claim->evaluatedApprovalId)
@@ -75,9 +88,11 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             ! $approval instanceof stdClass
             || (string) $approval->campaign_id !== $claim->campaignId
             || (string) $approval->snapshot_id !== $claim->snapshotId
+            || (string) $approval->outcome !== 'approved'
+            || ! hash_equals((string) $approval->target_set_hash, (string) $schedule->target_set_hash)
         ) {
             throw new InvalidArgumentException(
-                'Campaign schedule due claim evaluated approval does not match the immutable schedule snapshot.',
+                'Campaign schedule due claim evaluated approval does not match current approved schedule evidence.',
             );
         }
 
@@ -278,6 +293,35 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
         ) {
             throw new InvalidArgumentException(
                 'Campaign schedule execution intent requires its exact durable outbox handoff.',
+            );
+        }
+
+        try {
+            $payload = json_decode((string) $outbox->payload, true, 512, JSON_THROW_ON_ERROR);
+            $headers = json_decode((string) $outbox->headers, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution intent outbox evidence is not valid JSON.',
+                previous: $exception,
+            );
+        }
+
+        if (
+            ! is_array($payload)
+            || ! is_array($headers)
+            || ($payload['workspace_id'] ?? null) !== $intent->workspaceId
+            || ($payload['campaign_id'] ?? null) !== $intent->campaignId
+            || ($payload['snapshot_id'] ?? null) !== $intent->snapshotId
+            || ($payload['schedule_id'] ?? null) !== $intent->scheduleId
+            || ($payload['execution_intent_id'] ?? null) !== $intent->id
+            || ($payload['intent_hash'] ?? null) !== $intent->intentHash
+            || ($payload['resolved_at_utc'] ?? null)
+                !== $intent->resolvedAtUtc->format('Y-m-d\TH:i:s.u\Z')
+            || ($headers['schema_version'] ?? null) !== 1
+            || ($headers['source'] ?? null) !== 'task0039.scheduler'
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution intent outbox payload does not match immutable intent evidence.',
             );
         }
 

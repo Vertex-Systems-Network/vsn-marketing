@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b05153240dfe45cf7236b55b43acaf03394541e9",
+  "reconciled_main_sha": "74215790f1e7c70908c9da3e0bcb24251c8d6c02",
   "active_work_path": {
     "kind": "pr",
-    "number": 349,
-    "branch": "task/0038-scheduled-target-certification",
-    "milestone": "TASK-0038-SCHEDULED-TARGET-CERTIFICATION"
+    "number": 350,
+    "branch": "control/task0038-final-acceptance",
+    "milestone": "TASK-0038-FINAL-ACCEPTANCE"
   },
   "items": [
     {
@@ -55,12 +55,12 @@
     },
     {
       "kind": "pr",
-      "number": 349,
-      "title": "feat(publishing): certify scheduled intent and canonical targets",
-      "disposition": "active_task_implementation_verification",
+      "number": 350,
+      "title": "control: accept TASK-0038 campaign domain",
+      "disposition": "active_task_final_acceptance_verification",
       "accepted_actionable": true,
-      "runner_id": "RBT-015",
-      "branch": "task/0038-scheduled-target-certification"
+      "runner_id": "RBT-016",
+      "branch": "control/task0038-final-acceptance"
     }
   ]
 }

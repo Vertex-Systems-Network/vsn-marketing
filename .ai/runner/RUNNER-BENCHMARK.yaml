@@ -383,16 +383,49 @@
       "source": "PR #349 / TASK-0038 scheduled-intent and canonical target certification",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #349 exact-head status/comment"
+        "git_sha": "bd17a7b3211764f3720979e9ced6607b7d1a27fb",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #349 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0038-scheduled-target-certification; Approved->ScheduledIntent authority/replay + ContactIdentity/List/Tag canonical materialization/isolation",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0038-scheduled-target-certification:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 349,
+        "source_sha": "bd17a7b3211764f3720979e9ced6607b7d1a27fb",
+        "merge_sha": "74215790f1e7c70908c9da3e0bcb24251c8d6c02",
+        "workflow_runs": {
+          "ai_continuity_guard": 35660352758,
+          "application_foundation_ci": 35660352747,
+          "security_supply_chain_ci": 35660352748
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application formatting was repaired without semantic change. Pre-merge review then hardened ScheduledIntent duplicate replay so an already accepted intent remains idempotent after scheduled-time or approval expiry while immutable event/snapshot/target/approval provenance is verified; PHP 8.3 compatibility was preserved. No scheduler/provider execution or gate weakening was introduced."
+      }
+    },
+    {
+      "id": "RBT-016",
+      "source": "PR #350 / TASK-0038 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #350 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/task0038-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #342/#344/#347/#349 evidence",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-final-acceptance:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

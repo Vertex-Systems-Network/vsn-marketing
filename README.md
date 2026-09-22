@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-SCHEDULED-TARGET-CERTIFICATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-FINAL-ACCEPTANCE status=VERIFYING -->
 
-> Last verified protected-main product baseline: **2026-09-22** at `3e5212d6a97312f3ea2434a4b7ce1a682f2164bb` after TASK-0038 revision/history PR #347 merged. Exact source `8fe4204fedf3ef7c25e63df8acbd9816af74f96f` passed AI Continuity Guard `35657562769`, Application Foundation CI `35657562758`, and Security Supply Chain CI `35657562762`. Product capability now includes governed cancellation/completion provenance and replay-safe immutable material revisions; no live provider publication or production scheduler authority is activated.
+> Last verified protected-main product baseline: **2026-09-22** at `74215790f1e7c70908c9da3e0bcb24251c8d6c02` after TASK-0038 scheduled-intent/canonical-target PR #349 merged. Exact source `bd17a7b3211764f3720979e9ced6607b7d1a27fb` passed AI Continuity Guard `35660352758`, Application Foundation CI `35660352747`, and Security Supply Chain CI `35660352748`. TASK-0038 AC-1 through AC-8 are now staged true on final acceptance PR #350; no live provider publication or production scheduler authority is activated.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 42.86%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0038-SCHEDULED-TARGET-CERTIFICATION — VERIFYING**
+**Current milestone: TASK-0038-FINAL-ACCEPTANCE — VERIFYING**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47%
@@ -51,11 +51,11 @@ TASK-0038 is active in PHASE-07. Campaign persistence/domain foundation is trust
 
 The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
-TASK-0038 remains incomplete until AC-1 through AC-8 are fully certified. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
+TASK-0038 AC-1 through AC-8 are reconciled true on final acceptance PR #350, while the task intentionally remains `ready` until that exact acceptance head passes required gates. Live provider publication, provider media upload, production scheduler execution, provider credential activation, deployment/release authority and TASK-0039 remain inactive.
 
-PR #349 now stages the bounded scheduled-intent and canonical target certification milestone. It records authorized Approved -> ScheduledIntent state without executing a scheduler/provider, revalidates current exact-snapshot approval, pins fixed-instant execution intent in append-oriented evidence, and makes duplicate schedule-intent commands replay-safe. ContactList/Tag targets now pin materialized contact IDs into immutable target hashes and validate exact same-workspace canonical membership; ContactIdentity/List/Tag PostgreSQL and adversarial coverage is included.
+PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. PR #347 is merged and terminally reconciled; PR #349 is under exact-head verification. Product progress remains canonical at 47% / PHASE-07 42.86% while this partial TASK-0038 milestone is not yet accepted.
+README progress-sync protocol v2.4.2 remains enforced. Product progress remains canonical at 47% / PHASE-07 42.86% because TASK-0038 is `ready`, not completed, while PR #350 runs final exact-head acceptance. After acceptance, a separate guarded transition will complete TASK-0038 and only then register TASK-0039.
 
 ### README progress-sync contract
 

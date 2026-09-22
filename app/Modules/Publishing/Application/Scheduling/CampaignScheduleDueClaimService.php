@@ -111,6 +111,8 @@ final readonly class CampaignScheduleDueClaimService
                     );
                 }
 
+                $this->assertClaimAuthority($schedule, $existingClaim, $observedAt);
+
                 $replacement = $existingClaim->takeover(
                     leaseOwner: $leaseOwner,
                     leaseToken: $leaseToken,
@@ -264,12 +266,7 @@ final readonly class CampaignScheduleDueClaimService
                 );
             }
 
-            $campaign = $this->campaigns->lockCampaignForUpdate($workspaceId, $schedule->campaignId);
-            if ($campaign->status !== CampaignStatus::ScheduledIntent) {
-                throw new InvalidArgumentException(
-                    'Campaign schedule execution intent requires scheduled_intent lifecycle state.',
-                );
-            }
+            $this->assertClaimAuthority($schedule, $claim, $emittedAt);
 
             $intentId = $this->identifiers->next();
             $outboxId = $this->identifiers->next();
@@ -314,6 +311,46 @@ final readonly class CampaignScheduleDueClaimService
 
             return $intent;
         });
+    }
+
+    private function assertClaimAuthority(
+        \App\Modules\Publishing\Domain\Scheduling\CampaignSchedule $schedule,
+        CampaignScheduleDueClaim $claim,
+        DateTimeImmutable $at,
+    ): void {
+        $campaign = $this->campaigns->lockCampaignForUpdate($schedule->workspaceId, $schedule->campaignId);
+        if ($campaign->status !== CampaignStatus::ScheduledIntent) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution authority requires scheduled_intent lifecycle state.',
+            );
+        }
+
+        $snapshot = $this->campaigns->findSnapshot($schedule->workspaceId, $schedule->snapshotId);
+        if (
+            $snapshot === null
+            || $snapshot->campaignId !== $campaign->id
+            || $snapshot->id !== $claim->snapshotId
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution authority snapshot binding is not canonical.',
+            );
+        }
+
+        $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
+        if (! $evaluation->valid) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution authority is no longer effective: '.$evaluation->reason->value.'.',
+            );
+        }
+
+        if (
+            $evaluation->decisionId === null
+            || $evaluation->decisionId !== $claim->evaluatedApprovalId
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution authority approval lineage changed after due claiming.',
+            );
+        }
     }
 
     private function leaseExpiry(DateTimeImmutable $at, int $leaseSeconds): DateTimeImmutable

@@ -794,7 +794,7 @@ it('creates a replay-safe scheduled intent from an exact approved snapshot witho
     $intendedExecution = [
         'mode' => 'fixed_instant',
         'timezone' => 'UTC',
-        'at' => '2026-09-22T09:00:00Z',
+        'at' => '2026-09-22T09:00:00',
     ];
     $fixture = task0038GovernanceCampaign(
         $workspaceId,

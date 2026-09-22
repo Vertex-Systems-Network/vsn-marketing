@@ -17,7 +17,7 @@ beforeEach(function () {
     }
 });
 
-/** @return array{workspace_id: string, campaign_id: string, snapshot_id: string, approval_id: string, target_hash: string} */
+/** @return array{workspaceId: string, campaignId: string, snapshotId: string, approvalId: string, targetHash: string} */
 function task0039PersistenceFixture(string $suffix): array
 {
     $organizationId = (string) Str::uuid();

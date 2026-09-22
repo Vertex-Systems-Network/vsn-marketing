@@ -866,4 +866,3 @@ it('requires material fixed-instant revisions to regain approval before replacem
         ->and(DB::table('campaign_schedules')->where('id', $previous->id)->value('schedule_hash'))
         ->toBe($previous->scheduleHash);
 });
-

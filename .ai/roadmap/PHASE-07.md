@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0038 is completed and TASK-0039 is staged ready/active on the guarded transition; scheduler implementation remains blocked until this transition exact head is trusted.**
+Status: **IN PROGRESS — TASK-0038 is completed and TASK-0039 is trusted active/ready; the bounded calendar/timezone foundation milestone is now authorized while live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is staged ready/active by the guarded transition and remains non-executable for product implementation until the transition exact head is trusted.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is trusted active/ready; bounded provider-neutral calendar/timezone foundation implementation is authorized under the frozen TASK-0039 contract.
 
 ## Staged research direction
 

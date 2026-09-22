@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0038 is completed and TASK-0039 is trusted active/ready; the bounded calendar/timezone foundation milestone is now authorized while live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 calendar/timezone foundation is under exact-head verification on PR #355; immutable schedule persistence and DST-safe fixed-instant resolution are staged while live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is trusted active/ready; bounded provider-neutral calendar/timezone foundation implementation is authorized under the frozen TASK-0039 contract.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 stages the first bounded provider-neutral calendar/timezone foundation under the frozen TASK-0039 contract.
 
 ## Staged research direction
 

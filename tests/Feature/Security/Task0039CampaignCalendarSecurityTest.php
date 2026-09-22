@@ -1033,7 +1033,6 @@ it('reserves valid exact-due execution claiming for AC-6 without emitting an out
     expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
 });
 
-
 it('denies missed occurrence writes without campaign send authority', function () {
     $actor = task0039CalendarActor('missed-authority-owner');
     $fixture = task0039CalendarFixture($actor, 'missed-authority-owner');

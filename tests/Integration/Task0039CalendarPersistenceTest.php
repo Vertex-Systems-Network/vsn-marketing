@@ -19,7 +19,10 @@ beforeEach(function () {
     }
 });
 
-/** @return array{workspaceId: string, campaignId: string, snapshotId: string, approvalId: string, targetHash: string} */
+/**
+ * @param  array<string, mixed>|null  $intendedExecution
+ * @return array{workspaceId: string, campaignId: string, snapshotId: string, approvalId: string, targetHash: string}
+ */
 function task0039PersistenceFixture(string $suffix, ?array $intendedExecution = null): array
 {
     $organizationId = (string) Str::uuid();

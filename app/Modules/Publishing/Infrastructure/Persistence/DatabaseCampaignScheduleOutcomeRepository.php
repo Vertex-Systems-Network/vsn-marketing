@@ -5,6 +5,7 @@ namespace App\Modules\Publishing\Infrastructure\Persistence;
 use App\Modules\Publishing\Domain\Campaign\CampaignApprovalInvalidReason;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMissedReason;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleOccurrenceOutcome;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleOccurrenceState;
 use DateTimeImmutable;
 use DateTimeZone;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -120,6 +121,7 @@ final readonly class DatabaseCampaignScheduleOutcomeRepository
                 'schedule_hash' => $outcome->scheduleHash,
                 'scheduled_approval_id' => $outcome->scheduledApprovalId,
                 'evaluated_decision_id' => $outcome->evaluatedDecisionId,
+                'outcome_state' => $outcome->state->value,
                 'missed_reason' => $outcome->missedReason->value,
                 'approval_invalid_reason' => $outcome->approvalInvalidReason?->value,
                 'approval_detail' => $outcome->approvalDetail,
@@ -257,6 +259,7 @@ final readonly class DatabaseCampaignScheduleOutcomeRepository
             evaluatedDecisionId: $row->evaluated_decision_id === null
                 ? null
                 : (string) $row->evaluated_decision_id,
+            state: CampaignScheduleOccurrenceState::from((string) $row->outcome_state),
             missedReason: CampaignScheduleMissedReason::from((string) $row->missed_reason),
             approvalInvalidReason: $row->approval_invalid_reason === null
                 ? null
@@ -282,6 +285,7 @@ final readonly class DatabaseCampaignScheduleOutcomeRepository
             || $stored->scheduleId !== $requested->scheduleId
             || $stored->scheduledApprovalId !== $requested->scheduledApprovalId
             || $stored->evaluatedDecisionId !== $requested->evaluatedDecisionId
+            || $stored->state !== $requested->state
             || $stored->missedReason !== $requested->missedReason
             || $stored->approvalInvalidReason !== $requested->approvalInvalidReason
             || $stored->recordedByActorId !== $requested->recordedByActorId

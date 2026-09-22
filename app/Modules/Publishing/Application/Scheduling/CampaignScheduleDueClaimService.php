@@ -255,11 +255,6 @@ final readonly class CampaignScheduleDueClaimService
                 emittedAt: $emittedAt,
             );
 
-            $stored = $this->executions->createIntent($intent);
-            if ($stored->id !== $intent->id) {
-                return $stored;
-            }
-
             $this->outbox->store(new OutboxMessage(
                 id: $outboxId,
                 topic: self::OUTBOX_TOPIC,
@@ -281,6 +276,13 @@ final readonly class CampaignScheduleDueClaimService
                 occurredAt: $emittedAt,
                 availableAt: $emittedAt,
             ));
+
+            $stored = $this->executions->createIntent($intent);
+            if ($stored->id !== $intent->id) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule execution intent race produced a non-canonical outbox candidate.',
+                );
+            }
 
             $this->executions->markEmitted($claim, $emittedAt);
 

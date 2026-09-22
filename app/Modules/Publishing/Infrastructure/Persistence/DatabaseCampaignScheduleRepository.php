@@ -158,6 +158,16 @@ final readonly class DatabaseCampaignScheduleRepository
         });
     }
 
+    public function findByIdempotency(string $workspaceId, string $idempotencyKey): ?CampaignSchedule
+    {
+        $row = $this->database->connection()->table('campaign_schedules')
+            ->where('workspace_id', $workspaceId)
+            ->where('idempotency_key', $idempotencyKey)
+            ->first();
+
+        return $row instanceof stdClass ? $this->hydrate($row) : null;
+    }
+
     public function find(string $workspaceId, string $scheduleId): ?CampaignSchedule
     {
         $row = $this->database->connection()->table('campaign_schedules')

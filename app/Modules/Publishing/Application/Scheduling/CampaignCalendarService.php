@@ -209,6 +209,8 @@ final readonly class CampaignCalendarService
                 throw new InvalidArgumentException('Campaign queue scheduling must pin rule_set_id and channel.');
             }
 
+            $this->assertSnapshotChannel($snapshot, $channel);
+
             $ruleSet = $this->rules->find($context->workspaceId, $ruleSetId);
             if (! $ruleSet instanceof CampaignScheduleRuleSet || $ruleSet->channel !== $channel) {
                 throw new InvalidArgumentException('Campaign queue scheduling rule set does not match the intended channel.');
@@ -250,6 +252,19 @@ final readonly class CampaignCalendarService
         }
 
         return $snapshot;
+    }
+
+    private function assertSnapshotChannel(CampaignSnapshot $snapshot, string $channel): void
+    {
+        foreach ($snapshot->targets as $target) {
+            if ($target->channel === $channel) {
+                return;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            'Campaign queue scheduling channel is not present in the immutable snapshot target set.',
+        );
     }
 
     private function assertScheduleAuthority(User $actor, TenantContext $context): void

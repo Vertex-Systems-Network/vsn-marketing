@@ -499,7 +499,6 @@ it('rejects reschedule lineage that keeps the same canonical UTC occurrence', fu
     );
 });
 
-
 it('persists immutable missed occurrence outcomes with replay safety and re-entrant migration', function () {
     $fixture = task0039PersistenceFixture('missed-outcome');
     $schedules = app(DatabaseCampaignScheduleRepository::class);
@@ -631,4 +630,53 @@ it('rejects missed occurrence history after terminal reschedule or cancellation 
     );
 
     expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
+});
+
+
+it('rejects backdated reschedule or cancellation after a terminal occurrence outcome', function () {
+    $fixture = task0039PersistenceFixture('mutation-after-outcome');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $outcomes = app(DatabaseCampaignScheduleOutcomeRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-mutation-after-outcome',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $outcomes->create(CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedDecisionId: $fixture['approvalId'],
+        recordedByActorId: 'task0039-author',
+        idempotencyKey: 'outcome-before-backdated-mutation',
+        observedAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    ));
+
+    $backdatedMutation = CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Backdated cancellation must not double-terminate the occurrence.',
+        idempotencyKey: 'mutation-after-terminal-outcome',
+        occurredAt: new DateTimeImmutable('2026-07-15T12:00:00+00:00'),
+    );
+
+    expect(fn () => $mutations->create($backdatedMutation))->toThrow(
+        InvalidArgumentException::class,
+        'after a terminal occurrence outcome',
+    );
+
+    expect(DB::table('campaign_schedule_mutations')->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
 });

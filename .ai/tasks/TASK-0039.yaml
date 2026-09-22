@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "When TASK-0039 is separately activated after the trusted TASK-0038 completion transition, begin with canonical calendar/schedule persistence and deterministic timezone resolution tests: fixed_instant versus queue/next_slot, IANA timezone validation, ambiguous/nonexistent DST policy, immutable resolved instants, reschedule/cancel/missed-run history and replay-safe due claiming. Do not make provider API calls, upload media, publish content, use provider credentials, activate TASK-0040, or execute the deferred Runner optimization batch."
+  "exact_next_action": "Begin the bounded TASK-0039 calendar/timezone foundation milestone from current protected main. Implement canonical workspace-scoped schedule persistence plus deterministic IANA timezone resolution for fixed_instant semantics, including explicit ambiguous/nonexistent DST failure policy and immutable resolved UTC instants, with backend/PostgreSQL/adversarial tests. Reuse trusted TASK-0038 campaign snapshot/approval authority; do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization."
 }

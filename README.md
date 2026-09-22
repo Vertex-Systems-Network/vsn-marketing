@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0039-QUEUE-NEXT-SLOT-FOUNDATION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0039-RESCHEDULE-CANCEL-HISTORY status=VERIFYING -->
 
-> Last verified protected-main TASK-0039 baseline: **2026-09-22** at `1e17d38aaaefdeba1d2bb930e553c93f7d7ff7e7` after queue/next-slot foundation PR #357 merged. Exact source `ea721ef5f14602bb78a878ac976eb416e77b88ca` passed AI Continuity Guard `35738931906`, Application Foundation CI `35738931897`, and Security Supply Chain CI `35738931987`. Queue/next-slot scheduling semantics are trusted; provider scheduling/publication side effects remain inactive.
+> Last verified protected-main TASK-0039 baseline: **2026-09-22** at `0d6487ea611a684902a2fcc7ef83e9168b6f2981` after queue/next-slot terminal reconciliation PR #358. PR #359 now stages append-only reschedule/cancel history with immutable prior/replacement schedule evidence and material-revision reapproval enforcement; provider scheduling/publication side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 63.64%**  
 **Active task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
 **Last completed task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
-**Current milestone: TASK-0039-QUEUE-NEXT-SLOT-FOUNDATION — COMPLETE**
+**Current milestone: TASK-0039-RESCHEDULE-CANCEL-HISTORY — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 48.45%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 reschedule/cancel history next** | **63.64%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 reschedule/cancel PR #359 verification** | **63.64%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,7 +47,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 
 ### Current execution snapshot
 
-TASK-0039 is active/in-progress in PHASE-07. PR #355 fixed-instant calendar/timezone foundation and PR #357 queue/next-slot foundation are trusted. Protected main now has immutable versioned workspace/channel weekly rules, deterministic next-slot selection, fail-closed DST occurrence handling, exact snapshot target-channel authority and pinned rule-version/UTC occurrence evidence. The next bounded scope is append-only reschedule/cancel history.
+TASK-0039 is active/in-progress in PHASE-07. PR #355 fixed-instant calendar/timezone foundation and PR #357 queue/next-slot foundation are trusted. PR #359 stages immutable schedule-mutation lineage, terminal cancellation, replay-first idempotency, due/past fresh-mutation rejection, workspace isolation, and fixed-instant material-revision reapproval before replacement scheduling.
 
 The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
@@ -55,7 +55,7 @@ TASK-0038 is completed and TASK-0039 is in progress. PR #355 adds immutable fixe
 
 PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. PR #357 queue/next-slot foundation is trusted and terminally reconciled by this control milestone; deterministic progress remains roadmap 48.45% / PHASE-07 63.64% until TASK-0039 completes. Reschedule/cancel history is next; provider scheduling/publication side effects remain inactive.
+README progress-sync protocol v2.4.2 remains enforced. PR #359 is the active TASK-0039 reschedule/cancel verification surface; deterministic progress remains roadmap 48.45% / PHASE-07 63.64% until TASK-0039 completes. Missed-run/approval-deadline and due-claim work remain later bounded milestones; provider scheduling/publication side effects remain inactive.
 
 ### README progress-sync contract
 

@@ -285,7 +285,6 @@ final readonly class DatabaseCampaignScheduleOutcomeRepository
             || $stored->scheduleId !== $requested->scheduleId
             || $stored->scheduledApprovalId !== $requested->scheduledApprovalId
             || $stored->evaluatedDecisionId !== $requested->evaluatedDecisionId
-            || $stored->state !== $requested->state
             || $stored->missedReason !== $requested->missedReason
             || $stored->approvalInvalidReason !== $requested->approvalInvalidReason
             || $stored->recordedByActorId !== $requested->recordedByActorId

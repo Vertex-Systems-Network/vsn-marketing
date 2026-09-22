@@ -1354,3 +1354,57 @@ it('rejects claiming before the canonical resolved instant', function () {
             ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
             ->count())->toBe(0);
 });
+
+
+it('fails closed if campaign lifecycle becomes terminal after claiming but before intent emission', function () {
+    $suffix = 'claim-then-cancel';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'claim-then-cancel-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $claim = $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-cancel-race',
+        leaseToken: 'lease-claim-then-cancel',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+    expect($claim)->not->toBeNull();
+
+    DB::table('campaigns')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['campaign']->id)
+        ->update([
+            'status' => 'cancelled',
+            'state_version' => DB::raw('state_version + 1'),
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:05+00:00'),
+        ]);
+
+    expect(fn () => $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-cancel-race',
+        leaseToken: 'lease-claim-then-cancel',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'requires scheduled_intent lifecycle state',
+    );
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
+});

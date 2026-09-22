@@ -13,6 +13,7 @@ use App\Modules\Publishing\Domain\Campaign\CampaignApprovalOutcome;
 use App\Modules\Publishing\Domain\Campaign\CampaignEvent;
 use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
+use App\Modules\Publishing\Domain\Scheduling\LocalScheduleTimeResolver;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
 use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -26,6 +27,7 @@ final readonly class CampaignGovernanceService
         private CampaignApprovalEvaluator $approvals,
         private WorkspaceAuthorizer $authorizer,
         private DatabaseManager $database,
+        private LocalScheduleTimeResolver $scheduleTimeResolver,
     ) {}
 
     public function requestApproval(
@@ -795,11 +797,10 @@ final readonly class CampaignGovernanceService
         }
 
         try {
-            $scheduledTimezone = new \DateTimeZone($timezone);
-            $scheduledAt = new DateTimeImmutable($scheduledAtValue, $scheduledTimezone);
-        } catch (\Throwable $exception) {
+            $scheduledAt = $this->scheduleTimeResolver->resolve($timezone, $scheduledAtValue);
+        } catch (InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
-                'Campaign scheduled intent must contain a valid timezone and timestamp.',
+                'Campaign scheduled intent must contain a valid IANA timezone and unambiguous local wall-clock time.',
                 previous: $exception,
             );
         }

@@ -244,7 +244,7 @@ it('persists replay-safe campaign lifecycle snapshots approvals and append-only 
         assetReferenceIds: [],
         capabilityEvidenceIds: [],
         brandReference: [],
-        intendedExecution: ['mode' => 'fixed_instant', 'timezone' => 'UTC', 'at' => '2026-09-22T09:00:00Z'],
+        intendedExecution: ['mode' => 'fixed_instant', 'timezone' => 'UTC', 'at' => '2026-09-22T09:00:00'],
         targets: [$target],
         idempotencyKey: 'snapshot-foundation-v1',
         createdByActorId: 'task0038-author',

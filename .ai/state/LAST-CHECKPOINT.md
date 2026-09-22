@@ -2,32 +2,32 @@
 
 ## State
 
-- Timestamp: `2026-09-22T00:50:31Z`
-- Observed main: `c85294ed79c881c65e001cf5b54ce9fa645f258b`
+- Timestamp: `2026-09-22T07:29:00Z`
+- Observed main: `17f5722dde9ce5ff01e637c609aad673deda7b7b`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0038-TO-0039-TRANSITION`
-- Milestone status: `COMPLETE`
+- Active PR: `355`
+- Active branch: `task/0039-calendar-timezone-foundation`
+- Current milestone: `TASK-0039-CALENDAR-TIMEZONE-FOUNDATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0039`
 - Next task: `none`
 - Current phase: `PHASE-07`
-- Execution status: `ready`
-- Pending Runner IDs: `none`
+- Execution status: `in_progress`
+- Pending Runner IDs: `RBT-019`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `260cf0e8a0285e1e3c4259322aa81adeac0b099284661bf8df7106dfe8531e9d`
+- State fingerprint: `999ae923712df989928614361a6cc8cdea292bd11df095a3ff72b99b9abed6c1`
 
 ## Completed / observed this session
 
-Guarded TASK-0038 -> TASK-0039 transition PR #353 exact source `9e18966235f5c7b83f89d2dd7c7853e3354fed71` passed AI Continuity Guard `35672254776`, Application Foundation CI `35672254843` and Security Supply Chain CI `35672254866`, then merged on protected main as `c85294ed79c881c65e001cf5b54ce9fa645f258b`. RBT-018 is terminal PASS and the transition work path is cleared.
+PR #354 terminally reconciled the trusted TASK-0038 -> TASK-0039 transition on protected main `17f5722dde9ce5ff01e637c609aad673deda7b7b`. TASK-0039 is active and this bounded product milestone is staged on PR #355.
 
-TASK-0038 is completed. TASK-0039 is active/ready at deterministic roadmap `48.45%` / PHASE-07 `63.64%`; TASK-0040 remains unregistered. The next bounded product milestone is canonical calendar/schedule persistence plus deterministic IANA timezone resolution for fixed-instant semantics, including explicit ambiguous/nonexistent DST failure policy and immutable resolved UTC instants.
+The slice adds additive/re-entrant immutable `campaign_schedules` persistence, exact workspace/campaign/snapshot/target-set/current-approval binding, `campaign.send` authorization, campaign-row serialization against approval/revision races, strict IANA local wall-time resolution, deterministic rejection of DST/civil-time gaps and overlaps, immutable resolved UTC instants, canonical schedule hashes, and replay-first idempotency that remains a no-op after schedule time or approval expiry.
 
-No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
+Focused unit, security and PostgreSQL persistence tests are included. TASK-0039 AC-1 through AC-8 remain open pending later bounded milestones/final acceptance. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #353 exact head: Continuity `35672254776` PASS; Application `35672254843` PASS; Security `35672254866` PASS.
+PR #355 exact-head Continuity/Application/Security verification is pending under RBT-019. Migration/data-safety, PHP 8.3 floor, static analysis, formatting, unit/security/PostgreSQL integration and supply-chain checks are merge-blocking.
 
 ## Blockers
 
@@ -35,4 +35,4 @@ PR #353 exact head: Continuity `35672254776` PASS; Application `35672254843` PAS
 
 ## Exact next action
 
-Begin the bounded TASK-0039 calendar/timezone foundation milestone from current protected main. Implement canonical workspace-scoped schedule persistence plus deterministic IANA timezone resolution for fixed_instant semantics, including explicit ambiguous/nonexistent DST failure policy and immutable resolved UTC instants, with backend/PostgreSQL/adversarial tests. Reuse trusted TASK-0038 campaign snapshot/approval authority; do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization.
+Perform exact-head verification for PR #355. Merge the TASK-0039 calendar/timezone foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, migration/data-safety checks pass, and the exact head is unchanged. Treat IANA timezone/DST ambiguity-gap failures, schedule hash or idempotency instability, stale/foreign snapshot or approval acceptance, workspace isolation failures, campaign/approval race regressions, mutable schedule history, or any provider/native scheduling side effect as merge blockers. After trusted merge, terminally reconcile this milestone before starting queue/next-slot, reschedule/cancel, missed-run or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.

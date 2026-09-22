@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0038-TO-0039-TRANSITION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0039-CALENDAR-TIMEZONE-FOUNDATION status=VERIFYING -->
 
-> Last verified protected-main transition baseline: **2026-09-22** at `c85294ed79c881c65e001cf5b54ce9fa645f258b` after guarded TASK-0038 -> TASK-0039 PR #353 merged. Exact source `9e18966235f5c7b83f89d2dd7c7853e3354fed71` passed AI Continuity Guard `35672254776`, Application Foundation CI `35672254843`, and Security Supply Chain CI `35672254866`. TASK-0038 is completed and TASK-0039 is active/ready; no provider scheduling/publication side effect is enabled.
+> Last verified protected-main TASK-0039 baseline: **2026-09-22** at `17f5722dde9ce5ff01e637c609aad673deda7b7b` after transition reconciliation PR #354 merged. TASK-0039 calendar/timezone foundation is staged on PR #355 with immutable schedule persistence, strict IANA/DST resolution and approval/workspace boundaries; no provider scheduling/publication side effect is enabled.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 63.64%**  
 **Active task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
 **Last completed task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
-**Current milestone: TASK-0038-TO-0039-TRANSITION — COMPLETE**
+**Current milestone: TASK-0039-CALENDAR-TIMEZONE-FOUNDATION — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 48.45%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 calendar/timezone foundation** | **63.64%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 calendar/timezone foundation verification** | **63.64%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,15 +47,15 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 
 ### Current execution snapshot
 
-TASK-0039 is active in PHASE-07. TASK-0038 campaign-domain acceptance is complete; the current bounded scope is provider-neutral calendar/schedule persistence and deterministic IANA timezone resolution.
+TASK-0039 is active/in-progress in PHASE-07. PR #355 stages provider-neutral fixed-instant calendar/schedule persistence, exact approval/snapshot/workspace binding and deterministic IANA timezone resolution with fail-closed DST gap/overlap handling.
 
 The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
-TASK-0038 is completed and TASK-0039 is trusted active/ready after PR #353. The next bounded implementation milestone covers canonical schedule persistence, fixed-instant IANA timezone resolution, explicit ambiguous/nonexistent DST failure policy and immutable resolved UTC instants. Live provider publication, provider-native scheduling side effects, provider media upload, provider credential activation and deployment/release authority remain inactive.
+TASK-0038 is completed and TASK-0039 is in progress. PR #355 adds immutable fixed-instant schedule records, canonical schedule hashes, campaign-row serialization against approval/revision races, replay-safe idempotency after expiry/time, strict IANA local wall-time parsing, immutable UTC resolution and focused unit/security/PostgreSQL coverage. Live provider publication, provider-native scheduling side effects, provider media upload, provider credential activation and deployment/release authority remain inactive.
 
 PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. PR #353 is trusted and terminally reconciled; deterministic progress is roadmap 48.45% / PHASE-07 63.64%. Bounded TASK-0039 calendar/timezone foundation implementation is now authorized, while provider scheduling/publication side effects remain inactive.
+README progress-sync protocol v2.4.2 remains enforced. PR #355 is the active TASK-0039 calendar/timezone foundation verification surface; deterministic progress remains roadmap 48.45% / PHASE-07 63.64% until TASK-0039 completes. Provider scheduling/publication side effects remain inactive.
 
 ### README progress-sync contract
 

@@ -80,6 +80,7 @@ function task0039CalendarGrant(
 
 /**
  * @param  array{organization: Organization, workspace: Workspace, user: User, context: TenantContext}  $actor
+ * @param  array<string, mixed>|null  $intendedExecution
  * @return array{campaign: Campaign, snapshot: CampaignSnapshot, approver: User}
  */
 function task0039CalendarFixture(
@@ -526,6 +527,46 @@ it('rejects a queue intent whose pinned rule belongs to another workspace', func
             'channel' => 'email',
         ],
     ))->toThrow(AuthorizationException::class, 'Campaign schedule rule reference access denied.');
+
+    expect(DB::table('campaign_schedules')->count())->toBe(0);
+});
+
+
+it('rejects queue intent when the pinned channel is absent from immutable snapshot targets', function () {
+    $actor = task0039CalendarActor('queue-channel-mismatch');
+    $workspaceId = (string) $actor['workspace']->getKey();
+    task0039CalendarGrant(
+        $actor['user'],
+        $workspaceId,
+        'queue-channel-mismatch-editor',
+        [PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $rule = app(CampaignCalendarService::class)->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: (string) Str::uuid(),
+        channel: 'email',
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '12:00:00'],
+        ],
+        idempotencyKey: 'queue-channel-mismatch-rule',
+        at: new DateTimeImmutable('2026-07-15T10:00:00+00:00'),
+    );
+
+    expect(fn () => task0039CalendarFixture(
+        $actor,
+        'queue-channel-mismatch',
+        intendedExecution: [
+            'mode' => 'queue_next_slot',
+            'rule_set_id' => $rule->id,
+            'channel' => 'sms',
+        ],
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'channel is not present in the immutable snapshot target set',
+    );
 
     expect(DB::table('campaign_schedules')->count())->toBe(0);
 });

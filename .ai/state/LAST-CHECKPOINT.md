@@ -2,32 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-22T18:41:00Z`
-- Observed main: `0d6487ea611a684902a2fcc7ef83e9168b6f2981`
+- Timestamp: `2026-09-22T21:05:00Z`
+- Observed main: `f9c2175116d7d509c0ebe988bfa58ffaf927108b`
 - Active issue: `none`
-- Active PR: `359`
-- Active branch: `task/0039-reschedule-cancel-history`
+- Active PR: `none`
+- Active branch: `main`
 - Current milestone: `TASK-0039-RESCHEDULE-CANCEL-HISTORY`
-- Milestone status: `VERIFYING`
+- Milestone status: `COMPLETE`
 - Active task: `TASK-0039`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-021`
+- Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `1eed739ac129c1c6251b8264da8a999cc61e3454c66b0160b97a1ed28f9460ce`
+- State fingerprint: `52ca6e0f2b79f1b847f675ad4b5d8e4948b920730f21e454c2d38438756e8b6b`
 
 ## Completed / observed this session
 
-Queue/next-slot terminal reconciliation PR #358 merged on protected main as `0d6487ea611a684902a2fcc7ef83e9168b6f2981` after exact source `1a1ff0358079198e94af7f2c04bd3e6df6607a25` passed Continuity `35767424633`, Application `35767424758` and Security `35767424719`.
+TASK-0039 append-only reschedule/cancel PR #359 exact source `cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c` passed AI Continuity Guard `35783604657`, Application Foundation CI `35783604696` and Security Supply Chain CI `35783604660`, then merged on protected main as `f9c2175116d7d509c0ebe988bfa58ffaf927108b`. RBT-021 is terminal PASS and the PR #359 work path is cleared.
 
-PR #359 stages the next bounded TASK-0039 product milestone: immutable `campaign_schedule_mutations` history, terminal cancellation evidence, previous/replacement schedule identity and hash lineage, old/new resolved UTC instants, actor/time/reason provenance, replay-first idempotency, due/past fresh-mutation rejection, workspace isolation, and fixed-instant material-revision reapproval enforcement through existing canonical scheduling authority.
+The trusted milestone provides immutable append-only cancellation/reschedule evidence, previous/replacement schedule IDs and hashes, old/new UTC occurrence lineage, actor/time/reason provenance, one-terminal-mutation enforcement, replay-first idempotency, foreign-workspace fail-closed behavior, due/past fresh-mutation rejection, and fresh approval plus scheduled-intent re-entry before material fixed-instant replacement scheduling.
 
-TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. Missed-run/approval-deadline and due-claim concurrency remain later bounded milestones. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
+Verification exposed and repaired a material-revision test fixture that reused an immutable target-binding identity plus two Pint EOF style findings. Backend tests, architecture tests, static analysis, formatting and the final exact-head Continuity/Application/Security gates passed without weakening domain, approval, migration, workspace or security invariants.
+
+TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. The next bounded product milestone is approval-timing/missed-run history. Due-claim worker concurrency/internal execution-intent emission remains reserved for AC-6. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #359 RBT-021 exact-head Continuity/Application/Security verification is pending. Migration/data-safety, PostgreSQL immutability, workspace isolation, reapproval enforcement, replay/idempotency, static analysis, formatting and full security/supply-chain checks are merge-blocking.
+PR #359 exact head: Continuity `35783604657` PASS; Application `35783604696` PASS; Security `35783604660` PASS.
 
 ## Blockers
 
@@ -35,4 +37,4 @@ PR #359 RBT-021 exact-head Continuity/Application/Security verification is pendi
 
 ## Exact next action
 
-Perform exact-head verification for PR #359. Merge the TASK-0039 append-only reschedule/cancel history milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, migration/data-safety checks pass, schedule mutation history remains immutable and workspace-scoped, fresh due/past mutations fail closed, replay remains idempotent, and material fixed-instant revisions cannot create replacement schedules before fresh approval plus scheduled-intent re-entry. Treat mutable campaign_schedules, conflicting terminal mutations, cross-workspace lineage, replacement evidence mismatch, approval bypass, replay drift, or provider/native execution side effects as merge blockers. After trusted merge, terminally reconcile AC-4 before starting missed-run/approval-deadline or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.
+Begin the bounded TASK-0039 approval-timing and missed-run history foundation from current protected main. Reuse the canonical CampaignApprovalEvaluator at the due boundary so expired, revoked, stale or otherwise invalid approval cannot execute; persist deterministic append-only missed/needs-reschedule outcome evidence bound to the exact workspace, campaign, snapshot, schedule and approval with observed time and invalidation reason, without mutating historical schedule rows or silently publishing late. Add backend/PostgreSQL/adversarial coverage for approval expiry/revocation/capability or connection drift, missed-time terminality, replay/idempotency and workspace isolation. Keep due-claim worker leasing/concurrency and internal execution-intent emission for the separate AC-6 milestone, and keep provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.

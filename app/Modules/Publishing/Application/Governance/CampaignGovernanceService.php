@@ -13,8 +13,12 @@ use App\Modules\Publishing\Domain\Campaign\CampaignApprovalOutcome;
 use App\Modules\Publishing\Domain\Campaign\CampaignEvent;
 use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleStrategy;
 use App\Modules\Publishing\Domain\Scheduling\LocalScheduleTimeResolver;
+use App\Modules\Publishing\Domain\Scheduling\QueueNextSlotResolver;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\DatabaseManager;
@@ -28,6 +32,8 @@ final readonly class CampaignGovernanceService
         private WorkspaceAuthorizer $authorizer,
         private DatabaseManager $database,
         private LocalScheduleTimeResolver $scheduleTimeResolver,
+        private DatabaseCampaignScheduleRuleRepository $scheduleRules,
+        private QueueNextSlotResolver $queueSlotResolver,
     ) {}
 
     public function requestApproval(
@@ -431,7 +437,7 @@ final readonly class CampaignGovernanceService
 
         $evaluation = $this->approvals->evaluate($campaign, $snapshot, $at);
         $this->assertEffectiveApproval($evaluation);
-        $this->assertSchedulableIntendedExecution($snapshot, $at);
+        $this->assertSchedulableIntendedExecution($context, $snapshot, $at);
 
         $evidence = $this->scheduledIntentEvidence($snapshot, $evaluation);
 
@@ -775,39 +781,77 @@ final readonly class CampaignGovernanceService
     }
 
     private function assertSchedulableIntendedExecution(
+        TenantContext $context,
         CampaignSnapshot $snapshot,
         DateTimeImmutable $at,
     ): void {
         $execution = $snapshot->intendedExecution;
+        $mode = $execution['mode'] ?? null;
 
-        if (($execution['mode'] ?? null) !== 'fixed_instant') {
-            throw new InvalidArgumentException('Campaign scheduled intent requires fixed_instant intended execution.');
+        if ($mode === CampaignScheduleStrategy::FixedInstant->value) {
+            $timezone = $execution['timezone'] ?? null;
+            $scheduledAtValue = $execution['at'] ?? null;
+
+            if (
+                ! is_string($timezone)
+                || trim($timezone) === ''
+                || ! is_string($scheduledAtValue)
+                || trim($scheduledAtValue) === ''
+            ) {
+                throw new InvalidArgumentException('Campaign scheduled intent must pin timezone and at.');
+            }
+
+            try {
+                $scheduledAt = $this->scheduleTimeResolver->resolve($timezone, $scheduledAtValue);
+            } catch (InvalidArgumentException $exception) {
+                throw new InvalidArgumentException(
+                    'Campaign scheduled intent must contain a valid IANA timezone and unambiguous local wall-clock time.',
+                    previous: $exception,
+                );
+            }
+
+            if ($scheduledAt <= $at) {
+                throw new InvalidArgumentException('Campaign scheduled intent time must be in the future.');
+            }
+
+            return;
         }
 
-        $timezone = $execution['timezone'] ?? null;
-        $scheduledAtValue = $execution['at'] ?? null;
+        if ($mode === CampaignScheduleStrategy::QueueNextSlot->value) {
+            $ruleSetId = $execution['rule_set_id'] ?? null;
+            $channel = $execution['channel'] ?? null;
 
-        if (
-            ! is_string($timezone)
-            || trim($timezone) === ''
-            || ! is_string($scheduledAtValue)
-            || trim($scheduledAtValue) === ''
-        ) {
-            throw new InvalidArgumentException('Campaign scheduled intent must pin timezone and at.');
+            if (
+                ! is_string($ruleSetId)
+                || trim($ruleSetId) === ''
+                || ! is_string($channel)
+                || trim($channel) === ''
+            ) {
+                throw new InvalidArgumentException(
+                    'Campaign queue scheduled intent must pin rule_set_id and channel.',
+                );
+            }
+
+            $ruleSet = $this->scheduleRules->find($context->workspaceId, $ruleSetId);
+            if (! $ruleSet instanceof CampaignScheduleRuleSet || $ruleSet->channel !== $channel) {
+                throw new InvalidArgumentException(
+                    'Campaign queue scheduled intent rule set does not match workspace/channel authority.',
+                );
+            }
+
+            $resolved = $this->queueSlotResolver->resolve($ruleSet, $at);
+            if ($resolved->resolvedAtUtc <= $at) {
+                throw new InvalidArgumentException(
+                    'Campaign queue scheduled intent must resolve to a future UTC occurrence.',
+                );
+            }
+
+            return;
         }
 
-        try {
-            $scheduledAt = $this->scheduleTimeResolver->resolve($timezone, $scheduledAtValue);
-        } catch (InvalidArgumentException $exception) {
-            throw new InvalidArgumentException(
-                'Campaign scheduled intent must contain a valid IANA timezone and unambiguous local wall-clock time.',
-                previous: $exception,
-            );
-        }
-
-        if ($scheduledAt <= $at) {
-            throw new InvalidArgumentException('Campaign scheduled intent time must be in the future.');
-        }
+        throw new InvalidArgumentException(
+            'Campaign scheduled intent requires fixed_instant or queue_next_slot intended execution.',
+        );
     }
 
     private function assertScheduledIntentReplay(

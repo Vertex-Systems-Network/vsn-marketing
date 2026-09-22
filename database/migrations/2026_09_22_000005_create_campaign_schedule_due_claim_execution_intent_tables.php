@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->uuid('evaluated_approval_id');
                 $table->string('state', 32);
                 $table->string('lease_owner', 191);
-                $table->string('lease_token', 191);
+                $table->char('lease_token_hash', 64);
                 $table->timestampTz('lease_expires_at');
                 $table->timestampTz('claimed_at');
                 $table->unsignedInteger('attempt_number');
@@ -52,7 +52,7 @@ return new class extends Migration
 
                 $table->unique(['id', 'workspace_id'], 'campaign_due_claim_id_workspace_uq');
                 $table->unique(['workspace_id', 'schedule_id'], 'campaign_due_claim_schedule_uq');
-                $table->unique(['workspace_id', 'lease_token'], 'campaign_due_claim_lease_token_uq');
+                $table->unique(['workspace_id', 'lease_token_hash'], 'campaign_due_claim_lease_token_hash_uq');
                 $table->index(
                     ['workspace_id', 'state', 'lease_expires_at'],
                     'campaign_due_claim_lease_scan_idx',

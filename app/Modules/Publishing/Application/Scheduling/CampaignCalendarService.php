@@ -48,8 +48,7 @@ final readonly class CampaignCalendarService
         array $slots,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignScheduleRuleSet
-    {
+    ): CampaignScheduleRuleSet {
         $this->assertScheduleAuthority($actor, $context);
 
         $existing = $this->rules->findByIdempotency($context->workspaceId, $idempotencyKey);
@@ -105,8 +104,7 @@ final readonly class CampaignCalendarService
         string $scheduleId,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignSchedule
-    {
+    ): CampaignSchedule {
         $this->assertScheduleAuthority($actor, $context);
 
         return $this->database->connection()->transaction(function () use (
@@ -116,8 +114,7 @@ final readonly class CampaignCalendarService
             $scheduleId,
             $idempotencyKey,
             $at,
-        ): CampaignSchedule
-    {
+        ): CampaignSchedule {
             $campaign = $this->campaigns->lockCampaignForUpdate($context->workspaceId, $campaignId);
             $existing = $this->schedules->findByIdempotency($context->workspaceId, $idempotencyKey);
 
@@ -188,8 +185,7 @@ final readonly class CampaignCalendarService
         string $scheduleId,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignSchedule
-    {
+    ): CampaignSchedule {
         $this->assertScheduleAuthority($actor, $context);
 
         return $this->database->connection()->transaction(function () use (
@@ -199,8 +195,7 @@ final readonly class CampaignCalendarService
             $scheduleId,
             $idempotencyKey,
             $at,
-        ): CampaignSchedule
-    {
+        ): CampaignSchedule {
             $campaign = $this->campaigns->lockCampaignForUpdate($context->workspaceId, $campaignId);
             $existing = $this->schedules->findByIdempotency($context->workspaceId, $idempotencyKey);
 
@@ -277,8 +272,7 @@ final readonly class CampaignCalendarService
         TenantContext $context,
         string $campaignId,
         string $snapshotId,
-    ): CampaignSnapshot
-    {
+    ): CampaignSnapshot {
         $snapshot = $this->campaigns->findSnapshot($context->workspaceId, $snapshotId);
 
         if (! $snapshot instanceof CampaignSnapshot || $snapshot->campaignId !== $campaignId) {
@@ -315,8 +309,7 @@ final readonly class CampaignCalendarService
         string $snapshotId,
         string $scheduleId,
         string $actorId,
-    ): void
-    {
+    ): void {
         if (
             $existing->strategy !== $strategy
             || $existing->id !== $scheduleId

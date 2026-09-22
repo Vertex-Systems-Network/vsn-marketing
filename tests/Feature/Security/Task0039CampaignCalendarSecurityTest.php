@@ -1835,6 +1835,17 @@ it('rejects provider-native schedule identifiers and timestamps from canonical c
     ))->toThrow(InvalidArgumentException::class, 'Sensitive or transient provider campaign key');
 
     expect(fn () => task0039CalendarFixture(
+        task0039CalendarActor('provider-transient-payload'),
+        'provider-transient-payload',
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+            'provider_schedule_payload' => ['scheduled_at' => '2026-07-15T13:30:00Z'],
+        ],
+    ))->toThrow(InvalidArgumentException::class, 'Sensitive or transient provider campaign key');
+
+    expect(fn () => task0039CalendarFixture(
         task0039CalendarActor('provider-transient-time'),
         'provider-transient-time',
         intendedExecution: [

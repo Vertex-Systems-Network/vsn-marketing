@@ -78,7 +78,10 @@ function task0039CalendarGrant(
     $roles->assignRole($membership, $roleId);
 }
 
-/** @return array{campaign: Campaign, snapshot: CampaignSnapshot, approver: User} */
+/**
+ * @param  array{organization: Organization, workspace: Workspace, user: User, context: TenantContext}  $actor
+ * @return array{campaign: Campaign, snapshot: CampaignSnapshot, approver: User}
+ */
 function task0039CalendarFixture(
     array $actor,
     string $suffix,
@@ -330,7 +333,7 @@ it('creates and replays an authorized fixed-instant schedule bound to the exact 
         snapshotId: $fixture['snapshot']->id,
         scheduleId: $scheduleId,
         idempotencyKey: 'fixed-authorized-schedule',
-        at: $at,
+        at: new DateTimeImmutable('2026-07-15T16:00:00+00:00'),
     );
 
     expect($stored->resolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')

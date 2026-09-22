@@ -188,7 +188,6 @@ it('fails closed when a schedule identity is read from another workspace', funct
         ->toThrow(AuthorizationException::class, 'Campaign schedule reference access denied.');
 });
 
-
 it('persists immutable queue-rule bindings and keeps pinned occurrences stable across later rule versions', function () {
     $ruleId = (string) Str::uuid();
     $fixture = task0039PersistenceFixture('queue', [

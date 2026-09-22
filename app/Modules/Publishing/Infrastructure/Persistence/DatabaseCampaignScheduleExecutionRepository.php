@@ -47,7 +47,7 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             'evaluated_approval_id' => $claim->evaluatedApprovalId,
             'state' => $claim->state->value,
             'lease_owner' => $claim->leaseOwner,
-            'lease_token' => $claim->leaseToken,
+            'lease_token_hash' => $claim->leaseTokenHash,
             'lease_expires_at' => $claim->leaseExpiresAt,
             'claimed_at' => $claim->claimedAt,
             'attempt_number' => $claim->attemptNumber,
@@ -64,7 +64,7 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             ->where(function ($query) use ($claim): void {
                 $query->where('schedule_id', $claim->scheduleId)
                     ->orWhere('id', $claim->id)
-                    ->orWhere('lease_token', $claim->leaseToken);
+                    ->orWhere('lease_token_hash', $claim->leaseTokenHash);
             })
             ->lockForUpdate()
             ->first();
@@ -78,7 +78,7 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             $stored->id !== $claim->id
             || $stored->scheduleId !== $claim->scheduleId
             || $stored->leaseOwner !== $claim->leaseOwner
-            || ! hash_equals($stored->leaseToken, $claim->leaseToken)
+            || ! hash_equals($stored->leaseTokenHash, $claim->leaseTokenHash)
             || ! hash_equals($stored->scheduleHash, $claim->scheduleHash)
         ) {
             throw new InvalidArgumentException('Campaign schedule due claim identity conflicts with existing coordination state.');
@@ -107,10 +107,10 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             ->where('schedule_id', $current->scheduleId)
             ->where('version', $current->version)
             ->where('state', CampaignScheduleDueClaimState::Leased->value)
-            ->where('lease_token', $current->leaseToken)
+            ->where('lease_token_hash', $current->leaseTokenHash)
             ->update([
                 'lease_owner' => $replacement->leaseOwner,
-                'lease_token' => $replacement->leaseToken,
+                'lease_token_hash' => $replacement->leaseTokenHash,
                 'lease_expires_at' => $replacement->leaseExpiresAt,
                 'attempt_number' => $replacement->attemptNumber,
                 'version' => $replacement->version,
@@ -135,7 +135,7 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             ->where('schedule_id', $current->scheduleId)
             ->where('version', $current->version)
             ->where('state', CampaignScheduleDueClaimState::Leased->value)
-            ->where('lease_token', $current->leaseToken)
+            ->where('lease_token_hash', $current->leaseTokenHash)
             ->update([
                 'state' => CampaignScheduleDueClaimState::Emitted->value,
                 'version' => $emitted->version,
@@ -257,7 +257,7 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             evaluatedApprovalId: (string) $row->evaluated_approval_id,
             state: CampaignScheduleDueClaimState::from((string) $row->state),
             leaseOwner: (string) $row->lease_owner,
-            leaseToken: (string) $row->lease_token,
+            leaseTokenHash: (string) $row->lease_token_hash,
             leaseExpiresAt: $this->utc((string) $row->lease_expires_at),
             claimedAt: $this->utc((string) $row->claimed_at),
             attemptNumber: (int) $row->attempt_number,

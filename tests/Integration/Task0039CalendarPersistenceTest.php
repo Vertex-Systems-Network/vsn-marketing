@@ -534,6 +534,7 @@ it('persists immutable missed occurrence outcomes with replay safety and re-entr
 
     expect($stored->outcomeHash)->toBe($outcome->outcomeHash)
         ->and($replayed->id)->toBe($outcome->id)
+        ->and($stored->state->value)->toBe('missed_needs_reschedule')
         ->and($stored->missedReason->value)->toBe('execution_deadline_missed')
         ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
 

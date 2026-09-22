@@ -77,7 +77,7 @@ final class CampaignPayloadGuard
                 if (
                     is_string($key)
                     && preg_match(
-                        '/password|secret|token|authorization|credential|api[_-]?key|private[_-]?key|provider[_-]?payload|upload[_-]?id|container[_-]?id|provider[_-]?(?:post|media)[_-]?id|external[_-]?post[_-]?id|(?:provider|external|remote|native)[_-]?schedule[_-]?id|(?:provider|external|remote|native)[_-]?(?:scheduled|publish)[_-]?at/i',
+                        '/password|secret|token|authorization|credential|api[_-]?key|private[_-]?key|provider[_-]?payload|upload[_-]?id|container[_-]?id|provider[_-]?(?:post|media)[_-]?id|external[_-]?post[_-]?id|(?:provider|external|remote|native)[_-]?schedule[_-]?(?:id|payload)|(?:provider|external|remote|native)[_-]?(?:scheduled|publish)[_-]?at/i',
                         $key,
                     ) === 1
                 ) {

@@ -157,7 +157,11 @@ BEGIN
         RAISE EXCEPTION 'campaign schedule due claim identity evidence is immutable';
     END IF;
 
-    IF OLD.state = 'emitted' OR NEW.version <> OLD.version + 1 THEN
+    IF OLD.state = 'emitted'
+        OR NEW.version <> OLD.version + 1
+        OR NEW.updated_at <= OLD.updated_at
+        OR NEW.lease_expires_at <= NEW.updated_at
+    THEN
         RAISE EXCEPTION 'campaign schedule due claim transition is not monotonic';
     END IF;
 
@@ -165,6 +169,7 @@ BEGIN
         IF OLD.state <> 'leased'
             OR NEW.attempt_number <> OLD.attempt_number + 1
             OR NEW.lease_token_hash IS NOT DISTINCT FROM OLD.lease_token_hash
+            OR OLD.lease_expires_at > NEW.updated_at
         THEN
             RAISE EXCEPTION 'campaign schedule stale lease takeover is invalid';
         END IF;
@@ -174,6 +179,7 @@ BEGIN
             OR NEW.lease_owner IS DISTINCT FROM OLD.lease_owner
             OR NEW.lease_token_hash IS DISTINCT FROM OLD.lease_token_hash
             OR NEW.lease_expires_at IS DISTINCT FROM OLD.lease_expires_at
+            OR NEW.updated_at >= OLD.lease_expires_at
         THEN
             RAISE EXCEPTION 'campaign schedule emitted transition changed lease evidence';
         END IF;
@@ -191,7 +197,7 @@ SQL);
 
         if ($driver === 'sqlite') {
             DB::unprepared("CREATE TRIGGER IF NOT EXISTS campaign_schedule_due_claims_immutable_identity BEFORE UPDATE ON campaign_schedule_due_claims WHEN NEW.id IS NOT OLD.id OR NEW.workspace_id IS NOT OLD.workspace_id OR NEW.campaign_id IS NOT OLD.campaign_id OR NEW.snapshot_id IS NOT OLD.snapshot_id OR NEW.schedule_id IS NOT OLD.schedule_id OR NEW.schedule_hash IS NOT OLD.schedule_hash OR NEW.scheduled_approval_id IS NOT OLD.scheduled_approval_id OR NEW.evaluated_approval_id IS NOT OLD.evaluated_approval_id OR NEW.claimed_at IS NOT OLD.claimed_at BEGIN SELECT RAISE(ABORT, 'campaign schedule due claim identity evidence is immutable'); END;");
-            DB::unprepared("CREATE TRIGGER IF NOT EXISTS campaign_schedule_due_claims_monotonic BEFORE UPDATE ON campaign_schedule_due_claims WHEN OLD.state = 'emitted' OR NEW.version <> OLD.version + 1 OR (NEW.state = 'leased' AND (OLD.state <> 'leased' OR NEW.attempt_number <> OLD.attempt_number + 1 OR NEW.lease_token_hash IS OLD.lease_token_hash)) OR (NEW.state = 'emitted' AND (OLD.state <> 'leased' OR NEW.attempt_number <> OLD.attempt_number OR NEW.lease_owner IS NOT OLD.lease_owner OR NEW.lease_token_hash IS NOT OLD.lease_token_hash OR NEW.lease_expires_at IS NOT OLD.lease_expires_at)) OR NEW.state NOT IN ('leased', 'emitted') BEGIN SELECT RAISE(ABORT, 'campaign schedule due claim transition is not monotonic'); END;");
+            DB::unprepared("CREATE TRIGGER IF NOT EXISTS campaign_schedule_due_claims_monotonic BEFORE UPDATE ON campaign_schedule_due_claims WHEN OLD.state = 'emitted' OR NEW.version <> OLD.version + 1 OR NEW.updated_at <= OLD.updated_at OR NEW.lease_expires_at <= NEW.updated_at OR (NEW.state = 'leased' AND (OLD.state <> 'leased' OR NEW.attempt_number <> OLD.attempt_number + 1 OR NEW.lease_token_hash IS OLD.lease_token_hash OR OLD.lease_expires_at > NEW.updated_at)) OR (NEW.state = 'emitted' AND (OLD.state <> 'leased' OR NEW.attempt_number <> OLD.attempt_number OR NEW.lease_owner IS NOT OLD.lease_owner OR NEW.lease_token_hash IS NOT OLD.lease_token_hash OR NEW.lease_expires_at IS NOT OLD.lease_expires_at OR NEW.updated_at >= OLD.lease_expires_at)) OR NEW.state NOT IN ('leased', 'emitted') BEGIN SELECT RAISE(ABORT, 'campaign schedule due claim transition is not monotonic'); END;");
             DB::unprepared("CREATE TRIGGER IF NOT EXISTS campaign_schedule_due_claims_no_delete BEFORE DELETE ON campaign_schedule_due_claims BEGIN SELECT RAISE(ABORT, 'campaign schedule due claim coordination evidence cannot be deleted'); END;");
         }
     }

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0039",
+  "phase": "PHASE-07",
+  "module": "Publishing",
+  "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
+  "status": "planned",
+  "objective": "Implement the workspace-scoped canonical editorial/campaign calendar and provider-neutral scheduling engine that turns approved immutable campaign snapshots into deterministic fixed-instant or queue/next-slot execution intents with explicit IANA timezone/DST semantics, append-oriented reschedule/cancel/missed-run history, approval-timing enforcement and replay-safe due claiming, while leaving provider publication attempts, provider-native scheduling side effects and credential use to later guarded tasks.",
+  "dependencies": [
+    "TASK-0038"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped calendar/schedule records bind the exact campaign, immutable campaign snapshot, target-set hash and scheduling strategy; foreign-workspace references, stale snapshots or non-approval-eligible campaign state fail closed and no provider publication call is performed",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Fixed-instant scheduling requires an IANA timezone plus local scheduling input, resolves and persists one immutable canonical UTC execution instant, and defines deterministic fail-closed policies for ambiguous and nonexistent local times rather than relying on host timezone defaults",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Queue/next-slot scheduling is distinct from fixed-instant scheduling and uses versioned workspace/channel schedule rules, explicit IANA timezone and deterministic slot selection; once a run is pinned, later timezone, DST or queue-rule changes do not silently rewrite its resolved instant",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Reschedule and cancellation are append-oriented state changes that preserve previous schedule identity, actor/time/reason and old/new resolved instants; execution-pinned history is never mutated in place and material campaign/snapshot changes require deterministic approval re-evaluation before a new schedule can become executable",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Approval timing is enforced at scheduling and due-claim boundaries: expired/revoked/stale approval or a missed approval deadline cannot execute, and missed-time outcomes become deterministic auditable missed/needs-reschedule state rather than silent late publication",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Due-claiming and scheduler mutations are transaction-safe, concurrency-safe and idempotent under duplicate workers, retries, stale leases and replay; one canonical schedule occurrence can emit at most one internal execution intent and partial failures cannot create duplicate or cross-workspace work",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "VSN calendar time remains canonical even when provider-native scheduling is available; provider-native schedule support is versioned capability evidence only, provider disconnect/permission drift fails closed, credentials remain outside canonical calendar records, and TASK-0039 emits no live provider API call, upload or publication attempt",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Backend, PostgreSQL and adversarial tests prove IANA timezone/DST ambiguity and gap handling, fixed-versus-queue semantics, reschedule/cancel/missed-run history, approval timing, workspace isolation, duplicate prevention and replay safety; exact-head continuity, static-analysis/formatting, application, integration and security/supply-chain gates are green before TASK-0040 registration",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/supervisor_contract.py validate",
+    "python tools/runner_benchmark.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "When TASK-0039 is separately activated after the trusted TASK-0038 completion transition, begin with canonical calendar/schedule persistence and deterministic timezone resolution tests: fixed_instant versus queue/next_slot, IANA timezone validation, ambiguous/nonexistent DST policy, immutable resolved instants, reschedule/cancel/missed-run history and replay-safe due claiming. Do not make provider API calls, upload media, publish content, use provider credentials, activate TASK-0040, or execute the deferred Runner optimization batch."
+}

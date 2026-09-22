@@ -878,3 +878,99 @@ it('creates a replay-safe scheduled intent from an exact approved snapshot witho
         new DateTimeImmutable('2026-09-22T05:04:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'replay');
 });
+
+
+it('rejects offset-bearing fixed-instant input before entering scheduled intent', function () {
+    $editor = task0038GovernanceActor('scheduled-intent-local-wall-clock');
+    $workspaceId = (string) $editor['workspace']->getKey();
+
+    task0038GovernanceGrant(
+        $editor['user'],
+        $workspaceId,
+        'scheduled-intent-local-editor',
+        [PermissionCatalog::CAMPAIGN_CREATE, PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $approver = User::query()->create([
+        'name' => 'Local wall-clock approver',
+        'email' => 'local-wall-clock-approver@task0038.test',
+        'password' => Hash::make('secret-pass'),
+    ]);
+    task0038GovernanceGrant(
+        $approver,
+        $workspaceId,
+        'scheduled-intent-local-approver',
+        [PermissionCatalog::CAMPAIGN_APPROVE],
+    );
+    $approverContext = new TenantContext(
+        organizationId: (string) $editor['organization']->getKey(),
+        workspaceId: $workspaceId,
+        brandId: null,
+        actorId: (string) $approver->getKey(),
+    );
+
+    $inputs = task0038GovernanceCanonicalInputs($workspaceId, 'scheduled-intent-local-wall-clock');
+    $target = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $inputs['contact_id'],
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: new DateTimeImmutable('2026-09-22T05:00:00+00:00'),
+    );
+    $fixture = task0038GovernanceCampaign(
+        $workspaceId,
+        $inputs['content_version_id'],
+        $target,
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'UTC',
+            'at' => '2026-09-22T09:00:00Z',
+        ],
+    );
+
+    $service = app(CampaignGovernanceService::class);
+    $needsApproval = $service->requestApproval(
+        $editor['user'],
+        $editor['context'],
+        $fixture['campaign']->id,
+        $fixture['snapshot']->id,
+        (string) Str::uuid(),
+        'scheduled-intent-local-request',
+        'Request invalid offset-bearing intent approval.',
+        new DateTimeImmutable('2026-09-22T05:01:00+00:00'),
+    );
+    $approved = $service->approve(
+        $approver,
+        $approverContext,
+        $needsApproval->id,
+        $fixture['snapshot']->id,
+        'scheduled-intent-local-approver',
+        (string) Str::uuid(),
+        'scheduled-intent-local-approval',
+        (string) Str::uuid(),
+        'scheduled-intent-local-approval-event',
+        (string) Str::uuid(),
+        'scheduled-intent-local-approved-transition',
+        'Approval does not override invalid calendar semantics.',
+        new DateTimeImmutable('2026-09-22T12:00:00+00:00'),
+        new DateTimeImmutable('2026-09-22T05:02:00+00:00'),
+    );
+
+    expect(fn () => $service->scheduleIntent(
+        $editor['user'],
+        $editor['context'],
+        $approved->id,
+        (string) Str::uuid(),
+        'scheduled-intent-local-invalid-transition',
+        'Must reject offset-bearing wall-clock input.',
+        new DateTimeImmutable('2026-09-22T05:03:00+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'unambiguous local wall-clock time');
+
+    expect(app(DatabaseCampaignRepository::class)
+        ->findCampaign($workspaceId, $approved->id)?->status)
+        ->toBe(CampaignStatus::Approved);
+});

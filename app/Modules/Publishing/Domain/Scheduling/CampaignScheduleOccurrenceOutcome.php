@@ -61,9 +61,11 @@ final readonly class CampaignScheduleOccurrenceOutcome
 
         if (
             $this->missedReason === CampaignScheduleMissedReason::ExecutionDeadlineMissed
-            && $this->approvalInvalidReason !== null
+            && ($this->approvalInvalidReason !== null || $this->approvalDetail !== null)
         ) {
-            throw new InvalidArgumentException('Execution-deadline schedule outcome cannot contain an approval invalidation reason.');
+            throw new InvalidArgumentException(
+                'Execution-deadline schedule outcome cannot contain approval invalidation evidence.',
+            );
         }
 
         if ($this->approvalDetail !== null) {

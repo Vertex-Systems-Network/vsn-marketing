@@ -879,7 +879,6 @@ it('creates a replay-safe scheduled intent from an exact approved snapshot witho
     ))->toThrow(InvalidArgumentException::class, 'replay');
 });
 
-
 it('rejects offset-bearing fixed-instant input before entering scheduled intent', function () {
     $editor = task0038GovernanceActor('scheduled-intent-local-wall-clock');
     $workspaceId = (string) $editor['workspace']->getKey();

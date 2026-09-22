@@ -1575,7 +1575,6 @@ it('rolls back a partial outbox failure and retries to one canonical execution i
         ->toBe('emitted');
 });
 
-
 it('keeps VSN resolved time canonical when remote provider scheduling is supported', function () {
     $actor = task0039CalendarActor('provider-schedule-canonical');
     $fixture = task0039CalendarFixture(
@@ -1660,6 +1659,56 @@ it('fails closed when provider scope drifts after due claim and before execution
         ->and(DB::table('campaign_schedule_due_claims')
             ->where('schedule_id', $schedule->id)
             ->value('state'))->toBe('leased');
+});
+
+it('fails closed when remote scheduling capability support drifts after due claim', function () {
+    $actor = task0039CalendarActor('provider-capability-drift');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-capability-drift',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-capability-drift-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+    $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-capability-worker',
+        leaseToken: 'provider-capability-token',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+
+    DB::table('provider_capabilities')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['providerCapabilityId'])
+        ->update([
+            'support_status' => 'unsupported',
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:05+00:00'),
+        ]);
+
+    expect(fn () => $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-capability-worker',
+        leaseToken: 'provider-capability-token',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'capability_unsupported');
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
 });
 
 it('refuses stale lease takeover after provider connection becomes unavailable', function () {

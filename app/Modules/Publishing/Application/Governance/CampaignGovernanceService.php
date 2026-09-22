@@ -832,6 +832,8 @@ final readonly class CampaignGovernanceService
                 );
             }
 
+            $this->assertSnapshotChannel($snapshot, $channel);
+
             $ruleSet = $this->scheduleRules->find($context->workspaceId, $ruleSetId);
             if (! $ruleSet instanceof CampaignScheduleRuleSet || $ruleSet->channel !== $channel) {
                 throw new InvalidArgumentException(
@@ -851,6 +853,19 @@ final readonly class CampaignGovernanceService
 
         throw new InvalidArgumentException(
             'Campaign scheduled intent requires fixed_instant or queue_next_slot intended execution.',
+        );
+    }
+
+    private function assertSnapshotChannel(CampaignSnapshot $snapshot, string $channel): void
+    {
+        foreach ($snapshot->targets as $target) {
+            if ($target->channel === $channel) {
+                return;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            'Campaign queue scheduled intent channel is not present in the immutable snapshot target set.',
         );
     }
 

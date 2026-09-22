@@ -581,18 +581,34 @@
       "source": "PR #359 / TASK-0039 reschedule-cancel history foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #359 exact-head status/comment"
+        "git_sha": "cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #359 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0039-reschedule-cancel-history; append-only mutation history + reapproval + PostgreSQL/security tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-reschedule-cancel-history:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 359,
+        "source_sha": "cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c",
+        "merge_sha": "f9c2175116d7d509c0ebe988bfa58ffaf927108b",
+        "workflow_runs": {
+          "ai_continuity_guard": 35783604657,
+          "application_foundation_ci": 35783604696,
+          "security_supply_chain_ci": 35783604660
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "append-only reschedule/cancel history; immutable old/new schedule lineage; due/past mutation rejection; material-revision reapproval; no provider scheduling/publication side effect",
+        "recovery_note": "Verification exposed a material-revision test fixture reusing an immutable target-binding identity and two Pint EOF findings. The fixture was corrected with a fresh target-binding identity and formatting normalized without weakening product, approval, workspace, migration or security invariants."
+      }
     }
   ]
 }

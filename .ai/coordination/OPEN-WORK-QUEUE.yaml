@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1e17d38aaaefdeba1d2bb930e553c93f7d7ff7e7",
-  "active_work_path": null,
+  "reconciled_main_sha": "0d6487ea611a684902a2fcc7ef83e9168b6f2981",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 359,
+    "branch": "task/0039-reschedule-cancel-history",
+    "milestone": "TASK-0039-RESCHEDULE-CANCEL-HISTORY"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 359,
+      "title": "feat(publishing): add append-only reschedule and cancellation history",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-021",
+      "branch": "task/0039-reschedule-cancel-history"
     }
   ]
 }

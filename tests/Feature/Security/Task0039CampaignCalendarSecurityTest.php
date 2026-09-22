@@ -1032,3 +1032,46 @@ it('reserves valid exact-due execution claiming for AC-6 without emitting an out
 
     expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
 });
+
+
+it('denies missed occurrence writes without campaign send authority', function () {
+    $actor = task0039CalendarActor('missed-authority-owner');
+    $fixture = task0039CalendarFixture($actor, 'missed-authority-owner');
+    $calendar = app(CampaignCalendarService::class);
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'missed-authority-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $unauthorized = User::query()->create([
+        'name' => 'Unauthorized missed-outcome writer',
+        'email' => 'unauthorized-missed@task0039.test',
+        'password' => Hash::make('secret-pass'),
+    ]);
+    app(WorkspaceRoleManager::class)->addMember(
+        $unauthorized,
+        (string) $actor['workspace']->getKey(),
+    );
+    $context = new TenantContext(
+        organizationId: (string) $actor['organization']->getKey(),
+        workspaceId: (string) $actor['workspace']->getKey(),
+        brandId: null,
+        actorId: (string) $unauthorized->getKey(),
+    );
+
+    expect(fn () => $calendar->recordMissedOccurrence(
+        actor: $unauthorized,
+        context: $context,
+        scheduleId: $schedule->id,
+        outcomeId: (string) Str::uuid(),
+        idempotencyKey: 'missed-authority-denied',
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    ))->toThrow(AuthorizationException::class, 'campaign.send');
+
+    expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
+});

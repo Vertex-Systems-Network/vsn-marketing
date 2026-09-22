@@ -51,6 +51,34 @@ final readonly class CampaignCalendarService
     ): CampaignScheduleRuleSet {
         $this->assertScheduleAuthority($actor, $context);
 
+        $existing = $this->rules->findByIdempotency($context->workspaceId, $idempotencyKey);
+        if ($existing !== null) {
+            $candidate = CampaignScheduleRuleSet::create(
+                id: $ruleSetId,
+                workspaceId: $context->workspaceId,
+                parentRuleSetId: $existing->parentRuleSetId,
+                channel: $channel,
+                versionNumber: $existing->versionNumber,
+                timezoneId: $timezoneId,
+                slots: $slots,
+                idempotencyKey: $idempotencyKey,
+                createdByActorId: $context->actorId,
+                createdAt: $existing->createdAt,
+            );
+
+            if (
+                $existing->id !== $candidate->id
+                || $existing->createdByActorId !== $candidate->createdByActorId
+                || ! hash_equals($existing->ruleHash, $candidate->ruleHash)
+            ) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule rule replay conflicts with existing immutable rule state.',
+                );
+            }
+
+            return $existing;
+        }
+
         $latest = $this->rules->latest($context->workspaceId, $channel);
         $ruleSet = CampaignScheduleRuleSet::create(
             id: $ruleSetId,

@@ -2,34 +2,36 @@
 
 ## State
 
-- Timestamp: `2026-09-22T21:55:00Z`
-- Observed main: `909fc90032fe8530cab7859ffa08af42642b1af7`
+- Timestamp: `2026-09-22T22:15:00Z`
+- Observed main: `8218f3772f7ab131dbee3927c13970af5e1e8299`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0039-APPROVAL-MISSED-OUTCOMES`
-- Milestone status: `COMPLETE`
+- Active PR: `363`
+- Active branch: `task/0039-due-claim-execution-intent`
+- Current milestone: `TASK-0039-DUE-CLAIM-EXECUTION-INTENT`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0039`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-023`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `a3cd51d1ade86272beed1815cf7d078a0b4ed0af5b69c9666c0f498c095e1f11`
+- State fingerprint: `25ab44bc2ccaf587ba8dd894a765a59400e87e8bb5284e1e497f84dcc425134e`
 
 ## Completed / observed this session
 
-TASK-0039 approval-timing/missed-occurrence PR #361 exact source `c5481f457526a55cd681af93e098ba41f2d90171` passed AI Continuity Guard `35788599628`, Application Foundation CI `35788599696`, and Security Supply Chain CI `35788599636`, then merged on protected main as `909fc90032fe8530cab7859ffa08af42642b1af7`.
+TASK-0039 AC-5 approval-timing/missed-occurrence history was terminally reconciled through PR #362 on protected main `8218f3772f7ab131dbee3927c13970af5e1e8299`. Exact reconciliation source `6003c14c1ac942a3e9481120bcd5f0385bf70924` passed AI Continuity Guard `35789527404`, Application Foundation CI `35789527241` including PostgreSQL/Redis integration, and Security Supply Chain CI `35789527189`. The reconciliation also rolled immutable journal events 99-108 into the bounded archive without changing historical bytes.
 
-The trusted AC-5 slice provides immutable `campaign_schedule_occurrence_outcomes`, explicit `missed_needs_reschedule` state, canonical approval-invalid evidence, deterministic valid-but-late `execution_deadline_missed` outcomes, replay-first idempotency, exact schedule/snapshot/approval/resolved-UTC binding, symmetric conflict rejection against reschedule/cancellation terminal history, workspace isolation, PostgreSQL/SQLite immutability and authorization coverage.
+PR #363 stages the bounded AC-6 product milestone. PostgreSQL schedule-row locking is the canonical serialization point; durable due claims pin exact workspace/campaign/snapshot/schedule/schedule-hash/scheduled approval/evaluated approval evidence. Raw lease tokens are never persisted: only SHA-256 digests are stored. Active duplicate workers fail closed, expired leases require a fresh token and advance attempt/version lineage, and claim identity plus monotonic transitions are database-guarded.
 
-Application verification exposed one redundant single-case occurrence-state comparison in PHPStan and two Pint-only extra-blank-line issues. The repairs were verification-only and did not weaken approval, workspace, migration, terminality, replay or security invariants. RBT-022 is terminal PASS.
+An exact due occurrence reuses the canonical approval evaluator before first claim. Pre-due work is rejected. A late unclaimed occurrence is routed into the trusted AC-5 missed/needs-reschedule ledger. After due claiming starts, backdated reschedule/cancel and missed-outcome competitors fail closed. Campaign lifecycle is rechecked before emission.
 
-TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. The next bounded milestone is AC-6 PostgreSQL-authoritative due claiming with durable lease/stale-lease recovery plus exactly one immutable internal execution intent and same-transaction outbox handoff per canonical occurrence. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
+Under a current valid lease, PR #363 creates at most one immutable execution intent per workspace/schedule and one FK-bound outbox handoff in the same database transaction. Injected outbox failure must roll back intent/emitted state, while replay after commit returns the canonical intent. Real PostgreSQL multi-process contention coverage launches duplicate claim and emit workers and requires one claim, one immutable intent and one outbox record.
+
+TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #361 final exact head passed backend, architecture, PHP static analysis, Pint formatting, frontend typecheck/unit/build, PHP 8.3 compatibility floor, Playwright smoke, PostgreSQL/Redis infrastructure integration and full security/supply-chain verification.
+RBT-023 exact-head Continuity/Application/Security verification is pending. Merge-blocking coverage includes backend/architecture/static/formatting, PHP 8.3 compatibility, E2E, PostgreSQL/Redis integration, PostgreSQL multi-process scheduler contention, lease hashing/stale-token behavior, terminal-history conflicts, lifecycle cancellation, cross-workspace isolation, rollback/retry atomicity and security/supply-chain checks.
 
 ## Blockers
 
@@ -37,4 +39,4 @@ PR #361 final exact head passed backend, architecture, PHP static analysis, Pint
 
 ## Exact next action
 
-Begin the bounded TASK-0039 AC-6 due-claim concurrency/execution-intent milestone from protected main 909fc90032fe8530cab7859ffa08af42642b1af7. Use PostgreSQL as canonical scheduler truth: serialize on the exact workspace schedule row, allow claim only for the approval-eligible exact due occurrence, persist lease owner/token/version/expiry with deterministic stale-lease takeover, and route late unclaimed occurrences through the existing AC-5 missed/needs-reschedule path. Under a valid current lease, emit at most one immutable internal execution intent for the canonical schedule occurrence and one durable outbox handoff in the same database transaction; duplicate workers, retries, stale leases and partial failures must replay to the same intent without duplicate or cross-workspace work. Add PostgreSQL multi-process contention/adversarial coverage for one-intent/one-outbox uniqueness, stale-lease recovery, rollback/retry and terminal mutation/missed-outcome conflicts. Keep provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.
+Perform exact-head verification for PR #363. Merge the TASK-0039 AC-6 due-claim/execution-intent milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL multi-process contention proves duplicate claim/emit workers converge to one claim, one immutable execution intent and one durable outbox handoff; raw lease tokens are never persisted; pre-due, foreign-workspace, active-lease, stale-token, terminal-history and cancelled-lifecycle paths fail closed; expired leases recover with fresh token/version lineage; and injected partial outbox failure rolls back intent/emitted state before replay succeeds exactly once. After trusted merge, terminally reconcile AC-6 before starting the next TASK-0039 acceptance slice. Keep provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.

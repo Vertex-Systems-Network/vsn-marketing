@@ -717,6 +717,18 @@ it('persists due claims, blocks competing terminal history and protects immutabl
     );
     $executions->createClaim($claim);
 
+    expect(fn () => DB::transaction(function () use ($claim): void {
+        DB::table('campaign_schedule_due_claims')
+            ->where('id', $claim->id)
+            ->update(['schedule_hash' => hash('sha256', 'tampered-claim-identity')]);
+    }))->toThrow(QueryException::class);
+
+    expect(fn () => DB::transaction(function () use ($claim): void {
+        DB::table('campaign_schedule_due_claims')
+            ->where('id', $claim->id)
+            ->delete();
+    }))->toThrow(QueryException::class);
+
     $mutation = CampaignScheduleMutation::cancelled(
         id: (string) Str::uuid(),
         previous: $schedule,
@@ -786,13 +798,15 @@ it('persists due claims, blocks competing terminal history and protects immutabl
 
     expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(1);
 
-    expect(fn () => DB::table('campaign_schedule_execution_intents')
-        ->where('id', $intent->id)
-        ->update(['claim_version' => 99]))
-        ->toThrow(QueryException::class);
+    expect(fn () => DB::transaction(function () use ($intent): void {
+        DB::table('campaign_schedule_execution_intents')
+            ->where('id', $intent->id)
+            ->update(['claim_version' => 99]);
+    }))->toThrow(QueryException::class);
 
-    expect(fn () => DB::table('campaign_schedule_execution_intents')
-        ->where('id', $intent->id)
-        ->delete())
-        ->toThrow(QueryException::class);
+    expect(fn () => DB::transaction(function () use ($intent): void {
+        DB::table('campaign_schedule_execution_intents')
+            ->where('id', $intent->id)
+            ->delete();
+    }))->toThrow(QueryException::class);
 });

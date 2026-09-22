@@ -675,6 +675,24 @@
         },
         "recovery_note": "Final AC-6 head includes emitted-claim lineage verification on replay. Exact-head backend, architecture, PHP static analysis/formatting, PHP 8.3, E2E, PostgreSQL/Redis integration, real multi-process due-claim contention and security/supply-chain checks all passed without weakening workspace, approval, migration, lease, outbox or provider-isolation invariants."
       }
+    },
+    {
+      "id": "RBT-024",
+      "source": "PR #365 / TASK-0039 provider schedule capability-evidence milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #365 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-provider-schedule-capability-evidence; canonical VSN time + publication.schedule.remote evidence + provider drift revalidation + transient provider schedule metadata guards",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-provider-schedule-capability-evidence:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

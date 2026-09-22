@@ -245,6 +245,13 @@ final readonly class CampaignScheduleDueClaimService
                 );
             }
 
+            $campaign = $this->campaigns->lockCampaignForUpdate($workspaceId, $schedule->campaignId);
+            if ($campaign->status !== CampaignStatus::ScheduledIntent) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule execution intent requires scheduled_intent lifecycle state.',
+                );
+            }
+
             $intentId = $this->identifiers->next();
             $outboxId = $this->identifiers->next();
             $intent = CampaignScheduleExecutionIntent::create(

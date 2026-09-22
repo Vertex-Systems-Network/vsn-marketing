@@ -1,0 +1,184 @@
+<?php
+
+use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
+use DateTimeImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    if (filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL) === false) {
+        $this->markTestSkipped('Set RUN_INFRA_INTEGRATION=true to run TASK-0039 PostgreSQL persistence tests.');
+    }
+});
+
+/** @return array{workspace_id: string, campaign_id: string, snapshot_id: string, approval_id: string, target_hash: string} */
+function task0039PersistenceFixture(string $suffix): array
+{
+    $organizationId = (string) Str::uuid();
+    $workspaceId = (string) Str::uuid();
+    $campaignId = (string) Str::uuid();
+    $snapshotId = (string) Str::uuid();
+    $approvalId = (string) Str::uuid();
+    $documentId = (string) Str::uuid();
+    $contentVersionId = (string) Str::uuid();
+    $targetHash = hash('sha256', 'task0039-'.$suffix);
+    $now = new DateTimeImmutable('2026-07-15T10:00:00+00:00');
+
+    DB::table('organizations')->insert([
+        'id' => $organizationId,
+        'name' => 'Task0039 '.$suffix,
+        'slug' => 'task0039-'.$suffix,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+    DB::table('workspaces')->insert([
+        'id' => $workspaceId,
+        'organization_id' => $organizationId,
+        'name' => 'Task0039 '.$suffix,
+        'slug' => 'task0039-workspace-'.$suffix,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+    DB::table('content_documents')->insert([
+        'id' => $documentId,
+        'workspace_id' => $workspaceId,
+        'name' => 'Task0039 content '.$suffix,
+        'lifecycle' => 'active',
+        'created_by_actor_id' => 'task0039-author',
+        'audit_provenance' => json_encode(['source' => 'task0039-integration'], JSON_THROW_ON_ERROR),
+        'created_at' => $now,
+        'updated_at' => null,
+    ]);
+    DB::table('content_versions')->insert([
+        'id' => $contentVersionId,
+        'workspace_id' => $workspaceId,
+        'document_id' => $documentId,
+        'parent_version_id' => null,
+        'version_number' => 1,
+        'schema_version' => 1,
+        'status' => 'published',
+        'canonical_tree' => json_encode(['schema_version' => 1, 'root' => []], JSON_THROW_ON_ERROR),
+        'audit_provenance' => json_encode(['source' => 'task0039-integration'], JSON_THROW_ON_ERROR),
+        'idempotency_key' => 'content-'.$suffix,
+        'created_by_actor_id' => 'task0039-author',
+        'created_at' => $now,
+    ]);
+    DB::table('campaigns')->insert([
+        'id' => $campaignId,
+        'workspace_id' => $workspaceId,
+        'name' => 'Task0039 campaign '.$suffix,
+        'status' => 'scheduled_intent',
+        'state_version' => 5,
+        'idempotency_key' => 'campaign-'.$suffix,
+        'created_by_actor_id' => 'task0039-author',
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]);
+    DB::table('campaign_snapshots')->insert([
+        'id' => $snapshotId,
+        'workspace_id' => $workspaceId,
+        'campaign_id' => $campaignId,
+        'parent_snapshot_id' => null,
+        'version_number' => 1,
+        'schema_version' => 1,
+        'content_version_id' => $contentVersionId,
+        'template_version_id' => null,
+        'component_version_ids' => json_encode([], JSON_THROW_ON_ERROR),
+        'asset_reference_ids' => json_encode([], JSON_THROW_ON_ERROR),
+        'capability_evidence_ids' => json_encode([], JSON_THROW_ON_ERROR),
+        'brand_reference' => json_encode([], JSON_THROW_ON_ERROR),
+        'intended_execution' => json_encode([
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+        ], JSON_THROW_ON_ERROR),
+        'target_set_hash' => $targetHash,
+        'snapshot_hash' => hash('sha256', 'snapshot-'.$suffix),
+        'idempotency_key' => 'snapshot-'.$suffix,
+        'created_by_actor_id' => 'task0039-author',
+        'created_at' => $now,
+    ]);
+    DB::table('campaign_approval_decisions')->insert([
+        'id' => $approvalId,
+        'workspace_id' => $workspaceId,
+        'campaign_id' => $campaignId,
+        'snapshot_id' => $snapshotId,
+        'target_set_hash' => $targetHash,
+        'outcome' => 'approved',
+        'actor_id' => 'task0039-approver',
+        'actor_role' => 'campaign-approver',
+        'reason' => 'Approved for schedule persistence test.',
+        'capability_evidence_ids' => json_encode([], JSON_THROW_ON_ERROR),
+        'supersedes_decision_id' => null,
+        'expires_at' => new DateTimeImmutable('2026-07-15T14:00:00+00:00'),
+        'idempotency_key' => 'approval-'.$suffix,
+        'occurred_at' => new DateTimeImmutable('2026-07-15T10:05:00+00:00'),
+    ]);
+
+    return compact('workspaceId', 'campaignId', 'snapshotId', 'approvalId', 'targetHash');
+}
+
+it('persists replay-safe immutable fixed-instant schedules and preserves rows across re-entrant migration', function () {
+    $fixture = task0039PersistenceFixture('fixed');
+    $repository = app(DatabaseCampaignScheduleRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-fixed',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+
+    $stored = $repository->create($schedule);
+    $replayed = $repository->create($schedule);
+
+    expect($stored->scheduleHash)->toBe($schedule->scheduleHash)
+        ->and($replayed->id)->toBe($schedule->id)
+        ->and(DB::table('campaign_schedules')->count())->toBe(1);
+
+    $migration = require database_path('migrations/2026_09_22_000001_create_campaign_schedule_foundation_tables.php');
+    $migration->up();
+
+    expect(DB::table('campaign_schedules')->count())->toBe(1);
+
+    expect(fn () => DB::table('campaign_schedules')->where('id', $schedule->id)->update([
+        'timezone_id' => 'UTC',
+    ]))->toThrow(QueryException::class);
+});
+
+it('fails closed when a schedule identity is read from another workspace', function () {
+    $fixture = task0039PersistenceFixture('scope-a');
+    $other = task0039PersistenceFixture('scope-b');
+    $repository = app(DatabaseCampaignScheduleRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-scope-a',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $repository->create($schedule);
+
+    expect(fn () => $repository->find($other['workspaceId'], $schedule->id))
+        ->toThrow(AuthorizationException::class, 'Campaign schedule reference access denied.');
+});

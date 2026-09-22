@@ -103,6 +103,8 @@ return new class extends Migration
                     ['claim_id', 'workspace_id'],
                     'campaign_execution_intent_claim_workspace_fk',
                 )->references(['id', 'workspace_id'])->on('campaign_schedule_due_claims')->restrictOnDelete();
+                $table->foreign('outbox_id', 'campaign_execution_intent_outbox_fk')
+                    ->references('id')->on('outbox_messages')->restrictOnDelete();
 
                 $table->unique(['id', 'workspace_id'], 'campaign_execution_intent_id_workspace_uq');
                 $table->unique(['workspace_id', 'schedule_id'], 'campaign_execution_intent_schedule_uq');

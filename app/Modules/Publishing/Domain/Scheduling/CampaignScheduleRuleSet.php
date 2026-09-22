@@ -10,7 +10,7 @@ use InvalidArgumentException;
 final readonly class CampaignScheduleRuleSet
 {
     /**
-     * @param list<array{weekday: int, local_time: string}> $slots
+     * @param  list<array{weekday: int, local_time: string}>  $slots
      */
     public function __construct(
         public string $id,
@@ -65,7 +65,7 @@ final readonly class CampaignScheduleRuleSet
     }
 
     /**
-     * @param list<array{weekday: int, local_time: string}> $slots
+     * @param  list<array{weekday: int, local_time: string}>  $slots
      */
     public static function create(
         string $id,
@@ -78,7 +78,8 @@ final readonly class CampaignScheduleRuleSet
         string $idempotencyKey,
         string $createdByActorId,
         DateTimeImmutable $createdAt,
-    ): self {
+    ): self
+    {
         $canonicalSlots = self::canonicalizeSlots($slots);
         $payload = self::canonicalPayloadFor(
             workspaceId: $workspaceId,
@@ -118,7 +119,7 @@ final readonly class CampaignScheduleRuleSet
     }
 
     /**
-     * @param list<array{weekday: int, local_time: string}> $slots
+     * @param  list<array{weekday: int, local_time: string}>  $slots
      * @return list<array{weekday: int, local_time: string}>
      */
     private static function canonicalizeSlots(array $slots): array
@@ -173,7 +174,7 @@ final readonly class CampaignScheduleRuleSet
     }
 
     /**
-     * @param list<array{weekday: int, local_time: string}> $slots
+     * @param  list<array{weekday: int, local_time: string}>  $slots
      * @return array<string, mixed>
      */
     private static function canonicalPayloadFor(
@@ -183,7 +184,8 @@ final readonly class CampaignScheduleRuleSet
         int $versionNumber,
         string $timezoneId,
         array $slots,
-    ): array {
+    ): array
+    {
         return [
             'workspace_id' => $workspaceId,
             'parent_rule_set_id' => $parentRuleSetId,

@@ -1114,7 +1114,9 @@ it('claims an exact due occurrence once and atomically emits one durable executi
     expect($claim)->not->toBeNull()
         ->and($claim?->state->value)->toBe('leased')
         ->and($replayedClaim?->id)->toBe($claim?->id)
-        ->and(DB::table('campaign_schedule_due_claims')->count())->toBe(1);
+        ->and(DB::table('campaign_schedule_due_claims')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_due_claims')->value('lease_token_hash'))
+        ->toBe(hash('sha256', 'lease-due-claim-emit'));
 
     $intent = $claims->emitExecutionIntent(
         workspaceId: $actor['context']->workspaceId,
@@ -1167,6 +1169,18 @@ it('recovers an expired due lease with a fresh token and rejects the stale worke
         leaseSeconds: 30,
         at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
     );
+    expect(fn () => $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-worker-b',
+        leaseToken: 'lease-stale-b',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'actively leased by another worker',
+    );
+
     $replacement = $claims->acquireDueClaim(
         workspaceId: $actor['context']->workspaceId,
         scheduleId: $schedule->id,
@@ -1302,4 +1316,41 @@ it('fails closed on foreign-workspace due claims before exposing scheduler state
 
     expect(DB::table('campaign_schedule_due_claims')->count())->toBe(0)
         ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(0);
+});
+
+
+it('rejects claiming before the canonical resolved instant', function () {
+    $suffix = 'pre-due-claim';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'pre-due-claim-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    expect(fn () => $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-early-worker',
+        leaseToken: 'lease-pre-due',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:29:59+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'cannot be claimed before its resolved UTC instant',
+    );
+
+    expect(DB::table('campaign_schedule_due_claims')->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
 });

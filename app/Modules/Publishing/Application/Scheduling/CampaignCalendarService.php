@@ -48,8 +48,7 @@ final readonly class CampaignCalendarService
         array $slots,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignScheduleRuleSet
-    {
+    ): CampaignScheduleRuleSet {
         $this->assertScheduleAuthority($actor, $context);
 
         $latest = $this->rules->latest($context->workspaceId, $channel);
@@ -77,8 +76,7 @@ final readonly class CampaignCalendarService
         string $scheduleId,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignSchedule
-    {
+    ): CampaignSchedule {
         $this->assertScheduleAuthority($actor, $context);
 
         return $this->database->connection()->transaction(function () use (
@@ -88,8 +86,7 @@ final readonly class CampaignCalendarService
             $scheduleId,
             $idempotencyKey,
             $at,
-        ): CampaignSchedule
-    {
+        ): CampaignSchedule {
             $campaign = $this->campaigns->lockCampaignForUpdate($context->workspaceId, $campaignId);
             $existing = $this->schedules->findByIdempotency($context->workspaceId, $idempotencyKey);
 
@@ -160,8 +157,7 @@ final readonly class CampaignCalendarService
         string $scheduleId,
         string $idempotencyKey,
         DateTimeImmutable $at,
-    ): CampaignSchedule
-    {
+    ): CampaignSchedule {
         $this->assertScheduleAuthority($actor, $context);
 
         return $this->database->connection()->transaction(function () use (
@@ -171,8 +167,7 @@ final readonly class CampaignCalendarService
             $scheduleId,
             $idempotencyKey,
             $at,
-        ): CampaignSchedule
-    {
+        ): CampaignSchedule {
             $campaign = $this->campaigns->lockCampaignForUpdate($context->workspaceId, $campaignId);
             $existing = $this->schedules->findByIdempotency($context->workspaceId, $idempotencyKey);
 
@@ -249,8 +244,7 @@ final readonly class CampaignCalendarService
         TenantContext $context,
         string $campaignId,
         string $snapshotId,
-    ): CampaignSnapshot
-    {
+    ): CampaignSnapshot {
         $snapshot = $this->campaigns->findSnapshot($context->workspaceId, $snapshotId);
 
         if (! $snapshot instanceof CampaignSnapshot || $snapshot->campaignId !== $campaignId) {
@@ -260,8 +254,7 @@ final readonly class CampaignCalendarService
         return $snapshot;
     }
 
-    private function assertSnapshotChannel(CampaignSnapshot $snapshot, string $channel): void
-    {
+    private function assertSnapshotChannel(CampaignSnapshot $snapshot, string $channel): void {
         foreach ($snapshot->targets as $target) {
             if ($target->channel === $channel) {
                 return;
@@ -273,8 +266,7 @@ final readonly class CampaignCalendarService
         );
     }
 
-    private function assertScheduleAuthority(User $actor, TenantContext $context): void
-    {
+    private function assertScheduleAuthority(User $actor, TenantContext $context): void {
         if (! $this->authorizer->allows($actor, $context, PermissionCatalog::CAMPAIGN_SEND)) {
             throw new AuthorizationException('Campaign scheduling requires campaign.send permission.');
         }
@@ -287,8 +279,7 @@ final readonly class CampaignCalendarService
         string $snapshotId,
         string $scheduleId,
         string $actorId,
-    ): void
-    {
+    ): void {
         if (
             $existing->strategy !== $strategy
             || $existing->id !== $scheduleId
@@ -302,8 +293,7 @@ final readonly class CampaignCalendarService
         }
     }
 
-    private function assertEffectiveApproval(CampaignApprovalEvaluation $evaluation): void
-    {
+    private function assertEffectiveApproval(CampaignApprovalEvaluation $evaluation): void {
         if ($evaluation->valid) {
             return;
         }

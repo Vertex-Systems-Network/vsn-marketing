@@ -2,8 +2,10 @@
 
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleOccurrenceOutcome;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleOutcomeRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
@@ -495,4 +497,137 @@ it('rejects reschedule lineage that keeps the same canonical UTC occurrence', fu
         InvalidArgumentException::class,
         'must change the resolved UTC instant',
     );
+});
+
+
+it('persists immutable missed occurrence outcomes with replay safety and re-entrant migration', function () {
+    $fixture = task0039PersistenceFixture('missed-outcome');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $outcomes = app(DatabaseCampaignScheduleOutcomeRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-missed-outcome',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $outcome = CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedDecisionId: $fixture['approvalId'],
+        recordedByActorId: 'task0039-author',
+        idempotencyKey: 'outcome-missed-deadline',
+        observedAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+
+    $stored = $outcomes->create($outcome);
+    $replayed = $outcomes->create($outcome);
+
+    expect($stored->outcomeHash)->toBe($outcome->outcomeHash)
+        ->and($replayed->id)->toBe($outcome->id)
+        ->and($stored->missedReason->value)->toBe('execution_deadline_missed')
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
+
+    $migration = require database_path(
+        'migrations/2026_09_22_000004_create_campaign_schedule_occurrence_outcome_tables.php',
+    );
+    $migration->up();
+
+    expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
+
+    expect(fn () => DB::table('campaign_schedule_occurrence_outcomes')
+        ->where('id', $outcome->id)
+        ->update(['missed_reason' => 'approval_invalid']))
+        ->toThrow(QueryException::class);
+});
+
+it('fails closed when a schedule occurrence outcome is read from another workspace', function () {
+    $owner = task0039PersistenceFixture('outcome-scope-owner');
+    $other = task0039PersistenceFixture('outcome-scope-other');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $outcomes = app(DatabaseCampaignScheduleOutcomeRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $owner['workspaceId'],
+        campaignId: $owner['campaignId'],
+        snapshotId: $owner['snapshotId'],
+        approvalId: $owner['approvalId'],
+        targetSetHash: $owner['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-outcome-scope-owner',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $outcome = CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedDecisionId: $owner['approvalId'],
+        recordedByActorId: 'task0039-author',
+        idempotencyKey: 'outcome-scope-owner',
+        observedAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+    $outcomes->create($outcome);
+
+    expect(fn () => $outcomes->find($other['workspaceId'], $outcome->id))
+        ->toThrow(AuthorizationException::class, 'Campaign schedule outcome reference access denied.');
+});
+
+it('rejects missed occurrence history after terminal reschedule or cancellation history', function () {
+    $fixture = task0039PersistenceFixture('outcome-terminal-conflict');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+    $outcomes = app(DatabaseCampaignScheduleOutcomeRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-outcome-terminal-conflict',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $mutations->create(CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Cancel before occurrence.',
+        idempotencyKey: 'mutation-outcome-terminal-conflict',
+        occurredAt: new DateTimeImmutable('2026-07-15T12:00:00+00:00'),
+    ));
+
+    $outcome = CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedDecisionId: $fixture['approvalId'],
+        recordedByActorId: 'task0039-author',
+        idempotencyKey: 'outcome-terminal-conflict',
+        observedAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+
+    expect(fn () => $outcomes->create($outcome))->toThrow(
+        InvalidArgumentException::class,
+        'cannot be recorded after terminal reschedule/cancellation history',
+    );
+
+    expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
 });

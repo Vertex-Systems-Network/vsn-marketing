@@ -81,7 +81,7 @@ final class LocalScheduleTimeResolver
 
         return in_array(
             $timezoneId,
-            DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC),
+            DateTimeZone::listIdentifiers(DateTimeZone::ALL),
             true,
         );
     }

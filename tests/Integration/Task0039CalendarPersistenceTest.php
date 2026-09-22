@@ -683,7 +683,6 @@ it('rejects backdated reschedule or cancellation after a terminal occurrence out
         ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
 });
 
-
 it('persists due claims, blocks competing terminal history and protects immutable execution intents', function () {
     $fixture = task0039PersistenceFixture('due-claim-persistence');
     $schedules = app(DatabaseCampaignScheduleRepository::class);

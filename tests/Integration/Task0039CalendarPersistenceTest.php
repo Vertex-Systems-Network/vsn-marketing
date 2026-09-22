@@ -447,5 +447,53 @@ it('fails closed when schedule mutation history is read from another workspace',
 
     expect(fn () => $mutations->find($other['workspaceId'], $mutation->id))
         ->toThrow(AuthorizationException::class, 'Campaign schedule mutation reference access denied.');
+
+    expect(fn () => $mutations->history($other['workspaceId'], $owner['campaignId']))
+        ->toThrow(AuthorizationException::class, 'Campaign schedule mutation reference access denied.');
+});
+
+it('rejects reschedule lineage that keeps the same canonical UTC occurrence', function () {
+    $fixture = task0039PersistenceFixture('same-instant');
+    $previous = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'same-instant-old',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $replacement = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'UTC',
+        localScheduledAt: '2026-07-15T13:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'same-instant-new',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    );
+
+    expect(fn () => CampaignScheduleMutation::rescheduled(
+        id: (string) Str::uuid(),
+        previous: $previous,
+        replacement: $replacement,
+        actorId: 'task0039-author',
+        reason: 'Attempt no-op reschedule.',
+        idempotencyKey: 'same-instant-mutation',
+        occurredAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'must change the resolved UTC instant',
+    );
 });
 

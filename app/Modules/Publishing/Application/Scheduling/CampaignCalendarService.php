@@ -13,15 +13,18 @@ use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutationType;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleOccurrenceOutcome;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleStrategy;
 use App\Modules\Publishing\Domain\Scheduling\LocalScheduleTimeResolver;
 use App\Modules\Publishing\Domain\Scheduling\QueueNextSlotResolver;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleOutcomeRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
+use DateTimeZone;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\DatabaseManager;
 use InvalidArgumentException;
@@ -32,6 +35,7 @@ final readonly class CampaignCalendarService
         private DatabaseCampaignRepository $campaigns,
         private DatabaseCampaignScheduleRepository $schedules,
         private DatabaseCampaignScheduleMutationRepository $mutations,
+        private DatabaseCampaignScheduleOutcomeRepository $outcomes,
         private DatabaseCampaignScheduleRuleRepository $rules,
         private CampaignApprovalEvaluator $approvals,
         private LocalScheduleTimeResolver $resolver,
@@ -472,6 +476,117 @@ final readonly class CampaignCalendarService
                 occurredAt: $at,
             ));
         });
+    }
+
+    public function recordMissedOccurrence(
+        User $actor,
+        TenantContext $context,
+        string $scheduleId,
+        string $outcomeId,
+        string $idempotencyKey,
+        DateTimeImmutable $at,
+    ): CampaignScheduleOccurrenceOutcome {
+        $this->assertScheduleAuthority($actor, $context);
+
+        return $this->database->connection()->transaction(function () use (
+            $context,
+            $scheduleId,
+            $outcomeId,
+            $idempotencyKey,
+            $at,
+        ): CampaignScheduleOccurrenceOutcome {
+            $existing = $this->outcomes->findByIdempotency(
+                $context->workspaceId,
+                $idempotencyKey,
+            );
+
+            if ($existing !== null) {
+                $this->assertOutcomeReplay(
+                    existing: $existing,
+                    outcomeId: $outcomeId,
+                    scheduleId: $scheduleId,
+                    actorId: $context->actorId,
+                );
+
+                return $existing;
+            }
+
+            $schedule = $this->requireSchedule($context, $scheduleId);
+            $observedAt = $at->setTimezone(new DateTimeZone('UTC'));
+
+            if ($observedAt < $schedule->resolvedAtUtc) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule missed outcome cannot be recorded before the resolved occurrence is due.',
+                );
+            }
+
+            $campaign = $this->campaigns->lockCampaignForUpdate(
+                $context->workspaceId,
+                $schedule->campaignId,
+            );
+
+            if ($campaign->status->isTerminal()) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule missed outcome cannot be recorded for a terminal campaign.',
+                );
+            }
+
+            $snapshot = $this->requireSnapshot(
+                $context,
+                $campaign->id,
+                $schedule->snapshotId,
+            );
+            $evaluation = $this->approvals->evaluate($campaign, $snapshot, $observedAt);
+
+            if (! $evaluation->valid) {
+                return $this->outcomes->create(CampaignScheduleOccurrenceOutcome::approvalInvalid(
+                    id: $outcomeId,
+                    schedule: $schedule,
+                    evaluation: $evaluation,
+                    recordedByActorId: $context->actorId,
+                    idempotencyKey: $idempotencyKey,
+                    observedAt: $observedAt,
+                ));
+            }
+
+            if ($observedAt->format('U.u') === $schedule->resolvedAtUtc->format('U.u')) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule remains approval-eligible at the exact due boundary; AC-6 owns execution claiming.',
+                );
+            }
+
+            if ($evaluation->decisionId === null) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule due-boundary evaluation requires a concrete approval decision.',
+                );
+            }
+
+            return $this->outcomes->create(CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+                id: $outcomeId,
+                schedule: $schedule,
+                evaluatedDecisionId: $evaluation->decisionId,
+                recordedByActorId: $context->actorId,
+                idempotencyKey: $idempotencyKey,
+                observedAt: $observedAt,
+            ));
+        });
+    }
+
+    private function assertOutcomeReplay(
+        CampaignScheduleOccurrenceOutcome $existing,
+        string $outcomeId,
+        string $scheduleId,
+        string $actorId,
+    ): void {
+        if (
+            $existing->id !== $outcomeId
+            || $existing->scheduleId !== $scheduleId
+            || $existing->recordedByActorId !== $actorId
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule missed-outcome replay conflicts with immutable history.',
+            );
+        }
     }
 
     private function requireSchedule(

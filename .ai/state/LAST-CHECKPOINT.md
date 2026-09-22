@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-22T18:25:48Z`
+- Timestamp: `2026-09-22T18:27:22Z`
 - Observed main: `1e17d38aaaefdeba1d2bb930e553c93f7d7ff7e7`
 - Active issue: `none`
 - Active PR: `none`
@@ -23,7 +23,7 @@ TASK-0039 queue/next-slot foundation PR #357 exact source `ea721ef5f14602bb78a87
 
 The trusted queue foundation provides immutable versioned workspace/channel weekly rules, canonical IANA timezone, deterministic next-slot resolution, fail-closed DST gap/overlap handling, exact snapshot target-channel authority, immutable rule-set ID/version/hash bindings, pinned UTC occurrences, later-rule drift isolation, replay safety and fixed-instant compatibility.
 
-TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. The next bounded product milestone is AC-4 append-only reschedule/cancel history. Missed-run/approval-deadline and due-claim concurrency remain outside this milestone.
+TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. The next bounded product milestone is append-only reschedule/cancel history. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 

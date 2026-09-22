@@ -168,6 +168,16 @@ final readonly class DatabaseCampaignScheduleMutationRepository
     /** @return list<CampaignScheduleMutation> */
     public function history(string $workspaceId, string $campaignId): array
     {
+        $campaignExists = $this->database->connection()->table('campaigns')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', $campaignId)
+            ->exists();
+
+        if (! $campaignExists) {
+            $this->denyIfForeignReferenceExists('campaigns', $workspaceId, $campaignId);
+            throw new InvalidArgumentException('Campaign schedule mutation campaign does not exist in this workspace.');
+        }
+
         return $this->database->connection()->table('campaign_schedule_mutations')
             ->where('workspace_id', $workspaceId)
             ->where('campaign_id', $campaignId)

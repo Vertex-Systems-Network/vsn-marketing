@@ -866,3 +866,168 @@ it('requires material fixed-instant revisions to regain approval before replacem
         ->and(DB::table('campaign_schedules')->where('id', $previous->id)->value('schedule_hash'))
         ->toBe($previous->scheduleHash);
 });
+
+
+it('records expired approval as missed needs-reschedule at the exact due boundary', function () {
+    $suffix = 'missed-expired-approval';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture(
+        $actor,
+        $suffix,
+        approvalExpiry: '2026-07-15T13:00:00+00:00',
+    );
+    $calendar = app(CampaignCalendarService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'missed-expired-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $outcomeId = (string) Str::uuid();
+    $outcome = $calendar->recordMissedOccurrence(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        outcomeId: $outcomeId,
+        idempotencyKey: 'missed-expired-outcome',
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+
+    $replayed = $calendar->recordMissedOccurrence(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        outcomeId: $outcomeId,
+        idempotencyKey: 'missed-expired-outcome',
+        at: new DateTimeImmutable('2026-07-15T14:00:00+00:00'),
+    );
+
+    expect($outcome->missedReason->value)->toBe('approval_invalid')
+        ->and($outcome->approvalInvalidReason?->value)->toBe('approval_expired')
+        ->and($outcome->scheduledApprovalId)->toBe($schedule->approvalId)
+        ->and($outcome->observedAt->format('Y-m-d\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and($replayed->outcomeHash)->toBe($outcome->outcomeHash)
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(0)
+        ->and(DB::table('campaign_schedules')->where('id', $schedule->id)->value('schedule_hash'))
+        ->toBe($schedule->scheduleHash);
+});
+
+it('records revoked approval as a deterministic missed occurrence at due time', function () {
+    $suffix = 'missed-revoked-approval';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+    $governance = app(CampaignGovernanceService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'missed-revoked-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $governance->revokeApproval(
+        approver: $fixture['approver'],
+        context: new TenantContext(
+            organizationId: (string) $actor['organization']->getKey(),
+            workspaceId: (string) $actor['workspace']->getKey(),
+            brandId: null,
+            actorId: (string) $fixture['approver']->getKey(),
+        ),
+        campaignId: $fixture['campaign']->id,
+        roleKey: 'calendar-approver-'.$suffix,
+        decisionId: (string) Str::uuid(),
+        decisionIdempotencyKey: 'missed-revoked-decision',
+        approvalEventId: (string) Str::uuid(),
+        approvalEventIdempotencyKey: 'missed-revoked-approval-event',
+        transitionEventId: (string) Str::uuid(),
+        transitionEventIdempotencyKey: 'missed-revoked-transition',
+        reason: 'Approval revoked before the occurrence became due.',
+        at: new DateTimeImmutable('2026-07-15T12:00:00+00:00'),
+    );
+
+    $outcome = $calendar->recordMissedOccurrence(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        outcomeId: (string) Str::uuid(),
+        idempotencyKey: 'missed-revoked-outcome',
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+
+    expect($outcome->missedReason->value)->toBe('approval_invalid')
+        ->and($outcome->approvalInvalidReason?->value)->toBe('approval_revoked')
+        ->and($outcome->evaluatedDecisionId)->not->toBe($schedule->approvalId)
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
+});
+
+it('records a valid but late occurrence as missed instead of silently publishing late', function () {
+    $suffix = 'missed-valid-late';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'missed-valid-late-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $outcome = $calendar->recordMissedOccurrence(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        outcomeId: (string) Str::uuid(),
+        idempotencyKey: 'missed-valid-late-outcome',
+        at: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+
+    expect($outcome->missedReason->value)->toBe('execution_deadline_missed')
+        ->and($outcome->approvalInvalidReason)->toBeNull()
+        ->and($outcome->evaluatedDecisionId)->toBe($schedule->approvalId)
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
+});
+
+it('reserves valid exact-due execution claiming for AC-6 without emitting an outcome', function () {
+    $suffix = 'exact-due-ac6';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'exact-due-ac6-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    expect(fn () => $calendar->recordMissedOccurrence(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        outcomeId: (string) Str::uuid(),
+        idempotencyKey: 'exact-due-ac6-outcome',
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'AC-6 owns execution claiming',
+    );
+
+    expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
+});

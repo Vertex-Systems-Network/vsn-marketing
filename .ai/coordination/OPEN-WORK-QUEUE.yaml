@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2e0e0d9fc1d871ce6631c539593277b3da5ed787",
-  "active_work_path": null,
+  "reconciled_main_sha": "dd45ddbaa4b5b98fee1521a930778ef8fb84738a",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 357,
+    "branch": "task/0039-queue-next-slot-foundation",
+    "milestone": "TASK-0039-QUEUE-NEXT-SLOT-FOUNDATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 357,
+      "title": "feat(publishing): add queue next-slot rules",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-020",
+      "branch": "task/0039-queue-next-slot-foundation"
     }
   ]
 }

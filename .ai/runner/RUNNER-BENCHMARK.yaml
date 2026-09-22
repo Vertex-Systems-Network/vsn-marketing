@@ -575,6 +575,24 @@
         },
         "milestone": "immutable versioned queue rules; deterministic next-slot/DST handling; pinned rule/UTC occurrence evidence; fixed-instant compatibility; no provider scheduling/publication side effect"
       }
+    },
+    {
+      "id": "RBT-021",
+      "source": "PR #359 / TASK-0039 reschedule-cancel history foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #359 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-reschedule-cancel-history; append-only mutation history + reapproval + PostgreSQL/security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-reschedule-cancel-history:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 queue/next-slot rule foundation is trusted; the next bounded milestone is append-only reschedule/cancel history while live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 append-only reschedule/cancel history is staged on PR #359 under exact-head verification; live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation and PR #357 queue/next-slot rule foundation are trusted. Append-only reschedule/cancel history is the next bounded milestone under the frozen TASK-0039 contract.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation and PR #357 queue/next-slot rule foundation are trusted. PR #359 stages append-only reschedule/cancel lineage, cancellation terminality and material-revision reapproval enforcement under the frozen TASK-0039 contract.
 
 ## Staged research direction
 

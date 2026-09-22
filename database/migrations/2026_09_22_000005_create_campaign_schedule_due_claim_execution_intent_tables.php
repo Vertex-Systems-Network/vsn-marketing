@@ -138,7 +138,7 @@ return new class extends Migration
 
         if ($driver === 'pgsql') {
             DB::unprepared(<<<'SQL'
-CREATE OR REPLACE FUNCTION enforce_campaign_schedule_due_claim_coordination() RETURNS trigger AS $
+CREATE OR REPLACE FUNCTION enforce_campaign_schedule_due_claim_coordination() RETURNS trigger AS $claim$
 BEGIN
     IF TG_OP = 'DELETE' THEN
         RAISE EXCEPTION 'campaign schedule due claim coordination evidence cannot be deleted';
@@ -183,7 +183,7 @@ BEGIN
 
     RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$claim$ LANGUAGE plpgsql;
 SQL);
             DB::unprepared('DROP TRIGGER IF EXISTS campaign_schedule_due_claims_coordination ON campaign_schedule_due_claims;');
             DB::unprepared('CREATE TRIGGER campaign_schedule_due_claims_coordination BEFORE UPDATE OR DELETE ON campaign_schedule_due_claims FOR EACH ROW EXECUTE FUNCTION enforce_campaign_schedule_due_claim_coordination();');

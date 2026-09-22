@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c85294ed79c881c65e001cf5b54ce9fa645f258b",
-  "active_work_path": null,
+  "reconciled_main_sha": "17f5722dde9ce5ff01e637c609aad673deda7b7b",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 355,
+    "branch": "task/0039-calendar-timezone-foundation",
+    "milestone": "TASK-0039-CALENDAR-TIMEZONE-FOUNDATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 355,
+      "title": "feat(publishing): add calendar timezone foundation",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-019",
+      "branch": "task/0039-calendar-timezone-foundation"
     }
   ]
 }

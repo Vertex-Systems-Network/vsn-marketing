@@ -127,7 +127,7 @@ final readonly class CampaignCalendarService
             return;
         }
 
-        $reason = $evaluation->reason?->value ?? 'unknown';
+        $reason = $evaluation->reason->value;
 
         throw new InvalidArgumentException(
             'Campaign calendar scheduling requires effective approval: '.$reason.'.',

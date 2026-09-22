@@ -759,13 +759,31 @@ it('persists due claims, blocks competing terminal history and protects immutabl
     $intentId = (string) Str::uuid();
     $outboxId = (string) Str::uuid();
     $emittedAt = new DateTimeImmutable('2026-07-15T13:30:10+00:00');
+    $intent = CampaignScheduleExecutionIntent::create(
+        id: $intentId,
+        schedule: $schedule,
+        claim: $claim,
+        outboxId: $outboxId,
+        emittedAt: $emittedAt,
+    );
     DB::table('outbox_messages')->insert([
         'id' => $outboxId,
         'topic' => 'publishing.campaign_schedule.execution_intent.ready',
         'aggregate_type' => 'campaign_schedule_execution_intent',
         'aggregate_id' => $intentId,
-        'payload' => '{}',
-        'headers' => '{}',
+        'payload' => json_encode([
+            'workspace_id' => $intent->workspaceId,
+            'campaign_id' => $intent->campaignId,
+            'snapshot_id' => $intent->snapshotId,
+            'schedule_id' => $intent->scheduleId,
+            'execution_intent_id' => $intent->id,
+            'intent_hash' => $intent->intentHash,
+            'resolved_at_utc' => $intent->resolvedAtUtc->format('Y-m-d\\TH:i:s.u\\Z'),
+        ], JSON_THROW_ON_ERROR),
+        'headers' => json_encode([
+            'schema_version' => 1,
+            'source' => 'task0039.scheduler',
+        ], JSON_THROW_ON_ERROR),
         'occurred_at' => $emittedAt,
         'available_at' => $emittedAt,
         'published_at' => null,
@@ -775,13 +793,6 @@ it('persists due claims, blocks competing terminal history and protects immutabl
         'created_at' => $emittedAt,
         'updated_at' => $emittedAt,
     ]);
-    $intent = CampaignScheduleExecutionIntent::create(
-        id: $intentId,
-        schedule: $schedule,
-        claim: $claim,
-        outboxId: $outboxId,
-        emittedAt: $emittedAt,
-    );
     $stored = $executions->createIntent($intent);
 
     expect($stored->intentHash)->toBe($intent->intentHash)

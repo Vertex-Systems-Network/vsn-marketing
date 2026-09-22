@@ -388,6 +388,16 @@
       "dependencies": [
         "TASK-0037"
       ]
+    },
+    {
+      "id": "TASK-0039",
+      "phase": "PHASE-07",
+      "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0038"
+      ]
     }
   ]
 }

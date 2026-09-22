@@ -416,16 +416,49 @@
       "source": "PR #350 / TASK-0038 final acceptance",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #350 exact-head status/comment"
+        "git_sha": "393da7e2058149d2b0377794c4bb0518c6d1916c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #350 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/task0038-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #342/#344/#347/#349 evidence",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0038-final-acceptance:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 350,
+        "source_sha": "393da7e2058149d2b0377794c4bb0518c6d1916c",
+        "merge_sha": "272a139e5026098f15b5d0874eeb910beb9754d1",
+        "workflow_runs": {
+          "ai_continuity_guard": 35661612916,
+          "application_foundation_ci": 35661612968,
+          "security_supply_chain_ci": 35661613032
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "acceptance": "TASK-0038 AC-1 through AC-8 true; task/index remained ready until trusted acceptance merge."
+      }
+    },
+    {
+      "id": "RBT-017",
+      "source": "PR #351 / TASK-0039 PHASE-07 planned registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #351 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0039-phase07; TASK-0039 planned-only calendar/timezone-safe scheduler contract registration",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-registration:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

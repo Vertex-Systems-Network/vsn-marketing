@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0037 research complete; TASK-0038 implementation evidence is staged for final acceptance with AC-1 through AC-8 reconciled true; no live provider publication or production scheduling execution active yet.**
+Status: **IN PROGRESS — TASK-0038 final acceptance is trusted; TASK-0039 calendar/timezone-safe scheduler contract is staged as planned-only registration; no scheduler implementation or live provider publication is active yet.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 is complete. TASK-0038 is in final acceptance under the frozen research contract. TASK-0039 and later tasks remain non-executable until TASK-0038 acceptance merges, a separate guarded transition marks TASK-0038 completed, and TASK-0039 is explicitly registered.
+TASK-0037 is complete. TASK-0038 final acceptance is trusted. TASK-0039 is staged as a planned-only successor and remains non-executable until this registration is trusted/terminally reconciled and a separate guarded transition marks TASK-0038 completed and activates TASK-0039 ready.
 
 ## Staged research direction
 
@@ -66,3 +66,7 @@ TASK-0038 is active only for the provider-neutral campaign lifecycle/snapshot/ta
 - PHASE-09 journey runtime;
 - autonomous AI publishing;
 - Runner benchmark batch execution.
+
+## TASK-0039 registration boundary
+
+TASK-0039 owns the canonical workspace-scoped editorial/campaign calendar and provider-neutral scheduler semantics: fixed-instant versus queue/next-slot strategies, IANA timezone resolution, deterministic ambiguous/nonexistent DST policy, immutable resolved execution instants, append-oriented reschedule/cancel/missed-run history, approval timing enforcement, and concurrency/idempotency-safe due claiming. Provider-native scheduling remains optional versioned capability evidence; TASK-0039 does not authorize live provider API calls, media upload/publication attempts, provider credential activation, deployment/release execution, TASK-0040 activation or deferred Runner optimization.

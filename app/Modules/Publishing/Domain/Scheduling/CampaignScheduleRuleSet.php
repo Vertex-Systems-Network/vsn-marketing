@@ -78,8 +78,7 @@ final readonly class CampaignScheduleRuleSet
         string $idempotencyKey,
         string $createdByActorId,
         DateTimeImmutable $createdAt,
-    ): self
-    {
+    ): self {
         $canonicalSlots = self::canonicalizeSlots($slots);
         $payload = self::canonicalPayloadFor(
             workspaceId: $workspaceId,
@@ -106,8 +105,7 @@ final readonly class CampaignScheduleRuleSet
     }
 
     /** @return array<string, mixed> */
-    public function canonicalPayload(): array
-    {
+    public function canonicalPayload(): array {
         return self::canonicalPayloadFor(
             workspaceId: $this->workspaceId,
             parentRuleSetId: $this->parentRuleSetId,
@@ -122,8 +120,7 @@ final readonly class CampaignScheduleRuleSet
      * @param  list<array{weekday: int, local_time: string}>  $slots
      * @return list<array{weekday: int, local_time: string}>
      */
-    private static function canonicalizeSlots(array $slots): array
-    {
+    private static function canonicalizeSlots(array $slots): array {
         if (! array_is_list($slots)) {
             throw new InvalidArgumentException('Campaign schedule rule slots must be a list.');
         }
@@ -184,8 +181,7 @@ final readonly class CampaignScheduleRuleSet
         int $versionNumber,
         string $timezoneId,
         array $slots,
-    ): array
-    {
+    ): array {
         return [
             'workspace_id' => $workspaceId,
             'parent_rule_set_id' => $parentRuleSetId,
@@ -196,8 +192,7 @@ final readonly class CampaignScheduleRuleSet
         ];
     }
 
-    private static function isCanonicalTimezone(string $timezoneId): bool
-    {
+    private static function isCanonicalTimezone(string $timezoneId): bool {
         return $timezoneId === 'UTC'
             || in_array($timezoneId, DateTimeZone::listIdentifiers(DateTimeZone::ALL), true);
     }

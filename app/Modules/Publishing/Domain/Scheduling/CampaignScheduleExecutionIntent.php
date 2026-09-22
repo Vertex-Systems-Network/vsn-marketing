@@ -56,7 +56,10 @@ final readonly class CampaignScheduleExecutionIntent
             }
         }
 
-        if ($this->emittedAt < $this->claimedAt || $this->claimedAt !== $this->resolvedAtUtc) {
+        if (
+            $this->emittedAt < $this->claimedAt
+            || $this->claimedAt->format('U.u') !== $this->resolvedAtUtc->format('U.u')
+        ) {
             throw new InvalidArgumentException(
                 'Campaign schedule execution intent must originate from the exact canonical due occurrence.',
             );

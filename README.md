@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=45.91 phase=27.27 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0039-REGISTRATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=45.91 phase=27.27 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0039-REGISTRATION status=COMPLETE -->
 
-> Last verified protected-main acceptance baseline: **2026-09-22** at `272a139e5026098f15b5d0874eeb910beb9754d1` after TASK-0038 final acceptance PR #350 merged. Exact source `393da7e2058149d2b0377794c4bb0518c6d1916c` passed AI Continuity Guard `35661612916`, Application Foundation CI `35661612968`, and Security Supply Chain CI `35661613032`; TASK-0038 AC-1 through AC-8 are true. PR #351 now registers TASK-0039 as planned-only; no calendar/scheduler implementation or provider publication is active.
+> Last verified protected-main registration baseline: **2026-09-22** at `3dbd2aca8547167b42610007e8494606a9f9d7df` after TASK-0039 planned-registration PR #351 merged. Exact source `918e1d1d8a290d9b9c729a1764e7fd8160c5d80a` passed AI Continuity Guard `35670787818`, Application Foundation CI `35670787786`, and Security Supply Chain CI `35670787729`. TASK-0038 remains active/ready and TASK-0039 remains planned-only until the separate guarded transition.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 27.27%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0039-REGISTRATION — VERIFYING**
+**Current milestone: TASK-0039-REGISTRATION — COMPLETE**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 45.91%
@@ -55,7 +55,7 @@ TASK-0038 final acceptance PR #350 is trusted and AC-1 through AC-8 remain true.
 
 PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. TASK-0039 planned registration expands the registered PHASE-07 denominator, so deterministic progress temporarily normalizes to roadmap 45.91% / PHASE-07 27.27% while TASK-0038 remains ready. After registration is trusted and terminally reconciled, a separate guarded transition will complete TASK-0038 and activate TASK-0039 ready.
+README progress-sync protocol v2.4.2 remains enforced. TASK-0039 planned registration is now trusted and terminally reconciled; deterministic progress remains roadmap 45.91% / PHASE-07 27.27% while TASK-0038 stays ready. The next separate guarded transition will complete TASK-0038 and activate TASK-0039 ready.
 
 ### README progress-sync contract
 

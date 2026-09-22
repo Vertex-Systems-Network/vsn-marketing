@@ -52,6 +52,22 @@ final readonly class CampaignCalendarService
             $at,
         ): CampaignSchedule {
             $campaign = $this->campaigns->lockCampaignForUpdate($context->workspaceId, $campaignId);
+            $existing = $this->schedules->findByIdempotency($context->workspaceId, $idempotencyKey);
+
+            if ($existing !== null) {
+                if (
+                    $existing->id !== $scheduleId
+                    || $existing->campaignId !== $campaignId
+                    || $existing->snapshotId !== $snapshotId
+                    || $existing->createdByActorId !== $context->actorId
+                ) {
+                    throw new InvalidArgumentException(
+                        'Campaign calendar schedule replay conflicts with existing immutable schedule state.',
+                    );
+                }
+
+                return $existing;
+            }
 
             if ($campaign->status !== CampaignStatus::ScheduledIntent) {
                 throw new InvalidArgumentException('Campaign calendar scheduling requires scheduled_intent lifecycle state.');

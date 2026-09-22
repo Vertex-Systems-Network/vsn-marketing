@@ -1077,7 +1077,6 @@ it('denies missed occurrence writes without campaign send authority', function (
     expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
 });
 
-
 it('claims an exact due occurrence once and atomically emits one durable execution intent and outbox handoff', function () {
     $suffix = 'due-claim-emit';
     $actor = task0039CalendarActor($suffix);
@@ -1319,7 +1318,6 @@ it('fails closed on foreign-workspace due claims before exposing scheduler state
         ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(0);
 });
 
-
 it('rejects claiming before the canonical resolved instant', function () {
     $suffix = 'pre-due-claim';
     $actor = task0039CalendarActor($suffix);
@@ -1355,7 +1353,6 @@ it('rejects claiming before the canonical resolved instant', function () {
             ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
             ->count())->toBe(0);
 });
-
 
 it('fails closed if campaign lifecycle becomes terminal after claiming but before intent emission', function () {
     $suffix = 'claim-then-cancel';
@@ -1409,7 +1406,6 @@ it('fails closed if campaign lifecycle becomes terminal after claiming but befor
             ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
             ->count())->toBe(0);
 });
-
 
 it('rolls back a partial outbox failure and retries to one canonical execution intent', function () {
     $suffix = 'intent-outbox-rollback';

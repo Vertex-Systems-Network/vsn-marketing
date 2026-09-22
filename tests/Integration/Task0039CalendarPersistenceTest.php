@@ -1,8 +1,8 @@
 <?php
 
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
-use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;

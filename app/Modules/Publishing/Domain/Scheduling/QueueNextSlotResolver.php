@@ -29,6 +29,13 @@ final readonly class QueueNextSlotResolver
 
                 $localScheduledAt = $date->format('Y-m-d').'T'.$slot['local_time'];
 
+                if (
+                    $dayOffset === 0
+                    && $localScheduledAt <= $localAfter->format('Y-m-d\\TH:i:s')
+                ) {
+                    continue;
+                }
+
                 try {
                     $resolvedAtUtc = $this->localTimeResolver->resolve(
                         $ruleSet->timezoneId,

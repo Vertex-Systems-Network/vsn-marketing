@@ -72,8 +72,15 @@ final readonly class CampaignScheduleDueClaimService
             $existingClaim = $this->executions->findClaimBySchedule($workspaceId, $scheduleId, true);
 
             if ($existingIntent !== null) {
-                if ($existingClaim === null || $existingClaim->state !== CampaignScheduleDueClaimState::Emitted) {
-                    throw new InvalidArgumentException('Campaign schedule execution intent is missing emitted claim coordination state.');
+                if (
+                    $existingClaim === null
+                    || $existingClaim->state !== CampaignScheduleDueClaimState::Emitted
+                    || $existingClaim->id !== $existingIntent->claimId
+                    || $existingClaim->version !== $existingIntent->claimVersion + 1
+                ) {
+                    throw new InvalidArgumentException(
+                        'Campaign schedule execution intent is missing canonical emitted claim coordination state.',
+                    );
                 }
 
                 return $existingClaim;
@@ -219,6 +226,18 @@ final readonly class CampaignScheduleDueClaimService
 
             $existing = $this->executions->findIntentBySchedule($workspaceId, $scheduleId, true);
             if ($existing !== null) {
+                $emittedClaim = $this->executions->findClaimBySchedule($workspaceId, $scheduleId, true);
+                if (
+                    $emittedClaim === null
+                    || $emittedClaim->state !== CampaignScheduleDueClaimState::Emitted
+                    || $emittedClaim->id !== $existing->claimId
+                    || $emittedClaim->version !== $existing->claimVersion + 1
+                ) {
+                    throw new InvalidArgumentException(
+                        'Campaign schedule execution intent replay is missing canonical emitted claim state.',
+                    );
+                }
+
                 return $existing;
             }
 

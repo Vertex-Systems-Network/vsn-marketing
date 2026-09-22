@@ -515,18 +515,33 @@
       "source": "PR #355 / TASK-0039 calendar-timezone foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #355 exact-head status/comment"
+        "git_sha": "8c23329dc7c5b0684ce132516917d696a8cf1866",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #355 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0039-calendar-timezone-foundation; immutable schedule persistence + IANA/DST resolver + PostgreSQL/security tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-calendar-timezone-foundation:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 355,
+        "source_sha": "8c23329dc7c5b0684ce132516917d696a8cf1866",
+        "merge_sha": "2e0e0d9fc1d871ce6631c539593277b3da5ed787",
+        "workflow_runs": {
+          "ai_continuity_guard": 35703158184,
+          "application_foundation_ci": 35703158499,
+          "security_supply_chain_ci": 35703158448
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "immutable fixed-instant schedule persistence; canonical IANA/DST fail-closed semantics; exact approval/workspace binding; replay-safe idempotency; no provider scheduling/publication side effect"
+      }
     }
   ]
 }

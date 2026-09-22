@@ -867,7 +867,6 @@ it('requires material fixed-instant revisions to regain approval before replacem
         ->toBe($previous->scheduleHash);
 });
 
-
 it('records expired approval as missed needs-reschedule at the exact due boundary', function () {
     $suffix = 'missed-expired-approval';
     $actor = task0039CalendarActor($suffix);

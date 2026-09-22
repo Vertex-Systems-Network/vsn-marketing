@@ -146,8 +146,9 @@ function task0039DueClaimConcurrencyFixture(): array
     ];
 }
 
-/** @param list<array<string, mixed>> $payloads
- *  @return list<array<string, mixed>>
+/**
+ * @param  list<array<string, mixed>>  $payloads
+ * @return list<array<string, mixed>>
  */
 function task0039RunConcurrentWorkers(string $script, array $payloads): array
 {

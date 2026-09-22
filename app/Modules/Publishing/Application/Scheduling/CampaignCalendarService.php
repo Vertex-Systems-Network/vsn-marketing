@@ -57,7 +57,7 @@ final readonly class CampaignCalendarService
             workspaceId: $context->workspaceId,
             parentRuleSetId: $latest?->id,
             channel: $channel,
-            versionNumber: ($latest?->versionNumber ?? 0) + 1,
+            versionNumber: ($latest->versionNumber ?? 0) + 1,
             timezoneId: $timezoneId,
             slots: $slots,
             idempotencyKey: $idempotencyKey,

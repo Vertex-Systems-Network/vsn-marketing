@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Core\Domain\Contracts\OutboxRepository;
 use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
@@ -1407,4 +1408,72 @@ it('fails closed if campaign lifecycle becomes terminal after claiming but befor
         ->and(DB::table('outbox_messages')
             ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
             ->count())->toBe(0);
+});
+
+
+it('rolls back a partial outbox failure and retries to one canonical execution intent', function () {
+    $suffix = 'intent-outbox-rollback';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture($actor, $suffix);
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'intent-outbox-rollback-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $claim = $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-rollback-worker',
+        leaseToken: 'lease-outbox-rollback',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+    expect($claim)->not->toBeNull();
+
+    $realOutbox = app(OutboxRepository::class);
+    $failingOutbox = Mockery::mock(OutboxRepository::class);
+    $failingOutbox->shouldReceive('store')
+        ->once()
+        ->andThrow(new RuntimeException('Injected outbox persistence failure.'));
+    app()->instance(OutboxRepository::class, $failingOutbox);
+    $failingClaims = app(CampaignScheduleDueClaimService::class);
+
+    expect(fn () => $failingClaims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-rollback-worker',
+        leaseToken: 'lease-outbox-rollback',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(RuntimeException::class, 'Injected outbox persistence failure.');
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_due_claims')->where('schedule_id', $schedule->id)->value('state'))
+        ->toBe('leased')
+        ->and(DB::table('campaign_schedule_due_claims')->where('schedule_id', $schedule->id)->value('version'))
+        ->toBe(1)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
+
+    app()->instance(OutboxRepository::class, $realOutbox);
+    $intent = $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'scheduler-rollback-worker',
+        leaseToken: 'lease-outbox-rollback',
+        at: new DateTimeImmutable('2026-07-15T13:30:11+00:00'),
+    );
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(1)
+        ->and(DB::table('outbox_messages')->where('id', $intent->outboxId)->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_due_claims')->where('schedule_id', $schedule->id)->value('state'))
+        ->toBe('emitted');
 });

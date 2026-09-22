@@ -19,7 +19,7 @@ final readonly class CampaignScheduleDueClaim
         public string $evaluatedApprovalId,
         public CampaignScheduleDueClaimState $state,
         public string $leaseOwner,
-        public string $leaseToken,
+        public string $leaseTokenHash,
         public DateTimeImmutable $leaseExpiresAt,
         public DateTimeImmutable $claimedAt,
         public int $attemptNumber,
@@ -34,7 +34,7 @@ final readonly class CampaignScheduleDueClaim
         CampaignPayloadGuard::assertIdentifier($this->scheduledApprovalId, 'scheduleClaim.scheduledApprovalId');
         CampaignPayloadGuard::assertIdentifier($this->evaluatedApprovalId, 'scheduleClaim.evaluatedApprovalId');
         CampaignPayloadGuard::assertIdentifier($this->leaseOwner, 'scheduleClaim.leaseOwner');
-        CampaignPayloadGuard::assertIdentifier($this->leaseToken, 'scheduleClaim.leaseToken');
+        CampaignPayloadGuard::assertSha256($this->leaseTokenHash, 'scheduleClaim.leaseTokenHash');
         CampaignPayloadGuard::assertSha256($this->scheduleHash, 'scheduleClaim.scheduleHash');
 
         foreach ([
@@ -80,7 +80,7 @@ final readonly class CampaignScheduleDueClaim
             evaluatedApprovalId: $evaluatedApprovalId,
             state: CampaignScheduleDueClaimState::Leased,
             leaseOwner: $leaseOwner,
-            leaseToken: $leaseToken,
+            leaseTokenHash: hash('sha256', $leaseToken),
             leaseExpiresAt: $leaseExpiresAt,
             claimedAt: $claimedAt,
             attemptNumber: 1,
@@ -91,7 +91,8 @@ final readonly class CampaignScheduleDueClaim
 
     public function replayedBy(string $leaseOwner, string $leaseToken): bool
     {
-        return $this->leaseOwner === $leaseOwner && hash_equals($this->leaseToken, $leaseToken);
+        return $this->leaseOwner === $leaseOwner
+            && hash_equals($this->leaseTokenHash, hash('sha256', $leaseToken));
     }
 
     public function isLeaseActiveAt(DateTimeImmutable $at): bool
@@ -120,7 +121,7 @@ final readonly class CampaignScheduleDueClaim
             evaluatedApprovalId: $this->evaluatedApprovalId,
             state: CampaignScheduleDueClaimState::Leased,
             leaseOwner: $leaseOwner,
-            leaseToken: $leaseToken,
+            leaseTokenHash: hash('sha256', $leaseToken),
             leaseExpiresAt: $leaseExpiresAt,
             claimedAt: $this->claimedAt,
             attemptNumber: $this->attemptNumber + 1,
@@ -146,7 +147,7 @@ final readonly class CampaignScheduleDueClaim
             evaluatedApprovalId: $this->evaluatedApprovalId,
             state: CampaignScheduleDueClaimState::Emitted,
             leaseOwner: $this->leaseOwner,
-            leaseToken: $this->leaseToken,
+            leaseTokenHash: $this->leaseTokenHash,
             leaseExpiresAt: $this->leaseExpiresAt,
             claimedAt: $this->claimedAt,
             attemptNumber: $this->attemptNumber,

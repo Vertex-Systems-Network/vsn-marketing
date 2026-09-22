@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "74215790f1e7c70908c9da3e0bcb24251c8d6c02",
+  "reconciled_main_sha": "272a139e5026098f15b5d0874eeb910beb9754d1",
   "active_work_path": {
     "kind": "pr",
-    "number": 350,
-    "branch": "control/task0038-final-acceptance",
-    "milestone": "TASK-0038-FINAL-ACCEPTANCE"
+    "number": 351,
+    "branch": "control/register-task-0039-phase07",
+    "milestone": "TASK-0039-REGISTRATION"
   },
   "items": [
     {
@@ -55,12 +55,12 @@
     },
     {
       "kind": "pr",
-      "number": 350,
-      "title": "control: accept TASK-0038 campaign domain",
-      "disposition": "active_task_final_acceptance_verification",
+      "number": 351,
+      "title": "plan(phase07): register TASK-0039 scheduler",
+      "disposition": "successor_planned_registration_verification",
       "accepted_actionable": true,
-      "runner_id": "RBT-016",
-      "branch": "control/task0038-final-acceptance"
+      "runner_id": "RBT-017",
+      "branch": "control/register-task-0039-phase07"
     }
   ]
 }

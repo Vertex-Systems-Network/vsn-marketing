@@ -36,6 +36,59 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
 
     public function createClaim(CampaignScheduleDueClaim $claim): CampaignScheduleDueClaim
     {
+        $schedule = $this->database->connection()->table('campaign_schedules')
+            ->where('workspace_id', $claim->workspaceId)
+            ->where('id', $claim->scheduleId)
+            ->lockForUpdate()
+            ->first();
+
+        if (! $schedule instanceof stdClass) {
+            if ($this->database->connection()->table('campaign_schedules')
+                ->where('id', $claim->scheduleId)
+                ->where('workspace_id', '<>', $claim->workspaceId)
+                ->exists()) {
+                throw new AuthorizationException('Campaign schedule due claim source access denied.');
+            }
+
+            throw new InvalidArgumentException('Campaign schedule due claim source does not exist in this workspace.');
+        }
+
+        if (
+            (string) $schedule->campaign_id !== $claim->campaignId
+            || (string) $schedule->snapshot_id !== $claim->snapshotId
+            || (string) $schedule->approval_id !== $claim->scheduledApprovalId
+            || ! hash_equals((string) $schedule->schedule_hash, $claim->scheduleHash)
+            || $this->utc((string) $schedule->resolved_at_utc)->format('U.u')
+                !== $claim->claimedAt->format('U.u')
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule due claim does not match the immutable exact-due schedule evidence.',
+            );
+        }
+
+        $approval = $this->database->connection()->table('campaign_approval_decisions')
+            ->where('workspace_id', $claim->workspaceId)
+            ->where('id', $claim->evaluatedApprovalId)
+            ->first();
+
+        if (
+            ! $approval instanceof stdClass
+            || (string) $approval->campaign_id !== $claim->campaignId
+            || (string) $approval->snapshot_id !== $claim->snapshotId
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule due claim evaluated approval does not match the immutable schedule snapshot.',
+            );
+        }
+
+        if ($this->hasTerminalScheduleHistory($claim->workspaceId, $claim->scheduleId)) {
+            throw new InvalidArgumentException(
+                'Campaign schedule due claim cannot be created after terminal occurrence history.',
+            );
+        }
+
+        $this->assertNoForeignClaim($claim->workspaceId, $claim->id);
+
         $inserted = $this->database->connection()->table('campaign_schedule_due_claims')->insertOrIgnore([
             'id' => $claim->id,
             'workspace_id' => $claim->workspaceId,
@@ -97,6 +150,8 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
             || $current->scheduleId !== $replacement->scheduleId
             || $replacement->version !== $current->version + 1
             || $replacement->attemptNumber !== $current->attemptNumber + 1
+            || $current->leaseExpiresAt > $replacement->updatedAt
+            || $replacement->leaseExpiresAt <= $replacement->updatedAt
         ) {
             throw new InvalidArgumentException('Campaign schedule lease replacement does not preserve claim identity/version lineage.');
         }
@@ -128,6 +183,10 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
         CampaignScheduleDueClaim $current,
         DateTimeImmutable $at,
     ): CampaignScheduleDueClaim {
+        if ($current->leaseExpiresAt <= $at) {
+            throw new InvalidArgumentException('Campaign schedule expired lease cannot become emitted.');
+        }
+
         $intentExists = $this->database->connection()->table('campaign_schedule_execution_intents')
             ->where('workspace_id', $current->workspaceId)
             ->where('schedule_id', $current->scheduleId)

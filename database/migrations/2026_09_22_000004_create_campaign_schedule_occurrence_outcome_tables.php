@@ -19,6 +19,7 @@ return new class extends Migration
                 $table->char('schedule_hash', 64);
                 $table->uuid('scheduled_approval_id');
                 $table->uuid('evaluated_decision_id')->nullable();
+                $table->string('outcome_state', 64);
                 $table->string('missed_reason', 64);
                 $table->string('approval_invalid_reason', 64)->nullable();
                 $table->string('approval_detail', 1000)->nullable();

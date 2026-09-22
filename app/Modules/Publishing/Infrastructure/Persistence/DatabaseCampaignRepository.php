@@ -91,6 +91,11 @@ final readonly class DatabaseCampaignRepository
         return null;
     }
 
+    public function lockCampaignForUpdate(string $workspaceId, string $campaignId): Campaign
+    {
+        return $this->hydrateCampaign($this->lockCampaign($workspaceId, $campaignId));
+    }
+
     public function transitionCampaign(
         Campaign $next,
         int $expectedStateVersion,

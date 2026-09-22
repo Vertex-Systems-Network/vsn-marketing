@@ -38,6 +38,9 @@ it('rejects offset-only zones and malformed wall-clock input', function () {
     expect(fn () => $resolver->resolve('+05:00', '2026-07-15T09:30:00'))
         ->toThrow(InvalidArgumentException::class, 'canonical IANA timezone');
 
+    expect(fn () => $resolver->resolve('US/Eastern', '2026-07-15T09:30:00'))
+        ->toThrow(InvalidArgumentException::class, 'canonical IANA timezone');
+
     expect(fn () => $resolver->resolve('UTC', '2026-07-15T09:30:00Z'))
         ->toThrow(InvalidArgumentException::class, 'strict YYYY-MM-DDTHH:MM:SS');
 });

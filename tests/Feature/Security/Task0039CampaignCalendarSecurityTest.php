@@ -600,3 +600,258 @@ it('rejects queue intent when the pinned channel is absent from immutable snapsh
 
     expect(DB::table('campaign_schedules')->count())->toBe(0);
 });
+
+it('records cancellation as terminal immutable history and replays after the source occurrence is due', function () {
+    $actor = task0039CalendarActor('cancel-schedule-history');
+    $fixture = task0039CalendarFixture($actor, 'cancel-schedule-history');
+    $calendar = app(CampaignCalendarService::class);
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'cancel-history-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $mutationId = (string) Str::uuid();
+    $cancelled = $calendar->cancelSchedule(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        mutationId: $mutationId,
+        mutationIdempotencyKey: 'cancel-history-mutation',
+        reason: 'Operator cancelled before execution.',
+        at: new DateTimeImmutable('2026-07-15T11:05:00+00:00'),
+    );
+    $replayed = $calendar->cancelSchedule(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        mutationId: $mutationId,
+        mutationIdempotencyKey: 'cancel-history-mutation',
+        reason: 'Operator cancelled before execution.',
+        at: new DateTimeImmutable('2026-07-15T14:00:00+00:00'),
+    );
+
+    expect($cancelled->type->value)->toBe('cancelled')
+        ->and($cancelled->previousScheduleId)->toBe($schedule->id)
+        ->and($cancelled->replacementScheduleId)->toBeNull()
+        ->and($replayed->mutationHash)->toBe($cancelled->mutationHash)
+        ->and(DB::table('campaign_schedules')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(1);
+
+    expect(fn () => $calendar->cancelSchedule(
+        actor: $actor['user'],
+        context: $actor['context'],
+        scheduleId: $schedule->id,
+        mutationId: (string) Str::uuid(),
+        mutationIdempotencyKey: 'cancel-history-conflict',
+        reason: 'Conflicting cancellation.',
+        at: new DateTimeImmutable('2026-07-15T11:06:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'already has terminal reschedule/cancellation history',
+    );
+});
+
+it('denies schedule cancellation without campaign send authority', function () {
+    $actor = task0039CalendarActor('cancel-authority-owner');
+    $fixture = task0039CalendarFixture($actor, 'cancel-authority-owner');
+    $calendar = app(CampaignCalendarService::class);
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'cancel-authority-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $unauthorized = User::query()->create([
+        'name' => 'Unauthorized schedule canceller',
+        'email' => 'unauthorized-cancel@task0039.test',
+        'password' => Hash::make('secret-pass'),
+    ]);
+    app(WorkspaceRoleManager::class)->addMember(
+        $unauthorized,
+        (string) $actor['workspace']->getKey(),
+    );
+    $context = new TenantContext(
+        organizationId: (string) $actor['organization']->getKey(),
+        workspaceId: (string) $actor['workspace']->getKey(),
+        brandId: null,
+        actorId: (string) $unauthorized->getKey(),
+    );
+
+    expect(fn () => $calendar->cancelSchedule(
+        actor: $unauthorized,
+        context: $context,
+        scheduleId: $schedule->id,
+        mutationId: (string) Str::uuid(),
+        mutationIdempotencyKey: 'cancel-authority-denied',
+        reason: 'Unauthorized cancellation.',
+        at: new DateTimeImmutable('2026-07-15T11:05:00+00:00'),
+    ))->toThrow(AuthorizationException::class, 'campaign.send');
+
+    expect(DB::table('campaign_schedule_mutations')->count())->toBe(0);
+});
+
+it('requires material fixed-instant revisions to regain approval before replacement scheduling', function () {
+    $suffix = 'fixed-reschedule-approval';
+    $actor = task0039CalendarActor($suffix);
+    $fixture = task0039CalendarFixture(
+        $actor,
+        $suffix,
+        approvalExpiry: '2026-07-15T15:00:00+00:00',
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $governance = app(CampaignGovernanceService::class);
+
+    $previous = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'fixed-reschedule-original',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    task0039CalendarGrant(
+        $actor['user'],
+        (string) $actor['workspace']->getKey(),
+        'fixed-reschedule-editor',
+        [PermissionCatalog::CAMPAIGN_CREATE],
+    );
+
+    $old = $fixture['snapshot'];
+    $replacementSnapshot = CampaignSnapshot::create(
+        id: (string) Str::uuid(),
+        workspaceId: $old->workspaceId,
+        campaignId: $old->campaignId,
+        parentSnapshotId: $old->id,
+        versionNumber: 2,
+        contentVersionId: $old->contentVersionId,
+        templateVersionId: $old->templateVersionId,
+        componentVersionIds: $old->componentVersionIds,
+        assetReferenceIds: $old->assetReferenceIds,
+        capabilityEvidenceIds: $old->capabilityEvidenceIds,
+        brandReference: $old->brandReference,
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T10:30:00',
+        ],
+        targets: $old->targets,
+        idempotencyKey: 'fixed-reschedule-snapshot-v2',
+        createdByActorId: (string) $actor['user']->getKey(),
+        createdAt: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),
+    );
+
+    $governance->appendMaterialRevision(
+        actor: $actor['user'],
+        context: $actor['context'],
+        snapshot: $replacementSnapshot,
+        snapshotEventId: (string) Str::uuid(),
+        snapshotEventIdempotencyKey: 'fixed-reschedule-snapshot-v2-event',
+        invalidationEventId: (string) Str::uuid(),
+        invalidationEventIdempotencyKey: 'fixed-reschedule-invalidation',
+        reason: 'Move approved execution to a new fixed instant.',
+        at: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),
+    );
+
+    $replacementScheduleId = (string) Str::uuid();
+    $mutationId = (string) Str::uuid();
+
+    expect(fn () => $calendar->rescheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        previousScheduleId: $previous->id,
+        replacementSnapshotId: $replacementSnapshot->id,
+        replacementScheduleId: $replacementScheduleId,
+        replacementScheduleIdempotencyKey: 'fixed-reschedule-replacement',
+        mutationId: $mutationId,
+        mutationIdempotencyKey: 'fixed-reschedule-mutation',
+        reason: 'Apply approved replacement instant.',
+        at: new DateTimeImmutable('2026-07-15T11:03:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'requires scheduled_intent lifecycle state',
+    );
+
+    expect(DB::table('campaign_schedules')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(0);
+
+    $governance->approve(
+        approver: $fixture['approver'],
+        context: new TenantContext(
+            organizationId: (string) $actor['organization']->getKey(),
+            workspaceId: (string) $actor['workspace']->getKey(),
+            brandId: null,
+            actorId: (string) $fixture['approver']->getKey(),
+        ),
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $replacementSnapshot->id,
+        roleKey: 'calendar-approver-'.$suffix,
+        decisionId: (string) Str::uuid(),
+        decisionIdempotencyKey: 'fixed-reschedule-approval-v2',
+        approvalEventId: (string) Str::uuid(),
+        approvalEventIdempotencyKey: 'fixed-reschedule-approval-v2-event',
+        transitionEventId: (string) Str::uuid(),
+        transitionEventIdempotencyKey: 'fixed-reschedule-approved-v2',
+        reason: 'Approve revised execution instant.',
+        expiresAt: new DateTimeImmutable('2026-07-15T16:00:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T11:04:00+00:00'),
+    );
+
+    $governance->scheduleIntent(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        eventId: (string) Str::uuid(),
+        eventIdempotencyKey: 'fixed-reschedule-intent-v2',
+        reason: 'Record approved replacement intent.',
+        at: new DateTimeImmutable('2026-07-15T11:05:00+00:00'),
+    );
+
+    $mutation = $calendar->rescheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        previousScheduleId: $previous->id,
+        replacementSnapshotId: $replacementSnapshot->id,
+        replacementScheduleId: $replacementScheduleId,
+        replacementScheduleIdempotencyKey: 'fixed-reschedule-replacement',
+        mutationId: $mutationId,
+        mutationIdempotencyKey: 'fixed-reschedule-mutation',
+        reason: 'Apply approved replacement instant.',
+        at: new DateTimeImmutable('2026-07-15T11:06:00+00:00'),
+    );
+
+    $replayed = $calendar->rescheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        previousScheduleId: $previous->id,
+        replacementSnapshotId: $replacementSnapshot->id,
+        replacementScheduleId: $replacementScheduleId,
+        replacementScheduleIdempotencyKey: 'fixed-reschedule-replacement',
+        mutationId: $mutationId,
+        mutationIdempotencyKey: 'fixed-reschedule-mutation',
+        reason: 'Apply approved replacement instant.',
+        at: new DateTimeImmutable('2026-07-15T15:00:00+00:00'),
+    );
+
+    expect($mutation->type->value)->toBe('rescheduled')
+        ->and($mutation->previousScheduleId)->toBe($previous->id)
+        ->and($mutation->replacementScheduleId)->toBe($replacementScheduleId)
+        ->and($mutation->previousResolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and($mutation->replacementResolvedAtUtc?->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T14:30:00+00:00')
+        ->and($replayed->mutationHash)->toBe($mutation->mutationHash)
+        ->and(DB::table('campaign_schedules')->count())->toBe(2)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(1)
+        ->and(DB::table('campaign_schedules')->where('id', $previous->id)->value('schedule_hash'))
+        ->toBe($previous->scheduleHash);
+});
+

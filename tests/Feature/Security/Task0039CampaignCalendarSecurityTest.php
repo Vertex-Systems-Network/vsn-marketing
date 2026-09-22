@@ -408,7 +408,6 @@ it('fails closed on ambiguous DST local time before entering scheduled intent or
         ->and(DB::table('campaigns')->where('status', 'scheduled_intent')->count())->toBe(0);
 });
 
-
 it('pins queue schedules to the exact rule version despite later rule drift and replays after expiry', function () {
     $actor = task0039CalendarActor('queue-versioned');
     $workspaceId = (string) $actor['workspace']->getKey();
@@ -530,7 +529,6 @@ it('rejects a queue intent whose pinned rule belongs to another workspace', func
 
     expect(DB::table('campaign_schedules')->count())->toBe(0);
 });
-
 
 it('rejects queue intent when the pinned channel is absent from immutable snapshot targets', function () {
     $actor = task0039CalendarActor('queue-channel-mismatch');

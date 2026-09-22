@@ -384,7 +384,7 @@
       "phase": "PHASE-07",
       "title": "Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history",
       "weight": 20,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0037"
       ]
@@ -394,7 +394,7 @@
       "phase": "PHASE-07",
       "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0038"
       ]

@@ -11,11 +11,14 @@ use App\Modules\Publishing\Domain\Campaign\CampaignApprovalEvaluation;
 use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutationType;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleStrategy;
 use App\Modules\Publishing\Domain\Scheduling\LocalScheduleTimeResolver;
 use App\Modules\Publishing\Domain\Scheduling\QueueNextSlotResolver;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
@@ -28,6 +31,7 @@ final readonly class CampaignCalendarService
     public function __construct(
         private DatabaseCampaignRepository $campaigns,
         private DatabaseCampaignScheduleRepository $schedules,
+        private DatabaseCampaignScheduleMutationRepository $mutations,
         private DatabaseCampaignScheduleRuleRepository $rules,
         private CampaignApprovalEvaluator $approvals,
         private LocalScheduleTimeResolver $resolver,
@@ -266,6 +270,257 @@ final readonly class CampaignCalendarService
                 createdAt: $at,
             ));
         });
+    }
+
+    public function rescheduleFixedInstant(
+        User $actor,
+        TenantContext $context,
+        string $previousScheduleId,
+        string $replacementSnapshotId,
+        string $replacementScheduleId,
+        string $replacementScheduleIdempotencyKey,
+        string $mutationId,
+        string $mutationIdempotencyKey,
+        string $reason,
+        DateTimeImmutable $at,
+    ): CampaignScheduleMutation {
+        $this->assertScheduleAuthority($actor, $context);
+
+        return $this->database->connection()->transaction(function () use (
+            $actor,
+            $context,
+            $previousScheduleId,
+            $replacementSnapshotId,
+            $replacementScheduleId,
+            $replacementScheduleIdempotencyKey,
+            $mutationId,
+            $mutationIdempotencyKey,
+            $reason,
+            $at,
+        ): CampaignScheduleMutation {
+            $existing = $this->mutations->findByIdempotency(
+                $context->workspaceId,
+                $mutationIdempotencyKey,
+            );
+
+            if ($existing !== null) {
+                $this->assertMutationReplay(
+                    existing: $existing,
+                    type: CampaignScheduleMutationType::Rescheduled,
+                    mutationId: $mutationId,
+                    previousScheduleId: $previousScheduleId,
+                    replacementScheduleId: $replacementScheduleId,
+                    actorId: $context->actorId,
+                    reason: $reason,
+                );
+
+                return $existing;
+            }
+
+            $previous = $this->requireSchedule($context, $previousScheduleId);
+            if ($previous->strategy !== CampaignScheduleStrategy::FixedInstant) {
+                throw new InvalidArgumentException(
+                    'Campaign fixed-instant reschedule requires a fixed-instant source schedule.',
+                );
+            }
+            $this->assertScheduleMutationWindow($previous, $at);
+
+            $replacement = $this->scheduleFixedInstant(
+                actor: $actor,
+                context: $context,
+                campaignId: $previous->campaignId,
+                snapshotId: $replacementSnapshotId,
+                scheduleId: $replacementScheduleId,
+                idempotencyKey: $replacementScheduleIdempotencyKey,
+                at: $at,
+            );
+
+            return $this->mutations->create(CampaignScheduleMutation::rescheduled(
+                id: $mutationId,
+                previous: $previous,
+                replacement: $replacement,
+                actorId: $context->actorId,
+                reason: $reason,
+                idempotencyKey: $mutationIdempotencyKey,
+                occurredAt: $at,
+            ));
+        });
+    }
+
+    public function rescheduleQueueNextSlot(
+        User $actor,
+        TenantContext $context,
+        string $previousScheduleId,
+        string $replacementSnapshotId,
+        string $replacementScheduleId,
+        string $replacementScheduleIdempotencyKey,
+        string $mutationId,
+        string $mutationIdempotencyKey,
+        string $reason,
+        DateTimeImmutable $at,
+    ): CampaignScheduleMutation {
+        $this->assertScheduleAuthority($actor, $context);
+
+        return $this->database->connection()->transaction(function () use (
+            $actor,
+            $context,
+            $previousScheduleId,
+            $replacementSnapshotId,
+            $replacementScheduleId,
+            $replacementScheduleIdempotencyKey,
+            $mutationId,
+            $mutationIdempotencyKey,
+            $reason,
+            $at,
+        ): CampaignScheduleMutation {
+            $existing = $this->mutations->findByIdempotency(
+                $context->workspaceId,
+                $mutationIdempotencyKey,
+            );
+
+            if ($existing !== null) {
+                $this->assertMutationReplay(
+                    existing: $existing,
+                    type: CampaignScheduleMutationType::Rescheduled,
+                    mutationId: $mutationId,
+                    previousScheduleId: $previousScheduleId,
+                    replacementScheduleId: $replacementScheduleId,
+                    actorId: $context->actorId,
+                    reason: $reason,
+                );
+
+                return $existing;
+            }
+
+            $previous = $this->requireSchedule($context, $previousScheduleId);
+            if ($previous->strategy !== CampaignScheduleStrategy::QueueNextSlot) {
+                throw new InvalidArgumentException(
+                    'Campaign queue reschedule requires a queue_next_slot source schedule.',
+                );
+            }
+            $this->assertScheduleMutationWindow($previous, $at);
+
+            $replacement = $this->scheduleQueueNextSlot(
+                actor: $actor,
+                context: $context,
+                campaignId: $previous->campaignId,
+                snapshotId: $replacementSnapshotId,
+                scheduleId: $replacementScheduleId,
+                idempotencyKey: $replacementScheduleIdempotencyKey,
+                at: $at,
+            );
+
+            return $this->mutations->create(CampaignScheduleMutation::rescheduled(
+                id: $mutationId,
+                previous: $previous,
+                replacement: $replacement,
+                actorId: $context->actorId,
+                reason: $reason,
+                idempotencyKey: $mutationIdempotencyKey,
+                occurredAt: $at,
+            ));
+        });
+    }
+
+    public function cancelSchedule(
+        User $actor,
+        TenantContext $context,
+        string $scheduleId,
+        string $mutationId,
+        string $mutationIdempotencyKey,
+        string $reason,
+        DateTimeImmutable $at,
+    ): CampaignScheduleMutation {
+        $this->assertScheduleAuthority($actor, $context);
+
+        return $this->database->connection()->transaction(function () use (
+            $context,
+            $scheduleId,
+            $mutationId,
+            $mutationIdempotencyKey,
+            $reason,
+            $at,
+        ): CampaignScheduleMutation {
+            $existing = $this->mutations->findByIdempotency(
+                $context->workspaceId,
+                $mutationIdempotencyKey,
+            );
+
+            if ($existing !== null) {
+                $this->assertMutationReplay(
+                    existing: $existing,
+                    type: CampaignScheduleMutationType::Cancelled,
+                    mutationId: $mutationId,
+                    previousScheduleId: $scheduleId,
+                    replacementScheduleId: null,
+                    actorId: $context->actorId,
+                    reason: $reason,
+                );
+
+                return $existing;
+            }
+
+            $previous = $this->requireSchedule($context, $scheduleId);
+            $this->assertScheduleMutationWindow($previous, $at);
+
+            return $this->mutations->create(CampaignScheduleMutation::cancelled(
+                id: $mutationId,
+                previous: $previous,
+                actorId: $context->actorId,
+                reason: $reason,
+                idempotencyKey: $mutationIdempotencyKey,
+                occurredAt: $at,
+            ));
+        });
+    }
+
+    private function requireSchedule(
+        TenantContext $context,
+        string $scheduleId,
+    ): CampaignSchedule {
+        $schedule = $this->schedules->find($context->workspaceId, $scheduleId);
+
+        if (! $schedule instanceof CampaignSchedule) {
+            throw new InvalidArgumentException(
+                'Campaign schedule does not exist in this workspace.',
+            );
+        }
+
+        return $schedule;
+    }
+
+    private function assertScheduleMutationWindow(
+        CampaignSchedule $schedule,
+        DateTimeImmutable $at,
+    ): void {
+        if ($schedule->resolvedAtUtc <= $at) {
+            throw new InvalidArgumentException(
+                'Campaign schedule cannot be rescheduled or cancelled after its resolved occurrence is due.',
+            );
+        }
+    }
+
+    private function assertMutationReplay(
+        CampaignScheduleMutation $existing,
+        CampaignScheduleMutationType $type,
+        string $mutationId,
+        string $previousScheduleId,
+        ?string $replacementScheduleId,
+        string $actorId,
+        string $reason,
+    ): void {
+        if (
+            $existing->type !== $type
+            || $existing->id !== $mutationId
+            || $existing->previousScheduleId !== $previousScheduleId
+            || $existing->replacementScheduleId !== $replacementScheduleId
+            || $existing->actorId !== $actorId
+            || $existing->reason !== $reason
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule mutation replay conflicts with immutable history.',
+            );
+        }
     }
 
     private function requireSnapshot(

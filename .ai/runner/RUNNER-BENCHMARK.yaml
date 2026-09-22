@@ -548,18 +548,33 @@
       "source": "PR #357 / TASK-0039 queue-next-slot foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #357 exact-head status/comment"
+        "git_sha": "ea721ef5f14602bb78a878ac976eb416e77b88ca",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #357 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0039-queue-next-slot-foundation; immutable versioned weekly rules + deterministic next-slot + DST + fixed compatibility tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-queue-next-slot-foundation:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 357,
+        "source_sha": "ea721ef5f14602bb78a878ac976eb416e77b88ca",
+        "merge_sha": "1e17d38aaaefdeba1d2bb930e553c93f7d7ff7e7",
+        "workflow_runs": {
+          "ai_continuity_guard": 35738931906,
+          "application_foundation_ci": 35738931897,
+          "security_supply_chain_ci": 35738931987
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "immutable versioned queue rules; deterministic next-slot/DST handling; pinned rule/UTC occurrence evidence; fixed-instant compatibility; no provider scheduling/publication side effect"
+      }
     }
   ]
 }

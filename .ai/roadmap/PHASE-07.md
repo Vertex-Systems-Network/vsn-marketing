@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 AC-6 PostgreSQL-authoritative due claiming and internal execution-intent emission is staged on PR #363 under exact-head verification; live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 AC-6 due claiming/internal execution-intent semantics are trusted; the next bounded milestone is AC-7 provider-native scheduling capability evidence while VSN calendar time remains canonical and live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, and PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history are trusted. PR #363 stages the bounded AC-6 slice: PostgreSQL-authoritative due claims, hashed lease tokens, stale-lease recovery, exactly one immutable internal execution intent plus same-transaction outbox handoff, rollback/retry safety and multi-process contention evidence.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, and PR #363 PostgreSQL-authoritative due claims/execution intents are trusted. The next bounded AC-7 slice keeps VSN time canonical while treating provider-native schedule support only as versioned capability evidence that fails closed on connection/permission/capability drift.
 
 ## Staged research direction
 

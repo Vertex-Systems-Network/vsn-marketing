@@ -648,18 +648,33 @@
       "source": "PR #363 / TASK-0039 due-claim execution-intent milestone",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #363 exact-head status/comment"
+        "git_sha": "9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #363 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0039-due-claim-execution-intent; PostgreSQL schedule-row contention + stale-lease recovery + atomic immutable intent/outbox + adversarial security tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-due-claim-execution-intent:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 363,
+        "source_sha": "9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9",
+        "merge_sha": "58e7ec489fffb19a807ad69708b2919b22894bfb",
+        "workflow_runs": {
+          "ai_continuity_guard": 35791758031,
+          "application_foundation_ci": 35791757956,
+          "security_supply_chain_ci": 35791757920
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Final AC-6 head includes emitted-claim lineage verification on replay. Exact-head backend, architecture, PHP static analysis/formatting, PHP 8.3, E2E, PostgreSQL/Redis integration, real multi-process due-claim contention and security/supply-chain checks all passed without weakening workspace, approval, migration, lease, outbox or provider-isolation invariants."
+      }
     }
   ]
 }

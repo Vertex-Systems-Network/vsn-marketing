@@ -496,4 +496,3 @@ it('rejects reschedule lineage that keeps the same canonical UTC occurrence', fu
         'must change the resolved UTC instant',
     );
 });
-

@@ -55,6 +55,18 @@ final readonly class DatabaseCampaignScheduleMutationRepository
                 throw new InvalidArgumentException('Campaign schedule mutation source evidence does not match immutable schedule state.');
             }
 
+            $dueClaim = $this->database->connection()->table('campaign_schedule_due_claims')
+                ->where('workspace_id', $mutation->workspaceId)
+                ->where('schedule_id', $mutation->previousScheduleId)
+                ->lockForUpdate()
+                ->first();
+
+            if ($dueClaim instanceof stdClass) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule cannot be rescheduled or cancelled after due claiming begins.',
+                );
+            }
+
             $terminalOutcome = $this->database->connection()->table('campaign_schedule_occurrence_outcomes')
                 ->where('workspace_id', $mutation->workspaceId)
                 ->where('schedule_id', $mutation->previousScheduleId)

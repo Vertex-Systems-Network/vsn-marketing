@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 approval-timing/missed-occurrence history is staged on PR #361 under exact-head verification; due-claim execution and live provider scheduling/publication remain inactive.**
+Status: **IN PROGRESS — TASK-0039 approval-timing/missed-occurrence history is trusted; the next bounded milestone is AC-6 PostgreSQL-authoritative due claiming and internal execution-intent emission while live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, and PR #359 append-only reschedule/cancel history are trusted. PR #361 stages approval-timing enforcement plus immutable missed_needs_reschedule occurrence history; due-claim worker concurrency/execution-intent emission remains a separate AC-6 slice.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, and PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history are trusted. The next bounded AC-6 slice owns PostgreSQL-authoritative due claims, stale-lease recovery and exactly-once internal execution-intent/outbox handoff semantics.
 
 ## Staged research direction
 

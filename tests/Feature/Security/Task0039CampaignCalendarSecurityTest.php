@@ -728,6 +728,18 @@ it('requires material fixed-instant revisions to regain approval before replacem
     );
 
     $old = $fixture['snapshot'];
+    $oldTarget = $old->targets[0];
+    $replacementTarget = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $oldTarget->workspaceId,
+        kind: $oldTarget->kind,
+        canonicalReferenceId: $oldTarget->canonicalReferenceId,
+        channel: $oldTarget->channel,
+        providerConnectionId: $oldTarget->providerConnectionId,
+        capabilityEvidenceId: $oldTarget->capabilityEvidenceId,
+        metadata: $oldTarget->metadata,
+        createdAt: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),
+    );
     $replacementSnapshot = CampaignSnapshot::create(
         id: (string) Str::uuid(),
         workspaceId: $old->workspaceId,
@@ -745,7 +757,7 @@ it('requires material fixed-instant revisions to regain approval before replacem
             'timezone' => 'America/New_York',
             'at' => '2026-07-15T10:30:00',
         ],
-        targets: $old->targets,
+        targets: [$replacementTarget],
         idempotencyKey: 'fixed-reschedule-snapshot-v2',
         createdByActorId: (string) $actor['user']->getKey(),
         createdAt: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),

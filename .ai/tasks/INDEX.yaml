@@ -394,7 +394,7 @@
       "phase": "PHASE-07",
       "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
       "weight": 20,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0038"
       ]

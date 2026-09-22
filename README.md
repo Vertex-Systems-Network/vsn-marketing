@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0039-DUE-CLAIM-EXECUTION-INTENT status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0039-PROVIDER-SCHEDULE-CAPABILITY-EVIDENCE status=VERIFYING -->
 
-> Last verified protected-main TASK-0039 baseline: **2026-09-22** at `58e7ec489fffb19a807ad69708b2919b22894bfb` after AC-6 PR #363 merged. Exact source `9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9` passed AI Continuity Guard `35791758031`, Application Foundation CI `35791757956`, and Security Supply Chain CI `35791757920`. AC-6 is trusted; AC-7 provider-native capability-evidence/fail-closed drift work is next and provider scheduling/publication side effects remain inactive.
+> Last verified protected-main TASK-0039 baseline: **2026-09-22** at `2db0b1fa3604731c9e8e908df592cf778baea2dd` after AC-6 reconciliation PR #364. PR #365 now stages AC-7 provider-native schedule capability evidence and fail-closed drift revalidation while VSN calendar time remains canonical; provider scheduling/publication side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 63.64%**  
 **Active task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
 **Last completed task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
-**Current milestone: TASK-0039-DUE-CLAIM-EXECUTION-INTENT — COMPLETE**
+**Current milestone: TASK-0039-PROVIDER-SCHEDULE-CAPABILITY-EVIDENCE — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 48.45%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 AC-7 provider capability evidence next** | **63.64%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 AC-7 PR #365 verification** | **63.64%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,7 +47,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 
 ### Current execution snapshot
 
-TASK-0039 is active/in-progress in PHASE-07. PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot foundation, PR #359 append-only reschedule/cancel history, PR #361 canonical due-boundary approval/missed-occurrence history, and PR #363 PostgreSQL-authoritative due claiming/execution-intent semantics are trusted. The next bounded AC-7 slice keeps VSN calendar time canonical and models provider-native schedule support only as versioned capability evidence with fail-closed disconnect/permission/capability drift.
+TASK-0039 is active/in-progress in PHASE-07. PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot foundation, PR #359 append-only reschedule/cancel history, PR #361 canonical due-boundary approval/missed-occurrence history, and PR #363 PostgreSQL-authoritative due claiming/execution-intent semantics are trusted. PR #365 stages AC-7: VSN calendar time remains canonical, `publication.schedule.remote` is versioned evidence only, stale-lease takeover/new intent emission revalidate provider and approval authority, and provider-native schedule identifiers/timestamps remain outside canonical records.
 
 The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
@@ -55,7 +55,7 @@ TASK-0038 is completed and TASK-0039 is in progress. PR #355 adds immutable fixe
 
 PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. PR #363 is trusted on exact source `9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9` and RBT-023 is terminal PASS. Deterministic progress remains roadmap 48.45% / PHASE-07 63.64% until TASK-0039 completes. AC-7 provider-native scheduling capability evidence is next; provider scheduling/publication side effects remain inactive.
+README progress-sync protocol v2.4.2 remains enforced. AC-6 is terminally reconciled via PR #364; PR #365 / RBT-024 is the active AC-7 verification surface. Deterministic progress remains roadmap 48.45% / PHASE-07 63.64% until TASK-0039 completes. Provider scheduling/publication side effects remain inactive.
 
 ### README progress-sync contract
 

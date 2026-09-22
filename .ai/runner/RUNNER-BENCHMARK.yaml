@@ -615,18 +615,33 @@
       "source": "PR #361 / TASK-0039 approval-timing missed occurrence foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #361 exact-head status/comment"
+        "git_sha": "c5481f457526a55cd681af93e098ba41f2d90171",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #361 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0039-approval-missed-outcomes; due-boundary approval re-evaluation + immutable missed_needs_reschedule evidence + PostgreSQL/security tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-approval-missed-outcomes:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 361,
+        "source_sha": "c5481f457526a55cd681af93e098ba41f2d90171",
+        "merge_sha": "909fc90032fe8530cab7859ffa08af42642b1af7",
+        "workflow_runs": {
+          "ai_continuity_guard": 35788599628,
+          "application_foundation_ci": 35788599696,
+          "security_supply_chain_ci": 35788599636
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application verification first exposed one redundant single-case CampaignScheduleOccurrenceState comparison in PHPStan and then two Pint-only extra-blank-line issues. Both were repaired without weakening approval, workspace, migration, terminality, replay or security invariants; final exact head passed backend, architecture, static analysis, formatting, PHP 8.3, E2E, PostgreSQL/Redis integration and full security/supply-chain checks."
+      }
     }
   ]
 }

@@ -2,6 +2,8 @@
 
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
@@ -294,3 +296,156 @@ it('fails closed when reading a schedule rule from another workspace', function 
     expect(fn () => $rules->find($other['workspaceId'], $rule->id))
         ->toThrow(AuthorizationException::class, 'Campaign schedule rule reference access denied.');
 });
+
+it('persists append-only cancellation history with replay safety and terminality', function () {
+    $fixture = task0039PersistenceFixture('cancel-history');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-cancel-history',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $mutation = CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Operator cancelled before execution.',
+        idempotencyKey: 'mutation-cancel-history',
+        occurredAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    );
+
+    $stored = $mutations->create($mutation);
+    $replayed = $mutations->create($mutation);
+
+    expect($stored->mutationHash)->toBe($mutation->mutationHash)
+        ->and($replayed->id)->toBe($mutation->id)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(1)
+        ->and(DB::table('campaign_schedules')->where('id', $schedule->id)->value('resolved_at_utc'))
+        ->not->toBeNull();
+
+    $second = CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Conflicting second cancellation.',
+        idempotencyKey: 'mutation-cancel-history-second',
+        occurredAt: new DateTimeImmutable('2026-07-15T10:21:00+00:00'),
+    );
+
+    expect(fn () => $mutations->create($second))->toThrow(
+        InvalidArgumentException::class,
+        'already has terminal reschedule/cancellation history',
+    );
+
+    $migration = require database_path('migrations/2026_09_22_000003_create_campaign_schedule_mutation_tables.php');
+    $migration->up();
+
+    expect(DB::table('campaign_schedule_mutations')->count())->toBe(1);
+
+    expect(fn () => DB::table('campaign_schedule_mutations')->where('id', $mutation->id)->update([
+        'reason' => 'mutated history',
+    ]))->toThrow(QueryException::class);
+});
+
+it('persists reschedule lineage without rewriting the previous immutable schedule', function () {
+    $fixture = task0039PersistenceFixture('reschedule-history');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+
+    $previous = $schedules->create(CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'schedule-reschedule-history-old',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    ));
+
+    $replacement = $schedules->create(CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T10:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T14:30:00+00:00'),
+        idempotencyKey: 'schedule-reschedule-history-new',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    ));
+
+    $mutation = $mutations->create(CampaignScheduleMutation::rescheduled(
+        id: (string) Str::uuid(),
+        previous: $previous,
+        replacement: $replacement,
+        actorId: 'task0039-author',
+        reason: 'Move to the approved replacement instant.',
+        idempotencyKey: 'mutation-reschedule-history',
+        occurredAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    ));
+
+    $oldRow = DB::table('campaign_schedules')->where('id', $previous->id)->first();
+
+    expect($mutation->previousScheduleId)->toBe($previous->id)
+        ->and($mutation->replacementScheduleId)->toBe($replacement->id)
+        ->and($mutation->previousResolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and($mutation->replacementResolvedAtUtc?->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T14:30:00+00:00')
+        ->and($oldRow?->schedule_hash)->toBe($previous->scheduleHash)
+        ->and(DB::table('campaign_schedules')->count())->toBe(2)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(1);
+});
+
+it('fails closed when schedule mutation history is read from another workspace', function () {
+    $owner = task0039PersistenceFixture('mutation-scope-owner');
+    $other = task0039PersistenceFixture('mutation-scope-other');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+
+    $schedule = $schedules->create(CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $owner['workspaceId'],
+        campaignId: $owner['campaignId'],
+        snapshotId: $owner['snapshotId'],
+        approvalId: $owner['approvalId'],
+        targetSetHash: $owner['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'mutation-scope-schedule',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    ));
+
+    $mutation = $mutations->create(CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Cancel scoped schedule.',
+        idempotencyKey: 'mutation-scope-cancel',
+        occurredAt: new DateTimeImmutable('2026-07-15T10:20:00+00:00'),
+    ));
+
+    expect(fn () => $mutations->find($other['workspaceId'], $mutation->id))
+        ->toThrow(AuthorizationException::class, 'Campaign schedule mutation reference access denied.');
+});
+

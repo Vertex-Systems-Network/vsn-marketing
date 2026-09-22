@@ -232,6 +232,23 @@ final readonly class DatabaseCampaignScheduleRepository
         return null;
     }
 
+    public function lockForUpdate(string $workspaceId, string $scheduleId): ?CampaignSchedule
+    {
+        $row = $this->database->connection()->table('campaign_schedules')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', $scheduleId)
+            ->lockForUpdate()
+            ->first();
+
+        if ($row instanceof stdClass) {
+            return $this->hydrate($row);
+        }
+
+        $this->denyIfForeignReferenceExists('campaign_schedules', $workspaceId, $scheduleId);
+
+        return null;
+    }
+
     private function denyIfForeignReferenceExists(string $table, string $workspaceId, string $id): void
     {
         if ($this->database->connection()->table($table)

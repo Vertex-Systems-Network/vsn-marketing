@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0038_to_0039_transition_pr353_head_9e18966235f5c7b83f89d2dd7c7853e3354fed71_passed_run_35672254776",
-    "application_test_status": "task0038_to_0039_transition_pr353_head_9e18966235f5c7b83f89d2dd7c7853e3354fed71_passed_run_35672254843",
-    "security_supply_chain_status": "task0038_to_0039_transition_pr353_head_9e18966235f5c7b83f89d2dd7c7853e3354fed71_passed_run_35672254866",
+    "continuity_validation": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158184",
+    "application_test_status": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158499",
+    "security_supply_chain_status": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158448",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "17f5722dde9ce5ff01e637c609aad673deda7b7b",
+  "observed_main_sha": "2e0e0d9fc1d871ce6631c539593277b3da5ed787",
   "active_issue": null,
-  "active_pr": 355,
-  "active_branch": "task/0039-calendar-timezone-foundation",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "TASK-0039-CALENDAR-TIMEZONE-FOUNDATION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "Guarded TASK-0038 -> TASK-0039 transition terminally reconciled via PR #354 as 17f5722dde9ce5ff01e637c609aad673deda7b7b. TASK-0038 is completed, TASK-0039 is active/ready, and RBT-018 is terminal PASS.",
-  "exact_next_safe_action": "Perform exact-head verification for PR #355. Merge the TASK-0039 calendar/timezone foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, migration/data-safety checks pass, and the exact head is unchanged. Treat IANA timezone/DST ambiguity-gap failures, schedule hash or idempotency instability, stale/foreign snapshot or approval acceptance, workspace isolation failures, campaign/approval race regressions, mutable schedule history, or any provider/native scheduling side effect as merge blockers. After trusted merge, terminally reconcile this milestone before starting queue/next-slot, reschedule/cancel, missed-run or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.",
-  "pending_runner_ids": [
-    "RBT-019"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "TASK-0039 calendar/timezone foundation merged via PR #355 as 2e0e0d9fc1d871ce6631c539593277b3da5ed787; exact source 8c23329dc7c5b0684ce132516917d696a8cf1866 passed AI Continuity Guard 35703158184, Application Foundation CI 35703158499 and Security Supply Chain CI 35703158448. RBT-019 is terminal PASS and provider/native scheduling side effects remain inactive.",
+  "exact_next_safe_action": "Begin the bounded TASK-0039 queue/next-slot rule foundation from current protected main. Implement versioned workspace/channel weekly slot rules with explicit canonical IANA timezone, deterministic next-slot selection, and immutable pinned UTC occurrence semantics so later rule/timezone changes cannot silently rewrite an accepted occurrence. Bind queue scheduling to the exact campaign snapshot/current approval/workspace authority and preserve fixed_instant as a distinct strategy. Add backend/PostgreSQL/adversarial coverage for DST gaps/overlaps, deterministic tie-breaking, replay/idempotency and rule-version drift. Do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform exact-head verification for PR #355. Merge the TASK-0039 calendar/timezone foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green, review is clean, migration/data-safety checks pass, and the exact head is unchanged. Treat IANA timezone/DST ambiguity-gap failures, schedule hash or idempotency instability, stale/foreign snapshot or approval acceptance, workspace isolation failures, campaign/approval race regressions, mutable schedule history, or any provider/native scheduling side effect as merge blockers. After trusted merge, terminally reconcile this milestone before starting queue/next-slot, reschedule/cancel, missed-run or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Begin the bounded TASK-0039 queue/next-slot rule foundation from current protected main. Implement versioned workspace/channel weekly slot rules with explicit canonical IANA timezone, deterministic next-slot selection, and immutable pinned UTC occurrence semantics so later rule/timezone changes cannot silently rewrite an accepted occurrence. Bind queue scheduling to the exact campaign snapshot/current approval/workspace authority and preserve fixed_instant as a distinct strategy. Add backend/PostgreSQL/adversarial coverage for DST gaps/overlaps, deterministic tie-breaking, replay/idempotency and rule-version drift. Do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization."
 }

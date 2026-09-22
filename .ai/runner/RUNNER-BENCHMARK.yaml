@@ -476,6 +476,24 @@
         },
         "registration_boundary": "TASK-0039 planned-only; TASK-0038 remains active/ready until separate guarded transition."
       }
+    },
+    {
+      "id": "RBT-018",
+      "source": "PR #353 / guarded TASK-0038 -> TASK-0039 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #353 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0038-to-0039; TASK-0038 completed + TASK-0039 ready/active deterministic transition",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-task0039-transition:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

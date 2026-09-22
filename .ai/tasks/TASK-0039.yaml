@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement the workspace-scoped canonical editorial/campaign calendar and provider-neutral scheduling engine that turns approved immutable campaign snapshots into deterministic fixed-instant or queue/next-slot execution intents with explicit IANA timezone/DST semantics, append-oriented reschedule/cancel/missed-run history, approval-timing enforcement and replay-safe due claiming, while leaving provider publication attempts, provider-native scheduling side effects and credential use to later guarded tasks.",
   "dependencies": [
     "TASK-0038"

@@ -4,21 +4,21 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=45.91 phase=27.27 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0039-REGISTRATION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=48.45 phase=63.64 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0038-TO-0039-TRANSITION status=VERIFYING -->
 
-> Last verified protected-main registration baseline: **2026-09-22** at `3dbd2aca8547167b42610007e8494606a9f9d7df` after TASK-0039 planned-registration PR #351 merged. Exact source `918e1d1d8a290d9b9c729a1764e7fd8160c5d80a` passed AI Continuity Guard `35670787818`, Application Foundation CI `35670787786`, and Security Supply Chain CI `35670787729`. TASK-0038 remains active/ready and TASK-0039 remains planned-only until the separate guarded transition.
+> Last verified protected-main transition basis: **2026-09-22** at `ceec62e604ae4188dac80ebaac39da90f69da5fd` after TASK-0039 registration reconciliation PR #352 merged. Exact source `96b1f491f4b1b3b0d57c5fb191d8b2e54b7f91f6` passed AI Continuity Guard `35671745345`, Application Foundation CI `35671745351`, and Security Supply Chain CI `35671745343`. PR #353 now stages TASK-0038 completed / TASK-0039 ready without scheduler product implementation.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
-**Overall roadmap progress: 45.91%**  
-**Current phase: PHASE-07 — 27.27%**  
+**Overall roadmap progress: 48.45%**  
+**Current phase: PHASE-07 — 63.64%**  
 **Active task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
 **Last completed task: TASK-0037 — Research current campaign/social publishing APIs, app-review/scopes, scheduling constraints, media rules, and market calendar workflows**  
-**Current milestone: TASK-0039-REGISTRATION — COMPLETE**
+**Current milestone: TASK-0038-TO-0039-TRANSITION — VERIFYING**
 
 ```text
-Overall  [█████████░░░░░░░░░░░] 45.91%
-Phase 07 [█████░░░░░░░░░░░░░░░] 27.27%
+Overall  [██████████░░░░░░░░░░] 48.45%
+Phase 07 [█████████████░░░░░░░] 63.64%
 ```
 
 The deterministic roadmap percentage advances from completed task weights, so partial TASK-0038 milestones can land substantial product code while the canonical roadmap percentage remains 47%. The README still updates on every durable milestone state change so the active milestone, evidence, task and phase never remain stale.
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances from completed task weights, so pa
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0038 accepted / TASK-0039 registration** | **27.27%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0039 activation transition** | **63.64%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -51,11 +51,11 @@ TASK-0038 is active in PHASE-07. Campaign persistence/domain foundation is trust
 
 The canonical implementation now includes workspace-scoped campaign lifecycle persistence, immutable snapshots and canonical targets, snapshot-bound approval history, optimistic concurrency/idempotency, fail-closed workspace isolation, authorized approval/rejection/revocation/ready orchestration, approver permission/role re-evaluation, stale/future provider-capability rejection, material-revision invalidation, append-only stale-approval revocation, governed cancellation/completion provenance, immutable previous/new revision lineage, and replay-safe material revision commands.
 
-TASK-0038 final acceptance PR #350 is trusted and AC-1 through AC-8 remain true. TASK-0038 intentionally remains active/ready during the separate planned-only TASK-0039 registration PR #351. TASK-0039 implementation, live provider publication, provider media upload, provider credential activation and deployment/release authority remain inactive.
+TASK-0038 is staged completed and TASK-0039 staged ready/active on guarded transition PR #353. TASK-0039 product implementation remains blocked until this transition exact head is trusted and terminally reconciled. Live provider publication, provider media upload, provider credential activation and deployment/release authority remain inactive.
 
 PR #349 is merged on protected main and closes the scheduled-intent/canonical-target evidence gap: authorized Approved -> ScheduledIntent state is recorded without scheduler/provider execution, current exact-snapshot approval is revalidated for fresh scheduling, historical duplicate replay remains idempotent, fixed-instant intent is immutable evidence, and ContactIdentity/List/Tag targets are reproducible and workspace-isolated with exact materialized list/tag membership. PR #350 is the Supervisor-only final TASK-0038 acceptance surface.
 
-README progress-sync protocol v2.4.2 remains enforced. TASK-0039 planned registration is now trusted and terminally reconciled; deterministic progress remains roadmap 45.91% / PHASE-07 27.27% while TASK-0038 stays ready. The next separate guarded transition will complete TASK-0038 and activate TASK-0039 ready.
+README progress-sync protocol v2.4.2 remains enforced. PR #353 stages the guarded TASK-0038 completed / TASK-0039 ready transition; deterministic progress is roadmap 48.45% / PHASE-07 63.64%. Scheduler implementation remains blocked until this exact transition head is trusted and terminally reconciled.
 
 ### README progress-sync contract
 

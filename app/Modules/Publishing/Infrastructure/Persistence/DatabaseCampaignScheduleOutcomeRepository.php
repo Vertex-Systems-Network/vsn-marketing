@@ -59,6 +59,18 @@ final readonly class DatabaseCampaignScheduleOutcomeRepository
                 throw new InvalidArgumentException('Campaign schedule outcome evidence does not match immutable schedule state.');
             }
 
+            $dueClaim = $this->database->connection()->table('campaign_schedule_due_claims')
+                ->where('workspace_id', $outcome->workspaceId)
+                ->where('schedule_id', $outcome->scheduleId)
+                ->lockForUpdate()
+                ->first();
+
+            if ($dueClaim instanceof stdClass) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule missed outcome cannot be recorded after due claiming begins.',
+                );
+            }
+
             $terminalMutation = $this->database->connection()->table('campaign_schedule_mutations')
                 ->where('workspace_id', $outcome->workspaceId)
                 ->where('previous_schedule_id', $outcome->scheduleId)

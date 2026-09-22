@@ -1,9 +1,12 @@
 <?php
 
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleDueClaim;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleExecutionIntent;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleMutation;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleOccurrenceOutcome;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleExecutionRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleMutationRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleOutcomeRepository;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
@@ -678,4 +681,118 @@ it('rejects backdated reschedule or cancellation after a terminal occurrence out
 
     expect(DB::table('campaign_schedule_mutations')->count())->toBe(0)
         ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(1);
+});
+
+
+it('persists due claims, blocks competing terminal history and protects immutable execution intents', function () {
+    $fixture = task0039PersistenceFixture('due-claim-persistence');
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+    $executions = app(DatabaseCampaignScheduleExecutionRepository::class);
+    $mutations = app(DatabaseCampaignScheduleMutationRepository::class);
+    $outcomes = app(DatabaseCampaignScheduleOutcomeRepository::class);
+    $schedule = CampaignSchedule::fixedInstant(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        timezoneId: 'America/New_York',
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'due-claim-persistence-schedule',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $schedules->create($schedule);
+
+    $claim = CampaignScheduleDueClaim::firstLease(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedApprovalId: $fixture['approvalId'],
+        leaseOwner: 'task0039-worker',
+        leaseToken: 'due-claim-persistence-token',
+        claimedAt: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        leaseExpiresAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+    $executions->createClaim($claim);
+
+    $mutation = CampaignScheduleMutation::cancelled(
+        id: (string) Str::uuid(),
+        previous: $schedule,
+        actorId: 'task0039-author',
+        reason: 'Backdated cancellation cannot race a claimed occurrence.',
+        idempotencyKey: 'due-claim-backdated-cancel',
+        occurredAt: new DateTimeImmutable('2026-07-15T12:00:00+00:00'),
+    );
+
+    expect(fn () => $mutations->create($mutation))->toThrow(
+        InvalidArgumentException::class,
+        'after due claiming begins',
+    );
+
+    $outcome = CampaignScheduleOccurrenceOutcome::executionDeadlineMissed(
+        id: (string) Str::uuid(),
+        schedule: $schedule,
+        evaluatedDecisionId: $fixture['approvalId'],
+        recordedByActorId: 'task0039-worker',
+        idempotencyKey: 'due-claim-competing-outcome',
+        observedAt: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+
+    expect(fn () => $outcomes->create($outcome))->toThrow(
+        InvalidArgumentException::class,
+        'after due claiming begins',
+    );
+
+    $intentId = (string) Str::uuid();
+    $outboxId = (string) Str::uuid();
+    $emittedAt = new DateTimeImmutable('2026-07-15T13:30:10+00:00');
+    DB::table('outbox_messages')->insert([
+        'id' => $outboxId,
+        'topic' => 'publishing.campaign_schedule.execution_intent.ready',
+        'aggregate_type' => 'campaign_schedule_execution_intent',
+        'aggregate_id' => $intentId,
+        'payload' => '{}',
+        'headers' => '{}',
+        'occurred_at' => $emittedAt,
+        'available_at' => $emittedAt,
+        'published_at' => null,
+        'dead_lettered_at' => null,
+        'attempts' => 0,
+        'last_error' => null,
+        'created_at' => $emittedAt,
+        'updated_at' => $emittedAt,
+    ]);
+    $intent = CampaignScheduleExecutionIntent::create(
+        id: $intentId,
+        schedule: $schedule,
+        claim: $claim,
+        outboxId: $outboxId,
+        emittedAt: $emittedAt,
+    );
+    $stored = $executions->createIntent($intent);
+
+    expect($stored->intentHash)->toBe($intent->intentHash)
+        ->and(DB::table('campaign_schedule_due_claims')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(1)
+        ->and(DB::table('campaign_schedule_mutations')->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
+
+    $migration = require database_path(
+        'migrations/2026_09_22_000005_create_campaign_schedule_due_claim_execution_intent_tables.php',
+    );
+    $migration->up();
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(1);
+
+    expect(fn () => DB::table('campaign_schedule_execution_intents')
+        ->where('id', $intent->id)
+        ->update(['claim_version' => 99]))
+        ->toThrow(QueryException::class);
+
+    expect(fn () => DB::table('campaign_schedule_execution_intents')
+        ->where('id', $intent->id)
+        ->delete())
+        ->toThrow(QueryException::class);
 });

@@ -1,7 +1,9 @@
 <?php
 
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
+use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleRuleSet;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
+use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRuleRepository;
 use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
@@ -17,8 +19,11 @@ beforeEach(function () {
     }
 });
 
-/** @return array{workspaceId: string, campaignId: string, snapshotId: string, approvalId: string, targetHash: string} */
-function task0039PersistenceFixture(string $suffix): array
+/**
+ * @param  array<string, mixed>|null  $intendedExecution
+ * @return array{workspaceId: string, campaignId: string, snapshotId: string, approvalId: string, targetHash: string}
+ */
+function task0039PersistenceFixture(string $suffix, ?array $intendedExecution = null): array
 {
     $organizationId = (string) Str::uuid();
     $workspaceId = (string) Str::uuid();
@@ -93,7 +98,7 @@ function task0039PersistenceFixture(string $suffix): array
         'asset_reference_ids' => json_encode([], JSON_THROW_ON_ERROR),
         'capability_evidence_ids' => json_encode([], JSON_THROW_ON_ERROR),
         'brand_reference' => json_encode([], JSON_THROW_ON_ERROR),
-        'intended_execution' => json_encode([
+        'intended_execution' => json_encode($intendedExecution ?? [
             'mode' => 'fixed_instant',
             'timezone' => 'America/New_York',
             'at' => '2026-07-15T09:30:00',
@@ -181,4 +186,111 @@ it('fails closed when a schedule identity is read from another workspace', funct
 
     expect(fn () => $repository->find($other['workspaceId'], $schedule->id))
         ->toThrow(AuthorizationException::class, 'Campaign schedule reference access denied.');
+});
+
+it('persists immutable queue-rule bindings and keeps pinned occurrences stable across later rule versions', function () {
+    $ruleId = (string) Str::uuid();
+    $fixture = task0039PersistenceFixture('queue', [
+        'mode' => 'queue_next_slot',
+        'rule_set_id' => $ruleId,
+        'channel' => 'email',
+    ]);
+    $rules = app(DatabaseCampaignScheduleRuleRepository::class);
+    $schedules = app(DatabaseCampaignScheduleRepository::class);
+
+    $ruleV1 = $rules->create(CampaignScheduleRuleSet::create(
+        id: $ruleId,
+        workspaceId: $fixture['workspaceId'],
+        parentRuleSetId: null,
+        channel: 'email',
+        versionNumber: 1,
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '09:30:00'],
+        ],
+        idempotencyKey: 'queue-rule-v1',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:06:00+00:00'),
+    ));
+
+    $schedule = CampaignSchedule::queueNextSlot(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        campaignId: $fixture['campaignId'],
+        snapshotId: $fixture['snapshotId'],
+        approvalId: $fixture['approvalId'],
+        targetSetHash: $fixture['targetHash'],
+        channel: 'email',
+        ruleSet: $ruleV1,
+        localScheduledAt: '2026-07-15T09:30:00',
+        resolvedAtUtc: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+        idempotencyKey: 'queue-schedule-v1',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:10:00+00:00'),
+    );
+    $stored = $schedules->create($schedule);
+
+    $ruleV2 = $rules->create(CampaignScheduleRuleSet::create(
+        id: (string) Str::uuid(),
+        workspaceId: $fixture['workspaceId'],
+        parentRuleSetId: $ruleV1->id,
+        channel: 'email',
+        versionNumber: 2,
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '20:00:00'],
+        ],
+        idempotencyKey: 'queue-rule-v2',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:11:00+00:00'),
+    ));
+
+    $reloaded = $schedules->find($fixture['workspaceId'], $stored->id);
+
+    expect($ruleV2->versionNumber)->toBe(2)
+        ->and($reloaded?->ruleSetId)->toBe($ruleV1->id)
+        ->and($reloaded?->ruleVersion)->toBe(1)
+        ->and($reloaded?->ruleHash)->toBe($ruleV1->ruleHash)
+        ->and($reloaded?->timezoneId)->toBe('America/New_York')
+        ->and($reloaded?->resolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and(DB::table('campaign_schedule_rule_sets')->count())->toBe(2)
+        ->and(DB::table('campaign_queue_schedule_bindings')->count())->toBe(1);
+
+    $migration = require database_path('migrations/2026_09_22_000002_create_campaign_queue_rule_foundation_tables.php');
+    $migration->up();
+
+    expect(DB::table('campaign_schedule_rule_sets')->count())->toBe(2)
+        ->and(DB::table('campaign_queue_schedule_bindings')->count())->toBe(1);
+
+    expect(fn () => DB::table('campaign_schedule_rule_sets')->where('id', $ruleV1->id)->update([
+        'timezone_id' => 'UTC',
+    ]))->toThrow(QueryException::class);
+
+    expect(fn () => DB::table('campaign_queue_schedule_bindings')->where('schedule_id', $stored->id)->update([
+        'rule_version' => 2,
+    ]))->toThrow(QueryException::class);
+});
+
+it('fails closed when reading a schedule rule from another workspace', function () {
+    $owner = task0039PersistenceFixture('rule-scope-owner');
+    $other = task0039PersistenceFixture('rule-scope-other');
+    $rules = app(DatabaseCampaignScheduleRuleRepository::class);
+
+    $rule = $rules->create(CampaignScheduleRuleSet::create(
+        id: (string) Str::uuid(),
+        workspaceId: $owner['workspaceId'],
+        parentRuleSetId: null,
+        channel: 'email',
+        versionNumber: 1,
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '12:00:00'],
+        ],
+        idempotencyKey: 'rule-scope-owner-v1',
+        createdByActorId: 'task0039-author',
+        createdAt: new DateTimeImmutable('2026-07-15T10:06:00+00:00'),
+    ));
+
+    expect(fn () => $rules->find($other['workspaceId'], $rule->id))
+        ->toThrow(AuthorizationException::class, 'Campaign schedule rule reference access denied.');
 });

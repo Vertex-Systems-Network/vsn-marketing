@@ -18,21 +18,23 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158184",
-    "application_test_status": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158499",
-    "security_supply_chain_status": "task0039_calendar_timezone_pr355_head_8c23329dc7c5b0684ce132516917d696a8cf1866_passed_run_35703158448",
+    "continuity_validation": "task0039_calendar_terminal_pr356_head_10f8e9418fefcfd6c291cdd3e2c3c5dd2a69eb1c_passed_run_35704049169",
+    "application_test_status": "task0039_calendar_terminal_pr356_head_10f8e9418fefcfd6c291cdd3e2c3c5dd2a69eb1c_passed_run_35704049241",
+    "security_supply_chain_status": "task0039_calendar_terminal_pr356_head_10f8e9418fefcfd6c291cdd3e2c3c5dd2a69eb1c_passed_run_35704049246",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "2e0e0d9fc1d871ce6631c539593277b3da5ed787",
+  "observed_main_sha": "dd45ddbaa4b5b98fee1521a930778ef8fb84738a",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0039-CALENDAR-TIMEZONE-FOUNDATION",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0039 calendar/timezone foundation merged via PR #355 as 2e0e0d9fc1d871ce6631c539593277b3da5ed787; exact source 8c23329dc7c5b0684ce132516917d696a8cf1866 passed AI Continuity Guard 35703158184, Application Foundation CI 35703158499 and Security Supply Chain CI 35703158448. RBT-019 is terminal PASS and provider/native scheduling side effects remain inactive.",
-  "exact_next_safe_action": "Begin the bounded TASK-0039 queue/next-slot rule foundation from current protected main. Implement versioned workspace/channel weekly slot rules with explicit canonical IANA timezone, deterministic next-slot selection, and immutable pinned UTC occurrence semantics so later rule/timezone changes cannot silently rewrite an accepted occurrence. Bind queue scheduling to the exact campaign snapshot/current approval/workspace authority and preserve fixed_instant as a distinct strategy. Add backend/PostgreSQL/adversarial coverage for DST gaps/overlaps, deterministic tie-breaking, replay/idempotency and rule-version drift. Do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization.",
-  "pending_runner_ids": [],
+  "active_pr": 357,
+  "active_branch": "task/0039-queue-next-slot-foundation",
+  "current_milestone": "TASK-0039-QUEUE-NEXT-SLOT-FOUNDATION",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "TASK-0039 calendar/timezone foundation terminally reconciled via PR #356 as dd45ddbaa4b5b98fee1521a930778ef8fb84738a; exact reconciliation source 10f8e9418fefcfd6c291cdd3e2c3c5dd2a69eb1c passed AI Continuity Guard 35704049169, Application Foundation CI 35704049241 and Security Supply Chain CI 35704049246. RBT-019 is terminal PASS.",
+  "exact_next_safe_action": "Perform exact-head verification for PR #357. Merge the TASK-0039 queue/next-slot foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, migration/data-safety checks pass, deterministic slot/DST behavior is proven, fixed-instant compatibility remains intact, and no provider/native scheduling side effect is introduced. Treat rule-version drift, cross-workspace rule access, snapshot-channel mismatch, mutable queue bindings, non-deterministic slot selection, replay/idempotency instability, or fixed-instant hash regression as merge blockers. After trusted merge, terminally reconcile this milestone before starting reschedule/cancel, missed-run/approval-deadline or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [
+    "RBT-020"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the bounded TASK-0039 queue/next-slot rule foundation from current protected main. Implement versioned workspace/channel weekly slot rules with explicit canonical IANA timezone, deterministic next-slot selection, and immutable pinned UTC occurrence semantics so later rule/timezone changes cannot silently rewrite an accepted occurrence. Bind queue scheduling to the exact campaign snapshot/current approval/workspace authority and preserve fixed_instant as a distinct strategy. Add backend/PostgreSQL/adversarial coverage for DST gaps/overlaps, deterministic tie-breaking, replay/idempotency and rule-version drift. Do not execute provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority or deferred Runner optimization."
+  "exact_next_action": "Perform exact-head verification for PR #357. Merge the TASK-0039 queue/next-slot foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, migration/data-safety checks pass, deterministic slot/DST behavior is proven, fixed-instant compatibility remains intact, and no provider/native scheduling side effect is introduced. Treat rule-version drift, cross-workspace rule access, snapshot-channel mismatch, mutable queue bindings, non-deterministic slot selection, replay/idempotency instability, or fixed-instant hash regression as merge blockers. After trusted merge, terminally reconcile this milestone before starting reschedule/cancel, missed-run/approval-deadline or due-claim work. Keep live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive."
 }

@@ -80,6 +80,7 @@ function task0039CalendarGrant(
 
 /**
  * @param  array{organization: Organization, workspace: Workspace, user: User, context: TenantContext}  $actor
+ * @param  array<string, mixed>|null  $intendedExecution
  * @return array{campaign: Campaign, snapshot: CampaignSnapshot, approver: User}
  */
 function task0039CalendarFixture(
@@ -89,6 +90,7 @@ function task0039CalendarFixture(
     string $timezone = 'America/New_York',
     string $approvalExpiry = '2026-07-15T15:00:00+00:00',
     string $intentAt = '2026-07-15T11:00:00+00:00',
+    ?array $intendedExecution = null,
 ): array {
     $workspaceId = (string) $actor['workspace']->getKey();
     task0039CalendarGrant(
@@ -214,7 +216,7 @@ function task0039CalendarFixture(
         assetReferenceIds: [],
         capabilityEvidenceIds: [],
         brandReference: [],
-        intendedExecution: [
+        intendedExecution: $intendedExecution ?? [
             'mode' => 'fixed_instant',
             'timezone' => $timezone,
             'at' => $localAt,
@@ -404,4 +406,197 @@ it('fails closed on ambiguous DST local time before entering scheduled intent or
 
     expect(DB::table('campaign_schedules')->count())->toBe(0)
         ->and(DB::table('campaigns')->where('status', 'scheduled_intent')->count())->toBe(0);
+});
+
+it('pins queue schedules to the exact rule version despite later rule drift and replays after expiry', function () {
+    $actor = task0039CalendarActor('queue-versioned');
+    $workspaceId = (string) $actor['workspace']->getKey();
+    task0039CalendarGrant(
+        $actor['user'],
+        $workspaceId,
+        'queue-versioned-editor',
+        [PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $calendar = app(CampaignCalendarService::class);
+    $ruleId = (string) Str::uuid();
+    $ruleV1 = $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: $ruleId,
+        channel: 'email',
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '09:30:00'],
+            ['weekday' => 5, 'local_time' => '08:00:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v1',
+        at: new DateTimeImmutable('2026-07-15T10:00:00+00:00'),
+    );
+
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'queue-versioned',
+        approvalExpiry: '2026-07-15T15:00:00+00:00',
+        intentAt: '2026-07-15T11:00:00+00:00',
+        intendedExecution: [
+            'mode' => 'queue_next_slot',
+            'rule_set_id' => $ruleV1->id,
+            'channel' => 'email',
+        ],
+    );
+
+    $scheduleId = (string) Str::uuid();
+    $stored = $calendar->scheduleQueueNextSlot(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: $scheduleId,
+        idempotencyKey: 'queue-versioned-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    $ruleV2 = $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: (string) Str::uuid(),
+        channel: 'email',
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '20:00:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v2',
+        at: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),
+    );
+
+    $ruleV1Replay = $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: $ruleV1->id,
+        channel: 'email',
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '09:30:00'],
+            ['weekday' => 5, 'local_time' => '08:00:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v1',
+        at: new DateTimeImmutable('2026-07-15T16:00:00+00:00'),
+    );
+
+    expect(fn () => $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: $ruleV1->id,
+        channel: 'email',
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '10:30:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v1',
+        at: new DateTimeImmutable('2026-07-15T16:01:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'Campaign schedule rule replay conflicts with existing immutable rule state.',
+    );
+
+    $replayed = $calendar->scheduleQueueNextSlot(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: $scheduleId,
+        idempotencyKey: 'queue-versioned-schedule',
+        at: new DateTimeImmutable('2026-07-15T16:00:00+00:00'),
+    );
+
+    expect($ruleV1->versionNumber)->toBe(1)
+        ->and($ruleV2->versionNumber)->toBe(2)
+        ->and($ruleV1Replay->id)->toBe($ruleV1->id)
+        ->and($ruleV1Replay->ruleHash)->toBe($ruleV1->ruleHash)
+        ->and($stored->strategy->value)->toBe('queue_next_slot')
+        ->and($stored->ruleSetId)->toBe($ruleV1->id)
+        ->and($stored->ruleVersion)->toBe(1)
+        ->and($stored->ruleHash)->toBe($ruleV1->ruleHash)
+        ->and($stored->timezoneId)->toBe('America/New_York')
+        ->and($stored->localScheduledAt)->toBe('2026-07-15T09:30:00')
+        ->and($stored->resolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and($replayed->scheduleHash)->toBe($stored->scheduleHash)
+        ->and(DB::table('campaign_queue_schedule_bindings')->count())->toBe(1);
+});
+
+it('rejects a queue intent whose pinned rule belongs to another workspace', function () {
+    $owner = task0039CalendarActor('queue-rule-owner');
+    $foreign = task0039CalendarActor('queue-rule-foreign');
+
+    task0039CalendarGrant(
+        $foreign['user'],
+        (string) $foreign['workspace']->getKey(),
+        'queue-rule-foreign-editor',
+        [PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $rule = app(CampaignCalendarService::class)->createQueueRuleSet(
+        actor: $foreign['user'],
+        context: $foreign['context'],
+        ruleSetId: (string) Str::uuid(),
+        channel: 'email',
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '12:00:00'],
+        ],
+        idempotencyKey: 'queue-rule-foreign-v1',
+        at: new DateTimeImmutable('2026-07-15T10:00:00+00:00'),
+    );
+
+    expect(fn () => task0039CalendarFixture(
+        $owner,
+        'queue-rule-owner',
+        intendedExecution: [
+            'mode' => 'queue_next_slot',
+            'rule_set_id' => $rule->id,
+            'channel' => 'email',
+        ],
+    ))->toThrow(AuthorizationException::class, 'Campaign schedule rule reference access denied.');
+
+    expect(DB::table('campaign_schedules')->count())->toBe(0);
+});
+
+it('rejects queue intent when the pinned channel is absent from immutable snapshot targets', function () {
+    $actor = task0039CalendarActor('queue-channel-mismatch');
+    $workspaceId = (string) $actor['workspace']->getKey();
+    task0039CalendarGrant(
+        $actor['user'],
+        $workspaceId,
+        'queue-channel-mismatch-editor',
+        [PermissionCatalog::CAMPAIGN_SEND],
+    );
+
+    $rule = app(CampaignCalendarService::class)->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: (string) Str::uuid(),
+        channel: 'email',
+        timezoneId: 'UTC',
+        slots: [
+            ['weekday' => 3, 'local_time' => '12:00:00'],
+        ],
+        idempotencyKey: 'queue-channel-mismatch-rule',
+        at: new DateTimeImmutable('2026-07-15T10:00:00+00:00'),
+    );
+
+    expect(fn () => task0039CalendarFixture(
+        $actor,
+        'queue-channel-mismatch',
+        intendedExecution: [
+            'mode' => 'queue_next_slot',
+            'rule_set_id' => $rule->id,
+            'channel' => 'sms',
+        ],
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'channel is not present in the immutable snapshot target set',
+    );
+
+    expect(DB::table('campaign_schedules')->count())->toBe(0);
 });

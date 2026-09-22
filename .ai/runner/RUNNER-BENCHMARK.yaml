@@ -509,6 +509,24 @@
         },
         "transition": "TASK-0038 completed; TASK-0039 active/ready; roadmap 48.45%; PHASE-07 63.64%; no scheduler/provider side effect."
       }
+    },
+    {
+      "id": "RBT-019",
+      "source": "PR #355 / TASK-0039 calendar-timezone foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #355 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-calendar-timezone-foundation; immutable schedule persistence + IANA/DST resolver + PostgreSQL/security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-calendar-timezone-foundation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

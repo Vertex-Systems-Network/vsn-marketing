@@ -470,6 +470,36 @@ it('pins queue schedules to the exact rule version despite later rule drift and 
         at: new DateTimeImmutable('2026-07-15T11:02:00+00:00'),
     );
 
+    $ruleV1Replay = $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: $ruleV1->id,
+        channel: 'email',
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '09:30:00'],
+            ['weekday' => 5, 'local_time' => '08:00:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v1',
+        at: new DateTimeImmutable('2026-07-15T16:00:00+00:00'),
+    );
+
+    expect(fn () => $calendar->createQueueRuleSet(
+        actor: $actor['user'],
+        context: $actor['context'],
+        ruleSetId: $ruleV1->id,
+        channel: 'email',
+        timezoneId: 'America/New_York',
+        slots: [
+            ['weekday' => 3, 'local_time' => '10:30:00'],
+        ],
+        idempotencyKey: 'queue-versioned-rule-v1',
+        at: new DateTimeImmutable('2026-07-15T16:01:00+00:00'),
+    ))->toThrow(
+        InvalidArgumentException::class,
+        'Campaign schedule rule replay conflicts with existing immutable rule state.',
+    );
+
     $replayed = $calendar->scheduleQueueNextSlot(
         actor: $actor['user'],
         context: $actor['context'],
@@ -482,6 +512,8 @@ it('pins queue schedules to the exact rule version despite later rule drift and 
 
     expect($ruleV1->versionNumber)->toBe(1)
         ->and($ruleV2->versionNumber)->toBe(2)
+        ->and($ruleV1Replay->id)->toBe($ruleV1->id)
+        ->and($ruleV1Replay->ruleHash)->toBe($ruleV1->ruleHash)
         ->and($stored->strategy->value)->toBe('queue_next_slot')
         ->and($stored->ruleSetId)->toBe($ruleV1->id)
         ->and($stored->ruleVersion)->toBe(1)

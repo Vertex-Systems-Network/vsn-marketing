@@ -642,6 +642,24 @@
         },
         "recovery_note": "Application verification first exposed one redundant single-case CampaignScheduleOccurrenceState comparison in PHPStan and then two Pint-only extra-blank-line issues. Both were repaired without weakening approval, workspace, migration, terminality, replay or security invariants; final exact head passed backend, architecture, static analysis, formatting, PHP 8.3, E2E, PostgreSQL/Redis integration and full security/supply-chain checks."
       }
+    },
+    {
+      "id": "RBT-023",
+      "source": "PR #363 / TASK-0039 due-claim execution-intent milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #363 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-due-claim-execution-intent; PostgreSQL schedule-row contention + stale-lease recovery + atomic immutable intent/outbox + adversarial security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-due-claim-execution-intent:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

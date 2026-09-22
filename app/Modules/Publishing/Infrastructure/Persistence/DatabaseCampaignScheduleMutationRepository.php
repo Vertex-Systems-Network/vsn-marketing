@@ -55,6 +55,18 @@ final readonly class DatabaseCampaignScheduleMutationRepository
                 throw new InvalidArgumentException('Campaign schedule mutation source evidence does not match immutable schedule state.');
             }
 
+            $terminalOutcome = $this->database->connection()->table('campaign_schedule_occurrence_outcomes')
+                ->where('workspace_id', $mutation->workspaceId)
+                ->where('schedule_id', $mutation->previousScheduleId)
+                ->lockForUpdate()
+                ->first();
+
+            if ($terminalOutcome instanceof stdClass) {
+                throw new InvalidArgumentException(
+                    'Campaign schedule cannot be rescheduled or cancelled after a terminal occurrence outcome.',
+                );
+            }
+
             $terminal = $this->database->connection()->table('campaign_schedule_mutations')
                 ->where('workspace_id', $mutation->workspaceId)
                 ->where('previous_schedule_id', $mutation->previousScheduleId)

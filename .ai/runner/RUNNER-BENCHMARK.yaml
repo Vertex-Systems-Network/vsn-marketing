@@ -609,6 +609,24 @@
         "milestone": "append-only reschedule/cancel history; immutable old/new schedule lineage; due/past mutation rejection; material-revision reapproval; no provider scheduling/publication side effect",
         "recovery_note": "Verification exposed a material-revision test fixture reusing an immutable target-binding identity and two Pint EOF findings. The fixture was corrected with a fresh target-binding identity and formatting normalized without weakening product, approval, workspace, migration or security invariants."
       }
+    },
+    {
+      "id": "RBT-022",
+      "source": "PR #361 / TASK-0039 approval-timing missed occurrence foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #361 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-approval-missed-outcomes; due-boundary approval re-evaluation + immutable missed_needs_reschedule evidence + PostgreSQL/security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-approval-missed-outcomes:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

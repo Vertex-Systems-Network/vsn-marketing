@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 append-only reschedule/cancel history is trusted; the next bounded milestone is approval-timing/missed-run history while live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 approval-timing/missed-occurrence history is staged on PR #361 under exact-head verification; due-claim execution and live provider scheduling/publication remain inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, and PR #359 append-only reschedule/cancel history are trusted. Approval-timing/missed-run history is the next bounded milestone under the frozen TASK-0039 contract; due-claim worker concurrency remains a later AC-6 slice.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, and PR #359 append-only reschedule/cancel history are trusted. PR #361 stages approval-timing enforcement plus immutable missed_needs_reschedule occurrence history; due-claim worker concurrency/execution-intent emission remains a separate AC-6 slice.
 
 ## Staged research direction
 

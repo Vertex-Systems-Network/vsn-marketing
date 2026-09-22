@@ -632,7 +632,6 @@ it('rejects missed occurrence history after terminal reschedule or cancellation 
     expect(DB::table('campaign_schedule_occurrence_outcomes')->count())->toBe(0);
 });
 
-
 it('rejects backdated reschedule or cancellation after a terminal occurrence outcome', function () {
     $fixture = task0039PersistenceFixture('mutation-after-outcome');
     $schedules = app(DatabaseCampaignScheduleRepository::class);

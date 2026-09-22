@@ -6,6 +6,7 @@ use App\Modules\Publishing\Domain\Scheduling\QueueNextSlotResolver;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
+/** @param list<array{weekday: int, local_time: string}> $slots */
 function task0039QueueRule(
     string $id,
     string $timezoneId,

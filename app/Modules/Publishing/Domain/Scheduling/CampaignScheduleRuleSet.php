@@ -131,7 +131,12 @@ final readonly class CampaignScheduleRuleSet
         $canonical = [];
 
         foreach ($slots as $slot) {
-            if (! is_array($slot) || array_keys($slot) !== ['weekday', 'local_time']) {
+            if (
+                ! is_array($slot)
+                || count($slot) !== 2
+                || ! array_key_exists('weekday', $slot)
+                || ! array_key_exists('local_time', $slot)
+            ) {
                 throw new InvalidArgumentException('Campaign schedule rule slot must contain weekday and local_time only.');
             }
 

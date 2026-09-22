@@ -8,6 +8,7 @@ use App\Modules\Core\Domain\Messaging\OutboxMessage;
 use App\Modules\Publishing\Application\Governance\CampaignApprovalEvaluator;
 use App\Modules\Publishing\Domain\Campaign\CampaignPayloadGuard;
 use App\Modules\Publishing\Domain\Campaign\CampaignStatus;
+use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleDueClaim;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleDueClaimState;
 use App\Modules\Publishing\Domain\Scheduling\CampaignScheduleExecutionIntent;
@@ -314,7 +315,7 @@ final readonly class CampaignScheduleDueClaimService
     }
 
     private function assertClaimAuthority(
-        \App\Modules\Publishing\Domain\Scheduling\CampaignSchedule $schedule,
+        CampaignSchedule $schedule,
         CampaignScheduleDueClaim $claim,
         DateTimeImmutable $at,
     ): void {

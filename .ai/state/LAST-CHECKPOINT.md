@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-22T21:05:00Z`
-- Observed main: `f9c2175116d7d509c0ebe988bfa58ffaf927108b`
+- Timestamp: `2026-09-22T21:18:00Z`
+- Observed main: `fdb25d7488ff1398277a30ab74e0dd36c61b466a`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0039-RESCHEDULE-CANCEL-HISTORY`
-- Milestone status: `COMPLETE`
+- Active PR: `361`
+- Active branch: `task/0039-approval-missed-outcomes`
+- Current milestone: `TASK-0039-APPROVAL-MISSED-OUTCOMES`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0039`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-022`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `52ca6e0f2b79f1b847f675ad4b5d8e4948b920730f21e454c2d38438756e8b6b`
+- State fingerprint: `60474e882e2c58fd8ed73bd49d4b1359ade7995a9e914d4598b172c8ce32183d`
 
 ## Completed / observed this session
 
-TASK-0039 append-only reschedule/cancel PR #359 exact source `cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c` passed AI Continuity Guard `35783604657`, Application Foundation CI `35783604696` and Security Supply Chain CI `35783604660`, then merged on protected main as `f9c2175116d7d509c0ebe988bfa58ffaf927108b`. RBT-021 is terminal PASS and the PR #359 work path is cleared.
+TASK-0039 reschedule/cancel history terminal reconciliation PR #360 exact source `b416b76d870535d18d8ee3decddd72eea2db7711` passed AI Continuity Guard `35784431408`, Application Foundation CI `35784430507` and Security Supply Chain CI `35784430569`, then merged on protected main as `fdb25d7488ff1398277a30ab74e0dd36c61b466a`.
 
-The trusted milestone provides immutable append-only cancellation/reschedule evidence, previous/replacement schedule IDs and hashes, old/new UTC occurrence lineage, actor/time/reason provenance, one-terminal-mutation enforcement, replay-first idempotency, foreign-workspace fail-closed behavior, due/past fresh-mutation rejection, and fresh approval plus scheduled-intent re-entry before material fixed-instant replacement scheduling.
+PR #361 stages the bounded AC-5 product milestone: immutable `campaign_schedule_occurrence_outcomes`, explicit `missed_needs_reschedule` state, deterministic `approval_invalid` versus `execution_deadline_missed` reasons, exact schedule/snapshot/approval/resolved-UTC evidence, canonical due-boundary approval re-evaluation, replay-first idempotency, one terminal occurrence outcome per schedule, cross-workspace fail-closed behavior and conflict rejection against prior cancellation/reschedule history.
 
-Verification exposed and repaired a material-revision test fixture that reused an immutable target-binding identity plus two Pint EOF style findings. Backend tests, architecture tests, static analysis, formatting and the final exact-head Continuity/Application/Security gates passed without weakening domain, approval, migration, workspace or security invariants.
+Invalid approval at due records the canonical evaluator reason; valid approval observed after the immutable resolved instant becomes a deadline miss instead of silent late publication. Exact-due valid approval emits no outcome or execution intent in AC-5 and remains reserved for AC-6.
 
-TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. The next bounded product milestone is approval-timing/missed-run history. Due-claim worker concurrency/internal execution-intent emission remains reserved for AC-6. No provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
+TASK-0039 remains in progress at roadmap `48.45%` / PHASE-07 `63.64%`. No due-claim worker lease/concurrency implementation, internal execution-intent emission, provider-native scheduling side effect, live provider publication, media upload, provider credential use, TASK-0040, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #359 exact head: Continuity `35783604657` PASS; Application `35783604696` PASS; Security `35783604660` PASS.
+PR #361 RBT-022 exact-head Continuity/Application/Security verification is pending. Migration/data-safety, PostgreSQL immutability/re-entrancy, workspace isolation, due-time approval expiry/revocation, late-deadline behavior, replay/idempotency, static analysis, formatting and full security/supply-chain checks are merge-blocking.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ PR #359 exact head: Continuity `35783604657` PASS; Application `35783604696` PAS
 
 ## Exact next action
 
-Begin the bounded TASK-0039 approval-timing and missed-run history foundation from current protected main. Reuse the canonical CampaignApprovalEvaluator at the due boundary so expired, revoked, stale or otherwise invalid approval cannot execute; persist deterministic append-only missed/needs-reschedule outcome evidence bound to the exact workspace, campaign, snapshot, schedule and approval with observed time and invalidation reason, without mutating historical schedule rows or silently publishing late. Add backend/PostgreSQL/adversarial coverage for approval expiry/revocation/capability or connection drift, missed-time terminality, replay/idempotency and workspace isolation. Keep due-claim worker leasing/concurrency and internal execution-intent emission for the separate AC-6 milestone, and keep provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.
+Perform exact-head verification for PR #361. Merge the TASK-0039 approval-timing/missed-occurrence milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, migration/data-safety checks pass, due-time approval re-evaluation uses the canonical evaluator, invalid approval records immutable missed_needs_reschedule evidence, valid-but-late occurrences record execution_deadline_missed instead of publishing late, exact-due valid approval remains reserved for AC-6, replay remains idempotent, terminal reschedule/cancel history cannot double-terminate the same source schedule, and workspace isolation remains fail-closed. After trusted merge, terminally reconcile AC-5 before starting AC-6 due-claim worker concurrency/execution-intent work. Keep provider-native scheduling, live provider publication, media upload, provider credentials, TASK-0040, deployment/release authority and deferred Runner optimization inactive.

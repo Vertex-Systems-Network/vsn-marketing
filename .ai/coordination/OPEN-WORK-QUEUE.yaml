@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "58e7ec489fffb19a807ad69708b2919b22894bfb",
-  "active_work_path": null,
+  "reconciled_main_sha": "2db0b1fa3604731c9e8e908df592cf778baea2dd",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 365,
+    "branch": "task/0039-provider-schedule-capability-evidence",
+    "milestone": "TASK-0039-PROVIDER-SCHEDULE-CAPABILITY-EVIDENCE"
+  },
   "items": [
     {
       "kind": "issue",
@@ -47,6 +52,15 @@
       "disposition": "deferred_runner_batch",
       "accepted_actionable": false,
       "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 365,
+      "title": "feat(publishing): enforce provider schedule capability drift boundaries",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-024",
+      "branch": "task/0039-provider-schedule-capability-evidence"
     }
   ]
 }

@@ -128,6 +128,18 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
         CampaignScheduleDueClaim $current,
         DateTimeImmutable $at,
     ): CampaignScheduleDueClaim {
+        $intentExists = $this->database->connection()->table('campaign_schedule_execution_intents')
+            ->where('workspace_id', $current->workspaceId)
+            ->where('schedule_id', $current->scheduleId)
+            ->where('claim_id', $current->id)
+            ->exists();
+
+        if (! $intentExists) {
+            throw new InvalidArgumentException(
+                'Campaign schedule due claim cannot become emitted without immutable execution intent evidence.',
+            );
+        }
+
         $emitted = $current->emittedAt($at);
         $updated = $this->database->connection()->table('campaign_schedule_due_claims')
             ->where('id', $current->id)
@@ -169,6 +181,47 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
 
     public function createIntent(CampaignScheduleExecutionIntent $intent): CampaignScheduleExecutionIntent
     {
+        $claim = $this->database->connection()->table('campaign_schedule_due_claims')
+            ->where('id', $intent->claimId)
+            ->where('workspace_id', $intent->workspaceId)
+            ->where('schedule_id', $intent->scheduleId)
+            ->lockForUpdate()
+            ->first();
+
+        if (! $claim instanceof stdClass) {
+            $this->assertNoForeignClaim($intent->workspaceId, $intent->claimId);
+            throw new InvalidArgumentException('Campaign schedule execution intent claim does not exist in this workspace.');
+        }
+
+        if (
+            (string) $claim->campaign_id !== $intent->campaignId
+            || (string) $claim->snapshot_id !== $intent->snapshotId
+            || (string) $claim->scheduled_approval_id !== $intent->scheduledApprovalId
+            || (string) $claim->evaluated_approval_id !== $intent->evaluatedApprovalId
+            || (int) $claim->version !== $intent->claimVersion
+            || (string) $claim->state !== CampaignScheduleDueClaimState::Leased->value
+            || ! hash_equals((string) $claim->schedule_hash, $intent->scheduleHash)
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution intent does not match current lease coordination evidence.',
+            );
+        }
+
+        $outbox = $this->database->connection()->table('outbox_messages')
+            ->where('id', $intent->outboxId)
+            ->first();
+
+        if (
+            ! $outbox instanceof stdClass
+            || (string) $outbox->topic !== 'publishing.campaign_schedule.execution_intent.ready'
+            || (string) $outbox->aggregate_type !== 'campaign_schedule_execution_intent'
+            || (string) $outbox->aggregate_id !== $intent->id
+        ) {
+            throw new InvalidArgumentException(
+                'Campaign schedule execution intent requires its exact durable outbox handoff.',
+            );
+        }
+
         $inserted = $this->database->connection()->table('campaign_schedule_execution_intents')->insertOrIgnore([
             'id' => $intent->id,
             'workspace_id' => $intent->workspaceId,

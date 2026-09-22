@@ -99,6 +99,16 @@ final readonly class DatabaseCampaignScheduleRuleRepository
         });
     }
 
+    public function findByIdempotency(string $workspaceId, string $idempotencyKey): ?CampaignScheduleRuleSet
+    {
+        $row = $this->database->connection()->table('campaign_schedule_rule_sets')
+            ->where('workspace_id', $workspaceId)
+            ->where('idempotency_key', $idempotencyKey)
+            ->first();
+
+        return $row instanceof stdClass ? $this->hydrate($row) : null;
+    }
+
     public function find(string $workspaceId, string $ruleSetId): ?CampaignScheduleRuleSet
     {
         $row = $this->database->connection()->table('campaign_schedule_rule_sets')

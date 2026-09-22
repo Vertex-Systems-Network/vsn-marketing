@@ -68,6 +68,13 @@ final readonly class CampaignScheduleMutation
                 throw new InvalidArgumentException('Campaign reschedule mutation must materially change canonical schedule evidence.');
             }
 
+            if (
+                $this->replacementResolvedAtUtc->format('U.u')
+                === $this->previousResolvedAtUtc->format('U.u')
+            ) {
+                throw new InvalidArgumentException('Campaign reschedule mutation must change the resolved UTC instant.');
+            }
+
             if ($this->replacementResolvedAtUtc <= $this->occurredAt) {
                 throw new InvalidArgumentException('Campaign reschedule replacement must resolve to a future UTC instant.');
             }

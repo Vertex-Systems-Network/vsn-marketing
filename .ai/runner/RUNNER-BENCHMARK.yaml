@@ -542,6 +542,24 @@
         },
         "milestone": "immutable fixed-instant schedule persistence; canonical IANA/DST fail-closed semantics; exact approval/workspace binding; replay-safe idempotency; no provider scheduling/publication side effect"
       }
+    },
+    {
+      "id": "RBT-020",
+      "source": "PR #357 / TASK-0039 queue-next-slot foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #357 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-queue-next-slot-foundation; immutable versioned weekly rules + deterministic next-slot + DST + fixed compatibility tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-queue-next-slot-foundation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

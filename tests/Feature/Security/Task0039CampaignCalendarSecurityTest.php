@@ -391,25 +391,17 @@ it('fails closed when approval has expired before schedule creation', function (
     expect(DB::table('campaign_schedules')->count())->toBe(0);
 });
 
-it('fails closed on ambiguous DST local time before persisting a canonical schedule', function () {
+it('fails closed on ambiguous DST local time before entering scheduled intent or persisting a schedule', function () {
     $actor = task0039CalendarActor('dst-overlap');
-    $fixture = task0039CalendarFixture(
+
+    expect(fn () => task0039CalendarFixture(
         $actor,
         'dst-overlap',
         localAt: '2026-11-01T01:30:00',
         approvalExpiry: '2026-11-01T12:00:00+00:00',
         intentAt: '2026-10-31T12:00:00+00:00',
-    );
+    ))->toThrow(InvalidArgumentException::class, 'unambiguous local wall-clock time');
 
-    expect(fn () => app(CampaignCalendarService::class)->scheduleFixedInstant(
-        actor: $actor['user'],
-        context: $actor['context'],
-        campaignId: $fixture['campaign']->id,
-        snapshotId: $fixture['snapshot']->id,
-        scheduleId: (string) Str::uuid(),
-        idempotencyKey: 'dst-overlap-schedule',
-        at: new DateTimeImmutable('2026-10-31T12:01:00+00:00'),
-    ))->toThrow(InvalidArgumentException::class, 'ambiguous');
-
-    expect(DB::table('campaign_schedules')->count())->toBe(0);
+    expect(DB::table('campaign_schedules')->count())->toBe(0)
+        ->and(DB::table('campaigns')->where('status', 'scheduled_intent')->count())->toBe(0);
 });

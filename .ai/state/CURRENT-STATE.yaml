@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0039_final_acceptance_pr368_head_81968edd56f9c8a003ad01723f3056a9674691b5_passed_run_35912851630",
-    "application_test_status": "task0039_final_acceptance_pr368_head_81968edd56f9c8a003ad01723f3056a9674691b5_passed_run_35912851631",
-    "security_supply_chain_status": "task0039_final_acceptance_pr368_head_81968edd56f9c8a003ad01723f3056a9674691b5_passed_run_35912851703",
+    "continuity_validation": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250708",
+    "application_test_status": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250814",
+    "security_supply_chain_status": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250678",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "1e08f84c986ace04402ea2fc2d22ea328899063f",
+  "observed_main_sha": "54b5b4fe69b3922332b9aa064fabe45339787e93",
   "active_issue": null,
-  "active_pr": 369,
-  "active_branch": "control/register-task-0040-phase07",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "TASK-0040-REGISTRATION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0039 final acceptance merged via PR #368 as 1e08f84c986ace04402ea2fc2d22ea328899063f; exact source 81968edd56f9c8a003ad01723f3056a9674691b5 passed AI Continuity Guard 35912851630, Application Foundation CI 35912851631 and Security Supply Chain CI 35912851703 with AC-1 through AC-8 true. Resulting protected main also passed Release Integrity 35913605871 and OpenSSF Scorecard 35913605976. RBT-025 is terminal PASS.",
-  "exact_next_safe_action": "Verify and merge PR #369 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact registration head with no blocking review findings. TASK-0040 must remain planned-only during registration and TASK-0039 must remain active/ready. After trusted merge, terminally reconcile TASK-0040 registration, then perform a separate guarded transition that marks TASK-0039 completed and activates TASK-0040 ready. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and the deferred Runner benchmark batch inactive.",
-  "pending_runner_ids": [
-    "RBT-026"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "TASK-0040 planned registration merged via PR #369 as 54b5b4fe69b3922332b9aa064fabe45339787e93; exact source 97fec3bdf8311974054934a2ee7c6e2e70df2d94 passed AI Continuity Guard 35920250708, Application Foundation CI 35920250814 and Security Supply Chain CI 35920250678. Resulting protected main also passed Continuity 35920732979, Application 35920732892 and Security 35920732917. TASK-0040 remains planned-only; TASK-0039 remains active/ready until the separate guarded transition.",
+  "exact_next_safe_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify and merge PR #369 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact registration head with no blocking review findings. TASK-0040 must remain planned-only during registration and TASK-0039 must remain active/ready. After trusted merge, terminally reconcile TASK-0040 registration, then perform a separate guarded transition that marks TASK-0039 completed and activates TASK-0040 ready. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and the deferred Runner benchmark batch inactive."
+  "exact_next_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted."
 }

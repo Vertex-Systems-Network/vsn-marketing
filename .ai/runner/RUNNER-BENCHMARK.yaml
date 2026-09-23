@@ -732,18 +732,33 @@
       "source": "PR #369 / TASK-0040 PHASE-07 planned registration",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #369 exact-head status/comment"
+        "git_sha": "97fec3bdf8311974054934a2ee7c6e2e70df2d94",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #369 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/register-task-0040-phase07; TASK-0040 planned-only provider-neutral publication lifecycle/reconciliation contract registration",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0040-registration:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 369,
+        "source_sha": "97fec3bdf8311974054934a2ee7c6e2e70df2d94",
+        "merge_sha": "54b5b4fe69b3922332b9aa064fabe45339787e93",
+        "workflow_runs": {
+          "ai_continuity_guard": 35920250708,
+          "application_foundation_ci": 35920250814,
+          "security_supply_chain_ci": 35920250678
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "registration_boundary": "TASK-0040 planned-only; TASK-0039 remains active/ready until separate guarded transition."
+      }
     }
   ]
 }

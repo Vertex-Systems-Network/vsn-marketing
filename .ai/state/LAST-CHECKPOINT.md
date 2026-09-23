@@ -2,32 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-23T21:12:39Z`
-- Observed main: `54b5b4fe69b3922332b9aa064fabe45339787e93`
+- Timestamp: `2026-09-23T21:24:10Z`
+- Observed main: `ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0040-REGISTRATION`
-- Milestone status: `COMPLETE`
-- Active task: `TASK-0039`
-- Next task: `TASK-0040`
+- Active PR: `371`
+- Active branch: `control/transition-task-0039-to-0040`
+- Current milestone: `TASK-0039-TO-0040-TRANSITION`
+- Milestone status: `VERIFYING`
+- Active task: `TASK-0040`
+- Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-027`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `538f70c71647d70b454a789e9f9876254491f56b268b4612f4717c3a02cfdf14`
+- State fingerprint: `a904867fdaa8b4ebe6f0eb3dbb7f265e3f6715a9f4508260065455cf5d6480c3`
 
 ## Completed / observed this session
 
-TASK-0040 planned registration PR #369 exact source `97fec3bdf8311974054934a2ee7c6e2e70df2d94` passed AI Continuity Guard `35920250708`, Application Foundation CI `35920250814` and Security Supply Chain CI `35920250678`, then merged on protected main as `54b5b4fe69b3922332b9aa064fabe45339787e93`. Resulting-main Continuity `35920732979`, Application `35920732892` and Security `35920732917` also passed. RBT-026 is terminal PASS and the registration work path is cleared.
+TASK-0039 final acceptance, TASK-0040 planned registration, and registration terminal reconciliation are trusted on protected main. PR #370 exact source `3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9` passed AI Continuity Guard `35921025287`, Application Foundation CI `35921025389`, and Security Supply Chain CI `35921025347`, then merged as `ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47`; resulting-main Continuity `35921480003`, Application `35921480142`, and Security `35921480043` also passed.
 
-TASK-0040 remains planned-only with the frozen provider-neutral publication lifecycle/reconciliation contract. TASK-0039 remains active/ready with AC-1 through AC-8 trusted until the separate guarded transition. Registered-scope progress remains roadmap `47.27%` / PHASE-07 `46.67%`.
+PR #371 stages the guarded task transition: TASK-0039 is completed, TASK-0040 is ready/active, deterministic PHASE-07 progress becomes `73.33%` and roadmap progress `49.13%`. TASK-0041 remains unregistered, so next_task is none.
 
-No publication-attempt implementation, production provider API call, media upload/publication side effect, provider credential use, TASK-0041 implementation, deployment/release authority or deferred Runner optimization is activated.
+The active execution journal was rolled per repository policy: immutable events 109-116 moved byte-for-byte into `.ai/state/archive/EXECUTION-JOURNAL-0109-0116.jsonl` before transition event #137.
+
+No publication-attempt product implementation is authorized before this transition exact head is trusted and terminally reconciled. Production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority, and deferred Runner optimization remain inactive.
 
 ## Tests
 
-PR #369 exact head: Continuity `35920250708` PASS; Application `35920250814` PASS; Security `35920250678` PASS. Resulting main: Continuity `35920732979` PASS; Application `35920732892` PASS; Security `35920732917` PASS.
+PR #370 exact head: Continuity `35921025287` PASS; Application `35921025389` PASS; Security `35921025347` PASS. Resulting main: Continuity `35921480003` PASS; Application `35921480142` PASS; Security `35921480043` PASS. PR #371 transition exact-head verification is pending under RBT-027.
 
 ## Blockers
 
@@ -35,4 +37,4 @@ PR #369 exact head: Continuity `35920250708` PASS; Application `35920250814` PAS
 
 ## Exact next action
 
-Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted.
+Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive.

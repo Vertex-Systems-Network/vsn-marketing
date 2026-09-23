@@ -175,18 +175,20 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
                 throw new RuntimeException(trim($process->getErrorOutput().' '.$process->getOutput()));
             }
 
-            $stdout = trim($process->getOutput());
-            $lines = preg_split('/\\R/', $stdout) ?: [];
-            $jsonLine = '';
-            for ($index = count($lines) - 1; $index >= 0; $index--) {
-                $candidate = trim($lines[$index]);
-                if ($candidate !== '') {
-                    $jsonLine = $candidate;
-                    break;
-                }
+            $stdout = $process->getOutput();
+            $marker = '__TASK0039_RESULT__:';
+            $position = strrpos($stdout, $marker);
+            if ($position === false) {
+                throw new RuntimeException('TASK-0039 concurrency worker did not emit a framed result.');
             }
 
-            $decoded = json_decode($jsonLine, true, 512, JSON_THROW_ON_ERROR);
+            $encodedResult = trim(substr($stdout, $position + strlen($marker)));
+            $json = base64_decode($encodedResult, true);
+            if ($json === false) {
+                throw new RuntimeException('TASK-0039 concurrency worker emitted an invalid framed result.');
+            }
+
+            $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
             if (! is_array($decoded)) {
                 throw new RuntimeException('TASK-0039 concurrency worker returned invalid JSON.');
             }
@@ -235,7 +237,7 @@ $result = Illuminate\Support\Facades\DB::transaction(function () use ($payload):
     return ['claim_id' => $claim->id];
 });
 
-echo json_encode($result, JSON_THROW_ON_ERROR);
+echo '__TASK0039_RESULT__:'.base64_encode(json_encode($result, JSON_THROW_ON_ERROR));
 PHP;
 }
 
@@ -257,7 +259,7 @@ $intent = app(App\Modules\Publishing\Application\Scheduling\CampaignScheduleDueC
         at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
     );
 
-echo json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR);
+echo '__TASK0039_RESULT__:'.base64_encode(json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR));
 PHP;
 }
 

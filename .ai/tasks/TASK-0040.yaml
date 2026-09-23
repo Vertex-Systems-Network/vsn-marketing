@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0040",
+  "phase": "PHASE-07",
+  "module": "Publishing",
+  "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
+  "status": "planned",
+  "objective": "Implement the workspace-scoped provider-neutral publication lifecycle that consumes trusted canonical execution intents and exact approved campaign snapshots/targets into immutable publication attempts, capability-checked target-account operations, derivative media-processing references, idempotent retries and deterministic provider-status reconciliation, while preserving VSN campaign/snapshot/asset authority and failing closed on provider disconnect, permission, app-review, account-role or capability drift.",
+  "dependencies": [
+    "TASK-0039"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped publication attempts bind the exact canonical execution intent, campaign snapshot, target/account identity, channel and current provider connection/capability evidence; foreign-workspace references, stale authority, disconnected accounts or insufficient write permission fail closed before any provider operation",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Each create publication attempt has an immutable canonical attempt identity and idempotency key tied to one exact execution intent/target; worker retries, duplicate dispatch and replay cannot create duplicate successful provider publications, and provider object IDs remain derivative references rather than canonical campaign identity",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Multi-step upload/container/media processing is modeled separately from the publication attempt; temporary provider media/container identifiers, processing state and expiration are reconcilable derivatives and never replace canonical VSN asset identity or authorize arbitrary remote-media fetches",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Provider status reconciliation is append-oriented and monotonic under polling, webhooks, duplicate events and delayed/out-of-order updates; stale observations cannot overwrite newer terminal evidence, and provider timestamps/statuses retain provenance without rewriting canonical campaign history",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Partial multi-target or multi-channel success is represented per target/attempt with deterministic aggregate state; retries operate only on eligible failed/retriable work and cannot republish already-successful targets or collapse partial failure into a false global success",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Edit/delete/retry operations are permitted only when current versioned provider capability and account-role/scope evidence supports the exact operation; unsupported operations or capability drift fail closed while immutable original attempt/history and approved snapshot provenance remain intact",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Provider disconnect, credential invalidation, app-review restriction, permission loss, rate-limit/circuit state and capability-version drift are explicit deterministic outcomes; credentials remain outside canonical publication records and no fallback path may bypass approval, workspace, consent/suppression, sender/content, asset or provider policy boundaries",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Backend, PostgreSQL and adversarial tests prove workspace isolation, attempt idempotency, duplicate dispatch/webhook reconciliation, media-reference safety, partial-success handling, retry/edit/delete capability gating and stale/out-of-order provider evidence behavior; exact-head continuity, application/integration and security/supply-chain gates are green before TASK-0041 registration",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/supervisor_contract.py validate",
+    "python tools/runner_benchmark.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "After TASK-0040 planned registration is trusted and a separate guarded transition completes TASK-0039 and activates TASK-0040 ready, begin with provider-neutral publication-attempt persistence/state-machine and PostgreSQL/adversarial idempotency/isolation tests. Keep production provider credentials/API side effects, unsupported edit/delete assumptions, TASK-0041 implementation, deployment/release authority and the deferred Runner optimization batch inactive until separately authorized."
+}

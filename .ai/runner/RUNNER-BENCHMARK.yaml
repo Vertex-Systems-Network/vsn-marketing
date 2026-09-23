@@ -699,16 +699,49 @@
       "source": "PR #368 / TASK-0039 final acceptance",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #368 exact-head status/comment"
+        "git_sha": "81968edd56f9c8a003ad01723f3056a9674691b5",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #368 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/task0039-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #355/#357/#359/#361/#363/#365 evidence",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0039-final-acceptance:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 368,
+        "source_sha": "81968edd56f9c8a003ad01723f3056a9674691b5",
+        "merge_sha": "1e08f84c986ace04402ea2fc2d22ea328899063f",
+        "workflow_runs": {
+          "ai_continuity_guard": 35912851630,
+          "application_foundation_ci": 35912851631,
+          "security_supply_chain_ci": 35912851703
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "acceptance": "TASK-0039 AC-1 through AC-8 true; task/index remained ready until trusted acceptance merge."
+      }
+    },
+    {
+      "id": "RBT-026",
+      "source": "PR #369 / TASK-0040 PHASE-07 planned registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #369 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0040-phase07; TASK-0040 planned-only provider-neutral publication lifecycle/reconciliation contract registration",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-registration:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

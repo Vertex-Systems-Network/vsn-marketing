@@ -398,6 +398,16 @@
       "dependencies": [
         "TASK-0038"
       ]
+    },
+    {
+      "id": "TASK-0040",
+      "phase": "PHASE-07",
+      "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0039"
+      ]
     }
   ]
 }

@@ -175,7 +175,18 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
                 throw new RuntimeException(trim($process->getErrorOutput().' '.$process->getOutput()));
             }
 
-            $decoded = json_decode(trim($process->getOutput()), true, 512, JSON_THROW_ON_ERROR);
+            $stdout = trim($process->getOutput());
+            $lines = preg_split('/\\R/', $stdout) ?: [];
+            $jsonLine = '';
+            for ($index = count($lines) - 1; $index >= 0; $index--) {
+                $candidate = trim($lines[$index]);
+                if ($candidate !== '') {
+                    $jsonLine = $candidate;
+                    break;
+                }
+            }
+
+            $decoded = json_decode($jsonLine, true, 512, JSON_THROW_ON_ERROR);
             if (! is_array($decoded)) {
                 throw new RuntimeException('TASK-0039 concurrency worker returned invalid JSON.');
             }

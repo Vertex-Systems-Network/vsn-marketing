@@ -18,21 +18,23 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0039_due_claim_pr363_head_9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9_passed_run_35791758031",
-    "application_test_status": "task0039_due_claim_pr363_head_9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9_passed_run_35791757956",
-    "security_supply_chain_status": "task0039_due_claim_pr363_head_9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9_passed_run_35791757920",
+    "continuity_validation": "task0039_ac6_reconcile_pr364_head_7cfff8d7d57dfe76e1ad292378529dc94fdad565_passed_run_35792613078",
+    "application_test_status": "task0039_ac6_reconcile_pr364_head_7cfff8d7d57dfe76e1ad292378529dc94fdad565_passed_run_35792613112",
+    "security_supply_chain_status": "task0039_ac6_reconcile_pr364_head_7cfff8d7d57dfe76e1ad292378529dc94fdad565_passed_run_35792613031",
     "release_integrity_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333452",
     "scorecard_status": "resilience_reconciliation_main_head_da33e57012f0f2027bfcd8be50bae31bf65f1e6e_passed_run_35604333412"
   },
-  "observed_main_sha": "58e7ec489fffb19a807ad69708b2919b22894bfb",
+  "observed_main_sha": "2db0b1fa3604731c9e8e908df592cf778baea2dd",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0039-DUE-CLAIM-EXECUTION-INTENT",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0039 AC-6 due-claim/execution-intent milestone merged via PR #363 as 58e7ec489fffb19a807ad69708b2919b22894bfb; exact source 9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9 passed AI Continuity Guard 35791758031, Application Foundation CI 35791757956 including PostgreSQL/Redis integration and multi-process scheduler contention, and Security Supply Chain CI 35791757920. RBT-023 is terminal PASS.",
-  "exact_next_safe_action": "Begin the bounded TASK-0039 AC-7 provider-native scheduling capability-evidence milestone from protected main 58e7ec489fffb19a807ad69708b2919b22894bfb. Keep VSN calendar time and resolved UTC occurrence canonical even when a provider advertises native scheduling. Reuse the existing provider connection/capability evidence model to pin versioned same-workspace support evidence only; require current effective connection, scope/role and capability authority at the relevant scheduling/execution boundary; fail closed on disconnect, permission/role revocation, stale/not-effective/unsupported/incompatible capability evidence or cross-workspace references. Credentials, provider-native schedule IDs/payloads, uploads, live provider API calls and publication attempts must remain outside canonical calendar/schedule/claim/intent records and inactive in TASK-0039. Add focused backend/PostgreSQL/adversarial tests proving provider capability drift cannot rewrite canonical VSN schedule time or create execution work. After AC-7 is trusted and terminally reconciled, proceed to TASK-0039 AC-8 final acceptance/full exact-head certification before any TASK-0040 registration.",
-  "pending_runner_ids": [],
+  "active_pr": 365,
+  "active_branch": "task/0039-provider-schedule-capability-evidence",
+  "current_milestone": "TASK-0039-PROVIDER-SCHEDULE-CAPABILITY-EVIDENCE",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "TASK-0039 AC-6 due-claim/execution-intent is terminally reconciled on protected main via PR #364 as 2db0b1fa3604731c9e8e908df592cf778baea2dd; exact reconciliation source 7cfff8d7d57dfe76e1ad292378529dc94fdad565 passed AI Continuity Guard 35792613078, Application Foundation CI 35792613112 and Security Supply Chain CI 35792613031. RBT-023 remains terminal PASS.",
+  "exact_next_safe_action": "Perform exact-head verification for PR #365. Merge the TASK-0039 AC-7 provider-schedule capability-evidence milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; VSN fixed/queue calendar time remains canonical; `publication.schedule.remote` is evidence only; new stale-lease takeover and new execution-intent emission revalidate the exact pinned approval plus current same-workspace provider connection/capability authority; disconnect, scope/role revocation, stale/not-effective/unsupported/incompatible evidence and changed approval lineage fail closed without creating intent/outbox work; already-committed intent replay remains immutable and duplicate-free; provider-native schedule IDs/timestamps/payloads and credentials remain outside canonical campaign/schedule/claim/intent records; and no provider API call, upload or publication attempt is introduced. After trusted merge, terminally reconcile AC-7 and then stage TASK-0039 AC-8 final acceptance/full exact-head certification before any TASK-0040 registration.",
+  "pending_runner_ids": [
+    "RBT-024"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the bounded TASK-0039 AC-7 provider-native scheduling capability-evidence milestone from protected main 58e7ec489fffb19a807ad69708b2919b22894bfb. Keep VSN calendar time and resolved UTC occurrence canonical even when a provider advertises native scheduling. Reuse the existing provider connection/capability evidence model to pin versioned same-workspace support evidence only; require current effective connection, scope/role and capability authority at the relevant scheduling/execution boundary; fail closed on disconnect, permission/role revocation, stale/not-effective/unsupported/incompatible capability evidence or cross-workspace references. Credentials, provider-native schedule IDs/payloads, uploads, live provider API calls and publication attempts must remain outside canonical calendar/schedule/claim/intent records and inactive in TASK-0039. Add focused backend/PostgreSQL/adversarial tests proving provider capability drift cannot rewrite canonical VSN schedule time or create execution work. After AC-7 is trusted and terminally reconciled, proceed to TASK-0039 AC-8 final acceptance/full exact-head certification before any TASK-0040 registration."
+  "exact_next_action": "Perform exact-head verification for PR #365. Merge the TASK-0039 AC-7 provider-schedule capability-evidence milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; VSN fixed/queue calendar time remains canonical; `publication.schedule.remote` is evidence only; new stale-lease takeover and new execution-intent emission revalidate the exact pinned approval plus current same-workspace provider connection/capability authority; disconnect, scope/role revocation, stale/not-effective/unsupported/incompatible evidence and changed approval lineage fail closed without creating intent/outbox work; already-committed intent replay remains immutable and duplicate-free; provider-native schedule IDs/timestamps/payloads and credentials remain outside canonical campaign/schedule/claim/intent records; and no provider API call, upload or publication attempt is introduced. After trusted merge, terminally reconcile AC-7 and then stage TASK-0039 AC-8 final acceptance/full exact-head certification before any TASK-0040 registration."
 }

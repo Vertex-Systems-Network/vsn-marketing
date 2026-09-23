@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 AC-6 due claiming/internal execution-intent semantics are trusted; the next bounded milestone is AC-7 provider-native scheduling capability evidence while VSN calendar time remains canonical and live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 AC-7 provider-native scheduling capability evidence is staged on PR #365 under exact-head verification; VSN calendar time remains canonical and live provider scheduling/publication stays inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, and PR #363 PostgreSQL-authoritative due claims/execution intents are trusted. The next bounded AC-7 slice keeps VSN time canonical while treating provider-native schedule support only as versioned capability evidence that fails closed on connection/permission/capability drift.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, and PR #363 PostgreSQL-authoritative due claims/execution intents are trusted. PR #365 stages the bounded AC-7 slice: VSN time remains canonical; `publication.schedule.remote` remains versioned evidence only; stale-lease takeover and new internal intent emission revalidate current provider/approval authority; provider-native schedule identifiers/timestamps remain outside canonical records; no live provider side effect is introduced.
 
 ## Staged research direction
 

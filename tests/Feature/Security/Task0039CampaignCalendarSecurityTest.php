@@ -83,7 +83,13 @@ function task0039CalendarGrant(
 /**
  * @param  array{organization: Organization, workspace: Workspace, user: User, context: TenantContext}  $actor
  * @param  array<string, mixed>|null  $intendedExecution
- * @return array{campaign: Campaign, snapshot: CampaignSnapshot, approver: User}
+ * @return array{
+ *     campaign: Campaign,
+ *     snapshot: CampaignSnapshot,
+ *     approver: User,
+ *     providerConnectionId: ?string,
+ *     providerCapabilityId: ?string
+ * }
  */
 function task0039CalendarFixture(
     array $actor,
@@ -93,6 +99,7 @@ function task0039CalendarFixture(
     string $approvalExpiry = '2026-07-15T15:00:00+00:00',
     string $intentAt = '2026-07-15T11:00:00+00:00',
     ?array $intendedExecution = null,
+    bool $providerScheduleEvidence = false,
 ): array {
     $workspaceId = (string) $actor['workspace']->getKey();
     task0039CalendarGrant(
@@ -195,17 +202,105 @@ function task0039CalendarFixture(
         ),
     );
 
-    $target = new CampaignTargetBinding(
-        id: (string) Str::uuid(),
-        workspaceId: $workspaceId,
-        kind: CampaignTargetKind::Contact,
-        canonicalReferenceId: $contactId,
-        channel: 'email',
-        providerConnectionId: null,
-        capabilityEvidenceId: null,
-        metadata: [],
-        createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
-    );
+    $providerConnectionId = null;
+    $providerCapabilityId = null;
+    $capabilityEvidenceIds = [];
+
+    if ($providerScheduleEvidence) {
+        $providerId = (string) Str::uuid();
+        $providerConnectionId = (string) Str::uuid();
+        $providerCapabilityId = (string) Str::uuid();
+        $providerObservedAt = new DateTimeImmutable('2026-07-15T09:00:00+00:00');
+        $providerFreshUntil = new DateTimeImmutable('2026-07-16T09:00:00+00:00');
+
+        DB::table('providers')->insert([
+            'id' => $providerId,
+            'workspace_id' => $workspaceId,
+            'provider_key' => 'task0039-provider-'.$suffix,
+            'display_name' => 'Task0039 Provider '.$suffix,
+            'category' => 'social',
+            'metadata' => json_encode([], JSON_THROW_ON_ERROR),
+            'source_url' => 'https://example.test/task0039/provider',
+            'source_version' => '2026-09',
+            'observed_at' => $providerObservedAt,
+            'fresh_until' => $providerFreshUntil,
+            'created_at' => $providerObservedAt,
+            'updated_at' => $providerObservedAt,
+        ]);
+        DB::table('provider_connections')->insert([
+            'id' => $providerConnectionId,
+            'workspace_id' => $workspaceId,
+            'provider_id' => $providerId,
+            'name' => 'Task0039 provider connection',
+            'readiness_status' => 'ready',
+            'auth_family' => 'oauth2',
+            'secret_reference' => 'vault://task0039/'.$suffix,
+            'requested_scopes' => json_encode(['publish.write'], JSON_THROW_ON_ERROR),
+            'granted_scopes' => json_encode(['publish.write'], JSON_THROW_ON_ERROR),
+            'roles' => json_encode(['publisher'], JSON_THROW_ON_ERROR),
+            'access_tier' => null,
+            'region' => null,
+            'principal_type' => null,
+            'principal_reference' => null,
+            'provider_review_status' => 'approved',
+            'token_expires_at' => $providerFreshUntil,
+            'refresh_supported' => true,
+            'last_rotated_at' => null,
+            'metadata' => json_encode([], JSON_THROW_ON_ERROR),
+            'source_url' => 'https://example.test/task0039/provider/connection',
+            'source_version' => '2026-09',
+            'observed_at' => $providerObservedAt,
+            'fresh_until' => $providerFreshUntil,
+            'created_at' => $providerObservedAt,
+            'updated_at' => $providerObservedAt,
+        ]);
+        DB::table('provider_capabilities')->insert([
+            'id' => $providerCapabilityId,
+            'workspace_id' => $workspaceId,
+            'provider_id' => $providerId,
+            'connection_id' => $providerConnectionId,
+            'operation' => 'publication.schedule.remote',
+            'support_status' => 'supported',
+            'required_scopes' => json_encode(['publish.write'], JSON_THROW_ON_ERROR),
+            'required_roles' => json_encode(['publisher'], JSON_THROW_ON_ERROR),
+            'constraints' => json_encode([
+                'remote_schedule' => true,
+                'provider_timezone' => 'UTC',
+            ], JSON_THROW_ON_ERROR),
+            'source_url' => 'https://example.test/task0039/provider/capability',
+            'source_version' => '2026-09',
+            'observed_at' => $providerObservedAt,
+            'fresh_until' => $providerFreshUntil,
+            'created_at' => $providerObservedAt,
+            'updated_at' => $providerObservedAt,
+        ]);
+
+        $capabilityEvidenceIds = [$providerCapabilityId];
+        $target = new CampaignTargetBinding(
+            id: (string) Str::uuid(),
+            workspaceId: $workspaceId,
+            kind: CampaignTargetKind::ProviderConnection,
+            canonicalReferenceId: $providerConnectionId,
+            channel: 'social',
+            providerConnectionId: $providerConnectionId,
+            capabilityEvidenceId: $providerCapabilityId,
+            metadata: [],
+            createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
+        );
+    } else {
+        $target = new CampaignTargetBinding(
+            id: (string) Str::uuid(),
+            workspaceId: $workspaceId,
+            kind: CampaignTargetKind::Contact,
+            canonicalReferenceId: $contactId,
+            channel: 'email',
+            providerConnectionId: null,
+            capabilityEvidenceId: null,
+            metadata: [],
+            createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
+        );
+    }
+
     $snapshot = CampaignSnapshot::create(
         id: (string) Str::uuid(),
         workspaceId: $workspaceId,
@@ -216,7 +311,7 @@ function task0039CalendarFixture(
         templateVersionId: null,
         componentVersionIds: [],
         assetReferenceIds: [],
-        capabilityEvidenceIds: [],
+        capabilityEvidenceIds: $capabilityEvidenceIds,
         brandReference: [],
         intendedExecution: $intendedExecution ?? [
             'mode' => 'fixed_instant',
@@ -268,7 +363,7 @@ function task0039CalendarFixture(
         actorId: (string) $approver->getKey(),
         actorRole: $approverRole,
         reason: 'Approve calendar execution.',
-        capabilityEvidenceIds: [],
+        capabilityEvidenceIds: $capabilityEvidenceIds,
         supersedesDecisionId: null,
         expiresAt: new DateTimeImmutable($approvalExpiry),
         idempotencyKey: 'calendar-approval-'.$suffix,
@@ -311,7 +406,13 @@ function task0039CalendarFixture(
         at: new DateTimeImmutable($intentAt),
     );
 
-    return ['campaign' => $scheduledIntent, 'snapshot' => $snapshot, 'approver' => $approver];
+    return [
+        'campaign' => $scheduledIntent,
+        'snapshot' => $snapshot,
+        'approver' => $approver,
+        'providerConnectionId' => $providerConnectionId,
+        'providerCapabilityId' => $providerCapabilityId,
+    ];
 }
 
 it('creates and replays an authorized fixed-instant schedule bound to the exact approved snapshot', function () {
@@ -1472,4 +1573,286 @@ it('rolls back a partial outbox failure and retries to one canonical execution i
         ->and(DB::table('outbox_messages')->where('id', $intent->outboxId)->count())->toBe(1)
         ->and(DB::table('campaign_schedule_due_claims')->where('schedule_id', $schedule->id)->value('state'))
         ->toBe('emitted');
+});
+
+it('keeps VSN resolved time canonical when remote provider scheduling is supported', function () {
+    $actor = task0039CalendarActor('provider-schedule-canonical');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-schedule-canonical',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-schedule-canonical',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+
+    expect($fixture['providerCapabilityId'])->not->toBeNull()
+        ->and(DB::table('provider_capabilities')
+            ->where('id', $fixture['providerCapabilityId'])
+            ->value('operation'))->toBe('publication.schedule.remote')
+        ->and($schedule->resolvedAtUtc->format('Y-m-d\\TH:i:sP'))->toBe('2026-07-15T13:30:00+00:00')
+        ->and($schedule->timezoneId)->toBe('America/New_York')
+        ->and($schedule->localScheduledAt)->toBe('2026-07-15T09:30:00')
+        ->and(DB::table('campaign_schedules')->where('id', $schedule->id)->count())->toBe(1)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
+});
+
+it('fails closed when provider scope drifts after due claim and before execution intent emission', function () {
+    $actor = task0039CalendarActor('provider-drift-before-emit');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-drift-before-emit',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-drift-before-emit-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+    $claim = $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-drift-worker',
+        leaseToken: 'provider-drift-token',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+    expect($claim)->not->toBeNull();
+
+    DB::table('provider_connections')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['providerConnectionId'])
+        ->update([
+            'granted_scopes' => json_encode([], JSON_THROW_ON_ERROR),
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:05+00:00'),
+        ]);
+
+    expect(fn () => $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-drift-worker',
+        leaseToken: 'provider-drift-token',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'connection_scope_revoked');
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_due_claims')
+            ->where('schedule_id', $schedule->id)
+            ->value('state'))->toBe('leased');
+});
+
+it('fails closed when remote scheduling capability support drifts after due claim', function () {
+    $actor = task0039CalendarActor('provider-capability-drift');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-capability-drift',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-capability-drift-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+    $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-capability-worker',
+        leaseToken: 'provider-capability-token',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+
+    DB::table('provider_capabilities')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['providerCapabilityId'])
+        ->update([
+            'support_status' => 'unsupported',
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:05+00:00'),
+        ]);
+
+    expect(fn () => $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-capability-worker',
+        leaseToken: 'provider-capability-token',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'capability_unsupported');
+
+    expect(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(0);
+});
+
+it('refuses stale lease takeover after provider connection becomes unavailable', function () {
+    $actor = task0039CalendarActor('provider-drift-takeover');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-drift-takeover',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-drift-takeover-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+    $claim = $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-takeover-a',
+        leaseToken: 'provider-takeover-token-a',
+        leaseSeconds: 30,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+    expect($claim)->not->toBeNull();
+
+    DB::table('provider_connections')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['providerConnectionId'])
+        ->update([
+            'readiness_status' => 'suspended',
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:20+00:00'),
+        ]);
+
+    expect(fn () => $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-takeover-b',
+        leaseToken: 'provider-takeover-token-b',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:31+00:00'),
+    ))->toThrow(InvalidArgumentException::class, 'connection_unavailable');
+
+    expect(DB::table('campaign_schedule_due_claims')
+        ->where('schedule_id', $schedule->id)
+        ->value('attempt_number'))->toBe(1);
+});
+
+it('replays an already committed intent after later provider drift without creating duplicate work', function () {
+    $actor = task0039CalendarActor('provider-drift-after-commit');
+    $fixture = task0039CalendarFixture(
+        $actor,
+        'provider-drift-after-commit',
+        providerScheduleEvidence: true,
+    );
+    $calendar = app(CampaignCalendarService::class);
+    $claims = app(CampaignScheduleDueClaimService::class);
+
+    $schedule = $calendar->scheduleFixedInstant(
+        actor: $actor['user'],
+        context: $actor['context'],
+        campaignId: $fixture['campaign']->id,
+        snapshotId: $fixture['snapshot']->id,
+        scheduleId: (string) Str::uuid(),
+        idempotencyKey: 'provider-drift-after-commit-schedule',
+        at: new DateTimeImmutable('2026-07-15T11:01:00+00:00'),
+    );
+    $claims->acquireDueClaim(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-commit-worker',
+        leaseToken: 'provider-commit-token',
+        leaseSeconds: 60,
+        at: new DateTimeImmutable('2026-07-15T13:30:00+00:00'),
+    );
+    $intent = $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-commit-worker',
+        leaseToken: 'provider-commit-token',
+        at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
+    );
+
+    DB::table('provider_connections')
+        ->where('workspace_id', $actor['context']->workspaceId)
+        ->where('id', $fixture['providerConnectionId'])
+        ->update([
+            'readiness_status' => 'suspended',
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:30:20+00:00'),
+        ]);
+
+    $replayed = $claims->emitExecutionIntent(
+        workspaceId: $actor['context']->workspaceId,
+        scheduleId: $schedule->id,
+        leaseOwner: 'provider-commit-worker',
+        leaseToken: 'provider-commit-token',
+        at: new DateTimeImmutable('2026-07-15T13:31:00+00:00'),
+    );
+
+    expect($replayed->id)->toBe($intent->id)
+        ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(1)
+        ->and(DB::table('outbox_messages')
+            ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->count())->toBe(1);
+});
+
+it('rejects provider-native schedule identifiers and timestamps from canonical campaign JSON', function () {
+    $actor = task0039CalendarActor('provider-transient-guard');
+
+    expect(fn () => task0039CalendarFixture(
+        $actor,
+        'provider-transient-guard',
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+            'provider_schedule_id' => 'remote-123',
+        ],
+    ))->toThrow(InvalidArgumentException::class, 'Sensitive or transient provider campaign key');
+
+    expect(fn () => task0039CalendarFixture(
+        task0039CalendarActor('provider-transient-payload'),
+        'provider-transient-payload',
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+            'provider_schedule_payload' => ['scheduled_at' => '2026-07-15T13:30:00Z'],
+        ],
+    ))->toThrow(InvalidArgumentException::class, 'Sensitive or transient provider campaign key');
+
+    expect(fn () => task0039CalendarFixture(
+        task0039CalendarActor('provider-transient-time'),
+        'provider-transient-time',
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+            'provider_publish_at' => '2026-07-15T13:30:00Z',
+        ],
+    ))->toThrow(InvalidArgumentException::class, 'Sensitive or transient provider campaign key');
 });

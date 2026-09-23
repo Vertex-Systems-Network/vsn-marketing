@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
 beforeEach(function () {
-    if (! filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL)) {
+    if (!filter_var(env('RUN_INFRA_INTEGRATION', false), FILTER_VALIDATE_BOOL)) {
         $this->markTestSkipped('Set RUN_INFRA_INTEGRATION=true to run TASK-0039 due-claim concurrency certification.');
     }
 
@@ -190,7 +190,7 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
             }
 
             $decoded = json_decode($resultJson, true, 512, JSON_THROW_ON_ERROR);
-            if (! is_array($decoded)) {
+            if (!is_array($decoded)) {
                 throw new RuntimeException('TASK-0039 concurrency worker returned invalid JSON.');
             }
 
@@ -242,7 +242,7 @@ $result = Illuminate\Support\Facades\DB::transaction(function () use ($payload):
 });
 
 $resultJson = json_encode($result, JSON_THROW_ON_ERROR);
-if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
+if (!isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 claim worker result.');
 }
 PHP;
@@ -267,7 +267,7 @@ $intent = app(App\Modules\Publishing\Application\Scheduling\CampaignScheduleDueC
     );
 
 $resultJson = json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR);
-if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
+if (!isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 emit worker result.');
 }
 PHP;

@@ -1,11 +1,12 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.5.1",
-  "instruction_revision": "parallel-v2.5.1-shuffled-next-action-options",
+  "protocol_version": "2.5.2",
+  "instruction_revision": "parallel-v2.5.2-org-url-entry-options",
   "instruction_sources": [
-    ".ai/13-PARALLEL-DEVELOPMENT.md"
+    ".ai/13-PARALLEL-DEVELOPMENT.md",
+    ".ai/NEXT-ACTION-OPTIONS.md"
   ],
-  "instruction_fingerprint": "5d04a5d34aa202a8780fb46d6bbb0d435fc7d9ece618e83ab6e998d05a02cd20",
+  "instruction_fingerprint": "38c0a60b7581a051835395ebef0442e6f492f5e51f614c87c75a677bd88fcae2",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -129,5 +130,8 @@
     1,
     2,
     3
-  ]
+  ],
+  "url_only_repository_entry_mode": "read_only_options",
+  "url_only_repository_entry_mutation_forbidden": true,
+  "url_only_repository_entry_requires_state_reconciliation": true
 }

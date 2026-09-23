@@ -67,8 +67,10 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.5.1-shuffled-next-action-options`  
-Agent instruction fingerprint: `5d04a5d34aa202a8780fb46d6bbb0d435fc7d9ece618e83ab6e998d05a02cd20`
+Agent instruction revision: `parallel-v2.5.2-org-url-entry-options`  
+Agent instruction fingerprint: `38c0a60b7581a051835395ebef0442e6f492f5e51f614c87c75a677bd88fcae2`
+
+**URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 
 **Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the one-turn/one-milestone boundary.
 

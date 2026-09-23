@@ -190,16 +190,21 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
                 ? trim((string) @file_get_contents($resultPaths[$index]))
                 : trim(substr($stdout, $position + strlen($marker)));
 
-            if ($encodedResult === '') {
-                throw new RuntimeException('TASK-0039 concurrency worker did not emit a framed result.');
-            }
+            if ($encodedResult !== '') {
+                $json = base64_decode($encodedResult, true);
+                if ($json === false) {
+                    throw new RuntimeException('TASK-0039 concurrency worker emitted an invalid framed result.');
+                }
 
-            $json = base64_decode($encodedResult, true);
-            if ($json === false) {
-                throw new RuntimeException('TASK-0039 concurrency worker emitted an invalid framed result.');
-            }
+                $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            } else {
+                $legacyOutput = trim($stdout);
+                if ($legacyOutput === '') {
+                    throw new RuntimeException('TASK-0039 concurrency worker emitted no result.');
+                }
 
-            $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+                $decoded = json_decode($legacyOutput, true, 512, JSON_THROW_ON_ERROR);
+            }
             if (! is_array($decoded)) {
                 throw new RuntimeException('TASK-0039 concurrency worker returned invalid JSON.');
             }

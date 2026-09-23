@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement the workspace-scoped provider-neutral publication lifecycle that consumes trusted canonical execution intents and exact approved campaign snapshots/targets into immutable publication attempts, capability-checked target-account operations, derivative media-processing references, idempotent retries and deterministic provider-status reconciliation, while preserving VSN campaign/snapshot/asset authority and failing closed on provider disconnect, permission, app-review, account-role or capability drift.",
   "dependencies": [
     "TASK-0039"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After TASK-0040 planned registration is trusted and a separate guarded transition completes TASK-0039 and activates TASK-0040 ready, begin with provider-neutral publication-attempt persistence/state-machine and PostgreSQL/adversarial idempotency/isolation tests. Keep production provider credentials/API side effects, unsupported edit/delete assumptions, TASK-0041 implementation, deployment/release authority and the deferred Runner optimization batch inactive until separately authorized."
+  "exact_next_action": "TASK-0040 is staged ready/active by the guarded TASK-0039 -> TASK-0040 transition, but implementation must not begin until that transition exact head is trusted and terminally reconciled. After trust, begin with the bounded provider-neutral publication-attempt persistence/state-machine milestone and PostgreSQL/adversarial idempotency/isolation tests. Keep production provider credentials/API side effects, media upload/publication effects, unsupported edit/delete assumptions, TASK-0041 implementation, deployment/release authority and the deferred Runner optimization batch inactive until separately authorized."
 }

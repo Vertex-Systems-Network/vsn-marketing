@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement the workspace-scoped canonical editorial/campaign calendar and provider-neutral scheduling engine that turns approved immutable campaign snapshots into deterministic fixed-instant or queue/next-slot execution intents with explicit IANA timezone/DST semantics, append-oriented reschedule/cancel/missed-run history, approval-timing enforcement and replay-safe due claiming, while leaving provider publication attempts, provider-native scheduling side effects and credential use to later guarded tasks.",
   "dependencies": [
     "TASK-0038"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted."
+  "exact_next_action": "TASK-0039 is completed after trusted final acceptance and successor registration. Preserve the calendar/scheduler acceptance evidence and do not reopen TASK-0039 unless a regression is proven by repository/runtime evidence."
 }

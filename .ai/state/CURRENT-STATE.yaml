@@ -8,31 +8,33 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-07",
-    "active_task": "TASK-0039",
-    "last_completed_task": "TASK-0038",
-    "next_task": "TASK-0040"
+    "active_task": "TASK-0040",
+    "last_completed_task": "TASK-0039",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 47.27,
-    "phase_percent": 46.67,
+    "roadmap_percent": 49.13,
+    "phase_percent": 73.33,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250708",
-    "application_test_status": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250814",
-    "security_supply_chain_status": "task0040_registration_pr369_head_97fec3bdf8311974054934a2ee7c6e2e70df2d94_passed_run_35920250678",
+    "continuity_validation": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025287",
+    "application_test_status": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025389",
+    "security_supply_chain_status": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025347",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "54b5b4fe69b3922332b9aa064fabe45339787e93",
+  "observed_main_sha": "ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0040-REGISTRATION",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0040 planned registration merged via PR #369 as 54b5b4fe69b3922332b9aa064fabe45339787e93; exact source 97fec3bdf8311974054934a2ee7c6e2e70df2d94 passed AI Continuity Guard 35920250708, Application Foundation CI 35920250814 and Security Supply Chain CI 35920250678. Resulting protected main also passed Continuity 35920732979, Application 35920732892 and Security 35920732917. TASK-0040 remains planned-only; TASK-0039 remains active/ready until the separate guarded transition.",
-  "exact_next_safe_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted.",
-  "pending_runner_ids": [],
+  "active_pr": 371,
+  "active_branch": "control/transition-task-0039-to-0040",
+  "current_milestone": "TASK-0039-TO-0040-TRANSITION",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "TASK-0040 registration terminal reconciliation merged via PR #370 as ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47; exact source 3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9 passed AI Continuity Guard 35921025287, Application Foundation CI 35921025389 and Security Supply Chain CI 35921025347. Resulting protected main also passed Continuity 35921480003, Application 35921480142 and Security 35921480043. TASK-0039 acceptance and TASK-0040 registration are trusted.",
+  "exact_next_safe_action": "Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [
+    "RBT-027"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted."
+  "exact_next_action": "Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive."
 }

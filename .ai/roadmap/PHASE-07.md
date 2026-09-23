@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 AC-7 provider-native scheduling capability evidence is staged on PR #365 under exact-head verification; VSN calendar time remains canonical and live provider scheduling/publication stays inactive.**
+Status: **IN PROGRESS — TASK-0039 AC-8 final acceptance is staged on PR #368 with AC-1 through AC-8 reconciled true; exact-head continuity/application/security certification is pending and live provider scheduling/publication remains inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in progress; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, and PR #363 PostgreSQL-authoritative due claims/execution intents are trusted. PR #365 stages the bounded AC-7 slice: VSN time remains canonical; `publication.schedule.remote` remains versioned evidence only; stale-lease takeover and new internal intent emission revalidate current provider/approval authority; provider-native schedule identifiers/timestamps remain outside canonical records; no live provider side effect is introduced.
+TASK-0037 and TASK-0038 are completed. TASK-0039 is in final acceptance; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, PR #363 PostgreSQL-authoritative due claims/execution intents, and PR #365 provider capability-drift boundaries are trusted. PR #368 is the bounded Supervisor-only AC-8 acceptance surface: AC-1 through AC-8 are reconciled true while TASK-0039 remains `ready` until the exact acceptance head passes Continuity, Application and Security gates. Provider API calls, native scheduling/publication, uploads and credential activation remain inactive; TASK-0040 stays unregistered until a separate guarded post-acceptance transition.
 
 ## Staged research direction
 

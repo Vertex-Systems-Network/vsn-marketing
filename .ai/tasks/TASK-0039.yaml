@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement unified editorial/campaign calendar and timezone-safe scheduler",
-  "status": "in_progress",
+  "status": "ready",
   "objective": "Implement the workspace-scoped canonical editorial/campaign calendar and provider-neutral scheduling engine that turns approved immutable campaign snapshots into deterministic fixed-instant or queue/next-slot execution intents with explicit IANA timezone/DST semantics, append-oriented reschedule/cancel/missed-run history, approval-timing enforcement and replay-safe due claiming, while leaving provider publication attempts, provider-native scheduling side effects and credential use to later guarded tasks.",
   "dependencies": [
     "TASK-0038"
@@ -13,42 +13,42 @@
     {
       "id": "AC-1",
       "text": "Workspace-scoped calendar/schedule records bind the exact campaign, immutable campaign snapshot, target-set hash and scheduling strategy; foreign-workspace references, stale snapshots or non-approval-eligible campaign state fail closed and no provider publication call is performed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Fixed-instant scheduling requires an IANA timezone plus local scheduling input, resolves and persists one immutable canonical UTC execution instant, and defines deterministic fail-closed policies for ambiguous and nonexistent local times rather than relying on host timezone defaults",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Queue/next-slot scheduling is distinct from fixed-instant scheduling and uses versioned workspace/channel schedule rules, explicit IANA timezone and deterministic slot selection; once a run is pinned, later timezone, DST or queue-rule changes do not silently rewrite its resolved instant",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Reschedule and cancellation are append-oriented state changes that preserve previous schedule identity, actor/time/reason and old/new resolved instants; execution-pinned history is never mutated in place and material campaign/snapshot changes require deterministic approval re-evaluation before a new schedule can become executable",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Approval timing is enforced at scheduling and due-claim boundaries: expired/revoked/stale approval or a missed approval deadline cannot execute, and missed-time outcomes become deterministic auditable missed/needs-reschedule state rather than silent late publication",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Due-claiming and scheduler mutations are transaction-safe, concurrency-safe and idempotent under duplicate workers, retries, stale leases and replay; one canonical schedule occurrence can emit at most one internal execution intent and partial failures cannot create duplicate or cross-workspace work",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "VSN calendar time remains canonical even when provider-native scheduling is available; provider-native schedule support is versioned capability evidence only, provider disconnect/permission drift fails closed, credentials remain outside canonical calendar records, and TASK-0039 emits no live provider API call, upload or publication attempt",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "Backend, PostgreSQL and adversarial tests prove IANA timezone/DST ambiguity and gap handling, fixed-versus-queue semantics, reschedule/cancel/missed-run history, approval timing, workspace isolation, duplicate prevention and replay safety; exact-head continuity, static-analysis/formatting, application, integration and security/supply-chain gates are green before TASK-0040 registration",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform exact-head verification for PR #365. Merge the TASK-0039 AC-7 provider-schedule capability-evidence milestone only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; VSN fixed/queue calendar time remains canonical; `publication.schedule.remote` is evidence only; new stale-lease takeover and new execution-intent emission revalidate the exact pinned approval plus current same-workspace provider connection/capability authority; disconnect, scope/role revocation, stale/not-effective/unsupported/incompatible evidence and changed approval lineage fail closed without creating intent/outbox work; already-committed intent replay remains immutable and duplicate-free; provider-native schedule IDs/timestamps/payloads and credentials remain outside canonical campaign/schedule/claim/intent records; and no provider API call, upload or publication attempt is introduced. After trusted merge, terminally reconcile AC-7 and then stage TASK-0039 AC-8 final acceptance/full exact-head certification before any TASK-0040 registration."
+  "exact_next_action": "Run TASK-0039 final acceptance on PR #368 with AC-1 through AC-8 true while task/index status remains ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, perform a separate guarded transition that marks TASK-0039 completed and registers TASK-0040 as planned before any channel-neutral publication implementation. Keep provider API calls, provider-native scheduling/publication, media upload, provider credential activation, deployment/release authority and the deferred Runner benchmark batch inactive."
 }

@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "422f71e3a2afcea1ed39d786553876e544aec064",
-  "active_work_path": null,
+  "reconciled_main_sha": "e69adb6dd29bc80d6c767146637ba4c441456013",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 368,
+    "branch": "control/task0039-final-acceptance",
+    "milestone": "TASK-0039-FINAL-ACCEPTANCE"
+  },
   "items": [
     {
       "kind": "issue",
@@ -54,6 +59,15 @@
       "title": "feat(publishing): enforce provider schedule capability drift boundaries",
       "disposition": "terminal_merged_reconciled",
       "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 368,
+      "title": "control: accept TASK-0039 calendar and scheduler",
+      "disposition": "active_task_final_acceptance_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-025",
+      "branch": "control/task0039-final-acceptance"
     }
   ]
 }

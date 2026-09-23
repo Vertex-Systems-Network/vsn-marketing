@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-09-23T18:38:00Z`
-- Observed main: `422f71e3a2afcea1ed39d786553876e544aec064`
+- Timestamp: `2026-09-23T19:27:00Z`
+- Observed main: `e69adb6dd29bc80d6c767146637ba4c441456013`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0039-PROVIDER-SCHEDULE-CAPABILITY-EVIDENCE`
-- Milestone status: `COMPLETE`
+- Active PR: `368`
+- Active branch: `control/task0039-final-acceptance`
+- Current milestone: `TASK-0039-FINAL-ACCEPTANCE`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0039`
 - Next task: `none`
 - Current phase: `PHASE-07`
-- Execution status: `in_progress`
-- Pending Runner IDs: `none`
+- Execution status: `ready`
+- Pending Runner IDs: `RBT-025`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `0a2c055439d6b3f2ff1009658ff753e6bc41a029e2f0ff677bd0b1f48249f940`
+- State fingerprint: `7d45e69ac9464e5fc07e6910d15c3407a6c91980ebc9383187beb9b3fa1a5059`
 
 ## Completed / observed this session
 
-TASK-0039 AC-7 is trusted on protected main through PR #365. Exact source 2544f500c8a3bb9cb227a626170c45f993ac04d8 passed the required Application, Continuity, and Security gates. README progress is synchronized to the same durable state.
+Staged TASK-0039 final acceptance on PR #368 from protected main e69adb6dd29bc80d6c767146637ba4c441456013 after trusted bounded milestones #355, #357, #359, #361, #363 and #365. AC-1 through AC-8 are reconciled true and TASK-0039/index remain ready rather than completed until this acceptance head passes its own exact-head gates. The complete calendar/scheduler chain covers deterministic IANA/DST fixed-instant resolution, versioned queue/next-slot rules, append-only reschedule/cancel and missed-occurrence history, due-boundary approval enforcement, PostgreSQL-authoritative due claims and one immutable execution intent per canonical occurrence, provider capability-drift fail-closed boundaries, workspace isolation and replay/idempotency safety. RBT-025 is pending required Continuity/Application/Security verification; RBT-004 remains authorization-blocked. No provider API call, provider-native scheduling/publication, media upload, credential activation, TASK-0040 implementation, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #365 exact-head acceptance evidence is recorded in CURRENT-STATE. This reconciliation changes only durable AI state, checkpoint, and README surfaces and requires fresh exact-head control gates.
+Trusted milestone exact-head evidence remains recorded for PR #355, #357, #359, #361, #363 and #365, including PostgreSQL/adversarial/security coverage. PR #368 final acceptance exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are pending under RBT-025.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #365 exact-head acceptance evidence is recorded in CURRENT-STATE. This reconc
 
 ## Exact next action
 
-Stage the bounded TASK-0039 AC-8 final acceptance/full exact-head certification from protected main 422f71e3a2afcea1ed39d786553876e544aec064 before any TASK-0040 registration. Re-read the TASK-0039 contract and acceptance criteria, certify the complete calendar/scheduling chain across fixed-instant resolution, queue/next-slot rules, append-only reschedule/cancel history, approval timing and missed-occurrence history, PostgreSQL-authoritative due claims/execution intents, AC-7 provider capability drift boundaries, workspace isolation, replay/idempotency and security invariants. Keep provider API calls, provider-native scheduling/publication, uploads and credential activation inactive unless a later task explicitly authorizes them. Use one bounded governed carrier, update README with durable state, and require exact-head Application, Continuity and Security gates before terminal TASK-0039 acceptance.
+Run TASK-0039 final acceptance on PR #368 with AC-1 through AC-8 true while task/index status remains ready. Merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact acceptance head with no blocking review findings. After merge, perform a separate guarded transition that marks TASK-0039 completed, recalculates deterministic progress, and registers TASK-0040 as planned before any channel-neutral publication implementation. Keep provider API calls, provider-native scheduling/publication, media upload, credential activation, deployment/release authority and the deferred Runner benchmark batch inactive.

@@ -240,7 +240,7 @@ $result = Illuminate\Support\Facades\DB::transaction(function () use ($payload):
 });
 
 $resultJson = json_encode($result, JSON_THROW_ON_ERROR);
-if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
+if (!isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 claim worker result.');
 }
 PHP;
@@ -265,7 +265,7 @@ $intent = app(App\Modules\Publishing\Application\Scheduling\CampaignScheduleDueC
     );
 
 $resultJson = json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR);
-if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
+if (!isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 emit worker result.');
 }
 PHP;

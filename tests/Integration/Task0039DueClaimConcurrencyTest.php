@@ -162,11 +162,7 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
 
     try {
         foreach ($payloads as $payload) {
-            $resultPath = tempnam(sys_get_temp_dir(), 'vsn-task0039-result-');
-            if ($resultPath === false) {
-                throw new RuntimeException('Unable to create TASK-0039 concurrency result file.');
-            }
-
+            $resultPath = sys_get_temp_dir().'/vsn-task0039-result-'.bin2hex(random_bytes(16)).'.json';
             $payload['_result_path'] = $resultPath;
             $encoded = base64_encode(json_encode($payload, JSON_THROW_ON_ERROR));
             $process = new Process([PHP_BINARY, $path, $encoded], base_path());
@@ -183,28 +179,15 @@ function task0039RunConcurrentWorkers(string $script, array $payloads): array
                 throw new RuntimeException(trim($process->getErrorOutput().' '.$process->getOutput()));
             }
 
-            $stdout = $process->getOutput();
-            $marker = '__TASK0039_RESULT__:';
-            $position = strrpos($stdout, $marker);
-            $encodedResult = $position === false
-                ? trim((string) @file_get_contents($resultPaths[$index]))
-                : trim(substr($stdout, $position + strlen($marker)));
-
-            if ($encodedResult !== '') {
-                $json = base64_decode($encodedResult, true);
-                if ($json === false) {
-                    throw new RuntimeException('TASK-0039 concurrency worker emitted an invalid framed result.');
-                }
-
-                $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-            } else {
-                $legacyOutput = trim($stdout);
-                if ($legacyOutput === '') {
-                    throw new RuntimeException('TASK-0039 concurrency worker emitted no result.');
-                }
-
-                $decoded = json_decode($legacyOutput, true, 512, JSON_THROW_ON_ERROR);
+            $resultJson = trim((string) @file_get_contents($resultPaths[$index]));
+            if ($resultJson === '') {
+                throw new RuntimeException(
+                    'TASK-0039 concurrency worker emitted no result file. stdout='
+                    .trim($process->getOutput()).' stderr='.trim($process->getErrorOutput())
+                );
             }
+
+            $decoded = json_decode($resultJson, true, 512, JSON_THROW_ON_ERROR);
             if (! is_array($decoded)) {
                 throw new RuntimeException('TASK-0039 concurrency worker returned invalid JSON.');
             }
@@ -256,11 +239,10 @@ $result = Illuminate\Support\Facades\DB::transaction(function () use ($payload):
     return ['claim_id' => $claim->id];
 });
 
-$encodedResult = base64_encode(json_encode($result, JSON_THROW_ON_ERROR));
-if (isset($payload['_result_path']) && file_put_contents($payload['_result_path'], $encodedResult, LOCK_EX) === false) {
+$resultJson = json_encode($result, JSON_THROW_ON_ERROR);
+if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 claim worker result.');
 }
-echo '__TASK0039_RESULT__:'.$encodedResult;
 PHP;
 }
 
@@ -282,11 +264,10 @@ $intent = app(App\Modules\Publishing\Application\Scheduling\CampaignScheduleDueC
         at: new DateTimeImmutable('2026-07-15T13:30:10+00:00'),
     );
 
-$encodedResult = base64_encode(json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR));
-if (isset($payload['_result_path']) && file_put_contents($payload['_result_path'], $encodedResult, LOCK_EX) === false) {
+$resultJson = json_encode(['intent_id' => $intent->id, 'outbox_id' => $intent->outboxId], JSON_THROW_ON_ERROR);
+if (! isset($payload['_result_path']) || file_put_contents($payload['_result_path'], $resultJson, LOCK_EX) === false) {
     throw new RuntimeException('Unable to persist TASK-0039 emit worker result.');
 }
-echo '__TASK0039_RESULT__:'.$encodedResult;
 PHP;
 }
 

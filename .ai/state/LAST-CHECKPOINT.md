@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-23T18:10:00Z`
+- Timestamp: `2026-09-23T18:38:00Z`
 - Observed main: `422f71e3a2afcea1ed39d786553876e544aec064`
 - Active issue: `none`
 - Active PR: `none`
@@ -15,22 +15,20 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
+- State fingerprint: `0a2c055439d6b3f2ff1009658ff753e6bc41a029e2f0ff677bd0b1f48249f940`
 
 ## Completed / observed this session
 
-TASK-0039 AC-7 provider schedule capability-evidence is terminally trusted on protected main through PR #365, merged as `422f71e3a2afcea1ed39d786553876e544aec064` from exact source `2544f500c8a3bb9cb227a626170c45f993ac04d8`.
+TASK-0039 AC-7 is trusted on protected main through PR #365. Exact source 2544f500c8a3bb9cb227a626170c45f993ac04d8 passed the required Application, Continuity, and Security gates. README progress is synchronized to the same durable state.
 
-Exact-head required evidence is green on the unchanged source: AI Continuity Guard run `35892379441`, Application Foundation CI run `35892379327`, and Security Supply Chain CI run `35892379518` all completed successfully.
+## Tests
 
-The accepted AC-7 boundary keeps VSN local timezone input and immutable resolved UTC canonical. `publication.schedule.remote` remains versioned capability evidence only. Stale-lease takeover and new execution-intent emission revalidate the exact pinned approval plus current same-workspace provider connection/capability authority. Disconnect, scope/role revocation, stale/not-effective/unsupported/incompatible capability evidence and changed approval lineage fail closed before new scheduler work. Already-committed intent replay remains immutable/idempotent. Provider-native schedule IDs/timestamps/payloads and credentials remain outside canonical campaign/schedule/claim/intent records, and no live provider scheduling/publication side effect is activated.
-
-TASK-0039 remains active at roadmap `48.45%` / PHASE-07 `63.64%`. RBT-024 is terminal PASS. AC-8 final TASK-0039 acceptance/full exact-head certification is the next bounded milestone before any TASK-0040 registration.
+PR #365 exact-head acceptance evidence is recorded in CURRENT-STATE. This reconciliation changes only durable AI state, checkpoint, and README surfaces and requires fresh exact-head control gates.
 
 ## Blockers
 
-- None for AC-8 staging.
-- RBT-004 remains separately blocked/deferred and does not authorize opportunistic runner work.
+- None
 
 ## Exact next action
 
-Stage the bounded TASK-0039 AC-8 final acceptance/full exact-head certification from protected main `422f71e3a2afcea1ed39d786553876e544aec064`. Re-read the TASK-0039 contract and acceptance criteria, certify the complete calendar/scheduling chain across fixed-instant resolution, queue/next-slot rules, append-only reschedule/cancel history, approval timing and missed-occurrence history, PostgreSQL-authoritative due claims/execution intents, AC-7 provider capability drift boundaries, workspace isolation, replay/idempotency and security invariants. Keep provider API calls, provider-native scheduling/publication, uploads and credential activation inactive unless a later task explicitly authorizes them. Use one bounded governed carrier, update README with durable state, and require exact-head Application, Continuity and Security gates before terminal TASK-0039 acceptance.
+Stage the bounded TASK-0039 AC-8 final acceptance/full exact-head certification from protected main 422f71e3a2afcea1ed39d786553876e544aec064 before any TASK-0040 registration. Re-read the TASK-0039 contract and acceptance criteria, certify the complete calendar/scheduling chain across fixed-instant resolution, queue/next-slot rules, append-only reschedule/cancel history, approval timing and missed-occurrence history, PostgreSQL-authoritative due claims/execution intents, AC-7 provider capability drift boundaries, workspace isolation, replay/idempotency and security invariants. Keep provider API calls, provider-native scheduling/publication, uploads and credential activation inactive unless a later task explicitly authorizes them. Use one bounded governed carrier, update README with durable state, and require exact-head Application, Continuity and Security gates before terminal TASK-0039 acceptance.

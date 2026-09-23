@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=47.27 phase=46.67 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0040-REGISTRATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=47.27 phase=46.67 current_phase=PHASE-07 active_task=TASK-0039 milestone=TASK-0040-REGISTRATION status=COMPLETE -->
 
-> Last verified protected-main TASK-0039 acceptance baseline: **2026-09-23** at `1e08f84c986ace04402ea2fc2d22ea328899063f` after PR #368 merged. Exact acceptance source `81968edd56f9c8a003ad01723f3056a9674691b5` passed AI Continuity Guard `35912851630`, Application Foundation CI `35912851631`, and Security Supply Chain CI `35912851703`. PR #369 now registers TASK-0040 as planned-only; provider publication side effects remain inactive.
+> Last verified protected-main TASK-0040 registration baseline: **2026-09-23** at `54b5b4fe69b3922332b9aa064fabe45339787e93` after PR #369 merged. Exact source `97fec3bdf8311974054934a2ee7c6e2e70df2d94` passed AI Continuity Guard `35920250708`, Application Foundation CI `35920250814`, and Security Supply Chain CI `35920250678`; resulting-main Continuity/Application/Security also passed. TASK-0039 remains active/ready and TASK-0040 remains planned-only until the separate guarded transition.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 46.67%**  
 **Active task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
 **Last completed task: TASK-0038 — Implement campaign lifecycle, immutable snapshots, recipients/targets, approvals, and audit history**  
-**Current milestone: TASK-0040-REGISTRATION — VERIFYING**
+**Current milestone: TASK-0040-REGISTRATION — COMPLETE**
 
 ```text
 Overall  [█████████░░░░░░░░░░░] 47.27%
@@ -49,9 +49,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 TASK-0039 final acceptance is trusted on protected main through PR #368. Its fixed-instant and queue/next-slot scheduling, IANA/DST handling, append-only reschedule/cancel/missed history, due-boundary approval enforcement, PostgreSQL-authoritative due claims/execution intents, provider capability-drift boundaries, workspace isolation and replay/idempotency evidence remain accepted.
 
-PR #369 stages TASK-0040 as a planned-only successor. The frozen scope is provider-neutral publication attempts and reconciliation: exact execution-intent/snapshot/target authority, immutable idempotency, derivative media/provider references, partial-success states, retry/edit/delete capability gates and fail-closed provider/account permission drift. No production provider API call, publication/upload side effect, credential activation, deployment/release authority, TASK-0041 implementation or deferred Runner optimization is activated by registration.
+TASK-0040 planned registration PR #369 is trusted and terminally reconciled. The frozen scope remains provider-neutral publication attempts and reconciliation: exact execution-intent/snapshot/target authority, immutable idempotency, derivative media/provider references, partial-success states, retry/edit/delete capability gates and fail-closed provider/account permission drift. TASK-0039 remains active/ready; TASK-0040 remains planned-only until the separate guarded transition.
 
-README progress-sync protocol v2.4.2 remains enforced. Registration expands the deterministic PHASE-07 denominator, so canonical progress is roadmap 47.27% / PHASE-07 46.67% while TASK-0039 remains ready. After registration is trusted, a separate guarded transition may complete TASK-0039 and activate TASK-0040 ready.
+README progress-sync protocol v2.4.2 remains enforced. Registered-scope progress remains roadmap 47.27% / PHASE-07 46.67% while TASK-0039 remains ready. The next separate guarded transition will complete TASK-0039 and activate TASK-0040 ready.
 
 ### README progress-sync contract
 

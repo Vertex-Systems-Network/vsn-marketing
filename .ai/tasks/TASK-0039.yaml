@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "TASK-0039 final acceptance is trusted on protected main. Verify and merge the separate TASK-0040 planned-registration milestone on PR #369 without activating publication implementation. After registration is terminally reconciled, perform a separate guarded transition that marks TASK-0039 completed and activates TASK-0040 ready. Keep production provider API calls, provider media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and the deferred Runner optimization batch inactive."
+  "exact_next_action": "Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted."
 }

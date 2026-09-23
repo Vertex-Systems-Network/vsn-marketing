@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1e08f84c986ace04402ea2fc2d22ea328899063f",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 369,
-    "branch": "control/register-task-0040-phase07",
-    "milestone": "TASK-0040-REGISTRATION"
-  },
+  "reconciled_main_sha": "54b5b4fe69b3922332b9aa064fabe45339787e93",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -68,15 +63,6 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
-    },
-    {
-      "kind": "pr",
-      "number": 369,
-      "title": "plan(phase07): register TASK-0040 publication lifecycle",
-      "disposition": "successor_planned_registration_verification",
-      "accepted_actionable": true,
-      "runner_id": "RBT-026",
-      "branch": "control/register-task-0040-phase07"
     }
   ]
 }

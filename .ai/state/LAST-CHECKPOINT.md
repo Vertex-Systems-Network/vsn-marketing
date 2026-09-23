@@ -2,32 +2,32 @@
 
 ## State
 
-- Timestamp: `2026-09-23T21:05:20Z`
-- Observed main: `1e08f84c986ace04402ea2fc2d22ea328899063f`
+- Timestamp: `2026-09-23T21:12:39Z`
+- Observed main: `54b5b4fe69b3922332b9aa064fabe45339787e93`
 - Active issue: `none`
-- Active PR: `369`
-- Active branch: `control/register-task-0040-phase07`
+- Active PR: `none`
+- Active branch: `main`
 - Current milestone: `TASK-0040-REGISTRATION`
-- Milestone status: `VERIFYING`
+- Milestone status: `COMPLETE`
 - Active task: `TASK-0039`
 - Next task: `TASK-0040`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `RBT-026`
+- Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `c7b89eea0d566c4affe9060379d450491fbeb555232e66fb5160863c512b239e`
+- State fingerprint: `538f70c71647d70b454a789e9f9876254491f56b268b4612f4717c3a02cfdf14`
 
 ## Completed / observed this session
 
-TASK-0039 final acceptance is trusted. PR #368 exact source `81968edd56f9c8a003ad01723f3056a9674691b5` passed AI Continuity Guard `35912851630`, Application Foundation CI `35912851631` and Security Supply Chain CI `35912851703`, then merged on protected main as `1e08f84c986ace04402ea2fc2d22ea328899063f`; resulting-main Release Integrity and OpenSSF Scorecard also passed. RBT-025 is terminal PASS.
+TASK-0040 planned registration PR #369 exact source `97fec3bdf8311974054934a2ee7c6e2e70df2d94` passed AI Continuity Guard `35920250708`, Application Foundation CI `35920250814` and Security Supply Chain CI `35920250678`, then merged on protected main as `54b5b4fe69b3922332b9aa064fabe45339787e93`. Resulting-main Continuity `35920732979`, Application `35920732892` and Security `35920732917` also passed. RBT-026 is terminal PASS and the registration work path is cleared.
 
-PR #369 stages TASK-0040 as the planned-only PHASE-07 successor with weight `20`, following the established `15/20/20/20/15/10` phase structure. Registration expands the deterministic PHASE-07 denominator, so progress normalizes to `46.67%` and roadmap `47.27%` while TASK-0039 intentionally remains active/ready. This is scope registration, not loss of trusted TASK-0039 evidence.
+TASK-0040 remains planned-only with the frozen provider-neutral publication lifecycle/reconciliation contract. TASK-0039 remains active/ready with AC-1 through AC-8 trusted until the separate guarded transition. Registered-scope progress remains roadmap `47.27%` / PHASE-07 `46.67%`.
 
-TASK-0040 freezes the channel-neutral publication lifecycle contract: exact execution-intent/snapshot/target authority, immutable idempotent publication attempts, derivative media/container references, append-oriented provider reconciliation, partial-success semantics, capability-gated edit/delete/retry and fail-closed provider/account permission drift. Production provider calls, credentials and publication side effects remain inactive.
+No publication-attempt implementation, production provider API call, media upload/publication side effect, provider credential use, TASK-0041 implementation, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-TASK-0039 final acceptance exact head: Continuity `35912851630` PASS; Application `35912851631` PASS; Security `35912851703` PASS. PR #369 registration exact-head gates are pending under RBT-026.
+PR #369 exact head: Continuity `35920250708` PASS; Application `35920250814` PASS; Security `35920250678` PASS. Resulting main: Continuity `35920732979` PASS; Application `35920732892` PASS; Security `35920732917` PASS.
 
 ## Blockers
 
@@ -35,4 +35,4 @@ TASK-0039 final acceptance exact head: Continuity `35912851630` PASS; Applicatio
 
 ## Exact next action
 
-Verify and merge PR #369 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact registration head with no blocking review findings. TASK-0040 must remain planned-only during registration and TASK-0039 must remain active/ready. After trusted merge, terminally reconcile TASK-0040 registration, then perform a separate guarded transition that marks TASK-0039 completed and activates TASK-0040 ready. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and the deferred Runner benchmark batch inactive.
+Perform the separate guarded TASK-0039 -> TASK-0040 transition from current protected main: mark TASK-0039 completed, activate TASK-0040 ready, recalculate deterministic progress, and synchronize README/state/checkpoint/queue/runner/journal. Merge the transition only after its exact-head required gates pass. Do not begin publication-attempt implementation, production provider API calls, media upload/publication side effects, provider credential use, TASK-0041, deployment/release authority or the deferred Runner optimization batch before the transition is trusted.

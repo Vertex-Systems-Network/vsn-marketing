@@ -1,5 +1,8 @@
 <?php
 
+use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
+use App\Modules\Publishing\Domain\Campaign\CampaignTargetBinding;
+use App\Modules\Publishing\Domain\Campaign\CampaignTargetKind;
 use App\Modules\Publishing\Domain\Scheduling\CampaignSchedule;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignScheduleRepository;
 use Illuminate\Support\Facades\Artisan;
@@ -29,8 +32,41 @@ function task0039DueClaimConcurrencyFixture(): array
     $approvalId = (string) Str::uuid();
     $documentId = (string) Str::uuid();
     $contentVersionId = (string) Str::uuid();
-    $targetHash = hash('sha256', 'task0039-due-claim-concurrency');
     $createdAt = new DateTimeImmutable('2026-07-15T10:00:00+00:00');
+    $target = new CampaignTargetBinding(
+        id: (string) Str::uuid(),
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: (string) Str::uuid(),
+        channel: 'email',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: $createdAt,
+    );
+    $snapshot = CampaignSnapshot::create(
+        id: $snapshotId,
+        workspaceId: $workspaceId,
+        campaignId: $campaignId,
+        parentSnapshotId: null,
+        versionNumber: 1,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'America/New_York',
+            'at' => '2026-07-15T09:30:00',
+        ],
+        targets: [$target],
+        idempotencyKey: 'task0039-due-claim-snapshot',
+        createdByActorId: 'task0039-concurrency',
+        createdAt: $createdAt,
+    );
+    $targetHash = $snapshot->targetSetHash;
 
     DB::table('organizations')->insert([
         'id' => $organizationId,
@@ -101,9 +137,22 @@ function task0039DueClaimConcurrencyFixture(): array
             'at' => '2026-07-15T09:30:00',
         ], JSON_THROW_ON_ERROR),
         'target_set_hash' => $targetHash,
-        'snapshot_hash' => hash('sha256', 'task0039-due-claim-snapshot'),
+        'snapshot_hash' => $snapshot->snapshotHash,
         'idempotency_key' => 'task0039-due-claim-snapshot',
         'created_by_actor_id' => 'task0039-concurrency',
+        'created_at' => $createdAt,
+    ]);
+    DB::table('campaign_targets')->insert([
+        'id' => $target->id,
+        'workspace_id' => $workspaceId,
+        'snapshot_id' => $snapshotId,
+        'kind' => $target->kind->value,
+        'canonical_reference_id' => $target->canonicalReferenceId,
+        'channel' => $target->channel,
+        'provider_connection_id' => null,
+        'capability_evidence_id' => null,
+        'metadata' => json_encode($target->metadata, JSON_THROW_ON_ERROR),
+        'target_hash' => $target->fingerprint(),
         'created_at' => $createdAt,
     ]);
     DB::table('campaign_approval_decisions')->insert([

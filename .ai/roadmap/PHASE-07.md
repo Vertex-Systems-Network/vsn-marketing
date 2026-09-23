@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 AC-8 final acceptance is staged on PR #368 with AC-1 through AC-8 reconciled true; exact-head continuity/application/security certification is pending and live provider scheduling/publication remains inactive.**
+Status: **IN PROGRESS — TASK-0039 final acceptance is trusted; TASK-0040 channel-neutral publication lifecycle is staged as planned-only registration and no provider publication implementation or credential activation is active yet.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 is in final acceptance; PR #355 fixed-instant calendar/timezone foundation, PR #357 queue/next-slot rule foundation, PR #359 append-only reschedule/cancel history, PR #361 approval-timing plus immutable missed_needs_reschedule occurrence history, PR #363 PostgreSQL-authoritative due claims/execution intents, and PR #365 provider capability-drift boundaries are trusted. PR #368 is the bounded Supervisor-only AC-8 acceptance surface: AC-1 through AC-8 are reconciled true while TASK-0039 remains `ready` until the exact acceptance head passes Continuity, Application and Security gates. Provider API calls, native scheduling/publication, uploads and credential activation remain inactive; TASK-0040 stays unregistered until a separate guarded post-acceptance transition.
+TASK-0037 and TASK-0038 are completed. TASK-0039 final acceptance is trusted after PR #368 passed exact-head Continuity/Application/Security gates and merged on protected main. TASK-0040 is staged as a planned-only successor on PR #369; TASK-0039 intentionally remains active/ready until this registration is trusted and terminally reconciled, after which a separate guarded transition may mark TASK-0039 completed and activate TASK-0040 ready. Production provider API calls, media upload/publication side effects and credential activation remain inactive.
 
 ## Staged research direction
 
@@ -70,3 +70,8 @@ TASK-0038 is active only for the provider-neutral campaign lifecycle/snapshot/ta
 ## TASK-0039 registration boundary
 
 TASK-0039 owns the canonical workspace-scoped editorial/campaign calendar and provider-neutral scheduler semantics: fixed-instant versus queue/next-slot strategies, IANA timezone resolution, deterministic ambiguous/nonexistent DST policy, immutable resolved execution instants, append-oriented reschedule/cancel/missed-run history, approval timing enforcement, and concurrency/idempotency-safe due claiming. Provider-native scheduling remains optional versioned capability evidence; TASK-0039 does not authorize live provider API calls, media upload/publication attempts, provider credential activation, deployment/release execution, TASK-0040 activation or deferred Runner optimization.
+
+
+## TASK-0040 registration boundary
+
+TASK-0040 owns the provider-neutral publication lifecycle and reconciliation contract: exact workspace/campaign-snapshot/execution-intent/target-account bindings; immutable idempotent publication attempts; derivative provider post/media/container references; append-oriented status reconciliation under duplicate and out-of-order evidence; explicit partial-success semantics; and capability-gated retry/edit/delete behavior. Provider disconnect, app-review/account-role/scope/capability drift fails closed. Registration does not authorize production provider credentials/API calls, arbitrary remote-media fetches, TASK-0041 implementation, deployment/release execution or deferred Runner optimization.

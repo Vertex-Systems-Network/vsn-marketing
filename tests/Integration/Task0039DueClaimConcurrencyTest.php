@@ -30,6 +30,9 @@ function task0039DueClaimConcurrencyFixture(): array
     $campaignId = (string) Str::uuid();
     $snapshotId = (string) Str::uuid();
     $approvalId = (string) Str::uuid();
+    $approverId = (string) Str::uuid();
+    $membershipId = (string) Str::uuid();
+    $roleId = (string) Str::uuid();
     $documentId = (string) Str::uuid();
     $contentVersionId = (string) Str::uuid();
     $createdAt = new DateTimeImmutable('2026-07-15T10:00:00+00:00');
@@ -80,6 +83,43 @@ function task0039DueClaimConcurrencyFixture(): array
         'organization_id' => $organizationId,
         'name' => 'TASK-0039 Due Claim Workspace',
         'slug' => 'task0039-due-claim-workspace',
+        'created_at' => $createdAt,
+        'updated_at' => $createdAt,
+    ]);
+    DB::table('users')->insert([
+        'id' => $approverId,
+        'name' => 'TASK-0039 Concurrency Approver',
+        'email' => 'task0039-concurrency-approver@example.test',
+        'email_verified_at' => $createdAt,
+        'password' => bcrypt('task0039-concurrency'),
+        'remember_token' => null,
+        'created_at' => $createdAt,
+        'updated_at' => $createdAt,
+    ]);
+    DB::table('workspace_memberships')->insert([
+        'id' => $membershipId,
+        'workspace_id' => $workspaceId,
+        'user_id' => $approverId,
+        'created_at' => $createdAt,
+        'updated_at' => $createdAt,
+    ]);
+    DB::table('workspace_roles')->insert([
+        'id' => $roleId,
+        'workspace_id' => $workspaceId,
+        'key' => 'campaign-approver',
+        'name' => 'Campaign Approver',
+        'created_at' => $createdAt,
+        'updated_at' => $createdAt,
+    ]);
+    DB::table('workspace_role_permissions')->insert([
+        'workspace_role_id' => $roleId,
+        'permission' => 'campaign.approve',
+        'created_at' => $createdAt,
+        'updated_at' => $createdAt,
+    ]);
+    DB::table('workspace_membership_roles')->insert([
+        'workspace_membership_id' => $membershipId,
+        'workspace_role_id' => $roleId,
         'created_at' => $createdAt,
         'updated_at' => $createdAt,
     ]);
@@ -162,7 +202,7 @@ function task0039DueClaimConcurrencyFixture(): array
         'snapshot_id' => $snapshotId,
         'target_set_hash' => $targetHash,
         'outcome' => 'approved',
-        'actor_id' => 'task0039-concurrency-approver',
+        'actor_id' => $approverId,
         'actor_role' => 'campaign-approver',
         'reason' => 'Approved for due-claim contention certification.',
         'capability_evidence_ids' => json_encode([], JSON_THROW_ON_ERROR),

@@ -67,8 +67,10 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.4.2-readme-progress-sync`  
-Agent instruction fingerprint: `4918ea8be1f1ea1d2e1b7b439c5cd35d04c06daa7200602bb5245149a19afa38`
+Agent instruction revision: `parallel-v2.5.0-interactive-next-action-options`  
+Agent instruction fingerprint: `1c7c899f44896a93c7a37f0dd79e44944dbe6bbd45074a8c02a1b771b8e740a4`
+
+**Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the one-turn/one-milestone boundary.
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 

@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.4.2",
-  "instruction_revision": "parallel-v2.4.2-readme-progress-sync",
+  "protocol_version": "2.5.0",
+  "instruction_revision": "parallel-v2.5.0-interactive-next-action-options",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md"
   ],
-  "instruction_fingerprint": "4918ea8be1f1ea1d2e1b7b439c5cd35d04c06daa7200602bb5245149a19afa38",
+  "instruction_fingerprint": "1c7c899f44896a93c7a37f0dd79e44944dbe6bbd45074a8c02a1b771b8e740a4",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -110,5 +110,14 @@
   ],
   "readme_progress_sync_required": true,
   "readme_progress_sync_trigger_path": ".ai/state/CURRENT-STATE.yaml",
-  "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT"
+  "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT",
+  "next_action_options_required": true,
+  "next_action_options_min_count": 1,
+  "next_action_options_max_count": 3,
+  "next_action_primary_source": "exact_next_safe_action",
+  "next_action_interactive_control_preferred": true,
+  "next_action_click_initiates_request_only": true,
+  "next_action_selection_requires_full_resume_revalidation": true,
+  "next_action_stale_selection_fails_closed": true,
+  "next_action_fallback_format": "numbered_one_line_commands"
 }

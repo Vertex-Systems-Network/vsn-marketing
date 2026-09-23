@@ -167,6 +167,19 @@ This single-hop rule prevents recursive “update observed SHA -> merge -> SHA c
 
 One user `continue`/resume turn normally advances exactly one bounded milestone: one PR reconciliation, one coherent persisted implementation, one exact-head verify/merge decision, or one post-merge durable reconciliation. Do not chain audit -> multiple implementations -> repeated polling -> merge -> post-merge audit -> unrelated next task.
 
+### Next-action interactive option contract
+
+Every Supervisor development handoff MUST expose the next valid repository actions so the user can advance development without reconstructing the command from prose.
+
+- After repository evidence is reconciled, present **1 to 3** currently valid next-action options. The primary option MUST come from the live accepted work path and `exact_next_safe_action` / `exact_next_action`; it may not be invented from stale chat context.
+- Each option has a short human label and a deterministic request payload. When the host surface supports clickable action buttons or suggestion controls, render the option as a click target whose selection initiates that exact request as a new user turn.
+- A click/selection is a **request to resume**, not reusable execution authority. On selection, the Supervisor MUST rerun the normal resume order (compact state -> exact main -> Issues -> PRs -> claims/queue -> Runner Benchmark) and revalidate the selected action before any write, merge, provider, production, destructive, deployment, or other privileged action.
+- If the selected option became stale, blocked, merged, or unsafe, do not execute the stale payload. Reconcile repository truth and return the newly valid next-action options.
+- Never offer an option that bypasses an accepted actionable Issue/PR, jumps to a successor before the guarded transition, weakens security/CI, silently promotes deferred Runner work, or implies consumed/expired authorization is still valid.
+- During `VERIFYING` or `WAITING_EXTERNAL`, prefer an option to re-check the exact accepted head and merge only if the required gates/review are green; do not offer unrelated implementation as the primary action.
+- After a terminal milestone with no active accepted work path, the primary option may expose the separately authorized successor registration/transition when canonical state permits it.
+- If the host cannot render interactive controls, fall back to numbered one-line action commands that the user can send unchanged. The absence of UI-button support must never hide the exact next valid action.
+
 ### Remote-call and timeout budget
 
 Batch related reads. Read only evidence required by the active milestone. Perform at most one consolidated CI/status refresh per milestone by default. Tight polling and repeated unchanged reads are forbidden. A second refresh is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.

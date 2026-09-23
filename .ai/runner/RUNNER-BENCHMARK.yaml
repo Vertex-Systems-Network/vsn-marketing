@@ -693,6 +693,24 @@
       "dedup_key": "runner:task0039-provider-schedule-capability-evidence:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
+    },
+    {
+      "id": "RBT-025",
+      "source": "PR #368 / TASK-0039 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #368 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "control/task0039-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #355/#357/#359/#361/#363/#365 evidence",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-final-acceptance:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

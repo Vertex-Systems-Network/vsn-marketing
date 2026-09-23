@@ -167,6 +167,23 @@ This single-hop rule prevents recursive “update observed SHA -> merge -> SHA c
 
 One user `continue`/resume turn normally advances exactly one bounded milestone: one PR reconciliation, one coherent persisted implementation, one exact-head verify/merge decision, or one post-merge durable reconciliation. Do not chain audit -> multiple implementations -> repeated polling -> merge -> post-merge audit -> unrelated next task.
 
+### Next-action interactive option contract
+
+Every Supervisor development handoff MUST expose the next valid repository actions so the user can advance development without reconstructing the command from prose.
+
+- After repository evidence is reconciled, present **1 to 3** currently valid next-action options. The canonical/recommended action MUST come from the live accepted work path and `exact_next_safe_action` / `exact_next_action`; it may not be invented from stale chat context, but it is not permanently bound to option number 1.
+- Each option has a short human label and a deterministic request payload. When the host surface supports clickable action buttons or suggestion controls, render the option as a click target whose selection initiates that exact request as a new user turn.
+- When two or more valid options exist, assign the visible `1`/`2`/`3` numbers in a freshly shuffled order for each handoff. Randomization affects presentation only; it MUST NOT change action validity, priority, safety, or authorization.
+- If the previously selected action identity and its visible number are known and at least two valid options exist, that same action MUST NOT reuse the same number on the next handoff. This anti-repeat rule takes precedence over an otherwise repeated shuffle. With only one valid option, number reuse is unavoidable and allowed.
+- Mark the canonical action as **Recommended** (or equivalent) rather than forcing it to a fixed ordinal. Option-number mappings are ephemeral UI state and never become repository/runtime authority.
+- When the user's message is only this repository's canonical GitHub URL, treat it as a read-only entry request: perform the normal resume/reconciliation reads, make no repository/runtime mutation from the URL alone, and return the shuffled valid next-action options. A later numeric selection starts a separately revalidated turn.
+- A click/selection is a **request to resume**, not reusable execution authority. On selection, the Supervisor MUST rerun the normal resume order (compact state -> exact main -> Issues -> PRs -> claims/queue -> Runner Benchmark) and revalidate the selected action before any write, merge, provider, production, destructive, deployment, or other privileged action.
+- If the selected option became stale, blocked, merged, or unsafe, do not execute the stale payload. Reconcile repository truth and return the newly valid next-action options.
+- Never offer an option that bypasses an accepted actionable Issue/PR, jumps to a successor before the guarded transition, weakens security/CI, silently promotes deferred Runner work, or implies consumed/expired authorization is still valid.
+- During `VERIFYING` or `WAITING_EXTERNAL`, prefer an option to re-check the exact accepted head and merge only if the required gates/review are green; do not offer unrelated implementation as the primary action.
+- After a terminal milestone with no active accepted work path, the primary option may expose the separately authorized successor registration/transition when canonical state permits it.
+- If the host cannot render interactive controls, fall back to numbered one-line action commands that the user can send unchanged. The absence of UI-button support must never hide the exact next valid action.
+
 ### Remote-call and timeout budget
 
 Batch related reads. Read only evidence required by the active milestone. Perform at most one consolidated CI/status refresh per milestone by default. Tight polling and repeated unchanged reads are forbidden. A second refresh is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.

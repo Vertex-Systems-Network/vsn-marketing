@@ -163,3 +163,10 @@ The transactional transition snapshots all mutated ledger files, acquires a sing
 ## Product safety baseline
 
 This is a permission-based marketing platform. Never design mechanisms whose purpose is spam, consent bypass, suppression bypass, provider-limit evasion, fake-account free-tier rotation, unauthorized scraping, or sender/platform-policy circumvention.
+
+
+## VSN organization next-action handoff
+
+Before every user-facing development handoff, read and follow `.ai/NEXT-ACTION-OPTIONS.md`.
+
+If the user sends only this repository's GitHub URL, perform the policy's read-only bootstrap and return shuffled numbered next-action options. A URL-only message never authorizes a repository mutation. A later numeric selection must revalidate live repository state before acting.

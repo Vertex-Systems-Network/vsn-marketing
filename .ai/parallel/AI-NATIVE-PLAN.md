@@ -91,6 +91,19 @@ The machine coordination queue is `.ai/coordination/OPEN-WORK-QUEUE.yaml`; the m
 
 No agent may report COMPLETE/BLOCKED/VERIFYING/WAITING without durable reconciliation. No agent may bypass an accepted actionable open Issue/PR, reuse authorization, infer PASS from pending/skipped work, or repeat an operation after a message timeout without repository verification.
 
+## Persistent next-action option / interactive handoff directive
+
+This directive is cross-phase, non-optional, and survives every task transition.
+
+- Every development response ends with 1-3 valid next-action options derived from live repository truth. The canonical/accepted next work path is always included and marked Recommended, but it is not permanently tied to option 1.
+- Prefer host-native clickable buttons/suggestion controls. A click submits the option's exact request payload and starts a new turn; it does not itself grant merge, provider, production, deployment, destructive, or consumed runtime authority.
+- Shuffle the visible 1/2/3 numbering on every handoff when two or more valid options exist. If the previously selected action and number are known, that action must move to a different number on the next handoff. With one valid option, reuse is allowed. Number shuffling is presentation-only and never changes canonical action priority or authority.
+- A URL-only repository message is a read-only entry request: reconcile repository truth and show shuffled next-action options, but do not mutate the repo until the user selects an option in a later turn and that selection is revalidated.
+- Every selected option re-enters the full durable-resume sequence before execution. If repository state changed, replace the stale option with the current valid choices rather than blindly executing it.
+- Active accepted Issues/PRs remain first. VERIFYING/WAITING work exposes verify/review/merge-if-green before unrelated development. Successor registration/transition appears only when canonical state explicitly permits it.
+- If interactive controls are unavailable, show concise numbered fallback commands that can be sent unchanged so development can continue with one user action.
+- Security gates, one-turn/one-milestone boundaries, deferred Runner rules, and exact-head protections are unchanged by this UI convenience.
+
 ## Persistent README progress synchronization directive
 
 This directive is cross-phase, non-optional, and survives every task transition.

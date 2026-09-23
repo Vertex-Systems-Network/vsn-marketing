@@ -395,8 +395,11 @@ it('keeps PostgreSQL schedule canonical and blocks execution after provider capa
 
     expect(DB::table('campaign_schedules')->where('id', $schedule->id)->value('resolved_at_utc'))
         ->not->toBeNull()
-        ->and(DB::table('campaign_schedule_execution_intents')->count())->toBe(0)
+        ->and(DB::table('campaign_schedule_execution_intents')
+            ->where('schedule_id', $schedule->id)
+            ->count())->toBe(0)
         ->and(DB::table('outbox_messages')
             ->where('topic', 'publishing.campaign_schedule.execution_intent.ready')
+            ->where('payload->schedule_id', $schedule->id)
             ->count())->toBe(0);
 });

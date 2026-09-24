@@ -170,6 +170,19 @@ function formatDate(value: string | null): string {
           }).format(date) + ' UTC';
 }
 
+function newBatchId(): string {
+    if (typeof globalThis.crypto?.randomUUID === 'function') {
+        return globalThis.crypto.randomUUID();
+    }
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (token) => {
+        const value = Math.floor(Math.random() * 16);
+        const nibble = token === 'x' ? value : (value & 0x3) | 0x8;
+
+        return nibble.toString(16);
+    });
+}
+
 function StatCard({ label: title, value, hint }: { label: string; value: number; hint: string }) {
     return (
         <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
@@ -232,7 +245,7 @@ function ApprovalQueue({
         if (selectedItems.length === 0) return;
         if (operation === 'reject' && reason.trim().length < 3) return;
 
-        const nextBatchId = confirmed && batchId ? batchId : crypto.randomUUID();
+        const nextBatchId = confirmed && batchId ? batchId : newBatchId();
         if (!confirmed) setBatchId(nextBatchId);
 
         router.post(

@@ -104,6 +104,72 @@ final readonly class DatabasePublicationAttemptRepository
         return null;
     }
 
+    /** @return list<PublicationAttempt> */
+    public function forExecutionIntent(string $workspaceId, string $executionIntentId): array
+    {
+        $intentExists = $this->database->connection()->table('campaign_schedule_execution_intents')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', $executionIntentId)
+            ->exists();
+
+        if (! $intentExists) {
+            if ($this->database->connection()->table('campaign_schedule_execution_intents')
+                ->where('id', $executionIntentId)
+                ->where('workspace_id', '<>', $workspaceId)
+                ->exists()) {
+                throw new AuthorizationException('Publication attempt execution intent access denied.');
+            }
+
+            throw new InvalidArgumentException('Publication attempt execution intent does not exist in this workspace.');
+        }
+
+        return $this->database->connection()->table('publication_attempts')
+            ->where('workspace_id', $workspaceId)
+            ->where('execution_intent_id', $executionIntentId)
+            ->orderBy('target_id')
+            ->get()
+            ->map(fn (stdClass $row): PublicationAttempt => $this->hydrate($row))
+            ->all();
+    }
+
+    public function transitionState(PublicationAttempt $attempt, int $expectedStateVersion): PublicationAttempt
+    {
+        return $this->database->connection()->transaction(function () use (
+            $attempt,
+            $expectedStateVersion,
+        ): PublicationAttempt {
+            $current = $this->find($attempt->workspaceId, $attempt->id, true);
+            if ($current === null) {
+                throw new InvalidArgumentException('Publication attempt does not exist in this workspace.');
+            }
+
+            $this->assertReplay($current, $attempt);
+
+            if (
+                $current->stateVersion !== $expectedStateVersion
+                || $attempt->stateVersion !== $expectedStateVersion + 1
+            ) {
+                throw new InvalidArgumentException('Publication attempt state transition lost optimistic concurrency.');
+            }
+
+            $updated = $this->database->connection()->table('publication_attempts')
+                ->where('workspace_id', $attempt->workspaceId)
+                ->where('id', $attempt->id)
+                ->where('state_version', $expectedStateVersion)
+                ->update([
+                    'state' => $attempt->state->value,
+                    'state_version' => $attempt->stateVersion,
+                    'updated_at' => $attempt->updatedAt,
+                ]);
+
+            if ($updated !== 1) {
+                throw new InvalidArgumentException('Publication attempt state transition lost optimistic concurrency.');
+            }
+
+            return $attempt;
+        });
+    }
+
     private function assertAuthority(PublicationAttempt $attempt): void
     {
         $intent = $this->database->connection()->table('campaign_schedule_execution_intents')

@@ -28,7 +28,7 @@ use Illuminate\Support\Str;
 final class Task0040PublicationFixture
 {
     /** @return array<string, mixed> */
-    public static function create(string $suffix = 'base'): array
+    public static function create(string $suffix = 'base', bool $useVariant = false): array
     {
         $organization = Organization::query()->create([
             'name' => 'TASK-0040 '.$suffix,
@@ -98,6 +98,72 @@ final class Task0040PublicationFixture
             'created_by_actor_id' => (string) $author->getKey(),
             'created_at' => $createdAt,
         ]);
+
+        $assetId = (string) Str::uuid();
+        $assetOriginalId = (string) Str::uuid();
+        $assetVariantId = $useVariant ? (string) Str::uuid() : null;
+        $assetOriginalSha = hash('sha256', 'task0040-original-'.$suffix);
+        $assetVariantSha = hash('sha256', 'task0040-variant-'.$suffix);
+
+        DB::table('assets')->insert([
+            'id' => $assetId,
+            'workspace_id' => $workspaceId,
+            'name' => 'TASK-0040 asset '.$suffix,
+            'kind' => 'image',
+            'lifecycle' => 'active',
+            'created_by_actor_id' => (string) $author->getKey(),
+            'audit_provenance' => json_encode(['source' => 'task0040-fixture'], JSON_THROW_ON_ERROR),
+            'created_at' => $createdAt,
+            'updated_at' => null,
+        ]);
+        DB::table('asset_originals')->insert([
+            'id' => $assetOriginalId,
+            'workspace_id' => $workspaceId,
+            'asset_id' => $assetId,
+            'parent_original_id' => null,
+            'version_number' => 1,
+            'schema_version' => 1,
+            'content_sha256' => $assetOriginalSha,
+            'observed_media_type' => 'image/png',
+            'byte_size' => 1024,
+            'width' => 1280,
+            'height' => 720,
+            'duration_ms' => null,
+            'storage_disk' => 'assets',
+            'storage_key' => 'task0040/'.$suffix.'/original.png',
+            'source_metadata' => json_encode(['source' => 'fixture'], JSON_THROW_ON_ERROR),
+            'rights_metadata' => json_encode(['license' => 'internal-test'], JSON_THROW_ON_ERROR),
+            'created_by_actor_id' => (string) $author->getKey(),
+            'audit_provenance' => json_encode(['source' => 'task0040-fixture'], JSON_THROW_ON_ERROR),
+            'idempotency_key' => 'task0040-original-'.$suffix,
+            'created_at' => $createdAt,
+        ]);
+
+        if ($assetVariantId !== null) {
+            DB::table('asset_variants')->insert([
+                'id' => $assetVariantId,
+                'workspace_id' => $workspaceId,
+                'source_original_id' => $assetOriginalId,
+                'schema_version' => 1,
+                'transformation_spec' => json_encode(['steps' => [['operation' => 'resize', 'width' => 1080]]], JSON_THROW_ON_ERROR),
+                'transformation_hash' => hash('sha256', 'task0040-transform-'.$suffix),
+                'processor_id' => 'task0040-fixture',
+                'processor_version' => '1',
+                'output_sha256' => $assetVariantSha,
+                'observed_media_type' => 'image/png',
+                'byte_size' => 768,
+                'width' => 1080,
+                'height' => 608,
+                'duration_ms' => null,
+                'storage_disk' => 'assets',
+                'storage_key' => 'task0040/'.$suffix.'/variant.png',
+                'audit_provenance' => json_encode(['source' => 'task0040-fixture'], JSON_THROW_ON_ERROR),
+                'idempotency_key' => 'task0040-variant-'.$suffix,
+                'created_at' => $createdAt,
+            ]);
+        }
+
+        $assetReferenceId = $assetVariantId ?? $assetOriginalId;
 
         $providerId = (string) Str::uuid();
         $providerConnectionId = (string) Str::uuid();
@@ -222,7 +288,7 @@ final class Task0040PublicationFixture
             contentVersionId: $contentVersionId,
             templateVersionId: null,
             componentVersionIds: [],
-            assetReferenceIds: [],
+            assetReferenceIds: [$assetReferenceId],
             capabilityEvidenceIds: [$providerCapabilityId],
             brandReference: [],
             intendedExecution: [
@@ -358,6 +424,10 @@ final class Task0040PublicationFixture
             'providerId' => $providerId,
             'providerConnectionId' => $providerConnectionId,
             'providerCapabilityId' => $providerCapabilityId,
+            'assetId' => $assetId,
+            'assetOriginalId' => $assetOriginalId,
+            'assetVariantId' => $assetVariantId,
+            'assetReferenceId' => $assetReferenceId,
         ];
     }
 }

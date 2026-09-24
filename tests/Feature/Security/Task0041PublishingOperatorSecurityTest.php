@@ -53,7 +53,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
     $contentVersionId = (string) Str::uuid();
     $targetId = (string) Str::uuid();
     $canonicalReferenceId = (string) Str::uuid();
-    $createdAtValue = new \DateTimeImmutable('2026-09-24T12:00:00+00:00');
+    $createdAtValue = new DateTimeImmutable('2026-09-24T12:00:00+00:00');
     $createdAt = '2026-09-24 12:00:00+00:00';
 
     $target = new CampaignTargetBinding(

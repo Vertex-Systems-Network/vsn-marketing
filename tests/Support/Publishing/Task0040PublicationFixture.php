@@ -28,8 +28,11 @@ use Illuminate\Support\Str;
 final class Task0040PublicationFixture
 {
     /** @return array<string, mixed> */
-    public static function create(string $suffix = 'base', bool $useVariant = false): array
+    public static function create(string $suffix = 'base', bool $useVariant = false, int $targetCount = 1): array
     {
+        if ($targetCount < 1 || $targetCount > 5) {
+            throw new \InvalidArgumentException('TASK-0040 fixture target count must be between 1 and 5.');
+        }
         $organization = Organization::query()->create([
             'name' => 'TASK-0040 '.$suffix,
             'slug' => 'task0040-'.$suffix,
@@ -268,17 +271,21 @@ final class Task0040PublicationFixture
             ),
         );
 
-        $target = new CampaignTargetBinding(
-            id: (string) Str::uuid(),
-            workspaceId: $workspaceId,
-            kind: CampaignTargetKind::ProviderConnection,
-            canonicalReferenceId: $providerConnectionId,
-            channel: 'social',
-            providerConnectionId: $providerConnectionId,
-            capabilityEvidenceId: $providerCapabilityId,
-            metadata: [],
-            createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
-        );
+        $targets = [];
+        for ($index = 0; $index < $targetCount; $index++) {
+            $targets[] = new CampaignTargetBinding(
+                id: (string) Str::uuid(),
+                workspaceId: $workspaceId,
+                kind: CampaignTargetKind::ProviderConnection,
+                canonicalReferenceId: $providerConnectionId,
+                channel: $index === 0 ? 'social' : 'social_'.($index + 1),
+                providerConnectionId: $providerConnectionId,
+                capabilityEvidenceId: $providerCapabilityId,
+                metadata: [],
+                createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
+            );
+        }
+        $target = $targets[0];
         $snapshot = CampaignSnapshot::create(
             id: (string) Str::uuid(),
             workspaceId: $workspaceId,
@@ -296,7 +303,7 @@ final class Task0040PublicationFixture
                 'timezone' => 'America/New_York',
                 'at' => '2026-07-15T09:30:00',
             ],
-            targets: [$target],
+            targets: $targets,
             idempotencyKey: 'task0040-snapshot-'.$suffix,
             createdByActorId: (string) $author->getKey(),
             createdAt: new DateTimeImmutable('2026-07-15T10:02:00+00:00'),
@@ -420,6 +427,7 @@ final class Task0040PublicationFixture
             'campaign' => $scheduledIntent,
             'snapshot' => $snapshot,
             'target' => $target,
+            'targets' => $targets,
             'executionIntent' => $intent,
             'providerId' => $providerId,
             'providerConnectionId' => $providerConnectionId,

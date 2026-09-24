@@ -1093,6 +1093,24 @@
         },
         "transition": "TASK-0040 completed; TASK-0041 ready/active; no operator product implementation or provider side effect in transition carrier."
       }
+    },
+    {
+      "id": "RBT-037",
+      "source": "PR #386 / TASK-0041 operator read model and immutable snapshot preview foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #386 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task-0041-operator-read-model-preview; auth + tenant + campaign.read route guard, workspace-scoped canonical read model, immutable snapshot/channel preview, PublicationAggregateService partial-success projection, secret-safe props, backend/React tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-operator-read-model-preview:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

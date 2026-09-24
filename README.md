@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-MEDIA-DERIVATIVE-FOUNDATION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-PROVIDER-STATUS-RECONCILIATION status=VERIFYING -->
 
-> Last verified protected-main TASK-0040 baseline: **2026-09-24** at `76d1d9240e197d986de30f1cebbf597414fd0e77` after AC-3 provider-media derivative PR #375 merged. Exact source `d403241ca21c5c9d241cad838de1c6bc908b2b4b` passed AI Continuity Guard `36002275495`, Application Foundation CI `36002275491`, and Security Supply Chain CI `36002275532`. AC-3 derivative media/container authority is trusted; production provider polling/webhook ingestion and provider/media side effects remain inactive.
+> Last verified protected-main TASK-0040 baseline: **2026-09-24** at `1d4ed061f124d3972d24176c1c6a5c5d04f888ea` after AC-3 terminal reconciliation PR #376. Exact source `4a26558f7aeb86984ade030b82e2aff4db9f2ff3` passed AI Continuity Guard `36006165459`, Application Foundation CI `36006165498`, and Security Supply Chain CI `36006165499`. PR #377 now stages AC-4 append-only provider-status reconciliation; production provider polling/webhook ingestion and provider/media side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 73.33%**  
 **Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
 **Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0040-MEDIA-DERIVATIVE-FOUNDATION — COMPLETE**
+**Current milestone: TASK-0040-PROVIDER-STATUS-RECONCILIATION — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.13%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 AC-4 provider-status reconciliation next** | **73.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 AC-4 PR #377 verification** | **73.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,9 +47,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0040 is active/in-progress in PHASE-07. PR #373 publication-attempt foundation is trusted with RBT-028 terminal PASS, and PR #375 AC-3 provider-media derivative foundation is trusted with RBT-029 terminal PASS. The next bounded product milestone is AC-4 append-only provider-status reconciliation.
+TASK-0040 is active/in-progress in PHASE-07. PR #373 publication-attempt foundation is trusted with RBT-028 terminal PASS, and PR #375 AC-3 provider-media derivative foundation is trusted and terminally reconciled by PR #376 with RBT-029 terminal PASS. PR #377 stages the bounded AC-4 append-only provider-status reconciliation foundation.
 
-PR #373 provides trusted workspace-scoped provider-neutral publication attempts bound to exact execution-intent/provider-target authority. PR #375 now provides trusted separate provider-media derivative records bound to exact snapshot-pinned canonical asset original/variant identity and content hash, opaque upload/container/media IDs, deterministic idempotency, temporary-reference expiry and monotonic PostgreSQL/SQLite state guards. AC-4 will add append-only provider-status observations and monotonic current projection under duplicate/delayed/out-of-order evidence without rewriting canonical campaign history. Production provider polling/webhook ingestion, upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+PR #373 provides trusted workspace-scoped provider-neutral publication attempts bound to exact execution-intent/provider-target authority. PR #375 provides trusted provider-media derivatives bound to snapshot-pinned canonical asset identity. PR #377 adds append-only provider-status observations with provider-native status/timestamp/source provenance, stable duplicate convergence, one provider-operation identity per attempt, and a separate monotonic projection that stale/regressive/terminal-conflicting evidence cannot rewrite. Production provider polling/webhook ingestion, upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 README progress-sync protocol v2.4.2 remains enforced.
 

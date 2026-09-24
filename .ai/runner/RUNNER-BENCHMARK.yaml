@@ -859,6 +859,24 @@
         },
         "milestone": "snapshot-pinned canonical asset original/variant authority; opaque provider media/container derivatives; deterministic replay; immutable monotonic processing/expiry state; remote-media URL rejection; workspace/provider-drift security boundaries"
       }
+    },
+    {
+      "id": "RBT-030",
+      "source": "PR #377 / TASK-0040 AC-4 provider status reconciliation foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #377 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0040-provider-status-reconciliation; append-only polling/webhook status observations + duplicate convergence + provider-time monotonic projection + stale/out-of-order/terminal-conflict PostgreSQL/workspace security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-provider-status-reconciliation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

@@ -18,21 +18,23 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_media_derivative_pr375_head_d403241ca21c5c9d241cad838de1c6bc908b2b4b_passed_run_36002275495",
-    "application_test_status": "task0040_media_derivative_pr375_head_d403241ca21c5c9d241cad838de1c6bc908b2b4b_passed_run_36002275491",
-    "security_supply_chain_status": "task0040_media_derivative_pr375_head_d403241ca21c5c9d241cad838de1c6bc908b2b4b_passed_run_36002275532",
+    "continuity_validation": "task0040_media_derivative_reconciliation_pr376_head_4a26558f7aeb86984ade030b82e2aff4db9f2ff3_passed_run_36006165459",
+    "application_test_status": "task0040_media_derivative_reconciliation_pr376_head_4a26558f7aeb86984ade030b82e2aff4db9f2ff3_passed_run_36006165498",
+    "security_supply_chain_status": "task0040_media_derivative_reconciliation_pr376_head_4a26558f7aeb86984ade030b82e2aff4db9f2ff3_passed_run_36006165499",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "76d1d9240e197d986de30f1cebbf597414fd0e77",
+  "observed_main_sha": "1d4ed061f124d3972d24176c1c6a5c5d04f888ea",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0040-MEDIA-DERIVATIVE-FOUNDATION",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0040 AC-3 provider media/container derivative foundation merged via PR #375 as 76d1d9240e197d986de30f1cebbf597414fd0e77; exact source d403241ca21c5c9d241cad838de1c6bc908b2b4b passed AI Continuity Guard 36002275495, Application Foundation CI 36002275491 and Security Supply Chain CI 36002275532. RBT-029 is terminal PASS and AC-3 is trusted.",
-  "exact_next_safe_action": "Begin the bounded TASK-0040 AC-4 provider-status reconciliation foundation from current protected main. Add workspace-scoped append-only provider-status observations bound to the exact publication attempt and provider authority, with normalized status plus provider status/timestamp/provenance, deterministic observation idempotency, duplicate convergence, monotonic projection under delayed or out-of-order polling/webhook evidence, and database guards so stale observations cannot overwrite newer terminal evidence or rewrite canonical campaign history. Include PostgreSQL/adversarial tests for replay, stale/out-of-order observations, foreign-workspace isolation and immutable provenance. Do not activate production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization.",
-  "pending_runner_ids": [],
+  "active_pr": 377,
+  "active_branch": "task/0040-provider-status-reconciliation",
+  "current_milestone": "TASK-0040-PROVIDER-STATUS-RECONCILIATION",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "TASK-0040 AC-3 provider media/container derivative foundation terminal reconciliation merged via PR #376 as 1d4ed061f124d3972d24176c1c6a5c5d04f888ea; exact source 4a26558f7aeb86984ade030b82e2aff4db9f2ff3 passed AI Continuity Guard 36006165459, Application Foundation CI 36006165498 and Security Supply Chain CI 36006165499. RBT-029 remains terminal PASS and AC-3 is trusted.",
+  "exact_next_safe_action": "Perform exact-head verification for PR #377. Merge the TASK-0040 AC-4 provider-status reconciliation foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; provider-status observations remain append-only and workspace-scoped; duplicate source deliveries converge idempotently without losing first-seen provenance; projection advances monotonically by provider observation time/status; delayed/stale/regressive/terminal-conflicting evidence cannot rewrite newer terminal state; provider operation identity cannot switch or cross attempts; provenance contains no secrets/raw provider payload; and PostgreSQL guards enforce immutable observation and projection authority. After trusted merge, terminally reconcile AC-4 before beginning partial-success aggregation. Keep production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [
+    "RBT-030"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the bounded TASK-0040 AC-4 provider-status reconciliation foundation from current protected main. Add workspace-scoped append-only provider-status observations bound to the exact publication attempt and provider authority, with normalized status plus provider status/timestamp/provenance, deterministic observation idempotency, duplicate convergence, monotonic projection under delayed or out-of-order polling/webhook evidence, and database guards so stale observations cannot overwrite newer terminal evidence or rewrite canonical campaign history. Include PostgreSQL/adversarial tests for replay, stale/out-of-order observations, foreign-workspace isolation and immutable provenance. Do not activate production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization."
+  "exact_next_action": "Perform exact-head verification for PR #377. Merge the TASK-0040 AC-4 provider-status reconciliation foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; provider-status observations remain append-only and workspace-scoped; duplicate source deliveries converge idempotently without losing first-seen provenance; projection advances monotonically by provider observation time/status; delayed/stale/regressive/terminal-conflicting evidence cannot rewrite newer terminal state; provider operation identity cannot switch or cross attempts; provenance contains no secrets/raw provider payload; and PostgreSQL guards enforce immutable observation and projection authority. After trusted merge, terminally reconcile AC-4 before beginning partial-success aggregation. Keep production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

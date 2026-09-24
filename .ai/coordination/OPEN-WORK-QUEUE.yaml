@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "76d1d9240e197d986de30f1cebbf597414fd0e77",
-  "active_work_path": null,
+  "reconciled_main_sha": "1d4ed061f124d3972d24176c1c6a5c5d04f888ea",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 377,
+    "branch": "task/0040-provider-status-reconciliation",
+    "milestone": "TASK-0040-PROVIDER-STATUS-RECONCILIATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -63,6 +68,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 377,
+      "title": "feat(publishing): add provider status reconciliation foundation",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-030",
+      "branch": "task/0040-provider-status-reconciliation"
     }
   ]
 }

@@ -46,7 +46,7 @@ python tools/ai_parallel.py sync-check
 
 ### Durable Supervisor resume and authority rules
 
-Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. One user turn is one logical milestone by default. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
+Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. Fast Batch Development Mode is the default: one user turn should advance one substantial coherent batch inside the active task rather than one micro-transition. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
 
 `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. After resolving live main, run the main-observation validator. If the only intervening changes are approved durable reconciliation surfaces, accept the state as current and do not create another state-only PR; any material drift remains fail-closed.
 
@@ -58,7 +58,7 @@ Migration changes require the explicit safety review contract enforced by `tools
 
 ### Strict plan-following order
 
-AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> perform one approved milestone -> run class-appropriate checks -> exact-head PR gates -> merge -> re-read state -> only then register/transition the successor.
+AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute one substantial approved batch -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
 
 `tools/ci_change_policy.py` is authoritative for CI class selection. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight control CI. Any unknown/non-control path fails closed to full Application + Security CI. If a control-only milestone is a certification, release/promotion, security-sensitive acceptance, or its task contract explicitly demands full gates, the PR body MUST contain this exact standalone line:
 

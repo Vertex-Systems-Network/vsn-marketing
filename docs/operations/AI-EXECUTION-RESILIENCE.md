@@ -10,23 +10,21 @@ Reduce message/tool delivery timeouts and accidental duplicate repository operat
 
 This standard optimizes how work is sliced and resumed. It does **not** weaken required tests, exact-head gates, security scans, branch protection, research gates, review requirements, or task dependencies.
 
-## 1. One logical milestone per interaction by default
+## 1. Fast Batch Development Mode by default
 
-A single user interaction should normally complete at most one logical milestone.
+A single user interaction should normally complete one substantial coherent batch inside the active task, not one micro-transition.
 
-Examples of one milestone:
+A substantial batch may include:
 
-- inspect current state and prepare one scoped code/docs change plus PR;
-- diagnose and fix one failing gate on the current exact head;
-- verify an already-running PR gate set and merge when green;
-- verify post-merge protected-main evidence and reconcile the checkpoint;
-- register one successor task;
-- perform one guarded task/phase transition;
-- run one bounded research or certification acceptance step.
+- current-state reconciliation and one scoped implementation slice;
+- focused tests plus PR creation/update;
+- bounded diagnosis/repair of failures caused by that same slice;
+- exact-head verification and merge when required gates become green;
+- carry-forward of prior merge/run/Runner evidence into the next substantial PR.
 
-Do not chain registration -> implementation -> repeated CI polling -> merge -> post-merge polling -> next-task activation in one interaction merely because each individual step is available.
+Do **not** create a standalone post-merge reconciliation PR by default. Immediate standalone reconciliation is reserved for task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material repository drift, or when no safe successor PR exists and external coordination would otherwise be stale.
 
-Exception: tightly coupled safety/correctness cleanup may stay in the same interaction when stopping between the steps would leave the repository in an unsafe or internally inconsistent state.
+Do not use batching to cross into unrelated tasks, bypass task dependencies, broaden write authority, skip required checks, or hide unresolved failures.
 
 ## 2. External CI is a durable boundary, not a polling loop
 
@@ -91,9 +89,9 @@ Avoid repeated reads that cannot change the next decision.
 
 Do not fetch large logs unless a failing/ambiguous gate requires diagnosis.
 
-## 5. Checkpoint at milestone boundaries
+## 5. Checkpoint at substantial batch boundaries
 
-Every substantial milestone must leave enough durable evidence to resume safely.
+Every substantial batch must leave enough durable evidence to resume safely.
 
 Use the repository's existing canonical mechanisms as applicable:
 
@@ -143,11 +141,12 @@ Mandatory order:
 1. recover and validate canonical state;
 2. read current task/plan/checkpoint and exact repository head;
 3. classify the exact change set;
-4. execute one approved milestone;
+4. execute one substantial approved batch inside the active task;
 5. run the change-class checks;
 6. require the exact-head PR gates selected by policy;
-7. merge only that verified head;
-8. re-read repository state before any successor registration/transition.
+7. perform bounded same-scope repair when needed and re-verify the new exact head;
+8. merge only that verified head;
+9. re-read repository state and carry trusted merge evidence into the next substantial PR unless an immediate-reconciliation exception applies.
 
 `tools/ci_change_policy.py` fails closed. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs may skip heavy Application/Security jobs at job level while required check contexts remain reported. Any other/unknown path runs full Application + Security CI.
 
@@ -189,7 +188,7 @@ This standard is working when:
 - long sessions no longer rely on tight CI polling;
 - `continue` safely resumes from GitHub state;
 - duplicate branches/PRs/merges are avoided after delivery failures;
-- each interaction ends at a meaningful, resumable milestone;
+- each interaction advances a meaningful, resumable substantial batch instead of a micro-transition;
 - required security/application/governance gates remain unchanged;
 - Runner optimization remains separately governed;
 - future AI-Native plans retain this standard across task and phase transitions.

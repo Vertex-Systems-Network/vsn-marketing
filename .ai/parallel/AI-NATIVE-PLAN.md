@@ -55,7 +55,7 @@ This policy is cross-phase and survives task transitions. The full standard is `
 
 Resume authority is canonical state first: `.ai/state/CURRENT-STATE.yaml`, `.ai/state/LAST-CHECKPOINT.md`, `.ai/state/EXECUTION-JOURNAL.jsonl`, then current GitHub branch/PR/exact-SHA and CI evidence. Historical task/phase wording elsewhere in this plan is descriptive only and must never override those recovery sources on `continue` or after a timeout.
 
-- Default interaction budget is **one logical milestone**: for example change+PR, gate diagnosis/fix, gate verification+merge, post-merge reconciliation, successor registration, or guarded transition. Do not chain several milestone classes merely because tools are available.
+- Default interaction budget is **one substantial coherent batch** inside the active task. A batch may include implementation + focused tests + PR + bounded CI repair + exact-head verification + merge when green. Do not create standalone post-merge reconciliation PRs by default; carry trusted merge/run evidence into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or no-safe-successor condition requires immediate reconciliation.
 - External CI is a durable boundary, not a tight polling loop. After starting required gates, record PR/branch/exact SHA, read status, and normally perform at most one additional refresh in the same interaction unless a changed state requires diagnosis or one final read can close the milestone.
 - If required CI remains in progress, stop at the durable branch/PR/SHA checkpoint. On the next `continue`, re-read GitHub state before doing any write.
 - After a delivery timeout/interruption, never blindly replay branch/file/PR/merge/transition operations. Verify whether the prior operation already succeeded, then resume from actual repository state.
@@ -85,7 +85,7 @@ At resume, validate live main against the anchor. Exact equality is current. A d
 
 ## Persistent durable Supervisor resume directive
 
-The Durable AI Engineering Supervisor contract in `.ai/13-PARALLEL-DEVELOPMENT.md` is mandatory across every task and phase. On every resume: compact state -> exact main -> open Issues -> open PRs -> deterministic claims/coordination queue -> machine Runner Benchmark -> only then new work. One user turn advances one logical milestone by default. CI/status polling is bounded to one consolidated refresh unless a recorded safety exception applies.
+The Durable AI Engineering Supervisor contract in `.ai/13-PARALLEL-DEVELOPMENT.md` is mandatory across every task and phase. On every resume: compact state -> exact main -> open Issues -> open PRs -> deterministic claims/coordination queue -> machine Runner Benchmark -> only then new work. Fast Batch Development Mode advances one substantial coherent batch per turn by default, while unrelated tasks and guarded task/phase transitions remain separate. CI/status polling is bounded to one consolidated refresh unless a recorded safety exception applies.
 
 The machine coordination queue is `.ai/coordination/OPEN-WORK-QUEUE.yaml`; the machine Runner Benchmark is `.ai/runner/RUNNER-BENCHMARK.yaml`. These registries never override live GitHub/runtime evidence and never grant production/provider/destructive execution authority. Compact state is bounded and the hash-chained execution journal is rolling with immutable historical archives.
 

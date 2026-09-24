@@ -253,6 +253,34 @@ final readonly class DatabaseCampaignScheduleExecutionRepository
         return $row instanceof stdClass ? $this->hydrateIntent($row) : null;
     }
 
+    public function findIntent(
+        string $workspaceId,
+        string $intentId,
+        bool $lock = false,
+    ): ?CampaignScheduleExecutionIntent {
+        $query = $this->database->connection()->table('campaign_schedule_execution_intents')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', $intentId);
+
+        if ($lock) {
+            $query->lockForUpdate();
+        }
+
+        $row = $query->first();
+        if ($row instanceof stdClass) {
+            return $this->hydrateIntent($row);
+        }
+
+        if ($this->database->connection()->table('campaign_schedule_execution_intents')
+            ->where('id', $intentId)
+            ->where('workspace_id', '<>', $workspaceId)
+            ->exists()) {
+            throw new AuthorizationException('Campaign schedule execution intent access denied.');
+        }
+
+        return null;
+    }
+
     public function createIntent(CampaignScheduleExecutionIntent $intent): CampaignScheduleExecutionIntent
     {
         $claim = $this->database->connection()->table('campaign_schedule_due_claims')

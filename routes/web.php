@@ -1,6 +1,8 @@
 <?php
 
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
+use App\Modules\Publishing\Presentation\Http\Controllers\PublishingOperatorController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');

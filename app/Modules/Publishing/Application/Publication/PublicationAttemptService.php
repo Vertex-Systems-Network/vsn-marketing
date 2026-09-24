@@ -72,7 +72,7 @@ final readonly class PublicationAttemptService
             $evaluation = $this->approvals->evaluate($campaign, $snapshot, $preparedAt);
             if (! $evaluation->valid || $evaluation->reason !== null) {
                 throw new InvalidArgumentException(
-                    'Publication attempt authority is no longer effective: '.($evaluation->reason?->value ?? 'unknown').'.',
+                    'Publication attempt authority is no longer effective: '.$evaluation->reason->value.'.',
                 );
             }
 

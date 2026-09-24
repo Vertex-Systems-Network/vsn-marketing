@@ -967,16 +967,49 @@
       "source": "PR #382 / TASK-0040 AC-7 deterministic provider outcome semantics",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #382 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0040-provider-outcome-semantics; AC-6 authorization snapshot + policy-boundary precedence + disconnect/credential/app-review/permission/stale/capability drift + circuit/rate-limit/provider-error classification + secret-free canonical outcome + immutable publication history",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0040-provider-outcome-semantics:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 382,
+        "source_sha": "52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb",
+        "merge_sha": "e30de9b56b744edf40e90486ad328cc0b9f62373",
+        "workflow_runs": {
+          "ai_continuity_guard": 36026205392,
+          "application_foundation_ci": 36026205314,
+          "security_supply_chain_ci": 36026205297
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "deterministic provider outcome semantics; policy-boundary precedence; disconnect/credential/app-review/permission/stale/capability drift; circuit/rate-limit/provider-error classification; secret-free canonical outcomes; immutable publication history"
+      }
+    },
+    {
+      "id": "RBT-034",
+      "source": "PR #383 / TASK-0040 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #383 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/task0040-final-acceptance; AC-1..AC-8 reconciled from trusted TASK-0040 foundations + full backend/PostgreSQL/adversarial/application/security certification",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-final-acceptance:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

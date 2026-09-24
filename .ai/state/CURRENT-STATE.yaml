@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-07",
     "active_task": "TASK-0040",
     "last_completed_task": "TASK-0039",
@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_operation_authorization_pr381_head_c5060fa710d4d469b81db673fd58562b0dc19ed3_passed_run_36023562025",
-    "application_test_status": "task0040_operation_authorization_pr381_head_c5060fa710d4d469b81db673fd58562b0dc19ed3_passed_run_36023562227",
-    "security_supply_chain_status": "task0040_operation_authorization_pr381_head_c5060fa710d4d469b81db673fd58562b0dc19ed3_passed_run_36023562163",
+    "continuity_validation": "task0040_provider_outcome_pr382_head_52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb_passed_run_36026205392",
+    "application_test_status": "task0040_provider_outcome_pr382_head_52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb_passed_run_36026205314",
+    "security_supply_chain_status": "task0040_provider_outcome_pr382_head_52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb_passed_run_36026205297",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "5eefa805dbe743d83a86416669593ee37a0946ff",
+  "observed_main_sha": "e30de9b56b744edf40e90486ad328cc0b9f62373",
   "active_issue": null,
-  "active_pr": 382,
-  "active_branch": "task/0040-provider-outcome-semantics",
-  "current_milestone": "TASK-0040-PROVIDER-OUTCOME-SEMANTICS",
+  "active_pr": 383,
+  "active_branch": "control/task0040-final-acceptance",
+  "current_milestone": "TASK-0040-FINAL-ACCEPTANCE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0040 AC-6 capability-gated retry/edit/delete authorization merged via PR #381 as 5eefa805dbe743d83a86416669593ee37a0946ff; exact source c5060fa710d4d469b81db673fd58562b0dc19ed3 passed AI Continuity Guard 36023562025, Application Foundation CI 36023562227 and Security Supply Chain CI 36023562163 after continuity fingerprint and Pint-only formatting repairs without weakening provider capability, workspace, immutable-history or security invariants. RBT-032 is terminal PASS and AC-6 is trusted.",
-  "exact_next_safe_action": "Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0040 AC-7 deterministic provider outcome semantics merged via PR #382 as e30de9b56b744edf40e90486ad328cc0b9f62373; exact source 52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb passed AI Continuity Guard 36026205392, Application Foundation CI 36026205314 and Security Supply Chain CI 36026205297. RBT-033 is terminal PASS and AC-7 is trusted.",
+  "exact_next_safe_action": "Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-033"
+    "RBT-034"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

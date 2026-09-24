@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-PROVIDER-OUTCOME-SEMANTICS status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-FINAL-ACCEPTANCE status=VERIFYING -->
 
-> Last verified protected-main TASK-0040 baseline: **2026-09-24** at `5eefa805dbe743d83a86416669593ee37a0946ff` after AC-6 capability-gated operation authorization PR #381 merged. Exact source `c5060fa710d4d469b81db673fd58562b0dc19ed3` passed AI Continuity Guard `36023562025`, Application Foundation CI `36023562227`, and Security Supply Chain CI `36023562163`. RBT-032 is terminal PASS; PR #382 now verifies AC-7 deterministic provider outcome semantics without executing provider side effects.
+> Last verified protected-main TASK-0040 baseline: **2026-09-24** at `e30de9b56b744edf40e90486ad328cc0b9f62373` after AC-7 deterministic provider outcome PR #382 merged. Exact source `52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb` passed AI Continuity Guard `36026205392`, Application Foundation CI `36026205314`, and Security Supply Chain CI `36026205297`. RBT-033 is terminal PASS; PR #383 now stages AC-8 final TASK-0040 acceptance with AC-1 through AC-8 reconciled true while production provider side effects and TASK-0041 remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 73.33%**  
 **Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
 **Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0040-PROVIDER-OUTCOME-SEMANTICS — VERIFYING**
+**Current milestone: TASK-0040-FINAL-ACCEPTANCE — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.13%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 AC-7 PR #382 verification** | **73.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 final acceptance PR #383** | **73.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,9 +47,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0040 is active/in-progress in PHASE-07. PR #373 publication-attempt foundation is trusted with RBT-028 terminal PASS, PR #375 AC-3 provider-media derivative foundation is trusted with RBT-029 terminal PASS, PR #377 AC-4 provider-status reconciliation is trusted with RBT-030 terminal PASS, PR #380 AC-5 partial-success aggregation is trusted with RBT-031 terminal PASS, and PR #381 AC-6 operation authorization is trusted with RBT-032 terminal PASS. PR #382 now verifies AC-7 deterministic provider outcome semantics with RBT-033 pending exact-head full CI.
+TASK-0040 is in final acceptance in PHASE-07. PR #373 publication-attempt foundation is trusted with RBT-028 terminal PASS and certifies AC-1/AC-2 authority, workspace-isolation, immutable-attempt and deterministic-idempotency foundations. PR #375 AC-3, PR #377 AC-4, PR #380 AC-5, PR #381 AC-6 and PR #382 AC-7 are trusted with RBT-029 through RBT-033 terminal PASS. PR #383 is the Supervisor-only AC-8 acceptance surface with AC-1 through AC-8 reconciled true while TASK-0040/INDEX remain `ready` pending exact-head gates.
 
-PR #373 provides trusted workspace-scoped provider-neutral publication attempts bound to exact execution-intent/provider-target authority. PR #375 provides trusted provider-media derivatives bound to snapshot-pinned canonical asset identity. PR #377 provides trusted append-only provider-status observations with immutable provider-native provenance and monotonic projection. PR #380 provides trusted deterministic aggregate state over the immutable snapshot target set and safe retry selection. PR #381 provides trusted authorization-only retry/edit/delete gating with exact current capability/scope/role/app-review authority. PR #382 adds deterministic provider outcome semantics over that immutable authorization snapshot: provider disconnect/readiness loss, credential invalidation, app-review restriction, permission loss, stale authority, capability-version drift, circuit/rate-limit and normalized provider failures are explicit; policy-boundary denial outranks retry signals; fallback authority is structurally forbidden; raw provider evidence, tokens and credentials never enter canonical outcome payloads. Production provider polling/webhook ingestion, upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+TASK-0040 final acceptance reconciles the complete trusted publication chain: PR #373 workspace-scoped immutable/idempotent publication attempts and exact execution-intent/snapshot/target/provider authority; PR #375 derivative media/container references that preserve canonical VSN asset identity; PR #377 append-only monotonic provider-status reconciliation under duplicate/out-of-order evidence; PR #380 deterministic per-target partial-success aggregation and safe retry selection; PR #381 exact current capability/scope/role/app-review authorization for retry/edit/delete; and PR #382 deterministic provider/policy outcome semantics with no policy-bypassing fallback and no credential/raw-provider evidence in canonical outcomes. Production provider polling/webhook ingestion, upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 README progress-sync protocol v2.6.0 remains enforced.
 

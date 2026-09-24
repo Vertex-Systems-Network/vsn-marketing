@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
-  "status": "in_progress",
+  "status": "ready",
   "objective": "Implement the workspace-scoped provider-neutral publication lifecycle that consumes trusted canonical execution intents and exact approved campaign snapshots/targets into immutable publication attempts, capability-checked target-account operations, derivative media-processing references, idempotent retries and deterministic provider-status reconciliation, while preserving VSN campaign/snapshot/asset authority and failing closed on provider disconnect, permission, app-review, account-role or capability drift.",
   "dependencies": [
     "TASK-0039"
@@ -13,12 +13,12 @@
     {
       "id": "AC-1",
       "text": "Workspace-scoped publication attempts bind the exact canonical execution intent, campaign snapshot, target/account identity, channel and current provider connection/capability evidence; foreign-workspace references, stale authority, disconnected accounts or insufficient write permission fail closed before any provider operation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Each create publication attempt has an immutable canonical attempt identity and idempotency key tied to one exact execution intent/target; worker retries, duplicate dispatch and replay cannot create duplicate successful provider publications, and provider object IDs remain derivative references rather than canonical campaign identity",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
@@ -43,12 +43,12 @@
     {
       "id": "AC-7",
       "text": "Provider disconnect, credential invalidation, app-review restriction, permission loss, rate-limit/circuit state and capability-version drift are explicit deterministic outcomes; credentials remain outside canonical publication records and no fallback path may bypass approval, workspace, consent/suppression, sender/content, asset or provider policy boundaries",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-8",
       "text": "Backend, PostgreSQL and adversarial tests prove workspace isolation, attempt idempotency, duplicate dispatch/webhook reconciliation, media-reference safety, partial-success handling, retry/edit/delete capability gating and stale/out-of-order provider evidence behavior; exact-head continuity, application/integration and security/supply-chain gates are green before TASK-0041 registration",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

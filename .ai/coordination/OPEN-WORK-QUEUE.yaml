@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
   "reconciled_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
-  "active_work_path": null,
+  "active_work_path": {
+    "kind": "pr",
+    "number": 386,
+    "branch": "task-0041-operator-read-model-preview",
+    "milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW"
+  },
   "items": [
     {
       "kind": "issue",
@@ -82,6 +87,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-036",
       "branch": "control/transition-task-0040-to-0041"
+    },
+    {
+      "kind": "pr",
+      "number": 386,
+      "title": "feat(publishing): add operator read model and snapshot preview",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-037",
+      "branch": "task-0041-operator-read-model-preview"
     }
   ]
 }

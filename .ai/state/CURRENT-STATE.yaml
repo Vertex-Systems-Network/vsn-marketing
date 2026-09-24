@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-07",
     "active_task": "TASK-0040",
     "last_completed_task": "TASK-0039",
@@ -18,21 +18,23 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236225",
-    "application_test_status": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236211",
-    "security_supply_chain_status": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236405",
+    "continuity_validation": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594893",
+    "application_test_status": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594903",
+    "security_supply_chain_status": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594952",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "2fb81e791507e691a443662dc1a11d091535d24d",
+  "observed_main_sha": "f77d1ac80515999abcb9f9505ec230c94c4eca7d",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0039-TO-0040-TRANSITION",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "Guarded TASK-0039 -> TASK-0040 transition merged via PR #371 as 2fb81e791507e691a443662dc1a11d091535d24d; exact source bb6a7f699b7b86ee42de2487661905bcb06e5501 passed AI Continuity Guard 35922236225, Application Foundation CI 35922236211 and Security Supply Chain CI 35922236405. TASK-0039 is completed and TASK-0040 is active/ready.",
-  "exact_next_safe_action": "Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
-  "pending_runner_ids": [],
+  "active_pr": 373,
+  "active_branch": "task/0040-publication-attempt-foundation",
+  "current_milestone": "TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "TASK-0039 -> TASK-0040 activation terminal reconciliation merged via PR #372 as f77d1ac80515999abcb9f9505ec230c94c4eca7d; exact source efe7c116a4d952c6f35054ebaed64a9e76023623 passed AI Continuity Guard 35994594893, Application Foundation CI 35994594903 and Security Supply Chain CI 35994594952. TASK-0040 is active and the first bounded publication-attempt foundation is staged on PR #373.",
+  "exact_next_safe_action": "Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [
+    "RBT-028"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

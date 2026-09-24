@@ -792,6 +792,24 @@
         },
         "transition": "TASK-0039 completed; TASK-0040 active/ready; roadmap 49.13%; PHASE-07 73.33%; no production provider or publication side effect."
       }
+    },
+    {
+      "id": "RBT-028",
+      "source": "PR #373 / TASK-0040 publication-attempt persistence foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #373 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0040-publication-attempt-foundation; exact execution-intent/provider-target attempt identity + PostgreSQL immutable authority/state machine + replay/workspace/provider-drift security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-publication-attempt-foundation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

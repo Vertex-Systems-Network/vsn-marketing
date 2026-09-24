@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594893",
-    "application_test_status": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594903",
-    "security_supply_chain_status": "task0040_transition_reconciliation_pr372_head_efe7c116a4d952c6f35054ebaed64a9e76023623_passed_run_35994594952",
+    "continuity_validation": "task0040_publication_attempt_pr373_head_c41c13274ab30138857fb5cbf4776f43deaec708_passed_run_35997680976",
+    "application_test_status": "task0040_publication_attempt_pr373_head_c41c13274ab30138857fb5cbf4776f43deaec708_passed_run_35997680978",
+    "security_supply_chain_status": "task0040_publication_attempt_pr373_head_c41c13274ab30138857fb5cbf4776f43deaec708_passed_run_35997680869",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "f77d1ac80515999abcb9f9505ec230c94c4eca7d",
+  "observed_main_sha": "4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47",
   "active_issue": null,
-  "active_pr": 373,
-  "active_branch": "task/0040-publication-attempt-foundation",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0039 -> TASK-0040 activation terminal reconciliation merged via PR #372 as f77d1ac80515999abcb9f9505ec230c94c4eca7d; exact source efe7c116a4d952c6f35054ebaed64a9e76023623 passed AI Continuity Guard 35994594893, Application Foundation CI 35994594903 and Security Supply Chain CI 35994594952. TASK-0040 is active and the first bounded publication-attempt foundation is staged on PR #373.",
-  "exact_next_safe_action": "Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
-  "pending_runner_ids": [
-    "RBT-028"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "TASK-0040 publication-attempt persistence/state-machine foundation merged via PR #373 as 4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47; exact source c41c13274ab30138857fb5cbf4776f43deaec708 passed AI Continuity Guard 35997680976, Application Foundation CI 35997680978 and Security Supply Chain CI 35997680869. RBT-028 is terminal PASS; publication-attempt identity, authority and state-machine foundations are trusted while production provider/media side effects remain inactive.",
+  "exact_next_safe_action": "Begin the bounded TASK-0040 AC-3 derivative media/container processing foundation from current protected main. Model workspace-scoped provider media/container processing records separately from publication attempts, bound to the exact canonical publication attempt, VSN asset/version identity and current provider connection/capability authority; store temporary provider media/container identifiers, processing state, expiry and provenance as derivative references only; enforce idempotent replay, monotonic processing/expiry behavior, workspace isolation and fail-closed rejection of arbitrary remote-media fetches or stale/foreign references with PostgreSQL/adversarial tests. Do not execute production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Begin the bounded TASK-0040 AC-3 derivative media/container processing foundation from current protected main. Model workspace-scoped provider media/container processing records separately from publication attempts, bound to the exact canonical publication attempt, VSN asset/version identity and current provider connection/capability authority; store temporary provider media/container identifiers, processing state, expiry and provenance as derivative references only; enforce idempotent replay, monotonic processing/expiry behavior, workspace isolation and fail-closed rejection of arbitrary remote-media fetches or stale/foreign references with PostgreSQL/adversarial tests. Do not execute production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization."
 }

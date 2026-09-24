@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION status=COMPLETE -->
 
-> Last verified protected-main TASK-0040 activation baseline: **2026-09-24** at `f77d1ac80515999abcb9f9505ec230c94c4eca7d` after terminal reconciliation PR #372 merged. Exact source `efe7c116a4d952c6f35054ebaed64a9e76023623` passed AI Continuity Guard `35994594893`, Application Foundation CI `35994594903`, and Security Supply Chain CI `35994594952`. PR #373 now stages the first bounded publication-attempt persistence/state-machine foundation; production provider/publication side effects remain inactive.
+> Last verified protected-main TASK-0040 baseline: **2026-09-24** at `4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47` after publication-attempt foundation PR #373 merged. Exact source `c41c13274ab30138857fb5cbf4776f43deaec708` passed AI Continuity Guard `35997680976`, Application Foundation CI `35997680978`, and Security Supply Chain CI `35997680869`. Publication-attempt identity/idempotency, authority binding and database state-machine foundations are trusted; production provider/media side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,14 +14,14 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 73.33%**  
 **Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
 **Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION — VERIFYING**
+**Current milestone: TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION — COMPLETE**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.13%
 Phase 07 [███████████████░░░░░] 73.33%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. TASK-0039 is completed and TASK-0040 is active/ready; canonical progress is roadmap 49.13% / PHASE-07 73.33%.
+The deterministic roadmap percentage advances only from completed task weights. TASK-0039 is completed and TASK-0040 is active/in-progress; canonical progress remains roadmap 49.13% / PHASE-07 73.33% until TASK-0040 completes.
 
 ### Phase / module progress
 
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 publication-attempt PR #373 verification** | **73.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 AC-3 media/container derivatives next** | **73.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,9 +47,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0040 activation is trusted and terminally reconciled through PR #372. TASK-0040 is active/in-progress at deterministic roadmap 49.13% / PHASE-07 73.33%; PR #373 stages the first bounded product foundation.
+TASK-0040 is active/in-progress in PHASE-07. PR #373 publication-attempt persistence/state-machine foundation is trusted on protected main with RBT-028 terminal PASS. The next bounded product milestone is AC-3 derivative media/container processing references.
 
-PR #373 stages workspace-scoped provider-neutral publication attempts bound to exact campaign schedule execution-intent and immutable provider-target authority, deterministic one-attempt-per-intent/target idempotency, current `publication.create` capability/connection/scope/role/freshness revalidation, PostgreSQL/SQLite immutable authority plus monotonic state-machine guards, and replay/cross-workspace/provider-drift tests. Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+PR #373 now provides trusted workspace-scoped provider-neutral publication attempts bound to exact campaign schedule execution-intent and immutable provider-target authority, deterministic one-attempt-per-intent/target idempotency, current `publication.create` capability/connection/scope/role/freshness revalidation, PostgreSQL/SQLite immutable authority plus monotonic state-machine guards, and replay/cross-workspace/provider-drift evidence. AC-3 will model temporary provider media/container identifiers, processing states and expiry as derivative references bound to canonical VSN asset identity; production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 README progress-sync protocol v2.4.2 remains enforced.
 

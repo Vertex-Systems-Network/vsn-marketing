@@ -798,18 +798,34 @@
       "source": "PR #373 / TASK-0040 publication-attempt persistence foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PR #373 exact-head status/comment"
+        "git_sha": "c41c13274ab30138857fb5cbf4776f43deaec708",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #373 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0040-publication-attempt-foundation; exact execution-intent/provider-target attempt identity + PostgreSQL immutable authority/state machine + replay/workspace/provider-drift security tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0040-publication-attempt-foundation:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 373,
+        "source_sha": "c41c13274ab30138857fb5cbf4776f43deaec708",
+        "merge_sha": "4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47",
+        "workflow_runs": {
+          "ai_continuity_guard": 35997680976,
+          "application_foundation_ci": 35997680978,
+          "security_supply_chain_ci": 35997680869
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "workspace-scoped immutable publication attempts; exact execution-intent/snapshot/provider-target authority; deterministic idempotency; monotonic state machine; no production provider/media side effect",
+        "recovery_note": "Verification first repaired a CURRENT-STATE versus TASK-0040/INDEX status mismatch, then added all nine required migration-safety review markers, then fixed one PHPStan nullsafe-access finding. Final exact head passed all required gates without weakening domain, migration, workspace or security boundaries."
+      }
     }
   ]
 }

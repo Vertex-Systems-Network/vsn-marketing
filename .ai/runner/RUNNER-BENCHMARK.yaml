@@ -1033,16 +1033,49 @@
       "source": "PR #384 / TASK-0041 PHASE-07 planned registration",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "80da4ed9541217811f97e7fe90e4629b1196cdb1",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #384 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/register-task-0041-phase07; TASK-0041 planned-only campaign/publishing operator UX contract registration",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-registration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 384,
+        "source_sha": "80da4ed9541217811f97e7fe90e4629b1196cdb1",
+        "merge_sha": "616ac1345173d18f60f13453fa5aee62247ed197",
+        "workflow_runs": {
+          "ai_continuity_guard": 36056279614,
+          "application_foundation_ci": 36056279610,
+          "security_supply_chain_ci": 36056279598
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "registration_boundary": "TASK-0041 planned-only; TASK-0040 remains active/ready until separate guarded transition."
+      }
+    },
+    {
+      "id": "RBT-036",
+      "source": "PR #385 / guarded TASK-0040 -> TASK-0041 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #385 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0040-to-0041; TASK-0040 completed + TASK-0041 ready/active deterministic transition",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-task0041-transition:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

@@ -168,7 +168,6 @@ it('fails closed when an authenticated user requests a workspace they do not bel
         ->assertForbidden();
 });
 
-
 function task0041GrantApprover(User $user, Workspace $workspace, string $suffix): string
 {
     $roles = app(WorkspaceRoleManager::class);
@@ -206,8 +205,7 @@ it('preflights approval without mutation and resolves approver authority on the 
             'role_key' => 'forged-browser-role',
         ])
         ->assertRedirect()
-        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
-            $result['confirmed'] === false
+        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool => $result['confirmed'] === false
             && $result['counts']['eligible'] === 1
             && $result['counts']['applied'] === 0
             && $result['role_source'] === 'server_resolved_workspace_authority'
@@ -260,8 +258,7 @@ it('applies only exact-version eligible campaigns and skips stale bulk items', f
     $this->actingAs($actor['user'])
         ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', $payload + ['confirmed' => true])
         ->assertRedirect()
-        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
-            $result['confirmed'] === true
+        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool => $result['confirmed'] === true
             && $result['counts']['applied'] === 1
             && $result['counts']['conflict'] === 1
         );
@@ -300,7 +297,6 @@ it('fails closed when bulk approval references a campaign from another workspace
     expect(DB::table('campaign_approval_decisions')->where('campaign_id', $foreignCampaign['campaign_id'])->count())
         ->toBe(0);
 });
-
 
 it('rejects confirmed bulk approval that has no matching server preflight', function () {
     $actor = task0041OperatorActor('confirm-guard');

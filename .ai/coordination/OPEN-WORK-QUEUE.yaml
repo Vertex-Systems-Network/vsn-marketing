@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "5eefa805dbe743d83a86416669593ee37a0946ff",
+  "reconciled_main_sha": "e30de9b56b744edf40e90486ad328cc0b9f62373",
   "active_work_path": {
     "kind": "pr",
-    "number": 382,
-    "branch": "task/0040-provider-outcome-semantics",
-    "milestone": "TASK-0040-PROVIDER-OUTCOME-SEMANTICS"
+    "number": 383,
+    "branch": "control/task0040-final-acceptance",
+    "milestone": "TASK-0040-FINAL-ACCEPTANCE"
   },
   "items": [
     {
@@ -63,12 +63,12 @@
     },
     {
       "kind": "pr",
-      "number": 382,
-      "title": "feat(publishing): model deterministic provider outcomes",
-      "disposition": "active_task_product_verification",
+      "number": 383,
+      "title": "control: accept TASK-0040 publication lifecycle",
+      "disposition": "active_task_final_acceptance",
       "accepted_actionable": true,
-      "runner_id": "RBT-033",
-      "branch": "task/0040-provider-outcome-semantics"
+      "runner_id": "RBT-034",
+      "branch": "control/task0040-final-acceptance"
     }
   ]
 }

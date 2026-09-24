@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-24T16:12:00Z`
-- Observed main: `5eefa805dbe743d83a86416669593ee37a0946ff`
+- Timestamp: `2026-09-24T16:45:00Z`
+- Observed main: `e30de9b56b744edf40e90486ad328cc0b9f62373`
 - Active issue: `none`
-- Active PR: `382`
-- Active branch: `task/0040-provider-outcome-semantics`
-- Current milestone: `TASK-0040-PROVIDER-OUTCOME-SEMANTICS`
+- Active PR: `383`
+- Active branch: `control/task0040-final-acceptance`
+- Current milestone: `TASK-0040-FINAL-ACCEPTANCE`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
-- Execution status: `in_progress`
-- Pending Runner IDs: `RBT-033`
+- Execution status: `ready`
+- Pending Runner IDs: `RBT-034`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `51ff6e8f24e125a9c9bd6147eedfcb6468d38cc40f3cdc158c3c970915beab53`
+- State fingerprint: `abae2cb185506aff5ab08662b5ec0fefa08007d3ac330a1480968925bd520e0b`
 
 ## Completed / observed this session
 
-TASK-0040 AC-6 PR #381 exact source `c5060fa710d4d469b81db673fd58562b0dc19ed3` passed AI Continuity Guard `36023562025`, Application Foundation CI `36023562227` and Security Supply Chain CI `36023562163`, then merged on protected main as `5eefa805dbe743d83a86416669593ee37a0946ff`. RBT-032 is terminal PASS and AC-6 is trusted.
+TASK-0040 AC-7 PR #382 exact source `52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb` passed AI Continuity Guard `36026205392`, Application Foundation CI `36026205314` and Security Supply Chain CI `36026205297`, then merged on protected main as `e30de9b56b744edf40e90486ad328cc0b9f62373`. RBT-033 is terminal PASS and AC-7 is trusted.
 
-PR #382 stages AC-7 deterministic provider outcome semantics. It re-evaluates the immutable AC-6 authorization snapshot against current provider connection/capability state and explicit workspace/approval/consent-suppression/sender-content/asset/provider-policy boundaries.
+PR #383 stages TASK-0040 AC-8 final acceptance. AC-1 and AC-2 are reconciled from the trusted PR #373 publication-attempt foundation and existing unit/security/PostgreSQL tests proving exact authority/workspace isolation, stable create idempotency, one replay-safe attempt, immutable attempt authority and monotonic state. AC-3 through AC-7 retain their trusted milestone evidence.
 
-Provider disconnect/readiness loss, credential invalidation, app-review restriction, permission loss, stale authority, capability-version drift, circuit open/half-open, rate limiting and normalized retryable/unavailable/rejected/unknown provider failures resolve to explicit deterministic outcomes. Policy-boundary denial outranks provider retry signals and fallback authority is structurally forbidden.
+All TASK-0040 acceptance criteria are marked true while TASK-0040 and INDEX remain `ready`, not completed. Completion and TASK-0041 registration remain a separate guarded successor transition after this acceptance head passes its own exact-head gates.
 
-Canonical outcome payloads retain only safe category/timing/authority references and exclude raw provider message/evidence, credentials, tokens and secret references. Assessment is read-only over canonical publication attempts/status history.
+The active execution journal is compacted byte-for-byte from seq 123-130 into `.ai/state/archive/EXECUTION-JOURNAL-0123-0130.jsonl`; active history resumes at seq 131 and remains hash-chain continuous.
 
 ## Tests
 
-RBT-033 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #382. Product paths force full CI.
+RBT-034 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #383. `CI-Mode: full` is required despite this being a control-only certification carrier.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ RBT-033 exact-head AI Continuity Guard, Application Foundation CI and Security S
 
 ## Exact next action
 
-Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive.
+Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.

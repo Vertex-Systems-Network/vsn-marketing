@@ -131,6 +131,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
 }
 
 it('renders only canonical evidence from the selected authorized workspace', function () {
+    $this->withoutVite();
     $inside = task0041OperatorActor('inside');
     $outside = task0041OperatorActor('outside', $inside['user']);
     $insideCampaign = task0041OperatorCampaign($inside['workspace'], $inside['user'], 'inside');

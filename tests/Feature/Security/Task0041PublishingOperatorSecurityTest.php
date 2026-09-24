@@ -5,6 +5,10 @@ use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
+use App\Modules\Publishing\Domain\Campaign\CampaignTargetBinding;
+use App\Modules\Publishing\Domain\Campaign\CampaignTargetKind;
+use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -49,7 +53,43 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
     $documentId = (string) Str::uuid();
     $contentVersionId = (string) Str::uuid();
     $targetId = (string) Str::uuid();
+    $canonicalReferenceId = (string) Str::uuid();
+    $createdAtValue = new DateTimeImmutable('2026-09-24T12:00:00+00:00');
     $createdAt = '2026-09-24 12:00:00+00:00';
+
+    $target = new CampaignTargetBinding(
+        id: $targetId,
+        workspaceId: $workspaceId,
+        kind: CampaignTargetKind::Contact,
+        canonicalReferenceId: $canonicalReferenceId,
+        channel: 'linkedin',
+        providerConnectionId: null,
+        capabilityEvidenceId: null,
+        metadata: [],
+        createdAt: $createdAtValue,
+    );
+    $snapshot = CampaignSnapshot::create(
+        id: $snapshotId,
+        workspaceId: $workspaceId,
+        campaignId: $campaignId,
+        parentSnapshotId: null,
+        versionNumber: 1,
+        contentVersionId: $contentVersionId,
+        templateVersionId: null,
+        componentVersionIds: [],
+        assetReferenceIds: [],
+        capabilityEvidenceIds: [],
+        brandReference: [],
+        intendedExecution: [
+            'mode' => 'fixed_instant',
+            'timezone' => 'UTC',
+            'at' => '2026-09-24T13:00:00',
+        ],
+        targets: [$target],
+        idempotencyKey: 'operator-snapshot-'.$suffix,
+        createdByActorId: (string) $user->getKey(),
+        createdAt: $createdAtValue,
+    );
 
     DB::table('content_documents')->insert([
         'id' => $documentId,
@@ -104,8 +144,8 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
             'timezone' => 'UTC',
             'at' => '2026-09-24T13:00:00',
         ], JSON_THROW_ON_ERROR),
-        'target_set_hash' => str_repeat('b', 64),
-        'snapshot_hash' => str_repeat('a', 64),
+        'target_set_hash' => $snapshot->targetSetHash,
+        'snapshot_hash' => $snapshot->snapshotHash,
         'idempotency_key' => 'operator-snapshot-'.$suffix,
         'created_by_actor_id' => (string) $user->getKey(),
         'created_at' => $createdAt,
@@ -115,12 +155,12 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
         'workspace_id' => $workspaceId,
         'snapshot_id' => $snapshotId,
         'kind' => 'contact',
-        'canonical_reference_id' => (string) Str::uuid(),
+        'canonical_reference_id' => $canonicalReferenceId,
         'channel' => 'linkedin',
         'provider_connection_id' => null,
         'capability_evidence_id' => null,
         'metadata' => json_encode([], JSON_THROW_ON_ERROR),
-        'target_hash' => str_repeat('c', 64),
+        'target_hash' => $target->fingerprint(),
         'created_at' => $createdAt,
     ]);
 

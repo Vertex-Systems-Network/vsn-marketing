@@ -167,3 +167,126 @@ it('fails closed when an authenticated user requests a workspace they do not bel
         ->get('/workspaces/'.$foreign['workspace']->getKey().'/publishing')
         ->assertForbidden();
 });
+
+
+function task0041GrantApprover(User $user, Workspace $workspace, string $suffix): string
+{
+    $roles = app(WorkspaceRoleManager::class);
+    $membershipId = (string) DB::table('workspace_memberships')
+        ->where('workspace_id', $workspace->getKey())
+        ->where('user_id', $user->getKey())
+        ->value('id');
+
+    $roleKey = 'approver-'.$suffix;
+    $roleId = $roles->createRole((string) $workspace->getKey(), $roleKey, 'Approver '.$suffix);
+    $roles->grantPermission($roleId, PermissionCatalog::CAMPAIGN_APPROVE);
+    $roles->assignRole($membershipId, $roleId);
+
+    return $roleKey;
+}
+
+it('preflights approval without mutation and resolves approver authority on the server', function () {
+    $actor = task0041OperatorActor('preflight');
+    $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'preflight');
+    task0041GrantApprover($actor['user'], $actor['workspace'], 'preflight');
+
+    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval']);
+
+    $batchId = '11111111-1111-4111-8111-111111111111';
+    $this->actingAs($actor['user'])
+        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', [
+            'batch_id' => $batchId,
+            'operation' => 'approve',
+            'confirmed' => false,
+            'items' => [[
+                'campaign_id' => $campaign['campaign_id'],
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 1,
+            ]],
+            'role_key' => 'forged-browser-role',
+        ])
+        ->assertRedirect()
+        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
+            $result['confirmed'] === false
+            && $result['counts']['eligible'] === 1
+            && $result['counts']['applied'] === 0
+            && $result['role_source'] === 'server_resolved_workspace_authority'
+        );
+
+    expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
+        ->toBe('needs_approval')
+        ->and(DB::table('campaign_approval_decisions')->where('campaign_id', $campaign['campaign_id'])->count())
+        ->toBe(0);
+});
+
+it('applies only exact-version eligible campaigns and skips stale bulk items', function () {
+    $actor = task0041OperatorActor('bulk');
+    $first = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'bulk-a');
+    $second = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'bulk-b');
+    $roleKey = task0041GrantApprover($actor['user'], $actor['workspace'], 'bulk');
+
+    DB::table('campaigns')
+        ->whereIn('id', [$first['campaign_id'], $second['campaign_id']])
+        ->update(['status' => 'needs_approval']);
+
+    $this->actingAs($actor['user'])
+        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', [
+            'batch_id' => '22222222-2222-4222-8222-222222222222',
+            'operation' => 'approve',
+            'confirmed' => true,
+            'reason' => 'Reviewed and approved.',
+            'role_key' => 'forged-browser-role',
+            'items' => [
+                [
+                    'campaign_id' => $first['campaign_id'],
+                    'snapshot_id' => $first['snapshot_id'],
+                    'state_version' => 1,
+                ],
+                [
+                    'campaign_id' => $second['campaign_id'],
+                    'snapshot_id' => $second['snapshot_id'],
+                    'state_version' => 99,
+                ],
+            ],
+        ])
+        ->assertRedirect()
+        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
+            $result['confirmed'] === true
+            && $result['counts']['applied'] === 1
+            && $result['counts']['conflict'] === 1
+        );
+
+    expect(DB::table('campaigns')->where('id', $first['campaign_id'])->value('status'))
+        ->toBe('approved')
+        ->and(DB::table('campaigns')->where('id', $second['campaign_id'])->value('status'))
+        ->toBe('needs_approval')
+        ->and(DB::table('campaign_approval_decisions')->where('campaign_id', $first['campaign_id'])->value('actor_role'))
+        ->toBe($roleKey)
+        ->and(DB::table('campaign_approval_decisions')->where('campaign_id', $second['campaign_id'])->count())
+        ->toBe(0);
+});
+
+it('fails closed when bulk approval references a campaign from another workspace', function () {
+    $inside = task0041OperatorActor('bulk-inside');
+    $foreign = task0041OperatorActor('bulk-foreign');
+    $foreignCampaign = task0041OperatorCampaign($foreign['workspace'], $foreign['user'], 'bulk-foreign');
+    task0041GrantApprover($inside['user'], $inside['workspace'], 'bulk-inside');
+
+    DB::table('campaigns')->where('id', $foreignCampaign['campaign_id'])->update(['status' => 'needs_approval']);
+
+    $this->actingAs($inside['user'])
+        ->post('/workspaces/'.$inside['workspace']->getKey().'/publishing/approvals/bulk', [
+            'batch_id' => '33333333-3333-4333-8333-333333333333',
+            'operation' => 'approve',
+            'confirmed' => true,
+            'items' => [[
+                'campaign_id' => $foreignCampaign['campaign_id'],
+                'snapshot_id' => $foreignCampaign['snapshot_id'],
+                'state_version' => 1,
+            ]],
+        ])
+        ->assertForbidden();
+
+    expect(DB::table('campaign_approval_decisions')->where('campaign_id', $foreignCampaign['campaign_id'])->count())
+        ->toBe(0);
+});

@@ -162,6 +162,25 @@ final readonly class DatabaseProviderRepository implements ProviderRepository
         return $row instanceof stdClass ? $this->hydrateCapability($row) : null;
     }
 
+    public function findCapabilityForOperation(
+        string $workspaceId,
+        string $providerId,
+        string $connectionId,
+        string $operation,
+    ): ?ProviderCapability
+    {
+        $row = $this->database->connection()->table('provider_capabilities')
+            ->where('workspace_id', $workspaceId)
+            ->where('provider_id', $providerId)
+            ->where('connection_id', $connectionId)
+            ->where('operation', $operation)
+            ->orderByDesc('observed_at')
+            ->orderByDesc('id')
+            ->first();
+
+        return $row instanceof stdClass ? $this->hydrateCapability($row) : null;
+    }
+
     public function findQuota(string $workspaceId, string $quotaId): ?ProviderQuota
     {
         $row = $this->database->connection()->table('provider_quotas')

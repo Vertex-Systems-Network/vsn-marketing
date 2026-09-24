@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 final class PublishingBulkApprovalController
 {
@@ -33,6 +34,25 @@ final class PublishingBulkApprovalController
             'items.*.state_version' => ['required', 'integer', 'min:1'],
         ]);
 
+        $preflightFingerprint = hash('sha256', json_encode([
+            'workspace_id' => $context->workspaceId,
+            'actor_id' => $context->actorId,
+            'batch_id' => $validated['batch_id'],
+            'operation' => $validated['operation'],
+            'reason' => $validated['reason'] ?? null,
+            'items' => $validated['items'],
+        ], JSON_THROW_ON_ERROR));
+        $preflightKey = 'publishing_bulk_preflight.'.$validated['batch_id'];
+
+        if ($validated['confirmed']) {
+            $storedFingerprint = $request->session()->get($preflightKey);
+            if (! is_string($storedFingerprint) || ! hash_equals($storedFingerprint, $preflightFingerprint)) {
+                throw ValidationException::withMessages([
+                    'confirmed' => 'Bulk approval confirmation must match a current server-recorded preflight.',
+                ]);
+            }
+        }
+
         $result = $bulk->handle(
             actor: $actor,
             context: $context,
@@ -43,6 +63,10 @@ final class PublishingBulkApprovalController
             reason: $validated['reason'] ?? null,
             at: new DateTimeImmutable('now'),
         );
+
+        if (! $validated['confirmed']) {
+            $request->session()->put($preflightKey, $preflightFingerprint);
+        }
 
         return redirect()
             ->route('publishing.operator', ['workspace' => $context->workspaceId])

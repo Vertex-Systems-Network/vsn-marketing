@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement campaign/publishing operator UX",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement the workspace-scoped operator experience for governed campaign review, preview, approval queues, channel adaptations, publication execution visibility and safe recovery actions, using canonical campaign/snapshot/calendar/publication authority only and preserving explicit permission, provider-capability, policy and partial-success boundaries without introducing UI-only bypasses or direct provider authority.",
   "dependencies": [
     "TASK-0040"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Begin the bounded TASK-0041 operator read-model, navigation and immutable snapshot/channel preview foundation from protected main. Preserve workspace isolation and canonical campaign/snapshot/publication authority, present deterministic publication/partial-success state without enabling provider side effects, and add focused backend/React tests. Keep production provider credential/API activation, direct provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Perform exact-head verification for PR #386. Merge the TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend security coverage proves workspace isolation and permission enforcement, the read model remains read-only and secret-safe, React tests prove immutable preview and partial-success presentation, and no provider credential/API side effect or mutation authority is introduced. After trusted merge, terminally reconcile this foundation before beginning bulk safeguards, approval-queue actions, retry/edit/delete controls or later TASK-0041 slices. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

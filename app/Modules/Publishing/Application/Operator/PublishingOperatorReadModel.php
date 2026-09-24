@@ -4,18 +4,15 @@ namespace App\Modules\Publishing\Application\Operator;
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Publishing\Application\Publication\PublicationAggregateService;
-use App\Modules\Publishing\Domain\Campaign\CampaignApprovalDecision;
-use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Publication\PublicationTargetOutcome;
-use App\Modules\Publishing\Infrastructure\Persistence\DatabaseCampaignRepository;
 use Illuminate\Database\DatabaseManager;
+use JsonException;
 use stdClass;
 
 final readonly class PublishingOperatorReadModel
 {
     public function __construct(
         private DatabaseManager $database,
-        private DatabaseCampaignRepository $campaigns,
         private PublicationAggregateService $aggregates,
     ) {}
 
@@ -69,9 +66,16 @@ final readonly class PublishingOperatorReadModel
     {
         $workspaceId = $context->workspaceId;
         $campaignId = (string) $campaign->id;
-        $snapshot = $this->campaigns->latestSnapshot($workspaceId, $campaignId);
+        $connection = $this->database->connection();
 
-        if (! $snapshot instanceof CampaignSnapshot) {
+        $snapshot = $connection->table('campaign_snapshots')
+            ->where('workspace_id', $workspaceId)
+            ->where('campaign_id', $campaignId)
+            ->orderByDesc('version_number')
+            ->orderByDesc('id')
+            ->first();
+
+        if (! $snapshot instanceof stdClass) {
             return [
                 'id' => $campaignId,
                 'name' => (string) $campaign->name,
@@ -84,21 +88,35 @@ final readonly class PublishingOperatorReadModel
             ];
         }
 
-        $approvals = $this->campaigns->approvalDecisions($workspaceId, $campaignId, $snapshot->id);
-        $latestApproval = $approvals === [] ? null : $approvals[array_key_last($approvals)];
+        $targets = $connection->table('campaign_targets')
+            ->select(['id', 'channel'])
+            ->where('workspace_id', $workspaceId)
+            ->where('snapshot_id', (string) $snapshot->id)
+            ->orderBy('id')
+            ->get()
+            ->all();
 
-        $schedule = $this->database->connection()->table('campaign_schedules')
+        $approval = $connection->table('campaign_approval_decisions')
+            ->select(['outcome', 'actor_role', 'occurred_at', 'expires_at'])
             ->where('workspace_id', $workspaceId)
             ->where('campaign_id', $campaignId)
-            ->where('snapshot_id', $snapshot->id)
+            ->where('snapshot_id', (string) $snapshot->id)
+            ->orderByDesc('occurred_at')
+            ->orderByDesc('id')
+            ->first();
+
+        $schedule = $connection->table('campaign_schedules')
+            ->where('workspace_id', $workspaceId)
+            ->where('campaign_id', $campaignId)
+            ->where('snapshot_id', (string) $snapshot->id)
             ->orderByDesc('created_at')
             ->orderByDesc('id')
             ->first();
 
-        $intentId = $this->database->connection()->table('campaign_schedule_execution_intents')
+        $intentId = $connection->table('campaign_schedule_execution_intents')
             ->where('workspace_id', $workspaceId)
             ->where('campaign_id', $campaignId)
-            ->where('snapshot_id', $snapshot->id)
+            ->where('snapshot_id', (string) $snapshot->id)
             ->orderByDesc('emitted_at')
             ->orderByDesc('id')
             ->value('id');
@@ -108,10 +126,14 @@ final readonly class PublishingOperatorReadModel
             'name' => (string) $campaign->name,
             'status' => (string) $campaign->status,
             'state_version' => (int) $campaign->state_version,
-            'snapshot' => $this->snapshot($snapshot),
-            'approval' => $latestApproval instanceof CampaignApprovalDecision
-                ? $this->approval($latestApproval)
-                : null,
+            'snapshot' => $this->snapshot($snapshot, $targets),
+            'approval' => $approval instanceof stdClass ? [
+                'outcome' => (string) $approval->outcome,
+                'actor_role' => (string) $approval->actor_role,
+                'occurred_at' => (string) $approval->occurred_at,
+                'expires_at' => $approval->expires_at === null ? null : (string) $approval->expires_at,
+                'revoked' => (string) $approval->outcome === 'revoked',
+            ] : null,
             'schedule' => $schedule instanceof stdClass ? [
                 'strategy' => (string) $schedule->strategy,
                 'timezone_id' => (string) $schedule->timezone_id,
@@ -120,49 +142,40 @@ final readonly class PublishingOperatorReadModel
             ] : null,
             'publication' => is_string($intentId) && $intentId !== ''
                 ? $this->publication($workspaceId, $intentId)
-                : $this->notStartedPublication($snapshot),
+                : $this->notStartedPublication($targets),
         ];
     }
 
-    /** @return array<string, mixed> */
-    private function snapshot(CampaignSnapshot $snapshot): array
+    /**
+     * @param  list<stdClass>  $targets
+     * @return array<string, mixed>
+     */
+    private function snapshot(stdClass $snapshot, array $targets): array
     {
         $channels = array_values(array_unique(array_map(
-            static fn ($target): string => $target->channel,
-            $snapshot->targets,
+            static fn (stdClass $target): string => (string) $target->channel,
+            $targets,
         )));
         sort($channels, SORT_STRING);
 
         $execution = [];
         foreach (['mode', 'timezone', 'at', 'channel'] as $key) {
-            $value = $snapshot->intendedExecution[$key] ?? null;
+            $value = $this->decodeJsonObject($snapshot->intended_execution)[$key] ?? null;
             if (is_string($value) || is_int($value) || is_bool($value)) {
                 $execution[$key] = $value;
             }
         }
 
         return [
-            'id' => $snapshot->id,
-            'version_number' => $snapshot->versionNumber,
-            'content_version_id' => $snapshot->contentVersionId,
-            'snapshot_hash' => $snapshot->snapshotHash,
-            'target_set_hash' => $snapshot->targetSetHash,
-            'target_count' => count($snapshot->targets),
+            'id' => (string) $snapshot->id,
+            'version_number' => (int) $snapshot->version_number,
+            'content_version_id' => (string) $snapshot->content_version_id,
+            'snapshot_hash' => (string) $snapshot->snapshot_hash,
+            'target_set_hash' => (string) $snapshot->target_set_hash,
+            'target_count' => count($targets),
             'channels' => $channels,
             'intended_execution' => $execution,
-            'created_at' => $snapshot->createdAt->format(DATE_ATOM),
-        ];
-    }
-
-    /** @return array<string, mixed> */
-    private function approval(CampaignApprovalDecision $approval): array
-    {
-        return [
-            'outcome' => $approval->outcome->value,
-            'actor_role' => $approval->actorRole,
-            'occurred_at' => $approval->occurredAt->format(DATE_ATOM),
-            'expires_at' => $approval->expiresAt?->format(DATE_ATOM),
-            'revoked' => $approval->outcome->value === 'revoked',
+            'created_at' => (string) $snapshot->created_at,
         ];
     }
 
@@ -189,25 +202,28 @@ final readonly class PublishingOperatorReadModel
         ];
     }
 
-    /** @return array<string, mixed> */
-    private function notStartedPublication(CampaignSnapshot $snapshot): array
+    /**
+     * @param  list<stdClass>  $targets
+     * @return array<string, mixed>
+     */
+    private function notStartedPublication(array $targets): array
     {
-        $targets = array_map(
-            static fn ($target): array => [
-                'target_id' => $target->id,
-                'channel' => $target->channel,
+        $items = array_map(
+            static fn (stdClass $target): array => [
+                'target_id' => (string) $target->id,
+                'channel' => (string) $target->channel,
                 'state' => 'not_started',
                 'retry_eligible' => false,
             ],
-            $snapshot->targets,
+            $targets,
         );
 
         return [
             'execution_intent_id' => null,
             'state' => 'not_started',
             'retry_eligible_count' => 0,
-            'counts' => $this->targetCounts($targets),
-            'targets' => $targets,
+            'counts' => $this->targetCounts($items),
+            'targets' => $items,
         ];
     }
 
@@ -237,5 +253,25 @@ final readonly class PublishingOperatorReadModel
         }
 
         return $counts;
+    }
+
+    /** @return array<string, mixed> */
+    private function decodeJsonObject(mixed $value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (! is_string($value) || $value === '') {
+            return [];
+        }
+
+        try {
+            $decoded = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            return [];
+        }
+
+        return is_array($decoded) ? $decoded : [];
     }
 }

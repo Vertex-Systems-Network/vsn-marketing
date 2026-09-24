@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 is completed and TASK-0040 is in final acceptance; AC-1 through AC-8 are reconciled true on PR #383 while production provider API execution and TASK-0041 remain inactive.**
+Status: **IN PROGRESS — TASK-0040 final acceptance is trusted; TASK-0041 campaign/publishing operator UX is staged as planned-only registration and no operator-UX implementation, provider credential activation or direct provider side effect is active yet.**
 
 ## Purpose
 
@@ -75,3 +75,8 @@ TASK-0039 owns the canonical workspace-scoped editorial/campaign calendar and pr
 ## TASK-0040 registration boundary
 
 TASK-0040 owns the provider-neutral publication lifecycle and reconciliation contract: exact workspace/campaign-snapshot/execution-intent/target-account bindings; immutable idempotent publication attempts; derivative provider post/media/container references; append-oriented status reconciliation under duplicate and out-of-order evidence; explicit partial-success semantics; and capability-gated retry/edit/delete behavior. Provider disconnect, app-review/account-role/scope/capability drift fails closed. Registration does not authorize production provider credentials/API calls, arbitrary remote-media fetches, TASK-0041 implementation, deployment/release execution or deferred Runner optimization.
+
+
+## TASK-0041 registration boundary
+
+TASK-0041 owns the workspace-scoped operator experience over canonical campaign, approval, calendar and publication state: immutable snapshot/channel-aware previews, guarded bulk operations, approval queues, explicit permission/provider error and partial-success states, capability-gated retry/edit/delete controls, accessibility/responsive behavior and deterministic stale/concurrency conflict handling. UI actions must call existing canonical backend authority and may not create a browser-only bypass around workspace, approval, consent/suppression, sender/content, asset or provider policy. Registration does not authorize production provider credential/API activation, TASK-0042 implementation, deployment/release execution or deferred Runner optimization.

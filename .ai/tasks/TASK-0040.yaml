@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
-  "status": "ready",
+  "status": "completed",
   "objective": "Implement the workspace-scoped provider-neutral publication lifecycle that consumes trusted canonical execution intents and exact approved campaign snapshots/targets into immutable publication attempts, capability-checked target-account operations, derivative media-processing references, idempotent retries and deterministic provider-status reconciliation, while preserving VSN campaign/snapshot/asset authority and failing closed on provider disconnect, permission, app-review, account-role or capability drift.",
   "dependencies": [
     "TASK-0039"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "TASK-0040 final acceptance is trusted on protected main. Verify and merge the separate TASK-0041 planned-registration milestone on PR #384 without activating operator-UX implementation. After registration is terminally reconciled, perform a separate guarded transition that marks TASK-0040 completed and activates TASK-0041 ready. Keep production provider credential/API activation, direct UI authority bypass, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "TASK-0040 is completed after trusted final acceptance, TASK-0041 planned registration and guarded successor transition. Preserve publication lifecycle/reconciliation evidence and do not reopen TASK-0040 unless a regression is proven by repository/runtime evidence."
 }

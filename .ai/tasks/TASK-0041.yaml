@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement campaign/publishing operator UX",
-  "status": "planned",
+  "status": "ready",
   "objective": "Implement the workspace-scoped operator experience for governed campaign review, preview, approval queues, channel adaptations, publication execution visibility and safe recovery actions, using canonical campaign/snapshot/calendar/publication authority only and preserving explicit permission, provider-capability, policy and partial-success boundaries without introducing UI-only bypasses or direct provider authority.",
   "dependencies": [
     "TASK-0040"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "After TASK-0041 planned registration is trusted and a separate guarded transition completes TASK-0040 and activates TASK-0041 ready, begin with a bounded operator read-model/navigation/preview foundation that consumes canonical campaign, approval, calendar and publication state without enabling direct provider side effects or widening backend authority. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive until separately authorized."
+  "exact_next_action": "TASK-0041 is staged ready/active by guarded transition PR #385, but product implementation must not begin until the transition exact head is trusted, expected-head merged and terminally reconciled. After trust, begin the bounded operator read-model, navigation and immutable snapshot/channel preview foundation with workspace isolation, explicit publication/partial-success states and focused backend/React tests. Keep production provider credential/API activation, direct provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

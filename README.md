@@ -4,24 +4,24 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=48.28 phase=61.11 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0041-REGISTRATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0040-TO-0041-TRANSITION status=VERIFYING -->
 
-> Last verified protected-main TASK-0040 acceptance baseline: **2026-09-24** at `f602ff653ba935fbaaa302d95f457760b775c33d` after PR #383 merged. Exact acceptance source `ef61294bcde9c85293325c877ccb76a7a4ae57da` passed AI Continuity Guard `36052960536`, Application Foundation CI `36052960531`, and Security Supply Chain CI `36052960197`. RBT-034 is terminal PASS; PR #384 now registers TASK-0041 as planned-only while operator-UX implementation remains inactive.
+> Last verified protected-main TASK-0041 registration basis: **2026-09-24** at `616ac1345173d18f60f13453fa5aee62247ed197` after PR #384 merged. Exact registration source `80da4ed9541217811f97e7fe90e4629b1196cdb1` passed AI Continuity Guard `36056279614`, Application Foundation CI `36056279610`, and Security Supply Chain CI `36056279598`. RBT-035 is terminal PASS; PR #385 now stages TASK-0040 completed / TASK-0041 ready without operator implementation or provider side effects.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 48.28%**  
-**Current phase: PHASE-07 — 61.11%**  
-**Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0041-REGISTRATION — VERIFYING**
+**Overall roadmap progress: 49.83%**  
+**Current phase: PHASE-07 — 83.33%**  
+**Active task: TASK-0041 — Implement campaign/publishing operator UX**  
+**Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
+**Current milestone: TASK-0040-TO-0041-TRANSITION — VERIFYING**
 
 ```text
-Overall  [██████████░░░░░░░░░░] 48.28%
-Phase 07 [████████████░░░░░░░░] 61.11%
+Overall  [██████████░░░░░░░░░░] 49.83%
+Phase 07 [█████████████████░░░] 83.33%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. Planned TASK-0041 registration expands the PHASE-07 denominator, so canonical progress normalizes to roadmap 48.28% / PHASE-07 61.11% while TASK-0040 remains active/ready until the separate transition.
+The deterministic roadmap percentage advances only from completed task weights. The guarded TASK-0040 -> TASK-0041 transition moves canonical progress to roadmap 49.83% / PHASE-07 83.33%; TASK-0041 implementation remains blocked until PR #385 is trusted and terminally reconciled.
 
 ### Phase / module progress
 
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 accepted / TASK-0041 registration** | **61.11%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 activation transition** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,11 +47,11 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0040 final acceptance is trusted on protected main through PR #383. Exact acceptance source `ef61294bcde9c85293325c877ccb76a7a4ae57da` passed AI Continuity Guard `36052960536`, Application Foundation CI `36052960531`, and Security Supply Chain CI `36052960197`; PR #383 merged as `f602ff653ba935fbaaa302d95f457760b775c33d` and RBT-034 is terminal PASS.
+TASK-0040 final acceptance and TASK-0041 planned registration are trusted on protected main. PR #384 exact source `80da4ed9541217811f97e7fe90e4629b1196cdb1` passed AI Continuity Guard `36056279614`, Application Foundation CI `36056279610`, and Security Supply Chain CI `36056279598`, then merged as `616ac1345173d18f60f13453fa5aee62247ed197`; RBT-035 is terminal PASS.
 
-PR #384 stages TASK-0041 as a planned-only successor with weight 15. The frozen UX scope is workspace-scoped campaign/publishing operation over canonical campaign, snapshot, approval, calendar and publication state: channel-aware previews, guarded bulk actions, approval queues, explicit permission/provider/partial-success states, capability-gated retry/edit/delete controls, and accessible responsive browser flows. TASK-0040 remains active/ready until the separate guarded transition.
+PR #385 stages the guarded transition: TASK-0040 `completed`, TASK-0041 `ready`/active, roadmap 49.83% and PHASE-07 83.33%. TASK-0041 product work remains blocked until the transition exact head passes required gates, merges by expected head and is terminally reconciled.
 
-Registration expands the deterministic PHASE-07 denominator, so canonical progress is roadmap 48.28% / PHASE-07 61.11%. No production provider credential/API activation, UI-only authority bypass, TASK-0042 activation, deployment/release authority or deferred Runner optimization is enabled.
+The first bounded TASK-0041 product milestone after transition trust is a workspace-scoped operator read-model/navigation and immutable snapshot/channel preview foundation with explicit publication/partial-success presentation and focused backend/React tests. No production provider credential/API activation, direct provider side effect, TASK-0042 activation, deployment/release authority or deferred Runner optimization is enabled.
 
 ### README progress-sync contract
 

@@ -1066,18 +1066,33 @@
       "source": "PR #385 / guarded TASK-0040 -> TASK-0041 transition",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "72dd844c3b32438c5a1a1b5ab1815108d91a6f57",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #385 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "control/transition-task-0040-to-0041; TASK-0040 completed + TASK-0041 ready/active deterministic transition",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0040-task0041-transition:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 385,
+        "source_sha": "72dd844c3b32438c5a1a1b5ab1815108d91a6f57",
+        "merge_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
+        "workflow_runs": {
+          "ai_continuity_guard": 36057394172,
+          "application_foundation_ci": 36057394133,
+          "security_supply_chain_ci": 36057394186
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "transition": "TASK-0040 completed; TASK-0041 ready/active; no operator product implementation or provider side effect in transition carrier."
+      }
     }
   ]
 }

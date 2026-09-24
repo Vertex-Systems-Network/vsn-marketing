@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { useMemo, useState } from 'react';
 
 type Workspace = {
     id: string;
@@ -73,10 +74,36 @@ type Summary = {
     partial_success: number;
 };
 
+type BulkResult = {
+    batch_id: string;
+    operation: 'approve' | 'reject';
+    confirmed: boolean;
+    role_source: string;
+    counts: {
+        total: number;
+        eligible: number;
+        applied: number;
+        already_applied: number;
+        ineligible: number;
+        conflict: number;
+    };
+    results: Array<{
+        campaign_id: string;
+        snapshot_id: string;
+        expected_state_version: number;
+        status: string;
+        reason: string | null;
+    }>;
+};
+
 type Props = {
     workspace: Workspace;
     campaigns: Campaign[];
     summary: Summary;
+    permissions: {
+        can_approve: boolean;
+    };
+    bulk_result: BulkResult | null;
 };
 
 const stateLabels: Record<string, string> = {
@@ -158,9 +185,170 @@ function EmptyState() {
         <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] px-6 py-14 text-center">
             <p className="text-sm font-medium text-neutral-200">No campaigns in this workspace yet.</p>
             <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-neutral-500">
-                This operator surface only reads canonical campaign state. Creation and mutation controls will arrive in later guarded milestones.
+                This operator surface reads canonical campaign state. Approval mutations are exposed only through guarded server-authorized workflows.
             </p>
         </div>
+    );
+}
+
+
+function ApprovalQueue({
+    workspace,
+    campaigns,
+    canApprove,
+    bulkResult,
+}: {
+    workspace: Workspace;
+    campaigns: Campaign[];
+    canApprove: boolean;
+    bulkResult: BulkResult | null;
+}) {
+    const candidates = useMemo(
+        () => campaigns.filter((campaign) => campaign.status === 'needs_approval' && campaign.snapshot !== null),
+        [campaigns],
+    );
+    const [selected, setSelected] = useState<string[]>([]);
+    const [reason, setReason] = useState('');
+    const [batchId, setBatchId] = useState<string | null>(null);
+
+    const selectedItems = candidates
+        .filter((campaign) => selected.includes(campaign.id))
+        .map((campaign) => ({
+            campaign_id: campaign.id,
+            snapshot_id: campaign.snapshot!.id,
+            state_version: campaign.state_version,
+        }));
+
+    const toggle = (campaignId: string) => {
+        setSelected((current) =>
+            current.includes(campaignId)
+                ? current.filter((id) => id !== campaignId)
+                : [...current, campaignId],
+        );
+    };
+
+    const submit = (operation: 'approve' | 'reject', confirmed: boolean) => {
+        if (selectedItems.length === 0) return;
+        if (operation === 'reject' && reason.trim().length < 3) return;
+
+        const nextBatchId = confirmed && batchId ? batchId : crypto.randomUUID();
+        if (!confirmed) setBatchId(nextBatchId);
+
+        router.post(
+            \`/workspaces/\${workspace.id}/publishing/approvals/bulk\`,
+            {
+                batch_id: nextBatchId,
+                operation,
+                confirmed,
+                reason: reason.trim() === '' ? null : reason.trim(),
+                items: selectedItems,
+            },
+            { preserveScroll: true, preserveState: true },
+        );
+    };
+
+    if (!canApprove || candidates.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="mt-8 rounded-3xl border border-amber-400/15 bg-amber-400/[0.035] p-5" aria-label="Approval queue">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">Approval queue</p>
+                    <h2 className="mt-2 text-xl font-semibold text-white">Guarded bulk decisions</h2>
+                    <p className="mt-1 max-w-2xl text-sm leading-6 text-neutral-400">
+                        Selection is only a request. The server rechecks workspace authority, current approver role, state version and immutable snapshot before any decision is recorded.
+                    </p>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-neutral-300">
+                    {selected.length} selected · max 25
+                </div>
+            </div>
+
+            <div className="mt-5 grid gap-2">
+                {candidates.map((campaign) => (
+                    <label key={campaign.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-black/15 px-3 py-3">
+                        <input
+                            type="checkbox"
+                            checked={selected.includes(campaign.id)}
+                            onChange={() => toggle(campaign.id)}
+                            className="h-4 w-4 rounded border-white/20 bg-black"
+                        />
+                        <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium text-neutral-100">{campaign.name}</p>
+                            <p className="mt-1 font-mono text-[11px] text-neutral-600">
+                                snapshot {shortHash(campaign.snapshot!.id)} · state v{campaign.state_version}
+                            </p>
+                        </div>
+                        <Badge value={campaign.status} />
+                    </label>
+                ))}
+            </div>
+
+            <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto]">
+                <label className="block">
+                    <span className="text-xs text-neutral-500">Decision reason · required for rejection</span>
+                    <input
+                        value={reason}
+                        onChange={(event) => setReason(event.target.value)}
+                        maxLength={500}
+                        className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-700 focus:border-sky-400/40"
+                        placeholder="Why is this decision being made?"
+                    />
+                </label>
+                <div className="flex items-end gap-2">
+                    <button
+                        type="button"
+                        disabled={selected.length === 0}
+                        onClick={() => submit('approve', false)}
+                        className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2.5 text-sm font-medium text-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        Preflight approve
+                    </button>
+                    <button
+                        type="button"
+                        disabled={selected.length === 0 || reason.trim().length < 3}
+                        onClick={() => submit('reject', false)}
+                        className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-2.5 text-sm font-medium text-rose-100 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        Preflight reject
+                    </button>
+                </div>
+            </div>
+
+            {bulkResult && (
+                <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4" role="status">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p className="text-sm font-medium text-white">
+                                {bulkResult.confirmed ? 'Execution result' : 'Preflight result'} · {label(bulkResult.operation)}
+                            </p>
+                            <p className="mt-1 text-xs text-neutral-500">
+                                {bulkResult.counts.eligible} eligible · {bulkResult.counts.applied} applied · {bulkResult.counts.conflict} conflicts · {bulkResult.counts.ineligible} ineligible
+                            </p>
+                        </div>
+                        {!bulkResult.confirmed && bulkResult.counts.eligible > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => submit(bulkResult.operation, true)}
+                                className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black"
+                            >
+                                Confirm {bulkResult.operation}
+                            </button>
+                        )}
+                    </div>
+                    <div className="mt-3 grid gap-2">
+                        {bulkResult.results.map((result) => (
+                            <div key={result.campaign_id} className="flex items-center justify-between gap-3 rounded-lg border border-white/10 px-3 py-2 text-xs">
+                                <span className="font-mono text-neutral-400">{shortHash(result.campaign_id)}</span>
+                                <span className="text-neutral-200">{result.status}{result.reason ? \` · \${label(result.reason)}\` : ''}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </section>
     );
 }
 
@@ -313,7 +501,7 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
     );
 }
 
-export default function PublishingOperator({ workspace, campaigns, summary }: Props) {
+export default function PublishingOperator({ workspace, campaigns, summary, permissions, bulk_result }: Props) {
     return (
         <>
             <Head title="Publishing operator" />
@@ -324,7 +512,7 @@ export default function PublishingOperator({ workspace, campaigns, summary }: Pr
                             <div className="flex flex-wrap items-center gap-2">
                                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300">VSN Marketing</p>
                                 <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-sky-200">
-                                    Read-only milestone
+                                    Governed operator
                                 </span>
                             </div>
                             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Publishing operator</h1>
@@ -344,6 +532,13 @@ export default function PublishingOperator({ workspace, campaigns, summary }: Pr
                         <StatCard label="Scheduled" value={summary.scheduled} hint="Immutable timing" />
                         <StatCard label="Partial success" value={summary.partial_success} hint="Mixed target outcomes" />
                     </section>
+
+                    <ApprovalQueue
+                        workspace={workspace}
+                        campaigns={campaigns}
+                        canApprove={permissions.can_approve}
+                        bulkResult={bulk_result}
+                    />
 
                     <section className="mt-8 space-y-4">
                         <div className="flex items-center justify-between gap-4">

@@ -80,7 +80,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
         'workspace_id' => $workspaceId,
         'name' => 'Operator campaign '.$suffix,
         'status' => 'draft',
-        'state_version' => 1,
+        'state_version' => 2,
         'idempotency_key' => 'operator-campaign-'.$suffix,
         'created_by_actor_id' => (string) $user->getKey(),
         'created_at' => $createdAt,
@@ -189,7 +189,7 @@ it('preflights approval without mutation and resolves approver authority on the 
     $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'preflight');
     task0041GrantApprover($actor['user'], $actor['workspace'], 'preflight');
 
-    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval']);
+    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval', 'state_version' => 2]);
 
     $batchId = '11111111-1111-4111-8111-111111111111';
     $this->actingAs($actor['user'])
@@ -200,7 +200,7 @@ it('preflights approval without mutation and resolves approver authority on the 
             'items' => [[
                 'campaign_id' => $campaign['campaign_id'],
                 'snapshot_id' => $campaign['snapshot_id'],
-                'state_version' => 1,
+                'state_version' => 2,
             ]],
             'role_key' => 'forged-browser-role',
         ])
@@ -226,7 +226,7 @@ it('applies only exact-version eligible campaigns and skips stale bulk items', f
 
     DB::table('campaigns')
         ->whereIn('id', [$first['campaign_id'], $second['campaign_id']])
-        ->update(['status' => 'needs_approval']);
+        ->update(['status' => 'needs_approval', 'state_version' => 2]);
 
     $payload = [
         'batch_id' => '22222222-2222-4222-8222-222222222222',
@@ -237,7 +237,7 @@ it('applies only exact-version eligible campaigns and skips stale bulk items', f
             [
                 'campaign_id' => $first['campaign_id'],
                 'snapshot_id' => $first['snapshot_id'],
-                'state_version' => 1,
+                'state_version' => 2,
             ],
             [
                 'campaign_id' => $second['campaign_id'],
@@ -281,17 +281,17 @@ it('fails closed when bulk approval references a campaign from another workspace
     $foreignCampaign = task0041OperatorCampaign($foreign['workspace'], $foreign['user'], 'bulk-foreign');
     task0041GrantApprover($inside['user'], $inside['workspace'], 'bulk-inside');
 
-    DB::table('campaigns')->where('id', $foreignCampaign['campaign_id'])->update(['status' => 'needs_approval']);
+    DB::table('campaigns')->where('id', $foreignCampaign['campaign_id'])->update(['status' => 'needs_approval', 'state_version' => 2]);
 
     $this->actingAs($inside['user'])
         ->post('/workspaces/'.$inside['workspace']->getKey().'/publishing/approvals/bulk', [
             'batch_id' => '33333333-3333-4333-8333-333333333333',
             'operation' => 'approve',
-            'confirmed' => true,
+            'confirmed' => false,
             'items' => [[
                 'campaign_id' => $foreignCampaign['campaign_id'],
                 'snapshot_id' => $foreignCampaign['snapshot_id'],
-                'state_version' => 1,
+                'state_version' => 2,
             ]],
         ])
         ->assertForbidden();
@@ -304,7 +304,7 @@ it('rejects confirmed bulk approval that has no matching server preflight', func
     $actor = task0041OperatorActor('confirm-guard');
     $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'confirm-guard');
     task0041GrantApprover($actor['user'], $actor['workspace'], 'confirm-guard');
-    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval']);
+    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval', 'state_version' => 2]);
 
     $this->actingAs($actor['user'])
         ->from('/workspaces/'.$actor['workspace']->getKey().'/publishing')
@@ -315,7 +315,7 @@ it('rejects confirmed bulk approval that has no matching server preflight', func
             'items' => [[
                 'campaign_id' => $campaign['campaign_id'],
                 'snapshot_id' => $campaign['snapshot_id'],
-                'state_version' => 1,
+                'state_version' => 2,
             ]],
         ])
         ->assertRedirect('/workspaces/'.$actor['workspace']->getKey().'/publishing')

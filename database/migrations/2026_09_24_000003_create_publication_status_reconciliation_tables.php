@@ -48,6 +48,10 @@ return new class extends Migration
                 )->references(['id', 'workspace_id'])->on('providers')->restrictOnDelete();
 
                 $table->unique(['id', 'workspace_id'], 'publication_status_observation_id_workspace_uq');
+                $table->unique(
+                    ['id', 'workspace_id', 'publication_attempt_id'],
+                    'publication_status_observation_attempt_identity_uq',
+                );
                 $table->unique(['workspace_id', 'idempotency_key'], 'publication_status_observation_idempotency_uq');
                 $table->index(
                     ['workspace_id', 'publication_attempt_id', 'sequence'],
@@ -96,9 +100,9 @@ return new class extends Migration
                     'publication_status_projection_provider_workspace_fk',
                 )->references(['id', 'workspace_id'])->on('providers')->restrictOnDelete();
                 $table->foreign(
-                    ['current_observation_id', 'workspace_id'],
-                    'publication_status_projection_observation_workspace_fk',
-                )->references(['id', 'workspace_id'])->on('publication_status_observations')->restrictOnDelete();
+                    ['current_observation_id', 'workspace_id', 'publication_attempt_id'],
+                    'publication_status_projection_observation_attempt_fk',
+                )->references(['id', 'workspace_id', 'publication_attempt_id'])->on('publication_status_observations')->restrictOnDelete();
 
                 $table->unique(
                     ['publication_attempt_id', 'workspace_id'],
@@ -161,7 +165,7 @@ BEGIN
         RAISE EXCEPTION 'publication status projection authority is immutable';
     END IF;
 
-    IF NEW.projection_version <> OLD.projection_version + 1 OR NEW.updated_at <= OLD.updated_at THEN
+    IF NEW.projection_version <> OLD.projection_version + 1 OR NEW.updated_at < OLD.updated_at THEN
         RAISE EXCEPTION 'publication status projection version is not monotonic';
     END IF;
 
@@ -219,7 +223,7 @@ SQL);
             DB::unprepared("CREATE TRIGGER IF NOT EXISTS publication_status_observations_immutable_delete BEFORE DELETE ON publication_status_observations BEGIN SELECT RAISE(ABORT, 'publication status observations are append-only'); END;");
             DB::unprepared("CREATE TRIGGER IF NOT EXISTS publication_status_projections_no_delete BEFORE DELETE ON publication_status_projections BEGIN SELECT RAISE(ABORT, 'publication status projection cannot be deleted'); END;");
             DB::unprepared("CREATE TRIGGER IF NOT EXISTS publication_status_projections_authority BEFORE UPDATE ON publication_status_projections WHEN NEW.publication_attempt_id IS NOT OLD.publication_attempt_id OR NEW.workspace_id IS NOT OLD.workspace_id OR NEW.provider_connection_id IS NOT OLD.provider_connection_id OR NEW.capability_evidence_id IS NOT OLD.capability_evidence_id OR NEW.provider_id IS NOT OLD.provider_id OR NEW.provider_operation_id IS NOT OLD.provider_operation_id BEGIN SELECT RAISE(ABORT, 'publication status projection authority is immutable'); END;");
-            DB::unprepared("CREATE TRIGGER IF NOT EXISTS publication_status_projections_monotonic BEFORE UPDATE ON publication_status_projections WHEN NEW.projection_version <> OLD.projection_version + 1 OR NEW.updated_at <= OLD.updated_at OR NEW.provider_observed_at < OLD.provider_observed_at OR (OLD.normalized_status IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status <> OLD.normalized_status) OR (OLD.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status = 'unknown' AND OLD.normalized_status <> 'unknown') OR (OLD.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND (CASE NEW.normalized_status WHEN 'unknown' THEN -1 WHEN 'accepted' THEN 0 WHEN 'pending' THEN 1 WHEN 'in_progress' THEN 2 ELSE 3 END) < (CASE OLD.normalized_status WHEN 'unknown' THEN -1 WHEN 'accepted' THEN 0 WHEN 'pending' THEN 1 WHEN 'in_progress' THEN 2 ELSE 3 END)) BEGIN SELECT RAISE(ABORT, 'publication status projection is not monotonic'); END;");
+            DB::unprepared("CREATE TRIGGER IF NOT EXISTS publication_status_projections_monotonic BEFORE UPDATE ON publication_status_projections WHEN NEW.projection_version <> OLD.projection_version + 1 OR NEW.updated_at < OLD.updated_at OR NEW.provider_observed_at < OLD.provider_observed_at OR (OLD.normalized_status IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status <> OLD.normalized_status) OR (OLD.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status = 'unknown' AND OLD.normalized_status <> 'unknown') OR (OLD.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND NEW.normalized_status NOT IN ('succeeded', 'failed', 'cancelled') AND (CASE NEW.normalized_status WHEN 'unknown' THEN -1 WHEN 'accepted' THEN 0 WHEN 'pending' THEN 1 WHEN 'in_progress' THEN 2 ELSE 3 END) < (CASE OLD.normalized_status WHEN 'unknown' THEN -1 WHEN 'accepted' THEN 0 WHEN 'pending' THEN 1 WHEN 'in_progress' THEN 2 ELSE 3 END)) BEGIN SELECT RAISE(ABORT, 'publication status projection is not monotonic'); END;");
         }
     }
 

@@ -160,7 +160,7 @@ final readonly class PublicationStatusProjection
             currentObservationId: $observation->id,
             currentObservationHash: $observation->observationHash,
             projectionVersion: $this->projectionVersion + 1,
-            updatedAt: $observation->receivedAt,
+            updatedAt: $observation->receivedAt < $this->updatedAt ? $this->updatedAt : $observation->receivedAt,
         );
     }
 }

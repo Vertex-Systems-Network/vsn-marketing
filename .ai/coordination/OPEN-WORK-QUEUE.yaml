@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2fb81e791507e691a443662dc1a11d091535d24d",
-  "active_work_path": null,
+  "reconciled_main_sha": "f77d1ac80515999abcb9f9505ec230c94c4eca7d",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 373,
+    "branch": "task/0040-publication-attempt-foundation",
+    "milestone": "TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -63,6 +68,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 373,
+      "title": "feat(publishing): add publication attempt persistence foundation",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-028",
+      "branch": "task/0040-publication-attempt-foundation"
     }
   ]
 }

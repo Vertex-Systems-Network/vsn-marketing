@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-24T11:32:00Z`
-- Observed main: `2fb81e791507e691a443662dc1a11d091535d24d`
+- Timestamp: `2026-09-24T11:57:15Z`
+- Observed main: `f77d1ac80515999abcb9f9505ec230c94c4eca7d`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0039-TO-0040-TRANSITION`
-- Milestone status: `COMPLETE`
+- Active PR: `373`
+- Active branch: `task/0040-publication-attempt-foundation`
+- Current milestone: `TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
-- Execution status: `ready`
-- Pending Runner IDs: `none`
+- Execution status: `in_progress`
+- Pending Runner IDs: `RBT-028`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `ce346433e342fde9797611fc658febbf43ff8879fb4c90c9c7bb703d4ec2e32b`
+- State fingerprint: `4168fc5288bb61e30f5445302a1b0e51056cadb3f7b8b8141776b11bf74ee74f`
 
 ## Completed / observed this session
 
-Guarded TASK-0039 -> TASK-0040 transition PR #371 exact source `bb6a7f699b7b86ee42de2487661905bcb06e5501` passed AI Continuity Guard `35922236225`, Application Foundation CI `35922236211` and Security Supply Chain CI `35922236405`, then merged on protected main as `2fb81e791507e691a443662dc1a11d091535d24d`. RBT-027 is terminal PASS and the transition work path is cleared.
+TASK-0040 activation terminal reconciliation PR #372 exact source `efe7c116a4d952c6f35054ebaed64a9e76023623` passed AI Continuity Guard `35994594893`, Application Foundation CI `35994594903` and Security Supply Chain CI `35994594952`, then merged on protected main as `f77d1ac80515999abcb9f9505ec230c94c4eca7d`.
 
-TASK-0039 is completed. TASK-0040 is active/ready at deterministic roadmap `49.13%` / PHASE-07 `73.33%`. TASK-0041 remains unregistered, so next_task is none.
+PR #373 stages the first bounded TASK-0040 product slice. It adds workspace-scoped immutable publication-attempt persistence bound to the exact campaign schedule execution intent and immutable provider target, exact `publication.create` capability evidence and current provider connection authority. Deterministic idempotency converges duplicate prepare/replay to one canonical attempt per exact execution-intent/target.
 
-The first bounded TASK-0040 product milestone is provider-neutral publication-attempt persistence/state-machine with exact execution-intent/snapshot/target/account binding, immutable attempt identity/idempotency, deterministic state transitions, and PostgreSQL/adversarial workspace-isolation and duplicate-dispatch evidence.
+The database migration adds composite workspace foreign keys, immutable authority guards and monotonic state/version transitions for PostgreSQL and SQLite. Focused unit/security/PostgreSQL coverage checks replay, cross-workspace isolation, provider operation/scope drift, re-entrant migration and state-machine enforcement. Provider credential/secret material is not persisted in publication-attempt records.
 
-Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization remain inactive.
+No production provider API call, media upload/publication side effect, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #371 exact head: Continuity `35922236225` PASS; Application `35922236211` PASS; Security `35922236405` PASS. No blocking review threads were present when the transition was reconciled.
+RBT-028 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #373. Merge-blocking evidence includes unit/domain state-machine coverage, adversarial workspace/provider-authority drift coverage, PostgreSQL migration/data-safety and immutable/monotonic database-state enforcement.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ PR #371 exact head: Continuity `35922236225` PASS; Application `35922236211` PAS
 
 ## Exact next action
 
-Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.
+Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.

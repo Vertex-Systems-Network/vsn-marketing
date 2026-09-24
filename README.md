@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0039-TO-0040-TRANSITION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION status=VERIFYING -->
 
-> Last verified protected-main transition baseline: **2026-09-24** at `2fb81e791507e691a443662dc1a11d091535d24d` after guarded TASK-0039 -> TASK-0040 PR #371 merged. Exact source `bb6a7f699b7b86ee42de2487661905bcb06e5501` passed AI Continuity Guard `35922236225`, Application Foundation CI `35922236211`, and Security Supply Chain CI `35922236405`. TASK-0039 is completed and TASK-0040 is active/ready; production provider/publication side effects remain inactive.
+> Last verified protected-main TASK-0040 activation baseline: **2026-09-24** at `f77d1ac80515999abcb9f9505ec230c94c4eca7d` after terminal reconciliation PR #372 merged. Exact source `efe7c116a4d952c6f35054ebaed64a9e76023623` passed AI Continuity Guard `35994594893`, Application Foundation CI `35994594903`, and Security Supply Chain CI `35994594952`. PR #373 now stages the first bounded publication-attempt persistence/state-machine foundation; production provider/publication side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 73.33%**  
 **Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
 **Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0039-TO-0040-TRANSITION — COMPLETE**
+**Current milestone: TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.13%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 publication-attempt foundation** | **73.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 publication-attempt PR #373 verification** | **73.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,9 +47,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-Guarded TASK-0039 -> TASK-0040 transition PR #371 is trusted and terminally reconciled. TASK-0039 is `completed`; TASK-0040 is active/`ready` at deterministic roadmap 49.13% / PHASE-07 73.33%.
+TASK-0040 activation is trusted and terminally reconciled through PR #372. TASK-0040 is active/in-progress at deterministic roadmap 49.13% / PHASE-07 73.33%; PR #373 stages the first bounded product foundation.
 
-TASK-0040 implementation may now begin only with the bounded provider-neutral publication-attempt persistence/state-machine milestone: exact execution-intent/snapshot/target/account authority, immutable attempt identity/idempotency, deterministic state transitions, and PostgreSQL/adversarial isolation/duplicate-dispatch evidence. Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+PR #373 stages workspace-scoped provider-neutral publication attempts bound to exact campaign schedule execution-intent and immutable provider-target authority, deterministic one-attempt-per-intent/target idempotency, current `publication.create` capability/connection/scope/role/freshness revalidation, PostgreSQL/SQLite immutable authority plus monotonic state-machine guards, and replay/cross-workspace/provider-drift tests. Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 README progress-sync protocol v2.4.2 remains enforced.
 

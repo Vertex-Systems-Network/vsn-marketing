@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
+  "reconciled_main_sha": "792881f5c702ee38fa12b066f2eb8f65e73baca3",
   "active_work_path": {
     "kind": "pr",
-    "number": 386,
-    "branch": "task-0041-operator-read-model-preview",
-    "milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW"
+    "number": 387,
+    "branch": "supervisor/task-0041-approval-bulk-safeguards",
+    "milestone": "TASK-0041-APPROVAL-BULK-SAFEGUARDS"
   },
   "items": [
     {
@@ -92,10 +92,19 @@
       "kind": "pr",
       "number": 386,
       "title": "feat(publishing): add operator read model and snapshot preview",
-      "disposition": "active_task_product_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-037",
       "branch": "task-0041-operator-read-model-preview"
+    },
+    {
+      "kind": "pr",
+      "number": 387,
+      "title": "feat(publishing): add guarded approval queue and bulk decisions",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-038",
+      "branch": "supervisor/task-0041-approval-bulk-safeguards"
     }
   ]
 }

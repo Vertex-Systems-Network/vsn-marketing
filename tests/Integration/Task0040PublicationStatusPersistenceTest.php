@@ -95,7 +95,7 @@ it('database guards reject projection regression and terminal rewrite', function
         receivedAt: new DateTimeImmutable('2026-07-15T13:31:01+00:00'),
     );
 
-    expect(fn () => DB::table('publication_status_projections')
+    expect(fn () => DB::transaction(fn () => DB::table('publication_status_projections')
         ->where('publication_attempt_id', $attempt->id)
         ->update([
             'normalized_status' => 'pending',
@@ -103,7 +103,7 @@ it('database guards reject projection regression and terminal rewrite', function
             'provider_observed_at' => new DateTimeImmutable('2026-07-15T13:31:10+00:00'),
             'projection_version' => 2,
             'updated_at' => new DateTimeImmutable('2026-07-15T13:31:11+00:00'),
-        ]))
+        ])))
         ->toThrow(QueryException::class);
 
     $terminal = $service->observe(
@@ -120,7 +120,7 @@ it('database guards reject projection regression and terminal rewrite', function
 
     expect($terminal->projection->normalizedStatus)->toBe(ProviderOperationStatus::Succeeded);
 
-    expect(fn () => DB::table('publication_status_projections')
+    expect(fn () => DB::transaction(fn () => DB::table('publication_status_projections')
         ->where('publication_attempt_id', $attempt->id)
         ->update([
             'normalized_status' => 'failed',
@@ -128,6 +128,6 @@ it('database guards reject projection regression and terminal rewrite', function
             'provider_observed_at' => new DateTimeImmutable('2026-07-15T13:33:00+00:00'),
             'projection_version' => 3,
             'updated_at' => new DateTimeImmutable('2026-07-15T13:33:01+00:00'),
-        ]))
+        ])))
         ->toThrow(QueryException::class);
 });

@@ -9,3 +9,7 @@ Route::middleware(['guest', 'throttle:login'])
     ->post('/auth/login', [SessionController::class, 'store'])
     ->name('auth.login');
 Route::middleware('auth')->post('/auth/logout', [SessionController::class, 'destroy'])->name('auth.logout');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ])
+    ->get('/workspaces/{workspace}/publishing', PublishingOperatorController::class)
+    ->name('publishing.operator');

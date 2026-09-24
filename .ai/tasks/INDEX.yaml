@@ -404,7 +404,7 @@
       "phase": "PHASE-07",
       "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
       "weight": 20,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0039"
       ]

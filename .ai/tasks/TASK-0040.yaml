@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement channel-neutral publication lifecycle and provider reconciliation",
-  "status": "ready",
+  "status": "in_progress",
   "objective": "Implement the workspace-scoped provider-neutral publication lifecycle that consumes trusted canonical execution intents and exact approved campaign snapshots/targets into immutable publication attempts, capability-checked target-account operations, derivative media-processing references, idempotent retries and deterministic provider-status reconciliation, while preserving VSN campaign/snapshot/asset authority and failing closed on provider disconnect, permission, app-review, account-role or capability drift.",
   "dependencies": [
     "TASK-0039"
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Perform exact-head verification for PR #373. Merge the TASK-0040 publication-attempt persistence/state-machine foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; PostgreSQL coverage proves one canonical immutable publication attempt per exact workspace/execution-intent/provider-target, replay converges without duplicate work, authority fields and state transitions are database-guarded and monotonic, provider credentials/secrets are not persisted, current approval and publication.create provider capability/connection/scope/role/freshness authority fail closed on drift, and foreign-workspace references are denied. After trusted merge, terminally reconcile this foundation before beginning the next TASK-0040 slice. Keep production provider API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

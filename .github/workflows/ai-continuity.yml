@@ -12,6 +12,7 @@ permissions:
 
 env:
   TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
 concurrency:
   group: ai-continuity-${{ github.workflow }}-${{ github.ref }}
@@ -32,6 +33,16 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.13'
+      - name: Validate strict change-aware CI classification
+        env:
+          CI_FORCE_FULL: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+        run: >-
+          python tools/ci_change_policy.py classify
+          --base "${BASE_SHA}"
+          --head "${TARGET_SHA}"
+          --event-path "${GITHUB_EVENT_PATH}"
+      - name: Test strict change-aware CI policy
+        run: python tools/test_ci_change_policy.py
       - name: Require immutable GitHub Actions dependencies
         run: python tools/check_action_pins.py
       - name: Validate transactional continuity state
@@ -40,6 +51,15 @@ jobs:
         run: python tools/ai_state.py validate
       - name: Validate hash-chained execution journal
         run: python tools/ai_journal.py validate
+      - name: Validate durable Supervisor resume contract
+        run: python tools/supervisor_contract.py validate
+      - name: Validate protected-main snapshot anchor
+        if: github.event_name == 'pull_request'
+        run: >-
+          python tools/supervisor_contract.py validate-main-observation
+          --current-main "${{ github.event.pull_request.base.sha }}"
+      - name: Validate machine Runner Benchmark
+        run: python tools/runner_benchmark.py validate
       - name: Validate AI policy registries
         run: python tools/ai_policy.py
       - name: Validate parallel Supervisor control plane
@@ -50,6 +70,10 @@ jobs:
         run: python tools/test_ai_txn.py
       - name: Test AI continuity integrity guards
         run: python tools/test_ai_continuity.py
+      - name: Test durable Supervisor resume contract
+        run: python tools/test_supervisor_contract.py
+      - name: Test machine Runner Benchmark
+        run: python tools/test_runner_benchmark.py
       - name: Test deterministic AI context packs
         run: python tools/test_ai_context.py
       - name: Test AI policy negative guards
@@ -65,6 +89,13 @@ jobs:
       - name: Validate registered workstream PR submission signal
         if: github.event_name == 'pull_request'
         run: python tools/ai_parallel.py validate-pr-event --event-path "$GITHUB_EVENT_PATH"
+      - name: Enforce migration/data-safety review markers
+        if: github.event_name == 'pull_request'
+        run: >-
+          python tools/supervisor_contract.py validate-pr-event
+          --event-path "$GITHUB_EVENT_PATH"
+          --base "${{ github.event.pull_request.base.sha }}"
+          --head "${{ env.TARGET_SHA }}"
       - name: Require registered workstream branch to contain current main
         if: github.event_name == 'pull_request'
         run: python tools/ai_parallel.py sync-check --branch "${{ github.event.pull_request.head.ref }}"

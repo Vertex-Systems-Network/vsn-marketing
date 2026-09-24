@@ -1,0 +1,1116 @@
+{
+  "schema_version": 1,
+  "registry": "VSN Runner Benchmark",
+  "policy": {
+    "registration_grants_execution_authority": false,
+    "default_non_blocking_execution": "deferred_final_batch",
+    "immediate_classes": [
+      "security-critical validation",
+      "exact-head merge-required checks",
+      "migration/auth/secrets/data-safety checks",
+      "current-change integration-safety checks",
+      "incident/recovery checks"
+    ],
+    "terminal_evidence_required": true,
+    "exact_source_identity_required_before_execution": true
+  },
+  "tasks": [
+    {
+      "id": "RBT-001",
+      "source": "Application Foundation CI benchmark backlog",
+      "command_workflow": ".github/workflows/application-ci.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ubuntu-latest; PHP 8.5/8.3; Node 24; PostgreSQL 18; Redis 8; Playwright Chromium; repository fixtures",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:application-foundation:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-002",
+      "source": "Security Supply Chain CI benchmark backlog",
+      "command_workflow": ".github/workflows/security-ci.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ubuntu-latest; CodeQL; Semgrep; Composer/npm audit; Trivy secret/container; SBOM reproducibility",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": true,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:security-supply-chain:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-003",
+      "source": "Shipping Fast Gate benchmark backlog",
+      "command_workflow": ".github/workflows/shipping-fast-gate.yml",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "ship/week-1 exact-head fast-gate workload",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baseline",
+      "dedup_key": "runner:shipping-fast-gate:baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-004",
+      "source": "Issue #134 / TASK-0024 production-representative delivery benchmark",
+      "command_workflow": "tools/task0024_benchmark_capture.php / authorized external benchmark environment",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis delivery + reconciliation environment; exact fixture/threshold identity required",
+      "authorization_state": "awaiting_explicit_runtime_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_external_runtime",
+      "dedup_key": "runner:task0024:production-representative:v7",
+      "status": "deferred_authorization_required",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-005",
+      "source": "PR #235 + PR #236 CodeQL runner/toolchain maintenance",
+      "command_workflow": "github/codeql-action init/analyze maintenance review",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "current security-ci CodeQL javascript-typescript/actions matrix",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": true,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_RBT-002",
+      "dedup_key": "runner:codeql-toolchain:235-236",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-006",
+      "source": "Runner size/architecture/cache/concurrency evaluation",
+      "command_workflow": "cross-workflow benchmark batch",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true
+      },
+      "environment_matrix_input_fixture": "variants frozen only after RBT-001..005 baselines",
+      "authorization_state": "deferred_no_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_until_baselines",
+      "dedup_key": "runner:topology-optimization:post-baseline",
+      "status": "deferred",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-007",
+      "source": "PR #334 / Supervisor durable-resume contract v2 control milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "6a2ad96e74f394b9d41752f517c6a08cc18500d7",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #334 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/supervisor-durable-resume-v2; full exact-head governance/application/security verification",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:supervisor-contract-v2:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 334,
+        "source_sha": "6a2ad96e74f394b9d41752f517c6a08cc18500d7",
+        "merge_sha": "065b4da5cba4f610d5473e41ddb9fc3089e5c305",
+        "workflow_runs": {
+          "ai_continuity_guard": 35613079867,
+          "application_foundation_ci": 35613079738,
+          "security_supply_chain_ci": 35613079745
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-008",
+      "source": "PR #336 / non-recursive protected-main observation control milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "fd594bc19f71eaecce26ec2fe54f43336be77b35",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #336 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/nonrecursive-main-observation; workflow/tool/control exact-head verification",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:nonrecursive-main-observation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 336,
+        "source_sha": "fd594bc19f71eaecce26ec2fe54f43336be77b35",
+        "merge_sha": "aed56d384d6a5a1c6f111f234426ede455963920",
+        "workflow_runs": {
+          "ai_continuity_guard": 35615993805,
+          "application_foundation_ci": 35615993706,
+          "security_supply_chain_ci": 35615993876
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Security run initially failed on upstream HTTP 504 while installing checksum-verified Trivy; same-head failed-job rerun passed with no security weakening."
+      }
+    },
+    {
+      "id": "RBT-009",
+      "source": "PR #338 / TASK-0038 PHASE-07 registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "73068a7e8b58f13d3d78d12d1cfc66d6bb113089",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #338 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0038-phase07; TASK-0038 planned-registration exact-head verification",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-registration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 338,
+        "source_sha": "73068a7e8b58f13d3d78d12d1cfc66d6bb113089",
+        "merge_sha": "b0c701b46be8699eacce8b97e7af9f1505b78c09",
+        "workflow_runs": {
+          "ai_continuity_guard": 35618889918,
+          "application_foundation_ci": 35618889939,
+          "security_supply_chain_ci": 35618889946
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-010",
+      "source": "PR #340 / guarded TASK-0037 -> TASK-0038 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #340 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0037-to-0038; PHASE-07 task-transition exact-head verification",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0037-task0038-transition:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 340,
+        "source_sha": "8c0c9c7d74c1766b027f7e8eb1d67117d523ba5e",
+        "merge_sha": "32b81753c44cf2a3e285c3423b4a26c13a8f6afc",
+        "workflow_runs": {
+          "ai_continuity_guard": 35620231528,
+          "application_foundation_ci": 35620231349,
+          "security_supply_chain_ci": 35620231323
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-011",
+      "source": "PR #342 / TASK-0038 campaign persistence/domain foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "901a06378977f396df19c4cacaff942090f2c19e",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #342 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0038-campaign-foundation; additive/re-entrant migration + PostgreSQL campaign persistence + security immutability/workspace isolation",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-campaign-foundation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 342,
+        "source_sha": "901a06378977f396df19c4cacaff942090f2c19e",
+        "merge_sha": "ae1f98dc4b6060941d7d44de52817f89dfbd10c7",
+        "workflow_runs": {
+          "ai_continuity_guard": 35630716774,
+          "application_foundation_ci": 35630716746,
+          "security_supply_chain_ci": 35630716764
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Initial verification exposed missing migration review markers, three Pint formatting issues, stale pull-request event metadata and PostgreSQL immutability-test transaction poisoning. All were repaired without weakening migration semantics, immutable triggers, security gates, thresholds, idempotency, concurrency or workspace isolation."
+      }
+    },
+    {
+      "id": "RBT-012",
+      "source": "PR #344 / TASK-0038 lifecycle and approval orchestration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "b8810ff578432d35a10306ed9c83f3ae7b4b2eb0",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #344 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0038-approval-orchestration; workspace RBAC + exact snapshot approvals + stale capability/authorization invalidation + append-only revocation",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-approval-orchestration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 344,
+        "source_sha": "b8810ff578432d35a10306ed9c83f3ae7b4b2eb0",
+        "merge_sha": "09ea7cd36faae43620024788fa39af2e2847e77b",
+        "workflow_runs": {
+          "ai_continuity_guard": 35652184734,
+          "application_foundation_ci": 35652185080,
+          "security_supply_chain_ci": 35652185065
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application verification exposed bounded PHPStan/Pint findings after functional/security tests passed. Repairs removed only statically impossible nullsafe access, an unused helper and final formatter whitespace; lifecycle, authorization, capability freshness, append-only revocation, security gates and acceptance semantics were not weakened."
+      }
+    },
+    {
+      "id": "RBT-013",
+      "source": "PR #345 / README progress synchronization control protocol v2.4.2",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "875c01c8cc7549486296e01110d3704f74260695",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #345 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/readme-progress-sync-v2; instruction fingerprint + supervisor/parallel validators + README canonical progress mirror + non-recursive observation",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:readme-progress-sync-v2:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 345,
+        "source_sha": "875c01c8cc7549486296e01110d3704f74260695",
+        "merge_sha": "5d3441bcf6af841c3515b9f7af2eeaa0ffcc94d1",
+        "workflow_runs": {
+          "ai_continuity_guard": 35654800644,
+          "application_foundation_ci": 35654800643,
+          "security_supply_chain_ci": 35654800691
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Initial exact-head continuity validation exposed an execution-journal event-109 hash mismatch. The journal hash chain was repaired without weakening README synchronization, application, security, continuity, or change-classification gates; the corrected exact head then passed all three required workflows."
+      }
+    },
+    {
+      "id": "RBT-014",
+      "source": "PR #347 / TASK-0038 immutable revision and append-oriented history",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "8fe4204fedf3ef7c25e63df8acbd9816af74f96f",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #347 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0038-revision-history; immutable material revisions + target-change provenance + cancellation/completion audit + replay/workspace-isolation guards",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-revision-history:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 347,
+        "source_sha": "8fe4204fedf3ef7c25e63df8acbd9816af74f96f",
+        "merge_sha": "3e5212d6a97312f3ea2434a4b7ce1a682f2164bb",
+        "workflow_runs": {
+          "ai_continuity_guard": 35657562769,
+          "application_foundation_ci": 35657562758,
+          "security_supply_chain_ci": 35657562762
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Initial product head required two Pint no-extra-blank-line fixes. A subsequent acceptance audit found and repaired AC-6 material-revision command replay handling so exact latest-snapshot replay resolves immutable parent provenance and remains repository-idempotent. Final exact head passed all required gates without weakening security, authorization, migration, continuity or change-classification policy."
+      }
+    },
+    {
+      "id": "RBT-015",
+      "source": "PR #349 / TASK-0038 scheduled-intent and canonical target certification",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "bd17a7b3211764f3720979e9ced6607b7d1a27fb",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #349 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0038-scheduled-target-certification; Approved->ScheduledIntent authority/replay + ContactIdentity/List/Tag canonical materialization/isolation",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-scheduled-target-certification:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 349,
+        "source_sha": "bd17a7b3211764f3720979e9ced6607b7d1a27fb",
+        "merge_sha": "74215790f1e7c70908c9da3e0bcb24251c8d6c02",
+        "workflow_runs": {
+          "ai_continuity_guard": 35660352758,
+          "application_foundation_ci": 35660352747,
+          "security_supply_chain_ci": 35660352748
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application formatting was repaired without semantic change. Pre-merge review then hardened ScheduledIntent duplicate replay so an already accepted intent remains idempotent after scheduled-time or approval expiry while immutable event/snapshot/target/approval provenance is verified; PHP 8.3 compatibility was preserved. No scheduler/provider execution or gate weakening was introduced."
+      }
+    },
+    {
+      "id": "RBT-016",
+      "source": "PR #350 / TASK-0038 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "393da7e2058149d2b0377794c4bb0518c6d1916c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #350 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/task0038-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #342/#344/#347/#349 evidence",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-final-acceptance:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 350,
+        "source_sha": "393da7e2058149d2b0377794c4bb0518c6d1916c",
+        "merge_sha": "272a139e5026098f15b5d0874eeb910beb9754d1",
+        "workflow_runs": {
+          "ai_continuity_guard": 35661612916,
+          "application_foundation_ci": 35661612968,
+          "security_supply_chain_ci": 35661613032
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "acceptance": "TASK-0038 AC-1 through AC-8 true; task/index remained ready until trusted acceptance merge."
+      }
+    },
+    {
+      "id": "RBT-017",
+      "source": "PR #351 / TASK-0039 PHASE-07 planned registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "918e1d1d8a290d9b9c729a1764e7fd8160c5d80a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #351 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0039-phase07; TASK-0039 planned-only calendar/timezone-safe scheduler contract registration",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-registration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 351,
+        "source_sha": "918e1d1d8a290d9b9c729a1764e7fd8160c5d80a",
+        "merge_sha": "3dbd2aca8547167b42610007e8494606a9f9d7df",
+        "workflow_runs": {
+          "ai_continuity_guard": 35670787818,
+          "application_foundation_ci": 35670787786,
+          "security_supply_chain_ci": 35670787729
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "registration_boundary": "TASK-0039 planned-only; TASK-0038 remains active/ready until separate guarded transition."
+      }
+    },
+    {
+      "id": "RBT-018",
+      "source": "PR #353 / guarded TASK-0038 -> TASK-0039 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "9e18966235f5c7b83f89d2dd7c7853e3354fed71",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #353 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0038-to-0039; TASK-0038 completed + TASK-0039 ready/active deterministic transition",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0038-task0039-transition:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 353,
+        "source_sha": "9e18966235f5c7b83f89d2dd7c7853e3354fed71",
+        "merge_sha": "c85294ed79c881c65e001cf5b54ce9fa645f258b",
+        "workflow_runs": {
+          "ai_continuity_guard": 35672254776,
+          "application_foundation_ci": 35672254843,
+          "security_supply_chain_ci": 35672254866
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "transition": "TASK-0038 completed; TASK-0039 active/ready; roadmap 48.45%; PHASE-07 63.64%; no scheduler/provider side effect."
+      }
+    },
+    {
+      "id": "RBT-019",
+      "source": "PR #355 / TASK-0039 calendar-timezone foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "8c23329dc7c5b0684ce132516917d696a8cf1866",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #355 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0039-calendar-timezone-foundation; immutable schedule persistence + IANA/DST resolver + PostgreSQL/security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-calendar-timezone-foundation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 355,
+        "source_sha": "8c23329dc7c5b0684ce132516917d696a8cf1866",
+        "merge_sha": "2e0e0d9fc1d871ce6631c539593277b3da5ed787",
+        "workflow_runs": {
+          "ai_continuity_guard": 35703158184,
+          "application_foundation_ci": 35703158499,
+          "security_supply_chain_ci": 35703158448
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "immutable fixed-instant schedule persistence; canonical IANA/DST fail-closed semantics; exact approval/workspace binding; replay-safe idempotency; no provider scheduling/publication side effect"
+      }
+    },
+    {
+      "id": "RBT-020",
+      "source": "PR #357 / TASK-0039 queue-next-slot foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "ea721ef5f14602bb78a878ac976eb416e77b88ca",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #357 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0039-queue-next-slot-foundation; immutable versioned weekly rules + deterministic next-slot + DST + fixed compatibility tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-queue-next-slot-foundation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 357,
+        "source_sha": "ea721ef5f14602bb78a878ac976eb416e77b88ca",
+        "merge_sha": "1e17d38aaaefdeba1d2bb930e553c93f7d7ff7e7",
+        "workflow_runs": {
+          "ai_continuity_guard": 35738931906,
+          "application_foundation_ci": 35738931897,
+          "security_supply_chain_ci": 35738931987
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "immutable versioned queue rules; deterministic next-slot/DST handling; pinned rule/UTC occurrence evidence; fixed-instant compatibility; no provider scheduling/publication side effect"
+      }
+    },
+    {
+      "id": "RBT-021",
+      "source": "PR #359 / TASK-0039 reschedule-cancel history foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #359 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0039-reschedule-cancel-history; append-only mutation history + reapproval + PostgreSQL/security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-reschedule-cancel-history:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 359,
+        "source_sha": "cd8bcc82c9f1ee6983af5fbe80334b3cda690b9c",
+        "merge_sha": "f9c2175116d7d509c0ebe988bfa58ffaf927108b",
+        "workflow_runs": {
+          "ai_continuity_guard": 35783604657,
+          "application_foundation_ci": 35783604696,
+          "security_supply_chain_ci": 35783604660
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "append-only reschedule/cancel history; immutable old/new schedule lineage; due/past mutation rejection; material-revision reapproval; no provider scheduling/publication side effect",
+        "recovery_note": "Verification exposed a material-revision test fixture reusing an immutable target-binding identity and two Pint EOF findings. The fixture was corrected with a fresh target-binding identity and formatting normalized without weakening product, approval, workspace, migration or security invariants."
+      }
+    },
+    {
+      "id": "RBT-022",
+      "source": "PR #361 / TASK-0039 approval-timing missed occurrence foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "c5481f457526a55cd681af93e098ba41f2d90171",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #361 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0039-approval-missed-outcomes; due-boundary approval re-evaluation + immutable missed_needs_reschedule evidence + PostgreSQL/security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-approval-missed-outcomes:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 361,
+        "source_sha": "c5481f457526a55cd681af93e098ba41f2d90171",
+        "merge_sha": "909fc90032fe8530cab7859ffa08af42642b1af7",
+        "workflow_runs": {
+          "ai_continuity_guard": 35788599628,
+          "application_foundation_ci": 35788599696,
+          "security_supply_chain_ci": 35788599636
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Application verification first exposed one redundant single-case CampaignScheduleOccurrenceState comparison in PHPStan and then two Pint-only extra-blank-line issues. Both were repaired without weakening approval, workspace, migration, terminality, replay or security invariants; final exact head passed backend, architecture, static analysis, formatting, PHP 8.3, E2E, PostgreSQL/Redis integration and full security/supply-chain checks."
+      }
+    },
+    {
+      "id": "RBT-023",
+      "source": "PR #363 / TASK-0039 due-claim execution-intent milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #363 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0039-due-claim-execution-intent; PostgreSQL schedule-row contention + stale-lease recovery + atomic immutable intent/outbox + adversarial security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-due-claim-execution-intent:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 363,
+        "source_sha": "9d7ccfbb74ca6ffebe2c143fa6c69c5616546ba9",
+        "merge_sha": "58e7ec489fffb19a807ad69708b2919b22894bfb",
+        "workflow_runs": {
+          "ai_continuity_guard": 35791758031,
+          "application_foundation_ci": 35791757956,
+          "security_supply_chain_ci": 35791757920
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "recovery_note": "Final AC-6 head includes emitted-claim lineage verification on replay. Exact-head backend, architecture, PHP static analysis/formatting, PHP 8.3, E2E, PostgreSQL/Redis integration, real multi-process due-claim contention and security/supply-chain checks all passed without weakening workspace, approval, migration, lease, outbox or provider-isolation invariants."
+      }
+    },
+    {
+      "id": "RBT-024",
+      "source": "PR #365 / TASK-0039 provider schedule capability-evidence milestone",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #365 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0039-provider-schedule-capability-evidence; canonical VSN time + publication.schedule.remote evidence + provider drift revalidation + transient provider schedule metadata guards",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-provider-schedule-capability-evidence:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
+    },
+    {
+      "id": "RBT-025",
+      "source": "PR #368 / TASK-0039 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "81968edd56f9c8a003ad01723f3056a9674691b5",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #368 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/task0039-final-acceptance; AC-1..AC-8 exact-head acceptance over trusted PR #355/#357/#359/#361/#363/#365 evidence",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-final-acceptance:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 368,
+        "source_sha": "81968edd56f9c8a003ad01723f3056a9674691b5",
+        "merge_sha": "1e08f84c986ace04402ea2fc2d22ea328899063f",
+        "workflow_runs": {
+          "ai_continuity_guard": 35912851630,
+          "application_foundation_ci": 35912851631,
+          "security_supply_chain_ci": 35912851703
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "acceptance": "TASK-0039 AC-1 through AC-8 true; task/index remained ready until trusted acceptance merge."
+      }
+    },
+    {
+      "id": "RBT-026",
+      "source": "PR #369 / TASK-0040 PHASE-07 planned registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "97fec3bdf8311974054934a2ee7c6e2e70df2d94",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #369 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0040-phase07; TASK-0040 planned-only provider-neutral publication lifecycle/reconciliation contract registration",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-registration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 369,
+        "source_sha": "97fec3bdf8311974054934a2ee7c6e2e70df2d94",
+        "merge_sha": "54b5b4fe69b3922332b9aa064fabe45339787e93",
+        "workflow_runs": {
+          "ai_continuity_guard": 35920250708,
+          "application_foundation_ci": 35920250814,
+          "security_supply_chain_ci": 35920250678
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "registration_boundary": "TASK-0040 planned-only; TASK-0039 remains active/ready until separate guarded transition."
+      }
+    },
+    {
+      "id": "RBT-027",
+      "source": "PR #371 / guarded TASK-0039 -> TASK-0040 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "bb6a7f699b7b86ee42de2487661905bcb06e5501",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #371 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0039-to-0040; TASK-0039 completed + TASK-0040 ready/active deterministic transition",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0039-task0040-transition:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 371,
+        "source_sha": "bb6a7f699b7b86ee42de2487661905bcb06e5501",
+        "merge_sha": "2fb81e791507e691a443662dc1a11d091535d24d",
+        "workflow_runs": {
+          "ai_continuity_guard": 35922236225,
+          "application_foundation_ci": 35922236211,
+          "security_supply_chain_ci": 35922236405
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "transition": "TASK-0039 completed; TASK-0040 active/ready; roadmap 49.13%; PHASE-07 73.33%; no production provider or publication side effect."
+      }
+    },
+    {
+      "id": "RBT-028",
+      "source": "PR #373 / TASK-0040 publication-attempt persistence foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "c41c13274ab30138857fb5cbf4776f43deaec708",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #373 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-publication-attempt-foundation; exact execution-intent/provider-target attempt identity + PostgreSQL immutable authority/state machine + replay/workspace/provider-drift security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-publication-attempt-foundation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 373,
+        "source_sha": "c41c13274ab30138857fb5cbf4776f43deaec708",
+        "merge_sha": "4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47",
+        "workflow_runs": {
+          "ai_continuity_guard": 35997680976,
+          "application_foundation_ci": 35997680978,
+          "security_supply_chain_ci": 35997680869
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "workspace-scoped immutable publication attempts; exact execution-intent/snapshot/provider-target authority; deterministic idempotency; monotonic state machine; no production provider/media side effect",
+        "recovery_note": "Verification first repaired a CURRENT-STATE versus TASK-0040/INDEX status mismatch, then added all nine required migration-safety review markers, then fixed one PHPStan nullsafe-access finding. Final exact head passed all required gates without weakening domain, migration, workspace or security boundaries."
+      }
+    },
+    {
+      "id": "RBT-029",
+      "source": "PR #375 / TASK-0040 AC-3 provider media derivative foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "d403241ca21c5c9d241cad838de1c6bc908b2b4b",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #375 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-media-derivative-foundation; snapshot-pinned asset original/variant authority + opaque provider media/container refs + PostgreSQL immutable/monotonic state + replay/workspace/provider-drift/remote-fetch security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-media-derivative-foundation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 375,
+        "source_sha": "d403241ca21c5c9d241cad838de1c6bc908b2b4b",
+        "merge_sha": "76d1d9240e197d986de30f1cebbf597414fd0e77",
+        "workflow_runs": {
+          "ai_continuity_guard": 36002275495,
+          "application_foundation_ci": 36002275491,
+          "security_supply_chain_ci": 36002275532
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "snapshot-pinned canonical asset original/variant authority; opaque provider media/container derivatives; deterministic replay; immutable monotonic processing/expiry state; remote-media URL rejection; workspace/provider-drift security boundaries"
+      }
+    },
+    {
+      "id": "RBT-030",
+      "source": "PR #377 / TASK-0040 AC-4 provider status reconciliation foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "2189f173adbc5c6df330e98cb0f2c76fd2f44111",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #377 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-provider-status-reconciliation; append-only polling/webhook status observations + duplicate convergence + provider-time monotonic projection + stale/out-of-order/terminal-conflict PostgreSQL/workspace security tests",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-provider-status-reconciliation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 377,
+        "source_sha": "2189f173adbc5c6df330e98cb0f2c76fd2f44111",
+        "merge_sha": "2dfb6c62195fa1a4fd0b2a3f7873102186f50097",
+        "workflow_runs": {
+          "ai_continuity_guard": 36011100692,
+          "application_foundation_ci": 36011100592,
+          "security_supply_chain_ci": 36011100588
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "workspace-scoped append-only provider-status observations; duplicate polling/webhook convergence; provider-time monotonic projection; terminal-conflict resistance; immutable provenance; provider-operation identity and workspace boundaries",
+        "recovery_note": "Verification repaired duplicate DB-hydrated DateTimeImmutable value comparison and isolated intentional PostgreSQL guard failures in nested transaction savepoints; final exact head passed all required gates without weakening append-only, monotonic, workspace, migration or security invariants."
+      }
+    },
+    {
+      "id": "RBT-031",
+      "source": "PR #380 / TASK-0040 AC-5 partial-success aggregation foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "6e3c4710400a6c33b33dcfd14bdd6de20ba1672f",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #380 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-partial-success-aggregation; immutable snapshot target-set aggregation + per-target attempt/provider projection evidence + successful-target retry exclusion + PostgreSQL duplicate/stale reconciliation stability + workspace isolation",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-partial-success-aggregation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 380,
+        "source_sha": "6e3c4710400a6c33b33dcfd14bdd6de20ba1672f",
+        "merge_sha": "6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3",
+        "workflow_runs": {
+          "ai_continuity_guard": 36018716889,
+          "application_foundation_ci": 36018716961,
+          "security_supply_chain_ci": 36018716948
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "deterministic immutable snapshot target-set aggregate; per-target attempt/provider projection evidence; successful-target retry exclusion; failed_retriable plus trusted failed retry eligibility; workspace isolation and duplicate/stale evidence stability",
+        "recovery_note": "Final exact head followed one Pint-only PHPDoc alignment repair; all required gates passed without weakening aggregate, retry-selection, workspace or security invariants."
+      }
+    },
+    {
+      "id": "RBT-032",
+      "source": "PR #381 / TASK-0040 AC-6 capability-gated retry edit delete authorization",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "c5060fa710d4d469b81db673fd58562b0dc19ed3",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #381 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-operation-authorization; retry=create capability mapping + edit/update + delete/delete exact capability + latest capability drift + readiness/version/freshness/token/scope/role/app-review/workspace fail-closed checks + immutable publication history",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-operation-authorization:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 381,
+        "source_sha": "c5060fa710d4d469b81db673fd58562b0dc19ed3",
+        "merge_sha": "5eefa805dbe743d83a86416669593ee37a0946ff",
+        "workflow_runs": {
+          "ai_continuity_guard": 36023562025,
+          "application_foundation_ci": 36023562227,
+          "security_supply_chain_ci": 36023562163
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "capability-gated retry/edit/delete authorization; latest exact-operation capability evidence; readiness/version/freshness/token/scope/role/app-review/workspace fail-closed checks; immutable publication history",
+        "recovery_note": "Verification repaired one control fingerprint mismatch and Pint-only formatting issues without weakening capability, workspace, immutable-history or security invariants."
+      }
+    },
+    {
+      "id": "RBT-033",
+      "source": "PR #382 / TASK-0040 AC-7 deterministic provider outcome semantics",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #382 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-provider-outcome-semantics; AC-6 authorization snapshot + policy-boundary precedence + disconnect/credential/app-review/permission/stale/capability drift + circuit/rate-limit/provider-error classification + secret-free canonical outcome + immutable publication history",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-provider-outcome-semantics:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 382,
+        "source_sha": "52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb",
+        "merge_sha": "e30de9b56b744edf40e90486ad328cc0b9f62373",
+        "workflow_runs": {
+          "ai_continuity_guard": 36026205392,
+          "application_foundation_ci": 36026205314,
+          "security_supply_chain_ci": 36026205297
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "deterministic provider outcome semantics; policy-boundary precedence; disconnect/credential/app-review/permission/stale/capability drift; circuit/rate-limit/provider-error classification; secret-free canonical outcomes; immutable publication history"
+      }
+    },
+    {
+      "id": "RBT-034",
+      "source": "PR #383 / TASK-0040 final acceptance",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "ef61294bcde9c85293325c877ccb76a7a4ae57da",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #383 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/task0040-final-acceptance; AC-1..AC-8 reconciled from trusted TASK-0040 foundations + full backend/PostgreSQL/adversarial/application/security certification",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-final-acceptance:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 383,
+        "source_sha": "ef61294bcde9c85293325c877ccb76a7a4ae57da",
+        "merge_sha": "f602ff653ba935fbaaa302d95f457760b775c33d",
+        "workflow_runs": {
+          "ai_continuity_guard": 36052960536,
+          "application_foundation_ci": 36052960531,
+          "security_supply_chain_ci": 36052960197
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "acceptance": "TASK-0040 AC-1 through AC-8 true; task/index remained ready until trusted acceptance merge."
+      }
+    },
+    {
+      "id": "RBT-035",
+      "source": "PR #384 / TASK-0041 PHASE-07 planned registration",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "80da4ed9541217811f97e7fe90e4629b1196cdb1",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #384 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/register-task-0041-phase07; TASK-0041 planned-only campaign/publishing operator UX contract registration",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-registration:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 384,
+        "source_sha": "80da4ed9541217811f97e7fe90e4629b1196cdb1",
+        "merge_sha": "616ac1345173d18f60f13453fa5aee62247ed197",
+        "workflow_runs": {
+          "ai_continuity_guard": 36056279614,
+          "application_foundation_ci": 36056279610,
+          "security_supply_chain_ci": 36056279598
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "registration_boundary": "TASK-0041 planned-only; TASK-0040 remains active/ready until separate guarded transition."
+      }
+    },
+    {
+      "id": "RBT-036",
+      "source": "PR #385 / guarded TASK-0040 -> TASK-0041 transition",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": "72dd844c3b32438c5a1a1b5ab1815108d91a6f57",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #385 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "control/transition-task-0040-to-0041; TASK-0040 completed + TASK-0041 ready/active deterministic transition",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-task0041-transition:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 385,
+        "source_sha": "72dd844c3b32438c5a1a1b5ab1815108d91a6f57",
+        "merge_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
+        "workflow_runs": {
+          "ai_continuity_guard": 36057394172,
+          "application_foundation_ci": 36057394133,
+          "security_supply_chain_ci": 36057394186
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "transition": "TASK-0040 completed; TASK-0041 ready/active; no operator product implementation or provider side effect in transition carrier."
+      }
+    },
+    {
+      "id": "RBT-037",
+      "source": "PR #386 / TASK-0041 operator read model and immutable snapshot preview foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #386 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task-0041-operator-read-model-preview; auth + tenant + campaign.read route guard, workspace-scoped canonical read model, immutable snapshot/channel preview, PublicationAggregateService partial-success projection, secret-safe props, backend/React tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-operator-read-model-preview:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "reconciled_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 386,
+    "branch": "task-0041-operator-read-model-preview",
+    "milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW"
+  },
+  "items": [
+    {
+      "kind": "issue",
+      "number": 134,
+      "title": "[TASK-0024] Capture production benchmark evidence and approve numeric SLO thresholds",
+      "disposition": "deferred_runner_authorization_required",
+      "accepted_actionable": false,
+      "runner_id": "RBT-004"
+    },
+    {
+      "kind": "issue",
+      "number": 102,
+      "title": "[Supervisor] Persistent Control Plane Status",
+      "disposition": "standing_governance_surface",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "issue",
+      "number": 43,
+      "title": "Multi-Agent Supervisor Broadcast",
+      "disposition": "standing_coordination_surface",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "issue",
+      "number": 6,
+      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "disposition": "standing_governance_ledger",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 235,
+      "title": "chore(deps): bump github/codeql-action/analyze from 4.37.9 to 4.38.0",
+      "disposition": "deferred_runner_batch",
+      "accepted_actionable": false,
+      "runner_id": "RBT-005"
+    },
+    {
+      "kind": "pr",
+      "number": 365,
+      "title": "feat(publishing): enforce provider schedule capability drift boundaries",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 368,
+      "title": "control: accept TASK-0039 calendar and scheduler",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "runner_id": "RBT-025",
+      "branch": "control/task0039-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 383,
+      "title": "control: accept TASK-0040 publication lifecycle",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "runner_id": "RBT-034",
+      "branch": "control/task0040-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 384,
+      "title": "plan(phase07): register TASK-0041 operator UX",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "runner_id": "RBT-035",
+      "branch": "control/register-task-0041-phase07"
+    },
+    {
+      "kind": "pr",
+      "number": 385,
+      "title": "control: transition TASK-0040 to TASK-0041",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "runner_id": "RBT-036",
+      "branch": "control/transition-task-0040-to-0041"
+    },
+    {
+      "kind": "pr",
+      "number": 386,
+      "title": "feat(publishing): add operator read model and snapshot preview",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-037",
+      "branch": "task-0041-operator-read-model-preview"
+    }
+  ]
+}

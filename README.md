@@ -4,28 +4,24 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-> Last verified: **2026-09-10** from trusted `main` at `c6dab8eff0e8284a1e39d3105429ba5931fec9da` after TASK-0101 Persistent Supervisor merged. Post-merge AI Continuity, Application Foundation, Security Supply Chain, Release Integrity, and OpenSSF Scorecard passed; Persistent Supervisor default-branch run `34523049920` passed and status issue #102 reached `HEALTHY`.
->
-> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). The README is a human-readable snapshot; canonical task acceptance remains in `.ai/`.
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-READ-MODEL-PREVIEW status=VERIFYING -->
 
-**Overall roadmap progress: 30.25%**  
-**Current phase: PHASE-04 — 75.00%**  
-**Active task: TASK-0023 — Delivery SLO/load/saturation/fault-injection and PostgreSQL/Redis production-parity gates**  
-**Last completed task: TASK-0101 — Persistent GitHub-native Supervisor control plane**  
-**Next task: TASK-0024 — PHASE-04 certification**  
-**Parallel execution: TASK-0023 activation is Supervisor-owned on `supervisor/task-0023-delivery-slo`; one QA capacity branch is pre-created but remains OPEN, unassigned and unleased**
+> Last verified protected-main TASK-0041 activation baseline: **2026-09-25** at `2943f4e9dbb43ac7695cbd39e6d5741a575063bc` after transition PR #385 merged. Exact transition source `72dd844c3b32438c5a1a1b5ab1815108d91a6f57` passed AI Continuity Guard `36057394172`, Application Foundation CI `36057394133`, and Security Supply Chain CI `36057394186`. RBT-036 is terminal PASS; TASK-0041 is active/ready.
+>
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
+
+**Overall roadmap progress: 49.83%**  
+**Current phase: PHASE-07 — 83.33%**  
+**Active task: TASK-0041 — Implement campaign/publishing operator UX**  
+**Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
+**Current milestone: TASK-0041-OPERATOR-READ-MODEL-PREVIEW — VERIFYING**
 
 ```text
-Overall  [██████░░░░░░░░░░░░░░] 30.25%
-Phase 04 [███████████████░░░░░] 75.00%
+Overall  [██████████░░░░░░░░░░] 49.83%
+Phase 07 [█████████████████░░░] 83.33%
 ```
 
-```mermaid
-pie showData
-    title VSN Marketing Roadmap Completion
-    "Completed / certified weight" : 30.25
-    "Remaining roadmap weight" : 69.75
-```
+The deterministic roadmap percentage advances only from completed task weights. The guarded TASK-0040 -> TASK-0041 transition moves canonical progress to roadmap 49.83% / PHASE-07 83.33%; TASK-0041 implementation remains blocked until PR #385 is trusted and terminally reconciled.
 
 ### Phase / module progress
 
@@ -35,10 +31,10 @@ pie showData
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
 | PHASE-02 | 7% | Contacts, identities, companies, lists/tags, Consent, Events | ✅ Complete | 100% |
 | PHASE-03 | 7% | Providers, Connectors, Webhooks, Integrations, provider security baseline | ✅ Complete | 100% |
-| **PHASE-04** | **7%** | **Delivery, routing, throttling, idempotency, retry/failover, SLOs** | 🚧 **In progress — TASK-0023** | **75.00%** |
-| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ⏳ Planned | 0% |
-| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ⏳ Planned | 0% |
-| PHASE-07 | 7% | Campaigns, Publishing, approvals, scheduling, unified calendar | ⏳ Planned | 0% |
+| PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
+| PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
+| PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 operator read model/preview PR #386** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -51,38 +47,15 @@ pie showData
 
 ### Current execution snapshot
 
-TASK-0101 is complete. The repository-native Persistent Supervisor is now standing infrastructure on `main`; no external ChatGPT schedule is part of repository supervision. Its GitHub Actions workflow combines event-driven reconciliation with a five-minute heartbeat, maintains the durable `[Supervisor] Persistent Control Plane Status` issue, verifies current-main ancestry and exact-head required CI for registered submissions, and does not auto-merge or mutate canonical/product state.
+TASK-0041 is active on protected-main baseline `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`. PR #386 stages the first bounded operator-UX product milestone with RBT-037 pending exact-head full CI.
 
-Product execution has returned to the preserved PHASE-04 roadmap. TASK-0023 and TASK-0024 use the preplanned specifications originally reserved before TASK-0101 was inserted. TASK-0023 carries the remaining delivery SLO/load/fault-injection work and TASK-0024 is the final PHASE-04 certification task.
+The slice adds a workspace-scoped publishing operator surface guarded by authentication, tenant membership and `campaign.read`; a read-only projection over canonical campaign, immutable snapshot, approval and schedule evidence; existing `PublicationAggregateService`-derived target/partial-success state; and a responsive Inertia/React dashboard with focused backend and frontend security/read-only tests.
 
-TASK-0023 requires measured production-representative evidence rather than scale claims by assumption. Its scope includes queue-age/throughput/saturation/reconciliation-lag and meaningful p95/p99 SLIs/SLOs, PostgreSQL/Redis normal/burst/quota/saturation workloads, worker/Redis/PostgreSQL/provider fault injection, duplicate and retry-amplification evidence, recovery behavior, hotspot telemetry, and automated deterministic regression thresholds where stable.
+No provider credential/raw secret fields are exposed in the operator props. No publish, retry, edit, delete, provider API side effect, TASK-0042 activation, deployment/release authority or deferred Runner optimization is enabled.
 
-The current activation control-plane workstream is `WS-0023-ACTIVATION`. Its standalone completion signal refers only to TASK-0023 registration/activation and parallel handoff; it does **not** claim TASK-0023 performance acceptance is complete. After activation reaches `main`, fresh implementation lanes must synchronize from that main before performance/load/fault work begins.
+### README progress-sync contract
 
-Current canonical PHASE-04 calculation:
-
-```text
-TASK-0019  15 / 15  completed
-TASK-0020  20 / 20  completed
-TASK-0021  20 / 20  completed
-TASK-0022  20 / 20  completed
-TASK-0023   0 / 15  ready
-TASK-0024   0 / 10  planned
-TASK-0101   0 /  0  completed governance insertion
------------------------------------------------
-PHASE-04   75 / 100 = 75.00%
-ROADMAP                30.25%
-```
-
-Trusted-main evidence before TASK-0023 activation:
-
-- AI Continuity Guard `34522847507` — PASS
-- Application Foundation CI `34522847451` — PASS
-- Security Supply Chain CI `34522847473` — PASS
-- Release Integrity `34522847562` — PASS
-- OpenSSF Scorecard `34522847785` — PASS
-- Persistent Supervisor `34523049920` — PASS
-- Persistent status issue #102 — `HEALTHY`, no blockers
+README synchronization is marker-driven. When `.ai/state/CURRENT-STATE.yaml` changes roadmap/phase percentage, current phase, active task, current milestone, or milestone status, the same PR must update this README. Evidence-only changes such as exact-head run IDs, quality evidence, snapshot-basis SHA, queue/Runner evidence, or other non-marker metadata do not require README churn. `tools/supervisor_contract.py` validates both the canonical marker and PR-level marker-change rule.
 
 ## Delivery estimate assumptions
 
@@ -90,12 +63,20 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.2.1-week1-shipping`  
-Agent instruction fingerprint: `5418c6b0b04076a29687bc05ab12e4c4ce392091b47b06b106c3ae9f4f82c5bc`
+Agent instruction revision: `parallel-v2.6.0-fast-batch-development`  
+Agent instruction fingerprint: `502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5f4ecbbf5e1ee2771`
+
+**URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
+
+**Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the Fast Batch Development scope boundary.
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
 **Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, must pass `Shipping Fast Gate`, and are promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
+
+**Strict plan-following and change-aware CI are mandatory. Fast Batch Development Mode is active.** Every agent follows recover/validate -> canonical state/task/plan -> exact head -> change classification -> one substantial active-task batch -> class-appropriate checks -> exact-head PR gates -> bounded same-scope repair when needed -> merge when green -> repository re-read. Standalone post-merge reconciliation PRs are not the default; trusted merge/run evidence rides with the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or no-safe-successor exception requires immediate reconciliation. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
+
+**Protected-main observation is non-recursive.** `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. An anchor descendant containing only approved durable reconciliation surfaces is already current and must not trigger another state-only PR; material drift still fails closed.
 
 Before modifying the repository, read this README, [`AGENTS.md`](AGENTS.md), [`.ai/13-PARALLEL-DEVELOPMENT.md`](.ai/13-PARALLEL-DEVELOPMENT.md), and the machine registries under [`.ai/parallel/`](.ai/parallel/). Then run the full startup sequence from `AGENTS.md`, including:
 
@@ -105,6 +86,8 @@ python tools/ai_txn.py validate
 python tools/ai_state.py recover
 python tools/ai_state.py validate
 python tools/ai_journal.py validate
+python tools/supervisor_contract.py validate
+python tools/runner_benchmark.py validate
 python tools/ai_policy.py
 python tools/ai_parallel.py validate
 python tools/ai_context.py manifest

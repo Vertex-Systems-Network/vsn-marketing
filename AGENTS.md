@@ -44,6 +44,30 @@ python tools/ai_parallel.py sync-check
 
 ## Execution rules
 
+### Durable Supervisor resume and authority rules
+
+Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. Fast Batch Development Mode is the default: one user turn should advance one substantial coherent batch inside the active task rather than one micro-transition. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
+
+`observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. After resolving live main, run the main-observation validator. If the only intervening changes are approved durable reconciliation surfaces, accept the state as current and do not create another state-only PR; any material drift remains fail-closed.
+
+Before reporting a milestone complete/blocked/verifying/waiting, durable state must already reflect that status. Pending CI must not cause a state-only source commit that invalidates the exact head under test. Open accepted actionable work is a hard gate against unrelated new development.
+
+Run `python tools/supervisor_contract.py validate` and `python tools/runner_benchmark.py validate` as part of normal startup/CI. The rolling journal may archive immutable historical segments, but the active resume journal must remain <=32 KiB. Runtime/provider/deployment/release/destructive authority is never inferred from `continue`, old grants, prior chat, registration, or a timeout.
+
+Migration changes require the explicit safety review contract enforced by `tools/supervisor_contract.py validate-pr-event`. Public README dashboards are not rewritten for governance-only churn.
+
+### Strict plan-following order
+
+AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute one substantial approved batch -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
+
+`tools/ci_change_policy.py` is authoritative for CI class selection. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight control CI. Any unknown/non-control path fails closed to full Application + Security CI. If a control-only milestone is a certification, release/promotion, security-sensitive acceptance, or its task contract explicitly demands full gates, the PR body MUST contain this exact standalone line:
+
+`CI-Mode: full`
+
+Runner benchmarking/optimization is never part of ordinary task execution. Add runner sizing/cache/concurrency/architecture/toolchain work to the persistent Runner benchmark backlog and leave it deferred unless the coordinated Runner batch is explicitly activated or the documented blocker exception applies.
+
+No agent may skip/reorder this plan for convenience. Only a bounded, evidence-backed security/correctness/release blocker may interrupt the order, and that exception must be recorded.
+
 - Work only on the active task unless the user explicitly changes priority and the state is updated first.
 - Do not silently change architecture, stack, module boundaries, canonical contracts, security policy, or product terminology. Create an ADR and mark it `PROPOSED` first.
 - Do not start a task whose dependencies are incomplete.
@@ -139,3 +163,10 @@ The transactional transition snapshots all mutated ledger files, acquires a sing
 ## Product safety baseline
 
 This is a permission-based marketing platform. Never design mechanisms whose purpose is spam, consent bypass, suppression bypass, provider-limit evasion, fake-account free-tier rotation, unauthorized scraping, or sender/platform-policy circumvention.
+
+
+## VSN organization next-action handoff
+
+Before every user-facing development handoff, read and follow `.ai/NEXT-ACTION-OPTIONS.md`.
+
+If the user sends only this repository's GitHub URL, perform the policy's read-only bootstrap and return shuffled numbered next-action options. A URL-only message never authorizes a repository mutation. A later numeric selection must revalidate live repository state before acting.

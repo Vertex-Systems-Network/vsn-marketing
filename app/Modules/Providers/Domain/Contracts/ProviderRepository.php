@@ -23,5 +23,12 @@ interface ProviderRepository
 
     public function findCapability(string $workspaceId, string $capabilityId): ?ProviderCapability;
 
+    public function findCapabilityForOperation(
+        string $workspaceId,
+        string $providerId,
+        string $connectionId,
+        string $operation,
+    ): ?ProviderCapability;
+
     public function findQuota(string $workspaceId, string $quotaId): ?ProviderQuota;
 }

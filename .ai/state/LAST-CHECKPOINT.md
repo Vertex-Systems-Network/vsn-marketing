@@ -2,20 +2,32 @@
 
 ## State
 
-- Timestamp: `2026-09-20T23:20:00+00:00`
-- Active task: `TASK-0036`
+- Timestamp: `2026-09-24T22:23:00Z`
+- Observed main: `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`
+- Active issue: `none`
+- Active PR: `386`
+- Active branch: `task-0041-operator-read-model-preview`
+- Current milestone: `TASK-0041-OPERATOR-READ-MODEL-PREVIEW`
+- Milestone status: `VERIFYING`
+- Active task: `TASK-0041`
 - Next task: `none`
-- Current phase: `PHASE-06`
-- Execution status: `ready`
-- State fingerprint: `ed571f61dec0bbc33467c6285b924789d3352ca3d31096f0aea9eb11b8fb3ded`
+- Current phase: `PHASE-07`
+- Execution status: `in_progress`
+- Pending Runner IDs: `RBT-037`
+- Blocked Runner IDs: `RBT-004`
+- State fingerprint: `8422077052f7369a383ec963da9adb7d2a352f63078ad65276b3adf1a85a77c7`
 
 ## Completed / observed this session
 
-TASK-0036 security remediation is reconciled before protected-main promotion. Exact-head Security Supply Chain CI `35542862212` on promotion head `1b6273711f0c51449b1fbe4aa39923e10571ae84` exposed two moderate npm findings, including `GHSA-82fw-gwwq-j7x9` in the Vitest 3.x / `@vitest/mocker` chain, while the prior HIGH-only npm threshold allowed the aggregate gate to remain green. PR #321 activated bounded remediation under Supervisor-owned dependency/workflow paths. PR #322 upgraded Vitest/@vitest/mocker to 5.0.0 using the reviewed Dependabot lockfile delta, reconciled it onto the current lockfile, changed both Shipping Fast Gate and Security Supply Chain CI to fail on MODERATE-or-higher npm advisories, and updated the security operations contract. PR #322 exact-head Shipping Fast Gate `35544109634` passed with hardened npm audit reporting zero vulnerabilities. Merged ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e` then passed fresh AI Continuity, full application, and full security certification.
+TASK-0041 activation is terminally trusted on protected main `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`. PR #386 stages the first bounded operator-UX product slice.
+
+The slice adds an authenticated `auth + tenant + campaign.read` publishing operator route, a read-only workspace-scoped projection over canonical campaign/snapshot/approval/schedule evidence, existing publication aggregate semantics, a responsive Inertia/React dashboard, immutable snapshot/channel preview, partial-success state presentation and focused backend/React security coverage.
+
+No publish/retry/edit/delete mutation, production provider credential/API activation, TASK-0042, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e`: AI Continuity Guard `35544171867` PASS; Application Foundation CI `35544171851` PASS including foundation, PHP 8.3 floor, PostgreSQL/Redis integration, Playwright E2E, backend/architecture tests, static analysis, formatting, frontend tests and build; Security Supply Chain CI `35544171748` PASS including action integrity, CodeQL Actions + JavaScript/TypeScript, PHP taint SAST, secret scan, container vulnerability/secret scan, reproducible SBOM and aggregate security gates. Exact-head dependency audit reports no Composer security advisories and `found 0 vulnerabilities` from `npm audit --audit-level=moderate`.
+RBT-037 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #386.
 
 ## Blockers
 
@@ -23,4 +35,4 @@ Security-remediated ship head `dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e`: AI Con
 
 ## Exact next action
 
-Promote the security-remediated TASK-0036 PHASE-06 ship baseline dbff24fa9032b17b3853d9d12c9b92d30fcc9c8e to protected main after this Supervisor security-ledger reconciliation passes exact-head Shipping Fast Gate; require fresh exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI on the resulting promotion head, then reconcile final PHASE-06 acceptance before any PHASE-07 registration or activation.
+Perform exact-head verification for PR #386. Merge the TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend security coverage proves workspace isolation and permission enforcement, the read model remains read-only and secret-safe, React tests prove immutable preview and partial-success presentation, and no provider credential/API side effect or mutation authority is introduced. After trusted merge, terminally reconcile this foundation before beginning bulk safeguards, approval-queue actions, retry/edit/delete controls or later TASK-0041 slices. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.

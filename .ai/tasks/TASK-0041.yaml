@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0041",
+  "phase": "PHASE-07",
+  "module": "Publishing",
+  "title": "Implement campaign/publishing operator UX",
+  "status": "in_progress",
+  "objective": "Implement the workspace-scoped operator experience for governed campaign review, preview, approval queues, channel adaptations, publication execution visibility and safe recovery actions, using canonical campaign/snapshot/calendar/publication authority only and preserving explicit permission, provider-capability, policy and partial-success boundaries without introducing UI-only bypasses or direct provider authority.",
+  "dependencies": [
+    "TASK-0040"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Workspace-scoped campaign/publishing screens and commands bind canonical campaign, immutable snapshot, schedule/execution intent, target/account and publication-attempt identities; foreign-workspace or stale authority fails closed and no client-supplied identity may override canonical ownership",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Previews are deterministic, snapshot-bound and channel-aware, clearly distinguish canonical content from provider/channel adaptations, and never treat a browser preview, transient provider rendering or unsaved edit as approved canonical campaign state",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Bulk create/schedule/retry/edit/delete actions require explicit affected-target counts, permission/capability eligibility, confirmation safeguards and deterministic exclusion of ineligible/already-successful targets; bulk UI cannot widen backend authority or bypass approval, consent/suppression, sender/content, asset or provider policy",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Approval queues expose immutable snapshot identity, material-change status, approver authority and audit provenance; approve/reject/revoke actions re-evaluate current workspace role/permission and stale approvals or revisions fail closed",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Operator status surfaces represent per-target pending/success/retriable/failed/blocked outcomes and deterministic aggregate partial-success state without collapsing mixed results into false global success; retry controls select only backend-authorized eligible work",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Provider disconnect, credential/app-review/permission loss, rate-limit/circuit state and capability drift are rendered as explicit actionable-but-non-secret outcomes; UI payloads/logs never expose credentials, tokens, secret references or raw sensitive provider evidence",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Accessibility, responsive behavior, keyboard operation, destructive-action affordances, loading/empty/error states and optimistic-concurrency conflict handling are covered for the campaign, approval, calendar and publication operator flows without introducing hidden side effects",
+      "done": false
+    },
+    {
+      "id": "AC-8",
+      "text": "Backend/browser/E2E/adversarial tests prove workspace isolation, stale-snapshot and permission denial, preview fidelity, approval enforcement, bulk safeguards, partial-success rendering, retry/edit/delete capability gating and secret-safe errors; exact-head continuity, application, security and accessibility/performance gates are green before TASK-0042 registration",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_txn.py validate",
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/supervisor_contract.py validate",
+    "python tools/runner_benchmark.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "php artisan test",
+    "php artisan test --testsuite=Integration",
+    "composer analyse",
+    "composer lint:check",
+    "npm run typecheck",
+    "npm run test",
+    "npm run build",
+    "npm run test:e2e"
+  ],
+  "exact_next_action": "Perform exact-head verification for PR #386. Merge the TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend security coverage proves workspace isolation and permission enforcement, the read model remains read-only and secret-safe, React tests prove immutable preview and partial-success presentation, and no provider credential/API side effect or mutation authority is introduced. After trusted merge, terminally reconcile this foundation before beginning bulk safeguards, approval-queue actions, retry/edit/delete controls or later TASK-0041 slices. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+}

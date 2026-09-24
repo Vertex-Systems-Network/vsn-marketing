@@ -108,6 +108,13 @@ class JournalIntegrityTests(unittest.TestCase):
         self.assertTrue(any("truncated" in error for error in errors), errors)
 
 
+    def test_rollover_preserves_base_lines(self):
+        base = ['{"seq":2}', '{"seq":3}']
+        history = ['{"seq":1}'] + base + ['{"seq":4}']
+        self.assertEqual([], self.module.validate_preserved_lines(base, history))
+
+
+
 class RepositoryContinuityTests(unittest.TestCase):
     def test_repository_journal_validator_passes(self):
         proc = subprocess.run(

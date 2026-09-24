@@ -242,24 +242,37 @@ function ApprovalQueue({
     };
 
     const submit = (operation: 'approve' | 'reject', confirmed: boolean) => {
-        if (selectedItems.length === 0) return;
         if (operation === 'reject' && reason.trim().length < 3) return;
 
-        const nextBatchId = confirmed && batchId ? batchId : newBatchId();
+        const items = confirmed && pendingPreflight
+            ? pendingPreflight.results.map((result) => ({
+                  campaign_id: result.campaign_id,
+                  snapshot_id: result.snapshot_id,
+                  state_version: result.expected_state_version,
+              }))
+            : selectedItems;
+
+        if (items.length === 0) return;
+
+        const nextBatchId = confirmed
+            ? pendingPreflight?.batch_id ?? batchId
+            : newBatchId();
+
+        if (!nextBatchId) return;
         if (!confirmed) setBatchId(nextBatchId);
 
         router.post(
-            \`/workspaces/\${workspace.id}/publishing/approvals/bulk\`,
+            `/workspaces/${workspace.id}/publishing/approvals/bulk`,
             {
                 batch_id: nextBatchId,
                 operation,
                 confirmed,
                 reason: reason.trim() === '' ? null : reason.trim(),
-                items: selectedItems,
+                items,
             },
             { preserveScroll: true, preserveState: true },
         );
-    };
+    };;
 
     if (!canApprove || candidates.length === 0) {
         return null;
@@ -316,7 +329,7 @@ function ApprovalQueue({
                 <div className="flex items-end gap-2">
                     <button
                         type="button"
-                        disabled={selected.length === 0}
+                        disabled={selected.length === 0 || Boolean(pendingPreflight)}
                         onClick={() => submit('approve', false)}
                         className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2.5 text-sm font-medium text-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
                     >
@@ -324,7 +337,7 @@ function ApprovalQueue({
                     </button>
                     <button
                         type="button"
-                        disabled={selected.length === 0 || reason.trim().length < 3}
+                        disabled={selected.length === 0 || reason.trim().length < 3 || Boolean(pendingPreflight)}
                         onClick={() => submit('reject', false)}
                         className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-2.5 text-sm font-medium text-rose-100 disabled:cursor-not-allowed disabled:opacity-40"
                     >
@@ -358,7 +371,7 @@ function ApprovalQueue({
                         {bulkResult.results.map((result) => (
                             <div key={result.campaign_id} className="flex items-center justify-between gap-3 rounded-lg border border-white/10 px-3 py-2 text-xs">
                                 <span className="font-mono text-neutral-400">{shortHash(result.campaign_id)}</span>
-                                <span className="text-neutral-200">{result.status}{result.reason ? \` · \${label(result.reason)}\` : ''}</span>
+                                <span className="text-neutral-200">{result.status}{result.reason ? ` · ${label(result.reason)}` : ''}</span>
                             </div>
                         ))}
                     </div>

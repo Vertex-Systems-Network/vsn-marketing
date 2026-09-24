@@ -933,16 +933,50 @@
       "source": "PR #381 / TASK-0040 AC-6 capability-gated retry edit delete authorization",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "c5060fa710d4d469b81db673fd58562b0dc19ed3",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #381 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task/0040-operation-authorization; retry=create capability mapping + edit/update + delete/delete exact capability + latest capability drift + readiness/version/freshness/token/scope/role/app-review/workspace fail-closed checks + immutable publication history",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0040-operation-authorization:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 381,
+        "source_sha": "c5060fa710d4d469b81db673fd58562b0dc19ed3",
+        "merge_sha": "5eefa805dbe743d83a86416669593ee37a0946ff",
+        "workflow_runs": {
+          "ai_continuity_guard": 36023562025,
+          "application_foundation_ci": 36023562227,
+          "security_supply_chain_ci": 36023562163
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "capability-gated retry/edit/delete authorization; latest exact-operation capability evidence; readiness/version/freshness/token/scope/role/app-review/workspace fail-closed checks; immutable publication history",
+        "recovery_note": "Verification repaired one control fingerprint mismatch and Pint-only formatting issues without weakening capability, workspace, immutable-history or security invariants."
+      }
+    },
+    {
+      "id": "RBT-033",
+      "source": "PR #382 / TASK-0040 AC-7 deterministic provider outcome semantics",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #382 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-provider-outcome-semantics; AC-6 authorization snapshot + policy-boundary precedence + disconnect/credential/app-review/permission/stale/capability drift + circuit/rate-limit/provider-error classification + secret-free canonical outcome + immutable publication history",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-provider-outcome-semantics:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

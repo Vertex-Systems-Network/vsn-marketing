@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3",
+  "reconciled_main_sha": "5eefa805dbe743d83a86416669593ee37a0946ff",
   "active_work_path": {
     "kind": "pr",
-    "number": 381,
-    "branch": "task/0040-operation-authorization",
-    "milestone": "TASK-0040-OPERATION-AUTHORIZATION"
+    "number": 382,
+    "branch": "task/0040-provider-outcome-semantics",
+    "milestone": "TASK-0040-PROVIDER-OUTCOME-SEMANTICS"
   },
   "items": [
     {
@@ -63,12 +63,12 @@
     },
     {
       "kind": "pr",
-      "number": 381,
-      "title": "feat(publishing): gate retry edit delete operations",
+      "number": 382,
+      "title": "feat(publishing): model deterministic provider outcomes",
       "disposition": "active_task_product_verification",
       "accepted_actionable": true,
-      "runner_id": "RBT-032",
-      "branch": "task/0040-operation-authorization"
+      "runner_id": "RBT-033",
+      "branch": "task/0040-provider-outcome-semantics"
     }
   ]
 }

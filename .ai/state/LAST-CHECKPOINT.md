@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-24T15:34:09Z`
-- Observed main: `6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3`
+- Timestamp: `2026-09-24T16:12:00Z`
+- Observed main: `5eefa805dbe743d83a86416669593ee37a0946ff`
 - Active issue: `none`
-- Active PR: `381`
-- Active branch: `task/0040-operation-authorization`
-- Current milestone: `TASK-0040-OPERATION-AUTHORIZATION`
+- Active PR: `382`
+- Active branch: `task/0040-provider-outcome-semantics`
+- Current milestone: `TASK-0040-PROVIDER-OUTCOME-SEMANTICS`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-032`
+- Pending Runner IDs: `RBT-033`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `d42c8e075cb74085a158b90857d75d4f0e3e3e56b82237d3e4ffbcdb76b070ce`
+- State fingerprint: `51ff6e8f24e125a9c9bd6147eedfcb6468d38cc40f3cdc158c3c970915beab53`
 
 ## Completed / observed this session
 
-TASK-0040 AC-5 PR #380 exact source `6e3c4710400a6c33b33dcfd14bdd6de20ba1672f` passed AI Continuity Guard `36018716889`, Application Foundation CI `36018716961` and Security Supply Chain CI `36018716948`, then merged on protected main as `6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3`. RBT-031 is terminal PASS and AC-5 is trusted.
+TASK-0040 AC-6 PR #381 exact source `c5060fa710d4d469b81db673fd58562b0dc19ed3` passed AI Continuity Guard `36023562025`, Application Foundation CI `36023562227` and Security Supply Chain CI `36023562163`, then merged on protected main as `5eefa805dbe743d83a86416669593ee37a0946ff`. RBT-032 is terminal PASS and AC-6 is trusted.
 
-PR #381 stages AC-6 capability-gated retry/edit/delete authorization. Retry maps to existing `publication.create` authority and requires canonical `failed_retriable` plus trusted provider `failed` evidence. Edit/delete map to `publication.update` / `publication.delete` and require a canonical published attempt plus trusted provider `succeeded` evidence.
+PR #382 stages AC-7 deterministic provider outcome semantics. It re-evaluates the immutable AC-6 authorization snapshot against current provider connection/capability state and explicit workspace/approval/consent-suppression/sender-content/asset/provider-policy boundaries.
 
-Authorization re-evaluates current exact connection/capability evidence and fails closed on readiness, version, freshness/token expiry, scope, role, app-review and newer unsupported capability drift. No fallback to older supported evidence is permitted.
+Provider disconnect/readiness loss, credential invalidation, app-review restriction, permission loss, stale authority, capability-version drift, circuit open/half-open, rate limiting and normalized retryable/unavailable/rejected/unknown provider failures resolve to explicit deterministic outcomes. Policy-boundary denial outranks provider retry signals and fallback authority is structurally forbidden.
 
-The authorization result contains immutable provenance/hash only. Original publication attempt and status history remain unchanged, and no provider request is executed.
+Canonical outcome payloads retain only safe category/timing/authority references and exclude raw provider message/evidence, credentials, tokens and secret references. Assessment is read-only over canonical publication attempts/status history.
 
 ## Tests
 
-RBT-032 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #381. Product paths force full CI.
+RBT-033 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #382. Product paths force full CI.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ RBT-032 exact-head AI Continuity Guard, Application Foundation CI and Security S
 
 ## Exact next action
 
-Verify PR #381 on its unchanged exact head. Merge TASK-0040 AC-6 operation authorization only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove retry maps only to current publication.create authority, edit/delete require current publication.update/publication.delete authority, successful publications cannot retry, failed work cannot edit/delete, newer unsupported capability evidence cannot fall back to older supported evidence, current readiness/version/freshness/token/scope/role/app-review drift fails closed, workspace boundaries hold, and original attempt/status history remains unchanged. After trusted merge, the next Fast Batch must carry PR #381 evidence forward, mark AC-6 complete, and begin bounded AC-7 deterministic provider disconnect/credential invalidation/app-review/permission/rate-limit/circuit/capability-version outcome semantics without activating production provider API side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.
+Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive.

@@ -38,7 +38,7 @@
     {
       "id": "AC-6",
       "text": "Edit/delete/retry operations are permitted only when current versioned provider capability and account-role/scope evidence supports the exact operation; unsupported operations or capability drift fail closed while immutable original attempt/history and approved snapshot provenance remain intact",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Verify PR #381 on its unchanged exact head. Merge TASK-0040 AC-6 operation authorization only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove retry maps only to current publication.create authority, edit/delete require current publication.update/publication.delete authority, successful publications cannot retry, failed work cannot edit/delete, newer unsupported capability evidence cannot fall back to older supported evidence, current readiness/version/freshness/token/scope/role/app-review drift fails closed, workspace boundaries hold, and original attempt/status history remains unchanged. After trusted merge, the next Fast Batch must carry PR #381 evidence forward, mark AC-6 complete, and begin bounded AC-7 deterministic provider disconnect/credential invalidation/app-review/permission/rate-limit/circuit/capability-version outcome semantics without activating production provider API side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify PR #382 on its unchanged exact head. Merge TASK-0040 AC-7 provider-outcome semantics only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, tests prove explicit deterministic disconnect/credential/app-review/permission/rate-limit/circuit/capability-drift outcomes, policy-boundary denial outranks provider retry/fallback signals, canonical outcome payloads exclude credentials/tokens/raw provider evidence, current authorization/capability authority drift fails closed, and canonical publication attempt/status history remains immutable. After trusted merge, the next Fast Batch must carry PR #382 evidence forward, mark AC-7 complete, and begin bounded AC-8 final TASK-0040 certification without activating production provider API side effects or TASK-0041. Keep deployment/release authority and deferred Runner optimization inactive."
 }

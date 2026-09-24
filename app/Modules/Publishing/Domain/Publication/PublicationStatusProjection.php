@@ -121,7 +121,7 @@ final readonly class PublicationStatusProjection
             return $this;
         }
 
-        if ($observation->providerObservedAt === $this->providerObservedAt) {
+        if ($observation->providerObservedAt == $this->providerObservedAt) {
             if ($observation->normalizedStatus === $this->normalizedStatus) {
                 return $this;
             }

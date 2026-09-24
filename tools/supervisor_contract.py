@@ -105,9 +105,38 @@ def readme_progress_errors(state: dict[str, Any], readme: str) -> list[str]:
     return []
 
 
-def readme_progress_pr_errors(changed: set[str]) -> list[str]:
-    if README_SYNC_TRIGGER in changed and "README.md" not in changed:
-        return ["durable milestone state change requires README.md progress synchronization in the same PR"]
+def readme_progress_sync_required(before: dict[str, Any], after: dict[str, Any]) -> bool:
+    return readme_progress_marker(before) != readme_progress_marker(after)
+
+
+def git_load_json(ref: str, path: Path) -> dict[str, Any]:
+    rel = path.relative_to(ROOT).as_posix()
+    proc = subprocess.run(
+        ["git", "show", f"{ref}:{rel}"],
+        cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    if proc.returncode != 0:
+        raise ValueError(f"cannot read {rel} at {ref}: {proc.stderr.strip()}")
+    try:
+        value = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{rel} at {ref} is not valid JSON-compatible YAML: {exc}") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"{rel} at {ref} must contain an object")
+    return value
+
+
+def readme_progress_pr_errors(changed: set[str], base: str, head: str) -> list[str]:
+    if README_SYNC_TRIGGER not in changed or "README.md" in changed:
+        return []
+    try:
+        before = git_load_json(base, STATE)
+        after = git_load_json(head, STATE)
+        required = readme_progress_sync_required(before, after)
+    except ValueError as exc:
+        return [f"cannot evaluate README progress synchronization: {exc}"]
+    if required:
+        return ["CURRENT-STATE progress marker changed; README.md progress synchronization is required in the same PR"]
     return []
 
 
@@ -293,7 +322,7 @@ def validate_pr_event(path: Path, base: str, head: str) -> list[str]:
         changed = git_changed_files(base, head)
     except ValueError as exc:
         return [str(exc)]
-    return migration_review_errors(changed, body) + readme_progress_pr_errors(changed)
+    return migration_review_errors(changed, body) + readme_progress_pr_errors(changed, base, head)
 
 
 def main() -> int:

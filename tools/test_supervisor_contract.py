@@ -40,7 +40,10 @@ marker=m.readme_progress_marker(state)
 assert marker == "<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-APPROVAL-ORCHESTRATION status=COMPLETE -->"
 assert m.readme_progress_errors(state, marker) == []
 assert m.readme_progress_errors(state, "<!-- stale -->")
-assert m.readme_progress_pr_errors({".ai/state/CURRENT-STATE.yaml"}) == ["durable milestone state change requires README.md progress synchronization in the same PR"]
-assert m.readme_progress_pr_errors({".ai/state/CURRENT-STATE.yaml", "README.md"}) == []
-assert m.readme_progress_pr_errors({"docs/x.md"}) == []
+same_marker=dict(state)
+same_marker["quality"]={"application_test_status":"run-123"}
+changed_marker=dict(state)
+changed_marker["milestone_status"]="VERIFYING"
+assert m.readme_progress_sync_required(state, same_marker) is False
+assert m.readme_progress_sync_required(state, changed_marker) is True
 print("supervisor_contract tests: PASS")

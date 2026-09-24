@@ -137,6 +137,8 @@ def validate() -> list[str]:
         if doc.get("schema_version") != 2:
             errors.append(f"{name} schema_version must be 2")
 
+    if control.get("protocol_version") != "2.6.0":
+        errors.append("protocol_version must be 2.6.0")
     if control.get("protected_main_branch") != "main":
         errors.append("protected_main_branch must be main")
     if control.get("required_completion_signal") != "Work Done and Submitted":
@@ -163,20 +165,30 @@ def validate() -> list[str]:
         "reconcile_open_prs",
         "reread_claims_coordination_queue_runner_benchmark",
         "classify_change",
-        "execute_one_logical_milestone",
-        "persist_verifying_or_waiting_before_final_ci",
+        "execute_one_substantial_batch",
+        "run_class_appropriate_checks",
+        "persist_material_batch_state_in_same_scoped_pr",
         "require_exact_head_pr_gates",
-        "merge_verified_head",
+        "bounded_same_scope_repair_if_needed",
+        "merge_verified_head_when_green",
         "reread_post_merge_state_claims_queue_runner",
-        "separate_successor_registration_transition",
+        "carry_forward_reconciliation_or_apply_exception",
     ]
     if control.get("strict_execution_order") != expected_order:
         errors.append("strict_execution_order drift")
     required_contract = {
-        "supervisor_contract_version": "2.0",
+        "supervisor_contract_version": "2.1",
         "coordination_queue_path": ".ai/coordination/OPEN-WORK-QUEUE.yaml",
         "runner_benchmark_path": ".ai/runner/RUNNER-BENCHMARK.yaml",
-        "one_user_turn_one_logical_milestone": True,
+        "one_user_turn_one_logical_milestone": False,
+        "fast_batch_development_mode": True,
+        "one_user_turn_one_substantial_batch": True,
+        "same_turn_merge_when_required_gates_green": True,
+        "bounded_same_scope_ci_repair_stays_in_batch": True,
+        "unrelated_task_chaining_forbidden": True,
+        "standalone_terminal_reconciliation_pr_default": False,
+        "post_merge_reconciliation_strategy": "carry_forward_into_next_substantial_pr",
+        "readme_progress_sync_mode": "marker_change_only",
         "default_ci_status_refreshes_per_milestone": 1,
         "max_ci_status_refreshes_with_recorded_exception": 2,
         "tight_polling_forbidden": True,
@@ -212,6 +224,15 @@ def validate() -> list[str]:
     for key, expected in required_contract.items():
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
+    if control.get("immediate_reconciliation_exceptions") != [
+        "task_or_phase_final_acceptance",
+        "guarded_task_transition",
+        "release_or_promotion",
+        "security_or_incident_recovery",
+        "material_state_drift",
+        "no_safe_successor_pr",
+    ]:
+        errors.append("immediate_reconciliation_exceptions drift")
     expected_self_exact = [
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",

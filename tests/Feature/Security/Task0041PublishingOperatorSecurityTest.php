@@ -229,26 +229,36 @@ it('applies only exact-version eligible campaigns and skips stale bulk items', f
         ->whereIn('id', [$first['campaign_id'], $second['campaign_id']])
         ->update(['status' => 'needs_approval']);
 
-    $this->actingAs($actor['user'])
-        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', [
-            'batch_id' => '22222222-2222-4222-8222-222222222222',
-            'operation' => 'approve',
-            'confirmed' => true,
-            'reason' => 'Reviewed and approved.',
-            'role_key' => 'forged-browser-role',
-            'items' => [
-                [
-                    'campaign_id' => $first['campaign_id'],
-                    'snapshot_id' => $first['snapshot_id'],
-                    'state_version' => 1,
-                ],
-                [
-                    'campaign_id' => $second['campaign_id'],
-                    'snapshot_id' => $second['snapshot_id'],
-                    'state_version' => 99,
-                ],
+    $payload = [
+        'batch_id' => '22222222-2222-4222-8222-222222222222',
+        'operation' => 'approve',
+        'reason' => 'Reviewed and approved.',
+        'role_key' => 'forged-browser-role',
+        'items' => [
+            [
+                'campaign_id' => $first['campaign_id'],
+                'snapshot_id' => $first['snapshot_id'],
+                'state_version' => 1,
             ],
-        ])
+            [
+                'campaign_id' => $second['campaign_id'],
+                'snapshot_id' => $second['snapshot_id'],
+                'state_version' => 99,
+            ],
+        ],
+    ];
+
+    $this->actingAs($actor['user'])
+        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', $payload + ['confirmed' => false])
+        ->assertRedirect()
+        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
+            $result['confirmed'] === false
+            && $result['counts']['eligible'] === 1
+            && $result['counts']['conflict'] === 1
+        );
+
+    $this->actingAs($actor['user'])
+        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', $payload + ['confirmed' => true])
         ->assertRedirect()
         ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
             $result['confirmed'] === true
@@ -288,5 +298,33 @@ it('fails closed when bulk approval references a campaign from another workspace
         ->assertForbidden();
 
     expect(DB::table('campaign_approval_decisions')->where('campaign_id', $foreignCampaign['campaign_id'])->count())
+        ->toBe(0);
+});
+
+
+it('rejects confirmed bulk approval that has no matching server preflight', function () {
+    $actor = task0041OperatorActor('confirm-guard');
+    $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'confirm-guard');
+    task0041GrantApprover($actor['user'], $actor['workspace'], 'confirm-guard');
+    DB::table('campaigns')->where('id', $campaign['campaign_id'])->update(['status' => 'needs_approval']);
+
+    $this->actingAs($actor['user'])
+        ->from('/workspaces/'.$actor['workspace']->getKey().'/publishing')
+        ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', [
+            'batch_id' => '44444444-4444-4444-8444-444444444444',
+            'operation' => 'approve',
+            'confirmed' => true,
+            'items' => [[
+                'campaign_id' => $campaign['campaign_id'],
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 1,
+            ]],
+        ])
+        ->assertRedirect('/workspaces/'.$actor['workspace']->getKey().'/publishing')
+        ->assertSessionHasErrors('confirmed');
+
+    expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
+        ->toBe('needs_approval')
+        ->and(DB::table('campaign_approval_decisions')->where('campaign_id', $campaign['campaign_id'])->count())
         ->toBe(0);
 });

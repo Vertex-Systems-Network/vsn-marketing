@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "616ac1345173d18f60f13453fa5aee62247ed197",
+  "reconciled_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
   "active_work_path": {
     "kind": "pr",
-    "number": 385,
-    "branch": "control/transition-task-0040-to-0041",
-    "milestone": "TASK-0040-TO-0041-TRANSITION"
+    "number": 386,
+    "branch": "task-0041-operator-read-model-preview",
+    "milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW"
   },
   "items": [
     {
@@ -83,10 +83,19 @@
       "kind": "pr",
       "number": 385,
       "title": "control: transition TASK-0040 to TASK-0041",
-      "disposition": "active_task_transition_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-036",
       "branch": "control/transition-task-0040-to-0041"
+    },
+    {
+      "kind": "pr",
+      "number": 386,
+      "title": "feat(publishing): add operator read model and snapshot preview",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-037",
+      "branch": "task-0041-operator-read-model-preview"
     }
   ]
 }

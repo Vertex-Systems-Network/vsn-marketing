@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-07",
     "active_task": "TASK-0041",
     "last_completed_task": "TASK-0040",
@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_registration_pr384_head_80da4ed9541217811f97e7fe90e4629b1196cdb1_passed_run_36056279614",
-    "application_test_status": "task0041_registration_pr384_head_80da4ed9541217811f97e7fe90e4629b1196cdb1_passed_run_36056279610",
-    "security_supply_chain_status": "task0041_registration_pr384_head_80da4ed9541217811f97e7fe90e4629b1196cdb1_passed_run_36056279598",
+    "continuity_validation": "task0040_task0041_transition_pr385_head_72dd844c3b32438c5a1a1b5ab1815108d91a6f57_passed_run_36057394172",
+    "application_test_status": "task0040_task0041_transition_pr385_head_72dd844c3b32438c5a1a1b5ab1815108d91a6f57_passed_run_36057394133",
+    "security_supply_chain_status": "task0040_task0041_transition_pr385_head_72dd844c3b32438c5a1a1b5ab1815108d91a6f57_passed_run_36057394186",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "616ac1345173d18f60f13453fa5aee62247ed197",
+  "observed_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
   "active_issue": null,
-  "active_pr": 385,
-  "active_branch": "control/transition-task-0040-to-0041",
-  "current_milestone": "TASK-0040-TO-0041-TRANSITION",
+  "active_pr": 386,
+  "active_branch": "task-0041-operator-read-model-preview",
+  "current_milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 planned registration merged via PR #384 as 616ac1345173d18f60f13453fa5aee62247ed197; exact source 80da4ed9541217811f97e7fe90e4629b1196cdb1 passed AI Continuity Guard 36056279614, Application Foundation CI 36056279610 and Security Supply Chain CI 36056279598. RBT-035 is terminal PASS. TASK-0040 acceptance and TASK-0041 registration are trusted.",
-  "exact_next_safe_action": "Verify and merge PR #385 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0040 completed and TASK-0041 ready/active at deterministic roadmap 49.83% / PHASE-07 83.33%, but operator-UX implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-036/state/README, then begin the bounded TASK-0041 operator read-model, navigation and immutable snapshot/channel preview foundation with workspace isolation, publication/partial-success state presentation and focused backend/React tests. Keep production provider credential/API activation, direct provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0040 -> TASK-0041 guarded transition merged via PR #385 as 2943f4e9dbb43ac7695cbd39e6d5741a575063bc; exact source 72dd844c3b32438c5a1a1b5ab1815108d91a6f57 passed AI Continuity Guard 36057394172, Application Foundation CI 36057394133 and Security Supply Chain CI 36057394186. RBT-036 is terminal PASS. TASK-0040 is completed and TASK-0041 is active/ready.",
+  "exact_next_safe_action": "Perform exact-head verification for PR #386. Merge the TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend security coverage proves workspace isolation and permission enforcement, the read model remains read-only and secret-safe, React tests prove immutable preview and partial-success presentation, and no provider credential/API side effect or mutation authority is introduced. After trusted merge, terminally reconcile this foundation before beginning bulk safeguards, approval-queue actions, retry/edit/delete controls or later TASK-0041 slices. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-036"
+    "RBT-037"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify and merge PR #385 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0040 completed and TASK-0041 ready/active at deterministic roadmap 49.83% / PHASE-07 83.33%, but operator-UX implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-036/state/README, then begin the bounded TASK-0041 operator read-model, navigation and immutable snapshot/channel preview foundation with workspace isolation, publication/partial-success state presentation and focused backend/React tests. Keep production provider credential/API activation, direct provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Perform exact-head verification for PR #386. Merge the TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend security coverage proves workspace isolation and permission enforcement, the read model remains read-only and secret-safe, React tests prove immutable preview and partial-success presentation, and no provider credential/API side effect or mutation authority is introduced. After trusted merge, terminally reconcile this foundation before beginning bulk safeguards, approval-queue actions, retry/edit/delete controls or later TASK-0041 slices. Keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

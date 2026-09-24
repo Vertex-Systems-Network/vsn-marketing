@@ -414,7 +414,7 @@
       "phase": "PHASE-07",
       "title": "Implement campaign/publishing operator UX",
       "weight": 15,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0040"
       ]

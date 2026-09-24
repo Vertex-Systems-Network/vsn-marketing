@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0040-TO-0041-TRANSITION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-READ-MODEL-PREVIEW status=VERIFYING -->
 
 > Last verified protected-main TASK-0041 activation baseline: **2026-09-25** at `2943f4e9dbb43ac7695cbd39e6d5741a575063bc` after transition PR #385 merged. Exact transition source `72dd844c3b32438c5a1a1b5ab1815108d91a6f57` passed AI Continuity Guard `36057394172`, Application Foundation CI `36057394133`, and Security Supply Chain CI `36057394186`. RBT-036 is terminal PASS; TASK-0041 is active/ready.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 83.33%**  
 **Active task: TASK-0041 — Implement campaign/publishing operator UX**  
 **Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0040-TO-0041-TRANSITION — COMPLETE**
+**Current milestone: TASK-0041-OPERATOR-READ-MODEL-PREVIEW — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.83%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 active** | **83.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 operator read model/preview PR #386** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,11 +47,11 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-The guarded TASK-0040 -> TASK-0041 transition is terminally trusted. PR #385 exact source `72dd844c3b32438c5a1a1b5ab1815108d91a6f57` passed AI Continuity Guard `36057394172`, Application Foundation CI `36057394133`, and Security Supply Chain CI `36057394186`, then merged as `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`. RBT-036 is terminal PASS.
+TASK-0041 is active on protected-main baseline `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`. PR #386 stages the first bounded operator-UX product milestone with RBT-037 pending exact-head full CI.
 
-TASK-0040 is completed and TASK-0041 is active/ready at roadmap 49.83% / PHASE-07 83.33%. The next bounded product milestone is the workspace-scoped operator read-model/navigation and immutable snapshot/channel preview foundation with explicit publication/partial-success state presentation and focused backend/React tests.
+The slice adds a workspace-scoped publishing operator surface guarded by authentication, tenant membership and `campaign.read`; a read-only projection over canonical campaign, immutable snapshot, approval and schedule evidence; existing `PublicationAggregateService`-derived target/partial-success state; and a responsive Inertia/React dashboard with focused backend and frontend security/read-only tests.
 
-Production provider credential/API activation, direct provider side effects, TASK-0042 activation, deployment/release authority and deferred Runner optimization remain inactive.
+No provider credential/raw secret fields are exposed in the operator props. No publish, retry, edit, delete, provider API side effect, TASK-0042 activation, deployment/release authority or deferred Runner optimization is enabled.
 
 ### README progress-sync contract
 

@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3f67c3b6e51d5802f0d09c5d56792de86ca85da8",
-  "active_work_path": null,
+  "reconciled_main_sha": "c00ad32931369da8d316f6b18627130afb5ab230",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 380,
+    "branch": "task/0040-partial-success-aggregation",
+    "milestone": "TASK-0040-PARTIAL-SUCCESS-AGGREGATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -42,14 +47,6 @@
     },
     {
       "kind": "pr",
-      "number": 236,
-      "title": "chore(deps): bump github/codeql-action/init from 4.37.9 to 4.38.0",
-      "disposition": "deferred_runner_batch",
-      "accepted_actionable": false,
-      "runner_id": "RBT-005"
-    },
-    {
-      "kind": "pr",
       "number": 365,
       "title": "feat(publishing): enforce provider schedule capability drift boundaries",
       "disposition": "terminal_merged_reconciled",
@@ -63,6 +60,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 380,
+      "title": "feat(publishing): add partial success aggregation",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-031",
+      "branch": "task/0040-partial-success-aggregation"
     }
   ]
 }

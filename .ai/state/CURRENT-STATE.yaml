@@ -18,21 +18,23 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012373920",
-    "application_test_status": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012373960",
-    "security_supply_chain_status": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012374015",
+    "continuity_validation": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471452",
+    "application_test_status": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471628",
+    "security_supply_chain_status": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471580",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "3f67c3b6e51d5802f0d09c5d56792de86ca85da8",
+  "observed_main_sha": "c00ad32931369da8d316f6b18627130afb5ab230",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0040-PROVIDER-STATUS-RECONCILIATION",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0040 AC-4 provider-status reconciliation terminal reconciliation merged via PR #378 as 3f67c3b6e51d5802f0d09c5d56792de86ca85da8; exact source cbbe72cb764af96b1a830f45b2efa573a0d83e74 passed AI Continuity Guard 36012373920, Application Foundation CI 36012373960 and Security Supply Chain CI 36012374015. RBT-030 remains terminal PASS, AC-4 is trusted, and Fast Batch governance may carry this merge evidence forward without a standalone reconciliation PR.",
-  "exact_next_safe_action": "Begin the bounded TASK-0040 AC-5 partial multi-target/channel success aggregation foundation from current protected main. Derive a deterministic workspace-scoped aggregate publication outcome only from per-target publication attempts and trusted status projections while preserving each target's successful, failed, retriable, terminal and pending evidence independently. Retry selection must include only eligible failed/retriable attempts, must never republish already-successful targets, and must not collapse partial failure into a false global success. Enforce aggregate idempotency, workspace isolation and immutable provenance with PostgreSQL/adversarial tests for all-success, partial-success, terminal failure, duplicate/reordered evidence, retry eligibility and successful-target replay denial. Do not activate production provider retry/edit/delete execution, provider polling/webhook ingestion, provider upload/publication API calls, TASK-0041 implementation, deployment/release authority or deferred Runner optimization.",
-  "pending_runner_ids": [],
+  "active_pr": 380,
+  "active_branch": "task/0040-partial-success-aggregation",
+  "current_milestone": "TASK-0040-PARTIAL-SUCCESS-AGGREGATION",
+  "milestone_status": "VERIFYING",
+  "last_completed_milestone": "Fast Batch Development governance merged via PR #379 as c00ad32931369da8d316f6b18627130afb5ab230; exact source 8050a23b3c5ed7e217f462800d363a2fc5c415a1 passed AI Continuity Guard 36014471452, Application Foundation CI 36014471628 and Security Supply Chain CI 36014471580. TASK-0040 AC-4 remains trusted with RBT-030 terminal PASS.",
+  "exact_next_safe_action": "Verify PR #380 on its unchanged exact head. Merge TASK-0040 AC-5 partial-success aggregation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove deterministic snapshot-target aggregation, successful targets remain excluded from retry selection, retry eligibility requires canonical failed_retriable attempt state plus trusted failed provider projection, stale/duplicate provider evidence cannot rewrite aggregate evidence, and workspace boundaries fail closed. After trusted merge, the next Fast Batch must carry PR #380 evidence forward, mark AC-5 complete, and begin bounded AC-6 capability-gated retry/edit/delete authorization semantics without activating production provider side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [
+    "RBT-031"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the bounded TASK-0040 AC-5 partial multi-target/channel success aggregation foundation from current protected main. Derive a deterministic workspace-scoped aggregate publication outcome only from per-target publication attempts and trusted status projections while preserving each target's successful, failed, retriable, terminal and pending evidence independently. Retry selection must include only eligible failed/retriable attempts, must never republish already-successful targets, and must not collapse partial failure into a false global success. Enforce aggregate idempotency, workspace isolation and immutable provenance with PostgreSQL/adversarial tests for all-success, partial-success, terminal failure, duplicate/reordered evidence, retry eligibility and successful-target replay denial. Do not activate production provider retry/edit/delete execution, provider polling/webhook ingestion, provider upload/publication API calls, TASK-0041 implementation, deployment/release authority or deferred Runner optimization."
+  "exact_next_action": "Verify PR #380 on its unchanged exact head. Merge TASK-0040 AC-5 partial-success aggregation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove deterministic snapshot-target aggregation, successful targets remain excluded from retry selection, retry eligibility requires canonical failed_retriable attempt state plus trusted failed provider projection, stale/duplicate provider evidence cannot rewrite aggregate evidence, and workspace boundaries fail closed. After trusted merge, the next Fast Batch must carry PR #380 evidence forward, mark AC-5 complete, and begin bounded AC-6 capability-gated retry/edit/delete authorization semantics without activating production provider side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive."
 }

@@ -893,6 +893,24 @@
         "milestone": "workspace-scoped append-only provider-status observations; duplicate polling/webhook convergence; provider-time monotonic projection; terminal-conflict resistance; immutable provenance; provider-operation identity and workspace boundaries",
         "recovery_note": "Verification repaired duplicate DB-hydrated DateTimeImmutable value comparison and isolated intentional PostgreSQL guard failures in nested transaction savepoints; final exact head passed all required gates without weakening append-only, monotonic, workspace, migration or security invariants."
       }
+    },
+    {
+      "id": "RBT-031",
+      "source": "PR #380 / TASK-0040 AC-5 partial-success aggregation foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #380 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task/0040-partial-success-aggregation; immutable snapshot target-set aggregation + per-target attempt/provider projection evidence + successful-target retry exclusion + PostgreSQL duplicate/stale reconciliation stability + workspace isolation",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-partial-success-aggregation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

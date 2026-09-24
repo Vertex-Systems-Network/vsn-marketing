@@ -272,7 +272,7 @@ function ApprovalQueue({
             },
             { preserveScroll: true, preserveState: true },
         );
-    };;
+    };
 
     if (!canApprove || candidates.length === 0) {
         return null;

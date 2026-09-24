@@ -28,7 +28,7 @@
     {
       "id": "AC-4",
       "text": "Provider status reconciliation is append-oriented and monotonic under polling, webhooks, duplicate events and delayed/out-of-order updates; stale observations cannot overwrite newer terminal evidence, and provider timestamps/statuses retain provenance without rewriting canonical campaign history",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform exact-head verification for PR #377. Merge the TASK-0040 AC-4 provider-status reconciliation foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; provider-status observations remain append-only and workspace-scoped; duplicate source deliveries converge idempotently without losing first-seen provenance; projection advances monotonically by provider observation time/status; delayed/stale/regressive/terminal-conflicting evidence cannot rewrite newer terminal state; provider operation identity cannot switch or cross attempts; provenance contains no secrets/raw provider payload; and PostgreSQL guards enforce immutable observation and projection authority. After trusted merge, terminally reconcile AC-4 before beginning partial-success aggregation. Keep production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Begin the bounded TASK-0040 AC-5 partial multi-target/channel success aggregation foundation from current protected main. Derive a deterministic workspace-scoped aggregate publication outcome only from per-target publication attempts and trusted status projections while preserving each target's successful, failed, retriable, terminal and pending evidence independently. Retry selection must include only eligible failed/retriable attempts, must never republish already-successful targets, and must not collapse partial failure into a false global success. Enforce aggregate idempotency, workspace isolation and immutable provenance with PostgreSQL/adversarial tests for all-success, partial-success, terminal failure, duplicate/reordered evidence, retry eligibility and successful-target replay denial. Do not activate production provider retry/edit/delete execution, provider polling/webhook ingestion, provider upload/publication API calls, TASK-0041 implementation, deployment/release authority or deferred Runner optimization."
 }

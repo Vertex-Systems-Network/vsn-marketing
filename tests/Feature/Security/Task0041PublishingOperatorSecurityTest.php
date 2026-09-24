@@ -8,7 +8,6 @@ use App\Modules\Identity\Domain\Tenancy\Workspace;
 use App\Modules\Publishing\Domain\Campaign\CampaignSnapshot;
 use App\Modules\Publishing\Domain\Campaign\CampaignTargetBinding;
 use App\Modules\Publishing\Domain\Campaign\CampaignTargetKind;
-use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +43,7 @@ function task0041OperatorActor(string $suffix, ?User $user = null): array
     return compact('user', 'workspace');
 }
 
-/** @return array{campaign_id: string, snapshot_id: string} */
+/** @return array{campaign_id: string, snapshot_id: string, snapshot_hash: string} */
 function task0041OperatorCampaign(Workspace $workspace, User $user, string $suffix): array
 {
     $workspaceId = (string) $workspace->getKey();
@@ -54,7 +53,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
     $contentVersionId = (string) Str::uuid();
     $targetId = (string) Str::uuid();
     $canonicalReferenceId = (string) Str::uuid();
-    $createdAtValue = new DateTimeImmutable('2026-09-24T12:00:00+00:00');
+    $createdAtValue = new \DateTimeImmutable('2026-09-24T12:00:00+00:00');
     $createdAt = '2026-09-24 12:00:00+00:00';
 
     $target = new CampaignTargetBinding(
@@ -167,6 +166,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
     return [
         'campaign_id' => $campaignId,
         'snapshot_id' => $snapshotId,
+        'snapshot_hash' => $snapshot->snapshotHash,
     ];
 }
 
@@ -186,7 +186,7 @@ it('renders only canonical evidence from the selected authorized workspace', fun
             ->where('workspace.id', (string) $inside['workspace']->getKey())
             ->has('campaigns', 1)
             ->where('campaigns.0.id', $insideCampaign['campaign_id'])
-            ->where('campaigns.0.snapshot.snapshot_hash', str_repeat('a', 64))
+            ->where('campaigns.0.snapshot.snapshot_hash', $insideCampaign['snapshot_hash'])
             ->where('campaigns.0.snapshot.channels.0', 'linkedin')
             ->where('campaigns.0.publication.state', 'not_started')
             ->where('campaigns.0.publication.targets.0.state', 'not_started')

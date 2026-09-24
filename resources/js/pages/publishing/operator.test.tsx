@@ -92,3 +92,57 @@ test('preflights selected approval candidates with immutable snapshot and state-
     expect(payload.batch_id).toMatch(/^[0-9a-f-]{36}$/i);
     expect(options).toEqual({ preserveScroll: true, preserveState: true });
 });
+
+
+test('confirms the exact server preflight batch and immutable item expectations', () => {
+    post.mockClear();
+
+    render(
+        <PublishingOperator
+            workspace={{ id: 'workspace-123456789', name: 'VSN Workspace', slug: 'vsn' }}
+            summary={{ campaigns: 1, needs_approval: 1, scheduled: 1, partial_success: 1 }}
+            permissions={{ can_approve: true }}
+            bulk_result={{
+                batch_id: '11111111-1111-4111-8111-111111111111',
+                operation: 'approve',
+                confirmed: false,
+                role_source: 'server_resolved_workspace_authority',
+                counts: {
+                    total: 1,
+                    eligible: 1,
+                    applied: 0,
+                    already_applied: 0,
+                    ineligible: 0,
+                    conflict: 0,
+                },
+                results: [
+                    {
+                        campaign_id: 'campaign-1',
+                        snapshot_id: 'snapshot-1',
+                        expected_state_version: 7,
+                        status: 'eligible',
+                        reason: null,
+                    },
+                ],
+            }}
+            campaigns={[campaign]}
+        />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm approve' }));
+
+    expect(post).toHaveBeenCalledTimes(1);
+    const [url, payload, options] = post.mock.calls[0];
+
+    expect(url).toBe('/workspaces/workspace-123456789/publishing/approvals/bulk');
+    expect(payload).toEqual({
+        batch_id: '11111111-1111-4111-8111-111111111111',
+        operation: 'approve',
+        confirmed: true,
+        reason: null,
+        items: [
+            { campaign_id: 'campaign-1', snapshot_id: 'snapshot-1', state_version: 7 },
+        ],
+    });
+    expect(options).toEqual({ preserveScroll: true, preserveState: true });
+});

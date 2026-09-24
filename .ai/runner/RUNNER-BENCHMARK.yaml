@@ -826,6 +826,24 @@
         "milestone": "workspace-scoped immutable publication attempts; exact execution-intent/snapshot/provider-target authority; deterministic idempotency; monotonic state machine; no production provider/media side effect",
         "recovery_note": "Verification first repaired a CURRENT-STATE versus TASK-0040/INDEX status mismatch, then added all nine required migration-safety review markers, then fixed one PHPStan nullsafe-access finding. Final exact head passed all required gates without weakening domain, migration, workspace or security boundaries."
       }
+    },
+    {
+      "id": "RBT-029",
+      "source": "PR #375 / TASK-0040 AC-3 provider media derivative foundation",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #375 exact-head status/comment"
+      },
+      "environment_matrix_input_fixture": "task/0040-media-derivative-foundation; snapshot-pinned asset original/variant authority + opaque provider media/container refs + PostgreSQL immutable/monotonic state + replay/workspace/provider-drift/remote-fetch security tests",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0040-media-derivative-foundation:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

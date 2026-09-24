@@ -2,34 +2,36 @@
 
 ## State
 
-- Timestamp: `2026-09-24T12:28:53Z`
-- Observed main: `4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47`
+- Timestamp: `2026-09-24T12:40:00Z`
+- Observed main: `99a27e3bc9a3e3a52769ec06702200b9af77f6c7`
 - Active issue: `none`
-- Active PR: `none`
-- Active branch: `main`
-- Current milestone: `TASK-0040-PUBLICATION-ATTEMPT-FOUNDATION`
-- Milestone status: `COMPLETE`
+- Active PR: `375`
+- Active branch: `task/0040-media-derivative-foundation`
+- Current milestone: `TASK-0040-MEDIA-DERIVATIVE-FOUNDATION`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `none`
+- Pending Runner IDs: `RBT-029`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `bbd5dfdd66549385809cd0ad71eb1a8391085b4ae4ac42996711a39b13a3f953`
+- State fingerprint: `7993909d5ce31598e758fad853b6598c2c0837e96a7dad97ef7b732e9f020bb9`
 
 ## Completed / observed this session
 
-TASK-0040 publication-attempt foundation PR #373 exact source `c41c13274ab30138857fb5cbf4776f43deaec708` passed AI Continuity Guard `35997680976`, Application Foundation CI `35997680978` and Security Supply Chain CI `35997680869`, then merged on protected main as `4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47`. RBT-028 is terminal PASS and the PR #373 work path is cleared.
+TASK-0040 publication-attempt foundation terminal reconciliation PR #374 exact source `74718929b6d4b9356bc37f5d53cd72ab3fe227ef` passed AI Continuity Guard `36000088976`, Application Foundation CI `36000088677` and Security Supply Chain CI `36000088539`, then merged on protected main as `99a27e3bc9a3e3a52769ec06702200b9af77f6c7`. RBT-028 remains terminal PASS.
 
-The trusted foundation now provides workspace-scoped immutable publication attempts bound to the exact campaign schedule execution intent, immutable campaign snapshot/provider target, exact `publication.create` capability evidence and current provider connection authority. Deterministic idempotency converges duplicate prepare/replay to one canonical attempt per exact execution-intent/target.
+PR #375 stages the bounded TASK-0040 AC-3 provider-media derivative foundation. It models upload/container/media identifiers separately from publication attempts and binds each record to the exact workspace, canonical publication attempt, immutable snapshot-pinned asset original or variant, asset content hash, provider connection and capability evidence.
 
-PostgreSQL/SQLite guards keep authority evidence immutable and enforce monotonic state/version transitions. Verification also repaired the task-status continuity mismatch, added all required migration-safety review markers, and fixed one PHPStan nullsafe-access finding without weakening publication, workspace, migration or security invariants.
+Provider references are opaque derivative identifiers only; remote-media URLs are rejected rather than treated as fetch authority. Deterministic idempotency converges replay, PostgreSQL/SQLite guards keep derivative authority immutable, and pending/processing/ready/failed/expired transitions are monotonic with explicit expiry behavior.
 
-TASK-0040 remains in progress at roadmap `49.13%` / PHASE-07 `73.33%`. The next bounded product milestone is AC-3 derivative media/container processing references. Production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization remain inactive.
+Focused unit, security and PostgreSQL coverage checks original/variant lineage, replay, current provider-scope drift, foreign-workspace isolation, remote-fetch rejection, re-entrant migration and database state-machine enforcement.
+
+No production provider upload/publication API call, arbitrary remote-media fetch, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization is activated.
 
 ## Tests
 
-PR #373 exact head: Continuity `35997680976` PASS; Application `35997680978` PASS; Security `35997680869` PASS.
+RBT-029 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #375. Migration/data-safety, backend/unit/security/PostgreSQL integration, static analysis, formatting and full supply-chain checks are merge-blocking.
 
 ## Blockers
 
@@ -37,4 +39,4 @@ PR #373 exact head: Continuity `35997680976` PASS; Application `35997680978` PAS
 
 ## Exact next action
 
-Begin the bounded TASK-0040 AC-3 derivative media/container processing foundation from current protected main. Model workspace-scoped provider media/container processing records separately from publication attempts, bound to the exact canonical publication attempt, VSN asset/version identity and current provider connection/capability authority; store temporary provider media/container identifiers, processing state, expiry and provenance as derivative references only; enforce idempotent replay, monotonic processing/expiry behavior, workspace isolation and fail-closed rejection of arbitrary remote-media fetches or stale/foreign references with PostgreSQL/adversarial tests. Do not execute production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization.
+Perform exact-head verification for PR #375. Merge the TASK-0040 AC-3 derivative media/container processing foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; exact snapshot-pinned canonical asset original/variant identity is preserved; provider upload/container/media identifiers remain opaque derivatives rather than canonical authority; replay converges idempotently; database guards enforce immutable authority plus monotonic processing/expiry state; arbitrary remote-media URLs are rejected; current provider connection/capability/scope/role/freshness drift fails closed; and foreign-workspace references are denied. After trusted merge, terminally reconcile AC-3 before beginning provider status reconciliation. Keep production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.

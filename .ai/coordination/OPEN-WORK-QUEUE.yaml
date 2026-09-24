@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c00ad32931369da8d316f6b18627130afb5ab230",
+  "reconciled_main_sha": "6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3",
   "active_work_path": {
     "kind": "pr",
-    "number": 380,
-    "branch": "task/0040-partial-success-aggregation",
-    "milestone": "TASK-0040-PARTIAL-SUCCESS-AGGREGATION"
+    "number": 381,
+    "branch": "task/0040-operation-authorization",
+    "milestone": "TASK-0040-OPERATION-AUTHORIZATION"
   },
   "items": [
     {
@@ -63,12 +63,12 @@
     },
     {
       "kind": "pr",
-      "number": 380,
-      "title": "feat(publishing): add partial success aggregation",
+      "number": 381,
+      "title": "feat(publishing): gate retry edit delete operations",
       "disposition": "active_task_product_verification",
       "accepted_actionable": true,
-      "runner_id": "RBT-031",
-      "branch": "task/0040-partial-success-aggregation"
+      "runner_id": "RBT-032",
+      "branch": "task/0040-operation-authorization"
     }
   ]
 }

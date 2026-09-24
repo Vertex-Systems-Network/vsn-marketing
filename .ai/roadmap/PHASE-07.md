@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0040 planned registration is trusted and terminally reconciled; TASK-0039 remains active/ready until the separate guarded TASK-0039 -> TASK-0040 transition. No provider publication implementation or credential activation is active yet.**
+Status: **IN PROGRESS — TASK-0039 is completed and TASK-0040 is trusted active/ready; the bounded publication-attempt persistence/state-machine milestone is now authorized while production provider API calls, media publication side effects and credentials remain inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037 and TASK-0038 are completed. TASK-0039 final acceptance is trusted. TASK-0040 planned registration is now trusted and terminally reconciled after PR #369 passed exact-head and resulting-main Continuity/Application/Security gates. TASK-0039 intentionally remains active/ready and TASK-0040 remains planned-only until the separate guarded transition marks TASK-0039 completed and activates TASK-0040 ready. Production provider API calls, media upload/publication side effects and credential activation remain inactive.
+TASK-0037, TASK-0038 and TASK-0039 are completed. Guarded transition PR #371 passed exact-head Continuity/Application/Security gates and merged on protected main; TASK-0040 is trusted active/ready. The next bounded milestone is provider-neutral publication-attempt persistence/state-machine with PostgreSQL/adversarial idempotency and workspace-isolation evidence. Production provider API calls, media upload/publication side effects, provider credential activation, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 ## Staged research direction
 

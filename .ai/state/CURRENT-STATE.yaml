@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025287",
-    "application_test_status": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025389",
-    "security_supply_chain_status": "task0040_registration_reconciliation_pr370_head_3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9_passed_run_35921025347",
+    "continuity_validation": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236225",
+    "application_test_status": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236211",
+    "security_supply_chain_status": "task0039_to_0040_transition_pr371_head_bb6a7f699b7b86ee42de2487661905bcb06e5501_passed_run_35922236405",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47",
+  "observed_main_sha": "2fb81e791507e691a443662dc1a11d091535d24d",
   "active_issue": null,
-  "active_pr": 371,
-  "active_branch": "control/transition-task-0039-to-0040",
+  "active_pr": null,
+  "active_branch": "main",
   "current_milestone": "TASK-0039-TO-0040-TRANSITION",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0040 registration terminal reconciliation merged via PR #370 as ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47; exact source 3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9 passed AI Continuity Guard 35921025287, Application Foundation CI 35921025389 and Security Supply Chain CI 35921025347. Resulting protected main also passed Continuity 35921480003, Application 35921480142 and Security 35921480043. TASK-0039 acceptance and TASK-0040 registration are trusted.",
-  "exact_next_safe_action": "Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive.",
-  "pending_runner_ids": [
-    "RBT-027"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "Guarded TASK-0039 -> TASK-0040 transition merged via PR #371 as 2fb81e791507e691a443662dc1a11d091535d24d; exact source bb6a7f699b7b86ee42de2487661905bcb06e5501 passed AI Continuity Guard 35922236225, Application Foundation CI 35922236211 and Security Supply Chain CI 35922236405. TASK-0039 is completed and TASK-0040 is active/ready.",
+  "exact_next_safe_action": "Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -46,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
 }

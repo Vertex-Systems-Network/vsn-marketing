@@ -24,7 +24,7 @@ final readonly class CampaignBulkApprovalService
     ) {}
 
     /**
-     * @param list<array{campaign_id: string, snapshot_id: string, state_version: int}> $items
+     * @param  list<array{campaign_id: string, snapshot_id: string, state_version: int}>  $items
      * @return array<string, mixed>
      */
     public function handle(
@@ -75,7 +75,7 @@ final readonly class CampaignBulkApprovalService
         foreach ($results as $result) {
             $status = $result['status'];
             if (array_key_exists($status, $counts)) {
-                $counts[$status]++;
+                $counts[$status] += 1;
             }
         }
 
@@ -90,7 +90,7 @@ final readonly class CampaignBulkApprovalService
     }
 
     /**
-     * @param array{campaign_id: string, snapshot_id: string, state_version: int} $item
+     * @param  array{campaign_id: string, snapshot_id: string, state_version: int}  $item
      * @return array<string, mixed>
      */
     private function preflightOne(
@@ -126,7 +126,7 @@ final readonly class CampaignBulkApprovalService
     }
 
     /**
-     * @param array{campaign_id: string, snapshot_id: string, state_version: int} $item
+     * @param  array{campaign_id: string, snapshot_id: string, state_version: int}  $item
      * @return array<string, mixed>
      */
     private function executeOne(
@@ -275,7 +275,7 @@ final readonly class CampaignBulkApprovalService
     }
 
     /**
-     * @param array{campaign_id: string, snapshot_id: string, state_version: int} $item
+     * @param  array{campaign_id: string, snapshot_id: string, state_version: int}  $item
      * @return array<string, mixed>
      */
     private function result(array $item, string $status, ?string $reason): array

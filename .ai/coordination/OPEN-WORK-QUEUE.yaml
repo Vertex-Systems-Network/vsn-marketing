@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47",
-  "active_work_path": null,
+  "reconciled_main_sha": "99a27e3bc9a3e3a52769ec06702200b9af77f6c7",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 375,
+    "branch": "task/0040-media-derivative-foundation",
+    "milestone": "TASK-0040-MEDIA-DERIVATIVE-FOUNDATION"
+  },
   "items": [
     {
       "kind": "issue",
@@ -63,6 +68,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 375,
+      "title": "feat(publishing): add provider media derivative foundation",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-029",
+      "branch": "task/0040-media-derivative-foundation"
     }
   ]
 }

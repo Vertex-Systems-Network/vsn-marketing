@@ -1,6 +1,6 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0039 is completed and TASK-0040 is active/in-progress; the publication-attempt persistence/state-machine foundation is trusted and AC-3 derivative media/container processing references are next while production provider API calls, media publication side effects and credentials remain inactive.**
+Status: **IN PROGRESS — TASK-0039 is completed and TASK-0040 is active/in-progress; PR #375 now verifies the bounded AC-3 derivative media/container processing foundation while production provider API calls, media publication side effects and credentials remain inactive.**
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Orchestrate governed cross-channel campaigns and publication from one canonical 
 5. `TASK-0041` — Implement campaign/publishing operator UX.
 6. `TASK-0042` — Certify PHASE-07.
 
-TASK-0037, TASK-0038 and TASK-0039 are completed. TASK-0040 is active/in-progress. PR #373 merged the trusted provider-neutral publication-attempt persistence/state-machine foundation on protected main `4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47`; exact source `c41c13274ab30138857fb5cbf4776f43deaec708` passed Continuity `35997680976`, Application `35997680978` and Security `35997680869`. RBT-028 is terminal PASS. The next bounded milestone is AC-3 derivative media/container processing references with canonical VSN asset identity, temporary-provider-reference expiry/provenance, monotonic processing state and SSRF-safe remote-media boundaries. Production provider upload/publication API calls, arbitrary remote-media fetches, provider credential activation, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+TASK-0037, TASK-0038 and TASK-0039 are completed. TASK-0040 is active/in-progress. PR #373 merged the trusted provider-neutral publication-attempt persistence/state-machine foundation on protected main `4b7dd7151730cbfd06e9cc85fe6493fe0c7b3c47`; exact source `c41c13274ab30138857fb5cbf4776f43deaec708` passed Continuity `35997680976`, Application `35997680978` and Security `35997680869`. RBT-028 is terminal PASS. PR #375 stages AC-3 derivative media/container processing references with exact snapshot-pinned VSN asset original/variant identity, opaque provider upload/container/media identifiers, deterministic replay, temporary-reference expiry, monotonic processing state and fail-closed remote-media URL boundaries. Production provider upload/publication API calls, arbitrary remote-media fetches, provider credential activation, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 ## Staged research direction
 

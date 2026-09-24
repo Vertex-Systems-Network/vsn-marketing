@@ -266,7 +266,6 @@ final readonly class DatabasePublicationStatusRepository
             || $stored->source !== $candidate->source
             || $stored->sourceReference !== $candidate->sourceReference
             || $stored->providerObservedAt != $candidate->providerObservedAt
-            || $stored->receivedAt != $candidate->receivedAt
             || $stored->evidence !== $candidate->evidence
             || ! hash_equals($stored->idempotencyKey, $candidate->idempotencyKey)
             || ! hash_equals($stored->observationHash, $candidate->observationHash)

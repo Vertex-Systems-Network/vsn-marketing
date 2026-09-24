@@ -99,7 +99,6 @@ final readonly class PublicationStatusObservation
             'source' => $source->value,
             'source_reference' => $sourceReference,
             'provider_observed_at' => $providerObservedAt->format(DATE_ATOM),
-            'received_at' => $receivedAt->format(DATE_ATOM),
             'evidence' => $evidence,
             'idempotency_key' => $idempotencyKey,
         ];
@@ -140,7 +139,6 @@ final readonly class PublicationStatusObservation
             'source' => $this->source->value,
             'source_reference' => $this->sourceReference,
             'provider_observed_at' => $this->providerObservedAt->format(DATE_ATOM),
-            'received_at' => $this->receivedAt->format(DATE_ATOM),
             'evidence' => $this->evidence,
             'idempotency_key' => $this->idempotencyKey,
         ];

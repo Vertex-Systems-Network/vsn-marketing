@@ -4,6 +4,7 @@ use App\Modules\Providers\Domain\Connectors\ProviderOperationStatus;
 use App\Modules\Publishing\Application\Publication\PublicationOperationAuthorizationService;
 use App\Modules\Publishing\Domain\Publication\PublicationAttemptState;
 use App\Modules\Publishing\Domain\Publication\PublicationOperation;
+use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ it('authorizes retry only from canonical retriable failure evidence without muta
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Retry,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
 
     expect($authorization->providerCapabilityOperation)->toBe('publication.create')
@@ -52,13 +53,13 @@ it('authorizes edit and delete only from a trusted successful publication and ex
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Edit,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
     $delete = $service->authorize(
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Delete,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
 
     expect($edit->providerCapabilityOperation)->toBe('publication.update')
@@ -82,7 +83,7 @@ it('never authorizes retry for an already successful publication', function () {
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Retry,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'failed_retriable');
 });
 
@@ -97,14 +98,14 @@ it('fails closed on current provider scope loss', function () {
         ->where('id', $fixture['providerConnectionId'])
         ->update([
             'granted_scopes' => json_encode([], JSON_THROW_ON_ERROR),
-            'updated_at' => new \DateTimeImmutable('2026-07-15T13:31:30+00:00'),
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:31:30+00:00'),
         ]);
 
     expect(fn () => app(PublicationOperationAuthorizationService::class)->authorize(
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Edit,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'scopes are insufficient');
 });
 
@@ -119,14 +120,14 @@ it('fails closed on current provider account-role loss', function () {
         ->where('id', $fixture['providerConnectionId'])
         ->update([
             'roles' => json_encode([], JSON_THROW_ON_ERROR),
-            'updated_at' => new \DateTimeImmutable('2026-07-15T13:31:30+00:00'),
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:31:30+00:00'),
         ]);
 
     expect(fn () => app(PublicationOperationAuthorizationService::class)->authorize(
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Delete,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'account roles are insufficient');
 });
 
@@ -141,14 +142,14 @@ it('fails closed on provider app-review restriction', function () {
         ->where('id', $fixture['providerConnectionId'])
         ->update([
             'provider_review_status' => 'pending_review',
-            'updated_at' => new \DateTimeImmutable('2026-07-15T13:31:30+00:00'),
+            'updated_at' => new DateTimeImmutable('2026-07-15T13:31:30+00:00'),
         ]);
 
     expect(fn () => app(PublicationOperationAuthorizationService::class)->authorize(
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Edit,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'app-review');
 });
 
@@ -179,7 +180,7 @@ it('fails closed on a newer unsupported capability instead of falling back to ol
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Edit,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'not supported');
 
     expect(DB::table('provider_capabilities')->where('id', $newerUnsupported)->value('support_status'))
@@ -196,6 +197,6 @@ it('does not allow a foreign workspace to authorize an operation on another work
         workspaceId: $outside['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Retry,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(AuthorizationException::class, 'attempt access denied');
 });

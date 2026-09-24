@@ -2,6 +2,7 @@
 
 use App\Modules\Publishing\Domain\Publication\PublicationOperation;
 use App\Modules\Publishing\Domain\Publication\PublicationOperationAuthorization;
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 it('maps publication operations to the provider capability taxonomy without inventing a retry capability', function () {
@@ -26,7 +27,7 @@ it('hashes immutable operation authorization provenance deterministically', func
         projectionObservationHash: str_repeat('b', 64),
         projectionVersion: 2,
         providerOperationId: 'provider-operation-1',
-        authorizedAt: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        authorizedAt: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
     $second = new PublicationOperationAuthorization(
         workspaceId: 'workspace-1',
@@ -43,7 +44,7 @@ it('hashes immutable operation authorization provenance deterministically', func
         projectionObservationHash: str_repeat('b', 64),
         projectionVersion: 2,
         providerOperationId: 'provider-operation-1',
-        authorizedAt: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        authorizedAt: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
 
     expect($first->authorizationHash)->toBe($second->authorizationHash)
@@ -66,6 +67,6 @@ it('rejects mismatched requested and provider capability operations', function (
         projectionObservationHash: str_repeat('b', 64),
         projectionVersion: 1,
         providerOperationId: 'provider-operation-1',
-        authorizedAt: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        authorizedAt: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     ))->toThrow(InvalidArgumentException::class, 'does not match');
 });

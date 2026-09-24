@@ -167,8 +167,7 @@ final readonly class DatabaseProviderRepository implements ProviderRepository
         string $providerId,
         string $connectionId,
         string $operation,
-    ): ?ProviderCapability
-    {
+    ): ?ProviderCapability {
         $row = $this->database->connection()->table('provider_capabilities')
             ->where('workspace_id', $workspaceId)
             ->where('provider_id', $providerId)

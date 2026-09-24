@@ -4,6 +4,7 @@ use App\Modules\Providers\Domain\Connectors\ProviderOperationStatus;
 use App\Modules\Publishing\Application\Publication\PublicationOperationAuthorizationService;
 use App\Modules\Publishing\Domain\Publication\PublicationAttemptState;
 use App\Modules\Publishing\Domain\Publication\PublicationOperation;
+use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\Support\Publishing\Task0040PublicationFixture;
@@ -48,7 +49,7 @@ it('deterministically selects the newest exact operation evidence and preserves 
         workspaceId: $fixture['context']->workspaceId,
         publicationAttemptId: $attempt->id,
         operation: PublicationOperation::Delete,
-        at: new \DateTimeImmutable('2026-07-15T13:32:00+00:00'),
+        at: new DateTimeImmutable('2026-07-15T13:32:00+00:00'),
     );
 
     expect($authorization->currentCapabilityEvidenceId)->toBe($newestCapabilityId)

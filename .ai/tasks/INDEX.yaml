@@ -408,6 +408,16 @@
       "dependencies": [
         "TASK-0039"
       ]
+    },
+    {
+      "id": "TASK-0041",
+      "phase": "PHASE-07",
+      "title": "Implement campaign/publishing operator UX",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0040"
+      ]
     }
   ]
 }

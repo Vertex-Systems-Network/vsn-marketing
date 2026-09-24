@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "TASK-0040 final acceptance is trusted on protected main. Verify and merge the separate TASK-0041 planned-registration milestone on PR #384 without activating operator-UX implementation. After registration is terminally reconciled, perform a separate guarded transition that marks TASK-0040 completed and activates TASK-0041 ready. Keep production provider credential/API activation, direct UI authority bypass, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

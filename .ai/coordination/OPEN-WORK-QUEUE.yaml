@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e30de9b56b744edf40e90486ad328cc0b9f62373",
+  "reconciled_main_sha": "f602ff653ba935fbaaa302d95f457760b775c33d",
   "active_work_path": {
     "kind": "pr",
-    "number": 383,
-    "branch": "control/task0040-final-acceptance",
-    "milestone": "TASK-0040-FINAL-ACCEPTANCE"
+    "number": 384,
+    "branch": "control/register-task-0041-phase07",
+    "milestone": "TASK-0041-REGISTRATION"
   },
   "items": [
     {
@@ -65,10 +65,19 @@
       "kind": "pr",
       "number": 383,
       "title": "control: accept TASK-0040 publication lifecycle",
-      "disposition": "active_task_final_acceptance",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-034",
       "branch": "control/task0040-final-acceptance"
+    },
+    {
+      "kind": "pr",
+      "number": 384,
+      "title": "plan(phase07): register TASK-0041 operator UX",
+      "disposition": "successor_planned_registration_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-035",
+      "branch": "control/register-task-0041-phase07"
     }
   ]
 }

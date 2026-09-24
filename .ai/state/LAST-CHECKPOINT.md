@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-24T16:45:00Z`
-- Observed main: `e30de9b56b744edf40e90486ad328cc0b9f62373`
+- Timestamp: `2026-09-24T20:38:00Z`
+- Observed main: `f602ff653ba935fbaaa302d95f457760b775c33d`
 - Active issue: `none`
-- Active PR: `383`
-- Active branch: `control/task0040-final-acceptance`
-- Current milestone: `TASK-0040-FINAL-ACCEPTANCE`
+- Active PR: `384`
+- Active branch: `control/register-task-0041-phase07`
+- Current milestone: `TASK-0041-REGISTRATION`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
-- Next task: `none`
+- Next task: `TASK-0041`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `RBT-034`
+- Pending Runner IDs: `RBT-035`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `abae2cb185506aff5ab08662b5ec0fefa08007d3ac330a1480968925bd520e0b`
+- State fingerprint: `50b99b7fb5b13afbd7505008e89d80ece5a72b56470ff291ee2eacbb91b933bb`
 
 ## Completed / observed this session
 
-TASK-0040 AC-7 PR #382 exact source `52dfc5c5ab7f0a6aa925f1f2a78ee44a9197b4eb` passed AI Continuity Guard `36026205392`, Application Foundation CI `36026205314` and Security Supply Chain CI `36026205297`, then merged on protected main as `e30de9b56b744edf40e90486ad328cc0b9f62373`. RBT-033 is terminal PASS and AC-7 is trusted.
+TASK-0040 final acceptance PR #383 exact source `ef61294bcde9c85293325c877ccb76a7a4ae57da` passed AI Continuity Guard `36052960536`, Application Foundation CI `36052960531` and Security Supply Chain CI `36052960197`, then merged on protected main as `f602ff653ba935fbaaa302d95f457760b775c33d`. RBT-034 is terminal PASS and TASK-0040 AC-1 through AC-8 are trusted.
 
-PR #383 stages TASK-0040 AC-8 final acceptance. AC-1 and AC-2 are reconciled from the trusted PR #373 publication-attempt foundation and existing unit/security/PostgreSQL tests proving exact authority/workspace isolation, stable create idempotency, one replay-safe attempt, immutable attempt authority and monotonic state. AC-3 through AC-7 retain their trusted milestone evidence.
+PR #384 stages TASK-0041 as the planned-only PHASE-07 successor with weight `15`, preserving the established `15/20/20/20/15/10` phase structure. TASK-0040 intentionally remains active/ready during registration; TASK-0041 implementation is not activated by this carrier.
 
-All TASK-0040 acceptance criteria are marked true while TASK-0040 and INDEX remain `ready`, not completed. Completion and TASK-0041 registration remain a separate guarded successor transition after this acceptance head passes its own exact-head gates.
+The TASK-0041 contract covers workspace-scoped operator surfaces, snapshot/channel-aware previews, bulk safeguards, approval queues, permission/provider error states, deterministic partial-success visibility, capability-gated retry/edit/delete controls, accessibility/responsive behavior and browser/E2E/adversarial coverage.
 
-The active execution journal is compacted byte-for-byte from seq 123-130 into `.ai/state/archive/EXECUTION-JOURNAL-0123-0130.jsonl`; active history resumes at seq 131 and remains hash-chain continuous.
+Registration expands the deterministic PHASE-07 denominator, so progress normalizes to `61.11%` and roadmap `48.28%` while TASK-0040 remains active/ready.
 
 ## Tests
 
-RBT-034 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #383. `CI-Mode: full` is required despite this being a control-only certification carrier.
+TASK-0040 final acceptance exact head: Continuity `36052960536` PASS; Application `36052960531` PASS; Security `36052960197` PASS. PR #384 registration exact-head gates are pending under RBT-035.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ RBT-034 exact-head AI Continuity Guard, Application Foundation CI and Security S
 
 ## Exact next action
 
-Run TASK-0040 final acceptance on PR #383 with AC-1 through AC-8 true while TASK-0040 and INDEX remain ready. Merge only after exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged acceptance head with no blocking review findings. After merge, use a separate guarded successor-registration/transition batch to register TASK-0041 as planned and only then mark TASK-0040 completed before any operator-UX implementation. Keep production provider credentials/API calls, publication/edit/delete/retry side effects, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.
+Verify and merge PR #384 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact registration head with no blocking review findings. TASK-0041 must remain planned-only during registration and TASK-0040 must remain active/ready. After trusted merge, terminally reconcile TASK-0041 registration, then perform a separate guarded transition that marks TASK-0040 completed and activates TASK-0041 ready. Keep production provider credential/API activation, direct UI authority bypass, TASK-0042, deployment/release authority and deferred Runner optimization inactive.

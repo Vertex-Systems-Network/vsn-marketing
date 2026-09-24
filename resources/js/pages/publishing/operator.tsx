@@ -218,6 +218,7 @@ function ApprovalQueue({
             snapshot_id: campaign.snapshot!.id,
             state_version: campaign.state_version,
         }));
+    const pendingPreflight = bulkResult && !bulkResult.confirmed ? bulkResult : null;
 
     const toggle = (campaignId: string) => {
         setSelected((current) =>
@@ -272,8 +273,9 @@ function ApprovalQueue({
                         <input
                             type="checkbox"
                             checked={selected.includes(campaign.id)}
+                            disabled={Boolean(pendingPreflight)}
                             onChange={() => toggle(campaign.id)}
-                            className="h-4 w-4 rounded border-white/20 bg-black"
+                            className="h-4 w-4 rounded border-white/20 bg-black disabled:cursor-not-allowed disabled:opacity-50"
                         />
                         <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium text-neutral-100">{campaign.name}</p>
@@ -293,6 +295,7 @@ function ApprovalQueue({
                         value={reason}
                         onChange={(event) => setReason(event.target.value)}
                         maxLength={500}
+                        disabled={Boolean(pendingPreflight)}
                         className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-700 focus:border-sky-400/40"
                         placeholder="Why is this decision being made?"
                     />

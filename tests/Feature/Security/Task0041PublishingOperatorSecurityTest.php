@@ -124,7 +124,7 @@ function task0041OperatorCampaign(Workspace $workspace, User $user, string $suff
         'created_at' => $createdAt,
     ]);
 
-    return compact('campaignId', 'snapshotId') + [
+    return [
         'campaign_id' => $campaignId,
         'snapshot_id' => $snapshotId,
     ];
@@ -205,11 +205,12 @@ it('preflights approval without mutation and resolves approver authority on the 
             'role_key' => 'forged-browser-role',
         ])
         ->assertRedirect()
-        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool => $result['confirmed'] === false
-            && $result['counts']['eligible'] === 1
-            && $result['counts']['applied'] === 0
-            && $result['role_source'] === 'server_resolved_workspace_authority'
-        );
+        ->assertSessionHas('publishing_bulk_result', function (array $result): bool {
+            return $result['confirmed'] === false
+                && $result['counts']['eligible'] === 1
+                && $result['counts']['applied'] === 0
+                && $result['role_source'] === 'server_resolved_workspace_authority';
+        });
 
     expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
         ->toBe('needs_approval')
@@ -249,19 +250,20 @@ it('applies only exact-version eligible campaigns and skips stale bulk items', f
     $this->actingAs($actor['user'])
         ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', $payload + ['confirmed' => false])
         ->assertRedirect()
-        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool =>
-            $result['confirmed'] === false
-            && $result['counts']['eligible'] === 1
-            && $result['counts']['conflict'] === 1
-        );
+        ->assertSessionHas('publishing_bulk_result', function (array $result): bool {
+            return $result['confirmed'] === false
+                && $result['counts']['eligible'] === 1
+                && $result['counts']['conflict'] === 1;
+        });
 
     $this->actingAs($actor['user'])
         ->post('/workspaces/'.$actor['workspace']->getKey().'/publishing/approvals/bulk', $payload + ['confirmed' => true])
         ->assertRedirect()
-        ->assertSessionHas('publishing_bulk_result', fn (array $result): bool => $result['confirmed'] === true
-            && $result['counts']['applied'] === 1
-            && $result['counts']['conflict'] === 1
-        );
+        ->assertSessionHas('publishing_bulk_result', function (array $result): bool {
+            return $result['confirmed'] === true
+                && $result['counts']['applied'] === 1
+                && $result['counts']['conflict'] === 1;
+        });
 
     expect(DB::table('campaigns')->where('id', $first['campaign_id'])->value('status'))
         ->toBe('approved')

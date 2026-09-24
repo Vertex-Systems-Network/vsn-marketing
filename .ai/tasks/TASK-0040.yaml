@@ -23,7 +23,7 @@
     {
       "id": "AC-3",
       "text": "Multi-step upload/container/media processing is modeled separately from the publication attempt; temporary provider media/container identifiers, processing state and expiration are reconcilable derivatives and never replace canonical VSN asset identity or authorize arbitrary remote-media fetches",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
@@ -69,5 +69,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Perform exact-head verification for PR #375. Merge the TASK-0040 AC-3 derivative media/container processing foundation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head; review is clean; migration/data-safety checks pass; exact snapshot-pinned canonical asset original/variant identity is preserved; provider upload/container/media identifiers remain opaque derivatives rather than canonical authority; replay converges idempotently; database guards enforce immutable authority plus monotonic processing/expiry state; arbitrary remote-media URLs are rejected; current provider connection/capability/scope/role/freshness drift fails closed; and foreign-workspace references are denied. After trusted merge, terminally reconcile AC-3 before beginning provider status reconciliation. Keep production provider upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Begin the bounded TASK-0040 AC-4 provider-status reconciliation foundation from current protected main. Add workspace-scoped append-only provider-status observations bound to the exact publication attempt and provider authority, with normalized status plus provider status/timestamp/provenance, deterministic observation idempotency, duplicate convergence, monotonic projection under delayed or out-of-order polling/webhook evidence, and database guards so stale observations cannot overwrite newer terminal evidence or rewrite canonical campaign history. Include PostgreSQL/adversarial tests for replay, stale/out-of-order observations, foreign-workspace isolation and immutable provenance. Do not activate production provider polling/webhook ingestion, provider upload/publication API calls, edit/delete/retry execution, TASK-0041 implementation, deployment/release authority or deferred Runner optimization."
 }

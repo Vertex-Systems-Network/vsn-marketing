@@ -26,7 +26,7 @@ final readonly class PublicationAggregate
     public string $aggregateHash;
 
     /**
-     * @param list<PublicationTargetOutcome> $targets
+     * @param  list<PublicationTargetOutcome>  $targets
      */
     public function __construct(
         string $workspaceId,
@@ -99,7 +99,7 @@ final readonly class PublicationAggregate
     }
 
     /**
-     * @param list<PublicationTargetOutcome> $targets
+     * @param  list<PublicationTargetOutcome>  $targets
      */
     private static function deriveState(array $targets): PublicationAggregateState
     {

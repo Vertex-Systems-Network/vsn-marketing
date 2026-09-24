@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.5.2",
-  "instruction_revision": "parallel-v2.5.2-org-url-entry-options",
+  "protocol_version": "2.6.0",
+  "instruction_revision": "parallel-v2.6.0-fast-batch-development",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md"
   ],
-  "instruction_fingerprint": "38c0a60b7581a051835395ebef0442e6f492f5e51f614c87c75a677bd88fcae2",
+  "instruction_fingerprint": "502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5f4ecbbf5e1ee2771",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -44,12 +44,14 @@
     "reconcile_open_prs",
     "reread_claims_coordination_queue_runner_benchmark",
     "classify_change",
-    "execute_one_logical_milestone",
-    "persist_verifying_or_waiting_before_final_ci",
+    "execute_one_substantial_batch",
+    "run_class_appropriate_checks",
+    "persist_material_batch_state_in_same_scoped_pr",
     "require_exact_head_pr_gates",
-    "merge_verified_head",
+    "bounded_same_scope_repair_if_needed",
+    "merge_verified_head_when_green",
     "reread_post_merge_state_claims_queue_runner",
-    "separate_successor_registration_transition"
+    "carry_forward_reconciliation_or_apply_exception"
   ],
   "change_aware_ci_enabled": true,
   "ci_force_full_marker": "CI-Mode: full",
@@ -62,14 +64,14 @@
   "unknown_paths_fail_closed_to_full_ci": true,
   "runner_benchmark_batch_deferred": true,
   "runner_benchmark_batch_requires_explicit_activation": true,
-  "supervisor_contract_version": "2.0",
+  "supervisor_contract_version": "2.1",
   "compact_state_paths": [
     ".ai/state/CURRENT-STATE.yaml",
     ".ai/state/LAST-CHECKPOINT.md"
   ],
   "coordination_queue_path": ".ai/coordination/OPEN-WORK-QUEUE.yaml",
   "runner_benchmark_path": ".ai/runner/RUNNER-BENCHMARK.yaml",
-  "one_user_turn_one_logical_milestone": true,
+  "one_user_turn_one_logical_milestone": false,
   "default_ci_status_refreshes_per_milestone": 1,
   "max_ci_status_refreshes_with_recorded_exception": 2,
   "tight_polling_forbidden": true,
@@ -133,5 +135,21 @@
   ],
   "url_only_repository_entry_mode": "read_only_options",
   "url_only_repository_entry_mutation_forbidden": true,
-  "url_only_repository_entry_requires_state_reconciliation": true
+  "url_only_repository_entry_requires_state_reconciliation": true,
+  "fast_batch_development_mode": true,
+  "one_user_turn_one_substantial_batch": true,
+  "same_turn_merge_when_required_gates_green": true,
+  "bounded_same_scope_ci_repair_stays_in_batch": true,
+  "unrelated_task_chaining_forbidden": true,
+  "standalone_terminal_reconciliation_pr_default": false,
+  "post_merge_reconciliation_strategy": "carry_forward_into_next_substantial_pr",
+  "immediate_reconciliation_exceptions": [
+    "task_or_phase_final_acceptance",
+    "guarded_task_transition",
+    "release_or_promotion",
+    "security_or_incident_recovery",
+    "material_state_drift",
+    "no_safe_successor_pr"
+  ],
+  "readme_progress_sync_mode": "marker_change_only"
 }

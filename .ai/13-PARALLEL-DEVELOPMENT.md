@@ -96,13 +96,13 @@ When canonical agent-working behavior changes, the same PR must:
 
 README progress synchronization is mandatory durable state, not optional dashboard polish.
 
-- Every PR that changes `.ai/state/CURRENT-STATE.yaml` MUST update `README.md` in the same PR.
+- README synchronization is required when the canonical progress marker changes: roadmap/phase percentage, current phase, active task, current milestone, or milestone status.
+- A `CURRENT-STATE.yaml` change that only records exact-head evidence, quality/run IDs, queue/Runner evidence, observed snapshot basis, or other non-marker metadata does **not** force a README edit.
 - The README machine marker `AI_PROGRESS_SNAPSHOT` MUST mirror canonical `roadmap_percent`, `phase_percent`, current phase, active task, current milestone, and milestone status from `CURRENT-STATE.yaml`.
-- Human-readable README progress, phase/task labels and progress bars MUST be refreshed from canonical repository state; agents may not invent or manually estimate percentages.
-- CI/status-only interactions that make no repository state write do not create artificial README commits. The next durable state-changing milestone performs the required sync.
-- `README.md` is an approved self-reconciliation surface so a terminal state+README reconciliation does not create an infinite protected-main observation loop.
-- `python tools/supervisor_contract.py validate` fails closed when the README snapshot drifts, and PR-event validation fails when a durable state change omits README.
-- The README churn guard applies only to non-durable prose/dashboard churn; it MUST NOT suppress this required progress sync.
+- Human-readable README progress, phase/task labels and progress bars MUST be refreshed from canonical repository state whenever that marker changes; agents may not invent or manually estimate percentages.
+- CI/status-only interactions do not create artificial README commits. Merge evidence may be carried into the next substantial product/control PR when no safety/task-transition boundary requires immediate reconciliation.
+- `README.md` remains an approved self-reconciliation surface, and `python tools/supervisor_contract.py validate` fails closed on actual marker drift.
+- The README churn guard suppresses evidence-only/dashboard churn while preserving meaningful product/task/phase progress synchronization.
 
 ## Strict AI execution order and change-aware CI
 
@@ -113,12 +113,12 @@ The following order is **mandatory** for every AI/Supervisor development interac
 3. confirm the exact active task/milestone and current protected/integration branch head before any write;
 4. classify the intended change with the repository change-aware CI policy;
 5. create/use only the registered branch/workstream allowed for that milestone;
-6. execute one logical milestone and only its approved write scope;
+6. execute one **substantial development batch** within the approved task/scope; a batch may include implementation, focused tests, bounded CI repair, exact-head verification and merge when the required gates become green;
 7. run the local/fast checks required by that change class;
-8. open/update the scoped PR and use the exact standalone `CI-Mode: full` marker whenever a certification, release/promotion, security-sensitive acceptance, or explicit exact-head contract requires the full Application + Security gate set even if the file diff is control-only;
-9. wait for the required exact-head gates; never replace a required gate with Runner benchmarking;
-10. merge only the verified exact head, then re-read repository state before any next write;
-11. perform successor registration/task transition only as a separate guarded milestone unless repository safety requires an atomic coupled repair.
+8. open/update one scoped PR and use the exact standalone `CI-Mode: full` marker whenever a certification, release/promotion, security-sensitive acceptance, or explicit exact-head contract requires the full Application + Security gate set even if the file diff is control-only;
+9. require the selected exact-head gates; never replace a required gate with Runner benchmarking, but do not split a batch merely because one bounded repair is needed;
+10. merge only the verified exact head, then re-read repository state;
+11. do **not** create a standalone terminal-reconciliation PR by default. Carry trusted merge/run/Runner evidence into the next substantial product/control PR. Immediate standalone reconciliation is reserved for task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material state drift, or when no safe successor PR exists and external coordination would otherwise be incorrect.
 
 Deviation is permitted only for a demonstrated security/correctness/release blocker. The Supervisor must keep that exception bounded, preserve exact-head evidence, and record why the normal order could not safely be followed.
 
@@ -163,9 +163,11 @@ On every resume, compare the live protected-main SHA with the anchor:
 
 This single-hop rule prevents recursive “update observed SHA -> merge -> SHA changed again” loops while still failing closed on real repository drift. `python tools/supervisor_contract.py validate-main-observation --current-main <sha>` is the machine check.
 
-### One turn, one logical milestone
+### Fast Batch Development Mode
 
-One user `continue`/resume turn normally advances exactly one bounded milestone: one PR reconciliation, one coherent persisted implementation, one exact-head verify/merge decision, or one post-merge durable reconciliation. Do not chain audit -> multiple implementations -> repeated polling -> merge -> post-merge audit -> unrelated next task.
+One user `continue`/resume turn should normally advance one **substantial coherent batch**, not one micro-transition. Within the same active task and approved write scope, the Supervisor may combine implementation -> focused tests -> PR -> bounded CI diagnosis/repair -> exact-head verification -> merge when gates are green.
+
+External CI that is still running remains a durable stop boundary; tight polling is forbidden. After a successful merge, do not create a separate terminal-reconciliation PR merely to copy merge/run evidence. Carry that evidence into the next substantial product/control PR, unless an immediate reconciliation exception applies (task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material drift, or no safe successor PR). Do not chain unrelated tasks or broaden scope merely to make the batch larger.
 
 ### Next-action interactive option contract
 
@@ -186,7 +188,7 @@ Every Supervisor development handoff MUST expose the next valid repository actio
 
 ### Remote-call and timeout budget
 
-Batch related reads. Read only evidence required by the active milestone. Perform at most one consolidated CI/status refresh per milestone by default. Tight polling and repeated unchanged reads are forbidden. A second refresh is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.
+Batch related reads. Read only evidence required by the active batch. Perform at most one consolidated CI/status refresh per batch by default. Tight polling and repeated unchanged reads are forbidden. A second refresh is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.
 
 Before final exact-head CI observation, persist the milestone as `VERIFYING` or `WAITING_EXTERNAL`. If CI remains running, do not create a source/state-only commit merely to record pending CI; record run IDs externally when possible and end the milestone.
 
@@ -202,7 +204,7 @@ Deferred Runner items, standing governance ledgers, and explicitly authorization
 
 ### Durable state before reporting
 
-Before reporting a meaningful milestone complete, blocked, verifying, or waiting, reconcile compact state, checkpoint, rolling journal, coordination queue when changed, and Runner Benchmark when changed. `CURRENT-STATE.yaml` must record observed main SHA, active Issue/PR/branch, milestone/status, last completed milestone, exact next safe action, pending/blocked runner IDs, blockers, and timeout controls.
+Before ending a substantial batch at a durable boundary, reconcile the compact state surfaces that materially changed; do not create evidence-only state churn merely to narrate every intermediate CI transition. `CURRENT-STATE.yaml` must record observed main SHA, active Issue/PR/branch, milestone/status, last completed milestone, exact next safe action, pending/blocked runner IDs, blockers, and timeout controls.
 
 Limits are fail-closed: current state <= 12 KiB, checkpoint <= 16 KiB, active rolling journal <= 32 KiB. Historical journal segments are archived under `.ai/state/archive/`; archives are evidence and are not part of the normal resume read path.
 
@@ -220,7 +222,7 @@ Security is fail-closed: never weaken auth/authorization, CSRF/nonces, validatio
 
 Migration changes require explicit review of idempotency, transaction boundaries, apply-success/marker-failure recovery, retries, rollback/restore, destructive recovery, concurrency, partial execution and backup/snapshot requirements. Destructive migration authority remains separate and explicit.
 
-Every durable milestone PR that changes `CURRENT-STATE.yaml` must synchronize the README progress snapshot in the same PR. CI/status-only turns with no repository state write do not fabricate README churn. Other large README prose/dashboard changes remain limited to material public/module lifecycle truth or terminal closeout.
+Whenever a `CURRENT-STATE.yaml` change alters the README progress marker fields, the same PR must synchronize the README snapshot. Evidence-only state changes whose marker is unchanged do not force README churn. Other large README prose/dashboard changes remain limited to material public/module lifecycle truth or task/phase closeout.
 
 Third-party CI actions remain immutably pinned; credential persistence stays disabled unless reviewed; permissions are least-privilege; dangerous `pull_request_target` use requires separate review; dependency and distributable supply-chain audits remain fail-closed.
 

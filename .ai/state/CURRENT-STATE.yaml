@@ -18,19 +18,19 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0040_provider_status_pr377_head_2189f173adbc5c6df330e98cb0f2c76fd2f44111_passed_run_36011100692",
-    "application_test_status": "task0040_provider_status_pr377_head_2189f173adbc5c6df330e98cb0f2c76fd2f44111_passed_run_36011100592",
-    "security_supply_chain_status": "task0040_provider_status_pr377_head_2189f173adbc5c6df330e98cb0f2c76fd2f44111_passed_run_36011100588",
+    "continuity_validation": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012373920",
+    "application_test_status": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012373960",
+    "security_supply_chain_status": "task0040_provider_status_reconciliation_pr378_head_cbbe72cb764af96b1a830f45b2efa573a0d83e74_passed_run_36012374015",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "2dfb6c62195fa1a4fd0b2a3f7873102186f50097",
+  "observed_main_sha": "3f67c3b6e51d5802f0d09c5d56792de86ca85da8",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
   "current_milestone": "TASK-0040-PROVIDER-STATUS-RECONCILIATION",
   "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0040 AC-4 provider-status reconciliation foundation merged via PR #377 as 2dfb6c62195fa1a4fd0b2a3f7873102186f50097; exact source 2189f173adbc5c6df330e98cb0f2c76fd2f44111 passed AI Continuity Guard 36011100692, Application Foundation CI 36011100592 and Security Supply Chain CI 36011100588. RBT-030 is terminal PASS and AC-4 is trusted.",
+  "last_completed_milestone": "TASK-0040 AC-4 provider-status reconciliation terminal reconciliation merged via PR #378 as 3f67c3b6e51d5802f0d09c5d56792de86ca85da8; exact source cbbe72cb764af96b1a830f45b2efa573a0d83e74 passed AI Continuity Guard 36012373920, Application Foundation CI 36012373960 and Security Supply Chain CI 36012374015. RBT-030 remains terminal PASS, AC-4 is trusted, and Fast Batch governance may carry this merge evidence forward without a standalone reconciliation PR.",
   "exact_next_safe_action": "Begin the bounded TASK-0040 AC-5 partial multi-target/channel success aggregation foundation from current protected main. Derive a deterministic workspace-scoped aggregate publication outcome only from per-target publication attempts and trusted status projections while preserving each target's successful, failed, retriable, terminal and pending evidence independently. Retry selection must include only eligible failed/retriable attempts, must never republish already-successful targets, and must not collapse partial failure into a false global success. Enforce aggregate idempotency, workspace isolation and immutable provenance with PostgreSQL/adversarial tests for all-success, partial-success, terminal failure, duplicate/reordered evidence, retry eligibility and successful-target replay denial. Do not activate production provider retry/edit/delete execution, provider polling/webhook ingestion, provider upload/publication API calls, TASK-0041 implementation, deployment/release authority or deferred Runner optimization.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [

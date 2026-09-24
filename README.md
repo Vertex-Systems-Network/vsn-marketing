@@ -8,7 +8,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 > Last verified protected-main TASK-0040 baseline: **2026-09-24** at `2dfb6c62195fa1a4fd0b2a3f7873102186f50097` after AC-4 provider-status reconciliation PR #377 merged. Exact source `2189f173adbc5c6df330e98cb0f2c76fd2f44111` passed AI Continuity Guard `36011100692`, Application Foundation CI `36011100592`, and Security Supply Chain CI `36011100588`. AC-4 append-only provider-status reconciliation is trusted; production provider polling/webhook ingestion and provider/media side effects remain inactive.
 >
-> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
 **Overall roadmap progress: 49.13%**  
 **Current phase: PHASE-07 — 73.33%**  
@@ -51,11 +51,11 @@ TASK-0040 is active/in-progress in PHASE-07. PR #373 publication-attempt foundat
 
 PR #373 provides trusted workspace-scoped provider-neutral publication attempts bound to exact execution-intent/provider-target authority. PR #375 provides trusted provider-media derivatives bound to snapshot-pinned canonical asset identity. PR #377 now provides trusted append-only provider-status observations with immutable provider-native provenance, stable duplicate convergence, one provider-operation identity per attempt, and a monotonic current projection that stale/regressive/terminal-conflicting evidence cannot rewrite. AC-5 will derive deterministic multi-target/channel aggregate outcomes from trusted per-target evidence and restrict retries to eligible failed/retriable work without republishing successful targets. Production provider polling/webhook ingestion, upload/publication API calls, arbitrary remote-media fetches, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
-README progress-sync protocol v2.4.2 remains enforced.
+README progress-sync protocol v2.6.0 remains enforced.
 
 ### README progress-sync contract
 
-Every durable milestone PR that changes `.ai/state/CURRENT-STATE.yaml` must update this README in the same PR. `tools/supervisor_contract.py` validates the machine progress marker against canonical state and rejects a durable state-changing PR that omits README. CI/status-only interactions without repository state mutation do not fabricate README commits.
+README synchronization is marker-driven. When `.ai/state/CURRENT-STATE.yaml` changes roadmap/phase percentage, current phase, active task, current milestone, or milestone status, the same PR must update this README. Evidence-only changes such as exact-head run IDs, quality evidence, snapshot-basis SHA, queue/Runner evidence, or other non-marker metadata do not require README churn. `tools/supervisor_contract.py` validates both the canonical marker and PR-level marker-change rule.
 
 ## Delivery estimate assumptions
 
@@ -63,18 +63,18 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.5.2-org-url-entry-options`  
-Agent instruction fingerprint: `38c0a60b7581a051835395ebef0442e6f492f5e51f614c87c75a677bd88fcae2`
+Agent instruction revision: `parallel-v2.6.0-fast-batch-development`  
+Agent instruction fingerprint: `502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5f4ecbbf5e1ee2771`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 
-**Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the one-turn/one-milestone boundary.
+**Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the Fast Batch Development scope boundary.
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
 **Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, must pass `Shipping Fast Gate`, and are promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
 
-**Strict plan-following and change-aware CI are mandatory.** Every agent follows recover/validate -> canonical state/task/plan -> exact head -> change classification -> one logical milestone -> class-appropriate checks -> exact-head PR gates -> merge -> repository re-read -> separate successor registration/transition. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
+**Strict plan-following and change-aware CI are mandatory. Fast Batch Development Mode is active.** Every agent follows recover/validate -> canonical state/task/plan -> exact head -> change classification -> one substantial active-task batch -> class-appropriate checks -> exact-head PR gates -> bounded same-scope repair when needed -> merge when green -> repository re-read. Standalone post-merge reconciliation PRs are not the default; trusted merge/run evidence rides with the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or no-safe-successor exception requires immediate reconciliation. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
 
 **Protected-main observation is non-recursive.** `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. An anchor descendant containing only approved durable reconciliation surfaces is already current and must not trigger another state-only PR; material drift still fails closed.
 

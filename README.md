@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0039-TO-0040-TRANSITION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.13 phase=73.33 current_phase=PHASE-07 active_task=TASK-0040 milestone=TASK-0039-TO-0040-TRANSITION status=COMPLETE -->
 
-> Last verified protected-main transition basis: **2026-09-23** at `ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47` after TASK-0040 registration reconciliation PR #370 merged. Exact source `3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9` passed AI Continuity Guard `35921025287`, Application Foundation CI `35921025389`, and Security Supply Chain CI `35921025347`; resulting-main Continuity/Application/Security also passed. The new guarded transition stages TASK-0039 completed / TASK-0040 ready without publication implementation or provider side effects.
+> Last verified protected-main transition baseline: **2026-09-24** at `2fb81e791507e691a443662dc1a11d091535d24d` after guarded TASK-0039 -> TASK-0040 PR #371 merged. Exact source `bb6a7f699b7b86ee42de2487661905bcb06e5501` passed AI Continuity Guard `35922236225`, Application Foundation CI `35922236211`, and Security Supply Chain CI `35922236405`. TASK-0039 is completed and TASK-0040 is active/ready; production provider/publication side effects remain inactive.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror for every durable milestone state change.
 
@@ -14,14 +14,14 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 73.33%**  
 **Active task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
 **Last completed task: TASK-0039 — Implement unified editorial/campaign calendar and timezone-safe scheduler**  
-**Current milestone: TASK-0039-TO-0040-TRANSITION — VERIFYING**
+**Current milestone: TASK-0039-TO-0040-TRANSITION — COMPLETE**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.13%
 Phase 07 [███████████████░░░░░] 73.33%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. Planned TASK-0040 registration expands the PHASE-07 denominator, so progress normalizes to 47.27% roadmap / 46.67% PHASE-07 while trusted TASK-0039 remains active/ready until the separate activation transition.
+The deterministic roadmap percentage advances only from completed task weights. TASK-0039 is completed and TASK-0040 is active/ready; canonical progress is roadmap 49.13% / PHASE-07 73.33%.
 
 ### Phase / module progress
 
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 activation transition** | **73.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0040 publication-attempt foundation** | **73.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,9 +47,9 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0039 calendar/scheduler final acceptance and TASK-0040 planned registration are trusted on protected main. This guarded transition stages TASK-0039 `completed` and TASK-0040 `ready`, moving deterministic progress to roadmap 49.13% / PHASE-07 73.33%.
+Guarded TASK-0039 -> TASK-0040 transition PR #371 is trusted and terminally reconciled. TASK-0039 is `completed`; TASK-0040 is active/`ready` at deterministic roadmap 49.13% / PHASE-07 73.33%.
 
-TASK-0040 implementation remains blocked until this transition exact head passes required Continuity/Application/Security gates, merges by expected head, and is terminally reconciled. The first bounded product milestone remains provider-neutral publication-attempt persistence/idempotency; production provider credentials/API calls, media upload/publication side effects, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
+TASK-0040 implementation may now begin only with the bounded provider-neutral publication-attempt persistence/state-machine milestone: exact execution-intent/snapshot/target/account authority, immutable attempt identity/idempotency, deterministic state transitions, and PostgreSQL/adversarial isolation/duplicate-dispatch evidence. Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041, deployment/release authority and deferred Runner optimization remain inactive.
 
 README progress-sync protocol v2.4.2 remains enforced.
 

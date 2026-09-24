@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 371,
-    "branch": "control/transition-task-0039-to-0040",
-    "milestone": "TASK-0039-TO-0040-TRANSITION"
-  },
+  "reconciled_main_sha": "2fb81e791507e691a443662dc1a11d091535d24d",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -68,15 +63,6 @@
       "accepted_actionable": false,
       "runner_id": "RBT-025",
       "branch": "control/task0039-final-acceptance"
-    },
-    {
-      "kind": "pr",
-      "number": 371,
-      "title": "control: transition TASK-0039 to TASK-0040",
-      "disposition": "active_task_transition_verification",
-      "accepted_actionable": true,
-      "runner_id": "RBT-027",
-      "branch": "control/transition-task-0039-to-0040"
     }
   ]
 }

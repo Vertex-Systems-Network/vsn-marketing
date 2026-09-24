@@ -2,34 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-23T21:24:10Z`
-- Observed main: `ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47`
+- Timestamp: `2026-09-24T11:32:00Z`
+- Observed main: `2fb81e791507e691a443662dc1a11d091535d24d`
 - Active issue: `none`
-- Active PR: `371`
-- Active branch: `control/transition-task-0039-to-0040`
+- Active PR: `none`
+- Active branch: `main`
 - Current milestone: `TASK-0039-TO-0040-TRANSITION`
-- Milestone status: `VERIFYING`
+- Milestone status: `COMPLETE`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `ready`
-- Pending Runner IDs: `RBT-027`
+- Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `a904867fdaa8b4ebe6f0eb3dbb7f265e3f6715a9f4508260065455cf5d6480c3`
+- State fingerprint: `ce346433e342fde9797611fc658febbf43ff8879fb4c90c9c7bb703d4ec2e32b`
 
 ## Completed / observed this session
 
-TASK-0039 final acceptance, TASK-0040 planned registration, and registration terminal reconciliation are trusted on protected main. PR #370 exact source `3bec0cf283c930f3bfbb62d9fa51b93dde09e6d9` passed AI Continuity Guard `35921025287`, Application Foundation CI `35921025389`, and Security Supply Chain CI `35921025347`, then merged as `ebe8c982c8c2110ee49ece9ea4881c7b7df8cb47`; resulting-main Continuity `35921480003`, Application `35921480142`, and Security `35921480043` also passed.
+Guarded TASK-0039 -> TASK-0040 transition PR #371 exact source `bb6a7f699b7b86ee42de2487661905bcb06e5501` passed AI Continuity Guard `35922236225`, Application Foundation CI `35922236211` and Security Supply Chain CI `35922236405`, then merged on protected main as `2fb81e791507e691a443662dc1a11d091535d24d`. RBT-027 is terminal PASS and the transition work path is cleared.
 
-PR #371 stages the guarded task transition: TASK-0039 is completed, TASK-0040 is ready/active, deterministic PHASE-07 progress becomes `73.33%` and roadmap progress `49.13%`. TASK-0041 remains unregistered, so next_task is none.
+TASK-0039 is completed. TASK-0040 is active/ready at deterministic roadmap `49.13%` / PHASE-07 `73.33%`. TASK-0041 remains unregistered, so next_task is none.
 
-The active execution journal was rolled per repository policy: immutable events 109-116 moved byte-for-byte into `.ai/state/archive/EXECUTION-JOURNAL-0109-0116.jsonl` before transition event #137.
+The first bounded TASK-0040 product milestone is provider-neutral publication-attempt persistence/state-machine with exact execution-intent/snapshot/target/account binding, immutable attempt identity/idempotency, deterministic state transitions, and PostgreSQL/adversarial workspace-isolation and duplicate-dispatch evidence.
 
-No publication-attempt product implementation is authorized before this transition exact head is trusted and terminally reconciled. Production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority, and deferred Runner optimization remain inactive.
+Production provider credentials/API calls, media upload/publication side effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization remain inactive.
 
 ## Tests
 
-PR #370 exact head: Continuity `35921025287` PASS; Application `35921025389` PASS; Security `35921025347` PASS. Resulting main: Continuity `35921480003` PASS; Application `35921480142` PASS; Security `35921480043` PASS. PR #371 transition exact-head verification is pending under RBT-027.
+PR #371 exact head: Continuity `35922236225` PASS; Application `35922236211` PASS; Security `35922236405` PASS. No blocking review threads were present when the transition was reconciled.
 
 ## Blockers
 
@@ -37,4 +37,4 @@ PR #370 exact head: Continuity `35921025287` PASS; Application `35921025389` PAS
 
 ## Exact next action
 
-Verify and merge PR #371 only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI pass on the unchanged exact transition head with no blocking review findings. This transition marks TASK-0039 completed and TASK-0040 ready/active at deterministic roadmap 49.13% / PHASE-07 73.33%, but publication-attempt implementation must not begin until the transition is trusted and terminally reconciled. After trusted merge, reconcile RBT-027/state/README, then begin the bounded TASK-0040 publication-attempt persistence/idempotency milestone. Keep production provider API calls, media upload/publication side effects, provider credentials, TASK-0041, deployment/release authority and deferred Runner optimization inactive.
+Begin the bounded TASK-0040 publication-attempt persistence/state-machine milestone from current protected main. Implement workspace-scoped provider-neutral publication-attempt persistence bound to exact execution-intent, campaign-snapshot, target/account and current provider-capability authority; enforce immutable canonical attempt identity/idempotency and deterministic state transitions with PostgreSQL/adversarial workspace-isolation and duplicate-dispatch tests. Keep production provider credentials/API side effects, media upload/publication effects, provider edit/delete/retry execution, TASK-0041 implementation, deployment/release authority and deferred Runner optimization inactive.

@@ -2,36 +2,34 @@
 
 ## State
 
-- Timestamp: `2026-09-24T14:58:00Z`
-- Observed main: `c00ad32931369da8d316f6b18627130afb5ab230`
+- Timestamp: `2026-09-24T15:34:09Z`
+- Observed main: `6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3`
 - Active issue: `none`
-- Active PR: `380`
-- Active branch: `task/0040-partial-success-aggregation`
-- Current milestone: `TASK-0040-PARTIAL-SUCCESS-AGGREGATION`
+- Active PR: `381`
+- Active branch: `task/0040-operation-authorization`
+- Current milestone: `TASK-0040-OPERATION-AUTHORIZATION`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0040`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-031`
+- Pending Runner IDs: `RBT-032`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `df30680fa7e7b6f418b1d96d0babdee998437677a8348340ff50ac83b765f8e5`
+- State fingerprint: `6d7aa2bbf885e803235fc78b39249c2cd76287d3490a346e1858055bce8b96ea`
 
 ## Completed / observed this session
 
-Fast Batch Development governance PR #379 exact source `8050a23b3c5ed7e217f462800d363a2fc5c415a1` passed AI Continuity Guard `36014471452`, Application Foundation CI `36014471628` and Security Supply Chain CI `36014471580`, then merged on protected main as `c00ad32931369da8d316f6b18627130afb5ab230`.
+TASK-0040 AC-5 PR #380 exact source `6e3c4710400a6c33b33dcfd14bdd6de20ba1672f` passed AI Continuity Guard `36018716889`, Application Foundation CI `36018716961` and Security Supply Chain CI `36018716948`, then merged on protected main as `6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3`. RBT-031 is terminal PASS and AC-5 is trusted.
 
-PR #380 stages TASK-0040 AC-5 partial multi-target/channel success aggregation. Aggregate membership is derived from the immutable snapshot target set rather than only existing attempts, so unstarted/missing targets stay visible.
+PR #381 stages AC-6 capability-gated retry/edit/delete authorization. Retry maps to existing `publication.create` authority and requires canonical `failed_retriable` plus trusted provider `failed` evidence. Edit/delete map to `publication.update` / `publication.delete` and require a canonical published attempt plus trusted provider `succeeded` evidence.
 
-Per-target outcomes preserve canonical attempt state plus trusted provider projection evidence. Successful targets are never retry eligible. Retry eligibility fails closed unless the canonical attempt is `failed_retriable` and the trusted projection is provider `failed`.
+Authorization re-evaluates current exact connection/capability evidence and fails closed on readiness, version, freshness/token expiry, scope, role, app-review and newer unsupported capability drift. No fallback to older supported evidence is permitted.
 
-Aggregate target ordering, retry selection and aggregate hash are deterministic. Unit/security/PostgreSQL coverage exercises partial success, false-global-success resistance, workspace isolation, successful-target replay denial, and duplicate/stale provider-evidence stability.
-
-No production provider retry/edit/delete execution, polling/webhook ingestion, upload/publication API call, TASK-0041 implementation, deployment/release authority or deferred Runner optimization is activated.
+The authorization result contains immutable provenance/hash only. Original publication attempt and status history remain unchanged, and no provider request is executed.
 
 ## Tests
 
-RBT-031 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #380. Product paths force full CI.
+RBT-032 exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI verification is pending for PR #381. Product paths force full CI.
 
 ## Blockers
 
@@ -39,4 +37,4 @@ RBT-031 exact-head AI Continuity Guard, Application Foundation CI and Security S
 
 ## Exact next action
 
-Verify PR #380 on its unchanged exact head. Merge TASK-0040 AC-5 partial-success aggregation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove deterministic snapshot-target aggregation, successful targets remain excluded from retry selection, retry eligibility requires canonical failed_retriable attempt state plus trusted failed provider projection, stale/duplicate provider evidence cannot rewrite aggregate evidence, and workspace boundaries fail closed. After trusted merge, the next Fast Batch must carry PR #380 evidence forward, mark AC-5 complete, and begin bounded AC-6 capability-gated retry/edit/delete authorization semantics without activating production provider side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.
+Verify PR #381 on its unchanged exact head. Merge TASK-0040 AC-6 operation authorization only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove retry maps only to current publication.create authority, edit/delete require current publication.update/publication.delete authority, successful publications cannot retry, failed work cannot edit/delete, newer unsupported capability evidence cannot fall back to older supported evidence, current readiness/version/freshness/token/scope/role/app-review drift fails closed, workspace boundaries hold, and original attempt/status history remains unchanged. After trusted merge, the next Fast Batch must carry PR #381 evidence forward, mark AC-6 complete, and begin bounded AC-7 deterministic provider disconnect/credential invalidation/app-review/permission/rate-limit/circuit/capability-version outcome semantics without activating production provider API side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.

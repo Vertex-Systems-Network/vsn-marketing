@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471452",
-    "application_test_status": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471628",
-    "security_supply_chain_status": "fast_batch_governance_pr379_head_8050a23b3c5ed7e217f462800d363a2fc5c415a1_passed_run_36014471580",
+    "continuity_validation": "task0040_partial_success_pr380_head_6e3c4710400a6c33b33dcfd14bdd6de20ba1672f_passed_run_36018716889",
+    "application_test_status": "task0040_partial_success_pr380_head_6e3c4710400a6c33b33dcfd14bdd6de20ba1672f_passed_run_36018716961",
+    "security_supply_chain_status": "task0040_partial_success_pr380_head_6e3c4710400a6c33b33dcfd14bdd6de20ba1672f_passed_run_36018716948",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "c00ad32931369da8d316f6b18627130afb5ab230",
+  "observed_main_sha": "6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3",
   "active_issue": null,
-  "active_pr": 380,
-  "active_branch": "task/0040-partial-success-aggregation",
-  "current_milestone": "TASK-0040-PARTIAL-SUCCESS-AGGREGATION",
+  "active_pr": 381,
+  "active_branch": "task/0040-operation-authorization",
+  "current_milestone": "TASK-0040-OPERATION-AUTHORIZATION",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "Fast Batch Development governance merged via PR #379 as c00ad32931369da8d316f6b18627130afb5ab230; exact source 8050a23b3c5ed7e217f462800d363a2fc5c415a1 passed AI Continuity Guard 36014471452, Application Foundation CI 36014471628 and Security Supply Chain CI 36014471580. TASK-0040 AC-4 remains trusted with RBT-030 terminal PASS.",
-  "exact_next_safe_action": "Verify PR #380 on its unchanged exact head. Merge TASK-0040 AC-5 partial-success aggregation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove deterministic snapshot-target aggregation, successful targets remain excluded from retry selection, retry eligibility requires canonical failed_retriable attempt state plus trusted failed provider projection, stale/duplicate provider evidence cannot rewrite aggregate evidence, and workspace boundaries fail closed. After trusted merge, the next Fast Batch must carry PR #380 evidence forward, mark AC-5 complete, and begin bounded AC-6 capability-gated retry/edit/delete authorization semantics without activating production provider side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0040 AC-5 partial-success aggregation merged via PR #380 as 6ea713e8a826c300cfa3cc9dfe2002d3057e0bd3; exact source 6e3c4710400a6c33b33dcfd14bdd6de20ba1672f passed AI Continuity Guard 36018716889, Application Foundation CI 36018716961 and Security Supply Chain CI 36018716948 after one Pint-only PHPDoc alignment repair without weakening product or security semantics. RBT-031 is terminal PASS and AC-5 is trusted.",
+  "exact_next_safe_action": "Verify PR #381 on its unchanged exact head. Merge TASK-0040 AC-6 operation authorization only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove retry maps only to current publication.create authority, edit/delete require current publication.update/publication.delete authority, successful publications cannot retry, failed work cannot edit/delete, newer unsupported capability evidence cannot fall back to older supported evidence, current readiness/version/freshness/token/scope/role/app-review drift fails closed, workspace boundaries hold, and original attempt/status history remains unchanged. After trusted merge, the next Fast Batch must carry PR #381 evidence forward, mark AC-6 complete, and begin bounded AC-7 deterministic provider disconnect/credential invalidation/app-review/permission/rate-limit/circuit/capability-version outcome semantics without activating production provider API side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-031"
+    "RBT-032"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #380 on its unchanged exact head. Merge TASK-0040 AC-5 partial-success aggregation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove deterministic snapshot-target aggregation, successful targets remain excluded from retry selection, retry eligibility requires canonical failed_retriable attempt state plus trusted failed provider projection, stale/duplicate provider evidence cannot rewrite aggregate evidence, and workspace boundaries fail closed. After trusted merge, the next Fast Batch must carry PR #380 evidence forward, mark AC-5 complete, and begin bounded AC-6 capability-gated retry/edit/delete authorization semantics without activating production provider side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify PR #381 on its unchanged exact head. Merge TASK-0040 AC-6 operation authorization only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are terminal green, review is clean, unit/security/PostgreSQL tests prove retry maps only to current publication.create authority, edit/delete require current publication.update/publication.delete authority, successful publications cannot retry, failed work cannot edit/delete, newer unsupported capability evidence cannot fall back to older supported evidence, current readiness/version/freshness/token/scope/role/app-review drift fails closed, workspace boundaries hold, and original attempt/status history remains unchanged. After trusted merge, the next Fast Batch must carry PR #381 evidence forward, mark AC-6 complete, and begin bounded AC-7 deterministic provider disconnect/credential invalidation/app-review/permission/rate-limit/circuit/capability-version outcome semantics without activating production provider API side effects. Keep TASK-0041, deployment/release authority and deferred Runner optimization inactive."
 }

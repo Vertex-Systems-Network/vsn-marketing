@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-09-25T22:34:48+00:00`
-- Observed main: `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`
+- Timestamp: `2026-09-25T22:49:19+00:00`
+- Observed main: `7efe084acd906156e25d64cd9d3a12e984a90f8d`
 - Active issue: `none`
-- Active PR: `392`
-- Active branch: `control/task0041-wave1-activation`
-- Current milestone: `TASK-0041-WAVE-1-ACTIVATION`
+- Active PR: `393`
+- Active branch: `control/task0041-lane1-lease`
+- Current milestone: `TASK-0041-RETRY-CAPABILITY-LEASE`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0041`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-040`
+- Pending Runner IDs: `RBT-041`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `1c3ab83a00d285cefaab0d1256d08fed1b5a52fc8aec098385534a4fb97d5cb0`
+- State fingerprint: `5aeecacfd6bf36bf1d59b0f4f321e84f2e3f9b09a80659910e4a079034db31f7`
 
 ## Completed / observed this session
 
-Staged PR #392 to terminally reconcile trusted PR #391 and activate TASK-0041 accelerated Wave 1. RBT-039 is terminal PASS from PR #391 exact-head Continuity/Application/Security evidence; the old ship/week-1 head is archived, promoted product/test blobs were verified byte-identical, and ship/week-1 plus all four worker branches were realigned to resulting protected main 8bbda80bb34423cdd4d2f42f64c7b3d182dde18f. Worker slots are now ready_for_lease but no fake agent or lease is created. RBT-040 gates the activation carrier with full exact-head CI. Provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
+Staged PR #393 to terminally reconcile trusted Wave-1 activation PR #392 and lease WS-0041-RETRY-CAPABILITY to the current interactive execution identity chatgpt-session-task0041-retry. RBT-040 is terminal PASS from PR #392 exact-head Continuity/Application/Security evidence and resulting protected main 7efe084acd906156e25d64cd9d3a12e984a90f8d. RBT-041 gates the lease-authority carrier. The lease is exclusive to the three declared retry service/security-test paths; the other three worker slots remain open and no background/asynchronous agent is claimed.
 
 ## Tests
 
-PR #391 exact source `d52bff1e1b4618052f262c7c584bab89ea8843ff`: AI Continuity Guard `36195460215` PASS; Application Foundation CI `36195460252` PASS; Security Supply Chain CI `36195460219` PASS. PR #392 exact-head full Continuity/Application/Security verification is pending.
+PR #392 exact source `edc7589bbcfcb9d772262c5b327c6cf1784b399d`: AI Continuity Guard `36197499995` PASS; Application Foundation CI `36197500074` PASS; Security Supply Chain CI `36197500183` PASS. PR #393 exact-head full Continuity/Application/Security verification is pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #391 exact source `d52bff1e1b4618052f262c7c584bab89ea8843ff`: AI Continuity G
 
 ## Exact next action
 
-Verify PR #392 on its unchanged exact head and merge the TASK-0041 Wave-1 activation reconciliation only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, onboard real worker agents one-per-open lane from main, create leases only for explicitly assigned agents, and execute the retry/capability, approval-revocation, provider-drift and operator-UX lanes as independent Shipping Fast Gate PRs targeting ship/week-1. Keep shared routes/global state/workflows/config/migrations Supervisor-owned and keep production provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.
+Verify PR #393 on its unchanged exact head and merge the Lane-1 lease-authority carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, fast-forward worker-1/task0041-retry-capability to resulting protected main, execute only the leased PublicationRetryPreflightService, PublicationRetryActionService and Task0041RetryCapabilitySecurityTest scope as chatgpt-session-task0041-retry, then submit a Shipping Fast Gate PR targeting ship/week-1. Keep shared routes/global state/config/migrations Supervisor-owned and keep raw provider credentials, unrelated provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.

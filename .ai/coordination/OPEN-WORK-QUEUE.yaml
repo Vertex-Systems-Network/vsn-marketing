@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8bbda80bb34423cdd4d2f42f64c7b3d182dde18f",
+  "reconciled_main_sha": "7efe084acd906156e25d64cd9d3a12e984a90f8d",
   "active_work_path": {
     "kind": "pr",
-    "number": 392,
-    "branch": "control/task0041-wave1-activation",
-    "milestone": "TASK-0041-WAVE-1-ACTIVATION"
+    "number": 393,
+    "branch": "control/task0041-lane1-lease",
+    "milestone": "TASK-0041-RETRY-CAPABILITY-LEASE"
   },
   "items": [
     {
@@ -136,10 +136,19 @@
       "kind": "pr",
       "number": 392,
       "title": "control: activate TASK-0041 accelerated wave one",
-      "disposition": "active_promotion_reconciliation_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-040",
       "branch": "control/task0041-wave1-activation"
+    },
+    {
+      "kind": "pr",
+      "number": 393,
+      "title": "control: lease TASK-0041 retry capability lane",
+      "disposition": "active_lane1_lease_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-041",
+      "branch": "control/task0041-lane1-lease"
     }
   ]
 }

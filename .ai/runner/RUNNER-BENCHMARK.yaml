@@ -1209,16 +1209,49 @@
       "source": "PR #392 / TASK-0041 accelerated Wave-1 activation reconciliation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "edc7589bbcfcb9d772262c5b327c6cf1784b399d",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #392 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "terminal PR #391 reconciliation; archived pre-promotion shipping evidence; integration/worker branch alignment; worker slots ready_for_lease without fabricated leases",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-wave1-activation:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 392,
+        "source_sha": "edc7589bbcfcb9d772262c5b327c6cf1784b399d",
+        "merge_sha": "7efe084acd906156e25d64cd9d3a12e984a90f8d",
+        "workflow_runs": {
+          "ai_continuity_guard": 36197499995,
+          "application_foundation_ci": 36197500074,
+          "security_supply_chain_ci": 36197500183
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "activation": "four file-disjoint TASK-0041 worker slots ready_for_lease; no fabricated agent or lease"
+      }
+    },
+    {
+      "id": "RBT-041",
+      "source": "PR #393 / TASK-0041 retry capability Lane-1 lease authority",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #393 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "current interactive worker identity chatgpt-session-task0041-retry; exclusive WS-0041-RETRY-CAPABILITY lease; three declared write paths; no background/asynchronous agent claim",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-retry-lane1-lease:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

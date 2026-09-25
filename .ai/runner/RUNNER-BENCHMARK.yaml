@@ -85,7 +85,7 @@
     },
     {
       "id": "RBT-005",
-      "source": "PR #235 + PR #236 CodeQL runner/toolchain maintenance",
+      "source": "PR #235 + PR #388 CodeQL runner/toolchain maintenance",
       "command_workflow": "github/codeql-action init/analyze maintenance review",
       "exact_source_identity": {
         "git_sha": null,
@@ -96,7 +96,7 @@
       "security_critical": true,
       "merge_blocking": false,
       "expected_runner_time": "unmeasured_until_RBT-002",
-      "dedup_key": "runner:codeql-toolchain:235-236",
+      "dedup_key": "runner:codeql-toolchain:235-388",
       "status": "deferred",
       "immutable_evidence": null
     },
@@ -1099,18 +1099,33 @@
       "source": "PR #386 / TASK-0041 operator read model and immutable snapshot preview foundation",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "efcd1b02950f6c49073ad6e75fb958a5fdef1818",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #386 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "task-0041-operator-read-model-preview; auth + tenant + campaign.read route guard, workspace-scoped canonical read model, immutable snapshot/channel preview, PublicationAggregateService partial-success projection, secret-safe props, backend/React tests",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-operator-read-model-preview:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 386,
+        "source_sha": "efcd1b02950f6c49073ad6e75fb958a5fdef1818",
+        "merge_sha": "792881f5c702ee38fa12b066f2eb8f65e73baca3",
+        "workflow_runs": {
+          "ai_continuity_guard": 36069312197,
+          "application_foundation_ci": 36069312115,
+          "security_supply_chain_ci": 36069312124
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        },
+        "milestone": "workspace-scoped read model, immutable snapshot/channel preview, partial-success projection and secret-safe operator surface"
+      }
     }
   ]
 }

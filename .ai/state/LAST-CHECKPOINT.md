@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-09-25T22:49:19+00:00`
-- Observed main: `7efe084acd906156e25d64cd9d3a12e984a90f8d`
+- Timestamp: `2026-09-25T23:14:01+00:00`
+- Observed main: `280b6be5dda15a4ddce17123ea715c8c50ac3da0`
 - Active issue: `none`
-- Active PR: `393`
-- Active branch: `control/task0041-lane1-lease`
-- Current milestone: `TASK-0041-RETRY-CAPABILITY-LEASE`
+- Active PR: `395`
+- Active branch: `control/task0041-lane2-lease`
+- Current milestone: `TASK-0041-APPROVAL-REVOCATION-LEASE`
 - Milestone status: `VERIFYING`
 - Active task: `TASK-0041`
 - Next task: `none`
 - Current phase: `PHASE-07`
 - Execution status: `in_progress`
-- Pending Runner IDs: `RBT-041`
+- Pending Runner IDs: `RBT-043`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `5aeecacfd6bf36bf1d59b0f4f321e84f2e3f9b09a80659910e4a079034db31f7`
+- State fingerprint: `33763038f5836afa5c835341d0cdb4b8956b01ca5d42b953a222d5e13d99fb38`
 
 ## Completed / observed this session
 
-Staged PR #393 to terminally reconcile trusted Wave-1 activation PR #392 and lease WS-0041-RETRY-CAPABILITY to the current interactive execution identity chatgpt-session-task0041-retry. RBT-040 is terminal PASS from PR #392 exact-head Continuity/Application/Security evidence and resulting protected main 7efe084acd906156e25d64cd9d3a12e984a90f8d. RBT-041 gates the lease-authority carrier. The lease is exclusive to the three declared retry service/security-test paths; the other three worker slots remain open and no background/asynchronous agent is claimed.
+Staged PR #395 to carry forward trusted Lane-1 completion and lease WS-0041-APPROVAL-REVOCATION to chatgpt-session-task0041-approval-revocation. PR #393 full protected-main exact-head gates are terminal PASS; PR #394 exact-head Shipping Fast Gate and resulting ship/week-1 Continuity/Application/Fast Gate are terminal PASS. Lane-1 is released, issue #43 merge alert was posted, and Lane-2 is exclusively leased to its three declared service/controller/security-test paths. RBT-043 gates the lease carrier with full protected-main CI.
 
 ## Tests
 
-PR #392 exact source `edc7589bbcfcb9d772262c5b327c6cf1784b399d`: AI Continuity Guard `36197499995` PASS; Application Foundation CI `36197500074` PASS; Security Supply Chain CI `36197500183` PASS. PR #393 exact-head full Continuity/Application/Security verification is pending.
+PR #393 exact source `7b1b5497ec86d4d8ffdb746927e358daf0b8f179`: AI Continuity Guard `36198622976` PASS; Application Foundation CI `36198623003` PASS; Security Supply Chain CI `36198622967` PASS; merged main `280b6be5dda15a4ddce17123ea715c8c50ac3da0`. PR #394 exact source `d3a028a7f0576d89aa6b8495f6ad2666f66c8255`: Shipping Fast Gate `36199489253` PASS; merged integration `d9f699686098b4187cfce8fd4a9ab2e0e761fe6f`. Resulting integration: AI Continuity Guard `36199738634` PASS; Application Foundation CI `36199738672` PASS; Shipping Fast Gate `36199738706` PASS. PR #395 exact-head full Continuity/Application/Security verification is pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #392 exact source `edc7589bbcfcb9d772262c5b327c6cf1784b399d`: AI Continuity G
 
 ## Exact next action
 
-Verify PR #393 on its unchanged exact head and merge the Lane-1 lease-authority carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, fast-forward worker-1/task0041-retry-capability to resulting protected main, execute only the leased PublicationRetryPreflightService, PublicationRetryActionService and Task0041RetryCapabilitySecurityTest scope as chatgpt-session-task0041-retry, then submit a Shipping Fast Gate PR targeting ship/week-1. Keep shared routes/global state/config/migrations Supervisor-owned and keep raw provider credentials, unrelated provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.
+Verify PR #395 on its unchanged exact head and merge the Lane-2 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-2/task0041-approval-revocation to green integration head d9f699686098b4187cfce8fd4a9ab2e0e761fe6f, then execute only CampaignApprovalRevocationService.php, PublishingApprovalRevocationController.php and Task0041ApprovalRevocationSecurityTest.php as chatgpt-session-task0041-approval-revocation. Reuse canonical CampaignGovernanceService::revokeApproval(), resolve approver authority on the server, enforce exact latest snapshot and expected campaign state_version, and leave shared routes/global state/config/migrations Supervisor-owned. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.

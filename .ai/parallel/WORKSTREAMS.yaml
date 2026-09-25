@@ -47,12 +47,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Implement capability-gated retry preflight/execution over canonical publication attempts with exact eligible/excluded counts, already-successful exclusion, workspace isolation, stale capability fail-closed behavior and no raw provider credential exposure.",
-      "assigned_agent": "chatgpt-session-task0041-retry",
+      "assigned_agent": null,
       "branch": "worker-1/task0041-retry-capability",
       "worktree": "worktrees/task-0041-retry-capability",
-      "status": "leased",
-      "slot_status": "occupied",
-      "start_status": "leased_ready_to_execute",
+      "status": "merged",
+      "slot_status": "open",
+      "start_status": "shipping_merged_green",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -70,12 +70,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Implement focused approval revocation/material-change operator command support with server-derived current authority, exact snapshot/state-version concurrency checks and append-only audit provenance; shared route wiring remains Supervisor-owned.",
-      "assigned_agent": null,
+      "assigned_agent": "chatgpt-session-task0041-approval-revocation",
       "branch": "worker-2/task0041-approval-revocation",
       "worktree": "worktrees/task-0041-approval-revocation",
-      "status": "planned",
-      "slot_status": "open",
-      "start_status": "ready_for_lease",
+      "status": "leased",
+      "slot_status": "occupied",
+      "start_status": "leased_ready_to_execute",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"

@@ -51,7 +51,7 @@
       "branch": "worker-1/task0041-retry-capability",
       "worktree": "worktrees/task-0041-retry-capability",
       "status": "merged",
-      "slot_status": "released",
+      "slot_status": "open",
       "start_status": "shipping_merged_green",
       "onboarded_from_branch": "main",
       "dependencies": [

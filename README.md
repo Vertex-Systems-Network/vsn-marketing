@@ -4,9 +4,9 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-READ-MODEL-PREVIEW status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-READ-MODEL-PREVIEW status=COMPLETE -->
 
-> Last verified protected-main TASK-0041 activation baseline: **2026-09-25** at `2943f4e9dbb43ac7695cbd39e6d5741a575063bc` after transition PR #385 merged. Exact transition source `72dd844c3b32438c5a1a1b5ab1815108d91a6f57` passed AI Continuity Guard `36057394172`, Application Foundation CI `36057394133`, and Security Supply Chain CI `36057394186`. RBT-036 is terminal PASS; TASK-0041 is active/ready.
+> Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
 >
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
@@ -14,14 +14,14 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 83.33%**  
 **Active task: TASK-0041 — Implement campaign/publishing operator UX**  
 **Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-OPERATOR-READ-MODEL-PREVIEW — VERIFYING**
+**Current milestone: TASK-0041-OPERATOR-READ-MODEL-PREVIEW — COMPLETE**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.83%
 Phase 07 [█████████████████░░░] 83.33%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. The guarded TASK-0040 -> TASK-0041 transition moves canonical progress to roadmap 49.83% / PHASE-07 83.33%; TASK-0041 implementation remains blocked until PR #385 is trusted and terminally reconciled.
+The deterministic roadmap percentage advances only from completed task weights. Canonical progress remains roadmap 49.83% / PHASE-07 83.33% while TASK-0041 stays in progress; the trusted operator read-model/preview foundation is complete and the next bounded slice is guarded bulk safeguards plus approval-queue controls.
 
 ### Phase / module progress
 
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 operator read model/preview PR #386** | **83.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 read model/preview foundation complete; next guarded bulk/approval UX** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,11 +47,11 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-TASK-0041 is active on protected-main baseline `2943f4e9dbb43ac7695cbd39e6d5741a575063bc`. PR #386 stages the first bounded operator-UX product milestone with RBT-037 pending exact-head full CI.
+TASK-0041 remains active after the trusted first operator-UX product milestone merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. PR #386 exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed all required exact-head Continuity/Application/Security gates and RBT-037 is terminal PASS.
 
-The slice adds a workspace-scoped publishing operator surface guarded by authentication, tenant membership and `campaign.read`; a read-only projection over canonical campaign, immutable snapshot, approval and schedule evidence; existing `PublicationAggregateService`-derived target/partial-success state; and a responsive Inertia/React dashboard with focused backend and frontend security/read-only tests.
+The trusted foundation adds a workspace-scoped publishing operator surface guarded by authentication, tenant membership and `campaign.read`; a read-only projection over canonical campaign, immutable snapshot, approval and schedule evidence; existing `PublicationAggregateService`-derived target/partial-success state; and a responsive Inertia/React dashboard with focused backend and frontend security/read-only tests.
 
-No provider credential/raw secret fields are exposed in the operator props. No publish, retry, edit, delete, provider API side effect, TASK-0042 activation, deployment/release authority or deferred Runner optimization is enabled.
+No provider credential/raw secret fields are exposed in the operator props. The next bounded TASK-0041 slice is guarded bulk safeguards and approval-queue controls; provider API side effects, direct credential use, retry/edit/delete execution beyond capability checks, TASK-0042 activation, deployment/release authority and deferred Runner optimization remain inactive.
 
 ### README progress-sync contract
 

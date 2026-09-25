@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2943f4e9dbb43ac7695cbd39e6d5741a575063bc",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 386,
-    "branch": "task-0041-operator-read-model-preview",
-    "milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW"
-  },
+  "reconciled_main_sha": "792881f5c702ee38fa12b066f2eb8f65e73baca3",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -92,10 +87,19 @@
       "kind": "pr",
       "number": 386,
       "title": "feat(publishing): add operator read model and snapshot preview",
-      "disposition": "active_task_product_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-037",
       "branch": "task-0041-operator-read-model-preview"
+    },
+    {
+      "kind": "pr",
+      "number": 388,
+      "title": "chore(deps): bump github/codeql-action/init from 4.37.9 to 4.38.1",
+      "disposition": "deferred_runner_batch",
+      "accepted_actionable": false,
+      "runner_id": "RBT-005",
+      "branch": "dependabot/github_actions/github/codeql-action/init-4.38.1"
     }
   ]
 }

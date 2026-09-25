@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "7efe084acd906156e25d64cd9d3a12e984a90f8d",
+  "reconciled_main_sha": "280b6be5dda15a4ddce17123ea715c8c50ac3da0",
   "active_work_path": {
     "kind": "pr",
-    "number": 393,
-    "branch": "control/task0041-lane1-lease",
-    "milestone": "TASK-0041-RETRY-CAPABILITY-LEASE"
+    "number": 395,
+    "branch": "control/task0041-lane2-lease",
+    "milestone": "TASK-0041-APPROVAL-REVOCATION-LEASE"
   },
   "items": [
     {
@@ -145,10 +145,28 @@
       "kind": "pr",
       "number": 393,
       "title": "control: lease TASK-0041 retry capability lane",
-      "disposition": "active_lane1_lease_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-041",
       "branch": "control/task0041-lane1-lease"
+    },
+    {
+      "kind": "pr",
+      "number": 394,
+      "title": "feat(publishing): add guarded retry capability actions",
+      "disposition": "terminal_shipping_trusted",
+      "accepted_actionable": false,
+      "runner_id": "RBT-042",
+      "branch": "worker-1/task0041-retry-capability"
+    },
+    {
+      "kind": "pr",
+      "number": 395,
+      "title": "control: lease TASK-0041 approval revocation lane",
+      "disposition": "active_lane2_lease_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-043",
+      "branch": "control/task0041-lane2-lease"
     }
   ]
 }

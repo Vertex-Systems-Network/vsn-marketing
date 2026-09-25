@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';\nimport { useState } from 'react';
 
 type Workspace = {
     id: string;
@@ -55,6 +55,25 @@ type Publication = {
     targets: PublicationTarget[];
 };
 
+type ApprovalActions = {
+    approve: boolean;
+    reject: boolean;
+    revoke: boolean;
+    requires_snapshot_match: boolean;
+    requires_state_version_match: boolean;
+};
+
+type BulkRetrySafeguard = {
+    candidate_count: number;
+    affected_count: number;
+    excluded_count: number;
+    excluded_successful_count: number;
+    permission_granted: boolean;
+    confirmation_required: boolean;
+    execution_enabled: boolean;
+    blocked_reason: string | null;
+};
+
 type Campaign = {
     id: string;
     name: string;
@@ -64,6 +83,8 @@ type Campaign = {
     approval: Approval | null;
     schedule: Schedule | null;
     publication: Publication | null;
+    approval_actions?: ApprovalActions;
+    bulk_safeguards?: { retry: BulkRetrySafeguard };
 };
 
 type Summary = {
@@ -75,6 +96,10 @@ type Summary = {
 
 type Props = {
     workspace: Workspace;
+    permissions?: {
+        can_approve: boolean;
+        can_send: boolean;
+    };
     campaigns: Campaign[];
     summary: Summary;
 };
@@ -164,9 +189,36 @@ function EmptyState() {
     );
 }
 
-function CampaignCard({ campaign }: { campaign: Campaign }) {
+function CampaignCard({ campaign, workspaceId }: { campaign: Campaign; workspaceId: string }) {
     const snapshot = campaign.snapshot;
     const publication = campaign.publication;
+    const approvalActions = campaign.approval_actions;
+    const retrySafeguard = campaign.bulk_safeguards?.retry;
+    const [processingAction, setProcessingAction] = useState<string | null>(null);
+
+    function submitApprovalAction(action: 'approve' | 'reject' | 'revoke') {
+        if (!snapshot || !approvalActions?.[action]) return;
+
+        const prompt =
+            action === 'revoke'
+                ? 'Revoke the approval for this exact immutable snapshot?'
+                : `${action === 'approve' ? 'Approve' : 'Reject'} this exact immutable snapshot?`;
+
+        if (!window.confirm(prompt)) return;
+
+        setProcessingAction(action);
+        router.post(
+            `/workspaces/${encodeURIComponent(workspaceId)}/publishing/campaigns/${encodeURIComponent(campaign.id)}/approval/${action}`,
+            {
+                snapshot_id: snapshot.id,
+                state_version: campaign.state_version,
+            },
+            {
+                preserveScroll: true,
+                onFinish: () => setProcessingAction(null),
+            },
+        );
+    }
 
     return (
         <article className="overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/70 shadow-2xl shadow-black/10">
@@ -263,7 +315,81 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
                                 </span>
                             </div>
                         </div>
+
+                        {approvalActions && (approvalActions.approve || approvalActions.reject || approvalActions.revoke) && (
+                            <div className="mt-4 rounded-2xl border border-sky-400/15 bg-sky-400/[0.055] p-4">
+                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-200">Approval queue controls</p>
+                                <p className="mt-1 text-xs leading-5 text-neutral-400">
+                                    Server revalidates workspace permission, role, state version and latest immutable snapshot before every decision.
+                                </p>
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {approvalActions.approve && (
+                                        <button
+                                            type="button"
+                                            onClick={() => submitApprovalAction('approve')}
+                                            disabled={processingAction !== null}
+                                            className="rounded-lg border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-xs font-semibold text-emerald-100 disabled:opacity-50"
+                                        >
+                                            {processingAction === 'approve' ? 'Approving…' : 'Approve'}
+                                        </button>
+                                    )}
+                                    {approvalActions.reject && (
+                                        <button
+                                            type="button"
+                                            onClick={() => submitApprovalAction('reject')}
+                                            disabled={processingAction !== null}
+                                            className="rounded-lg border border-rose-400/25 bg-rose-400/10 px-3 py-2 text-xs font-semibold text-rose-100 disabled:opacity-50"
+                                        >
+                                            {processingAction === 'reject' ? 'Rejecting…' : 'Reject'}
+                                        </button>
+                                    )}
+                                    {approvalActions.revoke && (
+                                        <button
+                                            type="button"
+                                            onClick={() => submitApprovalAction('revoke')}
+                                            disabled={processingAction !== null}
+                                            className="rounded-lg border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-xs font-semibold text-amber-100 disabled:opacity-50"
+                                        >
+                                            {processingAction === 'revoke' ? 'Revoking…' : 'Revoke approval'}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
+
+                    {retrySafeguard && (
+                        <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4" aria-label="Bulk retry preflight">
+                            <div className="flex items-start justify-between gap-3">
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-400">Bulk retry preflight</p>
+                                    <p className="mt-1 text-xs leading-5 text-neutral-500">
+                                        Backend-derived target counts; successful or otherwise ineligible targets stay excluded.
+                                    </p>
+                                </div>
+                                <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-wide text-neutral-500">
+                                    execution locked
+                                </span>
+                            </div>
+                            <dl className="mt-4 grid grid-cols-3 gap-2">
+                                <div className="rounded-xl bg-white/[0.035] p-3">
+                                    <dt className="text-[11px] text-neutral-500">Candidates</dt>
+                                    <dd className="mt-1 text-lg font-semibold text-white">{retrySafeguard.candidate_count}</dd>
+                                </div>
+                                <div className="rounded-xl bg-white/[0.035] p-3">
+                                    <dt className="text-[11px] text-neutral-500">Affected</dt>
+                                    <dd className="mt-1 text-lg font-semibold text-white">{retrySafeguard.affected_count}</dd>
+                                </div>
+                                <div className="rounded-xl bg-white/[0.035] p-3">
+                                    <dt className="text-[11px] text-neutral-500">Excluded</dt>
+                                    <dd className="mt-1 text-lg font-semibold text-white">{retrySafeguard.excluded_count}</dd>
+                                </div>
+                            </dl>
+                            <p className="mt-3 text-xs text-neutral-500">
+                                Confirmation required: {retrySafeguard.confirmation_required ? 'yes' : 'no'} · execution enabled: {retrySafeguard.execution_enabled ? 'yes' : 'no'} · {label(retrySafeguard.blocked_reason ?? 'none')}
+                            </p>
+                        </div>
+                    )}
 
                     <div className="mt-6">
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500">Publication state</p>
@@ -313,7 +439,7 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
     );
 }
 
-export default function PublishingOperator({ workspace, campaigns, summary }: Props) {
+export default function PublishingOperator({ workspace, permissions, campaigns, summary }: Props) {
     return (
         <>
             <Head title="Publishing operator" />
@@ -324,7 +450,7 @@ export default function PublishingOperator({ workspace, campaigns, summary }: Pr
                             <div className="flex flex-wrap items-center gap-2">
                                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300">VSN Marketing</p>
                                 <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-sky-200">
-                                    Read-only milestone
+                                    Guarded operator controls
                                 </span>
                             </div>
                             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Publishing operator</h1>
@@ -351,10 +477,18 @@ export default function PublishingOperator({ workspace, campaigns, summary }: Pr
                                 <h2 className="text-lg font-semibold text-white">Campaign operations</h2>
                                 <p className="mt-1 text-sm text-neutral-500">Snapshot-bound previews and deterministic publication state.</p>
                             </div>
-                            <p className="hidden text-xs text-neutral-600 sm:block">No provider credentials or raw provider evidence exposed</p>
+                            <p className="hidden text-xs text-neutral-600 sm:block">
+                                Approval {permissions?.can_approve ? 'enabled' : 'read-only'} · provider credentials never exposed
+                            </p>
                         </div>
 
-                        {campaigns.length === 0 ? <EmptyState /> : campaigns.map((campaign) => <CampaignCard key={campaign.id} campaign={campaign} />)}
+                        {campaigns.length === 0 ? (
+                            <EmptyState />
+                        ) : (
+                            campaigns.map((campaign) => (
+                                <CampaignCard key={campaign.id} campaign={campaign} workspaceId={workspace.id} />
+                            ))
+                        )}
                     </section>
                 </div>
             </main>

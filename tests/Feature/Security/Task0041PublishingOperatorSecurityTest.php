@@ -14,7 +14,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 uses(RefreshDatabase::class);
 
 /** @return array{user: User, workspace: Workspace} */
-function task0041OperatorActor(string $suffix, ?User $user = null): array
+function task0041OperatorActor(string $suffix, ?User $user = null, array $permissions = []): array
 {
     $organization = Organization::query()->create([
         'name' => 'Task0041 '.$suffix,
@@ -34,10 +34,12 @@ function task0041OperatorActor(string $suffix, ?User $user = null): array
     $roles = app(WorkspaceRoleManager::class);
     $membership = $roles->addMember($user, (string) $workspace->getKey());
     $role = $roles->createRole((string) $workspace->getKey(), 'operator-'.$suffix, 'Operator '.$suffix);
-    $roles->grantPermission($role, PermissionCatalog::CAMPAIGN_READ);
+    foreach (array_unique([PermissionCatalog::CAMPAIGN_READ, ...$permissions]) as $permission) {
+        $roles->grantPermission($role, $permission);
+    }
     $roles->assignRole($membership, $role);
 
-    return compact('user', 'workspace');
+    return compact('user', 'workspace') + ['role_key' => 'operator-'.$suffix];
 }
 
 /** @return array{campaign_id: string, snapshot_id: string} */
@@ -150,6 +152,11 @@ it('renders only canonical evidence from the selected authorized workspace', fun
             ->where('campaigns.0.snapshot.channels.0', 'linkedin')
             ->where('campaigns.0.publication.state', 'not_started')
             ->where('campaigns.0.publication.targets.0.state', 'not_started')
+            ->where('permissions.can_approve', false)
+            ->where('permissions.can_send', false)
+            ->where('campaigns.0.approval_actions.approve', false)
+            ->where('campaigns.0.bulk_safeguards.retry.affected_count', 0)
+            ->where('campaigns.0.bulk_safeguards.retry.blocked_reason', 'permission_denied')
         );
 
     expect($response->getContent())
@@ -166,4 +173,126 @@ it('fails closed when an authenticated user requests a workspace they do not bel
     $this->actingAs($inside['user'])
         ->get('/workspaces/'.$foreign['workspace']->getKey().'/publishing')
         ->assertForbidden();
+});
+
+
+it('derives approval role server-side and enforces snapshot plus state-version guards for approve and revoke', function () {
+    $actor = task0041OperatorActor(
+        'approval-actions',
+        null,
+        [PermissionCatalog::CAMPAIGN_APPROVE],
+    );
+    $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'approval-actions');
+    DB::table('campaigns')
+        ->where('id', $campaign['campaign_id'])
+        ->update(['status' => 'needs_approval']);
+
+    $this->withoutVite();
+    $this->actingAs($actor['user'])
+        ->get('/workspaces/'.$actor['workspace']->getKey().'/publishing')
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('permissions.can_approve', true)
+            ->where('campaigns.0.approval_actions.approve', true)
+            ->where('campaigns.0.approval_actions.reject', true)
+            ->where('campaigns.0.approval_actions.revoke', false)
+        );
+
+    $this->actingAs($actor['user'])
+        ->post(
+            '/workspaces/'.$actor['workspace']->getKey()
+                .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/approve',
+            [
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 1,
+                'reason' => 'Operator reviewed the immutable snapshot.',
+                'role_key' => 'attacker-controlled-role',
+            ],
+        )
+        ->assertRedirect();
+
+    expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
+        ->toBe('approved')
+        ->and((int) DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('state_version'))
+        ->toBe(2)
+        ->and(DB::table('campaign_approval_decisions')
+            ->where('campaign_id', $campaign['campaign_id'])
+            ->where('outcome', 'approved')
+            ->value('actor_role'))
+        ->toBe($actor['role_key']);
+
+    $this->actingAs($actor['user'])
+        ->post(
+            '/workspaces/'.$actor['workspace']->getKey()
+                .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/revoke',
+            [
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 2,
+                'reason' => 'Approval intentionally revoked by the authorized operator.',
+            ],
+        )
+        ->assertRedirect();
+
+    expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
+        ->toBe('needs_approval')
+        ->and((int) DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('state_version'))
+        ->toBe(3)
+        ->and(DB::table('campaign_approval_decisions')
+            ->where('campaign_id', $campaign['campaign_id'])
+            ->orderByDesc('occurred_at')
+            ->orderByDesc('id')
+            ->value('outcome'))
+        ->toBe('revoked');
+});
+
+it('rejects stale operator approval commands without writing a decision', function () {
+    $actor = task0041OperatorActor(
+        'stale-approval',
+        null,
+        [PermissionCatalog::CAMPAIGN_APPROVE],
+    );
+    $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'stale-approval');
+    DB::table('campaigns')
+        ->where('id', $campaign['campaign_id'])
+        ->update(['status' => 'needs_approval', 'state_version' => 4]);
+
+    $this->actingAs($actor['user'])
+        ->post(
+            '/workspaces/'.$actor['workspace']->getKey()
+                .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/approve',
+            [
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 3,
+            ],
+        )
+        ->assertSessionHasErrors('approval');
+
+    expect(DB::table('campaign_approval_decisions')
+        ->where('campaign_id', $campaign['campaign_id'])
+        ->count())
+        ->toBe(0);
+});
+
+it('denies approval mutations to a read-only workspace operator', function () {
+    $actor = task0041OperatorActor('read-only-action');
+    $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'read-only-action');
+    DB::table('campaigns')
+        ->where('id', $campaign['campaign_id'])
+        ->update(['status' => 'needs_approval']);
+
+    $this->actingAs($actor['user'])
+        ->post(
+            '/workspaces/'.$actor['workspace']->getKey()
+                .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/approve',
+            [
+                'snapshot_id' => $campaign['snapshot_id'],
+                'state_version' => 1,
+            ],
+        )
+        ->assertForbidden();
+
+    expect(DB::table('campaign_approval_decisions')
+        ->where('campaign_id', $campaign['campaign_id'])
+        ->count())
+        ->toBe(0);
 });

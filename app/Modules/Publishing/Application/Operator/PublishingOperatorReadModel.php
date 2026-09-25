@@ -2,6 +2,9 @@
 
 namespace App\Modules\Publishing\Application\Operator;
 
+use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Publishing\Application\Publication\PublicationAggregateService;
 use App\Modules\Publishing\Domain\Publication\PublicationTargetOutcome;
@@ -14,16 +17,19 @@ final readonly class PublishingOperatorReadModel
     public function __construct(
         private DatabaseManager $database,
         private PublicationAggregateService $aggregates,
+        private WorkspaceAuthorizer $authorizer,
     ) {}
 
     /** @return array<string, mixed> */
-    public function forWorkspace(TenantContext $context): array
+    public function forWorkspace(TenantContext $context, User $actor): array
     {
         $connection = $this->database->connection();
         $workspace = $connection->table('workspaces')
             ->select(['id', 'name', 'slug'])
             ->where('id', $context->workspaceId)
             ->first();
+        $canApprove = $this->authorizer->allows($actor, $context, PermissionCatalog::CAMPAIGN_APPROVE);
+        $canSend = $this->authorizer->allows($actor, $context, PermissionCatalog::CAMPAIGN_SEND);
 
         $campaigns = $connection->table('campaigns')
             ->where('workspace_id', $context->workspaceId)
@@ -32,7 +38,12 @@ final readonly class PublishingOperatorReadModel
             ->orderBy('id')
             ->limit(50)
             ->get()
-            ->map(fn (stdClass $campaign): array => $this->campaign($context, $campaign))
+            ->map(fn (stdClass $campaign): array => $this->campaign(
+                $context,
+                $campaign,
+                $canApprove,
+                $canSend,
+            ))
             ->values()
             ->all();
 
@@ -41,6 +52,10 @@ final readonly class PublishingOperatorReadModel
                 'id' => $context->workspaceId,
                 'name' => $workspace instanceof stdClass ? (string) $workspace->name : 'Workspace',
                 'slug' => $workspace instanceof stdClass ? (string) $workspace->slug : '',
+            ],
+            'permissions' => [
+                'can_approve' => $canApprove,
+                'can_send' => $canSend,
             ],
             'campaigns' => $campaigns,
             'summary' => [
@@ -62,8 +77,12 @@ final readonly class PublishingOperatorReadModel
     }
 
     /** @return array<string, mixed> */
-    private function campaign(TenantContext $context, stdClass $campaign): array
-    {
+    private function campaign(
+        TenantContext $context,
+        stdClass $campaign,
+        bool $canApprove,
+        bool $canSend,
+    ): array {
         $workspaceId = $context->workspaceId;
         $campaignId = (string) $campaign->id;
         $connection = $this->database->connection();
@@ -85,6 +104,8 @@ final readonly class PublishingOperatorReadModel
                 'approval' => null,
                 'schedule' => null,
                 'publication' => null,
+                'approval_actions' => $this->approvalActions($campaign, null, $canApprove),
+                'bulk_safeguards' => $this->bulkSafeguards(null, $canSend),
             ];
         }
 
@@ -97,7 +118,7 @@ final readonly class PublishingOperatorReadModel
             ->all();
 
         $approval = $connection->table('campaign_approval_decisions')
-            ->select(['outcome', 'actor_role', 'occurred_at', 'expires_at'])
+            ->select(['id', 'outcome', 'actor_role', 'occurred_at', 'expires_at'])
             ->where('workspace_id', $workspaceId)
             ->where('campaign_id', $campaignId)
             ->where('snapshot_id', (string) $snapshot->id)
@@ -121,6 +142,10 @@ final readonly class PublishingOperatorReadModel
             ->orderByDesc('id')
             ->value('id');
 
+        $publication = is_string($intentId) && $intentId !== ''
+            ? $this->publication($workspaceId, $intentId)
+            : $this->notStartedPublication($targets);
+
         return [
             'id' => $campaignId,
             'name' => (string) $campaign->name,
@@ -140,9 +165,62 @@ final readonly class PublishingOperatorReadModel
                 'local_scheduled_at' => (string) $schedule->local_scheduled_at,
                 'resolved_at_utc' => (string) $schedule->resolved_at_utc,
             ] : null,
-            'publication' => is_string($intentId) && $intentId !== ''
-                ? $this->publication($workspaceId, $intentId)
-                : $this->notStartedPublication($targets),
+            'publication' => $publication,
+            'approval_actions' => $this->approvalActions($campaign, $approval, $canApprove),
+            'bulk_safeguards' => $this->bulkSafeguards($publication, $canSend),
+        ];
+    }
+
+    /**
+     * @return array{
+     *   approve: bool,
+     *   reject: bool,
+     *   revoke: bool,
+     *   requires_snapshot_match: bool,
+     *   requires_state_version_match: bool
+     * }
+     */
+    private function approvalActions(stdClass $campaign, ?stdClass $approval, bool $canApprove): array
+    {
+        $status = (string) $campaign->status;
+        $activeApproval = $approval instanceof stdClass && (string) $approval->outcome === 'approved';
+
+        return [
+            'approve' => $canApprove && $status === 'needs_approval',
+            'reject' => $canApprove && $status === 'needs_approval',
+            'revoke' => $canApprove
+                && $activeApproval
+                && in_array($status, ['approved', 'ready', 'scheduled_intent'], true),
+            'requires_snapshot_match' => true,
+            'requires_state_version_match' => true,
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $publication
+     * @return array{retry: array<string, bool|int|string|null>}
+     */
+    private function bulkSafeguards(?array $publication, bool $canSend): array
+    {
+        $counts = is_array($publication['counts'] ?? null) ? $publication['counts'] : [];
+        $total = (int) ($counts['total'] ?? 0);
+        $candidateCount = (int) ($publication['retry_eligible_count'] ?? 0);
+        $affectedCount = $canSend ? $candidateCount : 0;
+        $blockedReason = ! $canSend
+            ? 'permission_denied'
+            : ($candidateCount === 0 ? 'no_eligible_targets' : 'preflight_only');
+
+        return [
+            'retry' => [
+                'candidate_count' => $candidateCount,
+                'affected_count' => $affectedCount,
+                'excluded_count' => max(0, $total - $affectedCount),
+                'excluded_successful_count' => (int) ($counts['succeeded'] ?? 0),
+                'permission_granted' => $canSend,
+                'confirmation_required' => true,
+                'execution_enabled' => false,
+                'blocked_reason' => $blockedReason,
+            ],
         ];
     }
 

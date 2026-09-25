@@ -1,12 +1,12 @@
 <?php
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use App\Modules\Providers\Domain\Connectors\ProviderOperationStatus;
 use App\Modules\Publishing\Application\Operator\PublicationRetryActionService;
 use App\Modules\Publishing\Application\Operator\PublicationRetryPreflightService;
 use App\Modules\Publishing\Application\Publication\PublicationAttemptService;
 use App\Modules\Publishing\Domain\Publication\PublicationAttempt;
 use App\Modules\Publishing\Domain\Publication\PublicationAttemptState;
-use App\Modules\Providers\Domain\Connectors\ProviderOperationStatus;
 use App\Modules\Publishing\Infrastructure\Persistence\DatabasePublicationAttemptRepository;
 use DateTimeImmutable;
 use Illuminate\Auth\Access\AuthorizationException;

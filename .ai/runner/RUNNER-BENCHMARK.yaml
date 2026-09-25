@@ -1126,9 +1126,7 @@
         },
         "milestone": "workspace-scoped read model, immutable snapshot/channel preview, partial-success projection and secret-safe operator surface"
       }
-    }
-  ],
-  "items": [
+    },
     {
       "id": "RBT-038",
       "source": "PR #387 / TASK-0041 guarded approval queue and bulk decisions",

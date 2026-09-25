@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_wave1_activation_pr392_head_edc7589bbcfcb9d772262c5b327c6cf1784b399d_passed_run_36197499995",
-    "application_test_status": "task0041_wave1_activation_pr392_head_edc7589bbcfcb9d772262c5b327c6cf1784b399d_passed_run_36197500074",
-    "security_supply_chain_status": "task0041_wave1_activation_pr392_head_edc7589bbcfcb9d772262c5b327c6cf1784b399d_passed_run_36197500183",
+    "continuity_validation": "task0041_retry_lane1_ship_d9f699686098b4187cfce8fd4a9ab2e0e761fe6f_passed_run_36199738634",
+    "application_test_status": "task0041_retry_lane1_ship_d9f699686098b4187cfce8fd4a9ab2e0e761fe6f_passed_run_36199738672",
+    "security_supply_chain_status": "task0041_retry_lane1_lease_pr393_head_7b1b5497ec86d4d8ffdb746927e358daf0b8f179_passed_run_36198622967",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "7efe084acd906156e25d64cd9d3a12e984a90f8d",
+  "observed_main_sha": "280b6be5dda15a4ddce17123ea715c8c50ac3da0",
   "active_issue": null,
-  "active_pr": 393,
-  "active_branch": "control/task0041-lane1-lease",
-  "current_milestone": "TASK-0041-RETRY-CAPABILITY-LEASE",
+  "active_pr": 395,
+  "active_branch": "control/task0041-lane2-lease",
+  "current_milestone": "TASK-0041-APPROVAL-REVOCATION-LEASE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 accelerated Wave-1 activation trusted via PR #392: exact source edc7589bbcfcb9d772262c5b327c6cf1784b399d passed AI Continuity Guard 36197499995, Application Foundation CI 36197500074 and Security Supply Chain CI 36197500183; merged to protected main as 7efe084acd906156e25d64cd9d3a12e984a90f8d. RBT-040 is terminal PASS. Four TASK-0041 worker branches are aligned/available; Lane-1 lease activation is staged on PR #393.",
-  "exact_next_safe_action": "Verify PR #393 on its unchanged exact head and merge the Lane-1 lease-authority carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, fast-forward worker-1/task0041-retry-capability to resulting protected main, execute only the leased PublicationRetryPreflightService, PublicationRetryActionService and Task0041RetryCapabilitySecurityTest scope as chatgpt-session-task0041-retry, then submit a Shipping Fast Gate PR targeting ship/week-1. Keep shared routes/global state/config/migrations Supervisor-owned and keep raw provider credentials, unrelated provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0041 Lane-1 retry/capability shipping milestone trusted: PR #393 exact source 7b1b5497ec86d4d8ffdb746927e358daf0b8f179 passed full protected-main Continuity/Application/Security and merged as 280b6be5dda15a4ddce17123ea715c8c50ac3da0; PR #394 exact source d3a028a7f0576d89aa6b8495f6ad2666f66c8255 passed Shipping Fast Gate 36199489253 and merged to ship/week-1 as d9f699686098b4187cfce8fd4a9ab2e0e761fe6f; resulting integration head passed Continuity 36199738634, Application 36199738672 and Shipping Fast Gate 36199738706. Lane-1 lease is released and Lane-2 lease activation is staged on PR #395.",
+  "exact_next_safe_action": "Verify PR #395 on its unchanged exact head and merge the Lane-2 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-2/task0041-approval-revocation to green integration head d9f699686098b4187cfce8fd4a9ab2e0e761fe6f, then execute only CampaignApprovalRevocationService.php, PublishingApprovalRevocationController.php and Task0041ApprovalRevocationSecurityTest.php as chatgpt-session-task0041-approval-revocation. Reuse canonical CampaignGovernanceService::revokeApproval(), resolve approver authority on the server, enforce exact latest snapshot and expected campaign state_version, and leave shared routes/global state/config/migrations Supervisor-owned. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-041"
+    "RBT-043"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #393 on its unchanged exact head and merge the Lane-1 lease-authority carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, fast-forward worker-1/task0041-retry-capability to resulting protected main, execute only the leased PublicationRetryPreflightService, PublicationRetryActionService and Task0041RetryCapabilitySecurityTest scope as chatgpt-session-task0041-retry, then submit a Shipping Fast Gate PR targeting ship/week-1. Keep shared routes/global state/config/migrations Supervisor-owned and keep raw provider credentials, unrelated provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify PR #395 on its unchanged exact head and merge the Lane-2 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-2/task0041-approval-revocation to green integration head d9f699686098b4187cfce8fd4a9ab2e0e761fe6f, then execute only CampaignApprovalRevocationService.php, PublishingApprovalRevocationController.php and Task0041ApprovalRevocationSecurityTest.php as chatgpt-session-task0041-approval-revocation. Reuse canonical CampaignGovernanceService::revokeApproval(), resolve approver authority on the server, enforce exact latest snapshot and expected campaign state_version, and leave shared routes/global state/config/migrations Supervisor-owned. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

@@ -1,6 +1,6 @@
 # AI-Native Parallel Plan — TASK-0041 Accelerated Shipping
 
-Status: **active / Wave-1 Lane-1 leased**.
+Status: **active / Wave-1 Lane-2 leased**.
 
 Supervisor: `supervisor-main`  
 Control branch: `control/task0041-shipping-acceleration`  
@@ -41,8 +41,8 @@ The target is higher coding throughput through independent lanes while keeping o
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0041-SUPERVISOR-CONTROL | Promote trusted #387 implementation, own shared integration/state/routes and protected-main certification. | `occupied` | `supervisor-main` | `promotion_complete` | `control/task0041-shipping-acceleration` | squash | merge latest main before resume |
-| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | `occupied` | `chatgpt-session-task0041-retry` | `leased_ready_to_execute` | `worker-1/task0041-retry-capability` | squash | merge latest main before resume |
-| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | **OPEN** | — | `ready_for_lease` | `worker-2/task0041-approval-revocation` | squash | merge latest main before resume |
+| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | merge latest main before resume |
+| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | `occupied` | `chatgpt-session-task0041-approval-revocation` | `leased_ready_to_execute` | `worker-2/task0041-approval-revocation` | squash | merge latest main before resume |
 | 40 | WS-0041-PROVIDER-DRIFT | Secret-safe actionable provider disconnect/capability/rate/circuit projections. | **OPEN** | — | `ready_for_lease` | `worker-3/task0041-provider-drift` | squash | merge latest main before resume |
 | 50 | WS-0041-OPERATOR-UX-CERT | Accessibility, responsive/error/concurrency UX and focused frontend/E2E certification. | **OPEN** | — | `ready_for_lease` | `worker-4/task0041-operator-ux-cert` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
@@ -58,4 +58,4 @@ The target is higher coding throughput through independent lanes while keeping o
 
 ## Exact next action
 
-Execute WS-0041-RETRY-CAPABILITY on `worker-1/task0041-retry-capability` from the trusted current-main baseline. Implement only the declared retry preflight/action service and focused security test paths, keep shared routes/global state/config/migrations Supervisor-owned, target `ship/week-1`, and require Shipping Fast Gate before integration. The interactive worker identity is `chatgpt-session-task0041-retry`; it represents this active chat execution session and is not a background agent. Keep provider credentials/raw secrets, unrelated provider side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.
+Verify the Lane-2 lease carrier on its unchanged exact head with full protected-main Continuity/Application/Security gates. After trusted merge, sync `worker-2/task0041-approval-revocation` to green integration head `d9f699686098b4187cfce8fd4a9ab2e0e761fe6f`, then execute only the leased approval-revocation service/controller/security-test paths as `chatgpt-session-task0041-approval-revocation`. Reuse canonical `CampaignGovernanceService::revokeApproval()` and server-derived approver authority; enforce exact latest snapshot and state-version concurrency; do not add shared routes/global state/config/migrations in the worker lane. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.

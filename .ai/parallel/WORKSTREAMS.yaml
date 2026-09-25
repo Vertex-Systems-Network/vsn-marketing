@@ -2,7 +2,7 @@
   "schema_version": 2,
   "mode": "active",
   "parent_task": "TASK-0041",
-  "branch_creation_baseline_sha": "96c4e47d4d02c756fabbfda288d6768c366dfc75",
+  "branch_creation_baseline_sha": "8bbda80bb34423cdd4d2f42f64c7b3d182dde18f",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
@@ -14,9 +14,9 @@
       "assigned_agent": "supervisor-main",
       "branch": "control/task0041-shipping-acceleration",
       "worktree": "worktrees/task-0041-supervisor",
-      "status": "in_progress",
+      "status": "merged",
       "slot_status": "occupied",
-      "start_status": "promotion_verification",
+      "start_status": "promotion_complete",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
@@ -52,7 +52,7 @@
       "worktree": "worktrees/task-0041-retry-capability",
       "status": "planned",
       "slot_status": "open",
-      "start_status": "waiting_for_promotion_baseline",
+      "start_status": "ready_for_lease",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -75,7 +75,7 @@
       "worktree": "worktrees/task-0041-approval-revocation",
       "status": "planned",
       "slot_status": "open",
-      "start_status": "waiting_for_promotion_baseline",
+      "start_status": "ready_for_lease",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -98,7 +98,7 @@
       "worktree": "worktrees/task-0041-provider-drift",
       "status": "planned",
       "slot_status": "open",
-      "start_status": "waiting_for_promotion_baseline",
+      "start_status": "ready_for_lease",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -120,7 +120,7 @@
       "worktree": "worktrees/task-0041-operator-ux-cert",
       "status": "planned",
       "slot_status": "open",
-      "start_status": "waiting_for_promotion_baseline",
+      "start_status": "ready_for_lease",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"

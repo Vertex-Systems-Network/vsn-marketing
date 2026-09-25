@@ -2,14 +2,13 @@
   "schema_version": 2,
   "leases": [
     {
-      "agent": "chatgpt-session-task0041-approval-revocation",
-      "workstream": "WS-0041-APPROVAL-REVOCATION",
-      "branch": "worker-2/task0041-approval-revocation",
+      "agent": "chatgpt-session-task0041-provider-drift",
+      "workstream": "WS-0041-PROVIDER-DRIFT",
+      "branch": "worker-3/task0041-provider-drift",
       "status": "active",
       "write_paths": [
-        "app/Modules/Publishing/Application/Operator/CampaignApprovalRevocationService.php",
-        "app/Modules/Publishing/Presentation/Http/Controllers/PublishingApprovalRevocationController.php",
-        "tests/Feature/Security/Task0041ApprovalRevocationSecurityTest.php"
+        "app/Modules/Publishing/Application/Operator/PublishingOperatorReadModel.php",
+        "tests/Feature/Security/Task0041ProviderDriftOperatorSecurityTest.php"
       ]
     }
   ]

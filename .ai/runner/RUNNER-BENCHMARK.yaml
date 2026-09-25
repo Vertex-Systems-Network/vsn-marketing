@@ -1127,5 +1127,60 @@
         "milestone": "workspace-scoped read model, immutable snapshot/channel preview, partial-success projection and secret-safe operator surface"
       }
     }
+  ],
+  "items": [
+    {
+      "id": "RBT-038",
+      "source": "PR #387 / TASK-0041 guarded approval queue and bulk decisions",
+      "command_workflow": "Shipping Fast Gate on PR exact head + post-merge ship/week-1 AI Continuity Guard + Application Foundation CI",
+      "exact_source_identity": {
+        "git_sha": "acf19cb685923617d1ded39de70ec5af78e96125",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #387 exact-head Shipping Fast Gate + ship/week-1 integration-push evidence"
+      },
+      "environment_matrix_input_fixture": "server-resolved approver role + exact state_version/snapshot preflight + exact server-recorded confirmation binding + per-item stale/ineligible exclusion + deterministic idempotency + guarded approval queue UI + adversarial workspace/forged-role tests",
+      "authorization_state": "consumed_required_shipping_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_shipping_and_integration_workflow_timeouts",
+      "dedup_key": "runner:task0041-approval-bulk-safeguards:shipping-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 387,
+        "source_sha": "acf19cb685923617d1ded39de70ec5af78e96125",
+        "merge_sha": "df1d117ed78ca3563780444f46fcb316533f8b53",
+        "workflow_runs": {
+          "shipping_fast_gate_pr": 36074285668,
+          "ship_ai_continuity_guard": 36074471199,
+          "ship_application_foundation_ci": 36074471168,
+          "ship_shipping_fast_gate": 36074471196
+        },
+        "conclusions": {
+          "shipping_fast_gate_pr": "success",
+          "ship_ai_continuity_guard": "success",
+          "ship_application_foundation_ci": "success",
+          "ship_shipping_fast_gate": "success"
+        },
+        "milestone": "server-resolved approver authority, immutable snapshot/state-version bulk preflight, exact preflight-confirmation binding, deterministic replay, per-item fail-closed outcomes and guarded operator approval queue"
+      }
+    },
+    {
+      "id": "RBT-039",
+      "source": "PR #391 / TASK-0041 trusted shipping promotion and accelerated four-lane plan",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #391 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "trusted PR #387 product/test promotion onto protected-main descendant 96c4e47d; TASK-0041 four-lane file-disjoint Shipping Mode plan; no provider side effects; full protected-main security certification",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-shipping-promotion-acceleration:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
+    }
   ]
 }

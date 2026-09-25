@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "mode": "staged",
-  "parent_task": "TASK-0036",
-  "branch_creation_baseline_sha": "36120709c4d8e63160871894ea61fca67a386934",
+  "mode": "active",
+  "parent_task": "TASK-0041",
+  "branch_creation_baseline_sha": "96c4e47d4d02c756fabbfda288d6768c366dfc75",
   "branches_precreated": true,
   "remote_branch_validation_required": true,
   "workstreams": [
     {
-      "id": "WS-0036-SUPERVISOR-CONTROL",
+      "id": "WS-0041-SUPERVISOR-CONTROL",
       "role": "supervisor",
-      "module": "Content",
-      "capability": "Own TASK-0036 final PHASE-06 acceptance, canonical task/state/checkpoint/journal reconciliation, persistent deferred runner-registry continuity, and the separate guarded PHASE-07 handoff without activating campaign publishing early.",
+      "module": "Publishing",
+      "capability": "Promote trusted PR #387 shipping implementation onto current protected-main lineage, own shared routes/control/state integration, reconcile RBT evidence, protect security boundaries, and integrate worker submissions without widening provider or deployment authority.",
       "assigned_agent": "supervisor-main",
-      "branch": "supervisor/TASK-0036",
-      "worktree": "worktrees/task-0036-supervisor",
-      "status": "merged",
+      "branch": "control/task0041-shipping-acceleration",
+      "worktree": "worktrees/task-0041-supervisor",
+      "status": "in_progress",
       "slot_status": "occupied",
-      "start_status": "completed",
+      "start_status": "promotion_verification",
       "onboarded_from_branch": "main",
       "dependencies": [],
       "merge_group": 10,
@@ -25,31 +25,112 @@
         ".ai/parallel/AI-NATIVE-PLAN.md",
         ".ai/parallel/WORKSTREAMS.yaml",
         ".ai/parallel/AGENT-LEASES.yaml",
-        "docs/benchmarks/RUNNER-TASK-BENCHMARK-BACKLOG.md",
         ".ai/state/CURRENT-STATE.yaml",
         ".ai/state/LAST-CHECKPOINT.md",
         ".ai/state/EXECUTION-JOURNAL.jsonl",
-        ".ai/tasks/TASK-0036.yaml"
+        ".ai/coordination/OPEN-WORK-QUEUE.yaml",
+        ".ai/runner/RUNNER-BENCHMARK.yaml",
+        ".ai/tasks/TASK-0041.yaml",
+        "README.md",
+        "routes/web.php",
+        "app/Modules/Publishing/Application/Operator/CampaignApproverRoleResolver.php",
+        "app/Modules/Publishing/Application/Operator/CampaignBulkApprovalService.php",
+        "app/Modules/Publishing/Presentation/Http/Controllers/PublishingBulkApprovalController.php",
+        "app/Modules/Publishing/Presentation/Http/Controllers/PublishingOperatorController.php",
+        "resources/js/pages/publishing/operator.tsx",
+        "resources/js/pages/publishing/operator.test.tsx",
+        "tests/Feature/Security/Task0041PublishingOperatorSecurityTest.php"
       ]
     },
     {
-      "id": "WS-0036-PHASE-CERTIFICATION",
+      "id": "WS-0041-RETRY-CAPABILITY",
       "role": "worker",
-      "module": "Security",
-      "capability": "Certify PHASE-06 exact-version reproducibility, workspace isolation, asset provenance and variant safety, rendering and preview security, accessibility and representative visual/client regression, and provider-template synchronization/drift boundaries without adding product behavior.",
+      "module": "Publishing",
+      "capability": "Implement capability-gated retry preflight/execution over canonical publication attempts with exact eligible/excluded counts, already-successful exclusion, workspace isolation, stale capability fail-closed behavior and no raw provider credential exposure.",
       "assigned_agent": null,
-      "branch": "worker-1/TASK-0036",
-      "worktree": "worktrees/task-0036-worker-1",
-      "status": "completed",
+      "branch": "worker-1/task0041-retry-capability",
+      "worktree": "worktrees/task-0041-retry-capability",
+      "status": "planned",
       "slot_status": "open",
-      "start_status": "completed",
+      "start_status": "waiting_for_promotion_baseline",
       "onboarded_from_branch": "main",
-      "dependencies": [],
+      "dependencies": [
+        "WS-0041-SUPERVISOR-CONTROL"
+      ],
       "merge_group": 20,
       "merge_strategy": "squash",
       "write_paths": [
-        "tests/Integration/Task0036Phase06CertificationTest.php",
-        "tests/Feature/Security/Task0036Phase06SecurityCertificationTest.php"
+        "app/Modules/Publishing/Application/Operator/PublicationRetryPreflightService.php",
+        "app/Modules/Publishing/Application/Operator/PublicationRetryActionService.php",
+        "tests/Feature/Security/Task0041RetryCapabilitySecurityTest.php"
+      ]
+    },
+    {
+      "id": "WS-0041-APPROVAL-REVOCATION",
+      "role": "worker",
+      "module": "Publishing",
+      "capability": "Implement focused approval revocation/material-change operator command support with server-derived current authority, exact snapshot/state-version concurrency checks and append-only audit provenance; shared route wiring remains Supervisor-owned.",
+      "assigned_agent": null,
+      "branch": "worker-2/task0041-approval-revocation",
+      "worktree": "worktrees/task-0041-approval-revocation",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "waiting_for_promotion_baseline",
+      "onboarded_from_branch": "main",
+      "dependencies": [
+        "WS-0041-SUPERVISOR-CONTROL"
+      ],
+      "merge_group": 30,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Publishing/Application/Operator/CampaignApprovalRevocationService.php",
+        "app/Modules/Publishing/Presentation/Http/Controllers/PublishingApprovalRevocationController.php",
+        "tests/Feature/Security/Task0041ApprovalRevocationSecurityTest.php"
+      ]
+    },
+    {
+      "id": "WS-0041-PROVIDER-DRIFT",
+      "role": "worker",
+      "module": "Publishing",
+      "capability": "Extend the operator read model with actionable non-secret provider disconnect, permission, capability-drift, rate-limit and circuit outcomes while preserving canonical VSN authority and partial-success semantics.",
+      "assigned_agent": null,
+      "branch": "worker-3/task0041-provider-drift",
+      "worktree": "worktrees/task-0041-provider-drift",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "waiting_for_promotion_baseline",
+      "onboarded_from_branch": "main",
+      "dependencies": [
+        "WS-0041-SUPERVISOR-CONTROL"
+      ],
+      "merge_group": 40,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "app/Modules/Publishing/Application/Operator/PublishingOperatorReadModel.php",
+        "tests/Feature/Security/Task0041ProviderDriftOperatorSecurityTest.php"
+      ]
+    },
+    {
+      "id": "WS-0041-OPERATOR-UX-CERT",
+      "role": "worker",
+      "module": "Publishing",
+      "capability": "Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority.",
+      "assigned_agent": null,
+      "branch": "worker-4/task0041-operator-ux-cert",
+      "worktree": "worktrees/task-0041-operator-ux-cert",
+      "status": "planned",
+      "slot_status": "open",
+      "start_status": "waiting_for_promotion_baseline",
+      "onboarded_from_branch": "main",
+      "dependencies": [
+        "WS-0041-SUPERVISOR-CONTROL"
+      ],
+      "merge_group": 50,
+      "merge_strategy": "squash",
+      "write_paths": [
+        "resources/js/pages/publishing/operator.tsx",
+        "resources/js/pages/publishing/operator.test.tsx",
+        "tests/e2e/task0041-publishing-operator.spec.ts"
       ]
     }
   ]

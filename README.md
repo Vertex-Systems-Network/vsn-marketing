@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-SHIPPING-PROMOTION-ACCELERATION status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-WAVE-1-ACTIVATION status=VERIFYING -->
 
 > Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 83.33%**  
 **Active task: TASK-0041 — Implement campaign/publishing operator UX**  
 **Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-SHIPPING-PROMOTION-ACCELERATION — VERIFYING**
+**Current milestone: TASK-0041-WAVE-1-ACTIVATION — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.83%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 trusted shipping promotion PR #391 + four-lane acceleration** | **83.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Wave-1 activation PR #392** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,11 +47,11 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-PR #386 operator read-model/immutable preview foundation remains trusted on protected main. PR #387 is the trusted approval/bulk shipping milestone: exact source `acf19cb685923617d1ded39de70ec5af78e96125` passed Shipping Fast Gate `36074285668`, and resulting `ship/week-1` head `df1d117ed78ca3563780444f46fcb316533f8b53` passed AI Continuity Guard `36074471199`, Application Foundation CI `36074471168`, and Shipping Fast Gate `36074471196`. RBT-038 is terminal PASS on that shipping evidence.
+PR #391 trusted shipping promotion is merged on protected main `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`. Exact source `d52bff1e1b4618052f262c7c584bab89ea8843ff` passed AI Continuity Guard `36195460215`, Application Foundation CI `36195460252`, and Security Supply Chain CI `36195460219`; RBT-039 is terminal PASS.
 
-PR #391 promotes those reviewed #387 product/test surfaces onto current protected-main lineage `96c4e47d4d02c756fabbfda288d6768c366dfc75` and replaces the stale TASK-0036 parallel plan with four file-disjoint TASK-0041 worker lanes: retry/capability, approval revocation, provider drift, and operator UX certification. The worker branches are pre-created but remain unleased until RBT-039 exact-head Continuity/Application/Security verification and trusted promotion complete.
+The pre-promotion `ship/week-1` head `df1d117ed78ca3563780444f46fcb316533f8b53` is preserved at `archive/ship-week-1-task0041-pr387`. Eight promoted product/test blobs were verified byte-identical between the archived shipping source and resulting protected main. `ship/week-1` and all four TASK-0041 worker branches are aligned to the resulting protected-main head.
 
-Duplicate PR #390 is superseded and must not be merged. Production provider credentials/API calls, provider publish/retry/edit/delete side effects beyond later explicitly authorized bounded TASK-0041 work, TASK-0042 activation, deployment/release authority and deferred Runner optimization remain inactive.
+PR #392 terminally reconciles that promotion and marks the four file-disjoint worker slots ready for lease. No fabricated agent identity or lease is created; real worker onboarding remains main-first and explicit. Production provider credentials/API calls, provider side effects outside later bounded authorization, TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
 
 ### README progress-sync contract
 

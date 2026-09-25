@@ -1126,6 +1126,24 @@
         },
         "milestone": "workspace-scoped read model, immutable snapshot/channel preview, partial-success projection and secret-safe operator surface"
       }
+    },
+    {
+      "id": "RBT-038",
+      "source": "PR #390 / TASK-0041 guarded bulk safeguards and approval-queue controls",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #390 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "task-0041-bulk-approval-controls; server-derived campaign.approve role authority, latest immutable snapshot + optimistic state-version guards, approve/reject/revoke canonical governance, backend retry preflight candidate/affected/excluded counts, React confirmation/read-only presentation",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-bulk-approval-controls:required-full-ci",
+      "status": "registered_immediate",
+      "immutable_evidence": null
     }
   ]
 }

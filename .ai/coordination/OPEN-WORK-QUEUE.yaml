@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "792881f5c702ee38fa12b066f2eb8f65e73baca3",
-  "active_work_path": null,
+  "reconciled_main_sha": "96c4e47d4d02c756fabbfda288d6768c366dfc75",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 390,
+    "branch": "task-0041-bulk-approval-controls",
+    "milestone": "TASK-0041-BULK-SAFEGUARDS-APPROVAL-QUEUE"
+  },
   "items": [
     {
       "kind": "issue",
@@ -100,6 +105,15 @@
       "accepted_actionable": false,
       "runner_id": "RBT-005",
       "branch": "dependabot/github_actions/github/codeql-action/init-4.38.1"
+    },
+    {
+      "kind": "pr",
+      "number": 390,
+      "title": "feat(publishing): add guarded approval queue controls",
+      "disposition": "active_task_product_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-038",
+      "branch": "task-0041-bulk-approval-controls"
     }
   ]
 }

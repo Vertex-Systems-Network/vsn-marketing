@@ -24,15 +24,17 @@
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "792881f5c702ee38fa12b066f2eb8f65e73baca3",
+  "observed_main_sha": "96c4e47d4d02c756fabbfda288d6768c366dfc75",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
-  "current_milestone": "TASK-0041-OPERATOR-READ-MODEL-PREVIEW",
-  "milestone_status": "COMPLETE",
+  "active_pr": 390,
+  "active_branch": "task-0041-bulk-approval-controls",
+  "current_milestone": "TASK-0041-BULK-SAFEGUARDS-APPROVAL-QUEUE",
+  "milestone_status": "VERIFYING",
   "last_completed_milestone": "TASK-0041 operator read-model/navigation and immutable snapshot/channel preview foundation trusted via PR #386: exact source efcd1b02950f6c49073ad6e75fb958a5fdef1818 passed AI Continuity Guard 36069312197, Application Foundation CI 36069312115 and Security Supply Chain CI 36069312124; review threads were clean; merged to protected main as 792881f5c702ee38fa12b066f2eb8f65e73baca3. RBT-037 is terminal PASS.",
-  "exact_next_safe_action": "Begin the next bounded TASK-0041 product slice for guarded bulk safeguards and approval-queue controls from trusted protected main. Add backend-authorized affected-target counts, deterministic eligibility/exclusion and confirmation semantics plus workspace-scoped approval queue approve/reject/revoke actions that re-evaluate current permission, immutable snapshot identity and stale/material-change state. Keep provider API side effects, direct provider credential use, retry/edit/delete execution beyond capability checks, TASK-0042, deployment/release authority and deferred Runner optimization inactive. Keep CodeQL maintenance PRs #235/#388 in deferred RBT-005 and do not merge either independently while action versions are inconsistent.",
-  "pending_runner_ids": [],
+  "exact_next_safe_action": "Perform exact-head verification for PR #390. Merge the guarded TASK-0041 bulk-safeguard and approval-queue slice only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend tests prove workspace isolation, server-derived approver role authority, latest-snapshot/state-version fail-closed behavior and approve/reject/revoke governance, and React tests prove explicit bulk candidate/affected/excluded counts with confirmation semantics while retry execution remains locked. After trusted merge, terminally reconcile this milestone before enabling capability-gated retry/edit/delete execution or later TASK-0041 slices. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive; keep CodeQL PRs #235/#388 deferred under RBT-005.",
+  "pending_runner_ids": [
+    "RBT-038"
+  ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -44,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Begin the next bounded TASK-0041 product slice for guarded bulk safeguards and approval-queue controls from trusted protected main. Add backend-authorized affected-target counts, deterministic eligibility/exclusion and confirmation semantics plus workspace-scoped approval queue approve/reject/revoke actions that re-evaluate current permission, immutable snapshot identity and stale/material-change state. Keep provider API side effects, direct provider credential use, retry/edit/delete execution beyond capability checks, TASK-0042, deployment/release authority and deferred Runner optimization inactive. Keep CodeQL maintenance PRs #235/#388 in deferred RBT-005 and do not merge either independently while action versions are inconsistent."
+  "exact_next_action": "Perform exact-head verification for PR #390. Merge the guarded TASK-0041 bulk-safeguard and approval-queue slice only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green on the unchanged head, review is clean, backend tests prove workspace isolation, server-derived approver role authority, latest-snapshot/state-version fail-closed behavior and approve/reject/revoke governance, and React tests prove explicit bulk candidate/affected/excluded counts with confirmation semantics while retry execution remains locked. After trusted merge, terminally reconcile this milestone before enabling capability-gated retry/edit/delete execution or later TASK-0041 slices. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive; keep CodeQL PRs #235/#388 deferred under RBT-005."
 }

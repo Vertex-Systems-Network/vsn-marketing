@@ -4,6 +4,7 @@ Status: **promotion verification / staged worker activation**.
 
 Supervisor: `supervisor-main`  
 Control branch: `control/task0041-shipping-acceleration`  
+Active promotion PR: `#391`  
 Parent task: `TASK-0041`  
 Protected-main baseline: `96c4e47d4d02c756fabbfda288d6768c366dfc75`  
 Trusted shipping source: PR #387 exact head `acf19cb685923617d1ded39de70ec5af78e96125`, merged on `ship/week-1` as `df1d117ed78ca3563780444f46fcb316533f8b53`  

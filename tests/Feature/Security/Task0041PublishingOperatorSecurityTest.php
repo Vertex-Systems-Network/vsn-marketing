@@ -209,7 +209,8 @@ it('derives approval role server-side and enforces snapshot plus state-version g
                 'role_key' => 'attacker-controlled-role',
             ],
         )
-        ->assertRedirect();
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
 
     expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
         ->toBe('approved')

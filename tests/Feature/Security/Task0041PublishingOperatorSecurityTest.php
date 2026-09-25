@@ -13,7 +13,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
-/** @return array{user: User, workspace: Workspace} */
+/** @return array{user: User, workspace: Workspace, role_key: string} */
 function task0041OperatorActor(string $suffix, ?User $user = null, array $permissions = []): array
 {
     $organization = Organization::query()->create([
@@ -185,7 +185,7 @@ it('derives approval role server-side and enforces snapshot plus state-version g
     $campaign = task0041OperatorCampaign($actor['workspace'], $actor['user'], 'approval-actions');
     DB::table('campaigns')
         ->where('id', $campaign['campaign_id'])
-        ->update(['status' => 'needs_approval']);
+        ->update(['status' => 'needs_approval', 'state_version' => 2]);
 
     $this->withoutVite();
     $this->actingAs($actor['user'])
@@ -204,7 +204,7 @@ it('derives approval role server-side and enforces snapshot plus state-version g
                 .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/approve',
             [
                 'snapshot_id' => $campaign['snapshot_id'],
-                'state_version' => 1,
+                'state_version' => 2,
                 'reason' => 'Operator reviewed the immutable snapshot.',
                 'role_key' => 'attacker-controlled-role',
             ],
@@ -214,7 +214,7 @@ it('derives approval role server-side and enforces snapshot plus state-version g
     expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
         ->toBe('approved')
         ->and((int) DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('state_version'))
-        ->toBe(2)
+        ->toBe(3)
         ->and(DB::table('campaign_approval_decisions')
             ->where('campaign_id', $campaign['campaign_id'])
             ->where('outcome', 'approved')
@@ -227,7 +227,7 @@ it('derives approval role server-side and enforces snapshot plus state-version g
                 .'/publishing/campaigns/'.$campaign['campaign_id'].'/approval/revoke',
             [
                 'snapshot_id' => $campaign['snapshot_id'],
-                'state_version' => 2,
+                'state_version' => 3,
                 'reason' => 'Approval intentionally revoked by the authorized operator.',
             ],
         )
@@ -236,7 +236,7 @@ it('derives approval role server-side and enforces snapshot plus state-version g
     expect(DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('status'))
         ->toBe('needs_approval')
         ->and((int) DB::table('campaigns')->where('id', $campaign['campaign_id'])->value('state_version'))
-        ->toBe(3)
+        ->toBe(4)
         ->and(DB::table('campaign_approval_decisions')
             ->where('campaign_id', $campaign['campaign_id'])
             ->orderByDesc('occurred_at')

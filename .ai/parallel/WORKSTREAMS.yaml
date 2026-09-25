@@ -47,12 +47,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Implement capability-gated retry preflight/execution over canonical publication attempts with exact eligible/excluded counts, already-successful exclusion, workspace isolation, stale capability fail-closed behavior and no raw provider credential exposure.",
-      "assigned_agent": null,
+      "assigned_agent": "chatgpt-session-task0041-retry",
       "branch": "worker-1/task0041-retry-capability",
       "worktree": "worktrees/task-0041-retry-capability",
-      "status": "planned",
-      "slot_status": "open",
-      "start_status": "ready_for_lease",
+      "status": "leased",
+      "slot_status": "occupied",
+      "start_status": "leased_ready_to_execute",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"

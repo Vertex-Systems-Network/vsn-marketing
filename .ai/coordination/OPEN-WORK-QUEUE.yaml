@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "96c4e47d4d02c756fabbfda288d6768c366dfc75",
+  "reconciled_main_sha": "8bbda80bb34423cdd4d2f42f64c7b3d182dde18f",
   "active_work_path": {
     "kind": "pr",
-    "number": 391,
-    "branch": "control/task0041-shipping-acceleration",
-    "milestone": "TASK-0041-SHIPPING-PROMOTION-ACCELERATION"
+    "number": 392,
+    "branch": "control/task0041-wave1-activation",
+    "milestone": "TASK-0041-WAVE-1-ACTIVATION"
   },
   "items": [
     {
@@ -127,10 +127,19 @@
       "kind": "pr",
       "number": 391,
       "title": "feat(publishing): promote trusted bulk safeguards and accelerate TASK-0041",
-      "disposition": "active_task_promotion_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-039",
       "branch": "control/task0041-shipping-acceleration"
+    },
+    {
+      "kind": "pr",
+      "number": 392,
+      "title": "control: activate TASK-0041 accelerated wave one",
+      "disposition": "active_promotion_reconciliation_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-040",
+      "branch": "control/task0041-wave1-activation"
     }
   ]
 }

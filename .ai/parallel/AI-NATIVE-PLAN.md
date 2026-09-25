@@ -1,12 +1,13 @@
 # AI-Native Parallel Plan — TASK-0041 Accelerated Shipping
 
-Status: **promotion verification / staged worker activation**.
+Status: **active / worker intake open**.
 
 Supervisor: `supervisor-main`  
 Control branch: `control/task0041-shipping-acceleration`  
-Active promotion PR: `#391`  
-Parent task: `TASK-0041`  
-Protected-main baseline: `96c4e47d4d02c756fabbfda288d6768c366dfc75`  
+Promotion PR: `#391` — merged as `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  
+Archived pre-promotion integration head: `archive/ship-week-1-task0041-pr387` -> `df1d117ed78ca3563780444f46fcb316533f8b53`  
+Current integration branch: `ship/week-1` -> `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  Parent task: `TASK-0041`  
+Protected-main baseline: `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  
 Trusted shipping source: PR #387 exact head `acf19cb685923617d1ded39de70ec5af78e96125`, merged on `ship/week-1` as `df1d117ed78ca3563780444f46fcb316533f8b53`  
 Shipping writer cap: `5`  
 Planned worker lanes: `4` + Supervisor  
@@ -39,11 +40,11 @@ The target is higher coding throughput through independent lanes while keeping o
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 10 | WS-0041-SUPERVISOR-CONTROL | Promote trusted #387 implementation, own shared integration/state/routes and protected-main certification. | `occupied` | `supervisor-main` | `promotion_verification` | `control/task0041-shipping-acceleration` | squash | merge latest main before resume |
-| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | **OPEN** | — | `waiting_for_promotion_baseline` | `worker-1/task0041-retry-capability` | squash | merge latest main before resume |
-| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | **OPEN** | — | `waiting_for_promotion_baseline` | `worker-2/task0041-approval-revocation` | squash | merge latest main before resume |
-| 40 | WS-0041-PROVIDER-DRIFT | Secret-safe actionable provider disconnect/capability/rate/circuit projections. | **OPEN** | — | `waiting_for_promotion_baseline` | `worker-3/task0041-provider-drift` | squash | merge latest main before resume |
-| 50 | WS-0041-OPERATOR-UX-CERT | Accessibility, responsive/error/concurrency UX and focused frontend/E2E certification. | **OPEN** | — | `waiting_for_promotion_baseline` | `worker-4/task0041-operator-ux-cert` | squash | merge latest main before resume |
+| 10 | WS-0041-SUPERVISOR-CONTROL | Promote trusted #387 implementation, own shared integration/state/routes and protected-main certification. | `occupied` | `supervisor-main` | `promotion_complete` | `control/task0041-shipping-acceleration` | squash | merge latest main before resume |
+| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | **OPEN** | — | `ready_for_lease` | `worker-1/task0041-retry-capability` | squash | merge latest main before resume |
+| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | **OPEN** | — | `ready_for_lease` | `worker-2/task0041-approval-revocation` | squash | merge latest main before resume |
+| 40 | WS-0041-PROVIDER-DRIFT | Secret-safe actionable provider disconnect/capability/rate/circuit projections. | **OPEN** | — | `ready_for_lease` | `worker-3/task0041-provider-drift` | squash | merge latest main before resume |
+| 50 | WS-0041-OPERATOR-UX-CERT | Accessibility, responsive/error/concurrency UX and focused frontend/E2E certification. | **OPEN** | — | `ready_for_lease` | `worker-4/task0041-operator-ux-cert` | squash | merge latest main before resume |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Integration order
@@ -57,4 +58,4 @@ The target is higher coding throughput through independent lanes while keeping o
 
 ## Exact next action
 
-Verify the promotion carrier on an unchanged exact head with AI Continuity Guard, Application Foundation CI and Security Supply Chain CI. Merge only if all required gates are green and review is clean. Then preserve historical shipping head, realign `ship/week-1` and worker branches to trusted resulting main, and activate four independent TASK-0041 lanes without widening provider, deployment or deferred Runner authority.
+Terminally verify the TASK-0041 Wave-1 activation reconciliation. After it is trusted on protected main, onboard real worker agents one-per-open lane from `main`, create leases only for explicitly assigned agents, and execute the retry/capability, approval-revocation, provider-drift and operator-UX lanes as independent Shipping Fast Gate PRs targeting `ship/week-1`. Keep shared routes/global state/workflows/config/migrations Supervisor-owned and keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.

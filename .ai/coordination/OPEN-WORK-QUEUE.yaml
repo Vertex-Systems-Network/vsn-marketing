@@ -1,7 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "48bd8ef76017f5acdcfd25a506fb8864147b9ff5",
-  "active_work_path": null,
+  "reconciled_main_sha": "175baa525ff624b3b4418a6623317f5d0e060b4d",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 409,
+    "branch": "supervisor/phase08-ai-proposal"
+  },
   "items": [
     {
       "kind": "issue",
@@ -225,6 +229,14 @@
       "runner_id": "RBT-050",
       "branch": "supervisor/task0041-phase07-final-acceptance",
       "merge_sha": "87e65b1d458a79f925376d4cf49792d3771ef192"
+    },
+    {
+      "kind": "pr",
+      "number": 409,
+      "title": "test(phase08): add PostgreSQL segment compiler coverage",
+      "disposition": "active_task_validation",
+      "accepted_actionable": true,
+      "branch": "supervisor/phase08-ai-proposal"
     }
   ]
 }

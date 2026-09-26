@@ -24,14 +24,14 @@
     "release_integrity_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383323_passed",
     "scorecard_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383292_passed"
   },
-  "observed_main_sha": "48bd8ef76017f5acdcfd25a506fb8864147b9ff5",
+  "observed_main_sha": "175baa525ff624b3b4418a6623317f5d0e060b4d",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
+  "active_pr": 409,
+  "active_branch": "supervisor/phase08-ai-proposal",
   "current_milestone": "PHASE-08-TASK-0044-ARCHITECTURE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0043 PHASE-08 research gate completed and TASK-0042 plan drift reconciled; PHASE-07 certification remains satisfied by TASK-0041 final acceptance / PR #405.",
-  "exact_next_safe_action": "Complete TASK-0044 deterministic AST/compiler implementation and adversarial tests; keep TASK-0045 inactive until exact-head validation passes.",
+  "exact_next_safe_action": "Complete PostgreSQL-backed Task44 compiler/migration integration tests and re-run exact-head governance, application, and security gates on PR #409.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete TASK-0044 deterministic AST/compiler implementation and adversarial tests; keep TASK-0045 inactive until exact-head validation passes."
+  "exact_next_action": "Complete PostgreSQL-backed Task44 compiler/migration integration tests and re-run exact-head governance, application, and security gates on PR #409."
 }

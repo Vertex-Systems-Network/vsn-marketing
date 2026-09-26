@@ -89,8 +89,7 @@ function task45AllowingAuthorizer(): WorkspaceAuthorizer
     $query->shouldReceive('join')->with(
         'workspace_roles',
         Mockery::on(function (Closure $configure): bool {
-            $join = new class
-            {
+            $join = new class {
                 /** @var list<list<mixed>> */
                 public array $conditions = [];
 

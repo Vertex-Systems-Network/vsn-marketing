@@ -313,7 +313,7 @@ export default function SegmentationOperator({
                     {saved_segment && (
                         <section className="mt-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.05] p-4" role="status">
                             <h2 className="font-semibold text-emerald-100">{saved_segment.published ? 'Version published' : 'Draft version saved'}</h2>
-                            <p className="mt-1 text-sm text-neutral-300">Version {saved_segment.version} · hash {saved_segment.hash}</p>
+                            <p className="mt-1 break-all text-sm text-neutral-300">Version {saved_segment.version} · hash {saved_segment.hash}</p>
                         </section>
                     )}
                     {(saved_segment || selectedSegment) && <button type="button" onClick={publish} disabled={busy}

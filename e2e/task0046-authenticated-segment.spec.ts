@@ -25,7 +25,7 @@ test('authorized operator builds, previews, saves and publishes a pinned segment
     await expect(page.getByText('Exclude contacts matching:')).toBeVisible();
     await page.getByRole('button', { name: 'Remove exclusion' }).click();
     await page.getByRole('button', { name: 'Preview bounded count' }).click();
-    await expect(page.getByText('1 contacts · exact at evaluation time')).toBeVisible();
+    await expect(page.getByText('1 contacts · exact at evaluation time')).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/Source freshness is unknown/)).toBeVisible();
     await expect(page.getByText(/Member identities and personal details are hidden/)).toBeVisible();
     await page.getByLabel('Segment name').fill('E2E pinned segment');
@@ -35,6 +35,6 @@ test('authorized operator builds, previews, saves and publishes a pinned segment
     page.once('dialog', (dialog) => dialog.accept());
     await page.getByRole('button', { name: 'Publish selected immutable version' }).click();
     await expect(page.getByRole('heading', { name: 'Version published' })).toBeVisible();
-    await expect(page.getByText(/published 1/)).toBeVisible();
+    await expect(page.getByText(/published 1/).first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
 });

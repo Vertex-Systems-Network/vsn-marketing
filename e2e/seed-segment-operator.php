@@ -17,17 +17,18 @@ if (! $app->environment('testing') || DB::connection()->getDriverName() !== 'sql
     throw new RuntimeException('The E2E segment fixture requires testing mode and persistent SQLite.');
 }
 
-$organizationId = '00000000-0000-4000-8000-000000000046';
-$workspaceId = '00000000-0000-4000-8000-000000000047';
-$email = 'segment-operator-e2e@example.test';
+$fixtureId = Str::lower((string) Str::ulid());
+$organizationId = (string) Str::uuid();
+$workspaceId = (string) Str::uuid();
+$email = "segment-operator-{$fixtureId}@example.test";
 $password = 'local-e2e-segment-password';
 $user = User::query()->firstOrCreate(['email' => $email], [
     'name' => 'Segment E2E Operator', 'password' => Hash::make($password),
 ]);
-DB::table('organizations')->insertOrIgnore(['id' => $organizationId, 'name' => 'E2E Organization',
-    'slug' => 'segment-e2e-organization', 'created_at' => now(), 'updated_at' => now()]);
-DB::table('workspaces')->insertOrIgnore(['id' => $workspaceId, 'organization_id' => $organizationId,
-    'name' => 'Segment E2E', 'slug' => 'segment-e2e', 'created_at' => now(), 'updated_at' => now()]);
+DB::table('organizations')->insert(['id' => $organizationId, 'name' => 'E2E Organization',
+    'slug' => "segment-e2e-organization-{$fixtureId}", 'created_at' => now(), 'updated_at' => now()]);
+DB::table('workspaces')->insert(['id' => $workspaceId, 'organization_id' => $organizationId,
+    'name' => 'Segment E2E', 'slug' => "segment-e2e-{$fixtureId}", 'created_at' => now(), 'updated_at' => now()]);
 $roles = app(WorkspaceRoleManager::class);
 $membership = $roles->addMember($user, $workspaceId);
 $role = DB::table('workspace_roles')->where('workspace_id', $workspaceId)
@@ -36,15 +37,12 @@ $role = DB::table('workspace_roles')->where('workspace_id', $workspaceId)
 $roles->grantPermission($role, PermissionCatalog::CONTACT_READ);
 $roles->grantPermission($role, PermissionCatalog::CONTACT_WRITE);
 $roles->assignRole($membership, $role);
-$companyId = DB::table('companies')->where('workspace_id', $workspaceId)->where('domain', 'example.test')->value('id');
-if ($companyId === null) {
-    $companyId = (string) Str::uuid();
-    DB::table('companies')->insert(['id' => $companyId, 'workspace_id' => $workspaceId, 'brand_id' => null,
-        'name' => 'E2E Company', 'domain' => 'example.test', 'created_at' => now(), 'updated_at' => now()]);
-    DB::table('contacts')->insert(['id' => (string) Str::uuid(), 'workspace_id' => $workspaceId,
-        'brand_id' => null, 'company_id' => $companyId,
-        'first_name' => 'Hidden', 'last_name' => 'Contact', 'display_name' => 'Hidden Contact',
-        'created_at' => now(), 'updated_at' => now()]);
-}
+$companyId = (string) Str::uuid();
+DB::table('companies')->insert(['id' => $companyId, 'workspace_id' => $workspaceId, 'brand_id' => null,
+    'name' => 'E2E Company', 'domain' => "{$fixtureId}.example.test", 'created_at' => now(), 'updated_at' => now()]);
+DB::table('contacts')->insert(['id' => (string) Str::uuid(), 'workspace_id' => $workspaceId,
+    'brand_id' => null, 'company_id' => $companyId,
+    'first_name' => 'Hidden', 'last_name' => 'Contact', 'display_name' => 'Hidden Contact',
+    'created_at' => now(), 'updated_at' => now()]);
 
 echo json_encode(['workspace' => $workspaceId, 'email' => $email, 'password' => $password], JSON_THROW_ON_ERROR);

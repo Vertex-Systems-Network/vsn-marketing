@@ -1,10 +1,12 @@
 // @vitest-environment jsdom
 
-import { fireEvent, render, screen } from '@testing-library/react';
-import { expect, test, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, expect, test, vi } from 'vitest';
 import PublishingOperator from './operator';
 
 const { post } = vi.hoisted(() => ({ post: vi.fn() }));
+
+afterEach(() => cleanup());
 
 vi.mock('@inertiajs/react', () => ({
     Head: () => null,

@@ -1,5 +1,13 @@
 # Week-1 Shipping Mode
 
+
+## Development Acceleration v2.7 overlay
+
+- Batch dependency-ready, disjoint worker leases into one wave-control carrier whenever distinct real agents are available; do not create a protected-main lease PR for each sibling lane by default.
+- An independent leased lane may code from the last green `ship/week-1` baseline while a newer sibling integration head is still under CI. It may not submit or consume that pending change until the latest required green integration baseline is synchronized.
+- Merge alerts remain mandatory, but independent lanes synchronize at the next submission/dependency-consumption boundary instead of stopping an in-progress owned-path batch solely because a sibling merged.
+- Worker PR validation and `ai_parallel.py sync-check` use `ship/week-1` as the worker baseline while Shipping Mode is active; Supervisor/main-only governance still uses protected `main`.
+- Consolidate terminal worker evidence into the next wave-control/promotion boundary. Full protected-main Application + Security gates remain mandatory for promotion/final acceptance and security-sensitive exceptions.
 Status: ACTIVE when the integration branch `ship/week-1` exists and this plan is referenced by the active Supervisor.
 
 Purpose: compress development feedback loops for a seven-day production-candidate sprint without weakening the final `main` release boundary.

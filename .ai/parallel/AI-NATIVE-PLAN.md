@@ -41,20 +41,33 @@ The target is higher coding throughput through independent lanes while keeping o
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
 | 10 | WS-0041-SUPERVISOR-CONTROL | Promote trusted #387 implementation, own shared integration/state/routes and protected-main certification. | `occupied` | `supervisor-main` | `promotion_complete` | `control/task0041-shipping-acceleration` | squash | merge latest main before resume |
-| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | merge latest main before resume |
-| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | **OPEN** | — | `shipping_merged_green` | `worker-2/task0041-approval-revocation` | squash | merge latest main before resume |
-| 40 | WS-0041-PROVIDER-DRIFT | Secret-safe actionable provider disconnect/capability/rate/circuit projections. | `occupied` | `chatgpt-session-task0041-provider-drift` | `leased_ready_to_execute` | `worker-3/task0041-provider-drift` | squash | merge latest main before resume |
-| 50 | WS-0041-OPERATOR-UX-CERT | Accessibility, responsive/error/concurrency UX and focused frontend/E2E certification. | **OPEN** | — | `ready_for_lease` | `worker-4/task0041-operator-ux-cert` | squash | merge latest main before resume |
+| 20 | WS-0041-RETRY-CAPABILITY | Capability-gated publication retry eligibility/execution with exact exclusion and stale-authority safeguards. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | latest green ship/week-1 before submission |
+| 30 | WS-0041-APPROVAL-REVOCATION | Revocation/material-change operator commands with server-derived authority and optimistic concurrency. | **OPEN** | — | `shipping_merged_green` | `worker-2/task0041-approval-revocation` | squash | latest green ship/week-1 before submission |
+| 40 | WS-0041-PROVIDER-DRIFT | Secret-safe actionable provider disconnect/capability/rate/circuit projections. | `occupied` | `chatgpt-session-task0041-provider-drift` | `leased_ready_to_execute` | `worker-3/task0041-provider-drift` | squash | latest green ship/week-1 before submission |
+| 50 | WS-0041-OPERATOR-UX-CERT | Accessibility, responsive/error/concurrency UX and focused frontend/E2E certification. | **OPEN** | — | `ready_for_lease` | `worker-4/task0041-operator-ux-cert` | squash | latest green ship/week-1 before submission |
 <!-- WORKSTREAM_TABLE_END -->
 
+## Development Acceleration v2.7 overlay
+
+This task inherits the repository-wide wave acceleration contract:
+
+1. batch dependency-ready disjoint leases into one control carrier when distinct real agents are available;
+2. do not insert a protected-main control PR between every independent sibling lane by default;
+3. allow already-leased independent coding to continue from the last green shipping baseline while a newer sibling integration head is verifying;
+4. require synchronization to the latest required green `ship/week-1` baseline before worker submission/merge or dependency consumption;
+5. carry terminal worker evidence into the next substantial wave-control/promotion carrier;
+6. concentrate full protected-main Application + Security certification at promotion/final-acceptance/security boundaries;
+7. never fake agents, overlap write paths, bypass permissions/security, or treat pending/failed integration as consumable.
 ## Integration order
 
 1. Promote trusted #387 product behavior onto current protected-main lineage with fresh full exact-head gates.
 2. Preserve old `ship/week-1` at an archive ref, then realign the integration branch to resulting protected main only after comparison proves no trusted product loss.
 3. Fast-forward the four pre-created worker branches to the same trusted integration baseline.
-4. Onboard/lease independent lanes only after promotion is trusted. Worker PRs target `ship/week-1` and use Shipping Fast Gate; dependent work consumes only green integration heads.
-5. Full protected-main Application + Security certification remains mandatory at promotion boundaries.
-6. Final TASK-0041 acceptance and TASK-0042 activation remain separate guarded milestones.
+4. Onboard/lease dependency-ready disjoint lanes in wave-sized control carriers when real distinct agents are available. Worker PRs target `ship/week-1` and use Shipping Fast Gate.
+5. Independent leased lanes may continue coding from the last green integration baseline while sibling integration verification runs, but submission/merge and dependency consumption require synchronization to the latest required green integration head.
+6. Carry sibling terminal evidence forward and avoid per-lane protected-main control PRs unless a safety/authority/drift exception requires one.
+7. Full protected-main Application + Security certification remains mandatory at promotion/final-acceptance boundaries.
+8. Final TASK-0041 acceptance and TASK-0042 activation remain separate guarded milestones.
 
 ## Exact next action
 

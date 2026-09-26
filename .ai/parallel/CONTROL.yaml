@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.6.0",
-  "instruction_revision": "parallel-v2.6.0-fast-batch-development",
+  "protocol_version": "2.7.0",
+  "instruction_revision": "parallel-v2.7.0-wave-acceleration",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md"
   ],
-  "instruction_fingerprint": "502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5f4ecbbf5e1ee2771",
+  "instruction_fingerprint": "e1915e44d40288e0e8071860deb501ef6e808b3a393cf41fb850dc94cf8bce58",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -151,5 +151,14 @@
     "material_state_drift",
     "no_safe_successor_pr"
   ],
-  "readme_progress_sync_mode": "marker_change_only"
+  "readme_progress_sync_mode": "marker_change_only",
+  "wave_acceleration_enabled": true,
+  "wave_control_carrier_strategy": "batch_dependency_ready_disjoint_leases",
+  "per_lane_control_pr_default": false,
+  "independent_lane_coding_during_integration_verification": true,
+  "independent_lane_submission_requires_latest_green_integration": true,
+  "shipping_worker_pr_target": "ship/week-1",
+  "shipping_sync_check_uses_integration_for_workers": true,
+  "wave_main_promotion_strategy": "single_full_certification_after_green_integration_wave",
+  "merge_alert_sync_boundary": "before_submission_or_dependency_consumption"
 }

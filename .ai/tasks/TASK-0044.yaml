@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0044",
+  "phase": "PHASE-08",
+  "module": "Segmentation",
+  "title": "Implement canonical segment definition AST and deterministic query compiler",
+  "status": "in_progress",
+  "objective": "Define and implement a typed, versioned segment AST and a deterministic compiler that accepts only registered fields/operators/relations, derives workspace scope from authenticated context, binds values, and enforces cost limits.",
+  "dependencies": [
+    "TASK-0043"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical AST schema defines version, base subject, nested all/any/not groups, typed values, null/missing behavior, registered contact/company/list/tag and event predicates, canonical ordering and stable serialization/hash.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Field, event, relation, operator and function registries are server-owned, permission-aware and deny unknown, sensitive, non-targetable or non-previewable semantics by default.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Compiler derives workspace scope independently from the AST and enforces workspace equality in every base query, join and correlated subquery; no client/model tenant identity can widen scope.",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Compiler uses allowlisted identifiers and joins plus parameter-bound values; raw SQL, raw expressions, user functions, JSON paths, regex and arbitrary sorting/grouping fail closed.",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Event predicates pin a UTC evaluation instant, use explicit registered event types/properties, half-open absolute windows and bounded relative windows with deterministic exists/count/first/last semantics.",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "AST depth, predicate count, membership-list size, event lookback and query cost/time are bounded before execution, with deterministic validation errors and cancellation safety.",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Unit, property, database and adversarial tests prove canonical equivalence, stable hash, malformed AST rejection, SQL syntax injection resistance and cross-workspace read/join/count denial.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "Focused segment unit/security tests",
+    "PostgreSQL-backed integration and migration tests",
+    "PHP static analysis and formatting"
+  ],
+  "exact_next_action": "Freeze TASK-0044 architecture from TASK-0043 research and current schema before product implementation; do not activate TASK-0045 early."
+}

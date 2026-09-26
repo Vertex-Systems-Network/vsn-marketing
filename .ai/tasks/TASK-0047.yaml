@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0047",
+  "phase": "PHASE-08",
+  "module": "Segmentation",
+  "title": "Certify PHASE-08",
+  "status": "planned",
+  "objective": "Certify the PHASE-08 segment definition, compiler, AI proposal boundary, preview/count UX, privacy and cost controls on an unchanged exact head.",
+  "dependencies": [
+    "TASK-0046"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Cross-workspace reads, joins, counts, previews, cache/materialization reuse and unauthorized field access are denied by adversarial tests.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "SQL injection, malformed AST, unregistered identifier/operator/join, prompt injection and hallucinated field/event tests fail closed.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Equivalent canonical ASTs have stable serialization/hash and pinned-version evaluation identity; version updates never rewrite prior definitions.",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Privacy review confirms PII-minimized previews/logs, sensitive-field deny defaults, consent/suppression separation, permission boundaries and disclosure policy.",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Representative PostgreSQL evidence demonstrates bounded query plans, high-cardinality event protection, timeout/cancellation and safe large-audience behavior.",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Accessible browser flows cover rule building, AI proposal review, validation errors, loading, empty, stale, timeout, large audience, confirmation and responsive behavior.",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Exact protected-main Continuity, Application, Security and applicable E2E/release gates are green; durable task/phase/README/state/checkpoint/journal/queue/Runner evidence is synchronized; PHASE-09 remains inactive.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "All applicable AI state/transaction/journal/policy/parallel/context validators",
+    "Backend unit/feature/integration/database tests",
+    "Static analysis and formatting",
+    "Frontend typecheck/unit/build",
+    "Playwright/E2E",
+    "Security Supply Chain CI",
+    "AI Continuity Guard",
+    "Application Foundation CI",
+    "Relevant release/quality gates"
+  ],
+  "exact_next_action": "Complete PHASE-08 acceptance carrier only after every prior task and exact-head certification gate is green."
+}

@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=51 phase=100 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=NaN phase=NaN current_phase=PHASE-08 active_task=TASK-0044 milestone=PHASE-08-TASK-0044-ARCHITECTURE status=IN_PROGRESS -->
 
 > PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. PR #405 exact head `30f7eda14c0589e8e75ced004642251046cfe09c` passed Continuity `36243101029`, Application Foundation CI `36243101046`, and Security Supply Chain CI `36243100966`; resulting-main checks also passed (Continuity `36243383256`, Foundation `36243383236`, Security `36243383257`, Release Integrity `36243383323`, Scorecard `36243383292`). TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
 
@@ -35,7 +35,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
 | **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned; separate research-first registration | 0% |
-| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
+| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | NaN% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
 | PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |

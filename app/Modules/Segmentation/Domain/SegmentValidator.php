@@ -8,7 +8,12 @@ use JsonException;
 
 final readonly class SegmentValidator
 {
-    public function __construct(private SegmentFieldRegistry $fields) {}
+    private SegmentFieldRegistry $fields;
+
+    public function __construct(SegmentFieldRegistry $fields)
+    {
+        $this->fields = $fields;
+    }
 
     /** @param array<string, mixed> $input @return array<string, mixed> */
     public function normalize(array $input): array

@@ -11,7 +11,7 @@ interface SegmentProposalProvider
 
     /**
      * The provider receives only operator intent and allowlisted schema metadata. Implementations
-     * must use an approved gateway, fixed policy, schema-constrained output, and no tools; intent
+     * must use an approved gateway, fixed policy, schema-constrained output, no tools, and bounded time/token budgets; the application never retries. Intent
      * is untrusted data and can never authorize a query or bypass deterministic validation.
      *
      * @param array<string, mixed> $schema

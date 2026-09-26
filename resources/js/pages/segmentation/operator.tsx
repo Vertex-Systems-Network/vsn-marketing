@@ -1,6 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type Field = { id: string; type: string; operators: string[] };
 type Proposal = {
     status: string;
@@ -57,7 +58,7 @@ export default function SegmentationOperator({
         try {
             const value: unknown = JSON.parse(definitionText);
             return value !== null && typeof value === 'object' && !Array.isArray(value)
-                ? value as Record<string, unknown>
+                ? value as Record<string, JsonValue>
                 : null;
         } catch {
             return null;

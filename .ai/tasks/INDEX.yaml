@@ -426,7 +426,8 @@
       "status": "completed",
       "dependencies": [
         "TASK-0041"
-      ]
+      ],
+      "weight": 15
     },
     {
       "id": "TASK-0044",
@@ -435,7 +436,8 @@
       "status": "in_progress",
       "dependencies": [
         "TASK-0043"
-      ]
+      ],
+      "weight": 20
     },
     {
       "id": "TASK-0045",
@@ -444,7 +446,8 @@
       "status": "planned",
       "dependencies": [
         "TASK-0044"
-      ]
+      ],
+      "weight": 20
     },
     {
       "id": "TASK-0046",
@@ -453,7 +456,8 @@
       "status": "planned",
       "dependencies": [
         "TASK-0045"
-      ]
+      ],
+      "weight": 20
     },
     {
       "id": "TASK-0047",
@@ -462,7 +466,8 @@
       "status": "planned",
       "dependencies": [
         "TASK-0046"
-      ]
+      ],
+      "weight": 10
     }
   ]
 }

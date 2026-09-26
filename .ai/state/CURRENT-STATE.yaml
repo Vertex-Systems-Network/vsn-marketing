@@ -13,8 +13,8 @@
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": null,
-    "phase_percent": null,
+    "roadmap_percent": 51.88,
+    "phase_percent": 17.65,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -44,6 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete TASK-0044 architecture freeze from the accepted research: pin field/event/relation/operator registries, AST semantics, tenant-scope injection, cost bounds and test contracts before product implementation; keep PHASE-09 inactive.",
-  "journal_tail_hash": "a47720bb66354349dda0ed21334c03710e4a41c5fa09807d5cf0f482e01d0c97"
+  "exact_next_action": "Complete TASK-0044 architecture freeze from the accepted research: pin field/event/relation/operator registries, AST semantics, tenant-scope injection, cost bounds and test contracts before product implementation; keep PHASE-09 inactive."
 }

@@ -16,8 +16,8 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current milestone: PHASE-07-FINAL-ACCEPTANCE — COMPLETE**
 
 ```text
-Overall  [██████████░░░░░░░░░░] 51.00%
-Phase 07 [████████████████████] 100.00%
+Overall  [██████████░░░░░░░░░░] 51.88%
+Phase 08 [████░░░░░░░░░░░░░░░░] 17.65%
 ```
 
 The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance are complete and certified on protected main. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
@@ -34,7 +34,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
 | **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
-| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned; separate research-first registration | 0% |
+| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | 17.65% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | NaN% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |

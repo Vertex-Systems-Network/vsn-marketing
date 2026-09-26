@@ -52,11 +52,17 @@ function task0044Company(string $workspaceId, string $domain): string
 
 function task0044Event(string $workspaceId, string $contactId, string $name, string $occurredAt): void
 {
-    $typeId = (string) Str::uuid();
-    DB::table('event_types')->insert([
-        'id' => $typeId, 'workspace_id' => $workspaceId, 'canonical_name' => $name,
-        'schema_version' => 1, 'created_at' => now(),
-    ]);
+    $typeId = DB::table('event_types')
+        ->where('workspace_id', $workspaceId)
+        ->where('canonical_name', $name)
+        ->value('id');
+    if (! is_string($typeId)) {
+        $typeId = (string) Str::uuid();
+        DB::table('event_types')->insert([
+            'id' => $typeId, 'workspace_id' => $workspaceId, 'canonical_name' => $name,
+            'schema_version' => 1, 'created_at' => now(),
+        ]);
+    }
     DB::table('customer_events')->insert([
         'id' => (string) Str::uuid(), 'workspace_id' => $workspaceId, 'brand_id' => null,
         'event_type_id' => $typeId, 'contact_id' => $contactId, 'contact_identity_id' => null,
@@ -135,6 +141,30 @@ it('uses a pinned instant and half-open UTC event intervals', function () {
 
     expect($first->query->pluck('c.id')->all())->toBe([])
         ->and($first->evaluationFingerprint)->not->toBe($second->evaluationFingerprint);
+});
+
+
+it('limits first and last event selection to the requested window', function () {
+    $workspaceId = task0044Workspace('first-last-window');
+    $contactId = task0044Contact($workspaceId);
+    task0044Event($workspaceId, $contactId, 'order.placed', '2026-09-01 00:00:00');
+    task0044Event($workspaceId, $contactId, 'order.placed', '2026-09-09 00:00:00');
+    task0044Event($workspaceId, $contactId, 'order.placed', '2026-09-10 00:00:00');
+    task0044Event($workspaceId, $contactId, 'order.placed', '2026-09-20 00:00:00');
+
+    foreach (['first', 'last'] as $mode) {
+        $definition = ['schema_version' => 1, 'subject' => 'contact', 'root' => [
+            'type' => 'group', 'operator' => 'all', 'children' => [[
+                'type' => 'event', 'name' => 'order.placed', 'mode' => $mode,
+                'window' => ['kind' => 'absolute', 'from' => '2026-09-08T00:00:00Z', 'to' => '2026-09-12T00:00:00Z'],
+            ]],
+        ]];
+        $compiled = app(DeterministicSegmentCompiler::class)->compile(
+            $definition, task0044Context($workspaceId), new DateTimeImmutable('2026-09-26T12:00:00Z'),
+        );
+
+        expect($compiled->query->pluck('c.id')->all())->toBe([$contactId]);
+    }
 });
 
 it('rejects excessive compiler cost before constructing an executable query', function () {

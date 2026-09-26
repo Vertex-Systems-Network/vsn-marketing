@@ -4,7 +4,7 @@
   "phase": "PHASE-08",
   "module": "Segmentation",
   "title": "Implement canonical segment definition AST and deterministic query compiler",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Define and implement a typed, versioned segment AST and a deterministic compiler that accepts only registered fields/operators/relations, derives workspace scope from authenticated context, binds values, and enforces cost limits.",
   "dependencies": [
     "TASK-0043"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "Canonical AST schema defines version, base subject, nested all/any/not groups, typed values, null/missing behavior, registered contact/company/list/tag and event predicates, canonical ordering and stable serialization/hash.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Field, event, relation, operator and function registries are server-owned, permission-aware and deny unknown, sensitive, non-targetable or non-previewable semantics by default.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Compiler derives workspace scope independently from the AST and enforces workspace equality in every base query, join and correlated subquery; no client/model tenant identity can widen scope.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Compiler uses allowlisted identifiers and joins plus parameter-bound values; raw SQL, raw expressions, user functions, JSON paths, regex and arbitrary sorting/grouping fail closed.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Event predicates pin a UTC evaluation instant, use explicit registered event types/properties, half-open absolute windows and bounded relative windows with deterministic exists/count/first/last semantics.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "AST depth, predicate count, membership-list size, event lookback and query cost/time are bounded before execution, with deterministic validation errors and cancellation safety.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Unit, property, database and adversarial tests prove canonical equivalence, stable hash, malformed AST rejection, SQL syntax injection resistance and cross-workspace read/join/count denial.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

@@ -304,7 +304,11 @@ export default function SegmentationOperator({
                             <p className="mt-2 text-xs text-neutral-400">Evaluated {preview_result.evaluated_at} · definition {preview_result.definition_hash.slice(0, 12)}
                                 {preview_result.definition_version !== null ? ` · version ${preview_result.definition_version}` : ' · unsaved draft'}
                             </p>
-                            <p className="mt-1 text-xs text-amber-100">Source freshness is unknown; this count can become stale after data changes.</p>
+                            <p className="mt-1 text-xs text-amber-100">
+                                {preview_result.source_freshness_at
+                                    ? `Source data current through ${preview_result.source_freshness_at}; this count can become stale after data changes.`
+                                    : 'Source freshness is unknown; this count can become stale after data changes.'}
+                            </p>
                             <p className="mt-2 text-xs text-neutral-300">{preview_result.eligibility_explanation}</p>
                             <p className="mt-1 text-xs text-neutral-400">Member identities and personal details are hidden in this preview.</p>
                         </section>

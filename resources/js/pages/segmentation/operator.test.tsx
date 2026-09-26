@@ -165,7 +165,8 @@ it('labels estimated counts and permission denial without query details', () => 
             status: 'estimated', count_kind: 'estimated', count: 42,
             definition_hash: 'a'.repeat(64), definition_version: 3, evaluated_at: '2026-09-26 12:00:00 UTC',
             source_freshness_at: '2026-09-26 11:55:00 UTC', eligibility_explanation: 'Eligibility is not evaluated.',
-        }} />);
+    }} />);
     expect(screen.getByText(/Approximately 42 contacts/)).toBeInTheDocument();
+    expect(screen.getByText(/Source data current through 2026-09-26 11:55:00 UTC/)).toBeInTheDocument();
     expect(screen.getByText(/permissions do not allow this operation/)).toBeInTheDocument();
 });

@@ -79,6 +79,37 @@ final readonly class ConfirmSegmentProposal
         return $saved;
     }
 
+    /** @param array<string, mixed> $definition @return array{id: string, version: int, hash: string} */
+    public function revise(string $id, array $definition, TenantContext $scope, User $actor, bool $confirmed): array
+    {
+        $this->assertEditor($scope, $actor, $confirmed);
+        $normalized = $this->validator->normalize($definition);
+        $this->guard->assertSafeDefinition($normalized);
+        $this->assertAuthorizedFields($normalized['root'], array_keys($this->fields->availableTo([PermissionCatalog::CONTACT_READ])), '$.root');
+        $this->compiler->compile($normalized, $scope, new DateTimeImmutable('now', new DateTimeZone('UTC')));
+        $saved = $this->saveVersion->revise($id, $normalized, $scope);
+        $this->audit->record(
+            workspaceId: $scope->workspaceId,
+            action: 'segment.version.created',
+            evidence: ['definition_hash' => $saved['hash'], 'definition_version' => $saved['version']],
+            brandId: $scope->brandId,
+            actorId: $scope->actorId,
+            subjectType: 'segment_definition',
+            subjectId: $id,
+        );
+
+        return $saved;
+    }
+
+    private function assertEditor(TenantContext $scope, User $actor, bool $confirmed): void
+    {
+        if (! $confirmed || (string) $actor->getKey() !== $scope->actorId
+            || ! $this->authorizer->allows($actor, $scope, PermissionCatalog::CONTACT_READ)
+            || ! $this->authorizer->allows($actor, $scope, PermissionCatalog::CONTACT_WRITE)) {
+            throw new AuthorizationException('Segment edit confirmation and workspace permissions are required.');
+        }
+    }
+
     /** @param array<string, mixed> $node @param list<string> $allowedFields */
     private function assertAuthorizedFields(array $node, array $allowedFields, string $path): void
     {

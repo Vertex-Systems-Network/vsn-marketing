@@ -1,6 +1,6 @@
 # PHASE-08 — Segmentation and Natural-Language Segment Compiler
 
-Status: **IN PROGRESS — TASK-0043 research and TASK-0044 AST/compiler are complete; TASK-0045 proposal compiler is active.**
+Status: **IN PROGRESS — TASK-0043 through TASK-0046 are complete; TASK-0047 final certification is active.**
 
 ## Purpose
 
@@ -8,10 +8,10 @@ Build deterministic, explainable, workspace-safe audience definitions over VSN's
 
 ## Current progress
 
-- PHASE-08: 35.00%
-- Roadmap: 52.75%
-- Completed: TASK-0043 research and TASK-0044 canonical AST/compiler
-- Active: TASK-0045 natural-language proposal compiler
+- PHASE-08: 75.00%
+- Roadmap: 54.75%
+- Completed: TASK-0043 research, TASK-0044 canonical AST/compiler, TASK-0045 proposal compiler, and TASK-0046 bounded preview/count UX
+- Active: TASK-0047 final certification
 - TASK-0042: intentionally unmaterialized gap; PHASE-07 certification was accepted through TASK-0041 final acceptance / PR #405.
 
 ## Trust boundary
@@ -26,9 +26,9 @@ Natural-language text, model output and client data never become SQL authority. 
 
 1. TASK-0043 — Research segmentation/privacy/query patterns and benchmark audience builders. **Complete.**
 2. TASK-0044 — Implement canonical segment definition AST and deterministic query compiler. **Complete.**
-3. TASK-0045 — Implement natural-language-to-segment structured compiler. **Active.**
-4. TASK-0046 — Implement preview/count/freshness/cost guards and audience UX.
-5. TASK-0047 — Certify PHASE-08.
+3. TASK-0045 — Implement natural-language-to-segment structured compiler. **Complete.**
+4. TASK-0046 — Implement preview/count/freshness/cost guards and audience UX. **Complete.**
+5. TASK-0047 — Certify PHASE-08. **Active.**
 
 ## Invariants
 
@@ -46,4 +46,3 @@ Natural-language text, model output and client data never become SQL authority. 
 
 - Evidence pack: [TASK-0043 research](../research/PHASE-08/TASK-0043-RESEARCH.md).
 - Plan drift: TASK-0042 remains a documented gap, not a task to materialize.
-

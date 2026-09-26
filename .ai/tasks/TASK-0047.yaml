@@ -4,7 +4,7 @@
   "phase": "PHASE-08",
   "module": "Segmentation",
   "title": "Certify PHASE-08",
-  "status": "planned",
+  "status": "ready",
   "objective": "Certify the PHASE-08 segment definition, compiler, AI proposal boundary, preview/count UX, privacy and cost controls on an unchanged exact head.",
   "dependencies": [
     "TASK-0046"

@@ -1,6 +1,6 @@
 # PHASE-08 — Segmentation and Natural-Language Segment Compiler
 
-Status: **IN PROGRESS — TASK-0043 through TASK-0046 are complete; TASK-0047 final certification is active.**
+Status: **COMPLETE — TASK-0043 through TASK-0047 are certified; PHASE-09 remains inactive.**
 
 ## Purpose
 
@@ -8,10 +8,10 @@ Build deterministic, explainable, workspace-safe audience definitions over VSN's
 
 ## Current progress
 
-- PHASE-08: 75.00%
-- Roadmap: 54.75%
-- Completed: TASK-0043 research, TASK-0044 canonical AST/compiler, TASK-0045 proposal compiler, and TASK-0046 bounded preview/count UX
-- Active: TASK-0047 final certification
+- PHASE-08: 100.00%
+- Roadmap: 56.00%
+- Completed: TASK-0043 research, TASK-0044 canonical AST/compiler, TASK-0045 proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 final certification
+- Active successor: none; PHASE-09 remains planned/inactive pending a separate research-first milestone
 - TASK-0042: intentionally unmaterialized gap; PHASE-07 certification was accepted through TASK-0041 final acceptance / PR #405.
 
 ## Trust boundary
@@ -28,7 +28,7 @@ Natural-language text, model output and client data never become SQL authority. 
 2. TASK-0044 — Implement canonical segment definition AST and deterministic query compiler. **Complete.**
 3. TASK-0045 — Implement natural-language-to-segment structured compiler. **Complete.**
 4. TASK-0046 — Implement preview/count/freshness/cost guards and audience UX. **Complete.**
-5. TASK-0047 — Certify PHASE-08. **Active.**
+5. TASK-0047 — Certify PHASE-08. **Complete.**
 
 ## Invariants
 

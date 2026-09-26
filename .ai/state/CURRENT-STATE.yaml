@@ -6,43 +6,47 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-08",
     "active_task": "TASK-0047",
-    "last_completed_task": "TASK-0046",
+    "last_completed_task": "TASK-0047",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 54.75,
-    "phase_percent": 75.0,
+    "roadmap_percent": 56.0,
+    "phase_percent": 100.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #412 implementation head 69ba53e397304474f353f8e2a6036c58c9e73bf3 passed Continuity run 36278577811.",
-    "application_test_status": "PR #412 implementation head 69ba53e397304474f353f8e2a6036c58c9e73bf3 passed Application run 36278577784: foundation, PostgreSQL integration, PHP 8.3 floor and four Playwright journeys.",
-    "security_supply_chain_status": "PR #412 implementation head 69ba53e397304474f353f8e2a6036c58c9e73bf3 passed Security Supply Chain CI run 36278577807.",
+    "continuity_validation": "PR #413 immutable candidate head eff0d08506c408090754c72e4ea6ca4bdcd10369 passed AI Continuity Guard run 36279523770.",
+    "application_test_status": "PR #413 immutable candidate head eff0d08506c408090754c72e4ea6ca4bdcd10369 passed Application Foundation CI run 36279523802: foundation, PostgreSQL integration, PHP 8.3 floor and live Playwright E2E.",
+    "security_supply_chain_status": "PR #413 immutable candidate head eff0d08506c408090754c72e4ea6ca4bdcd10369 passed Security Supply Chain CI run 36279523720.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
   "observed_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
   "active_issue": null,
-  "active_pr": 413,
+  "active_pr": null,
   "active_branch": "supervisor/phase08-final-certification",
-  "current_milestone": "PHASE-08-TASK-0047-FINAL-CERTIFICATION",
-  "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0046 accepted and merged via PR #412 as protected main 8f12e6668b8eded05ad6282ff61f508f64ead4dc after exact-head Continuity 36278940823, Application 36278940850 and Security 36278940854 passed.",
-  "exact_next_safe_action": "Run PR #413 full exact-head certification; keep TASK-0047 AC-7 and PHASE-08 completion pending until the unchanged carrier head is green.",
+  "current_milestone": "PHASE-08-FINALIZED",
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "TASK-0047 and PHASE-08 accepted on PR #413 immutable candidate head eff0d08506c408090754c72e4ea6ca4bdcd10369 after Continuity 36279523770, Application 36279523802 and Security 36279523720 passed.",
+  "exact_next_safe_action": "Keep PHASE-09 inactive; begin a separate research-first registration milestone only after explicit authorization.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
-  "blockers": [],
-  "current_blockers": [],
+  "blockers": [
+    "PHASE-09 has no registered research-first task; it must remain inactive until a separate explicitly authorized milestone."
+  ],
+  "current_blockers": [
+    "PHASE-09 has no registered research-first task; it must remain inactive until a separate explicitly authorized milestone."
+  ],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 1,
     "max_ci_status_refreshes_with_recorded_exception": 2,
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Run PR #413 full exact-head certification; keep TASK-0047 AC-7 and PHASE-08 completion pending until the unchanged carrier head is green."
+  "exact_next_action": "Keep PHASE-09 inactive; begin a separate research-first registration milestone only after explicit authorization."
 }

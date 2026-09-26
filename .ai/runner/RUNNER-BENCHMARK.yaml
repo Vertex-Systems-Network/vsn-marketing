@@ -1584,6 +1584,38 @@
         },
         "test_surface_note": "Application Foundation passed backend, integration, architecture/static analysis, formatting, frontend typecheck/unit/build, PHP floor and Playwright E2E on both the exact PR head and resulting main SHA."
       }
+    },
+    {
+      "id": "RBT-051",
+      "source": "PHASE-08 final segmentation certification baseline",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI + PostgreSQL integration + live Playwright E2E",
+      "exact_source_identity": {
+        "git_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #413 immutable candidate head full gates"
+      },
+      "environment_matrix_input_fixture": "TASK-0043 research and TASK-0044..TASK-0047 acceptance ledger; tenant-isolated AST/compiler; hostile bound values; prompt-injection and hallucination refusal; PostgreSQL cost/timeout probes; authenticated accessible count-only audience UX including empty, stale, capped-large and responsive states",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_protected_main_full_workflow_timeouts",
+      "dedup_key": "runner:phase08-final-segmentation-certification:protected-main",
+      "status": "passed",
+      "immutable_evidence": {
+        "promotion_pr": 413,
+        "source_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369",
+        "workflow_runs": {
+          "candidate_ai_continuity_guard": 36279523770,
+          "candidate_application_foundation_ci": 36279523802,
+          "candidate_security_supply_chain_ci": 36279523720
+        },
+        "conclusions": {
+          "candidate_ai_continuity_guard": "success",
+          "candidate_application_foundation_ci": "success",
+          "candidate_security_supply_chain_ci": "success"
+        },
+        "test_surface_note": "Application Foundation passed backend, architecture/static/format, frontend typecheck/unit/build, PHP 8.3 floor, PostgreSQL integration and live Playwright E2E; Continuity and Security also passed on the identical candidate SHA. The subsequent closeout commit contains only durable certification/state surfaces and must independently repeat all full gates before merge."
+      }
     }
   ]
 }

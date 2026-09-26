@@ -2,33 +2,33 @@
 
 ## State
 
-- Timestamp: `2026-09-26T23:27:18+00:00`
+- Timestamp: `2026-09-26T23:36:42+00:00`
 - Observed main: `8f12e6668b8eded05ad6282ff61f508f64ead4dc`
 - Active issue: `none`
-- Active PR: `413`
+- Active PR: `none`
 - Active branch: `supervisor/phase08-final-certification`
-- Current milestone: `PHASE-08-TASK-0047-FINAL-CERTIFICATION`
-- Milestone status: `IN_PROGRESS`
+- Current milestone: `PHASE-08-FINALIZED`
+- Milestone status: `COMPLETE`
 - Active task: `TASK-0047`
 - Next task: `none`
 - Current phase: `PHASE-08`
-- Execution status: `ready`
+- Execution status: `needs_reconciliation`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `a4fc31db9314e022702cd4a16d09f55daed908fc6fa2af59e6a92a63210a4193`
+- State fingerprint: `692f15bd209c99114f085f966e37792facf8fd48d9186aace44f0c4821582761`
 
 ## Completed / observed this session
 
-Opened Supervisor-owned PHASE-08 final certification PR #413 from protected main 8f12e666. TASK-0047 AC-1..AC-6 are evidenced; browser certification includes live invalid/loading/empty/stale/capped-large states. AC-7 and completion remain pending unchanged full-CI head.
+TASK-0047 and PHASE-08 completed from immutable PR #413 candidate head eff0d085 after Continuity 36279523770, Application 36279523802 including PostgreSQL/live E2E, and Security 36279523720 passed. Canonical progress is PHASE-08 100% / roadmap 56%; the queue and Runner evidence are terminalized, no writable lease remains, and PHASE-09 stays planned/inactive.
 
 ## Tests
 
-Local typecheck PASS; 13 segmentation UI tests PASS; build PASS; E2E seeder syntax PASS; governance validators PASS. PR #413 exact-head gates pending.
+Candidate baseline: Continuity 36279523770 success; Application 36279523802 success; Security 36279523720 success. Final closeout head must repeat full exact-head CI unchanged before merge.
 
 ## Blockers
 
-- None
+- PHASE-09 has no registered research-first task; it must remain inactive until a separate explicitly authorized milestone.
 
 ## Exact next action
 
-Run PR #413 full exact-head certification; keep TASK-0047 AC-7 and PHASE-08 completion pending until the unchanged carrier head is green.
+Keep PHASE-09 inactive; begin a separate research-first registration milestone only after explicit authorization.

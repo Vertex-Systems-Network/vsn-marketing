@@ -1,14 +1,7 @@
 {
   "schema_version": 1,
   "reconciled_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 413,
-    "title": "control(phase08): certify segmentation and close phase",
-    "disposition": "active_phase_certification",
-    "accepted_actionable": true,
-    "branch": "supervisor/phase08-final-certification"
-  },
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -273,9 +266,11 @@
       "kind": "pr",
       "number": 413,
       "title": "control(phase08): certify segmentation and close phase",
-      "disposition": "active_phase_certification",
-      "accepted_actionable": true,
-      "branch": "supervisor/phase08-final-certification"
+      "disposition": "terminal_promotion_candidate_exact_head",
+      "accepted_actionable": false,
+      "runner_id": "RBT-051",
+      "branch": "supervisor/phase08-final-certification",
+      "candidate_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369"
     }
   ]
 }

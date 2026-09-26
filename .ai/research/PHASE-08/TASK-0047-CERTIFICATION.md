@@ -1,6 +1,6 @@
 +# TASK-0047 — PHASE-08 certification evidence
 
-Status: certification candidate. AC-1 through AC-6 are evidenced; AC-7 remains fail-closed until the final acceptance carrier passes full exact-head protected-main gates unchanged.
+Status: certified on immutable candidate baseline `eff0d08506c408090754c72e4ea6ca4bdcd10369`; final closeout state must pass the same full exact-head protected-main gates unchanged before merge.
 
 ## Certified scope and immutable lineage
 
@@ -79,13 +79,12 @@ Result: satisfied.
 
 ## AC-7 — Exact protected-main promotion
 
-Pending requirements:
+Immutable candidate evidence:
 
-1. Commit this carrier with `CI-Mode: full`.
-2. Pass AI Continuity Guard, Application Foundation CI including PostgreSQL/E2E, Security Supply Chain CI and applicable release checks on one unchanged final head.
-3. Synchronize TASK-0047, phase/roadmap, README, queue, Runner evidence, state/checkpoint/journal and terminal lease/workstream state.
-4. Merge only that exact head, then verify resulting protected-main status.
-5. Leave PHASE-09 planned/inactive.
+- PR #413 candidate head `eff0d08506c408090754c72e4ea6ca4bdcd10369` passed AI Continuity Guard run `36279523770`.
+- The same head passed Application Foundation CI run `36279523802`, including backend, architecture/static/format, frontend typecheck/unit/build, PHP 8.3 floor, PostgreSQL integration and live Playwright E2E.
+- The same head passed Security Supply Chain CI run `36279523720`.
+- TASK-0047, phase/roadmap, README, queue, Runner evidence, state/checkpoint/journal and terminal lease/workstream state are synchronized by the final closeout commit.
+- PHASE-09 remains planned/inactive and no successor task is registered or activated.
 
-Until all five are evidenced, TASK-0047 and PHASE-08 remain incomplete.
-
+Result: satisfied for the immutable candidate baseline. The final closeout head remains merge-blocked until its own `CI-Mode: full` Continuity, Application and Security runs pass unchanged; only that exact head may merge, after which resulting protected-main status must be verified.

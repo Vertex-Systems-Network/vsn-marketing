@@ -6,7 +6,6 @@ use App\Modules\Audit\Domain\Contracts\AuditEventRepository;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Core\Domain\Contracts\IdentifierGenerator;
 use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
-use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Segmentation\Application\DeterministicSegmentCompiler;

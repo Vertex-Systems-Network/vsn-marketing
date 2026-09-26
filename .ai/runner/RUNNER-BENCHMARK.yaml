@@ -1308,16 +1308,82 @@
       "source": "PR #395 / TASK-0041 approval revocation Lane-2 lease authority",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "5a065e9ad425473d729da0625ed104ca50bd2af5",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #395 exact-head status + protected-main merge evidence"
       },
-      "environment_matrix_input_fixture": "Lane-1 terminal release; interactive Lane-2 identity chatgpt-session-task0041-approval-revocation; exclusive three-path lease; green integration dependency d9f69968",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "environment_matrix_input_fixture": "Lane-1 terminal release; interactive Lane-2 identity chatgpt-session-task0041-approval-revocation; exclusive three-path lease; green integration dependency",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-approval-revocation-lane2-lease:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 395,
+        "source_sha": "5a065e9ad425473d729da0625ed104ca50bd2af5",
+        "merge_sha": "f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8",
+        "workflow_runs": {
+          "ai_continuity_guard": 36200389705,
+          "application_foundation_ci": 36200389716,
+          "security_supply_chain_ci": 36200389698
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-044",
+      "source": "PR #396 / TASK-0041 approval revocation worker implementation",
+      "command_workflow": "Shipping Fast Gate on exact worker head + post-merge ship/week-1 Continuity/Application/Shipping Fast Gate",
+      "exact_source_identity": {
+        "git_sha": "39a2017bb9791e078a70ebdebe15b05fa17234d5",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #396 exact-head Shipping Fast Gate + resulting integration-push evidence"
+      },
+      "environment_matrix_input_fixture": "server-derived approver authority; exact latest snapshot/state_version; server-recorded destructive confirmation; canonical append-only revoke; replay; permission drift; workspace isolation; no provider side effect",
+      "authorization_state": "consumed_required_shipping_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_shipping_and_integration_workflow_timeouts",
+      "dedup_key": "runner:task0041-approval-revocation:shipping-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 396,
+        "source_sha": "39a2017bb9791e078a70ebdebe15b05fa17234d5",
+        "merge_sha": "3a53bf6982df1d4277a750434d5d2c12314a7a2d",
+        "workflow_runs": {
+          "shipping_fast_gate_pr": 36201532662,
+          "ship_ai_continuity_guard": 36201663908,
+          "ship_application_foundation_ci": 36201663901,
+          "ship_shipping_fast_gate": 36201663961
+        },
+        "conclusions": {
+          "shipping_fast_gate_pr": "success",
+          "ship_ai_continuity_guard": "success",
+          "ship_application_foundation_ci": "success",
+          "ship_shipping_fast_gate": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-045",
+      "source": "PR #397 / TASK-0041 provider drift Lane-3 lease authority",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #397 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "Lane-2 terminal release; interactive Lane-3 identity chatgpt-session-task0041-provider-drift; exclusive read-model/security-test lease; green integration dependency 3a53bf69",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-provider-drift-lane3-lease:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

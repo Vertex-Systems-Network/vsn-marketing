@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_retry_lane1_ship_d9f699686098b4187cfce8fd4a9ab2e0e761fe6f_passed_run_36199738634",
-    "application_test_status": "task0041_retry_lane1_ship_d9f699686098b4187cfce8fd4a9ab2e0e761fe6f_passed_run_36199738672",
-    "security_supply_chain_status": "task0041_retry_lane1_lease_pr393_head_7b1b5497ec86d4d8ffdb746927e358daf0b8f179_passed_run_36198622967",
+    "continuity_validation": "task0041_approval_revocation_ship_3a53bf6982df1d4277a750434d5d2c12314a7a2d_passed_run_36201663908",
+    "application_test_status": "task0041_approval_revocation_ship_3a53bf6982df1d4277a750434d5d2c12314a7a2d_passed_run_36201663901",
+    "security_supply_chain_status": "task0041_approval_revocation_lease_pr395_head_5a065e9ad425473d729da0625ed104ca50bd2af5_passed_run_36200389698",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "280b6be5dda15a4ddce17123ea715c8c50ac3da0",
+  "observed_main_sha": "f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8",
   "active_issue": null,
-  "active_pr": 395,
-  "active_branch": "control/task0041-lane2-lease",
-  "current_milestone": "TASK-0041-APPROVAL-REVOCATION-LEASE",
+  "active_pr": 397,
+  "active_branch": "control/task0041-lane3-lease",
+  "current_milestone": "TASK-0041-PROVIDER-DRIFT-LEASE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 Lane-1 retry/capability shipping milestone trusted: PR #393 exact source 7b1b5497ec86d4d8ffdb746927e358daf0b8f179 passed full protected-main Continuity/Application/Security and merged as 280b6be5dda15a4ddce17123ea715c8c50ac3da0; PR #394 exact source d3a028a7f0576d89aa6b8495f6ad2666f66c8255 passed Shipping Fast Gate 36199489253 and merged to ship/week-1 as d9f699686098b4187cfce8fd4a9ab2e0e761fe6f; resulting integration head passed Continuity 36199738634, Application 36199738672 and Shipping Fast Gate 36199738706. Lane-1 lease is released and Lane-2 lease activation is staged on PR #395.",
-  "exact_next_safe_action": "Verify PR #395 on its unchanged exact head and merge the Lane-2 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-2/task0041-approval-revocation to green integration head d9f699686098b4187cfce8fd4a9ab2e0e761fe6f, then execute only CampaignApprovalRevocationService.php, PublishingApprovalRevocationController.php and Task0041ApprovalRevocationSecurityTest.php as chatgpt-session-task0041-approval-revocation. Reuse canonical CampaignGovernanceService::revokeApproval(), resolve approver authority on the server, enforce exact latest snapshot and expected campaign state_version, and leave shared routes/global state/config/migrations Supervisor-owned. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0041 Lane-2 approval-revocation shipping milestone trusted: PR #395 exact source 5a065e9ad425473d729da0625ed104ca50bd2af5 passed full protected-main Continuity/Application/Security and merged as f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8; PR #396 exact source 39a2017bb9791e078a70ebdebe15b05fa17234d5 passed Shipping Fast Gate 36201532662 and merged to ship/week-1 as 3a53bf6982df1d4277a750434d5d2c12314a7a2d; resulting integration head passed Continuity 36201663908, Application 36201663901 and Shipping Fast Gate 36201663961. Lane-2 lease is released and Lane-3 provider-drift lease activation is staged on PR #397.",
+  "exact_next_safe_action": "Verify PR #397 on its unchanged exact head and merge the Lane-3 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-3/task0041-provider-drift to green integration head 3a53bf6982df1d4277a750434d5d2c12314a7a2d, then execute only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php as chatgpt-session-task0041-provider-drift. Surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes from canonical provider/publication evidence; preserve workspace isolation and partial-success semantics; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-043"
+    "RBT-045"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #395 on its unchanged exact head and merge the Lane-2 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-2/task0041-approval-revocation to green integration head d9f699686098b4187cfce8fd4a9ab2e0e761fe6f, then execute only CampaignApprovalRevocationService.php, PublishingApprovalRevocationController.php and Task0041ApprovalRevocationSecurityTest.php as chatgpt-session-task0041-approval-revocation. Reuse canonical CampaignGovernanceService::revokeApproval(), resolve approver authority on the server, enforce exact latest snapshot and expected campaign state_version, and leave shared routes/global state/config/migrations Supervisor-owned. Keep provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify PR #397 on its unchanged exact head and merge the Lane-3 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-3/task0041-provider-drift to green integration head 3a53bf6982df1d4277a750434d5d2c12314a7a2d, then execute only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php as chatgpt-session-task0041-provider-drift. Surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes from canonical provider/publication evidence; preserve workspace isolation and partial-success semantics; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

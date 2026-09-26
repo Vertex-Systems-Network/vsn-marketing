@@ -7,8 +7,8 @@ use InvalidArgumentException;
 final readonly class SegmentProposalResponse
 {
     /**
-     * @param  array<string, mixed>|null $definition
-     * @param  list<string> $clarificationQuestions
+     * @param  array<string, mixed>|null  $definition
+     * @param  list<string>  $clarificationQuestions
      */
     private function __construct(
         public string $status,

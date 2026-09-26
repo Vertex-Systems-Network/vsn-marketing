@@ -91,13 +91,26 @@ it('binds hostile values and scopes contacts and company joins to the authentica
     );
     $ids = $compiled->query->pluck('c.id')->all();
 
+    $otherBrandScope = new TenantContext(
+        Str::uuid()->toString(),
+        $workspaceId,
+        Str::uuid()->toString(),
+        Str::uuid()->toString(),
+    );
+    $otherBrand = app(DeterministicSegmentCompiler::class)->compile(
+        $definition,
+        $otherBrandScope,
+        new DateTimeImmutable('2026-09-26T12:00:00Z'),
+    );
+
     expect($ids)->toBe([$insideContact])
         ->and($compiled->query->getBindings())->toContain($domain)
         ->and($compiled->evaluationFingerprint)->toBe(
             app(DeterministicSegmentCompiler::class)->compile(
                 $definition, task0044Context($workspaceId), new DateTimeImmutable('2026-09-26T12:00:00Z'),
             )->evaluationFingerprint,
-        );
+        )
+        ->and($otherBrand->evaluationFingerprint)->not->toBe($compiled->evaluationFingerprint);
 });
 
 it('rejects foreign event references and applies bounded event predicates', function () {

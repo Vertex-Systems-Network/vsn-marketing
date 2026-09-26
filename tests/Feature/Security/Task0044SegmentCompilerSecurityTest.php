@@ -137,7 +137,6 @@ it('uses a pinned instant and half-open UTC event intervals', function () {
         ->and($first->evaluationFingerprint)->not->toBe($second->evaluationFingerprint);
 });
 
-
 it('rejects excessive compiler cost before constructing an executable query', function () {
     config(['segmentation.max_cost' => 1]);
     $definition = ['schema_version' => 1, 'subject' => 'contact', 'root' => [

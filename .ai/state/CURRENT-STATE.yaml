@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
   "active_issue": null,
-  "active_pr": null,
+  "active_pr": 413,
   "active_branch": "supervisor/phase08-final-certification",
   "current_milestone": "PHASE-08-TASK-0047-FINAL-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0046 accepted and merged via PR #412 as protected main 8f12e6668b8eded05ad6282ff61f508f64ead4dc after exact-head Continuity 36278940823, Application 36278940850 and Security 36278940854 passed.",
-  "exact_next_safe_action": "Commit and open the single TASK-0047 PHASE-08 final certification PR with CI-Mode full; do not mark AC-7 or PHASE-08 complete before exact-head gates.",
+  "exact_next_safe_action": "Run PR #413 full exact-head certification; keep TASK-0047 AC-7 and PHASE-08 completion pending until the unchanged carrier head is green.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Commit and open the single TASK-0047 PHASE-08 final certification PR with CI-Mode full; do not mark AC-7 or PHASE-08 complete before exact-head gates."
+  "exact_next_action": "Run PR #413 full exact-head certification; keep TASK-0047 AC-7 and PHASE-08 completion pending until the unchanged carrier head is green."
 }

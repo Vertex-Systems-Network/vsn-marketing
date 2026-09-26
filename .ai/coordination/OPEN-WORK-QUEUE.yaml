@@ -1,7 +1,14 @@
 {
   "schema_version": 1,
   "reconciled_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
-  "active_work_path": null,
+  "active_work_path": {
+    "kind": "pr",
+    "number": 413,
+    "title": "control(phase08): certify segmentation and close phase",
+    "disposition": "active_phase_certification",
+    "accepted_actionable": true,
+    "branch": "supervisor/phase08-final-certification"
+  },
   "items": [
     {
       "kind": "issue",
@@ -261,6 +268,14 @@
       "accepted_actionable": false,
       "branch": "supervisor/phase08-task46-preview-count-ux",
       "merge_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc"
+    },
+    {
+      "kind": "pr",
+      "number": 413,
+      "title": "control(phase08): certify segmentation and close phase",
+      "disposition": "active_phase_certification",
+      "accepted_actionable": true,
+      "branch": "supervisor/phase08-final-certification"
     }
   ]
 }

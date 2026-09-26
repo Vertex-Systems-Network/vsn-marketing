@@ -306,4 +306,3 @@ it('surfaces half-open circuit recovery as an explicit blocked provider outcome'
         ->and($provider['retry_after_seconds'])->toBeNull()
         ->and($provider['next_probe_at'])->not->toBeNull();
 });
-

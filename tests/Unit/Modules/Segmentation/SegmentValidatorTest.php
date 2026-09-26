@@ -72,6 +72,12 @@ it('rejects empty groups malformed windows and excessive event history', functio
     ];
     expect(fn () => $validator->normalize($definition))
         ->toThrow(SegmentDefinitionException::class, 'invalid_absolute_window');
+
+    $definition['root']['children'][0]['window'] = [
+        'kind' => 'absolute', 'from' => '2020-01-01T00:00:00Z', 'to' => '2026-09-26T00:00:00Z',
+    ];
+    expect(fn () => $validator->normalize($definition))
+        ->toThrow(SegmentDefinitionException::class, 'invalid_absolute_window');
 });
 
 it('rejects SQL syntax values from becoming structure while preserving them only as data', function () {

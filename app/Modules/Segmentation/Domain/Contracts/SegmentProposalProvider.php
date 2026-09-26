@@ -10,10 +10,10 @@ interface SegmentProposalProvider
     public function available(): bool;
 
     /**
-     * The provider receives only operator intent and allowlisted schema metadata. Implementations
-     * must use an approved gateway, fixed policy, schema-constrained output, no tools, and
-     * bounded time/token budgets; the application never retries. Intent is untrusted data and can
-     * never authorize a query or bypass deterministic validation.
+     * The provider receives operator intent and allowlisted schema metadata only.
+     * It must use an approved gateway, fixed policy, structured output, and no tools.
+     * Time and token budgets must be bounded; the application never retries.
+     * Intent is untrusted data and cannot authorize or alter query semantics.
      *
      * @param array<string, mixed> $schema
      */

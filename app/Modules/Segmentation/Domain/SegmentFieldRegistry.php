@@ -24,7 +24,8 @@ final class SegmentFieldRegistry
     {
         $granted = array_fill_keys($permissions, true);
 
-        return array_filter(self::FIELDS, static fn (array $field): bool => $field['targetable'] && isset($granted[$field['required_permission']]));
+        // FIELDS is the allowlist of targetable attributes; permission is checked for each result.
+        return array_filter(self::FIELDS, static fn (array $field): bool => isset($granted[$field['required_permission']]));
     }
 
     /** @return array<string, array{table: string, column: string, type: string, required_permission: string, targetable: bool, previewable: bool}> */

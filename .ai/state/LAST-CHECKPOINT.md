@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-26T18:06:38+00:00`
+- Timestamp: `2026-09-26T18:11:27+00:00`
 - Observed main: `143b76089c1b7c5f7954cb1beda31849ff5f2d20`
 - Active issue: `none`
 - Active PR: `412`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `c47b5591d5f0e238236914d301240e4555d12fe4adbb19f692e18dd6359bfce9`
+- State fingerprint: `81979edd122449f444e9f410a67efe851139496a463870ee4584dd6d3f73f2c9`
 
 ## Completed / observed this session
 
-PR #412 initial Application run 36260994079 passed backend 658 tests, architecture 4 and PHP static analysis, then failed Pint formatting; repaired same scoped files with exact Pint 1.30.5. Security 36260994099 and Continuity 36260994080 passed. Added pinned-version UI preview, audit and adversarial tests; final head awaits full gates.
+PR #412 repair head passed foundation, PHP floor, Continuity and Security. E2E showed unauthenticated bare POST is rejected by CSRF 419 before auth; test now checks GET 401 and POST 419 plus no leakage. Added browser nested-rule/mobile failure-state flow and estimated/cost labels. PostgreSQL integration remains pending.
 
 ## Tests
 
-Pint 1.30.5 --test changed PHP PASS; frontend typecheck PASS, nine UI tests PASS; initial backend 658/architecture 4/PHP static PASS; initial Security and Continuity PASS; PostgreSQL/E2E skipped until formatting repair head.
+Local typecheck PASS, ten frontend tests PASS, build PASS, Pint 1.30.5 PASS. PR #412 f10c3ac foundation/PHP floor PASS, Continuity 36261413557 PASS, Security 36261413601 PASS; E2E 419 expected behavior repaired in same PR; integration pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Pint 1.30.5 --test changed PHP PASS; frontend typecheck PASS, nine UI tests PASS
 
 ## Exact next action
 
-Push TASK-0046 in-scope repair to PR #412, inspect exact-head Application/PostgreSQL/E2E/Security/Continuity, complete remaining ACs before acceptance.
+Push PR #412 E2E in-scope repair and review exact-head full Application/PostgreSQL/browser gates; certify TASK-0046 only if all ACs are evidenced.

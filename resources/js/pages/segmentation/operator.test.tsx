@@ -57,6 +57,11 @@ describe('SegmentationOperator', () => {
         render(<SegmentationOperator {...props} proposal_result={{ status: 'invalid', code: 'unknown_field' }} />);
         expect(screen.getByText(/failed deterministic validation/i)).toBeInTheDocument();
     });
+
+    it('explains the configured cost budget without exposing query details', () => {
+        render(<SegmentationOperator {...props} proposal_result={{ status: 'invalid', code: 'cost_limit_exceeded' }} />);
+        expect(screen.getByText(/exceeds the configured evaluation budget/)).toBeInTheDocument();
+    });
 });
 
 it('loads returned AST into the editable proposal review field', () => {

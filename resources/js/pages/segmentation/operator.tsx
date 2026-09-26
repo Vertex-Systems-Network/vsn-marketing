@@ -40,6 +40,7 @@ const notices: Record<string, string> = {
     failed: 'The proposal could not be validated. No segment was saved.',
     permission_denied: 'Your workspace permissions do not allow this operation.',
     clarification_required: 'The request needs clarification before it can become a segment.',
+    cost_limit_exceeded: 'This audience exceeds the configured evaluation budget. Simplify the rules or reduce event windows.',
 };
 
 export default function SegmentationOperator({
@@ -129,7 +130,7 @@ export default function SegmentationOperator({
     };
 
     const statusMessage = result
-        ? notices[result.status] ?? (result.status === 'proposed'
+        ? notices[result.code ?? ''] ?? notices[result.status] ?? (result.status === 'proposed'
             ? 'Proposal ready for review. Check and edit the structured definition before saving.'
             : 'The request was not saved.')
         : proposal_available
@@ -294,6 +295,8 @@ export default function SegmentationOperator({
                             <p className="mt-2 text-sm text-neutral-200">
                                 {preview_result.count_kind === 'capped'
                                     ? `At least ${preview_result.count_lower_bound} contacts; exact count unavailable within the bounded probe.`
+                                    : preview_result.count_kind === 'estimated'
+                                      ? `Approximately ${preview_result.count} contacts; estimated at evaluation time.`
                                     : preview_result.count_kind === 'exact'
                                       ? `${preview_result.count} contacts · exact at evaluation time`
                                       : 'Count unavailable. Try again later or simplify the rules.'}

@@ -154,10 +154,10 @@ final readonly class DeterministicSegmentCompiler
         $definitionTable = $kind === 'list' ? 'contact_lists' : 'tags';
         $membershipTable = $kind === 'list' ? 'contact_list_memberships' : 'contact_tag_assignments';
         $referenceColumn = $kind === 'list' ? 'list_id' : 'tag_id';
-        if (! $this->database->table($definitionTable)
+        if ($this->database->table($definitionTable)
             ->where('workspace_id', $scope->workspaceId)
             ->where('id', $node['id'])
-            ->exists()) {
+            ->exists() === false) {
             throw new SegmentDefinitionException('unknown_or_foreign_membership', '$.root.id');
         }
         $method = $node['operator'] === 'in'

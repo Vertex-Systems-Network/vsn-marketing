@@ -91,23 +91,16 @@ function task45AllowingAuthorizer(): WorkspaceAuthorizer
     $query->shouldReceive('join')->with(
         'workspace_roles',
         Mockery::on(function (Closure $configure): bool {
-            $join = new class {
-                /** @var list<list<mixed>> */
-                public array $conditions = [];
-
-                public function on(mixed ...$arguments): self
-                {
-                    $this->conditions[] = $arguments;
-
-                    return $this;
-                }
-            };
+            $join = Mockery::mock();
+            $join->shouldReceive('on')->once()->with(
+                'workspace_roles.id', '=', 'workspace_membership_roles.workspace_role_id',
+            )->andReturnSelf();
+            $join->shouldReceive('on')->once()->with(
+                'workspace_roles.workspace_id', '=', 'workspace_memberships.workspace_id',
+            )->andReturnSelf();
             $configure($join);
 
-            return $join->conditions === [
-                ['workspace_roles.id', '=', 'workspace_membership_roles.workspace_role_id'],
-                ['workspace_roles.workspace_id', '=', 'workspace_memberships.workspace_id'],
-            ];
+            return true;
         }),
     )->twice()->andReturnSelf();
     $query->shouldReceive('join')->with(

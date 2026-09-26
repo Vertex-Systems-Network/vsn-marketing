@@ -30,7 +30,7 @@ final readonly class SegmentProposalResponse
         }
 
         foreach ($clarificationQuestions as $question) {
-            if (! is_string($question)) {
+            if (is_string($question) === false) {
                 throw new InvalidArgumentException('Clarification questions must be strings.');
             }
         }

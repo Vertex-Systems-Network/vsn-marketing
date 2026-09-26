@@ -16,7 +16,7 @@ interface SegmentProposalProvider
      * Time and token budgets must be bounded; the application never retries.
      * Intent is untrusted data and cannot authorize or alter query semantics.
      *
-     * @param array<string, mixed> $schema
+     * @param  array<string, mixed> $schema
      */
     public function propose(string $intent, array $schema): SegmentProposalResponse;
 }

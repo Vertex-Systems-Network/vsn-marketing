@@ -10,6 +10,7 @@ use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Segmentation\Domain\Contracts\SegmentProposalProvider;
 use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentFieldRegistry;
+use App\Modules\Segmentation\Domain\SegmentProposalGuard;
 use App\Modules\Segmentation\Domain\SegmentProposalResponse;
 use App\Modules\Segmentation\Domain\SegmentValidator;
 use DateTimeImmutable;
@@ -25,6 +26,7 @@ final readonly class ProposeSegment
         private SegmentProposalProvider $provider,
         private SegmentFieldRegistry $fields,
         private SegmentValidator $validator,
+        private SegmentProposalGuard $guard,
         private DeterministicSegmentCompiler $compiler,
         private WorkspaceAuthorizer $authorizer,
         private DatabaseManager $database,
@@ -48,7 +50,7 @@ final readonly class ProposeSegment
             return ['status' => 'invalid_input', 'code' => 'intent_length_invalid'];
         }
 
-        if ($this->containsSensitiveLiteral($intent)) {
+        if ($this->guard->containsSensitiveLiteral($intent)) {
             $this->record($scope, $intentFingerprint, 'input_rejected', null);
 
             return ['status' => 'input_rejected', 'code' => 'remove_personal_or_secret_values'];
@@ -89,6 +91,7 @@ final readonly class ProposeSegment
         try {
             $definition = $this->validator->normalize($response->definition);
             $schema = $this->schema($scope);
+            $this->guard->assertSafeDefinition($definition);
             $this->assertAllowedReferences($definition['root'], $schema, '$.root');
             $compiled = $this->compiler->compile(
                 $definition,

@@ -9,6 +9,7 @@ use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentFieldRegistry;
+use App\Modules\Segmentation\Domain\SegmentProposalGuard;
 use App\Modules\Segmentation\Domain\SegmentValidator;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -22,6 +23,7 @@ final readonly class ConfirmSegmentProposal
         private WorkspaceAuthorizer $authorizer,
         private SegmentFieldRegistry $fields,
         private SegmentValidator $validator,
+        private SegmentProposalGuard $guard,
         private DeterministicSegmentCompiler $compiler,
         private SaveSegmentVersion $saveVersion,
         private AuditRecorder $audit,
@@ -46,6 +48,7 @@ final readonly class ConfirmSegmentProposal
         }
 
         $normalized = $this->validator->normalize($definition);
+        $this->guard->assertSafeDefinition($normalized);
         $allowedFields = $this->fields->availableTo([PermissionCatalog::CONTACT_READ]);
         $this->assertAuthorizedFields($normalized['root'], array_keys($allowedFields), '$.root');
 

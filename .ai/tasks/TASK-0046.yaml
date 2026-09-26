@@ -4,7 +4,7 @@
   "phase": "PHASE-08",
   "module": "Segmentation",
   "title": "Implement preview/count/freshness/cost guards and audience UX",
-  "status": "planned",
+  "status": "in_progress",
   "objective": "Provide safe bounded segment preview, count and freshness explanations plus an accessible rule-builder and AI-proposal review workflow.",
   "dependencies": [
     "TASK-0045"
@@ -52,5 +52,5 @@
     "Playwright/E2E accessibility and failure-state tests",
     "PostgreSQL query-plan and scale fixtures"
   ],
-  "exact_next_action": "Implement after TASK-0045 validated proposal output and cost policy are accepted."
+  "exact_next_action": "Implement workspace-scoped bounded preview/count and freshness semantics, pinned version evaluation, consent/suppression explanation, accessible rule builder and PostgreSQL/E2E evidence; PHASE-09 remains inactive."
 }

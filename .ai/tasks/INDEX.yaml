@@ -443,7 +443,7 @@
       "id": "TASK-0045",
       "phase": "PHASE-08",
       "title": "Implement natural-language-to-segment structured compiler",
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0044"
       ],
@@ -453,7 +453,7 @@
       "id": "TASK-0046",
       "phase": "PHASE-08",
       "title": "Implement preview/count/freshness/cost guards and audience UX",
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0045"
       ],

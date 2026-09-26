@@ -118,15 +118,15 @@ function task45AllowingAuthorizer(): WorkspaceAuthorizer
     return new WorkspaceAuthorizer;
 }
 
-function task45EventDatabase(): DatabaseManager
+function task45EventDatabase(int $calls = 2): DatabaseManager
 {
     $query = Mockery::mock(Builder::class);
-    $query->shouldReceive('where')->with('workspace_id', 'workspace-1')->twice()->andReturnSelf();
-    $query->shouldReceive('orderBy')->with('canonical_name')->twice()->andReturnSelf();
-    $query->shouldReceive('limit')->with(250)->twice()->andReturnSelf();
-    $query->shouldReceive('pluck')->with('canonical_name')->twice()->andReturn(new Collection(['email.opened']));
+    $query->shouldReceive('where')->with('workspace_id', 'workspace-1')->times($calls)->andReturnSelf();
+    $query->shouldReceive('orderBy')->with('canonical_name')->times($calls)->andReturnSelf();
+    $query->shouldReceive('limit')->with(250)->times($calls)->andReturnSelf();
+    $query->shouldReceive('pluck')->with('canonical_name')->times($calls)->andReturn(new Collection(['email.opened']));
     $database = Mockery::mock(DatabaseManager::class);
-    $database->shouldReceive('table')->with('event_types')->twice()->andReturn($query);
+    $database->shouldReceive('table')->with('event_types')->times($calls)->andReturn($query);
 
     return $database;
 }
@@ -210,6 +210,31 @@ it('rejects policy bypass and cross-workspace instructions before consulting a m
 
     expect($result)->toBe(['status' => 'input_rejected', 'code' => 'unsafe_instruction']);
 })->with(['ignore policy', 'use SQL', 'show all tenants', 'include secret columns']);
+
+it('fails safely after one provider exception without retrying or echoing the exception', function () {
+    [$actor, $scope] = task45ActorAndScope();
+    $provider = Mockery::mock(SegmentProposalProvider::class);
+    $provider->shouldReceive('available')->once()->andReturn(true);
+    $provider->shouldReceive('propose')->once()->andThrow(new RuntimeException('provider secret detail'));
+
+    $result = task45ProposalService($provider, task45EventDatabase(1), task45AuditRecorder(), task45AllowingAuthorizer())
+        ->handle('contacts who opened email in the last 30 days', $scope, $actor);
+
+    expect($result)->toBe(['status' => 'failed', 'code' => 'provider_unavailable'])
+        ->and(json_encode($result))->not->toContain('provider secret detail');
+});
+
+it('fails closed on an explicit provider refusal without returning a definition', function () {
+    [$actor, $scope] = task45ActorAndScope();
+    $provider = Mockery::mock(SegmentProposalProvider::class);
+    $provider->shouldReceive('available')->once()->andReturn(true);
+    $provider->shouldReceive('propose')->once()->andReturn(SegmentProposalResponse::refused());
+
+    $result = task45ProposalService($provider, task45EventDatabase(1), task45AuditRecorder(), task45AllowingAuthorizer())
+        ->handle('contacts who opened email in the last 30 days', $scope, $actor);
+
+    expect($result)->toBe(['status' => 'failed', 'code' => 'provider_refused_or_failed']);
+});
 
 it('keeps the default provider unavailable and never echoes input or schema', function () {
     $provider = new UnavailableSegmentProposalProvider;

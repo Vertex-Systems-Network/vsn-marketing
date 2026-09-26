@@ -1,6 +1,6 @@
 # TASK-0046 evaluation and privacy evidence
 
-Status: implementation evidence in PR #412; acceptance pending its unchanged final head.
+Status: accepted on PR #412 exact implementation head `69ba53e397304474f353f8e2a6036c58c9e73bf3`.
 
 ## Query shape and bounded work
 
@@ -14,6 +14,9 @@ Status: implementation evidence in PR #412; acceptance pending its unchanged fin
 - Count disclosure is limited to an authorized `contact.read` actor in the same workspace. No universal small-cell suppression threshold is asserted without an approved privacy policy. Count evaluations are audited by hash/evaluation ID and count kind, excluding raw filter values. Saved definitions are listed with a 50-row bound to authorized users; no contact export or audience membership pagination endpoint exists.
 - Draft edits append immutable versions under a scoped row lock. Publication pins an explicit version number; later edits do not float that pointer. Pinned preview reloads stored AST by composite workspace/definition/version identity, checks its canonical hash and rejects a mismatched client definition. No count/membership cache exists (`cache_status: disabled`), preventing cross-workspace reuse by construction. Future caching requires an independently reviewed permission/policy revision in its key and reauthorization on retrieval.
 
-## Remaining certification
+## Exact-head certification and acceptance
 
-Exact final PR head Application/E2E/Security/Continuity and TASK-0046 acceptance criteria remain open. The browser test seeds a test-only persistent SQLite workspace and exercises a live authenticated keyboard-operated, mobile build → preview → save → publish journey, including nested and NOT controls. Unit UI tests cover unavailable/freshness states. The endpoint test separately proves unauthenticated read and CSRF-protected mutation denial. The persistent database and file sessions are scoped to the E2E job; the seed script refuses non-testing or non-SQLite contexts. These new browser changes remain unverified until their exact head passes CI.
+- PR #412 head `69ba53e397304474f353f8e2a6036c58c9e73bf3` passed AI Continuity Guard `36278577811`, Application Foundation CI `36278577784`, and Security Supply Chain CI `36278577807` unchanged.
+- Application CI passed the backend suite, architecture tests, static analysis, Pint, frontend typecheck, 13 segmentation UX state tests, production build, PHP 8.3 floor, PostgreSQL integration/plan/statement-timeout fixture, and all four Playwright journeys.
+- The authenticated browser journey creates a retry-isolated test-only SQLite workspace and exercises keyboard rule creation, nested and NOT controls, bounded count preview, PII-minimized copy, immutable draft save, confirmed publication, and 375px responsive behavior. The seeder refuses non-testing, non-SQLite, or in-memory databases.
+- AC-1 through AC-7 are satisfied. Caching and member export remain deliberately disabled; therefore no cache/member-page identity exists to reuse across tenants or versions. Any future cache must add workspace, hash/version, permission/policy revision and evaluation identity keys plus read-time authorization before the feature may be enabled.

@@ -40,8 +40,8 @@ const campaign = {
         retry_eligible_count: 1,
         counts: { total: 2, succeeded: 1, pending: 0, in_progress: 0, failed: 1, cancelled: 0 },
         targets: [
-            { target_id: 'target-a', channel: 'linkedin', state: 'succeeded', retry_eligible: false },
-            { target_id: 'target-b', channel: 'instagram', state: 'failed_retriable', retry_eligible: true },
+            { target_id: 'target-a', channel: 'linkedin', state: 'succeeded', retry_eligible: false, provider: null },
+            { target_id: 'target-b', channel: 'instagram', state: 'failed_retriable', retry_eligible: true, provider: null },
         ],
     },
 };
@@ -225,13 +225,13 @@ test('announces canonical conflicts and prevents duplicate approval submission w
         />,
     );
 
-    expect(screen.getByRole('alert')).toHaveTextContent('canonical campaign state changed');
+    expect(screen.getByRole('alert').textContent).toContain('canonical campaign state changed');
 
     const confirm = screen.getByRole('button', { name: 'Confirm approve' });
     fireEvent.click(confirm);
 
     expect(post).toHaveBeenCalledTimes(1);
-    expect(confirm).toBeDisabled();
+    expect((confirm as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByText('Submitting approve decision…')).toBeTruthy();
 });
 

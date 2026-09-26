@@ -2,6 +2,7 @@
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Segmentation\Application\DeterministicSegmentCompiler;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,6 +14,13 @@ beforeEach(function () {
         || DB::connection()->getDriverName() !== 'pgsql') {
         $this->markTestSkipped('PostgreSQL integration environment is required.');
     }
+});
+
+it('cancels over-budget PostgreSQL work with a transaction-local statement timeout', function () {
+    expect(fn () => DB::transaction(function (): void {
+        DB::statement('SET LOCAL statement_timeout = 10');
+        DB::select('SELECT pg_sleep(0.05)');
+    }))->toThrow(QueryException::class);
 });
 
 it('explains representative bounded query shape with tenant equality and bound values', function () {

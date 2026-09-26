@@ -12,7 +12,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 **Overall roadmap progress: 51.88%**  
 **Current phase: PHASE-08 — 17.65%**  
-**Last completed task: TASK-0041 — Implement campaign/publishing operator UX**  
+**Last completed task: TASK-0043 — Research segmentation/privacy/query patterns and benchmark audience builders**  
 **Current milestone: PHASE-08-TASK-0044-ARCHITECTURE — IN_PROGRESS**
 
 ```text
@@ -33,7 +33,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Certified on protected main via TASK-0041 / PR #405** | **100.00%** |
 | PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | 17.65% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -44,7 +44,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% |
 | PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% |
 
-### Current execution snapshot
+### PHASE-07 closeout evidence (historical)
 
 PR #402 exact head `34b1a0a2632218cd87ae070547f16a20dc76ba5a` passed AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and all applicable E2E/integration checks before merging as `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`; it staged the exclusive TASK-0041 Operator UX lane.
 
@@ -52,9 +52,13 @@ PR #403 merged exact worker head `391f43b3e7ee720be878294009a5993c163da685` into
 
 The integration push correctly exposed a missing global continuity-ledger handoff. PR #404 synchronized PR #402's current Lane-4 authority, appended the hash-chained checkpoint, and passed its exact Shipping Fast Gate. Resulting integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed Continuity, Application Foundation and Shipping Fast Gate. Product/test files are unchanged from the fully tested `7f43eda` snapshot.
 
-TASK-0041 acceptance criteria AC-1..AC-8 are recorded against the canonical workspace, preview, bulk approval, revocation, partial-success, provider-safety, accessibility, adversarial and E2E evidence. The final acceptance carrier uses `CI-Mode: full`; it is not mergeable until exact-head Continuity, Application Foundation and Security Supply Chain checks pass.
+TASK-0041 AC-1..AC-8 were accepted by PR #405. Its exact head passed Continuity, Application Foundation and Security Supply Chain before merging as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main gates passed and were reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.
 
-TASK-0042 is not registered. PHASE-08 research/task materialization, deployment/release authority and deferred Runner optimization remain inactive.
+The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; it is complete, TASK-0044 architecture freeze is active, and PHASE-09 remains inactive.
+
+### Current execution snapshot
+
+PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 architecture freeze is active. PHASE-08 progress is 17.65%; deterministic roadmap progress is 51.88%. TASK-0045 through TASK-0047 are planned in dependency order. No Runner task or PHASE-09 work is active.
 
 ### README progress-sync contract
 

@@ -210,12 +210,6 @@ final readonly class ProposeSegment
         throw new SegmentDefinitionException('unsupported_ai_node', $path.'.type');
     }
 
-    private function containsSensitiveLiteral(string $intent): bool
-    {
-        return preg_match('/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i', $intent) === 1
-            || preg_match('/\b(?:sk|rk|ghp|github_pat)_[A-Za-z0-9_-]{10,}\b/i', $intent) === 1;
-    }
-
     private function record(TenantContext $scope, string $intentFingerprint, string $status, ?string $definitionHash): void
     {
         $this->audit->record(

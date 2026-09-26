@@ -21,6 +21,7 @@ function task0044Workspace(string $label): string
         'id' => $workspaceId, 'organization_id' => $organizationId, 'name' => $label,
         'slug' => Str::slug($label), 'created_at' => now(), 'updated_at' => now(),
     ]);
+
     return $workspaceId;
 }
 
@@ -48,6 +49,7 @@ function task0044Company(string $workspaceId, string $domain): string
         'id' => $id, 'workspace_id' => $workspaceId, 'brand_id' => null, 'name' => 'Example',
         'domain' => $domain, 'created_at' => now(), 'updated_at' => now(),
     ]);
+
     return $id;
 }
 

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-26T15:38:54+00:00`
-- Observed main: `413430693fbb15ce4e0c6f5fb26cb41192b69f84`
+- Timestamp: `2026-09-26T16:23:44Z`
+- Observed main: `c2278638788958bb9875bbc465f5bdb8c52a92a3`
 - Active issue: `none`
-- Active PR: `410`
-- Active branch: `supervisor/phase08-task44-acceptance`
+- Active PR: `411`
+- Active branch: `supervisor/phase08-task45-natural-language-compiler`
 - Current milestone: `PHASE-08-TASK-0045-NATURAL-LANGUAGE-COMPILER`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0045`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `2b2d394ac974b3cd8787eb6095f6a09ad89b96ba10219290996ed2299c98e6b5`
+- State fingerprint: `09046dde743aedd4d3c01d646fe09177b98e26aaeafb39a4dd99b679b733fb13`
 
 ## Completed / observed this session
 
-PR #410 carries the final Task44 registry permission/preview policy coverage and its completed-to-Task45 transition. Exact-head Continuity, Application Foundation and Security gates are pending; PHASE-09 stays inactive.
+Reconciled protected main after PR #410 completed TASK-0044 at c2278638788958bb9875bbc465f5bdb8c52a92a3. Registered PR #411 as the active TASK-0045 acceptance carrier. The branch adds an unavailable-by-default provider port, schema-only proposal context, deterministic validation and shared sensitive-value blocking, confirmed immutable draft saving, accessible structured review, and adversarial tests. TASK-0042 remains unmaterialized because TASK-0041/PR #405 satisfied PHASE-07 certification; PHASE-09 remains inactive.
 
 ## Tests
 
-PR #408 exact-head implementation gates passed; PR #409 exact-head PostgreSQL compiler/migration tests and resulting-main gates passed. PR #410 exact-head CI is pending.
+PR #410 exact-head and resulting-main Continuity, Application Foundation, Security, release-integrity, Scorecard, and Persistent Supervisor checks passed. PR #411 CI-Mode: full is pending on head 7e205ec4166aa325e746670ea2dad0aa6ca0f185.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #408 exact-head implementation gates passed; PR #409 exact-head PostgreSQL co
 
 ## Exact next action
 
-Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive.
+Run CI-Mode: full on PR #411 exact head; repair in-scope failures, then certify its unchanged head. Keep TASK-0046 and PHASE-09 inactive.

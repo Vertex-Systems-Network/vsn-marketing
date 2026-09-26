@@ -14,24 +14,24 @@
   },
   "progress": {
     "roadmap_percent": 52.75,
-    "phase_percent": 35.0,
+    "phase_percent": 35,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498662_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_governance_success",
-    "application_test_status": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498610_all_jobs_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_run_36251767867_all_jobs_passed",
-    "security_supply_chain_status": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498682_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_run_36251767895_security_gates_passed",
-    "release_integrity_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383323_passed",
-    "scorecard_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383292_passed"
+    "continuity_validation": "PR #410 exact head passed run 36253649223; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964727.",
+    "application_test_status": "PR #410 Application Foundation all jobs passed run 36253649249; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 all jobs passed run 36253964718.",
+    "security_supply_chain_status": "PR #410 exact head passed run 36253649243; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964750.",
+    "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
+    "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84",
+  "observed_main_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3",
   "active_issue": null,
-  "active_pr": 410,
-  "active_branch": "supervisor/phase08-task44-acceptance",
+  "active_pr": 411,
+  "active_branch": "supervisor/phase08-task45-natural-language-compiler",
   "current_milestone": "PHASE-08-TASK-0045-NATURAL-LANGUAGE-COMPILER",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0044 canonical AST/compiler, PostgreSQL migration and workspace-isolation coverage completed on PRs #408/#409; exact-head and resulting-main gates passed. PHASE-09 remains inactive.",
-  "exact_next_safe_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive.",
+  "last_completed_milestone": "TASK-0044 completed by PR #410. Exact-head Continuity 36253649223, Application Foundation 36253649249, and Security 36253649243 passed. Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed Continuity 36253964727, Application Foundation 36253964718, Security 36253964750, release integrity 36253964681, Scorecard 36253964656, and Persistent Supervisor 36253983819. PHASE-09 remains inactive.",
+  "exact_next_safe_action": "Run CI-Mode: full on PR #411 exact head; repair in-scope failures, then certify its unchanged head. Keep TASK-0046 and PHASE-09 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive."
+  "exact_next_action": "Run CI-Mode: full on PR #411 exact head; repair in-scope failures, then certify its unchanged head. Keep TASK-0046 and PHASE-09 inactive."
 }

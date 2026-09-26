@@ -1,9 +1,12 @@
+// @vitest-environment jsdom
+
 import '@testing-library/jest-dom/vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import SegmentationOperator from './operator';
 
 const { post } = vi.hoisted(() => ({ post: vi.fn() }));
+afterEach(() => cleanup());
 vi.mock('@inertiajs/react', () => ({
     Head: () => null,
     router: { post },

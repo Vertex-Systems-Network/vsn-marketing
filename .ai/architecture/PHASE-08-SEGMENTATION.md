@@ -1,12 +1,12 @@
 # PHASE-08 Segmentation Architecture
 
-Status: frozen for TASK-0044 implementation, 2026-09-26.
+Status: TASK-0044 AST/compiler and TASK-0045 provider-neutral proposal boundary accepted; TASK-0046 preview/count UX active, 2026-09-26.
 
 ## Runtime boundary
 
 An authenticated request resolves TenantContext from membership middleware. SegmentDefinition is a versioned, canonical document with no organization/workspace field. The compiler receives TenantContext as a separate required argument and injects workspace equality into the contacts base scan and each registered relation. Browser or model payloads never provide scope.
 
-Natural-language proposals will be accepted only as untrusted structured AST. The same validator and field/event registries apply to typed rules and AI proposals. The model cannot select SQL, identifiers, joins, event properties, functions, or permissions.
+Natural-language proposals are accepted only as untrusted structured AST. The same validator and field/event registries apply to typed rules and AI proposals. The model cannot select SQL, identifiers, joins, event properties, functions, or permissions.
 
 ## Canonical AST v1
 
@@ -47,3 +47,15 @@ Operator and preview routes require authenticated membership plus contact.read a
 - Version confusion/cache leakage: hash includes canonical definition; evaluation identity includes workspace, brand scope, version/hash, and pinned instant.
 - Logging leakage: record IDs, hashes and safe reason codes, never raw values or customer rows.
 
+
+## TASK-0045 proposal contract
+
+The model-facing provider port accepts only the operator's bounded intent and an allowlisted schema description: stable field IDs/types/operators and canonical event names for the authenticated workspace. It receives no workspace id, tenant id, customer rows, customer identifiers, event payloads, consent/suppression evidence, list/tag IDs, provider credentials, or SQL metadata. AI list/tag predicates remain unsupported until a server-owned name-to-ID picker is available.
+
+Provider responses are proposals only. Schema normalization, current workspace event validation, permission checks and cost validation run after the provider call. Ambiguous requests remain clarification-only; invalid or hallucinated fields/events fail closed. Obvious email and credential literals are rejected before dispatch and also rejected if returned inside a proposed text value. The default provider binding is unavailable, has no retry, and never calls an external provider.
+
+Operator review exposes the canonical structured proposal in an editable JSON editor; saving requires contact.read + contact.write and an explicit confirmation flag. Audit events store only the intent SHA-256, safe outcome code, canonical definition hash and saved segment/version identity. Prompts, raw values and customer data are never written to audit evidence.
+
+Provider implementations must use the repository's approved AI Gateway, schema-constrained structured output, fixed policy, no tool calling, and bounded time/token budgets. The application does not retry provider requests; no provider-specific client or secret is registered by this task.
+
+TASK-0045 acceptance also rejects obvious authority-seeking instructions before the provider call and requires clarification for undefined audience labels such as “high value” and “recently active.” The model still cannot confer authority: current registered fields/events, policy, workspace membership, AST shape and cost are independently checked before any proposal is saved. A provider failure is a single attempt with a safe status; the default unconfigured route remains unavailable.

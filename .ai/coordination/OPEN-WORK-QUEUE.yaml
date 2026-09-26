@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84",
+  "reconciled_main_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3",
   "active_work_path": {
     "kind": "pr",
-    "number": 410,
-    "branch": "supervisor/phase08-task44-acceptance"
+    "number": 411,
+    "branch": "supervisor/phase08-task45-natural-language-compiler"
   },
   "items": [
     {
@@ -243,9 +243,18 @@
       "kind": "pr",
       "number": 410,
       "title": "feat(phase08): finish Task44 permissions and activate Task45",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task44-acceptance",
+      "merge_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3"
+    },
+    {
+      "kind": "pr",
+      "number": 411,
+      "title": "feat(phase08): add safe natural-language segment proposal review",
       "disposition": "active_task_acceptance",
       "accepted_actionable": true,
-      "branch": "supervisor/phase08-task44-acceptance"
+      "branch": "supervisor/phase08-task45-natural-language-compiler"
     }
   ]
 }

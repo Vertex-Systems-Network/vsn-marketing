@@ -4,7 +4,7 @@
   "phase": "PHASE-08",
   "module": "Segmentation",
   "title": "Implement natural-language-to-segment structured compiler",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Translate natural-language audience intent into an editable structured AST proposal through an approved provider-neutral AI boundary; deterministic validation and human review retain execution authority.",
   "dependencies": [
     "TASK-0044"
@@ -13,37 +13,37 @@
     {
       "id": "AC-1",
       "text": "AI request context contains only approved field/event descriptions and intent; no customer rows, identifiers, raw event payloads, consent evidence or secrets are sent to a model.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Model output is a bounded structured proposal matching the versioned schema and never SQL; server validates registry identity, type, permissions, policy, depth, count and query cost independently.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Unknown/hallucinated fields or events, unsupported operators, prompt injection, cross-tenant instructions and malformed output fail closed with safe, actionable errors.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Ambiguous time range, negation, identity, event meaning or audience intent remains a draft requiring clarification; no silent executable interpretation occurs.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Provider integration uses the repository AI Gateway contract/model policy or a provider-neutral port; absence of an approved route produces an explicit unavailable state and no direct provider secret/client.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-6",
       "text": "Operator can inspect/edit every proposed rule and explicitly accept the validated definition before save/publish; audit captures proposal provenance without logging PII or prompts containing sensitive values.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-7",
       "text": "Timeout, retry, token/cost budget, refusal and malformed-response behavior are bounded and tested using deterministic fake providers.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -51,5 +51,5 @@
     "AI policy validation",
     "Frontend proposal-review tests"
   ],
-  "exact_next_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive."
+  "exact_next_action": "Accepted on PR #411 after implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed Continuity 36258991613, Application 36258991641 including PostgreSQL integration and E2E, and Security 36258991574; final acceptance carrier requires unchanged full gates. TASK-0046 is active."
 }

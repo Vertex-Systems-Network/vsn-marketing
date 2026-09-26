@@ -17,6 +17,8 @@ use App\Modules\Segmentation\Domain\SegmentProposalGuard;
 use App\Modules\Segmentation\Domain\SegmentProposalResponse;
 use App\Modules\Segmentation\Domain\SegmentValidator;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +29,17 @@ function task45ProposalService(
     AuditRecorder $audit,
     WorkspaceAuthorizer $authorizer,
 ): ProposeSegment {
+    Container::getInstance()->instance('config', new Repository([
+        'segmentation' => [
+            'max_proposal_characters' => 2000,
+            'max_proposal_events' => 250,
+            'max_depth' => 8,
+            'max_nodes' => 100,
+            'max_event_days' => 365,
+            'max_cost' => 100,
+            'query_timeout_ms' => 3000,
+        ],
+    ]));
     $fields = new SegmentFieldRegistry;
     $validator = new SegmentValidator($fields);
 

@@ -8,6 +8,7 @@ use App\Modules\DeliveryEngine\DeliveryEngineServiceProvider;
 use App\Modules\Events\EventsServiceProvider;
 use App\Modules\Identity\IdentityServiceProvider;
 use App\Modules\Providers\ProvidersServiceProvider;
+use App\Modules\Segmentation\SegmentationServiceProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\HorizonServiceProvider;
 
@@ -22,4 +23,5 @@ return [
     ConsentServiceProvider::class,
     ProvidersServiceProvider::class,
     DeliveryEngineServiceProvider::class,
+    SegmentationServiceProvider::class,
 ];

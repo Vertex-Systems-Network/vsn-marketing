@@ -4,24 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-UX-CERT-LEASE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51.00 phase=100.00 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=VERIFYING -->
 
-> Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
->
+> PHASE-07 final acceptance is assembled from the TASK-0041 worker and integration evidence. Product-bearing integration head `7f43eda18cc95ab90ea0b56207e67476e7433fab` passed Application Foundation CI `36241797924` and Shipping Fast Gate `36241797817`; the final ledger-reconciled integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed AI Continuity Guard `36242518365`, Application Foundation CI `36242518520`, and Shipping Fast Gate `36242518369`. PR #403 exact head `391f43b3e7ee720be878294009a5993c163da685` passed its Shipping Fast Gate `36241215009`. The final protected-main acceptance carrier is undergoing exact-head full certification before merge.
+
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 49.83%**  
-**Current phase: PHASE-07 — 83.33%**  
-**Active task: TASK-0041 — Implement campaign/publishing operator UX**  
-**Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-OPERATOR-UX-CERT-LEASE — VERIFYING**
+**Overall roadmap progress: 51.00%**  
+**Current phase: PHASE-07 — 100%**  
+**Last completed task: TASK-0041 — Implement campaign/publishing operator UX**  
+**Current milestone: PHASE-07-FINAL-ACCEPTANCE — VERIFYING**
 
 ```text
-Overall  [██████████░░░░░░░░░░] 49.83%
-Phase 07 [█████████████████░░░] 83.33%
+Overall  [██████████░░░░░░░░░░] 51.00%
+Phase 07 [████████████████████] 100.00%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. Canonical progress remains roadmap 49.83% / PHASE-07 83.33% while TASK-0041 stays in progress; provider-drift is trusted and the next bounded slice is accessible, responsive, secret-safe Operator UX certification.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance evidence are complete; this carrier still requires green protected-main Continuity, Application and Security gates before it can be promoted. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
 
 ### Phase / module progress
 
@@ -34,8 +33,8 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Operator UX Lane-4 lease** | **83.33%** |
-| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
+| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned; separate research-first registration | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
@@ -47,13 +46,15 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-Development Acceleration v2.7 is trusted on protected main. PR #399 exact source `30b4db16bcdf3f18575065313fa59fe62a1a3456` passed AI Continuity Guard `36231899742`, Application Foundation CI `36231899743`, and Security Supply Chain CI `36231899714`, then merged as `6510597557611466200293a2e68ec9e2c4ece073`. RBT-046 is terminal PASS.
+PR #402 exact head `34b1a0a2632218cd87ae070547f16a20dc76ba5a` passed AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and all applicable E2E/integration checks before merging as `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`; it staged the exclusive TASK-0041 Operator UX lane.
 
-Provider Drift Lane-3 is trusted. PR #401 exact source `fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b` passed Shipping Fast Gate `36237884166` and merged to `ship/week-1` as `fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c`; that resulting integration head passed Continuity `36238008876`, Application `36238008880`, and Shipping Fast Gate `36238008958`. RBT-047 is terminal PASS.
+PR #403 merged exact worker head `391f43b3e7ee720be878294009a5993c163da685` into `ship/week-1` as `7f43eda18cc95ab90ea0b56207e67476e7433fab`. Its exact worker Shipping Fast Gate passed. Product-bearing integration Application Foundation CI passed backend tests, infrastructure integration, architecture checks, PHP static analysis/formatting, frontend typecheck/unit tests/build, PHP 8.3 compatibility, and Playwright smoke.
 
-Lane-3 is released and `WS-0041-OPERATOR-UX-CERT` is assigned exclusively to `chatgpt-session-task0041-operator-ux`. Its worker paths are `resources/js/pages/publishing/operator.tsx`, `resources/js/pages/publishing/operator.test.tsx`, and the corrected Playwright path `e2e/task0041-publishing-operator.spec.ts`. The lane may improve accessibility, responsive/error/concurrency feedback, guarded destructive affordances and provider-status rendering only; backend authority remains unchanged.
+The integration push correctly exposed a missing global continuity-ledger handoff. PR #404 synchronized PR #402's current Lane-4 authority, appended the hash-chained checkpoint, and passed its exact Shipping Fast Gate. Resulting integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed Continuity, Application Foundation and Shipping Fast Gate. Product/test files are unchanged from the fully tested `7f43eda` snapshot.
 
-TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
+TASK-0041 acceptance criteria AC-1..AC-8 are recorded against the canonical workspace, preview, bulk approval, revocation, partial-success, provider-safety, accessibility, adversarial and E2E evidence. The final acceptance carrier uses `CI-Mode: full`; it is not mergeable until exact-head Continuity, Application Foundation and Security Supply Chain checks pass.
+
+TASK-0042 is not registered. PHASE-08 research/task materialization, deployment/release authority and deferred Runner optimization remain inactive.
 
 ### README progress-sync contract
 

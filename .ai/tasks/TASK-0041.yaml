@@ -4,7 +4,7 @@
   "phase": "PHASE-07",
   "module": "Publishing",
   "title": "Implement campaign/publishing operator UX",
-  "status": "in_progress",
+  "status": "completed",
   "objective": "Implement the workspace-scoped operator experience for governed campaign review, preview, approval queues, channel adaptations, publication execution visibility and safe recovery actions, using canonical campaign/snapshot/calendar/publication authority only and preserving explicit permission, provider-capability, policy and partial-success boundaries without introducing UI-only bypasses or direct provider authority.",
   "dependencies": [
     "TASK-0040"
@@ -13,42 +13,50 @@
     {
       "id": "AC-1",
       "text": "Workspace-scoped campaign/publishing screens and commands bind canonical campaign, immutable snapshot, schedule/execution intent, target/account and publication-attempt identities; foreign-workspace or stale authority fails closed and no client-supplied identity may override canonical ownership",
-      "done": false
+      "done": true,
+      "evidence": "PR #386 exact source efcd1b02950f6c49073ad6e75fb958a5fdef1818; Application Foundation CI 36069312115 and Security Supply Chain CI 36069312124. Workspace-scoped auth/read model, canonical ownership and secret-safe props; PR #403 E2E unauthenticated-tenant guard on 391f43b3e7ee720be878294009a5993c163da685 (Shipping Fast Gate 36241215009)."
     },
     {
       "id": "AC-2",
       "text": "Previews are deterministic, snapshot-bound and channel-aware, clearly distinguish canonical content from provider/channel adaptations, and never treat a browser preview, transient provider rendering or unsaved edit as approved canonical campaign state",
-      "done": false
+      "done": true,
+      "evidence": "PR #386 exact source efcd1b02950f6c49073ad6e75fb958a5fdef1818; immutable snapshot/channel preview and canonical-vs-provider adaptation checks in focused backend/React tests under Application Foundation CI 36069312115."
     },
     {
       "id": "AC-3",
       "text": "Bulk create/schedule/retry/edit/delete actions require explicit affected-target counts, permission/capability eligibility, confirmation safeguards and deterministic exclusion of ineligible/already-successful targets; bulk UI cannot widen backend authority or bypass approval, consent/suppression, sender/content, asset or provider policy",
-      "done": false
+      "done": true,
+      "evidence": "PR #387 exact source acf19cb685923617d1ded39de70ec5af78e96125; Shipping Fast Gate 36074285668 and green integration runs 36074471199/36074471168/36074471196. Server-resolved role, exact snapshot/state-version preflight, exact confirmation binding, idempotency and ineligible/already-successful exclusion."
     },
     {
       "id": "AC-4",
       "text": "Approval queues expose immutable snapshot identity, material-change status, approver authority and audit provenance; approve/reject/revoke actions re-evaluate current workspace role/permission and stale approvals or revisions fail closed",
-      "done": false
+      "done": true,
+      "evidence": "PR #396 exact source 39a2017bb9791e078a70ebdebe15b05fa17234d5; Shipping Fast Gate 36201532662 and integration runs 36201663908/36201663901/36201663961. Revoke path rechecks server authority, latest snapshot/state version and destructive confirmation; stale and cross-workspace attempts fail closed."
     },
     {
       "id": "AC-5",
       "text": "Operator status surfaces represent per-target pending/success/retriable/failed/blocked outcomes and deterministic aggregate partial-success state without collapsing mixed results into false global success; retry controls select only backend-authorized eligible work",
-      "done": false
+      "done": true,
+      "evidence": "PR #386 read-model/PublicationAggregateService partial-success projection and PR #394 retry capability tests (RBT-037/RBT-042). PR #401 provider drift hardening exact source fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b plus green integration 36238008876/36238008880/36238008958."
     },
     {
       "id": "AC-6",
       "text": "Provider disconnect, credential/app-review/permission loss, rate-limit/circuit state and capability drift are rendered as explicit actionable-but-non-secret outcomes; UI payloads/logs never expose credentials, tokens, secret references or raw sensitive provider evidence",
-      "done": false
+      "done": true,
+      "evidence": "PR #401 exact source fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b; PR #403 exact source 391f43b3e7ee720be878294009a5993c163da685, Shipping Fast Gate 36241215009; actionable disconnect/permission/app-review/capability/rate-limit/circuit states with secret-safe output and adversarial unauthenticated E2E guard."
     },
     {
       "id": "AC-7",
       "text": "Accessibility, responsive behavior, keyboard operation, destructive-action affordances, loading/empty/error states and optimistic-concurrency conflict handling are covered for the campaign, approval, calendar and publication operator flows without introducing hidden side effects",
-      "done": false
+      "done": true,
+      "evidence": "PR #403 exact source 391f43b3e7ee720be878294009a5993c163da685, Shipping Fast Gate 36241215009; focused frontend unit tests cover responsive operator rendering, accessible status/conflict, keyboard-addressable controls, busy duplicate-submit prevention, and destructive reject description; Playwright guard is e2e/task0041-publishing-operator.spec.ts. Full Application Foundation CI 36241797924 passed build/E2E smoke on integration head 7f43eda18cc95ab90ea0b56207e67476e7433fab."
     },
     {
       "id": "AC-8",
       "text": "Backend/browser/E2E/adversarial tests prove workspace isolation, stale-snapshot and permission denial, preview fidelity, approval enforcement, bulk safeguards, partial-success rendering, retry/edit/delete capability gating and secret-safe errors; exact-head continuity, application, security and accessibility/performance gates are green before TASK-0042 registration",
-      "done": false
+      "done": true,
+      "evidence": "Exact worker Shipping Fast Gate 36241215009 passed on 391f43b3e7ee720be878294009a5993c163da685. Full Application Foundation CI 36241797924 passed backend, architecture, static analysis, PHP formatting, frontend typecheck/unit/build, PHP floor, integration suite and Playwright E2E on product integration head 7f43eda18cc95ab90ea0b56207e67476e7433fab; latest ledger-reconciled integration 0733c40eead4038e2c1d7f19a50df23b88aaac6a passed Continuity 36242518365, Application gate 36242518520, and Shipping Fast Gate 36242518369. Final protected-main exact-head Continuity/Application/Security checks are required to pass before this acceptance carrier can merge."
     }
   ],
   "required_tests": [
@@ -69,5 +77,5 @@
     "npm run build",
     "npm run test:e2e"
   ],
-  "exact_next_action": "Certify the exact ship/week-1 integration head 7f43eda18cc95ab90ea0b56207e67476e7433fab after terminal AI Continuity Guard, Application Foundation CI, and Shipping Fast Gate results. Repair only same-scope TASK-0041 test or continuity-ledger failures from a latest green integration baseline. Keep the Operator UX lease active until exact-head certification and final promotion pass; do not activate TASK-0042 or PHASE-08, and do not change security, tenant, provider, or data-integrity authority."
+  "exact_next_action": "Merge the PHASE-07 final-acceptance carrier only after its unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, and review. Reread resulting main and immediately reconcile any material main-anchor or final-runner-evidence drift. Keep next_task null; PHASE-08 research and task materialization must be a separate milestone."
 }

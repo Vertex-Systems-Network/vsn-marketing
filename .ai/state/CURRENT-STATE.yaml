@@ -6,45 +6,49 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-07",
     "active_task": "TASK-0041",
-    "last_completed_task": "TASK-0040",
+    "last_completed_task": "TASK-0041",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 49.83,
-    "phase_percent": 83.33,
+    "roadmap_percent": 51,
+    "phase_percent": 100,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_provider_drift_ship_fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c_passed_run_36238008876",
-    "application_test_status": "task0041_provider_drift_ship_fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c_passed_run_36238008880",
-    "security_supply_chain_status": "task0041_wave_acceleration_pr399_head_30b4db16bcdf3f18575065313fa59fe62a1a3456_passed_run_36231899714",
+    "continuity_validation": "task0041_final_green_ship_0733c40eead4038e2c1d7f19a50df23b88aaac6a_passed_run_36242518365",
+    "application_test_status": "task0041_operator_ux_product_snapshot_7f43eda18cc95ab90ea0b56207e67476e7433fab_passed_run_36241797924; latest ledger-reconciled integration gate 0733c40eead4038e2c1d7f19a50df23b88aaac6a passed_run_36242518520",
+    "security_supply_chain_status": "task0041_lane4_authority_pr402_head_34b1a0a2632218cd87ae070547f16a20dc76ba5a_passed_run_36240505338",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "6510597557611466200293a2e68ec9e2c4ece073",
+  "observed_main_sha": "ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e",
   "active_issue": null,
   "active_pr": null,
-  "active_branch": "control/task0041-ship-ledger-reconcile",
-  "current_milestone": "TASK-0041-OPERATOR-UX-CERT-LEASE",
+  "active_branch": "supervisor/task0041-phase07-final-acceptance",
+  "current_milestone": "PHASE-07-FINAL-ACCEPTANCE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "Development Acceleration v2.7 is trusted on protected main via PR #399 exact source 30b4db16bcdf3f18575065313fa59fe62a1a3456 with Continuity/Application/Security runs 36231899742/36231899743/36231899714 and merge 6510597557611466200293a2e68ec9e2c4ece073. Provider Drift Lane-3 hardening is trusted via PR #401 exact source fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b, Shipping Fast Gate 36237884166, merge fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c, and resulting integration Continuity/Application/Shipping runs 36238008876/36238008880/36238008958. Lane-3 is released; Lane-4 Operator UX certification is staged with corrected Playwright path.",
-  "exact_next_safe_action": "Certify the exact ship/week-1 integration head 7f43eda18cc95ab90ea0b56207e67476e7433fab after terminal AI Continuity Guard, Application Foundation CI, and Shipping Fast Gate results. Repair only same-scope TASK-0041 test or continuity-ledger failures from a latest green integration baseline. Keep the Operator UX lease active until exact-head certification and final promotion pass; do not activate TASK-0042 or PHASE-08, and do not change security, tenant, provider, or data-integrity authority.",
+  "last_completed_milestone": "TASK-0041 AC-1..AC-8 acceptance evidence is assembled from PR #386..#403 and green shipping integration certification. Final PHASE-07 promotion is awaiting exact-head protected-main Continuity/Application/Security checks; no TASK-0042/PHASE-08 task has been materialized or activated.",
+  "exact_next_safe_action": "Merge the PHASE-07 final-acceptance carrier only after its unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, and review. Reread resulting main and immediately reconcile any material main-anchor or final-runner-evidence drift. Keep next_task null; PHASE-08 research and task materialization must be a separate milestone.",
   "pending_runner_ids": [
-    "RBT-048"
+    "RBT-050"
   ],
   "blocked_runner_ids": [
     "RBT-004"
   ],
-  "blockers": [],
-  "current_blockers": [],
+  "blockers": [
+    "No successor task is registered after TASK-0041; PHASE-08 research-first task materialization must be completed as a separate milestone before further implementation."
+  ],
+  "current_blockers": [
+    "No successor task is registered after TASK-0041; PHASE-08 research-first task materialization must be completed as a separate milestone before further implementation."
+  ],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 1,
     "max_ci_status_refreshes_with_recorded_exception": 2,
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify the exact ship/week-1 integration head 7f43eda18cc95ab90ea0b56207e67476e7433fab after terminal AI Continuity Guard, Application Foundation CI, and Shipping Fast Gate results. Repair only same-scope TASK-0041 test or continuity-ledger failures from a latest green integration baseline. Keep the Operator UX lease active until exact-head certification and final promotion pass; do not activate TASK-0042 or PHASE-08, and do not change security, tenant, provider, or data-integrity authority."
+  "exact_next_action": "Merge the PHASE-07 final-acceptance carrier only after its unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, and review. Reread resulting main and immediately reconcile any material main-anchor or final-runner-evidence drift. Keep next_task null; PHASE-08 research and task materialization must be a separate milestone."
 }

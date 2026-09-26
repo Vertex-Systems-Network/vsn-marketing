@@ -1,13 +1,13 @@
 # AI-Native Parallel Plan — TASK-0041 Accelerated Shipping
 
-Status: **active / Wave-1 Lane-3 leased**.
+Status: **PHASE-07 final acceptance — verifying protected-main gates; all TASK-0041 workstreams terminal and no active worker leases**.
 
 Supervisor: `supervisor-main`  
-Control branch: `control/task0041-shipping-acceleration`  
+Control branch: `supervisor/task0041-phase07-final-acceptance`  
 Promotion PR: `#391` — merged as `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  
 Archived pre-promotion integration head: `archive/ship-week-1-task0041-pr387` -> `df1d117ed78ca3563780444f46fcb316533f8b53`  
-Current integration branch: `ship/week-1` -> `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  Parent task: `TASK-0041`  
-Protected-main baseline: `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  
+Current integration branch: `ship/week-1` -> `0733c40eead4038e2c1d7f19a50df23b88aaac6a`  Parent task: `TASK-0041`  
+Protected-main baseline: `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`  
 Trusted shipping source: PR #387 exact head `acf19cb685923617d1ded39de70ec5af78e96125`, merged on `ship/week-1` as `df1d117ed78ca3563780444f46fcb316533f8b53`  
 Shipping writer cap: `5`  
 Planned worker lanes: `4` + Supervisor  
@@ -44,7 +44,7 @@ The target is higher coding throughput through independent lanes while keeping o
 | 20 | WS-0041-RETRY-CAPABILITY | Implement capability-gated retry preflight/execution over canonical publication attempts with exact eligible/excluded counts, already-successful exclusion, workspace isolation, stale capability fail-closed behavior and no raw provider credential exposure. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | latest green ship/week-1 before submission |
 | 30 | WS-0041-APPROVAL-REVOCATION | Implement focused approval revocation/material-change operator command support with server-derived current authority, exact snapshot/state-version concurrency checks and append-only audit provenance; shared route wiring remains Supervisor-owned. | **OPEN** | — | `shipping_merged_green` | `worker-2/task0041-approval-revocation` | squash | latest green ship/week-1 before submission |
 | 40 | WS-0041-PROVIDER-DRIFT | Extend the operator read model with actionable non-secret provider disconnect, permission, capability-drift, rate-limit and circuit outcomes while preserving canonical VSN authority and partial-success semantics. | **OPEN** | — | `shipping_merged_green` | `worker-3/task0041-provider-drift` | squash | latest green ship/week-1 before submission |
-| 50 | WS-0041-OPERATOR-UX-CERT | Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority. | `occupied` | `chatgpt-session-task0041-operator-ux` | `leased_ready_to_execute` | `worker-4/task0041-operator-ux-cert` | squash | latest green ship/week-1 before submission |
+| 50 | WS-0041-OPERATOR-UX-CERT | Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority. | **COMPLETE** | — | `shipping_merged_green` | `worker-4/task0041-operator-ux-cert` | squash | terminal; no active lease |
 <!-- WORKSTREAM_TABLE_END -->
 
 ## Development Acceleration v2.7 overlay
@@ -71,4 +71,4 @@ This task inherits the repository-wide wave acceleration contract:
 
 ## Exact next action
 
-Verify the TASK-0041 Operator UX Lane-4 lease carrier on its unchanged exact head with full protected-main Continuity/Application/Security gates and merge only when all three are green and review is clean. After trusted merge, synchronize worker-4/task0041-operator-ux-cert to latest green ship/week-1 head fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c before submission/merge or dependency consumption, then execute only resources/js/pages/publishing/operator.tsx, resources/js/pages/publishing/operator.test.tsx and e2e/task0041-publishing-operator.spec.ts as chatgpt-session-task0041-operator-ux. Render actionable non-secret provider outcomes, accessible loading/empty/error/concurrency feedback, keyboard/destructive affordances and responsive operator states without adding backend authority. Keep shared routes/global state/config/migrations, TASK-0042, deployment/release authority and deferred Runner optimization inactive.
+TASK-0041 final acceptance evidence is assembled. Promote PHASE-07 only when this carrier's unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and review. Keep PHASE-08 and TASK-0042 unmaterialized; their research-first registration is a separate milestone.

@@ -235,6 +235,7 @@ final readonly class DeterministicSegmentCompiler
                 'exists', 'not_exists' => 5,
                 'count' => 8,
                 'first', 'last' => 10,
+                default => throw new SegmentDefinitionException('invalid_event_mode', '$.root.mode'),
             };
         }
         return 1;

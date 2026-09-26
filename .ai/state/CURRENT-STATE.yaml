@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_approval_revocation_ship_3a53bf6982df1d4277a750434d5d2c12314a7a2d_passed_run_36201663908",
-    "application_test_status": "task0041_approval_revocation_ship_3a53bf6982df1d4277a750434d5d2c12314a7a2d_passed_run_36201663901",
-    "security_supply_chain_status": "task0041_approval_revocation_lease_pr395_head_5a065e9ad425473d729da0625ed104ca50bd2af5_passed_run_36200389698",
+    "continuity_validation": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863338",
+    "application_test_status": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863320",
+    "security_supply_chain_status": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863329",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8",
+  "observed_main_sha": "d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210",
   "active_issue": null,
-  "active_pr": 397,
-  "active_branch": "control/task0041-lane3-lease",
-  "current_milestone": "TASK-0041-PROVIDER-DRIFT-LEASE",
+  "active_pr": 399,
+  "active_branch": "control/task0041-shipping-acceleration",
+  "current_milestone": "TASK-0041-WAVE-ACCELERATION",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 Lane-2 approval-revocation shipping milestone trusted: PR #395 exact source 5a065e9ad425473d729da0625ed104ca50bd2af5 passed full protected-main Continuity/Application/Security and merged as f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8; PR #396 exact source 39a2017bb9791e078a70ebdebe15b05fa17234d5 passed Shipping Fast Gate 36201532662 and merged to ship/week-1 as 3a53bf6982df1d4277a750434d5d2c12314a7a2d; resulting integration head passed Continuity 36201663908, Application 36201663901 and Shipping Fast Gate 36201663961. Lane-2 lease is released and Lane-3 provider-drift lease activation is staged on PR #397.",
-  "exact_next_safe_action": "Verify PR #397 on its unchanged exact head and merge the Lane-3 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-3/task0041-provider-drift to green integration head 3a53bf6982df1d4277a750434d5d2c12314a7a2d, then execute only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php as chatgpt-session-task0041-provider-drift. Surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes from canonical provider/publication evidence; preserve workspace isolation and partial-success semantics; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "TASK-0041 Lane-3 provider-drift lease authority trusted: PR #397 exact source b787a82e2fcc499ae5ae66233298061952202033 passed full protected-main Continuity/Application/Security runs 36202863338/36202863320/36202863329 and merged as d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210. WS-0041-PROVIDER-DRIFT remains exclusively leased to chatgpt-session-task0041-provider-drift on PublishingOperatorReadModel.php plus Task0041ProviderDriftOperatorSecurityTest.php; green integration dependency remains 3a53bf6982df1d4277a750434d5d2c12314a7a2d.",
+  "exact_next_safe_action": "Verify PR #399 on its post-reconciliation exact head and merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, continue WS-0041-PROVIDER-DRIFT under Development Acceleration v2.7 from the latest required green ship/week-1 baseline; edit only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php, and synchronize the latest required green integration before submission/merge or dependency consumption. Preserve workspace isolation, partial-success semantics and secret-safe provider evidence; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-045"
+    "RBT-046"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #397 on its unchanged exact head and merge the Lane-3 lease carrier only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, sync worker-3/task0041-provider-drift to green integration head 3a53bf6982df1d4277a750434d5d2c12314a7a2d, then execute only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php as chatgpt-session-task0041-provider-drift. Surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes from canonical provider/publication evidence; preserve workspace isolation and partial-success semantics; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify PR #399 on its post-reconciliation exact head and merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, continue WS-0041-PROVIDER-DRIFT under Development Acceleration v2.7 from the latest required green ship/week-1 baseline; edit only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php, and synchronize the latest required green integration before submission/merge or dependency consumption. Preserve workspace isolation, partial-success semantics and secret-safe provider evidence; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

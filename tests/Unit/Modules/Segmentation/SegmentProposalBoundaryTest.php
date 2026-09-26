@@ -128,12 +128,12 @@ function task45AllowingAuthorizer(): WorkspaceAuthorizer
 function task45EventDatabase(): DatabaseManager
 {
     $query = Mockery::mock(Builder::class);
-    $query->shouldReceive('where')->with('workspace_id', 'workspace-1')->once()->andReturnSelf();
-    $query->shouldReceive('orderBy')->with('canonical_name')->once()->andReturnSelf();
-    $query->shouldReceive('limit')->with(250)->once()->andReturnSelf();
-    $query->shouldReceive('pluck')->with('canonical_name')->once()->andReturn(new Collection(['email.opened']));
+    $query->shouldReceive('where')->with('workspace_id', 'workspace-1')->twice()->andReturnSelf();
+    $query->shouldReceive('orderBy')->with('canonical_name')->twice()->andReturnSelf();
+    $query->shouldReceive('limit')->with(250)->twice()->andReturnSelf();
+    $query->shouldReceive('pluck')->with('canonical_name')->twice()->andReturn(new Collection(['email.opened']));
     $database = Mockery::mock(DatabaseManager::class);
-    $database->shouldReceive('table')->with('event_types')->once()->andReturn($query);
+    $database->shouldReceive('table')->with('event_types')->twice()->andReturn($query);
 
     return $database;
 }
@@ -141,7 +141,7 @@ function task45EventDatabase(): DatabaseManager
 it('blocks personal and credential literals before calling the proposal provider', function () {
     [$actor, $scope] = task45ActorAndScope();
     $provider = Mockery::mock(SegmentProposalProvider::class);
-    $provider->shouldReceive('available')->once()->andReturn(true);
+    $provider->shouldNotReceive('available');
     $provider->shouldNotReceive('propose');
     $authorizer = task45AllowingAuthorizer();
     $database = Mockery::mock(DatabaseManager::class);

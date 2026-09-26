@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-26T16:37:09Z`
+- Timestamp: `2026-09-26T16:41:12Z`
 - Observed main: `c2278638788958bb9875bbc465f5bdb8c52a92a3`
 - Active issue: `none`
 - Active PR: `411`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `bc933b1a00dfbe012a60da961ab4ff877a7f4b25193d4800a278ae9d9199115f`
+- State fingerprint: `727989b75e634a81be43d8e4c9c42c55115d33df6f63c0b5522d20c35ec5ca21`
 
 ## Completed / observed this session
 
-PR #411 exact head 13bc326e793b6b17925facdf3ac6ec06a8dfe59e passed Continuity and Security; Application Foundation again stopped in the new unit tests because the isolated Pest harness had no Laravel config binding. Added a minimal segmentation config repository in the test helper. No production behavior failed; full CI will rerun on the corrected head. PHASE-09 remains inactive.
+PR #411 exact head 61973e11ef97eaa4a894a6fd9253fca0b1d4cd5a passed Continuity and Security; Application Foundation reached the new boundary cases but failed two test expectations. Sensitive input intentionally stops before provider availability, and allowed event/field metadata is re-read after the model call to detect registry changes. Updated the test expectations; no production behavior failed. PHASE-09 remains inactive.
 
 ## Tests
 
-PR #411 head 13bc326e793b6b17925facdf3ac6ec06a8dfe59e: Continuity 36255910925 success; Security 36255910937 success; Application Foundation 36255910919 failed in new unit tests because the test harness lacked config. The config fixture repair is committed with this checkpoint; full CI pending on resulting exact head.
+PR #411 head 61973e11ef97eaa4a894a6fd9253fca0b1d4cd5a: Continuity 36256121469 success; Security 36256121450 success; Application Foundation 36256121375 failed in two new test expectations. Updated the tests to assert fail-closed preflight and post-call schema revalidation; full CI will run on the corrected exact head.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #411 head 13bc326e793b6b17925facdf3ac6ec06a8dfe59e: Continuity 36255910925 su
 
 ## Exact next action
 
-Rerun CI-Mode: full on PR #411 exact head after fixing the isolated Laravel config fixture. Accept TASK-0045 only when all exact-head gates pass; keep TASK-0046 and PHASE-09 inactive.
+Rerun CI-Mode: full on PR #411 after updating proposal boundary test expectations. Accept TASK-0045 only after all exact-head gates pass; keep TASK-0046 and PHASE-09 inactive.

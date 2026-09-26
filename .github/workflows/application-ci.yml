@@ -208,9 +208,9 @@ jobs:
       APP_ENV: testing
       APP_URL: http://127.0.0.1:8000
       DB_CONNECTION: sqlite
-      DB_DATABASE: ':memory:'
+      DB_DATABASE: ${{ github.workspace }}/database/e2e.sqlite
       CACHE_STORE: file
-      SESSION_DRIVER: array
+      SESSION_DRIVER: file
       QUEUE_CONNECTION: sync
       QUEUE_FAILED_DRIVER: null
       FILESYSTEM_DISK: local
@@ -240,6 +240,8 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate --ansi
+          touch database/e2e.sqlite
+          php artisan migrate --force
       - name: Build frontend
         run: npm run build
       - name: Install Chromium

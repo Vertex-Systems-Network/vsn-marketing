@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-26T17:33:16Z`
-- Observed main: `c2278638788958bb9875bbc465f5bdb8c52a92a3`
+- Timestamp: `2026-09-26T18:16:52+00:00`
+- Observed main: `143b76089c1b7c5f7954cb1beda31849ff5f2d20`
 - Active issue: `none`
-- Active PR: `411`
-- Active branch: `supervisor/phase08-task45-natural-language-compiler`
+- Active PR: `412`
+- Active branch: `supervisor/phase08-task46-preview-count-ux`
 - Current milestone: `PHASE-08-TASK-0046-AUDIENCE-PREVIEW-UX`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0046`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `c4bf27628ea5e208fdf87a984b243de61332c78ad99ea9cf0027b7177c7104c7`
+- State fingerprint: `e518fd5085edd2ce3aa92d8d353a19df9a6b854f66d04cb98f1beaf3238cb064`
 
 ## Completed / observed this session
 
-TASK-0045 provider-neutral structured proposal, deterministic validation, policy/permission boundary, explicit review, safe audit, ambiguity and prompt-injection rejection accepted after PR #411 implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed Continuity 36258991613, Application Foundation 36258991641 (backend, PostgreSQL integration, PHPStan, Pint, frontend, E2E, PHP floor) and Security 36258991574. Supplemental fake-provider refusal and no-retry failure assertions are included in the acceptance carrier. TASK-0046 activated at PHASE-08 55% and roadmap 53.75%; PHASE-09 remains inactive.
+PR #412 5775bd7 foundation/PostgreSQL/PHP floor passed; synthetic browser harness failed to render. Replaced with guarded test-only persistent SQLite and file-session authenticated browser journey, added PostgreSQL timeout evidence and updated threat/performance notes. Live E2E exact head is pending.
 
 ## Tests
 
-Continuity 36258991613 PASS; Application Foundation 36258991641 PASS including foundation, PostgreSQL integration, E2E and PHP floor; Security Supply Chain 36258991574 PASS. Final acceptance head must pass full gates unchanged before merge.
+Local Pint 1.30.5 PASS; typecheck PASS; ten UI tests PASS; 5775bd7 foundation/PostgreSQL/PHP floor PASS, Continuity PASS; browser failure repaired in scope; new live browser test pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Continuity 36258991613 PASS; Application Foundation 36258991641 PASS including f
 
 ## Exact next action
 
-Complete TASK-0046 bounded preview/count/freshness/cost controls and accessible rule builder after PR #411 final acceptance merges; keep TASK-0047 planned and PHASE-09 inactive.
+Push PR #412 live E2E implementation, inspect exact-head gates and resolve any same-scope failures before TASK-0046 acceptance.

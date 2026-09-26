@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #411 TASK-0045 implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed AI Continuity Guard run 36258991613; final acceptance head pending full recheck.",
-    "application_test_status": "PR #411 TASK-0045 implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed Application Foundation CI run 36258991641 (foundation, PostgreSQL integration, E2E, PHP floor); final acceptance head pending full recheck.",
-    "security_supply_chain_status": "PR #411 TASK-0045 implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed Security Supply Chain CI run 36258991574; final acceptance head pending full recheck.",
+    "continuity_validation": "PR #412 head 5775bd729737b7bf8b810a4391eb28014fa41e87 passed Continuity run 36261687774; final live E2E head pending.",
+    "application_test_status": "PR #412 head 5775bd729737b7bf8b810a4391eb28014fa41e87 passed foundation, PostgreSQL integration and PHP floor; synthetic browser harness failed to render. Replaced with test-only authenticated persistent SQLite browser journey; final head pending.",
+    "security_supply_chain_status": "PR #412 head 5775bd729737b7bf8b810a4391eb28014fa41e87 Security run 36261687775 pending final confirmation; final live E2E head pending.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3",
+  "observed_main_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20",
   "active_issue": null,
-  "active_pr": 411,
-  "active_branch": "supervisor/phase08-task45-natural-language-compiler",
+  "active_pr": 412,
+  "active_branch": "supervisor/phase08-task46-preview-count-ux",
   "current_milestone": "PHASE-08-TASK-0046-AUDIENCE-PREVIEW-UX",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0045 provider-neutral natural-language proposal boundary accepted on PR #411 implementation head e4e99be3be60172d87af920d11077ab6e10624e5. Continuity 36258991613, Application Foundation 36258991641 (including PostgreSQL integration and E2E), and Security 36258991574 passed; final acceptance head requires unchanged full gates. AI remains untrusted structured input and the unconfigured provider is explicitly unavailable.",
-  "exact_next_safe_action": "Complete TASK-0046 bounded preview/count/freshness/cost controls and accessible rule builder after PR #411 final acceptance merges; keep TASK-0047 planned and PHASE-09 inactive.",
+  "last_completed_milestone": "TASK-0045 accepted and merged via PR #411 at 143b76089c1b7c5f7954cb1beda31849ff5f2d20. Exact PR head 7a94ea2b5c8c2a260a389ed1ddfaefbb88f75998 passed Continuity 36259633803, Application 36259633805, Security 36259633809; resulting main governance status success 36259962440.",
+  "exact_next_safe_action": "Push PR #412 live E2E implementation, inspect exact-head gates and resolve any same-scope failures before TASK-0046 acceptance.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete TASK-0046 bounded preview/count/freshness/cost controls and accessible rule builder after PR #411 final acceptance merges; keep TASK-0047 planned and PHASE-09 inactive."
+  "exact_next_action": "Push PR #412 live E2E implementation, inspect exact-head gates and resolve any same-scope failures before TASK-0046 acceptance."
 }

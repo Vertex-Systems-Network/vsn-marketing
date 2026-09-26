@@ -1,5 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
+import RuleBuilder from './rule-builder';
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type Field = { id: string; type: string; operators: string[] };
@@ -12,14 +13,23 @@ type Proposal = {
     explanation?: string;
     path?: string;
 };
-type SavedSegment = { id: string; version: number; hash: string };
+type SavedSegment = { id: string; version: number; hash: string; published?: boolean };
+type ExistingSegment = { id: string; name: string; status: string; published_version: number | null;
+    latest_version: number; latest_hash: string; latest_definition: Record<string, JsonValue> };
+type Preview = {
+    status: string; count_kind: string; count: number | null; count_lower_bound?: number | null;
+    definition_hash: string; definition_version: number | null; evaluated_at: string;
+    source_freshness_at: string | null; eligibility_explanation: string;
+};
 type Props = {
     proposal_available: boolean;
     fields: Field[];
     registered_events: string[];
     proposal_result: Proposal | null;
     saved_segment: SavedSegment | null;
-    actions: { propose: string; store: string };
+    segments: ExistingSegment[];
+    preview_result: Preview | null;
+    actions: { propose: string; store: string; preview: string; revise_base: string };
 };
 
 const notices: Record<string, string> = {
@@ -30,6 +40,7 @@ const notices: Record<string, string> = {
     failed: 'The proposal could not be validated. No segment was saved.',
     permission_denied: 'Your workspace permissions do not allow this operation.',
     clarification_required: 'The request needs clarification before it can become a segment.',
+    cost_limit_exceeded: 'This audience exceeds the configured evaluation budget. Simplify the rules or reduce event windows.',
 };
 
 export default function SegmentationOperator({
@@ -38,6 +49,8 @@ export default function SegmentationOperator({
     registered_events,
     proposal_result,
     saved_segment,
+    segments,
+    preview_result,
     actions,
 }: Props) {
     const [intent, setIntent] = useState('');
@@ -45,6 +58,8 @@ export default function SegmentationOperator({
     const [definitionText, setDefinitionText] = useState('');
     const [confirmed, setConfirmed] = useState(false);
     const [busy, setBusy] = useState(false);
+    const [previewedDefinition, setPreviewedDefinition] = useState<string | null>(null);
+    const [selectedSegment, setSelectedSegment] = useState<ExistingSegment | null>(null);
     const result = proposal_result;
 
     useEffect(() => {
@@ -77,7 +92,7 @@ export default function SegmentationOperator({
     const save = () => {
         if (busy || !definition || name.trim() === '' || !confirmed) return;
         setBusy(true);
-        router.post(actions.store, {
+        router.post(selectedSegment ? `${actions.revise_base}/${selectedSegment.id}/versions` : actions.store, {
             name: name.trim(),
             definition,
             confirmed: true,
@@ -87,13 +102,41 @@ export default function SegmentationOperator({
         });
     };
 
+    const preview = () => {
+        if (busy || !definition) return;
+        setPreviewedDefinition(definitionText);
+        setBusy(true);
+        const selectedUnchanged = selectedSegment !== null
+            && definitionText === JSON.stringify(selectedSegment.latest_definition, null, 2);
+        router.post(actions.preview, {
+            definition,
+            ...(selectedUnchanged ? { segment_id: selectedSegment.id, version: selectedSegment.latest_version } : {}),
+        }, {
+            preserveScroll: true,
+            onFinish: () => setBusy(false),
+        });
+    };
+    const publish = () => {
+        const target = selectedSegment && saved_segment?.id !== selectedSegment.id ? {
+            id: selectedSegment.id, version: selectedSegment.latest_version, hash: selectedSegment.latest_hash,
+        } : (saved_segment ?? (selectedSegment ? {
+            id: selectedSegment.id, version: selectedSegment.latest_version, hash: selectedSegment.latest_hash,
+        } : null));
+        if (!target || busy || !window.confirm(`Publish immutable segment version ${target.version}?`)) return;
+        setBusy(true);
+        router.post(`${actions.revise_base}/${target.id}/publish`, { version: target.version, confirmed: true }, {
+            preserveScroll: true, onFinish: () => setBusy(false),
+        });
+    };
+
     const statusMessage = result
-        ? notices[result.status] ?? (result.status === 'proposed'
+        ? notices[result.code ?? ''] ?? notices[result.status] ?? (result.status === 'proposed'
             ? 'Proposal ready for review. Check and edit the structured definition before saving.'
             : 'The request was not saved.')
         : proposal_available
           ? 'A proposal is created only after deterministic validation.'
           : notices.unavailable;
+    const visualRoot = definition?.root;
 
     return (
         <>
@@ -137,6 +180,18 @@ export default function SegmentationOperator({
                         </div>
                     </section>
 
+                    <section className="mt-5 rounded-2xl border border-white/10 p-4" aria-labelledby="existing-segments">
+                        <h2 id="existing-segments" className="text-lg font-semibold">Saved segments</h2>
+                        {segments.length === 0 ? <p className="mt-2 text-sm text-neutral-400">No saved segments in this workspace.</p> :
+                            <ul className="mt-3 space-y-2">{segments.map((segment) => <li key={segment.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 p-3 text-sm">
+                                <span>{segment.name} · latest v{segment.latest_version} · published {segment.published_version ?? 'none'}</span>
+                                <button type="button" onClick={() => {
+                                    setSelectedSegment(segment); setName(segment.name);
+                                    setDefinitionText(JSON.stringify(segment.latest_definition, null, 2)); setConfirmed(false);
+                                }} className="rounded border border-white/20 px-3 py-2">Edit a new version</button>
+                            </li>)}</ul>}
+                    </section>
+
                     <section className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4" aria-live="polite" aria-atomic="true">
                         <p className="text-sm text-neutral-200">{statusMessage}</p>
                         {result?.code && <p className="mt-1 text-xs text-neutral-500">Status: {result.code.replaceAll('_', ' ')}</p>}
@@ -174,6 +229,17 @@ export default function SegmentationOperator({
                         />
 
                         <label htmlFor="segment-definition" className="mt-4 block text-sm font-medium text-neutral-200">Structured definition (JSON)</label>
+                        <div className="mt-4 rounded-xl border border-white/10 p-4">
+                            <h3 className="mb-2 text-sm font-semibold">Visual rules</h3>
+                            {visualRoot && typeof visualRoot === 'object' && !Array.isArray(visualRoot) && visualRoot.type === 'group'
+                                ? <RuleBuilder root={visualRoot as Record<string, unknown>} fields={fields} events={registered_events}
+                                    onChange={(root) => { setDefinitionText(JSON.stringify({ schema_version: 1, subject: 'contact', root }, null, 2)); setConfirmed(false); }} />
+                                : <button type="button" disabled={fields.length === 0} onClick={() => {
+                                    setDefinitionText(JSON.stringify({ schema_version: 1, subject: 'contact', root: {
+                                        type: 'group', operator: 'all', children: [{ type: 'attribute', field: fields[0].id, operator: 'is_set' }],
+                                    } }, null, 2)); setConfirmed(false);
+                                }} className="rounded border border-white/20 px-3 py-2 text-sm disabled:opacity-40">Start visual rule builder</button>}
+                        </div>
                         <textarea
                             id="segment-definition"
                             value={definitionText}
@@ -203,27 +269,57 @@ export default function SegmentationOperator({
                                 onChange={(event) => setConfirmed(event.target.checked)}
                                 className="mt-1 h-4 w-4 rounded border-white/20 bg-black"
                             />
-                            <span>I reviewed the structured rules and confirm saving this immutable draft version.</span>
+                            <span>I reviewed the structured rules and confirm saving a new immutable draft version.</span>
                         </label>
                         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <p className="text-xs text-neutral-500">The reviewed definition becomes an immutable draft version; the original request is not retained.</p>
+                            <button type="button" onClick={preview} disabled={!definition || busy}
+                                className="rounded-xl border border-sky-400/30 px-4 py-2.5 text-sm font-semibold text-sky-100 disabled:opacity-40">
+                                {busy ? 'Evaluating…' : 'Preview bounded count'}
+                            </button>
                             <button
                                 type="button"
                                 onClick={save}
                                 disabled={!definition || name.trim() === '' || !confirmed || busy}
                                 className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2.5 text-sm font-semibold text-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
                             >
-                                {busy ? 'Saving…' : 'Confirm and save draft'}
+                                {busy ? 'Saving…' : selectedSegment ? 'Confirm and save new version' : 'Confirm and save draft'}
                             </button>
                         </div>
                     </section>
 
+                    {preview_result && (
+                        <section className="mt-4 rounded-2xl border border-sky-400/20 bg-sky-400/[0.05] p-4" aria-live="polite" aria-label="Audience preview">
+                            <h2 className="font-semibold text-sky-100">Audience count · {preview_result.status.replaceAll('_', ' ')}</h2>
+                            {previewedDefinition !== definitionText && <p className="mt-2 text-sm text-amber-100" role="status">Rules have changed. This count is stale; preview again.</p>}
+                            <p className="mt-2 text-sm text-neutral-200">
+                                {preview_result.count_kind === 'capped'
+                                    ? `At least ${preview_result.count_lower_bound} contacts; exact count unavailable within the bounded probe.`
+                                    : preview_result.count_kind === 'estimated'
+                                      ? `Approximately ${preview_result.count} contacts; estimated at evaluation time.`
+                                    : preview_result.count_kind === 'exact'
+                                      ? `${preview_result.count} contacts · exact at evaluation time`
+                                      : 'Count unavailable. Try again later or simplify the rules.'}
+                            </p>
+                            <p className="mt-2 text-xs text-neutral-400">Evaluated {preview_result.evaluated_at} · definition {preview_result.definition_hash.slice(0, 12)}
+                                {preview_result.definition_version !== null ? ` · version ${preview_result.definition_version}` : ' · unsaved draft'}
+                            </p>
+                            <p className="mt-1 text-xs text-amber-100">Source freshness is unknown; this count can become stale after data changes.</p>
+                            <p className="mt-2 text-xs text-neutral-300">{preview_result.eligibility_explanation}</p>
+                            <p className="mt-1 text-xs text-neutral-400">Member identities and personal details are hidden in this preview.</p>
+                        </section>
+                    )}
+
                     {saved_segment && (
                         <section className="mt-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.05] p-4" role="status">
-                            <h2 className="font-semibold text-emerald-100">Draft version saved</h2>
+                            <h2 className="font-semibold text-emerald-100">{saved_segment.published ? 'Version published' : 'Draft version saved'}</h2>
                             <p className="mt-1 text-sm text-neutral-300">Version {saved_segment.version} · hash {saved_segment.hash}</p>
                         </section>
                     )}
+                    {(saved_segment || selectedSegment) && <button type="button" onClick={publish} disabled={busy}
+                        className="mt-3 rounded-xl border border-amber-400/30 px-4 py-2 text-sm text-amber-100 disabled:opacity-40">
+                        Publish selected immutable version
+                    </button>}
 
                     <details className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
                         <summary className="cursor-pointer text-sm font-medium text-neutral-200">Supported field and event metadata</summary>

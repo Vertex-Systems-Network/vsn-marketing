@@ -426,7 +426,12 @@ final readonly class PublishingOperatorReadModel
     /** @param array<string, mixed> $campaign */
     private function providerAttentionCount(array $campaign): int
     {
-        $targets = $campaign['publication']['targets'] ?? [];
+        $publication = $campaign['publication'] ?? null;
+        if (! is_array($publication)) {
+            return 0;
+        }
+
+        $targets = $publication['targets'] ?? [];
         if (! is_array($targets)) {
             return 0;
         }

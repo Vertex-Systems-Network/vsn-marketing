@@ -139,3 +139,33 @@ it('labels capped counts, unknown freshness, and the absence of delivery eligibi
     expect(screen.getByText(/Source freshness is unknown/)).toBeInTheDocument();
     expect(screen.getByText(/Consent and suppression are checked/)).toBeInTheDocument();
 });
+
+it('presents exact zero as an explicit empty audience instead of an unavailable count', () => {
+    render(<SegmentationOperator {...props} preview_result={{
+        status: 'fresh', count_kind: 'exact', count: 0,
+        definition_hash: 'a'.repeat(64), definition_version: null, evaluated_at: '2026-09-26 12:00:00 UTC',
+        source_freshness_at: null, eligibility_explanation: 'Consent and suppression are checked at send admission.',
+    }} />);
+    expect(screen.getByText('0 contacts · exact at evaluation time')).toBeInTheDocument();
+    expect(screen.queryByText(/Count unavailable/)).not.toBeInTheDocument();
+});
+
+it('announces evaluation loading and prevents duplicate preview work', () => {
+    render(<SegmentationOperator {...props} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Start visual rule builder' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview bounded count' }));
+    expect(screen.getByRole('button', { name: 'Evaluating…' })).toBeDisabled();
+    expect(post).toHaveBeenCalledTimes(1);
+});
+
+it('labels estimated counts and permission denial without query details', () => {
+    render(<SegmentationOperator {...props}
+        proposal_result={{ status: 'invalid', code: 'permission_denied' }}
+        preview_result={{
+            status: 'estimated', count_kind: 'estimated', count: 42,
+            definition_hash: 'a'.repeat(64), definition_version: 3, evaluated_at: '2026-09-26 12:00:00 UTC',
+            source_freshness_at: '2026-09-26 11:55:00 UTC', eligibility_explanation: 'Eligibility is not evaluated.',
+        }} />);
+    expect(screen.getByText(/Approximately 42 contacts/)).toBeInTheDocument();
+    expect(screen.getByText(/permissions do not allow this operation/)).toBeInTheDocument();
+});

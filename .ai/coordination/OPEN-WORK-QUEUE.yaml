@@ -1,11 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 411,
-    "branch": "supervisor/phase08-task45-natural-language-compiler"
-  },
+  "reconciled_main_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -32,7 +28,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },
@@ -252,9 +248,10 @@
       "kind": "pr",
       "number": 411,
       "title": "feat(phase08): add safe natural-language segment proposal review",
-      "disposition": "active_task_acceptance",
-      "accepted_actionable": true,
-      "branch": "supervisor/phase08-task45-natural-language-compiler"
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task45-natural-language-compiler",
+      "merge_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20"
     }
   ]
 }

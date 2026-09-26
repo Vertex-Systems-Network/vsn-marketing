@@ -26,6 +26,10 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
     ->get('/workspaces/{workspace}/segments', [SegmentProposalController::class, 'index'])
     ->name('segments.operator');
 
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CONTACT_READ, 'throttle:30,1'])
+    ->post('/workspaces/{workspace}/segments/preview', [SegmentProposalController::class, 'preview'])
+    ->name('segments.preview');
+
 Route::middleware([
     'auth',
     'tenant',
@@ -43,3 +47,15 @@ Route::middleware([
 ])
     ->post('/workspaces/{workspace}/segments/versions', [SegmentProposalController::class, 'store'])
     ->name('segments.versions.store');
+
+Route::middleware([
+    'auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CONTACT_READ,
+    'workspace.permission:'.PermissionCatalog::CONTACT_WRITE,
+])->post('/workspaces/{workspace}/segments/{segment}/versions', [SegmentProposalController::class, 'revise'])
+    ->name('segments.versions.revise');
+
+Route::middleware([
+    'auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CONTACT_READ,
+    'workspace.permission:'.PermissionCatalog::CONTACT_WRITE,
+])->post('/workspaces/{workspace}/segments/{segment}/publish', [SegmentProposalController::class, 'publish'])
+    ->name('segments.versions.publish');

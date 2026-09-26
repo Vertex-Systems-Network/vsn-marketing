@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-26T17:33:16Z`
-- Observed main: `c2278638788958bb9875bbc465f5bdb8c52a92a3`
+- Timestamp: `2026-09-26T17:58:48+00:00`
+- Observed main: `143b76089c1b7c5f7954cb1beda31849ff5f2d20`
 - Active issue: `none`
-- Active PR: `411`
-- Active branch: `supervisor/phase08-task45-natural-language-compiler`
+- Active PR: `none`
+- Active branch: `supervisor/phase08-task46-preview-count-ux`
 - Current milestone: `PHASE-08-TASK-0046-AUDIENCE-PREVIEW-UX`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0046`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `c4bf27628ea5e208fdf87a984b243de61332c78ad99ea9cf0027b7177c7104c7`
+- State fingerprint: `b8164c2c9fdd9d83a08bd73f1f7937c6222119ea4f9cc55270d77304f2c6672c`
 
 ## Completed / observed this session
 
-TASK-0045 provider-neutral structured proposal, deterministic validation, policy/permission boundary, explicit review, safe audit, ambiguity and prompt-injection rejection accepted after PR #411 implementation head e4e99be3be60172d87af920d11077ab6e10624e5 passed Continuity 36258991613, Application Foundation 36258991641 (backend, PostgreSQL integration, PHPStan, Pint, frontend, E2E, PHP floor) and Security 36258991574. Supplemental fake-provider refusal and no-retry failure assertions are included in the acceptance carrier. TASK-0046 activated at PHASE-08 55% and roadmap 53.75%; PHASE-09 remains inactive.
+TASK-0046 branch implements bounded count-only preview with tenant-bound compiler and timeout, pinned draft/published versions, accessible nested rules and safe failure/freshness labels. Backend PostgreSQL and E2E evidence has been added but is not yet certified.
 
 ## Tests
 
-Continuity 36258991613 PASS; Application Foundation 36258991641 PASS including foundation, PostgreSQL integration, E2E and PHP floor; Security Supply Chain 36258991574 PASS. Final acceptance head must pass full gates unchanged before merge.
+npm run typecheck PASS; npm test -- --run resources/js/pages/segmentation/operator.test.tsx PASS (8 tests); npm run build PASS; PHP/PostgreSQL/Playwright pending CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Continuity 36258991613 PASS; Application Foundation 36258991641 PASS including f
 
 ## Exact next action
 
-Complete TASK-0046 bounded preview/count/freshness/cost controls and accessible rule builder after PR #411 final acceptance merges; keep TASK-0047 planned and PHASE-09 inactive.
+Run exact TASK-0046 backend, PostgreSQL, browser and migration safety gates; repair same PR and certify acceptance only when all criteria are verified.

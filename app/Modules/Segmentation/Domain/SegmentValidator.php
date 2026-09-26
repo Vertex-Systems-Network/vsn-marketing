@@ -52,7 +52,7 @@ final readonly class SegmentValidator
     /** @param array<string, mixed> $node @return array<string, mixed> */
     private function node(mixed $node, string $path, int $depth, array &$state): array
     {
-        if (! is_array($node) || array_is_list($node)) {
+        if (is_array($node) === false || array_is_list($node)) {
             throw new SegmentDefinitionException('node_must_be_object', $path);
         }
         if ($depth > (int) $this->setting('segmentation.max_depth', 8)) {
@@ -77,7 +77,7 @@ final readonly class SegmentValidator
         $this->keys($node, ['type', 'operator', 'children'], $path);
         $operator = $node['operator'] ?? null;
         $children = $node['children'] ?? null;
-        if (! in_array($operator, ['all', 'any'], true) || ! is_array($children) || ! array_is_list($children) || $children === []) {
+        if (in_array($operator, ['all', 'any'], true) === false || is_array($children) === false || array_is_list($children) === false || $children === []) {
             throw new SegmentDefinitionException('invalid_group', $path);
         }
         $normalized = [];
@@ -91,7 +91,7 @@ final readonly class SegmentValidator
     private function not(array $node, string $path, int $depth, array &$state): array
     {
         $this->keys($node, ['type', 'child'], $path);
-        if (! is_array($node['child'] ?? null)) {
+        if (is_array($node['child'] ?? null) === false) {
             throw new SegmentDefinitionException('invalid_not_child', $path.'.child');
         }
         return ['type' => 'not', 'child' => $this->node($node['child'], $path.'.child', $depth + 1, $state)];
@@ -111,7 +111,7 @@ final readonly class SegmentValidator
             'timestamp' => ['before', 'after', 'on_or_before', 'on_or_after', 'is_set', 'is_not_set'],
             default => [],
         };
-        if (! in_array($operator, $allowed, true)) {
+        if (in_array($operator, $allowed, true) === false) {
             throw new SegmentDefinitionException('operator_not_allowed_for_field', $path.'.operator');
         }
         if (in_array($operator, ['is_set', 'is_not_set'], true)) {
@@ -121,7 +121,7 @@ final readonly class SegmentValidator
             return ['type' => 'attribute', 'field' => $field, 'operator' => $operator];
         }
         $value = $node['value'] ?? null;
-        if ($metadata['type'] === 'text' && (! is_string($value) || strlen($value) > 191 || trim($value) === '')) {
+        if ($metadata['type'] === 'text' && (is_string($value) === false || strlen($value) > 191 || trim($value) === '')) {
             throw new SegmentDefinitionException('invalid_text_value', $path.'.value');
         }
         if ($metadata['type'] === 'timestamp') {
@@ -136,10 +136,10 @@ final readonly class SegmentValidator
         $kind = $node['kind'] ?? null;
         $id = $node['id'] ?? null;
         $operator = $node['operator'] ?? null;
-        if (! in_array($kind, ['list', 'tag'], true) || ! is_string($id) || ! preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $id)) {
+        if (in_array($kind, ['list', 'tag'], true) === false || is_string($id) === false || preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $id) === false) {
             throw new SegmentDefinitionException('invalid_membership_reference', $path);
         }
-        if (! in_array($operator, ['in', 'not_in'], true)) {
+        if (in_array($operator, ['in', 'not_in'], true) === false) {
             throw new SegmentDefinitionException('invalid_membership_operator', $path.'.operator');
         }
         return ['type' => 'membership', 'kind' => $kind, 'id' => strtolower($id), 'operator' => $operator];
@@ -150,10 +150,10 @@ final readonly class SegmentValidator
         $this->keys($node, ['type', 'name', 'mode', 'window', 'minimum'], $path);
         $name = $node['name'] ?? null;
         $mode = $node['mode'] ?? null;
-        if (! is_string($name) || ! preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $name)) {
+        if (is_string($name) === false || preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $name) === false) {
             throw new SegmentDefinitionException('invalid_event_name', $path.'.name');
         }
-        if (! in_array($mode, ['exists', 'not_exists', 'count', 'first', 'last'], true)) {
+        if (in_array($mode, ['exists', 'not_exists', 'count', 'first', 'last'], true) === false) {
             throw new SegmentDefinitionException('invalid_event_mode', $path.'.mode');
         }
         $window = $this->window($node['window'] ?? null, $path.'.window');
@@ -172,7 +172,7 @@ final readonly class SegmentValidator
 
     private function window(mixed $window, string $path): array
     {
-        if (! is_array($window) || array_is_list($window)) {
+        if (is_array($window) === false || array_is_list($window)) {
             throw new SegmentDefinitionException('invalid_window', $path);
         }
         if (($window['kind'] ?? null) === 'relative') {

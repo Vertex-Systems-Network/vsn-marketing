@@ -2,6 +2,7 @@
 
 use App\Modules\Publishing\Application\Operator\PublishingOperatorReadModel;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -249,4 +250,63 @@ it('surfaces a bounded rate-limit reset when no circuit hold exists', function (
         ->and($provider['retry_blocked'])->toBeTrue()
         ->and($provider['retry_after_seconds'])->toBe(90)
         ->and($provider['next_probe_at'])->toBeNull();
+});
+
+it('fails closed when a campaign target references provider evidence from another workspace', function () {
+    $local = Task0040PublicationFixture::create('task0041-provider-cross-workspace-local');
+    $foreign = Task0040PublicationFixture::create('task0041-provider-cross-workspace-foreign');
+
+    expect(fn () => DB::table('campaign_targets')->insert([
+        'id' => (string) Str::uuid(),
+        'workspace_id' => $local['context']->workspaceId,
+        'snapshot_id' => $local['snapshot']->id,
+        'kind' => 'provider_connection',
+        'canonical_reference_id' => $foreign['providerConnectionId'],
+        'channel' => 'social_foreign',
+        'provider_connection_id' => $foreign['providerConnectionId'],
+        'capability_evidence_id' => $foreign['providerCapabilityId'],
+        'metadata' => json_encode([], JSON_THROW_ON_ERROR),
+        'target_hash' => hash('sha256', 'task0041-provider-cross-workspace-target'),
+        'created_at' => CarbonImmutable::now('UTC'),
+    ]))->toThrow(QueryException::class);
+
+    $payload = task0041ProviderDriftPayload($local);
+    $provider = task0041ProviderDriftFirstProvider($payload);
+
+    expect($provider['status'])->toBe('ready')
+        ->and($payload['summary']['provider_attention'])->toBe(0);
+
+    $encoded = json_encode($payload, JSON_THROW_ON_ERROR);
+    expect($encoded)
+        ->not->toContain($foreign['providerConnectionId'])
+        ->not->toContain($foreign['providerCapabilityId'])
+        ->not->toContain('vault://task0040/task0041-provider-cross-workspace-foreign');
+});
+
+it('surfaces half-open circuit recovery as an explicit blocked provider outcome', function () {
+    $fixture = Task0040PublicationFixture::create('task0041-provider-half-open');
+    $now = CarbonImmutable::now('UTC');
+
+    DB::table('delivery_circuit_breakers')->insert([
+        'id' => hash('sha256', 'task0041-provider-half-open'),
+        'workspace_id' => $fixture['context']->workspaceId,
+        'provider_id' => $fixture['providerId'],
+        'provider_connection_id' => $fixture['providerConnectionId'],
+        'operation_class' => 'publication.create',
+        'state' => 'half_open',
+        'consecutive_failures' => 2,
+        'next_probe_at' => $now->addSeconds(30),
+        'probe_in_flight' => true,
+        'version' => 4,
+        'created_at' => $now->subMinute(),
+        'updated_at' => $now,
+    ]);
+
+    $provider = task0041ProviderDriftFirstProvider(task0041ProviderDriftPayload($fixture));
+
+    expect($provider['status'])->toBe('circuit_half_open')
+        ->and($provider['action'])->toBe('wait_for_provider_probe')
+        ->and($provider['retry_blocked'])->toBeTrue()
+        ->and($provider['retry_after_seconds'])->toBeNull()
+        ->and($provider['next_probe_at'])->not->toBeNull();
 });

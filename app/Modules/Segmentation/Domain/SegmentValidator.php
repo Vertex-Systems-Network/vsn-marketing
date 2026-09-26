@@ -27,6 +27,7 @@ final readonly class SegmentValidator
         if (($root['type'] ?? null) !== 'group') {
             throw new SegmentDefinitionException('root_must_be_group', '$.root');
         }
+
         return ['schema_version' => 1, 'subject' => 'contact', 'root' => $root];
     }
 
@@ -65,6 +66,7 @@ final readonly class SegmentValidator
         if ($state['nodes'] > (int) $this->setting('segmentation.max_nodes', 100)) {
             throw new SegmentDefinitionException('maximum_nodes_exceeded', $path);
         }
+
         return match ($node['type'] ?? null) {
             'group' => $this->group($node, $path, $depth, $state),
             'not' => $this->not($node, $path, $depth, $state),
@@ -88,6 +90,7 @@ final readonly class SegmentValidator
             $normalized[] = $this->node($child, $path.'.children.'.$index, $depth + 1, $state);
         }
         usort($normalized, fn (array $left, array $right): int => strcmp($this->encode($left), $this->encode($right)));
+
         return ['type' => 'group', 'operator' => $operator, 'children' => $normalized];
     }
 
@@ -97,6 +100,7 @@ final readonly class SegmentValidator
         if (is_array($node['child'] ?? null) === false) {
             throw new SegmentDefinitionException('invalid_not_child', $path.'.child');
         }
+
         return ['type' => 'not', 'child' => $this->node($node['child'], $path.'.child', $depth + 1, $state)];
     }
 
@@ -121,6 +125,7 @@ final readonly class SegmentValidator
             if (array_key_exists('value', $node)) {
                 throw new SegmentDefinitionException('unexpected_value', $path.'.value');
             }
+
             return ['type' => 'attribute', 'field' => $field, 'operator' => $operator];
         }
         $value = $node['value'] ?? null;
@@ -130,6 +135,7 @@ final readonly class SegmentValidator
         if ($metadata['type'] === 'timestamp') {
             $value = $this->instant($value, $path.'.value');
         }
+
         return ['type' => 'attribute', 'field' => $field, 'operator' => $operator, 'value' => $value];
     }
 
@@ -145,6 +151,7 @@ final readonly class SegmentValidator
         if (in_array($operator, ['in', 'not_in'], true) === false) {
             throw new SegmentDefinitionException('invalid_membership_operator', $path.'.operator');
         }
+
         return ['type' => 'membership', 'kind' => $kind, 'id' => strtolower($id), 'operator' => $operator];
     }
 
@@ -170,6 +177,7 @@ final readonly class SegmentValidator
         } elseif (array_key_exists('minimum', $node)) {
             throw new SegmentDefinitionException('unexpected_minimum', $path.'.minimum');
         }
+
         return $normalized;
     }
 
@@ -184,6 +192,7 @@ final readonly class SegmentValidator
             if (is_int($days) === false || $days < 1 || $days > (int) $this->setting('segmentation.max_event_days', 365)) {
                 throw new SegmentDefinitionException('invalid_relative_window', $path.'.days');
             }
+
             return ['kind' => 'relative', 'days' => $days];
         }
         if (($window['kind'] ?? null) === 'absolute') {
@@ -196,6 +205,7 @@ final readonly class SegmentValidator
             if ($from >= $to || $durationSeconds > $maximumSeconds) {
                 throw new SegmentDefinitionException('invalid_absolute_window', $path);
             }
+
             return ['kind' => 'absolute', 'from' => $from, 'to' => $to];
         }
         throw new SegmentDefinitionException('invalid_window_kind', $path.'.kind');
@@ -225,6 +235,7 @@ final readonly class SegmentValidator
                 return $default;
             }
         }
+
         return $default;
     }
 
@@ -247,6 +258,7 @@ final readonly class SegmentValidator
         if (array_is_list($value) === false) {
             ksort($value, SORT_STRING);
         }
+
         return $value;
     }
 }

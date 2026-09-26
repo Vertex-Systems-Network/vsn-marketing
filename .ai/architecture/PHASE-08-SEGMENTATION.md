@@ -29,7 +29,7 @@ The field registry maps stable field IDs to static table/column/type/operator me
 
 The compiler produces a Laravel query builder for distinct contact IDs. It binds all values. The base predicate is contacts.workspace_id = TenantContext.workspaceId. Company join conditions include workspace equality. List/tag correlated subqueries bind workspace, contact and selected membership ID. Event predicates join event_types on both event type ID and workspace ID, and bind canonical event name and UTC time bounds. The compiler rejects a missing/foreign event name and missing/foreign list/tag ID.
 
-Default complexity limits are configuration-backed and deliberately provisional until representative production benchmarks exist: maximum depth 8, 100 nodes, membership list size 50, relative event window 365 days, preview limit 50, synchronous exact-count timeout 3 seconds. They are conservative application defaults, not production SLO claims. Statement timeout is applied only on PostgreSQL and query cancellation bubbles without a success-shaped count.
+Default complexity limits are configuration-backed and deliberately provisional until representative production benchmarks exist: maximum depth 8, 100 nodes, membership list size 50, relative event window 365 days, preview limit 50, synchronous exact-count timeout 3 seconds, compiler cost score 100. They are conservative application defaults, not production SLO claims. Statement timeout is applied only on PostgreSQL and query cancellation bubbles without a success-shaped count.
 
 ## Versioning and authorization
 

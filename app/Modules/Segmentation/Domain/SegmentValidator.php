@@ -53,11 +53,11 @@ final readonly class SegmentValidator
         if (! is_array($node) || array_is_list($node)) {
             throw new SegmentDefinitionException('node_must_be_object', $path);
         }
-        if ($depth > (int) config('segmentation.max_depth', 8)) {
+        if ($depth > (int) $this->setting('segmentation.max_depth', 8)) {
             throw new SegmentDefinitionException('maximum_depth_exceeded', $path);
         }
         $state['nodes']++;
-        if ($state['nodes'] > (int) config('segmentation.max_nodes', 100)) {
+        if ($state['nodes'] > (int) $this->setting('segmentation.max_nodes', 100)) {
             throw new SegmentDefinitionException('maximum_nodes_exceeded', $path);
         }
         return match ($node['type'] ?? null) {
@@ -176,7 +176,7 @@ final readonly class SegmentValidator
         if (($window['kind'] ?? null) === 'relative') {
             $this->keys($window, ['kind', 'days'], $path);
             $days = $window['days'] ?? null;
-            if (! is_int($days) || $days < 1 || $days > (int) config('segmentation.max_event_days', 365)) {
+            if (! is_int($days) || $days < 1 || $days > (int) $this->setting('segmentation.max_event_days', 365)) {
                 throw new SegmentDefinitionException('invalid_relative_window', $path.'.days');
             }
             return ['kind' => 'relative', 'days' => $days];
@@ -203,6 +203,21 @@ final readonly class SegmentValidator
         } catch (\Throwable) {
             throw new SegmentDefinitionException('invalid_timestamp', $path);
         }
+    }
+
+    private function setting(string $key, int $default): int
+    {
+        if (function_exists('app')) {
+            try {
+                $application = app();
+                if ($application->bound('config')) {
+                    return (int) $application->make('config')->get($key, $default);
+                }
+            } catch (\Throwable) {
+                return $default;
+            }
+        }
+        return $default;
     }
 
     private function keys(array $value, array $allowed, string $path): void

@@ -136,3 +136,19 @@ it('uses a pinned instant and half-open UTC event intervals', function () {
     expect($first->query->pluck('c.id')->all())->toBe([])
         ->and($first->evaluationFingerprint)->not->toBe($second->evaluationFingerprint);
 });
+
+
+it('rejects excessive compiler cost before constructing an executable query', function () {
+    config(['segmentation.max_cost' => 1]);
+    $definition = ['schema_version' => 1, 'subject' => 'contact', 'root' => [
+        'type' => 'group', 'operator' => 'all', 'children' => [
+            ['type' => 'attribute', 'field' => 'company.domain', 'operator' => 'equals', 'value' => 'example.test'],
+        ],
+    ]];
+
+    expect(fn () => app(DeterministicSegmentCompiler::class)->compile(
+        $definition,
+        task0044Context((string) Str::uuid()),
+        new DateTimeImmutable('2026-09-26T12:00:00Z'),
+    ))->toThrow(SegmentDefinitionException::class, 'cost_limit_exceeded');
+});

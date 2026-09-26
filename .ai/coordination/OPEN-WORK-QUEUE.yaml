@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8",
+  "reconciled_main_sha": "d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210",
   "active_work_path": {
     "kind": "pr",
-    "number": 397,
-    "branch": "control/task0041-lane3-lease",
-    "milestone": "TASK-0041-PROVIDER-DRIFT-LEASE"
+    "number": 399,
+    "branch": "control/task0041-shipping-acceleration",
+    "milestone": "TASK-0041-WAVE-ACCELERATION"
   },
   "items": [
     {
@@ -181,10 +181,19 @@
       "kind": "pr",
       "number": 397,
       "title": "control: lease TASK-0041 provider drift lane",
-      "disposition": "active_lane3_lease_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-045",
       "branch": "control/task0041-lane3-lease"
+    },
+    {
+      "kind": "pr",
+      "number": 399,
+      "title": "control: accelerate AI development waves",
+      "disposition": "active_wave_acceleration_verification",
+      "accepted_actionable": true,
+      "runner_id": "RBT-046",
+      "branch": "control/task0041-shipping-acceleration"
     }
   ]
 }

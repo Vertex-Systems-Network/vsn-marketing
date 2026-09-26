@@ -28,7 +28,7 @@ Writable work requires all of the following:
 6. dependency readiness;
 7. current instruction revision;
 8. disjoint write paths;
-9. latest `main` is an ancestor of the branch before resume/submission.
+9. the required active baseline is an ancestor before submission: `main` outside Shipping Mode, and `ship/week-1` for Shipping Mode worker PRs. Independent leased lanes may continue a coherent local batch from the last green shipping baseline while a newer sibling integration head is still verifying, provided they do not consume that pending change and synchronize the latest green integration baseline before submission.
 
 Workers may not mutate paths in `.ai/parallel/SHARED-PATHS.yaml`. Shared contract, migration, dependency, workflow, route/config, global state, or architecture mutations are Supervisor-controlled integration changes.
 
@@ -48,7 +48,7 @@ After every registered workstream merge, the Supervisor posts this exact alert t
 
 `New changes have been merged — please merge these changes into your branch first, then resume your own work.`
 
-Every alerted agent must merge/pull latest `main`, run `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume writable work.
+Outside Shipping Mode, every alerted agent must merge/pull latest `main`, run `python tools/ai_parallel.py sync-check`, rerun affected fast checks, and only then resume writable work. During Shipping Mode, the alert is a mandatory synchronization boundary before submission, merge, or consumption of the merged dependency; an independent lane already inside a coherent local batch may finish that owned-path batch against the last green integration baseline, but it MUST synchronize the latest green `ship/week-1`, run `python tools/ai_parallel.py sync-check`, and rerun affected fast checks before PR submission or dependency consumption.
 
 ## New Agent Onboarding
 
@@ -81,6 +81,20 @@ Dynamic agent/slot assignments are orchestration state. They do not by themselve
 
 Increasing concurrency must not weaken path isolation, CI, task dependencies, or Supervisor merge serialization.
 
+## Development Acceleration v2.7
+
+The default delivery model is **wave-oriented**, not lane-by-lane orchestration.
+
+- When several dependency-ready workstreams have distinct real agents and disjoint write paths, the Supervisor batches their assignments/leases into one wave-control carrier instead of opening one protected-main control PR per lane.
+- A per-lane control PR is not the default when the same safe dependency-ready lease set can be carried by one wave-control PR. Separate carriers remain valid for security boundaries, material drift, conflicts, new authority, or newly discovered dependencies.
+- Independent leased lanes may keep coding from the last **green** integration baseline while a newer sibling integration merge is being certified. They may not submit, merge, or consume that sibling contract until the current integration baseline required by policy is green and synchronized.
+- Merge alerts remain mandatory durable awareness, but in Shipping Mode they synchronize independent lanes at the next submission/dependency-consumption boundary rather than forcing every agent to abandon an in-progress owned-path batch.
+- Worker PRs use the Shipping Fast Gate. A green integration push is the dependency-consumption boundary. Protected-main full Application + Security certification is concentrated at wave promotion/final acceptance boundaries instead of being inserted between every independent worker lane.
+- Terminal worker evidence rides into the next substantial wave-control/promotion PR by default. Do not create evidence-only protected-main PRs between sibling lanes.
+- One agent still holds at most one active writable lease. Wave batching never invents background agents, duplicates an identity, overlaps write paths, or grants authority that was not explicitly registered.
+- Shipping Mode retains its five-writer cap and all permission, tenant-isolation, secret, migration, provider-policy, data-integrity and exact-head security requirements.
+
+This acceleration changes **idle time and orchestration placement**, not safety. A failed integration freezes the affected dependency chain; independent work may continue only when it does not consume the failed/pending contract.
 ## README instruction synchronization
 
 When canonical agent-working behavior changes, the same PR must:
@@ -167,7 +181,7 @@ This single-hop rule prevents recursive “update observed SHA -> merge -> SHA c
 
 One user `continue`/resume turn should normally advance one **substantial coherent batch**, not one micro-transition. Within the same active task and approved write scope, the Supervisor may combine implementation -> focused tests -> PR -> bounded CI diagnosis/repair -> exact-head verification -> merge when gates are green.
 
-External CI that is still running remains a durable stop boundary; tight polling is forbidden. After a successful merge, do not create a separate terminal-reconciliation PR merely to copy merge/run evidence. Carry that evidence into the next substantial product/control PR, unless an immediate reconciliation exception applies (task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material drift, or no safe successor PR). Do not chain unrelated tasks or broaden scope merely to make the batch larger.
+External CI that is still running remains a durable stop boundary for the exact artifact/dependency being verified; tight polling is forbidden. Under Development Acceleration v2.7, an already leased, file-disjoint independent lane may continue a coherent local batch from the last green integration baseline while sibling integration CI runs, but it cannot submit/merge or consume the pending sibling change until the required green integration baseline is synchronized. After a successful merge, do not create a separate terminal-reconciliation PR merely to copy merge/run evidence. Carry that evidence into the next substantial product/control PR, unless an immediate reconciliation exception applies (task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material drift, or no safe successor PR). Do not chain unrelated tasks or broaden scope merely to make the batch larger.
 
 ### Next-action interactive option contract
 
@@ -237,7 +251,7 @@ When `.ai/parallel/WEEK-1-SHIPPING-PLAN.md` is ACTIVE, `ship/week-1` is the spri
 - Writable implementation is limited to five primary lanes: backend, frontend, delivery, data, and QA/release. Additional agents may review or research read-only work but must not create overlapping writes.
 - Grandfathered drain exception: workstreams already registered and occupied for the active task when Shipping Mode was activated may finish without being terminated solely to reach the five-writer target. No new writable slot may be added or reassigned above five during that drain. `TASK-0026` is the activation-time grandfathered task; after its transition, the five-writer shipping cap is hard.
 - Sprint feature/workstream PRs target `ship/week-1` unless the Supervisor explicitly marks a change as main-only governance/release work.
-- Before submission or resume, a sprint branch must contain the latest `ship/week-1` baseline and pass the `Shipping Fast Gate`.
+- Before submission or dependency consumption, a sprint branch must contain the latest required **green** `ship/week-1` baseline and pass the `Shipping Fast Gate`. Independent leased coding may continue from the last green integration baseline while a newer sibling integration head is still verifying; synchronization is mandatory before submission.
 - A merge/push to `ship/week-1` runs the full Application Foundation and AI Continuity integration wave.
 - Only a green `ship/week-1` baseline is promoted to `main`; protected-main required checks and full Security Supply Chain CI remain mandatory there.
 - A failed merge wave freezes only the affected dependency chain. Independent lanes may continue when they do not consume the broken contract.

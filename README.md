@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-PROVIDER-DRIFT-LEASE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-WAVE-ACCELERATION status=VERIFYING -->
 
 > Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 83.33%**  
 **Active task: TASK-0041 — Implement campaign/publishing operator UX**  
 **Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-PROVIDER-DRIFT-LEASE — VERIFYING**
+**Current milestone: TASK-0041-WAVE-ACCELERATION — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.83%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Provider Drift Lane-3 lease PR #397** | **83.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Wave Acceleration v2.7 PR #399** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -49,7 +49,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 Lane-2 approval revocation is trusted. PR #395 exact source `5a065e9ad425473d729da0625ed104ca50bd2af5` passed AI Continuity Guard `36200389705`, Application Foundation CI `36200389716`, and Security Supply Chain CI `36200389698`, then merged to protected main as `f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8`. PR #396 exact source `39a2017bb9791e078a70ebdebe15b05fa17234d5` passed Shipping Fast Gate `36201532662` and merged to `ship/week-1` as `3a53bf6982df1d4277a750434d5d2c12314a7a2d`; that resulting integration head passed Continuity `36201663908`, Application `36201663901`, and Shipping Fast Gate `36201663961`. RBT-043 and RBT-044 are terminal PASS.
 
-PR #397 releases the completed Lane-2 lease and leases `WS-0041-PROVIDER-DRIFT` to `chatgpt-session-task0041-provider-drift`, representing this active interactive ChatGPT session. Its exclusive worker paths are `PublishingOperatorReadModel.php` and `Task0041ProviderDriftOperatorSecurityTest.php`. The lane may surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes while preserving workspace isolation and partial-success semantics; credentials, tokens, secret references and raw sensitive provider evidence remain excluded.
+PR #397 is trusted and merged as `d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210`; `WS-0041-PROVIDER-DRIFT` remains exclusively leased to `chatgpt-session-task0041-provider-drift` on `PublishingOperatorReadModel.php` and `Task0041ProviderDriftOperatorSecurityTest.php`. PR #399 is the active Development Acceleration v2.7 control carrier; it changes orchestration throughput only and does not widen provider, tenant, secret, migration, release or data-integrity authority.
 
 TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
 
@@ -63,8 +63,8 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.6.0-fast-batch-development`  
-Agent instruction fingerprint: `502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5f4ecbbf5e1ee2771`
+Agent instruction revision: `parallel-v2.7.0-wave-acceleration`  
+Agent instruction fingerprint: `e1915e44d40288e0e8071860deb501ef6e808b3a393cf41fb850dc94cf8bce58`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 
@@ -72,9 +72,9 @@ Agent instruction fingerprint: `502ac83e98423056bfa8f04651e55b3a47e6a83d0c0b68c5
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
-**Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, must pass `Shipping Fast Gate`, and are promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
+**Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, `ai_parallel.py sync-check` validates that shipping baseline for workers, and PRs must pass `Shipping Fast Gate`. Independent leased lanes can keep coding from the last green integration baseline while a sibling merge is still verifying, but must sync the latest required green integration head before submission/merge/dependency consumption. Work is promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
 
-**Strict plan-following and change-aware CI are mandatory. Fast Batch Development Mode is active.** Every agent follows recover/validate -> canonical state/task/plan -> exact head -> change classification -> one substantial active-task batch -> class-appropriate checks -> exact-head PR gates -> bounded same-scope repair when needed -> merge when green -> repository re-read. Standalone post-merge reconciliation PRs are not the default; trusted merge/run evidence rides with the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or no-safe-successor exception requires immediate reconciliation. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
+**Strict plan-following, change-aware CI, and Development Acceleration v2.7 are mandatory.** Work is wave-oriented: batch dependency-ready disjoint leases into one control carrier when distinct real agents are available; independent leased lanes may code from the last green shipping baseline while a newer sibling integration head verifies; synchronize latest required green `ship/week-1` before submission/merge/dependency consumption; worker PRs use Shipping Fast Gate; terminal worker evidence rides into the next substantial wave-control/promotion PR; full protected-main Application + Security gates remain concentrated at promotion/final-acceptance/security boundaries. Per-lane protected-main orchestration PRs are not the default. No acceleration may fake agents, overlap write paths, consume pending/failed integration, or weaken permissions/security. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
 
 **Protected-main observation is non-recursive.** `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. An anchor descendant containing only approved durable reconciliation surfaces is already current and must not trigger another state-only PR; material drift still fails closed.
 

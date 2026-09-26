@@ -2,6 +2,7 @@
 
 use App\Modules\Publishing\Application\Operator\PublishingOperatorReadModel;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -267,7 +268,7 @@ it('fails closed when a campaign target references provider evidence from anothe
         'metadata' => json_encode([], JSON_THROW_ON_ERROR),
         'target_hash' => hash('sha256', 'task0041-provider-cross-workspace-target'),
         'created_at' => CarbonImmutable::now('UTC'),
-    ]))->toThrow(\Illuminate\Database\QueryException::class);
+    ]))->toThrow(QueryException::class);
 
     $payload = task0041ProviderDriftPayload($local);
     $provider = task0041ProviderDriftFirstProvider($payload);

@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 399,
-    "branch": "control/task0041-shipping-acceleration",
-    "milestone": "TASK-0041-WAVE-ACCELERATION"
-  },
+  "reconciled_main_sha": "6510597557611466200293a2e68ec9e2c4ece073",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -190,10 +185,27 @@
       "kind": "pr",
       "number": 399,
       "title": "control: accelerate AI development waves",
-      "disposition": "active_wave_acceleration_verification",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "runner_id": "RBT-046",
       "branch": "control/task0041-shipping-acceleration"
+    },
+    {
+      "kind": "pr",
+      "number": 401,
+      "title": "test(publishing): harden provider drift isolation coverage",
+      "disposition": "terminal_shipping_trusted",
+      "accepted_actionable": false,
+      "runner_id": "RBT-047",
+      "branch": "worker-3/task0041-provider-drift"
+    },
+    {
+      "kind": "pr",
+      "number": 403,
+      "title": "feat(publishing): certify accessible operator UX states",
+      "disposition": "terminal_shipping_merged_certification_pending",
+      "accepted_actionable": false,
+      "branch": "worker-4/task0041-operator-ux-cert"
     }
   ]
 }

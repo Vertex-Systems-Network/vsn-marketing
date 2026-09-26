@@ -1406,16 +1406,82 @@
       "source": "PR #399 / Development Acceleration v2.7 wave-control upgrade",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "30b4db16bcdf3f18575065313fa59fe62a1a3456",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #399 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "protocol 2.7 wave acceleration; shipping worker baseline fix; batched disjoint lease control; merge-alert sync boundary; unchanged five-writer/security/tenant/secret/data-integrity gates",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-wave-acceleration-v2.7:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 399,
+        "source_sha": "30b4db16bcdf3f18575065313fa59fe62a1a3456",
+        "merge_sha": "6510597557611466200293a2e68ec9e2c4ece073",
+        "workflow_runs": {
+          "ai_continuity_guard": 36231899742,
+          "application_foundation_ci": 36231899743,
+          "security_supply_chain_ci": 36231899714
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-047",
+      "source": "PR #401 / TASK-0041 provider drift hardening worker implementation",
+      "command_workflow": "Shipping Fast Gate on exact worker head + post-merge ship/week-1 Continuity/Application/Shipping Fast Gate",
+      "exact_source_identity": {
+        "git_sha": "fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #401 exact-head Shipping Fast Gate + resulting integration-push evidence"
+      },
+      "environment_matrix_input_fixture": "provider drift read-model hardening; cross-workspace provider/capability evidence rejected at canonical persistence boundary; secret-safe output; half-open circuit recovery; no provider side effect",
+      "authorization_state": "consumed_required_shipping_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_shipping_and_integration_workflow_timeouts",
+      "dedup_key": "runner:task0041-provider-drift-hardening:shipping-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 401,
+        "source_sha": "fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b",
+        "merge_sha": "fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c",
+        "workflow_runs": {
+          "shipping_fast_gate_pr": 36237884166,
+          "ship_ai_continuity_guard": 36238008876,
+          "ship_application_foundation_ci": 36238008880,
+          "ship_shipping_fast_gate": 36238008958
+        },
+        "conclusions": {
+          "shipping_fast_gate_pr": "success",
+          "ship_ai_continuity_guard": "success",
+          "ship_application_foundation_ci": "success",
+          "ship_shipping_fast_gate": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-048",
+      "source": "TASK-0041 Operator UX Lane-4 lease authority carrier",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "Lane-4 lease carrier exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "Lane-3 terminal release; interactive Lane-4 identity chatgpt-session-task0041-operator-ux; exclusive frontend/unit/E2E lease; corrected Playwright e2e path; green integration dependency fdd4ab92",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-operator-ux-lane4-lease:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

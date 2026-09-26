@@ -14,11 +14,21 @@ use Illuminate\Database\Query\Builder;
 
 final readonly class DeterministicSegmentCompiler
 {
+    private DatabaseManager $database;
+
+    private SegmentValidator $validator;
+
+    private SegmentFieldRegistry $fields;
+
     public function __construct(
-        private DatabaseManager $database,
-        private SegmentValidator $validator,
-        private SegmentFieldRegistry $fields,
-    ) {}
+        DatabaseManager $database,
+        SegmentValidator $validator,
+        SegmentFieldRegistry $fields,
+    ) {
+        $this->database = $database;
+        $this->validator = $validator;
+        $this->fields = $fields;
+    }
 
     /** @param array<string, mixed> $definition */
     public function compile(array $definition, TenantContext $scope, DateTimeImmutable $evaluationInstant): CompiledSegment

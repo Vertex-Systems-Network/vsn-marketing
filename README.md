@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=51.00 phase=100.00 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51 phase=100 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=VERIFYING -->
 
 > PHASE-07 final acceptance is assembled from the TASK-0041 worker and integration evidence. Product-bearing integration head `7f43eda18cc95ab90ea0b56207e67476e7433fab` passed Application Foundation CI `36241797924` and Shipping Fast Gate `36241797817`; the final ledger-reconciled integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed AI Continuity Guard `36242518365`, Application Foundation CI `36242518520`, and Shipping Fast Gate `36242518369`. PR #403 exact head `391f43b3e7ee720be878294009a5993c163da685` passed its Shipping Fast Gate `36241215009`. The final protected-main acceptance carrier is undergoing exact-head full certification before merge.
 

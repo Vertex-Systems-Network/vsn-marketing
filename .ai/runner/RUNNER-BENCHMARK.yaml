@@ -1545,18 +1545,45 @@
       "source": "PHASE-07 final acceptance and protected-main promotion",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI + all applicable release acceptance checks",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "PHASE-07 final-acceptance promotion PR exact-head checks and resulting protected-main verification"
+        "git_sha": "30f7eda14c0589e8e75ced004642251046cfe09c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #405 exact-head full gates and resulting protected-main checks"
       },
       "environment_matrix_input_fixture": "TASK-0041 AC-1..AC-8 acceptance ledger; PR #402/#403/#404 and final ship integration evidence; CI-Mode full; exact protected-main target",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_protected_main_full_workflow_timeouts",
       "dedup_key": "runner:phase07-final-acceptance-promotion:protected-main",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "promotion_pr": 405,
+        "source_sha": "30f7eda14c0589e8e75ced004642251046cfe09c",
+        "merge_sha": "87e65b1d458a79f925376d4cf49792d3771ef192",
+        "workflow_runs": {
+          "pr_ai_continuity_guard": 36243101029,
+          "pr_application_foundation_ci": 36243101046,
+          "pr_security_supply_chain_ci": 36243100966,
+          "resulting_main_ai_continuity_guard": 36243383256,
+          "resulting_main_application_foundation_ci": 36243383236,
+          "resulting_main_security_supply_chain_ci": 36243383257,
+          "resulting_main_release_integrity": 36243383323,
+          "resulting_main_scorecard": 36243383292,
+          "resulting_main_persistent_control_plane": 36243491699
+        },
+        "conclusions": {
+          "pr_ai_continuity_guard": "success",
+          "pr_application_foundation_ci": "success",
+          "pr_security_supply_chain_ci": "success",
+          "resulting_main_ai_continuity_guard": "success",
+          "resulting_main_application_foundation_ci": "success",
+          "resulting_main_security_supply_chain_ci": "success",
+          "resulting_main_release_integrity": "success",
+          "resulting_main_scorecard": "success",
+          "resulting_main_persistent_control_plane": "success"
+        },
+        "test_surface_note": "Application Foundation passed backend, integration, architecture/static analysis, formatting, frontend typecheck/unit/build, PHP floor and Playwright E2E on both the exact PR head and resulting main SHA."
+      }
     }
   ]
 }

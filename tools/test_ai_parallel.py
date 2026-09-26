@@ -85,7 +85,7 @@ def main() -> int:
         "pull_request": {
             "draft": False,
             "head": {"ref": row["branch"]},
-            "base": {"ref": "main"},
+            "base": {"ref": mod.expected_base(control, row)},
             "body": f"Workstream: {row['id']}\n",
         }
     }

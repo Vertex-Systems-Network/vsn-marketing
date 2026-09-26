@@ -255,22 +255,25 @@ it('fails closed when a campaign target references provider evidence from anothe
     $local = Task0040PublicationFixture::create('task0041-provider-cross-workspace-local');
     $foreign = Task0040PublicationFixture::create('task0041-provider-cross-workspace-foreign');
 
-    DB::table('campaign_targets')
-        ->where('workspace_id', $local['context']->workspaceId)
-        ->where('id', $local['target']->id)
-        ->update([
-            'provider_connection_id' => $foreign['providerConnectionId'],
-            'capability_evidence_id' => $foreign['providerCapabilityId'],
-        ]);
+    expect(fn () => DB::table('campaign_targets')->insert([
+        'id' => (string) Str::uuid(),
+        'workspace_id' => $local['context']->workspaceId,
+        'snapshot_id' => $local['snapshot']->id,
+        'kind' => 'provider_connection',
+        'canonical_reference_id' => $foreign['providerConnectionId'],
+        'channel' => 'social_foreign',
+        'provider_connection_id' => $foreign['providerConnectionId'],
+        'capability_evidence_id' => $foreign['providerCapabilityId'],
+        'metadata' => json_encode([], JSON_THROW_ON_ERROR),
+        'target_hash' => hash('sha256', 'task0041-provider-cross-workspace-target'),
+        'created_at' => CarbonImmutable::now('UTC'),
+    ]))->toThrow(\Illuminate\Database\QueryException::class);
 
     $payload = task0041ProviderDriftPayload($local);
     $provider = task0041ProviderDriftFirstProvider($payload);
 
-    expect($provider)->toMatchArray([
-        'status' => 'provider_disconnected',
-        'action' => 'reconnect_provider',
-        'retry_blocked' => true,
-    ])->and($payload['summary']['provider_attention'])->toBe(1);
+    expect($provider['status'])->toBe('ready')
+        ->and($payload['summary']['provider_attention'])->toBe(0);
 
     $encoded = json_encode($payload, JSON_THROW_ON_ERROR);
     expect($encoded)

@@ -93,12 +93,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Extend the operator read model with actionable non-secret provider disconnect, permission, capability-drift, rate-limit and circuit outcomes while preserving canonical VSN authority and partial-success semantics.",
-      "assigned_agent": "chatgpt-session-task0041-provider-drift",
+      "assigned_agent": null,
       "branch": "worker-3/task0041-provider-drift",
       "worktree": "worktrees/task-0041-provider-drift",
-      "status": "leased",
-      "slot_status": "occupied",
-      "start_status": "leased_ready_to_execute",
+      "status": "merged",
+      "slot_status": "open",
+      "start_status": "shipping_merged_green",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -115,12 +115,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority.",
-      "assigned_agent": null,
+      "assigned_agent": "chatgpt-session-task0041-operator-ux",
       "branch": "worker-4/task0041-operator-ux-cert",
       "worktree": "worktrees/task-0041-operator-ux-cert",
-      "status": "planned",
-      "slot_status": "open",
-      "start_status": "ready_for_lease",
+      "status": "leased",
+      "slot_status": "occupied",
+      "start_status": "leased_ready_to_execute",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"
@@ -130,7 +130,7 @@
       "write_paths": [
         "resources/js/pages/publishing/operator.tsx",
         "resources/js/pages/publishing/operator.test.tsx",
-        "tests/e2e/task0041-publishing-operator.spec.ts"
+        "e2e/task0041-publishing-operator.spec.ts"
       ]
     }
   ]

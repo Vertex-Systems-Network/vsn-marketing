@@ -18,22 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863338",
-    "application_test_status": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863320",
-    "security_supply_chain_status": "task0041_provider_drift_lease_pr397_head_b787a82e2fcc499ae5ae66233298061952202033_passed_run_36202863329",
+    "continuity_validation": "task0041_provider_drift_ship_fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c_passed_run_36238008876",
+    "application_test_status": "task0041_provider_drift_ship_fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c_passed_run_36238008880",
+    "security_supply_chain_status": "task0041_wave_acceleration_pr399_head_30b4db16bcdf3f18575065313fa59fe62a1a3456_passed_run_36231899714",
     "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
     "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
   },
-  "observed_main_sha": "d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210",
+  "observed_main_sha": "6510597557611466200293a2e68ec9e2c4ece073",
   "active_issue": null,
-  "active_pr": 399,
-  "active_branch": "control/task0041-shipping-acceleration",
-  "current_milestone": "TASK-0041-WAVE-ACCELERATION",
+  "active_pr": null,
+  "active_branch": "control/task0041-lane4-ux-lease",
+  "current_milestone": "TASK-0041-OPERATOR-UX-CERT-LEASE",
   "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 Lane-3 provider-drift lease authority trusted: PR #397 exact source b787a82e2fcc499ae5ae66233298061952202033 passed full protected-main Continuity/Application/Security runs 36202863338/36202863320/36202863329 and merged as d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210. WS-0041-PROVIDER-DRIFT remains exclusively leased to chatgpt-session-task0041-provider-drift on PublishingOperatorReadModel.php plus Task0041ProviderDriftOperatorSecurityTest.php; green integration dependency remains 3a53bf6982df1d4277a750434d5d2c12314a7a2d.",
-  "exact_next_safe_action": "Verify PR #399 on its post-reconciliation exact head and merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, continue WS-0041-PROVIDER-DRIFT under Development Acceleration v2.7 from the latest required green ship/week-1 baseline; edit only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php, and synchronize the latest required green integration before submission/merge or dependency consumption. Preserve workspace isolation, partial-success semantics and secret-safe provider evidence; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
+  "last_completed_milestone": "Development Acceleration v2.7 is trusted on protected main via PR #399 exact source 30b4db16bcdf3f18575065313fa59fe62a1a3456 with Continuity/Application/Security runs 36231899742/36231899743/36231899714 and merge 6510597557611466200293a2e68ec9e2c4ece073. Provider Drift Lane-3 hardening is trusted via PR #401 exact source fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b, Shipping Fast Gate 36237884166, merge fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c, and resulting integration Continuity/Application/Shipping runs 36238008876/36238008880/36238008958. Lane-3 is released; Lane-4 Operator UX certification is staged with corrected Playwright path.",
+  "exact_next_safe_action": "Verify the TASK-0041 Operator UX Lane-4 lease carrier on its unchanged exact head with full protected-main Continuity/Application/Security gates and merge only when all three are green and review is clean. After trusted merge, synchronize worker-4/task0041-operator-ux-cert to latest green ship/week-1 head fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c before submission/merge or dependency consumption, then execute only resources/js/pages/publishing/operator.tsx, resources/js/pages/publishing/operator.test.tsx and e2e/task0041-publishing-operator.spec.ts as chatgpt-session-task0041-operator-ux. Render actionable non-secret provider outcomes, accessible loading/empty/error/concurrency feedback, keyboard/destructive affordances and responsive operator states without adding backend authority. Keep shared routes/global state/config/migrations, TASK-0042, deployment/release authority and deferred Runner optimization inactive.",
   "pending_runner_ids": [
-    "RBT-046"
+    "RBT-048"
   ],
   "blocked_runner_ids": [
     "RBT-004"
@@ -46,5 +46,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #399 on its post-reconciliation exact head and merge only if AI Continuity Guard, Application Foundation CI and Security Supply Chain CI are green and review is clean. After trusted merge, continue WS-0041-PROVIDER-DRIFT under Development Acceleration v2.7 from the latest required green ship/week-1 baseline; edit only PublishingOperatorReadModel.php and Task0041ProviderDriftOperatorSecurityTest.php, and synchronize the latest required green integration before submission/merge or dependency consumption. Preserve workspace isolation, partial-success semantics and secret-safe provider evidence; never expose credentials, tokens, secret references or raw sensitive provider metadata. Keep shared routes/global state/config/migrations Supervisor-owned and keep TASK-0042, deployment/release authority and deferred Runner optimization inactive."
+  "exact_next_action": "Verify the TASK-0041 Operator UX Lane-4 lease carrier on its unchanged exact head with full protected-main Continuity/Application/Security gates and merge only when all three are green and review is clean. After trusted merge, synchronize worker-4/task0041-operator-ux-cert to latest green ship/week-1 head fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c before submission/merge or dependency consumption, then execute only resources/js/pages/publishing/operator.tsx, resources/js/pages/publishing/operator.test.tsx and e2e/task0041-publishing-operator.spec.ts as chatgpt-session-task0041-operator-ux. Render actionable non-secret provider outcomes, accessible loading/empty/error/concurrency feedback, keyboard/destructive affordances and responsive operator states without adding backend authority. Keep shared routes/global state/config/migrations, TASK-0042, deployment/release authority and deferred Runner optimization inactive."
 }

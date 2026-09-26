@@ -2,13 +2,14 @@
   "schema_version": 2,
   "leases": [
     {
-      "agent": "chatgpt-session-task0041-provider-drift",
-      "workstream": "WS-0041-PROVIDER-DRIFT",
-      "branch": "worker-3/task0041-provider-drift",
+      "agent": "chatgpt-session-task0041-operator-ux",
+      "workstream": "WS-0041-OPERATOR-UX-CERT",
+      "branch": "worker-4/task0041-operator-ux-cert",
       "status": "active",
       "write_paths": [
-        "app/Modules/Publishing/Application/Operator/PublishingOperatorReadModel.php",
-        "tests/Feature/Security/Task0041ProviderDriftOperatorSecurityTest.php"
+        "resources/js/pages/publishing/operator.tsx",
+        "resources/js/pages/publishing/operator.test.tsx",
+        "e2e/task0041-publishing-operator.spec.ts"
       ]
     }
   ]

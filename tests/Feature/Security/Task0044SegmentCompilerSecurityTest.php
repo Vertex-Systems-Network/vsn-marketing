@@ -37,6 +37,7 @@ function task0044Contact(string $workspaceId, ?string $companyId = null): string
         'first_name' => null, 'last_name' => null, 'display_name' => null,
         'created_at' => now(), 'updated_at' => now(),
     ]);
+
     return $id;
 }
 
@@ -56,6 +57,7 @@ function task0044Event(string $workspaceId, string $contactId, string $name, str
         ->where('workspace_id', $workspaceId)
         ->where('canonical_name', $name)
         ->value('id');
+
     if (is_string($typeId) === false) {
         $typeId = (string) Str::uuid();
         DB::table('event_types')->insert([
@@ -63,6 +65,7 @@ function task0044Event(string $workspaceId, string $contactId, string $name, str
             'schema_version' => 1, 'created_at' => now(),
         ]);
     }
+
     DB::table('customer_events')->insert([
         'id' => (string) Str::uuid(), 'workspace_id' => $workspaceId, 'brand_id' => null,
         'event_type_id' => $typeId, 'contact_id' => $contactId, 'contact_identity_id' => null,

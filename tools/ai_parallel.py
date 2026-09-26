@@ -137,8 +137,8 @@ def validate() -> list[str]:
         if doc.get("schema_version") != 2:
             errors.append(f"{name} schema_version must be 2")
 
-    if control.get("protocol_version") != "2.6.0":
-        errors.append("protocol_version must be 2.6.0")
+    if control.get("protocol_version") != "2.7.0":
+        errors.append("protocol_version must be 2.7.0")
     if control.get("protected_main_branch") != "main":
         errors.append("protected_main_branch must be main")
     if control.get("required_completion_signal") != "Work Done and Submitted":
@@ -188,6 +188,15 @@ def validate() -> list[str]:
         "unrelated_task_chaining_forbidden": True,
         "standalone_terminal_reconciliation_pr_default": False,
         "post_merge_reconciliation_strategy": "carry_forward_into_next_substantial_pr",
+        "wave_acceleration_enabled": True,
+        "wave_control_carrier_strategy": "batch_dependency_ready_disjoint_leases",
+        "per_lane_control_pr_default": False,
+        "independent_lane_coding_during_integration_verification": True,
+        "independent_lane_submission_requires_latest_green_integration": True,
+        "shipping_worker_pr_target": "ship/week-1",
+        "shipping_sync_check_uses_integration_for_workers": True,
+        "wave_main_promotion_strategy": "single_full_certification_after_green_integration_wave",
+        "merge_alert_sync_boundary": "before_submission_or_dependency_consumption",
         "readme_progress_sync_mode": "marker_change_only",
         "default_ci_status_refreshes_per_milestone": 1,
         "max_ci_status_refreshes_with_recorded_exception": 2,
@@ -376,19 +385,35 @@ def validate_remote_branches() -> list[str]:
     return [f"missing pre-created remote branch: {row.get('branch')}" for row in rows(registry) if not remote_branch_exists(str(row.get("branch", "")))]
 
 
+def expected_base(control: dict[str, Any], row: dict[str, Any]) -> str:
+    if control.get("shipping_mode") is True and row.get("role") != "supervisor":
+        target = str(
+            control.get("shipping_worker_pr_target")
+            or control.get("shipping_integration_branch")
+            or ""
+        ).strip()
+        if target:
+            return target
+    return str(control.get("protected_main_branch", "main")).strip()
+
+
 def sync_check(branch: str | None) -> list[str]:
     registry = load(WORKSTREAMS)
     control = load(CONTROL)
     current = branch or branch_name()
-    if by_branch(registry).get(current) is None:
+    row = by_branch(registry).get(current)
+    if row is None:
         return []
-    main = str(control.get("protected_main_branch", "main"))
-    git("fetch", "origin", main, "--quiet", check=False)
-    candidate = f"origin/{main}"
+    baseline = expected_base(control, row)
+    git("fetch", "origin", baseline, "--quiet", check=False)
+    candidate = f"origin/{baseline}"
     if git("rev-parse", "--verify", candidate, check=False).returncode != 0:
-        candidate = main
+        candidate = baseline
     if git("merge-base", "--is-ancestor", candidate, "HEAD", check=False).returncode != 0:
-        return [f"registered branch {current} is stale; merge latest {main} before resuming/submitting"]
+        return [
+            f"registered branch {current} is stale; merge latest {baseline} "
+            "before submission/dependency consumption"
+        ]
     return []
 
 
@@ -398,18 +423,22 @@ def validate_pr_event(path: Path) -> list[str]:
     if not isinstance(pr, dict):
         return []
     head = pr.get("head", {}).get("ref")
-    row = by_branch(load(WORKSTREAMS)).get(str(head))
+    registry = load(WORKSTREAMS)
+    control = load(CONTROL)
+    row = by_branch(registry).get(str(head))
     if row is None:
         return []
     errors: list[str] = []
-    if pr.get("base", {}).get("ref") != "main":
-        errors.append(f"registered workstream PR {head} must target main")
+    required_base = expected_base(control, row)
+    actual_base = str(pr.get("base", {}).get("ref") or "")
+    if actual_base != required_base:
+        errors.append(f"registered workstream PR {head} must target {required_base}")
     body = pr.get("body") or ""
     marker = f"Workstream: {row.get('id')}"
     if not standalone(body, marker):
         errors.append(f"registered workstream PR must contain standalone line: {marker}")
     if not pr.get("draft"):
-        signal = str(load(CONTROL).get("required_completion_signal"))
+        signal = str(control.get("required_completion_signal"))
         if not standalone(body, signal):
             errors.append(f"non-draft workstream PR must contain exact standalone signal: {signal}")
     return errors
@@ -435,7 +464,12 @@ def render_plan_table(registry: dict[str, Any]) -> str:
     for row in sorted(rows(registry), key=lambda r: (int(r.get("merge_group", 999)), str(r.get("id", "")))):
         agent = f"`{row.get('assigned_agent')}`" if row.get("assigned_agent") else "—"
         slot = "**OPEN**" if row.get("slot_status") == "open" else "`occupied`"
-        lines.append(f"| {row.get('merge_group')} | {row.get('id')} | {row.get('capability')} | {slot} | {agent} | `{row.get('start_status')}` | `{row.get('branch')}` | {row.get('merge_strategy')} | merge latest main before resume |")
+        baseline = (
+            "latest green ship/week-1 before submission"
+            if load(CONTROL).get("shipping_mode") is True and row.get("role") != "supervisor"
+            else "merge latest main before resume"
+        )
+        lines.append(f"| {row.get('merge_group')} | {row.get('id')} | {row.get('capability')} | {slot} | {agent} | `{row.get('start_status')}` | `{row.get('branch')}` | {row.get('merge_strategy')} | {baseline} |")
     return "\n".join(lines)
 
 

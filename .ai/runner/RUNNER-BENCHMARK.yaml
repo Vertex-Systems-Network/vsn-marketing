@@ -1374,16 +1374,48 @@
       "source": "PR #397 / TASK-0041 provider drift Lane-3 lease authority",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "b787a82e2fcc499ae5ae66233298061952202033",
+        "resolution_required_before_execution": false,
         "evidence_surface": "PR #397 exact-head status + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "Lane-2 terminal release; interactive Lane-3 identity chatgpt-session-task0041-provider-drift; exclusive read-model/security-test lease; green integration dependency 3a53bf69",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-provider-drift-lane3-lease:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 397,
+        "source_sha": "b787a82e2fcc499ae5ae66233298061952202033",
+        "merge_sha": "d2cf0b6c80f21558cfc4e92d9cd3ed2e91ba8210",
+        "workflow_runs": {
+          "ai_continuity_guard": 36202863338,
+          "application_foundation_ci": 36202863320,
+          "security_supply_chain_ci": 36202863329
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-046",
+      "source": "PR #399 / Development Acceleration v2.7 wave-control upgrade",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PR #399 exact-head status + protected-main merge evidence"
+      },
+      "environment_matrix_input_fixture": "protocol 2.7 wave acceleration; shipping worker baseline fix; batched disjoint lease control; merge-alert sync boundary; unchanged five-writer/security/tenant/secret/data-integrity gates",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_required_workflow_timeouts",
+      "dedup_key": "runner:task0041-wave-acceleration-v2.7:required-full-ci",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

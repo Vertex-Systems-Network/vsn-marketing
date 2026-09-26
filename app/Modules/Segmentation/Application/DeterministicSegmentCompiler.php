@@ -175,10 +175,10 @@ final readonly class DeterministicSegmentCompiler
 
     private function event(Builder $query, array $node, string $boolean, TenantContext $scope, DateTimeImmutable $at): void
     {
-        if (! $this->database->table('event_types')
+        if ($this->database->table('event_types')
             ->where('workspace_id', $scope->workspaceId)
             ->where('canonical_name', $node['name'])
-            ->exists()) {
+            ->exists() === false) {
             throw new SegmentDefinitionException('unknown_or_foreign_event', '$.root.name');
         }
         [$from, $to] = $this->window($node['window'], $at);

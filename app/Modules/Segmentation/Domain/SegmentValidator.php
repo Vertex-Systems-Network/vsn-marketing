@@ -187,7 +187,10 @@ final readonly class SegmentValidator
             $this->keys($window, ['kind', 'from', 'to'], $path);
             $from = $this->instant($window['from'] ?? null, $path.'.from');
             $to = $this->instant($window['to'] ?? null, $path.'.to');
-            if ($from >= $to) {
+            $durationSeconds = (new DateTimeImmutable($to))->getTimestamp()
+                - (new DateTimeImmutable($from))->getTimestamp();
+            $maximumSeconds = $this->setting('segmentation.max_event_days', 365) * 86400;
+            if ($from >= $to || $durationSeconds > $maximumSeconds) {
                 throw new SegmentDefinitionException('invalid_absolute_window', $path);
             }
             return ['kind' => 'absolute', 'from' => $from, 'to' => $to];

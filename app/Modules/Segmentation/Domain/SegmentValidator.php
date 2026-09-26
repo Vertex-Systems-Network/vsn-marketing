@@ -200,7 +200,7 @@ final readonly class SegmentValidator
 
     private function instant(mixed $value, string $path): string
     {
-        if (is_string($value) === false || strlen($value) > 40 || ! preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/', $value)) {
+        if (is_string($value) === false || strlen($value) > 40 || preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/', $value) === false) {
             throw new SegmentDefinitionException('invalid_timestamp', $path);
         }
         try {

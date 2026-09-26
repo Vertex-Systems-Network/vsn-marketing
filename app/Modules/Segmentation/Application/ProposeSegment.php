@@ -56,6 +56,21 @@ final readonly class ProposeSegment
             return ['status' => 'input_rejected', 'code' => 'remove_personal_or_secret_values'];
         }
 
+        if ($this->guard->requestsUnsafeAuthority($intent)) {
+            $this->record($scope, $intentFingerprint, 'input_rejected', null);
+
+            return ['status' => 'input_rejected', 'code' => 'unsafe_instruction'];
+        }
+
+        if ($this->guard->requiresClarification($intent)) {
+            $this->record($scope, $intentFingerprint, 'clarification_required', null);
+
+            return [
+                'status' => 'clarification_required',
+                'questions' => ['Which measurable field or event and threshold define this audience?'],
+            ];
+        }
+
         try {
             $available = $this->provider->available();
         } catch (Throwable) {

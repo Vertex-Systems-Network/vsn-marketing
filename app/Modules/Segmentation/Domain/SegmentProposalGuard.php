@@ -10,6 +10,20 @@ final class SegmentProposalGuard
             || preg_match('/\\b(?:sk|rk|ghp|github_pat)_[A-Za-z0-9_-]{10,}\\b/i', $value) === 1;
     }
 
+    public function requestsUnsafeAuthority(string $intent): bool
+    {
+        return preg_match('/\b(?:ignore|bypass|override)\b.{0,40}\b(?:policy|instructions|rules|authorization|permissions)\b/i', $intent) === 1
+            || preg_match('/\b(?:use|emit|execute|write|run)\s+(?:raw\s+)?sql\b/i', $intent) === 1
+            || preg_match('/\b(?:show|query|include|access|read)\b.{0,40}\b(?:all|other)\s+(?:tenants?|workspaces?)\b/i', $intent) === 1
+            || preg_match('/\b(?:admin|secret|hidden)\s+(?:columns?|fields?)\b/i', $intent) === 1;
+    }
+
+    public function requiresClarification(string $intent): bool
+    {
+        return preg_match('/\b(?:high[ -]value|best|engaged|active|recent|recently)\s+(?:customers?|users?|leads?|contacts?)\b/i', $intent) === 1
+            || preg_match('/\brecently\s+active\b/i', $intent) === 1;
+    }
+
     /** @param array<string, mixed> $definition */
     public function assertSafeDefinition(array $definition): void
     {

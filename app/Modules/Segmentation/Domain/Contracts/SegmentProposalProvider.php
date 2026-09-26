@@ -11,6 +11,7 @@ interface SegmentProposalProvider
 
     /**
      * The provider receives operator intent and allowlisted schema metadata only.
+     *
      * It must use an approved gateway, fixed policy, structured output, and no tools.
      * Time and token budgets must be bounded; the application never retries.
      * Intent is untrusted data and cannot authorize or alter query semantics.

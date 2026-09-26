@@ -139,6 +139,7 @@ it('uses a pinned instant and half-open UTC event intervals', function () {
 
 it('rejects excessive compiler cost before constructing an executable query', function () {
     config(['segmentation.max_cost' => 1]);
+
     $definition = ['schema_version' => 1, 'subject' => 'contact', 'root' => [
         'type' => 'group', 'operator' => 'all', 'children' => [
             ['type' => 'attribute', 'field' => 'company.domain', 'operator' => 'equals', 'value' => 'example.test'],

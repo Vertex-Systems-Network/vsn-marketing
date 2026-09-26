@@ -4,23 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=NaN phase=NaN current_phase=PHASE-08 active_task=TASK-0044 milestone=PHASE-08-TASK-0044-ARCHITECTURE status=IN_PROGRESS -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51.88 phase=17.65 current_phase=PHASE-08 active_task=TASK-0044 milestone=PHASE-08-TASK-0044-ARCHITECTURE status=IN_PROGRESS -->
 
-> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. PR #405 exact head `30f7eda14c0589e8e75ced004642251046cfe09c` passed Continuity `36243101029`, Application Foundation CI `36243101046`, and Security Supply Chain CI `36243100966`; resulting-main checks also passed (Continuity `36243383256`, Foundation `36243383236`, Security `36243383257`, Release Integrity `36243383323`, Scorecard `36243383292`). TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
+> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. TASK-0043 research is complete with TASK-0042 plan drift explicitly reconciled; TASK-0044 architecture freeze is active. PHASE-09 remains planned.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 51.00%**  
-**Current phase: PHASE-07 — 100%**  
+**Overall roadmap progress: 51.88%**  
+**Current phase: PHASE-08 — 17.65%**  
 **Last completed task: TASK-0041 — Implement campaign/publishing operator UX**  
-**Current milestone: PHASE-07-FINAL-ACCEPTANCE — COMPLETE**
+**Current milestone: PHASE-08-TASK-0044-ARCHITECTURE — IN_PROGRESS**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 51.88%
 Phase 08 [████░░░░░░░░░░░░░░░░] 17.65%
 ```
 
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance are complete and certified on protected main. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043 with research complete and TASK-0044 architecture active.
 
 ### Phase / module progress
 
@@ -35,7 +35,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
 | **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
 | PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | 17.65% |
-| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | NaN% |
+| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
 | PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |

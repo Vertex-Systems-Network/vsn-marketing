@@ -149,3 +149,8 @@ it('rejects personal and credential literals in structured text values, includin
     expect(fn () => (new SegmentProposalGuard)->assertSafeDefinition($normalized))
         ->toThrow(App\Modules\Segmentation\Domain\SegmentDefinitionException::class, 'sensitive_literal_not_allowed');
 });
+
+it('rejects malformed clarification payloads at the provider response boundary', function () {
+    expect(fn () => SegmentProposalResponse::clarificationRequired(['Choose a date range', ['unexpected' => 'object']]))
+        ->toThrow(InvalidArgumentException::class, 'Clarification questions must be strings.');
+});

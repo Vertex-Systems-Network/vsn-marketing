@@ -56,7 +56,15 @@ final readonly class ProposeSegment
             return ['status' => 'input_rejected', 'code' => 'remove_personal_or_secret_values'];
         }
 
-        if (! $this->provider->available()) {
+        try {
+            $available = $this->provider->available();
+        } catch (Throwable) {
+            $this->record($scope, $intentFingerprint, 'failed', null);
+
+            return ['status' => 'failed', 'code' => 'provider_unavailable'];
+        }
+
+        if (! $available) {
             $this->record($scope, $intentFingerprint, 'unavailable', null);
 
             return ['status' => 'unavailable', 'code' => 'no_approved_ai_route'];

@@ -28,6 +28,12 @@ final readonly class SegmentProposalResponse
         if ($status !== 'proposed' && $definition !== null) {
             throw new InvalidArgumentException('Only a proposed response may contain a definition.');
         }
+
+        foreach ($clarificationQuestions as $question) {
+            if (! is_string($question)) {
+                throw new InvalidArgumentException('Clarification questions must be strings.');
+            }
+        }
     }
 
     /** @param array<string, mixed> $definition */

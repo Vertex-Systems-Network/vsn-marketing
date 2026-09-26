@@ -42,7 +42,7 @@ final readonly class DeterministicSegmentCompiler
         $this->apply($query, $ast['root'], 'and', $scope, $at);
 
         $definitionHash = $this->validator->hash($ast);
-        $fingerprint = hash('sha256', implode('|', [$scope->workspaceId, $definitionHash, $evaluatedAt]));
+        $fingerprint = hash('sha256', implode('|', [$scope->workspaceId, $scope->brandId ?? '', $definitionHash, $evaluatedAt]));
 
         return new CompiledSegment($query, $definitionHash, $fingerprint, $evaluatedAt, $estimatedCost, (int) config('segmentation.query_timeout_ms', 3000));
     }
@@ -203,7 +203,7 @@ final readonly class DeterministicSegmentCompiler
             }
             if ($mode === 'first' || $mode === 'last') {
                 $direction = $mode === 'first' ? '<' : '>';
-                $events->whereNotExists(function (Builder $other) use ($scope, $node, $direction): void {
+                $events->whereNotExists(function (Builder $other) use ($scope, $node, $direction, $from, $to): void {
                     $other->select('ce2.id')
                         ->from('customer_events as ce2')
                         ->join('event_types as et2', function ($join): void {
@@ -213,6 +213,8 @@ final readonly class DeterministicSegmentCompiler
                         ->whereColumn('ce2.contact_id', 'c.id')
                         ->where('ce2.workspace_id', $scope->workspaceId)
                         ->where('et2.canonical_name', $node['name'])
+                        ->where('ce2.occurred_at', '>=', $from)
+                        ->where('ce2.occurred_at', '<', $to)
                         ->whereColumn('ce2.occurred_at', $direction, 'ce.occurred_at');
                 });
             }

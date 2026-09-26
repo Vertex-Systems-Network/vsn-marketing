@@ -1,14 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 412,
-    "title": "feat(phase08): bounded audience preview and immutable segment versions",
-    "disposition": "active_task_implementation",
-    "accepted_actionable": true,
-    "branch": "supervisor/phase08-task46-preview-count-ux"
-  },
+  "reconciled_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -264,9 +257,10 @@
       "kind": "pr",
       "number": 412,
       "title": "feat(phase08): bounded audience preview and immutable segment versions",
-      "disposition": "active_task_implementation",
-      "accepted_actionable": true,
-      "branch": "supervisor/phase08-task46-preview-count-ux"
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task46-preview-count-ux",
+      "merge_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc"
     }
   ]
 }

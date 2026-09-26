@@ -18,6 +18,15 @@ if (! $app->environment('testing') || DB::connection()->getDriverName() !== 'sql
 }
 
 $fixtureId = Str::lower((string) Str::ulid());
+$contactCount = 1;
+foreach (array_slice($argv, 1) as $argument) {
+    if (preg_match('/^--contacts=(\d+)$/', $argument, $matches) === 1) {
+        $contactCount = (int) $matches[1];
+    }
+}
+if ($contactCount < 1 || $contactCount > 251) {
+    throw new RuntimeException('The E2E segment fixture contact count must be between 1 and 251.');
+}
 $organizationId = (string) Str::uuid();
 $workspaceId = (string) Str::uuid();
 $email = "segment-operator-{$fixtureId}@example.test";
@@ -40,9 +49,13 @@ $roles->assignRole($membership, $role);
 $companyId = (string) Str::uuid();
 DB::table('companies')->insert(['id' => $companyId, 'workspace_id' => $workspaceId, 'brand_id' => null,
     'name' => 'E2E Company', 'domain' => "{$fixtureId}.example.test", 'created_at' => now(), 'updated_at' => now()]);
-DB::table('contacts')->insert(['id' => (string) Str::uuid(), 'workspace_id' => $workspaceId,
-    'brand_id' => null, 'company_id' => $companyId,
-    'first_name' => 'Hidden', 'last_name' => 'Contact', 'display_name' => 'Hidden Contact',
-    'created_at' => now(), 'updated_at' => now()]);
+$contacts = [];
+for ($index = 0; $index < $contactCount; $index++) {
+    $contacts[] = ['id' => (string) Str::uuid(), 'workspace_id' => $workspaceId,
+        'brand_id' => null, 'company_id' => $companyId,
+        'first_name' => 'Hidden', 'last_name' => 'Contact', 'display_name' => 'Hidden Contact',
+        'created_at' => now(), 'updated_at' => now()];
+}
+DB::table('contacts')->insert($contacts);
 
 echo json_encode(['workspace' => $workspaceId, 'email' => $email, 'password' => $password], JSON_THROW_ON_ERROR);

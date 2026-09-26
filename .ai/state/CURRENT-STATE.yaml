@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20",
+  "observed_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
   "active_issue": null,
-  "active_pr": 412,
-  "active_branch": "supervisor/phase08-task46-preview-count-ux",
+  "active_pr": null,
+  "active_branch": "supervisor/phase08-final-certification",
   "current_milestone": "PHASE-08-TASK-0047-FINAL-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0046 accepted on PR #412 implementation head 69ba53e397304474f353f8e2a6036c58c9e73bf3 after Continuity 36278577811, Application 36278577784, Security 36278577807 and Playwright E2E passed.",
-  "exact_next_safe_action": "Commit and certify the TASK-0046 acceptance transition on PR #412, merge its exact green head, then create the single Supervisor-owned TASK-0047 PHASE-08 final acceptance carrier.",
+  "last_completed_milestone": "TASK-0046 accepted and merged via PR #412 as protected main 8f12e6668b8eded05ad6282ff61f508f64ead4dc after exact-head Continuity 36278940823, Application 36278940850 and Security 36278940854 passed.",
+  "exact_next_safe_action": "Commit and open the single TASK-0047 PHASE-08 final certification PR with CI-Mode full; do not mark AC-7 or PHASE-08 complete before exact-head gates.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Commit and certify the TASK-0046 acceptance transition on PR #412, merge its exact green head, then create the single Supervisor-owned TASK-0047 PHASE-08 final acceptance carrier."
+  "exact_next_action": "Commit and open the single TASK-0047 PHASE-08 final certification PR with CI-Mode full; do not mark AC-7 or PHASE-08 complete before exact-head gates."
 }

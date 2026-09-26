@@ -4,23 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=51 phase=100 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51.88 phase=17.65 current_phase=PHASE-08 active_task=TASK-0044 milestone=PHASE-08-TASK-0044-ARCHITECTURE status=IN_PROGRESS -->
 
-> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. PR #405 exact head `30f7eda14c0589e8e75ced004642251046cfe09c` passed Continuity `36243101029`, Application Foundation CI `36243101046`, and Security Supply Chain CI `36243100966`; resulting-main checks also passed (Continuity `36243383256`, Foundation `36243383236`, Security `36243383257`, Release Integrity `36243383323`, Scorecard `36243383292`). TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
+> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. TASK-0043 research is complete with TASK-0042 plan drift explicitly reconciled; TASK-0044 architecture freeze is active. PHASE-09 remains planned.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 51.00%**  
-**Current phase: PHASE-07 — 100%**  
-**Last completed task: TASK-0041 — Implement campaign/publishing operator UX**  
-**Current milestone: PHASE-07-FINAL-ACCEPTANCE — COMPLETE**
+**Overall roadmap progress: 51.88%**  
+**Current phase: PHASE-08 — 17.65%**  
+**Last completed task: TASK-0043 — Research segmentation/privacy/query patterns and benchmark audience builders**  
+**Current milestone: PHASE-08-TASK-0044-ARCHITECTURE — IN_PROGRESS**
 
 ```text
-Overall  [██████████░░░░░░░░░░] 51.00%
-Phase 07 [████████████████████] 100.00%
+Overall  [██████████░░░░░░░░░░] 51.88%
+Phase 08 [████░░░░░░░░░░░░░░░░] 17.65%
 ```
 
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance are complete and certified on protected main. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043 with research complete and TASK-0044 architecture active.
 
 ### Phase / module progress
 
@@ -33,8 +33,8 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Complete — final protected-main verification in progress** | **100.00%** |
-| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned; separate research-first registration | 0% |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Certified on protected main via TASK-0041 / PR #405** | **100.00%** |
+| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | 17.65% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
@@ -44,7 +44,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% |
 | PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% |
 
-### Current execution snapshot
+### PHASE-07 closeout evidence (historical)
 
 PR #402 exact head `34b1a0a2632218cd87ae070547f16a20dc76ba5a` passed AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and all applicable E2E/integration checks before merging as `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`; it staged the exclusive TASK-0041 Operator UX lane.
 
@@ -52,9 +52,13 @@ PR #403 merged exact worker head `391f43b3e7ee720be878294009a5993c163da685` into
 
 The integration push correctly exposed a missing global continuity-ledger handoff. PR #404 synchronized PR #402's current Lane-4 authority, appended the hash-chained checkpoint, and passed its exact Shipping Fast Gate. Resulting integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed Continuity, Application Foundation and Shipping Fast Gate. Product/test files are unchanged from the fully tested `7f43eda` snapshot.
 
-TASK-0041 acceptance criteria AC-1..AC-8 are recorded against the canonical workspace, preview, bulk approval, revocation, partial-success, provider-safety, accessibility, adversarial and E2E evidence. The final acceptance carrier uses `CI-Mode: full`; it is not mergeable until exact-head Continuity, Application Foundation and Security Supply Chain checks pass.
+TASK-0041 AC-1..AC-8 were accepted by PR #405. Its exact head passed Continuity, Application Foundation and Security Supply Chain before merging as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main gates passed and were reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.
 
-TASK-0042 is not registered. PHASE-08 research/task materialization, deployment/release authority and deferred Runner optimization remain inactive.
+The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; it is complete, TASK-0044 architecture freeze is active, and PHASE-09 remains inactive.
+
+### Current execution snapshot
+
+PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 architecture freeze is active. PHASE-08 progress is 17.65%; deterministic roadmap progress is 51.88%. TASK-0045 through TASK-0047 are planned in dependency order. No Runner task or PHASE-09 work is active.
 
 ### README progress-sync contract
 

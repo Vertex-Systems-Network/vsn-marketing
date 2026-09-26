@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0045",
+  "phase": "PHASE-08",
+  "module": "Segmentation",
+  "title": "Implement natural-language-to-segment structured compiler",
+  "status": "planned",
+  "objective": "Translate natural-language audience intent into an editable structured AST proposal through an approved provider-neutral AI boundary; deterministic validation and human review retain execution authority.",
+  "dependencies": [
+    "TASK-0044"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "AI request context contains only approved field/event descriptions and intent; no customer rows, identifiers, raw event payloads, consent evidence or secrets are sent to a model.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Model output is a bounded structured proposal matching the versioned schema and never SQL; server validates registry identity, type, permissions, policy, depth, count and query cost independently.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Unknown/hallucinated fields or events, unsupported operators, prompt injection, cross-tenant instructions and malformed output fail closed with safe, actionable errors.",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Ambiguous time range, negation, identity, event meaning or audience intent remains a draft requiring clarification; no silent executable interpretation occurs.",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Provider integration uses the repository AI Gateway contract/model policy or a provider-neutral port; absence of an approved route produces an explicit unavailable state and no direct provider secret/client.",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Operator can inspect/edit every proposed rule and explicitly accept the validated definition before save/publish; audit captures proposal provenance without logging PII or prompts containing sensitive values.",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Timeout, retry, token/cost budget, refusal and malformed-response behavior are bounded and tested using deterministic fake providers.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "AI segment compiler unit and prompt-injection tests",
+    "AI policy validation",
+    "Frontend proposal-review tests"
+  ],
+  "exact_next_action": "Implement only after TASK-0044 AST, registry and deterministic validation contracts are frozen."
+}

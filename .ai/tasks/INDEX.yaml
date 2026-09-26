@@ -418,6 +418,56 @@
       "dependencies": [
         "TASK-0040"
       ]
+    },
+    {
+      "id": "TASK-0043",
+      "phase": "PHASE-08",
+      "title": "Research segmentation/privacy/query patterns and benchmark audience builders",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0041"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0044",
+      "phase": "PHASE-08",
+      "title": "Implement canonical segment definition AST and deterministic query compiler",
+      "status": "in_progress",
+      "dependencies": [
+        "TASK-0043"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0045",
+      "phase": "PHASE-08",
+      "title": "Implement natural-language-to-segment structured compiler",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0044"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0046",
+      "phase": "PHASE-08",
+      "title": "Implement preview/count/freshness/cost guards and audience UX",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0045"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0047",
+      "phase": "PHASE-08",
+      "title": "Certify PHASE-08",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0046"
+      ],
+      "weight": 10
     }
   ]
 }

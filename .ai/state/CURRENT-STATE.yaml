@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "needs_reconciliation",
-    "current_phase": "PHASE-07",
-    "active_task": "TASK-0041",
-    "last_completed_task": "TASK-0041",
+    "status": "in_progress",
+    "current_phase": "PHASE-08",
+    "active_task": "TASK-0044",
+    "last_completed_task": "TASK-0043",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 51,
-    "phase_percent": 100,
+    "roadmap_percent": 51.88,
+    "phase_percent": 17.65,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,29 +24,25 @@
     "release_integrity_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383323_passed",
     "scorecard_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383292_passed"
   },
-  "observed_main_sha": "87e65b1d458a79f925376d4cf49792d3771ef192",
+  "observed_main_sha": "6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
-  "current_milestone": "PHASE-07-FINAL-ACCEPTANCE",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "PHASE-07 final acceptance merged to protected main as 87e65b1d458a79f925376d4cf49792d3771ef192. TASK-0041 AC-1..AC-8 are verified; PR #403 worker, PR #404 ledger reconciliation, and PR #405 final promotion are terminal. PHASE-08 remains separate research-first work; no successor is registered.",
-  "exact_next_safe_action": "Keep next_task null. Register PHASE-08 only in a separate research-first milestone using the preplanned implementation plan and research-first standard.",
+  "current_milestone": "PHASE-08-TASK-0044-ARCHITECTURE",
+  "milestone_status": "IN_PROGRESS",
+  "last_completed_milestone": "TASK-0043 PHASE-08 research gate completed and TASK-0042 plan drift reconciled; PHASE-07 certification remains satisfied by TASK-0041 final acceptance / PR #405.",
+  "exact_next_safe_action": "Complete TASK-0044 architecture freeze from the accepted research: pin field/event/relation/operator registries, AST semantics, tenant-scope injection, cost bounds and test contracts before product implementation; keep PHASE-09 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
-  "blockers": [
-    "No successor task is registered after TASK-0041; PHASE-08 research-first task materialization must be completed as a separate milestone before further implementation."
-  ],
-  "current_blockers": [
-    "No successor task is registered after TASK-0041; PHASE-08 research-first task materialization must be completed as a separate milestone before further implementation."
-  ],
+  "blockers": [],
+  "current_blockers": [],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 1,
     "max_ci_status_refreshes_with_recorded_exception": 2,
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Keep next_task null. Register PHASE-08 only in a separate research-first milestone using the preplanned implementation plan and research-first standard."
+  "exact_next_action": "Complete TASK-0044 architecture freeze from the accepted research: pin field/event/relation/operator registries, AST semantics, tenant-scope injection, cost bounds and test contracts before product implementation; keep PHASE-09 inactive."
 }

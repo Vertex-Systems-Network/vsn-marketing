@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0043",
+  "phase": "PHASE-08",
+  "module": "Segmentation",
+  "title": "Research segmentation/privacy/query patterns and benchmark audience builders",
+  "status": "completed",
+  "objective": "Research current segmentation products, canonical VSN customer/event semantics, privacy and security boundaries, bounded evaluation patterns and natural-language proposal controls; reconcile the stale TASK-0042 reservation without rewriting completed history.",
+  "dependencies": [
+    "TASK-0041"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Current first-party documentation from multiple audience builders is compared with extracted design implications for saved/dynamic membership, event/attribute filters, nested groups, evaluation freshness, counts, AI proposals and operator review.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-2",
+      "text": "Canonical VSN contact, company, identity, list/tag, immutable consent and customer-event models are mapped to typed segment semantics; null, time-window, Boolean, relation and unsupported-rule semantics are explicit.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-3",
+      "text": "Privacy analysis covers targeting/profiling, sensitive and inferred attributes, PII preview exposure, consent/suppression, deletion/export, retention, role boundaries, count disclosure and audit requirements.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-4",
+      "text": "Threat model defines parameter binding, registry-only identifiers/operators/joins, AST limits, independently derived tenant scope, prompt injection/hallucination rejection and query-cost controls.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-5",
+      "text": "Evaluation and scale research defines bounded preview/count, exact versus estimated/capped/stale semantics, timeout/cancellation, high-cardinality events, pagination/export and representative PostgreSQL plan evidence.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-6",
+      "text": "Research-to-plan reconciliation explicitly records TASK-0042 as an unmaterialized stale reservation satisfied by TASK-0041 final acceptance/PR #405, preserves the ID gap, and starts PHASE-08 at TASK-0043.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    },
+    {
+      "id": "AC-7",
+      "text": "Research pack is dated, uses authoritative current sources, records conflicts and freshness risks, and recommends a provider-neutral AI proposal boundary without activating PHASE-09 or PHASE-10.",
+      "done": true,
+      "evidence": "Evidence: .ai/research/PHASE-08/TASK-0043-RESEARCH.md; live official sources accessed 2026-09-26; repository baseline and TASK-0042 reconciliation recorded."
+    }
+  ],
+  "required_tests": [
+    "python tools/ai_state.py validate",
+    "python tools/ai_journal.py validate",
+    "python tools/supervisor_contract.py validate",
+    "python tools/runner_benchmark.py validate",
+    "python tools/ai_policy.py",
+    "python tools/ai_parallel.py validate",
+    "python tools/ai_context.py manifest",
+    "Full CI on the exact research/task-registration head"
+  ],
+  "exact_next_action": "Activate TASK-0044 architecture freeze only after this research evidence and task registry pass exact-head checks."
+}

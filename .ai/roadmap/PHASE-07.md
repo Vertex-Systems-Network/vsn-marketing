@@ -1,8 +1,8 @@
 # PHASE-07 — Campaigns, Publishing, Approvals, and Scheduling
 
-Status: **IN PROGRESS — TASK-0040 is accepted/completed and TASK-0041 operator UX is staged ready/active by guarded transition PR #385; implementation remains blocked until the transition exact head is trusted and terminally reconciled.**
+Status: **COMPLETE — PHASE-07 was accepted through TASK-0041 final acceptance / PR #405 and merged to protected main as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main state was reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.**
 
-## Purpose
+## TASK-0042 reservation reconciliation\n\nThe preplanned TASK-0042 certification reservation was not materialized. TASK-0041 final acceptance / PR #405 verified PHASE-07 AC-1..AC-8 and closed the phase. Keep TASK-0042 as an unmaterialized identifier gap; do not reuse or renumber it. PHASE-08 begins at TASK-0043.\n\n## Purpose
 
 Orchestrate governed cross-channel campaigns and publication from one canonical VSN calendar while keeping provider-specific APIs, account roles, app-review requirements, media transfer mechanics and native scheduling semantics behind versioned capability evidence.
 

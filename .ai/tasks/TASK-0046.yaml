@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "TASK-0046",
+  "phase": "PHASE-08",
+  "module": "Segmentation",
+  "title": "Implement preview/count/freshness/cost guards and audience UX",
+  "status": "planned",
+  "objective": "Provide safe bounded segment preview, count and freshness explanations plus an accessible rule-builder and AI-proposal review workflow.",
+  "dependencies": [
+    "TASK-0045"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Preview and count responses are workspace- and permission-scoped, never expose member PII by default, and return explicit exact/estimated/capped/stale semantics with evaluation timestamps.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Expensive or high-cardinality evaluations use bounded work, query timeouts, cancellation and safe failure states; exact counts are not required for unbounded audiences.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Preview/count cache keys include workspace, canonical definition hash/version, permission/policy revision and evaluation identity; cross-workspace or cross-version reuse is rejected.",
+      "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Consent and suppression impact is described as a separate eligibility/exclusion result, and actual send authority rechecks canonical consent/suppression after preview.",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Saved definitions use draft/published immutable versions; edits create new versions and previews identify the exact definition hash.",
+      "done": false
+    },
+    {
+      "id": "AC-6",
+      "text": "Accessible responsive rule builder supports nested logic, typed operators, event windows, inline errors, loading/empty/stale/timeout/large-audience states and keyboard/screen-reader operation.",
+      "done": false
+    },
+    {
+      "id": "AC-7",
+      "text": "Pagination and any export path are bounded, authorized and auditable; no raw SQL or uncontrolled audience export is introduced.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "Backend preview/count integration tests",
+    "Frontend typecheck/unit/build",
+    "Playwright/E2E accessibility and failure-state tests",
+    "PostgreSQL query-plan and scale fixtures"
+  ],
+  "exact_next_action": "Implement after TASK-0045 validated proposal output and cost policy are accepted."
+}

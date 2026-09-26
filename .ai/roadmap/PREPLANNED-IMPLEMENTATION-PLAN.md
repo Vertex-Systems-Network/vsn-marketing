@@ -15,6 +15,10 @@ It does **not** authorize future implementation by itself. `CURRENT-STATE.yaml`,
 7. Provider and AI vendors remain replaceable implementations behind canonical contracts.
 8. The final task number is not a project limit. If research justifies additional work, continue with TASK-0101+ rather than compressing or hiding scope.
 
+## TASK-0042 / PHASE-07 certification reconciliation (2026-09-26)
+
+The preplanned TASK-0042 reservation is stale. Canonical task history has TASK-0041 completed with AC-1..AC-8 verified; final acceptance carrier PR #405 passed exact-head Continuity/Application/Security, merged to protected main as 87e65b1d458a79f925376d4cf49792d3771ef192, and resulting-main evidence was reconciled at 6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115. Therefore TASK-0042 MUST remain unmaterialized and MUST NOT be reused. Preserve the identifier gap. PHASE-08 starts at TASK-0043, dependent on TASK-0041. Repository evidence and the final acceptance carrier take precedence over the old plan reservation.
+
 ## Cross-cutting requirements inherited by every phase
 
 - Organization → Workspace → Brand isolation.

@@ -1,9 +1,9 @@
 <?php
 
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentFieldRegistry;
 use App\Modules\Segmentation\Domain\SegmentValidator;
-use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 
 function segmentValidator(): SegmentValidator
 {

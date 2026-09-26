@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6510597557611466200293a2e68ec9e2c4ece073",
+  "reconciled_main_sha": "ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e",
   "active_work_path": null,
   "items": [
     {
@@ -198,6 +198,32 @@
       "accepted_actionable": false,
       "runner_id": "RBT-047",
       "branch": "worker-3/task0041-provider-drift"
+    },
+    {
+      "kind": "pr",
+      "number": 403,
+      "title": "feat(publishing): certify accessible operator UX states",
+      "disposition": "terminal_shipping_merged_certified",
+      "accepted_actionable": false,
+      "branch": "worker-4/task0041-operator-ux-cert",
+      "runner_id": "RBT-049"
+    },
+    {
+      "kind": "pr",
+      "number": 404,
+      "title": "control: reconcile TASK-0041 worker integration ledger",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "control/task0041-ship-ledger-reconcile"
+    },
+    {
+      "kind": "pr",
+      "number": 405,
+      "title": "control: accept TASK-0041 and close PHASE-07",
+      "disposition": "phase07_final_acceptance_promotion_in_progress",
+      "accepted_actionable": false,
+      "runner_id": "RBT-050",
+      "branch": "supervisor/task0041-phase07-final-acceptance"
     }
   ]
 }

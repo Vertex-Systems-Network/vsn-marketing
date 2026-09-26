@@ -1472,16 +1472,89 @@
       "source": "TASK-0041 Operator UX Lane-4 lease authority carrier",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "Lane-4 lease carrier exact-head status + protected-main merge evidence"
+        "git_sha": "34b1a0a2632218cd87ae070547f16a20dc76ba5a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #402 exact-head full gate + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "Lane-3 terminal release; interactive Lane-4 identity chatgpt-session-task0041-operator-ux; exclusive frontend/unit/E2E lease; corrected Playwright e2e path; green integration dependency fdd4ab92",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-operator-ux-lane4-lease:required-full-ci",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 402,
+        "source_sha": "34b1a0a2632218cd87ae070547f16a20dc76ba5a",
+        "merge_sha": "ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e",
+        "workflow_runs": {
+          "ai_continuity_guard": 36240505361,
+          "application_foundation_ci": 36240505342,
+          "security_supply_chain_ci": 36240505338
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-049",
+      "source": "PR #403 operator UX worker + PR #404 required ledger reconciliation and final TASK-0041 integration certification",
+      "command_workflow": "PR #403 Shipping Fast Gate; full Application Foundation CI on product-bearing integration; final green ship/week-1 Continuity + Application + Shipping Fast Gate",
+      "exact_source_identity": {
+        "git_sha": "0733c40eead4038e2c1d7f19a50df23b88aaac6a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #403 exact worker head plus exact green integration heads 7f43eda18cc95ab90ea0b56207e67476e7433fab / 0733c40eead4038e2c1d7f19a50df23b88aaac6a"
+      },
+      "environment_matrix_input_fixture": "accessible responsive operator UX; workspace/tenant authority; immutable preview; approval and reject confirmation; retry/revoke stale-state guards; partial-success/provider outcomes; secret-safe Playwright guard; PHP backend/integration/static/format, frontend typecheck/unit/build and Playwright smoke",
+      "authorization_state": "consumed_required_shipping_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_exact_worker_and_integration_workflow_timeouts",
+      "dedup_key": "runner:task0041-final-operator-ux-integration:403-404",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_requests": [
+          403,
+          404
+        ],
+        "worker_source_sha": "391f43b3e7ee720be878294009a5993c163da685",
+        "product_test_sha": "7f43eda18cc95ab90ea0b56207e67476e7433fab",
+        "latest_green_integration_sha": "0733c40eead4038e2c1d7f19a50df23b88aaac6a",
+        "workflow_runs": {
+          "worker_shipping_fast_gate": 36241215009,
+          "product_application_foundation_ci": 36241797924,
+          "final_ship_ai_continuity_guard": 36242518365,
+          "final_ship_application_foundation_ci": 36242518520,
+          "final_ship_shipping_fast_gate": 36242518369
+        },
+        "conclusions": {
+          "worker_shipping_fast_gate": "success",
+          "product_application_foundation_ci": "success",
+          "final_ship_ai_continuity_guard": "success",
+          "final_ship_application_foundation_ci": "success",
+          "final_ship_shipping_fast_gate": "success"
+        },
+        "test_surface_note": "The complete application suite ran successfully on product-bearing integration head 7f43eda; the subsequent latest integration head 0733c40 differs only by the Supervisor ledger reconciliation, and its required continuity/application/shipping workflow conclusions are all success."
+      }
+    },
+    {
+      "id": "RBT-050",
+      "source": "PHASE-07 final acceptance and protected-main promotion",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI + all applicable release acceptance checks",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "PHASE-07 final-acceptance promotion PR exact-head checks and resulting protected-main verification"
+      },
+      "environment_matrix_input_fixture": "TASK-0041 AC-1..AC-8 acceptance ledger; PR #402/#403/#404 and final ship integration evidence; CI-Mode full; exact protected-main target",
+      "authorization_state": "authorized_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_protected_main_full_workflow_timeouts",
+      "dedup_key": "runner:phase07-final-acceptance-promotion:protected-main",
       "status": "registered_immediate",
       "immutable_evidence": null
     }

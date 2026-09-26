@@ -18,8 +18,7 @@ final readonly class DeterministicSegmentCompiler
         private DatabaseManager $database,
         private SegmentValidator $validator,
         private SegmentFieldRegistry $fields,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $definition */
     public function compile(array $definition, TenantContext $scope, DateTimeImmutable $evaluationInstant): CompiledSegment

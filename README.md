@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-APPROVAL-REVOCATION-LEASE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-PROVIDER-DRIFT-LEASE status=VERIFYING -->
 
 > Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
 >
@@ -14,7 +14,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current phase: PHASE-07 — 83.33%**  
 **Active task: TASK-0041 — Implement campaign/publishing operator UX**  
 **Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-APPROVAL-REVOCATION-LEASE — VERIFYING**
+**Current milestone: TASK-0041-PROVIDER-DRIFT-LEASE — VERIFYING**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 49.83%
@@ -34,7 +34,7 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 approval revocation Lane-2 lease PR #395** | **83.33%** |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Provider Drift Lane-3 lease PR #397** | **83.33%** |
 | PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
@@ -47,11 +47,11 @@ The deterministic roadmap percentage advances only from completed task weights. 
 
 ### Current execution snapshot
 
-Lane-1 retry/capability is trusted. PR #393 exact source `7b1b5497ec86d4d8ffdb746927e358daf0b8f179` passed AI Continuity Guard `36198622976`, Application Foundation CI `36198623003`, and Security Supply Chain CI `36198622967`, then merged to protected main as `280b6be5dda15a4ddce17123ea715c8c50ac3da0`. PR #394 exact source `d3a028a7f0576d89aa6b8495f6ad2666f66c8255` passed Shipping Fast Gate `36199489253` and merged to `ship/week-1` as `d9f699686098b4187cfce8fd4a9ab2e0e761fe6f`; that resulting integration head passed Continuity `36199738634`, Application `36199738672`, and Shipping Fast Gate `36199738706`. RBT-041 and RBT-042 are terminal PASS.
+Lane-2 approval revocation is trusted. PR #395 exact source `5a065e9ad425473d729da0625ed104ca50bd2af5` passed AI Continuity Guard `36200389705`, Application Foundation CI `36200389716`, and Security Supply Chain CI `36200389698`, then merged to protected main as `f45cbbe970ae9e9a8eea2fe71a58e61783ebe3e8`. PR #396 exact source `39a2017bb9791e078a70ebdebe15b05fa17234d5` passed Shipping Fast Gate `36201532662` and merged to `ship/week-1` as `3a53bf6982df1d4277a750434d5d2c12314a7a2d`; that resulting integration head passed Continuity `36201663908`, Application `36201663901`, and Shipping Fast Gate `36201663961`. RBT-043 and RBT-044 are terminal PASS.
 
-PR #395 releases the completed Lane-1 lease and leases `WS-0041-APPROVAL-REVOCATION` to `chatgpt-session-task0041-approval-revocation`, representing this active interactive ChatGPT session. Its exclusive worker paths are `CampaignApprovalRevocationService.php`, `PublishingApprovalRevocationController.php`, and `Task0041ApprovalRevocationSecurityTest.php`. The worker must reuse canonical governance revocation authority and cannot edit shared routes/global state/config/migrations.
+PR #397 releases the completed Lane-2 lease and leases `WS-0041-PROVIDER-DRIFT` to `chatgpt-session-task0041-provider-drift`, representing this active interactive ChatGPT session. Its exclusive worker paths are `PublishingOperatorReadModel.php` and `Task0041ProviderDriftOperatorSecurityTest.php`. The lane may surface actionable non-secret provider disconnect/readiness, permission/app-review loss, capability drift/staleness, rate-limit and circuit outcomes while preserving workspace isolation and partial-success semantics; credentials, tokens, secret references and raw sensitive provider evidence remain excluded.
 
-Production provider credentials/API side effects, TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
+TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
 
 ### README progress-sync contract
 

@@ -18,7 +18,8 @@ final readonly class DeterministicSegmentCompiler
         private DatabaseManager $database,
         private SegmentValidator $validator,
         private SegmentFieldRegistry $fields,
-    ) {}
+    ) {
+    }
 
     /** @param array<string, mixed> $definition */
     public function compile(array $definition, TenantContext $scope, DateTimeImmutable $evaluationInstant): CompiledSegment
@@ -153,7 +154,7 @@ final readonly class DeterministicSegmentCompiler
         $definitionTable = $kind === 'list' ? 'contact_lists' : 'tags';
         $membershipTable = $kind === 'list' ? 'contact_list_memberships' : 'contact_tag_assignments';
         $referenceColumn = $kind === 'list' ? 'list_id' : 'tag_id';
-        if (!$this->database->table($definitionTable)
+        if (! $this->database->table($definitionTable)
             ->where('workspace_id', $scope->workspaceId)
             ->where('id', $node['id'])
             ->exists()) {
@@ -174,7 +175,7 @@ final readonly class DeterministicSegmentCompiler
 
     private function event(Builder $query, array $node, string $boolean, TenantContext $scope, DateTimeImmutable $at): void
     {
-        if (!$this->database->table('event_types')
+        if (! $this->database->table('event_types')
             ->where('workspace_id', $scope->workspaceId)
             ->where('canonical_name', $node['name'])
             ->exists()) {

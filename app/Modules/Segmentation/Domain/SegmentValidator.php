@@ -213,11 +213,6 @@ final readonly class SegmentValidator
         }
     }
 
-    private function encode(array $value): string
-    {
-        return json_encode($this->sortKeys($value), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?: '';
-    }
-
     private function sortKeys(array $value): array
     {
         foreach ($value as &$item) {

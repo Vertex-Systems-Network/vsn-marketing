@@ -24,6 +24,10 @@ final readonly class DeterministicSegmentCompiler
     public function compile(array $definition, TenantContext $scope, DateTimeImmutable $evaluationInstant): CompiledSegment
     {
         $ast = $this->validator->normalize($definition);
+        $estimatedCost = $this->estimateCost($ast['root']);
+        if ($estimatedCost > (int) config('segmentation.max_cost', 100)) {
+            throw new SegmentDefinitionException('cost_limit_exceeded', '$.root');
+        }
         $at = $evaluationInstant->setTimezone(new DateTimeZone('UTC'));
         $evaluatedAt = $at->format('Y-m-d H:i:s');
         $query = $this->database->connection()->table('contacts as c')
@@ -39,7 +43,7 @@ final readonly class DeterministicSegmentCompiler
         $definitionHash = $this->validator->hash($ast);
         $fingerprint = hash('sha256', implode('|', [$scope->workspaceId, $definitionHash, $evaluatedAt]));
 
-        return new CompiledSegment($query, $definitionHash, $fingerprint, $evaluatedAt);
+        return new CompiledSegment($query, $definitionHash, $fingerprint, $evaluatedAt, $estimatedCost, (int) config('segmentation.query_timeout_ms', 3000));
     }
 
     /** @param array<string, mixed> $node */
@@ -212,6 +216,28 @@ final readonly class DeterministicSegmentCompiler
                 });
             }
         });
+    }
+
+    /** @param array<string, mixed> $node */
+    private function estimateCost(array $node): int
+    {
+        if ($node['type'] === 'group') {
+            return 1 + array_sum(array_map(fn (array $child): int => $this->estimateCost($child), $node['children']));
+        }
+        if ($node['type'] === 'not') {
+            return 1 + $this->estimateCost($node['child']);
+        }
+        if ($node['type'] === 'membership') {
+            return 3;
+        }
+        if ($node['type'] === 'event') {
+            return match ($node['mode']) {
+                'exists', 'not_exists' => 5,
+                'count' => 8,
+                'first', 'last' => 10,
+            };
+        }
+        return 1;
     }
 
     private function window(array $window, DateTimeImmutable $at): array

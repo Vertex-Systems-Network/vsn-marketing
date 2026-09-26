@@ -11,5 +11,7 @@ final readonly class CompiledSegment
         public string $definitionHash,
         public string $evaluationFingerprint,
         public string $evaluatedAt,
+        public int $estimatedCost,
+        public int $timeoutMs,
     ) {}
 }

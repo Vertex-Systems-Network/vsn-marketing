@@ -51,5 +51,5 @@
     "PostgreSQL-backed integration and migration tests",
     "PHP static analysis and formatting"
   ],
-  "exact_next_action": "Freeze TASK-0044 architecture from TASK-0043 research and current schema before product implementation; do not activate TASK-0045 early."
+  "exact_next_action": "Complete TASK-0044 deterministic AST/compiler implementation and adversarial tests; keep TASK-0045 inactive until exact-head validation passes."
 }

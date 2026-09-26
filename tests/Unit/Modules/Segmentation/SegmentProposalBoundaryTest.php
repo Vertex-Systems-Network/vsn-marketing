@@ -19,6 +19,7 @@ use App\Modules\Segmentation\Domain\SegmentValidator;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 function task45ProposalService(
     SegmentProposalProvider $provider,
@@ -41,14 +42,6 @@ function task45ProposalService(
     );
 }
 
-function task45ActorAndScope(): array
-{
-    $actor = new User;
-    $actor->setAttribute('id', 'actor-1');
-
-    return [$actor, new TenantContext('org-1', 'workspace-1', null, 'actor-1')];
-}
-
 function task45AuditRecorder(): AuditRecorder
 {
     $clock = Mockery::mock(Clock::class);
@@ -59,6 +52,64 @@ function task45AuditRecorder(): AuditRecorder
     $events->shouldReceive('store')->once()->with(Mockery::type(AuditEvent::class));
 
     return new AuditRecorder($clock, $identifiers, $events);
+}
+
+/** @return array{0: User, 1: TenantContext} */
+function task45ActorAndScope(): array
+{
+    $actor = new User;
+    $actor->setAttribute('id', 'actor-1');
+
+    return [$actor, new TenantContext('org-1', 'workspace-1', null, 'actor-1')];
+}
+
+/** Build two successful workspace permission checks through the real final authorizer. */
+function task45AllowingAuthorizer(): WorkspaceAuthorizer
+{
+    $query = Mockery::mock(Builder::class);
+    $query->shouldReceive('join')->with(
+        'workspace_membership_roles',
+        'workspace_membership_roles.workspace_membership_id',
+        '=',
+        'workspace_memberships.id',
+    )->twice()->andReturnSelf();
+    $query->shouldReceive('join')->with(
+        'workspace_roles',
+        Mockery::on(function (Closure $configure): bool {
+            $join = new class
+            {
+                /** @var list<list<mixed>> */
+                public array $conditions = [];
+
+                public function on(mixed ...$arguments): self
+                {
+                    $this->conditions[] = $arguments;
+
+                    return $this;
+                }
+            };
+            $configure($join);
+
+            return $join->conditions === [
+                ['workspace_roles.id', '=', 'workspace_membership_roles.workspace_role_id'],
+                ['workspace_roles.workspace_id', '=', 'workspace_memberships.workspace_id'],
+            ];
+        }),
+    )->twice()->andReturnSelf();
+    $query->shouldReceive('join')->with(
+        'workspace_role_permissions',
+        'workspace_role_permissions.workspace_role_id',
+        '=',
+        'workspace_roles.id',
+    )->twice()->andReturnSelf();
+    $query->shouldReceive('where')->with('workspace_memberships.user_id', 'actor-1')->twice()->andReturnSelf();
+    $query->shouldReceive('where')->with('workspace_memberships.workspace_id', 'workspace-1')->twice()->andReturnSelf();
+    $query->shouldReceive('where')->with('workspace_roles.workspace_id', 'workspace-1')->twice()->andReturnSelf();
+    $query->shouldReceive('where')->with('workspace_role_permissions.permission', Mockery::type('string'))->twice()->andReturnSelf();
+    $query->shouldReceive('exists')->twice()->andReturn(true);
+    DB::shouldReceive('table')->with('workspace_memberships')->twice()->andReturn($query);
+
+    return new WorkspaceAuthorizer;
 }
 
 function task45EventDatabase(): DatabaseManager
@@ -79,8 +130,7 @@ it('blocks personal and credential literals before calling the proposal provider
     $provider = Mockery::mock(SegmentProposalProvider::class);
     $provider->shouldReceive('available')->once()->andReturn(true);
     $provider->shouldNotReceive('propose');
-    $authorizer = Mockery::mock(WorkspaceAuthorizer::class);
-    $authorizer->shouldReceive('allows')->twice()->andReturn(true);
+    $authorizer = task45AllowingAuthorizer();
     $database = Mockery::mock(DatabaseManager::class);
     $database->shouldNotReceive('table');
 
@@ -112,8 +162,7 @@ it('rejects hallucinated fields and events after proposal output without exposin
 
         return true;
     }))->andReturn(SegmentProposalResponse::proposed($definition));
-    $authorizer = Mockery::mock(WorkspaceAuthorizer::class);
-    $authorizer->shouldReceive('allows')->twice()->andReturn(true);
+    $authorizer = task45AllowingAuthorizer();
     $compilerDatabase = task45EventDatabase();
 
     $result = task45ProposalService($provider, $compilerDatabase, task45AuditRecorder(), $authorizer)

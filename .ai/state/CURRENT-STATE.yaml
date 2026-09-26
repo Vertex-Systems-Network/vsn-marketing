@@ -19,7 +19,7 @@
   },
   "quality": {
     "continuity_validation": "PR #410 exact head passed run 36253649223; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964727.",
-    "application_test_status": "PR #410 Application Foundation all jobs passed run 36253649249; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 all jobs passed run 36253964718.",
+    "application_test_status": "PR #411 head 432aeb68198193d0ae88b68583b77650886e5177 Application Foundation failed in two new unit tests because the final WorkspaceAuthorizer was mocked. The in-scope test harness is repaired to exercise the real authorizer; full checks are pending on the repaired branch head.",
     "security_supply_chain_status": "PR #410 exact head passed run 36253649243; resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964750.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-08-TASK-0045-NATURAL-LANGUAGE-COMPILER",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0044 completed by PR #410. Exact-head Continuity 36253649223, Application Foundation 36253649249, and Security 36253649243 passed. Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed Continuity 36253964727, Application Foundation 36253964718, Security 36253964750, release integrity 36253964681, Scorecard 36253964656, and Persistent Supervisor 36253983819. PHASE-09 remains inactive.",
-  "exact_next_safe_action": "Run CI-Mode: full on PR #411 exact head; repair in-scope failures, then certify its unchanged head. Keep TASK-0046 and PHASE-09 inactive.",
+  "exact_next_safe_action": "Rerun CI-Mode: full on PR #411 repaired exact head; accept TASK-0045 only after all required checks pass. Keep TASK-0046 and PHASE-09 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Run CI-Mode: full on PR #411 exact head; repair in-scope failures, then certify its unchanged head. Keep TASK-0046 and PHASE-09 inactive."
+  "exact_next_action": "Rerun CI-Mode: full on PR #411 repaired exact head; accept TASK-0045 only after all required checks pass. Keep TASK-0046 and PHASE-09 inactive."
 }

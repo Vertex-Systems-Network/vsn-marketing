@@ -18,23 +18,21 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_final_green_ship_0733c40eead4038e2c1d7f19a50df23b88aaac6a_passed_run_36242518365",
-    "application_test_status": "task0041_operator_ux_product_snapshot_7f43eda18cc95ab90ea0b56207e67476e7433fab_passed_run_36241797924; latest ledger-reconciled integration gate 0733c40eead4038e2c1d7f19a50df23b88aaac6a passed_run_36242518520",
-    "security_supply_chain_status": "task0041_lane4_authority_pr402_head_34b1a0a2632218cd87ae070547f16a20dc76ba5a_passed_run_36240505338",
-    "release_integrity_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605871",
-    "scorecard_status": "task0039_acceptance_resulting_main_1e08f84c986ace04402ea2fc2d22ea328899063f_passed_run_35913605976"
+    "continuity_validation": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243101029_passed; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383256_passed",
+    "application_test_status": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243101046_passed_all_jobs; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383236_passed_all_jobs",
+    "security_supply_chain_status": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243100966_passed; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383257_passed",
+    "release_integrity_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383323_passed",
+    "scorecard_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383292_passed"
   },
-  "observed_main_sha": "ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e",
+  "observed_main_sha": "87e65b1d458a79f925376d4cf49792d3771ef192",
   "active_issue": null,
   "active_pr": null,
-  "active_branch": "supervisor/task0041-phase07-final-acceptance",
+  "active_branch": "main",
   "current_milestone": "PHASE-07-FINAL-ACCEPTANCE",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0041 AC-1..AC-8 acceptance evidence is assembled from PR #386..#403 and green shipping integration certification. Final PHASE-07 promotion is awaiting exact-head protected-main Continuity/Application/Security checks; no TASK-0042/PHASE-08 task has been materialized or activated.",
-  "exact_next_safe_action": "Merge the PHASE-07 final-acceptance carrier only after its unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, and review. Reread resulting main and immediately reconcile any material main-anchor or final-runner-evidence drift. Keep next_task null; PHASE-08 research and task materialization must be a separate milestone.",
-  "pending_runner_ids": [
-    "RBT-050"
-  ],
+  "milestone_status": "COMPLETE",
+  "last_completed_milestone": "PHASE-07 final acceptance merged to protected main as 87e65b1d458a79f925376d4cf49792d3771ef192. TASK-0041 AC-1..AC-8 are verified; PR #403 worker, PR #404 ledger reconciliation, and PR #405 final promotion are terminal. PHASE-08 remains separate research-first work; no successor is registered.",
+  "exact_next_safe_action": "Keep next_task null. Register PHASE-08 only in a separate research-first milestone using the preplanned implementation plan and research-first standard.",
+  "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
@@ -50,5 +48,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Merge the PHASE-07 final-acceptance carrier only after its unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI, and review. Reread resulting main and immediately reconcile any material main-anchor or final-runner-evidence drift. Keep next_task null; PHASE-08 research and task materialization must be a separate milestone."
+  "exact_next_action": "Keep next_task null. Register PHASE-08 only in a separate research-first milestone using the preplanned implementation plan and research-first standard."
 }

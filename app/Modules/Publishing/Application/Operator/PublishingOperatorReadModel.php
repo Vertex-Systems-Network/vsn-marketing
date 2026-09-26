@@ -5,12 +5,15 @@ namespace App\Modules\Publishing\Application\Operator;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Publishing\Application\Publication\PublicationAggregateService;
 use App\Modules\Publishing\Domain\Publication\PublicationTargetOutcome;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\DatabaseManager;
 use JsonException;
 use stdClass;
 
 final readonly class PublishingOperatorReadModel
 {
+    private const PROVIDER_OPERATION = 'publication.create';
+
     public function __construct(
         private DatabaseManager $database,
         private PublicationAggregateService $aggregates,
@@ -57,6 +60,10 @@ final readonly class PublishingOperatorReadModel
                     $campaigns,
                     static fn (array $campaign): bool => ($campaign['publication']['state'] ?? null) === 'partial_success',
                 )),
+                'provider_attention' => array_sum(array_map(
+                    fn (array $campaign): int => $this->providerAttentionCount($campaign),
+                    $campaigns,
+                )),
             ],
         ];
     }
@@ -89,7 +96,13 @@ final readonly class PublishingOperatorReadModel
         }
 
         $targets = $connection->table('campaign_targets')
-            ->select(['id', 'channel'])
+            ->select([
+                'id',
+                'kind',
+                'channel',
+                'provider_connection_id',
+                'capability_evidence_id',
+            ])
             ->where('workspace_id', $workspaceId)
             ->where('snapshot_id', (string) $snapshot->id)
             ->orderBy('id')
@@ -141,8 +154,8 @@ final readonly class PublishingOperatorReadModel
                 'resolved_at_utc' => (string) $schedule->resolved_at_utc,
             ] : null,
             'publication' => is_string($intentId) && $intentId !== ''
-                ? $this->publication($workspaceId, $intentId)
-                : $this->notStartedPublication($targets),
+                ? $this->publication($workspaceId, $intentId, $targets)
+                : $this->notStartedPublication($workspaceId, $targets),
         ];
     }
 
@@ -179,17 +192,32 @@ final readonly class PublishingOperatorReadModel
         ];
     }
 
-    /** @return array<string, mixed> */
-    private function publication(string $workspaceId, string $intentId): array
+    /**
+     * @param  list<stdClass>  $canonicalTargets
+     * @return array<string, mixed>
+     */
+    private function publication(string $workspaceId, string $intentId, array $canonicalTargets): array
     {
         $aggregate = $this->aggregates->forExecutionIntent($workspaceId, $intentId);
+        $byId = [];
+        foreach ($canonicalTargets as $target) {
+            $byId[(string) $target->id] = $target;
+        }
+
         $targets = array_map(
-            static fn (PublicationTargetOutcome $target): array => [
-                'target_id' => $target->targetId,
-                'channel' => $target->channel,
-                'state' => $target->state->value,
-                'retry_eligible' => $target->retryEligible,
-            ],
+            function (PublicationTargetOutcome $target) use ($workspaceId, $byId): array {
+                $canonical = $byId[$target->targetId] ?? null;
+
+                return [
+                    'target_id' => $target->targetId,
+                    'channel' => $target->channel,
+                    'state' => $target->state->value,
+                    'retry_eligible' => $target->retryEligible,
+                    'provider' => $canonical instanceof stdClass
+                        ? $this->providerOutcome($workspaceId, $canonical)
+                        : null,
+                ];
+            },
             $aggregate->targets,
         );
 
@@ -206,14 +234,15 @@ final readonly class PublishingOperatorReadModel
      * @param  list<stdClass>  $targets
      * @return array<string, mixed>
      */
-    private function notStartedPublication(array $targets): array
+    private function notStartedPublication(string $workspaceId, array $targets): array
     {
         $items = array_map(
-            static fn (stdClass $target): array => [
+            fn (stdClass $target): array => [
                 'target_id' => (string) $target->id,
                 'channel' => (string) $target->channel,
                 'state' => 'not_started',
                 'retry_eligible' => false,
+                'provider' => $this->providerOutcome($workspaceId, $target),
             ],
             $targets,
         );
@@ -227,8 +256,196 @@ final readonly class PublishingOperatorReadModel
         ];
     }
 
+    /** @return array<string, mixed>|null */
+    private function providerOutcome(string $workspaceId, stdClass $target): ?array
+    {
+        if (
+            (string) ($target->kind ?? '') !== 'provider_connection'
+            || ! is_string($target->provider_connection_id ?? null)
+            || $target->provider_connection_id === ''
+            || ! is_string($target->capability_evidence_id ?? null)
+            || $target->capability_evidence_id === ''
+        ) {
+            return null;
+        }
+
+        $connection = $this->database->connection();
+        $now = CarbonImmutable::now('UTC');
+        $providerConnection = $connection->table('provider_connections')
+            ->where('workspace_id', $workspaceId)
+            ->where('id', (string) $target->provider_connection_id)
+            ->first();
+
+        if (! $providerConnection instanceof stdClass) {
+            return $this->providerStatus('provider_disconnected', 'reconnect_provider');
+        }
+
+        $readiness = (string) $providerConnection->readiness_status;
+        if ($readiness !== 'ready') {
+            return match ($readiness) {
+                'auth_required' => $this->providerStatus('credential_invalid', 'reauthenticate_provider'),
+                'scope_required' => $this->providerStatus('permission_lost', 'reauthorize_permissions'),
+                'provider_review_required' => $this->providerStatus('app_review_restricted', 'complete_provider_review'),
+                default => $this->providerStatus('provider_disconnected', 'reconnect_provider'),
+            };
+        }
+
+        if (
+            $providerConnection->token_expires_at !== null
+            && $this->time((string) $providerConnection->token_expires_at) <= $now
+        ) {
+            return $this->providerStatus('credential_invalid', 'reauthenticate_provider');
+        }
+
+        if (
+            $providerConnection->provider_review_status !== null
+            && mb_strtolower(trim((string) $providerConnection->provider_review_status)) !== 'approved'
+        ) {
+            return $this->providerStatus('app_review_restricted', 'complete_provider_review');
+        }
+
+        $capability = $connection->table('provider_capabilities')
+            ->where('workspace_id', $workspaceId)
+            ->where('provider_id', (string) $providerConnection->provider_id)
+            ->where('connection_id', (string) $providerConnection->id)
+            ->where('operation', self::PROVIDER_OPERATION)
+            ->orderByDesc('observed_at')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->first();
+
+        if (! $capability instanceof stdClass) {
+            return $this->providerStatus('capability_drift', 'refresh_provider_capability');
+        }
+
+        if (
+            trim((string) ($providerConnection->source_version ?? '')) === ''
+            || trim((string) ($capability->source_version ?? '')) === ''
+            || $this->time((string) $providerConnection->observed_at) > $now
+            || $this->time((string) $capability->observed_at) > $now
+            || ($providerConnection->fresh_until !== null
+                && $this->time((string) $providerConnection->fresh_until) <= $now)
+            || ($capability->fresh_until !== null
+                && $this->time((string) $capability->fresh_until) <= $now)
+        ) {
+            return $this->providerStatus('provider_authority_stale', 'refresh_provider_authority');
+        }
+
+        if (
+            (string) $capability->support_status !== 'supported'
+            || (string) $capability->id !== (string) $target->capability_evidence_id
+        ) {
+            return $this->providerStatus('capability_drift', 'refresh_provider_capability');
+        }
+
+        $requiredScopes = $this->decodeStringList($capability->required_scopes);
+        $requiredRoles = $this->decodeStringList($capability->required_roles);
+        $grantedScopes = $this->decodeStringList($providerConnection->granted_scopes);
+        $roles = $this->decodeStringList($providerConnection->roles);
+
+        if (
+            $requiredScopes === null
+            || $requiredRoles === null
+            || $grantedScopes === null
+            || $roles === null
+            || array_diff($requiredScopes, $grantedScopes) !== []
+            || array_diff($requiredRoles, $roles) !== []
+        ) {
+            return $this->providerStatus('permission_lost', 'reauthorize_permissions');
+        }
+
+        $breaker = $connection->table('delivery_circuit_breakers')
+            ->where('workspace_id', $workspaceId)
+            ->where('provider_id', (string) $providerConnection->provider_id)
+            ->where('provider_connection_id', (string) $providerConnection->id)
+            ->where('operation_class', self::PROVIDER_OPERATION)
+            ->orderByDesc('updated_at')
+            ->first();
+
+        if ($breaker instanceof stdClass && in_array((string) $breaker->state, ['open', 'half_open'], true)) {
+            return $this->providerStatus(
+                (string) $breaker->state === 'open' ? 'circuit_open' : 'circuit_half_open',
+                'wait_for_provider_probe',
+                nextProbeAt: $breaker->next_probe_at === null ? null : (string) $breaker->next_probe_at,
+            );
+        }
+
+        $quota = $connection->table('provider_quotas')
+            ->where('workspace_id', $workspaceId)
+            ->where('provider_id', (string) $providerConnection->provider_id)
+            ->where('connection_id', (string) $providerConnection->id)
+            ->where('operation', self::PROVIDER_OPERATION)
+            ->orderByDesc('observed_at')
+            ->orderByDesc('id')
+            ->first();
+
+        if (
+            $quota instanceof stdClass
+            && $quota->remaining_value !== null
+            && (float) $quota->remaining_value <= 0.0
+            && $quota->resets_at !== null
+            && $this->time((string) $quota->resets_at) > $now
+            && $this->time((string) $quota->observed_at) <= $now
+            && ($quota->fresh_until === null || $this->time((string) $quota->fresh_until) > $now)
+        ) {
+            $retryAfter = max(0, (int) $now->diffInSeconds(
+                $this->time((string) $quota->resets_at),
+                absolute: false,
+            ));
+
+            return $this->providerStatus(
+                'rate_limited',
+                'wait_for_rate_reset',
+                retryAfterSeconds: $retryAfter,
+            );
+        }
+
+        return $this->providerStatus('ready', null, retryBlocked: false);
+    }
+
     /**
-     * @param  list<array{target_id: string, channel: string, state: string, retry_eligible: bool}>  $targets
+     * @return array{status: string, action: string|null, retry_blocked: bool, retry_after_seconds: int|null, next_probe_at: string|null, evidence: string}
+     */
+    private function providerStatus(
+        string $status,
+        ?string $action,
+        bool $retryBlocked = true,
+        ?int $retryAfterSeconds = null,
+        ?string $nextProbeAt = null,
+    ): array {
+        return [
+            'status' => $status,
+            'action' => $action,
+            'retry_blocked' => $retryBlocked,
+            'retry_after_seconds' => $retryAfterSeconds,
+            'next_probe_at' => $nextProbeAt,
+            'evidence' => 'canonical_provider_evidence',
+        ];
+    }
+
+    /** @param array<string, mixed> $campaign */
+    private function providerAttentionCount(array $campaign): int
+    {
+        $publication = $campaign['publication'] ?? null;
+        if (! is_array($publication)) {
+            return 0;
+        }
+
+        $targets = $publication['targets'] ?? [];
+        if (! is_array($targets)) {
+            return 0;
+        }
+
+        return count(array_filter(
+            $targets,
+            static fn (mixed $target): bool => is_array($target)
+                && is_array($target['provider'] ?? null)
+                && ($target['provider']['status'] ?? 'ready') !== 'ready',
+        ));
+    }
+
+    /**
+     * @param  list<array{target_id: string, channel: string, state: string, retry_eligible: bool, provider?: array<string, mixed>|null}>  $targets
      * @return array<string, int>
      */
     private function targetCounts(array $targets): array
@@ -253,6 +470,41 @@ final readonly class PublishingOperatorReadModel
         }
 
         return $counts;
+    }
+
+    /** @return list<string>|null */
+    private function decodeStringList(mixed $value): ?array
+    {
+        if (is_array($value)) {
+            $decoded = $value;
+        } elseif (is_string($value) && $value !== '') {
+            try {
+                $decoded = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        if (! is_array($decoded) || ! array_is_list($decoded)) {
+            return null;
+        }
+
+        $result = [];
+        foreach ($decoded as $item) {
+            if (! is_string($item) || trim($item) === '') {
+                return null;
+            }
+            $result[] = $item;
+        }
+
+        return $result;
+    }
+
+    private function time(string $value): CarbonImmutable
+    {
+        return CarbonImmutable::parse($value)->utc();
     }
 
     /** @return array<string, mixed> */

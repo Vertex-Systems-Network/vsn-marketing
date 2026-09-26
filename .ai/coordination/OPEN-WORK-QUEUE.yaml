@@ -1,11 +1,7 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "175baa525ff624b3b4418a6623317f5d0e060b4d",
-  "active_work_path": {
-    "kind": "pr",
-    "number": 409,
-    "branch": "supervisor/phase08-ai-proposal"
-  },
+  "reconciled_main_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84",
+  "active_work_path": null,
   "items": [
     {
       "kind": "issue",
@@ -234,9 +230,10 @@
       "kind": "pr",
       "number": 409,
       "title": "test(phase08): add PostgreSQL segment compiler coverage",
-      "disposition": "active_task_validation",
-      "accepted_actionable": true,
-      "branch": "supervisor/phase08-ai-proposal"
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-ai-proposal",
+      "merge_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84"
     }
   ]
 }

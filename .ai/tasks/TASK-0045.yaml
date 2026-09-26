@@ -4,7 +4,7 @@
   "phase": "PHASE-08",
   "module": "Segmentation",
   "title": "Implement natural-language-to-segment structured compiler",
-  "status": "planned",
+  "status": "in_progress",
   "objective": "Translate natural-language audience intent into an editable structured AST proposal through an approved provider-neutral AI boundary; deterministic validation and human review retain execution authority.",
   "dependencies": [
     "TASK-0044"
@@ -51,5 +51,5 @@
     "AI policy validation",
     "Frontend proposal-review tests"
   ],
-  "exact_next_action": "Implement only after TASK-0044 AST, registry and deterministic validation contracts are frozen."
+  "exact_next_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive."
 }

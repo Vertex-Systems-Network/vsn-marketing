@@ -3,6 +3,7 @@
 use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentFieldRegistry;
 use App\Modules\Segmentation\Domain\SegmentValidator;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 
 function segmentValidator(): SegmentValidator
 {
@@ -88,4 +89,21 @@ it('rejects SQL syntax values from becoming structure while preserving them only
     $normalized = segmentValidator()->normalize($definition);
 
     expect($normalized['root']['children'][0]['value'])->toBe($value);
+});
+
+it('filters targetable fields through their registered workspace permission and disables preview fields by default', function () {
+    $registry = new SegmentFieldRegistry;
+
+    expect($registry->availableTo([]))->toBe([])
+        ->and($registry->availableTo([PermissionCatalog::CONTACT_READ]))->toHaveKeys([
+            'contact.created_at',
+            'company.name',
+            'company.domain',
+        ]);
+
+    foreach ($registry->all() as $field) {
+        expect($field['required_permission'])->toBe(PermissionCatalog::CONTACT_READ)
+            ->and($field['targetable'])->toBeTrue()
+            ->and($field['previewable'])->toBeFalse();
+    }
 });

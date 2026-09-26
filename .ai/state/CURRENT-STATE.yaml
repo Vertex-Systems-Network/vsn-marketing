@@ -8,30 +8,30 @@
   "execution": {
     "status": "in_progress",
     "current_phase": "PHASE-08",
-    "active_task": "TASK-0044",
-    "last_completed_task": "TASK-0043",
-    "next_task": null
+    "active_task": "TASK-0045",
+    "last_completed_task": "TASK-0044",
+    "next_task": "TASK-0046"
   },
   "progress": {
-    "roadmap_percent": 51.88,
-    "phase_percent": 17.65,
+    "roadmap_percent": 52.75,
+    "phase_percent": 35.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243101029_passed; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383256_passed",
-    "application_test_status": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243101046_passed_all_jobs; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383236_passed_all_jobs",
-    "security_supply_chain_status": "task0041_final_promotion_pr405_head_30f7eda14c0589e8e75ced004642251046cfe09c_run_36243100966_passed; resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383257_passed",
+    "continuity_validation": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498662_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_governance_success",
+    "application_test_status": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498610_all_jobs_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_run_36251767867_all_jobs_passed",
+    "security_supply_chain_status": "task0044_pg_coverage_pr409_head_bb4f484eb376e1923f7cdc64bf233b5b7028fc1a_run_36251498682_passed; resulting_main_413430693fbb15ce4e0c6f5fb26cb41192b69f84_run_36251767895_security_gates_passed",
     "release_integrity_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383323_passed",
     "scorecard_status": "phase07_resulting_main_87e65b1d458a79f925376d4cf49792d3771ef192_run_36243383292_passed"
   },
-  "observed_main_sha": "175baa525ff624b3b4418a6623317f5d0e060b4d",
+  "observed_main_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84",
   "active_issue": null,
-  "active_pr": 409,
-  "active_branch": "supervisor/phase08-ai-proposal",
-  "current_milestone": "PHASE-08-TASK-0044-ARCHITECTURE",
+  "active_pr": null,
+  "active_branch": "supervisor/phase08-task44-acceptance",
+  "current_milestone": "PHASE-08-TASK-0045-NATURAL-LANGUAGE-COMPILER",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0043 PHASE-08 research gate completed and TASK-0042 plan drift reconciled; PHASE-07 certification remains satisfied by TASK-0041 final acceptance / PR #405.",
-  "exact_next_safe_action": "Complete PostgreSQL-backed Task44 compiler/migration integration tests and re-run exact-head governance, application, and security gates on PR #409.",
+  "last_completed_milestone": "TASK-0044 canonical AST/compiler, PostgreSQL migration and workspace-isolation coverage completed on PRs #408/#409; exact-head and resulting-main gates passed. PHASE-09 remains inactive.",
+  "exact_next_safe_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete PostgreSQL-backed Task44 compiler/migration integration tests and re-run exact-head governance, application, and security gates on PR #409."
+  "exact_next_action": "Implement the provider-neutral TASK-0045 proposal boundary, safe schema-only context, deterministic permission/policy validation, explicit human confirmation, and bounded fake-provider tests; keep TASK-0046 and PHASE-09 inactive."
 }

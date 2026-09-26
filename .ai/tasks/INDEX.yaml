@@ -433,7 +433,7 @@
       "id": "TASK-0044",
       "phase": "PHASE-08",
       "title": "Implement canonical segment definition AST and deterministic query compiler",
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0043"
       ],
@@ -443,7 +443,7 @@
       "id": "TASK-0045",
       "phase": "PHASE-08",
       "title": "Implement natural-language-to-segment structured compiler",
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0044"
       ],
@@ -467,7 +467,7 @@
       "dependencies": [
         "TASK-0046"
       ],
-      "weight": 10
+      "weight": 25
     }
   ]
 }

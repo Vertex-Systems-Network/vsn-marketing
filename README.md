@@ -4,23 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=51 phase=100 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51 phase=100 current_phase=PHASE-07 active_task=TASK-0041 milestone=PHASE-07-FINAL-ACCEPTANCE status=COMPLETE -->
 
-> PHASE-07 final acceptance is assembled from the TASK-0041 worker and integration evidence. Product-bearing integration head `7f43eda18cc95ab90ea0b56207e67476e7433fab` passed Application Foundation CI `36241797924` and Shipping Fast Gate `36241797817`; the final ledger-reconciled integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed AI Continuity Guard `36242518365`, Application Foundation CI `36242518520`, and Shipping Fast Gate `36242518369`. PR #403 exact head `391f43b3e7ee720be878294009a5993c163da685` passed its Shipping Fast Gate `36241215009`. The final protected-main acceptance carrier is undergoing exact-head full certification before merge.
+> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. PR #405 exact head `30f7eda14c0589e8e75ced004642251046cfe09c` passed Continuity `36243101029`, Application Foundation CI `36243101046`, and Security Supply Chain CI `36243100966`; resulting-main checks also passed (Continuity `36243383256`, Foundation `36243383236`, Security `36243383257`, Release Integrity `36243383323`, Scorecard `36243383292`). TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
 **Overall roadmap progress: 51.00%**  
 **Current phase: PHASE-07 — 100%**  
 **Last completed task: TASK-0041 — Implement campaign/publishing operator UX**  
-**Current milestone: PHASE-07-FINAL-ACCEPTANCE — VERIFYING**
+**Current milestone: PHASE-07-FINAL-ACCEPTANCE — COMPLETE**
 
 ```text
 Overall  [██████████░░░░░░░░░░] 51.00%
 Phase 07 [████████████████████] 100.00%
 ```
 
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance evidence are complete; this carrier still requires green protected-main Continuity, Application and Security gates before it can be promoted. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 implementation and TASK-0041 acceptance are complete and certified on protected main. TASK-0042 and PHASE-08 remain unmaterialized for a separate research-first milestone.
 
 ### Phase / module progress
 

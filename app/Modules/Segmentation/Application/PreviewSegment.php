@@ -2,12 +2,13 @@
 
 namespace App\Modules\Segmentation\Application;
 
+use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
-use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\CompiledSegment;
+use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentFieldRegistry;
 use App\Modules\Segmentation\Domain\SegmentProposalGuard;
 use App\Modules\Segmentation\Domain\SegmentValidator;
@@ -27,6 +28,7 @@ final readonly class PreviewSegment
         private SegmentProposalGuard $guard,
         private DeterministicSegmentCompiler $compiler,
         private DatabaseManager $database,
+        private AuditRecorder $audit,
     ) {}
 
     /** @param array<string, mixed> $definition @return array<string, mixed> */
@@ -76,25 +78,46 @@ final readonly class PreviewSegment
                     $timeout = max(1, min(10000, $compiled->timeoutMs));
                     $connection->statement('SET LOCAL statement_timeout = '.$timeout);
                 }
+
                 // LIMIT is applied before counting. No full-audience exact COUNT is issued.
                 return (int) $connection->query()
                     ->fromSub((clone $compiled->query)->limit($limit + 1), 'bounded_members')
                     ->count();
             });
         } catch (Throwable) {
+            $this->audit->record(
+                workspaceId: $scope->workspaceId, action: 'segment.preview.unavailable',
+                evidence: ['definition_hash' => $compiled->definitionHash, 'evaluation_id' => $compiled->evaluationFingerprint],
+                brandId: $scope->brandId, actorId: $scope->actorId,
+                subjectType: $segmentId === null ? null : 'segment_definition', subjectId: $segmentId,
+            );
+
             return $this->metadata($scope, $compiled, $segmentId, $version) + [
                 'status' => 'timeout_or_unavailable', 'count_kind' => 'unavailable', 'count' => null,
                 'eligibility' => 'not_evaluated',
             ];
         }
 
-        return $this->metadata($scope, $compiled, $segmentId, $version) + [
+        $result = $this->metadata($scope, $compiled, $segmentId, $version) + [
             'status' => $count === 0 ? 'empty' : ($count > $limit ? 'large_audience' : 'fresh'),
             'count_kind' => $count > $limit ? 'capped' : 'exact',
             'count' => min($count, $limit),
             'count_lower_bound' => $count > $limit ? $limit + 1 : null,
             'eligibility' => 'not_evaluated',
         ];
+        $this->audit->record(
+            workspaceId: $scope->workspaceId, action: 'segment.preview.count',
+            evidence: [
+                'definition_hash' => $compiled->definitionHash,
+                'evaluation_id' => $compiled->evaluationFingerprint,
+                'definition_version' => $version,
+                'count_kind' => $result['count_kind'],
+            ],
+            brandId: $scope->brandId, actorId: $scope->actorId,
+            subjectType: $segmentId === null ? null : 'segment_definition', subjectId: $segmentId,
+        );
+
+        return $result;
     }
 
     /** @return array<string, mixed> */
@@ -108,6 +131,8 @@ final readonly class PreviewSegment
             'evaluation_id' => $compiled->evaluationFingerprint,
             'evaluated_at' => $compiled->evaluatedAt.' UTC',
             'source_freshness_at' => null,
+            'cache_status' => 'disabled',
+            'cache_key' => null,
             'estimated_cost' => $compiled->estimatedCost,
             'preview_members' => [],
             'eligibility_explanation' => 'Segment membership is distinct from delivery eligibility. Consent and suppression must be checked at send admission.',

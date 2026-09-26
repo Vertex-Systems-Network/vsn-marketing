@@ -3,12 +3,12 @@
 namespace App\Modules\Segmentation\Application;
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
-use App\Modules\Segmentation\Domain\SegmentValidator;
+use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use App\Modules\Segmentation\Domain\SegmentProposalGuard;
+use App\Modules\Segmentation\Domain\SegmentValidator;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Str;
-use App\Modules\Segmentation\Domain\SegmentDefinitionException;
 use RuntimeException;
 
 final readonly class SaveSegmentVersion

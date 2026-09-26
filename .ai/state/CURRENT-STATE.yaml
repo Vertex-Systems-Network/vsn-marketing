@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #411 exact head 7a94ea2b5c8c2a260a389ed1ddfaefbb88f75998 passed AI Continuity Guard run 36259633803; resulting main governance-main status success 36259962440.",
-    "application_test_status": "PR #411 exact head passed Application Foundation CI run 36259633805 including E2E and PostgreSQL integration; TASK-0046 head pending.",
-    "security_supply_chain_status": "PR #411 exact head passed Security Supply Chain CI run 36259633809; TASK-0046 head pending.",
+    "continuity_validation": "PR #412 initial head f7ee337723c517698931c1df53e0a4c86cabbb36 passed AI Continuity Guard run 36260994080; final head pending.",
+    "application_test_status": "PR #412 initial head f7ee337723c517698931c1df53e0a4c86cabbb36: backend 658 passed, architecture 4 passed, PHP static analysis green; Application run 36260994079 failed Pint style before integration/E2E. Same-scope Pint 1.30.5 repair staged; new head pending.",
+    "security_supply_chain_status": "PR #412 initial head passed Security Supply Chain CI run 36260994099; final head pending.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
   "observed_main_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20",
   "active_issue": null,
-  "active_pr": null,
+  "active_pr": 412,
   "active_branch": "supervisor/phase08-task46-preview-count-ux",
   "current_milestone": "PHASE-08-TASK-0046-AUDIENCE-PREVIEW-UX",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0045 accepted and merged via PR #411 at 143b76089c1b7c5f7954cb1beda31849ff5f2d20. Exact PR head 7a94ea2b5c8c2a260a389ed1ddfaefbb88f75998 passed Continuity 36259633803, Application 36259633805, Security 36259633809; resulting main governance status success 36259962440.",
-  "exact_next_safe_action": "Run exact TASK-0046 backend, PostgreSQL, browser and migration safety gates; repair same PR and certify acceptance only when all criteria are verified.",
+  "exact_next_safe_action": "Push TASK-0046 in-scope repair to PR #412, inspect exact-head Application/PostgreSQL/E2E/Security/Continuity, complete remaining ACs before acceptance.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Run exact TASK-0046 backend, PostgreSQL, browser and migration safety gates; repair same PR and certify acceptance only when all criteria are verified."
+  "exact_next_action": "Push TASK-0046 in-scope repair to PR #412, inspect exact-head Application/PostgreSQL/E2E/Security/Continuity, complete remaining ACs before acceptance."
 }

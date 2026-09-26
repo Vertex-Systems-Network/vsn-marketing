@@ -7,6 +7,7 @@ use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Segmentation\Application\PreviewSegment;
 use App\Modules\Segmentation\Application\SaveSegmentVersion;
 use App\Modules\Segmentation\Domain\SegmentDefinitionException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -65,12 +66,16 @@ it('bounds counts, withholds identities and rejects foreign pinned versions', fu
         ->and($preview['preview_members'])->toBe([])
         ->and($preview['definition_hash'])->toBe($version['hash'])
         ->and($preview['source_freshness_at'])->toBeNull()
-        ->and($preview['eligibility'])->toBe('not_evaluated');
+        ->and($preview['eligibility'])->toBe('not_evaluated')
+        ->and(DB::table('audit_events')->where('workspace_id', $scope->workspaceId)
+            ->where('action', 'segment.preview.count')->count())->toBe(1);
 
     expect(fn () => app(PreviewSegment::class)->evaluate([], $otherScope, $otherActor, $version['id'], 1))
         ->toThrow(SegmentDefinitionException::class, 'segment_version_not_found');
     expect(fn () => app(PreviewSegment::class)->evaluate(task46Definition('changed.test'), $scope, $actor, $version['id'], 1))
         ->toThrow(SegmentDefinitionException::class, 'definition_version_mismatch');
+    expect(fn () => app(PreviewSegment::class)->evaluate($definition, $scope, $otherActor))
+        ->toThrow(AuthorizationException::class);
 });
 
 it('appends immutable versions while publication remains pinned to its chosen version', function () {
@@ -83,4 +88,7 @@ it('appends immutable versions while publication remains pinned to its chosen ve
         ->and($next['hash'])->not->toBe($saved['hash'])
         ->and($record->published_version_number)->toBe(1)
         ->and(DB::table('segment_definition_versions')->where('definition_id', $saved['id'])->count())->toBe(2);
+    [, $otherScope] = task46Scope('foreign-version');
+    expect(fn () => app(SaveSegmentVersion::class)->publish($saved['id'], 2, $otherScope))
+        ->toThrow(SegmentDefinitionException::class, 'segment_version_not_found');
 });

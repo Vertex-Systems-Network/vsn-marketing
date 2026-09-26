@@ -105,15 +105,22 @@ export default function SegmentationOperator({
         if (busy || !definition) return;
         setPreviewedDefinition(definitionText);
         setBusy(true);
-        router.post(actions.preview, { definition }, {
+        const selectedUnchanged = selectedSegment !== null
+            && definitionText === JSON.stringify(selectedSegment.latest_definition, null, 2);
+        router.post(actions.preview, {
+            definition,
+            ...(selectedUnchanged ? { segment_id: selectedSegment.id, version: selectedSegment.latest_version } : {}),
+        }, {
             preserveScroll: true,
             onFinish: () => setBusy(false),
         });
     };
     const publish = () => {
-        const target = saved_segment ?? (selectedSegment ? {
+        const target = selectedSegment && saved_segment?.id !== selectedSegment.id ? {
             id: selectedSegment.id, version: selectedSegment.latest_version, hash: selectedSegment.latest_hash,
-        } : null);
+        } : (saved_segment ?? (selectedSegment ? {
+            id: selectedSegment.id, version: selectedSegment.latest_version, hash: selectedSegment.latest_hash,
+        } : null));
         if (!target || busy || !window.confirm(`Publish immutable segment version ${target.version}?`)) return;
         setBusy(true);
         router.post(`${actions.revise_base}/${target.id}/publish`, { version: target.version, confirmed: true }, {

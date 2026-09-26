@@ -109,6 +109,21 @@ it('shows a safe unavailable count with no member identities', () => {
     expect(screen.getByText(/Member identities and personal details are hidden/)).toBeInTheDocument();
 });
 
+it('previews a selected immutable version by id and version', () => {
+    const definition = { schema_version: 1, subject: 'contact', root: {
+        type: 'group', operator: 'all', children: [{ type: 'attribute', field: 'contact.created_at', operator: 'is_set' }],
+    } };
+    render(<SegmentationOperator {...props} segments={[{
+        id: 'segment-1', name: 'Existing', status: 'draft', published_version: null,
+        latest_version: 2, latest_hash: 'a'.repeat(64), latest_definition: definition,
+    }]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Edit a new version' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview bounded count' }));
+    expect(post).toHaveBeenCalledWith('/preview', expect.objectContaining({
+        segment_id: 'segment-1', version: 2,
+    }), expect.any(Object));
+});
+
 it('labels capped counts, unknown freshness, and the absence of delivery eligibility', () => {
     render(<SegmentationOperator {...props} preview_result={{
         status: 'large_audience', count_kind: 'capped', count: 250, count_lower_bound: 251,

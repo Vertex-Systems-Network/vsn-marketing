@@ -76,7 +76,6 @@ export default function SegmentationOperator({
     const save = () => {
         if (busy || !definition || name.trim() === '' || !confirmed) return;
         setBusy(true);
-        setLocalError('');
         router.post(actions.store, {
             name: name.trim(),
             definition,

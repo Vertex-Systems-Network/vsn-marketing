@@ -56,7 +56,7 @@ function task0044Event(string $workspaceId, string $contactId, string $name, str
         ->where('workspace_id', $workspaceId)
         ->where('canonical_name', $name)
         ->value('id');
-    if (! is_string($typeId)) {
+    if (is_string($typeId) === false) {
         $typeId = (string) Str::uuid();
         DB::table('event_types')->insert([
             'id' => $typeId, 'workspace_id' => $workspaceId, 'canonical_name' => $name,

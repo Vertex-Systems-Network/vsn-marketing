@@ -34,11 +34,21 @@ type Schedule = {
     resolved_at_utc: string;
 };
 
+type ProviderOutcome = {
+    status: string;
+    action: string | null;
+    retry_blocked: boolean;
+    retry_after_seconds: number | null;
+    next_probe_at: string | null;
+    evidence: string;
+};
+
 type PublicationTarget = {
     target_id: string;
     channel: string;
     state: string;
     retry_eligible: boolean;
+    provider: ProviderOutcome | null;
 };
 
 type Publication = {
@@ -72,6 +82,7 @@ type Summary = {
     needs_approval: number;
     scheduled: number;
     partial_success: number;
+    provider_attention: number;
 };
 
 type BulkResult = {
@@ -123,6 +134,15 @@ const stateLabels: Record<string, string> = {
     scheduled_intent: 'Scheduled',
     running: 'Running',
     completed: 'Completed',
+    provider_disconnected: 'Provider disconnected',
+    credential_invalid: 'Credential needs attention',
+    permission_lost: 'Provider permission lost',
+    app_review_restricted: 'Provider app review required',
+    capability_drift: 'Provider capability changed',
+    provider_authority_stale: 'Provider authority stale',
+    circuit_open: 'Provider circuit open',
+    circuit_half_open: 'Provider recovery probe active',
+    rate_limited: 'Provider rate limited',
 };
 
 function label(value: string): string {
@@ -150,6 +170,50 @@ function Badge({ value }: { value: string }) {
         <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium capitalize ${badgeClass(value)}`}>
             {label(value)}
         </span>
+    );
+}
+
+const providerActionLabels: Record<string, string> = {
+    reconnect_provider: 'Reconnect the provider connection',
+    reauthenticate_provider: 'Reauthenticate the provider connection',
+    reauthorize_permissions: 'Reauthorize required provider permissions',
+    complete_provider_review: 'Complete the provider app-review requirement',
+    refresh_provider_capability: 'Refresh provider capability evidence',
+    refresh_provider_authority: 'Refresh provider authority evidence',
+    wait_for_provider_probe: 'Wait for the provider recovery probe',
+    wait_for_rate_reset: 'Wait for the provider rate-limit reset',
+};
+
+function ProviderNotice({ provider }: { provider: ProviderOutcome }) {
+    if (provider.status === 'ready') return null;
+
+    const timing = provider.retry_after_seconds !== null
+        ? `Retry window in about ${provider.retry_after_seconds} seconds.`
+        : provider.next_probe_at
+          ? `Next safe probe: ${formatDate(provider.next_probe_at)}.`
+          : null;
+
+    return (
+        <div
+            className="mt-2 rounded-lg border border-amber-400/20 bg-amber-400/[0.06] px-3 py-2.5"
+            role="status"
+            aria-label={`Provider attention: ${label(provider.status)}`}
+        >
+            <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-amber-100">{label(provider.status)}</span>
+                {provider.retry_blocked && (
+                    <span className="rounded-full border border-amber-400/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200">
+                        Retry blocked
+                    </span>
+                )}
+            </div>
+            {provider.action && (
+                <p className="mt-1 text-xs leading-5 text-neutral-400">
+                    Next safe step: {providerActionLabels[provider.action] ?? label(provider.action)}.
+                </p>
+            )}
+            {timing && <p className="mt-1 text-xs text-neutral-500">{timing}</p>}
+        </div>
     );
 }
 
@@ -223,6 +287,7 @@ function ApprovalQueue({
     const [selected, setSelected] = useState<string[]>([]);
     const [reason, setReason] = useState('');
     const [batchId, setBatchId] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState<'approve' | 'reject' | null>(null);
 
     const selectedItems = candidates
         .filter((campaign) => selected.includes(campaign.id))
@@ -232,6 +297,7 @@ function ApprovalQueue({
             state_version: campaign.state_version,
         }));
     const pendingPreflight = bulkResult && !bulkResult.confirmed ? bulkResult : null;
+    const isBusy = submitting !== null;
 
     const toggle = (campaignId: string) => {
         setSelected((current) =>
@@ -242,7 +308,7 @@ function ApprovalQueue({
     };
 
     const submit = (operation: 'approve' | 'reject', confirmed: boolean) => {
-        if (operation === 'reject' && reason.trim().length < 3) return;
+        if (isBusy || (operation === 'reject' && reason.trim().length < 3)) return;
 
         const items = confirmed && pendingPreflight
             ? pendingPreflight.results.map((result) => ({
@@ -261,6 +327,7 @@ function ApprovalQueue({
         if (!nextBatchId) return;
         if (!confirmed) setBatchId(nextBatchId);
 
+        setSubmitting(operation);
         router.post(
             `/workspaces/${workspace.id}/publishing/approvals/bulk`,
             {
@@ -270,7 +337,11 @@ function ApprovalQueue({
                 reason: reason.trim() === '' ? null : reason.trim(),
                 items,
             },
-            { preserveScroll: true, preserveState: true },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onFinish: () => setSubmitting(null),
+            },
         );
     };
 
@@ -279,7 +350,14 @@ function ApprovalQueue({
     }
 
     return (
-        <section className="mt-8 rounded-3xl border border-amber-400/15 bg-amber-400/[0.035] p-5" aria-label="Approval queue">
+        <section
+            className="mt-8 rounded-3xl border border-amber-400/15 bg-amber-400/[0.035] p-5"
+            aria-label="Approval queue"
+            aria-busy={isBusy}
+        >
+            <p className="sr-only" aria-live="polite">
+                {isBusy ? `Submitting ${submitting} decision…` : 'Approval controls ready.'}
+            </p>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">Approval queue</p>
@@ -299,7 +377,7 @@ function ApprovalQueue({
                         <input
                             type="checkbox"
                             checked={selected.includes(campaign.id)}
-                            disabled={Boolean(pendingPreflight)}
+                            disabled={Boolean(pendingPreflight) || isBusy}
                             onChange={() => toggle(campaign.id)}
                             className="h-4 w-4 rounded border-white/20 bg-black disabled:cursor-not-allowed disabled:opacity-50"
                         />
@@ -321,7 +399,7 @@ function ApprovalQueue({
                         value={reason}
                         onChange={(event) => setReason(event.target.value)}
                         maxLength={500}
-                        disabled={Boolean(pendingPreflight)}
+                        disabled={Boolean(pendingPreflight) || isBusy}
                         className="mt-1.5 w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-sm text-neutral-100 outline-none placeholder:text-neutral-700 focus:border-sky-400/40"
                         placeholder="Why is this decision being made?"
                     />
@@ -329,7 +407,7 @@ function ApprovalQueue({
                 <div className="flex items-end gap-2">
                     <button
                         type="button"
-                        disabled={selected.length === 0 || Boolean(pendingPreflight)}
+                        disabled={selected.length === 0 || Boolean(pendingPreflight) || isBusy}
                         onClick={() => submit('approve', false)}
                         className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2.5 text-sm font-medium text-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
                     >
@@ -337,7 +415,7 @@ function ApprovalQueue({
                     </button>
                     <button
                         type="button"
-                        disabled={selected.length === 0 || reason.trim().length < 3 || Boolean(pendingPreflight)}
+                        disabled={selected.length === 0 || reason.trim().length < 3 || Boolean(pendingPreflight) || isBusy}
                         onClick={() => submit('reject', false)}
                         className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-2.5 text-sm font-medium text-rose-100 disabled:cursor-not-allowed disabled:opacity-40"
                     >
@@ -347,7 +425,12 @@ function ApprovalQueue({
             </div>
 
             {bulkResult && (
-                <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4" role="status">
+                <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4" role="status" aria-live="polite">
+                    {bulkResult.counts.conflict > 0 && (
+                        <div className="mb-3 rounded-xl border border-rose-400/20 bg-rose-400/[0.06] px-3 py-2 text-sm text-rose-100" role="alert">
+                            {bulkResult.counts.conflict} decision {bulkResult.counts.conflict === 1 ? 'conflict was' : 'conflicts were'} blocked because canonical campaign state changed. Refresh before retrying.
+                        </div>
+                    )}
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <p className="text-sm font-medium text-white">
@@ -358,13 +441,24 @@ function ApprovalQueue({
                             </p>
                         </div>
                         {!bulkResult.confirmed && bulkResult.counts.eligible > 0 && (
-                            <button
-                                type="button"
-                                onClick={() => submit(bulkResult.operation, true)}
-                                className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black"
-                            >
-                                Confirm {bulkResult.operation}
-                            </button>
+                            <div className="flex flex-col items-stretch gap-2 sm:items-end">
+                                {bulkResult.operation === 'reject' && (
+                                    <p id="bulk-reject-warning" className="max-w-xs text-xs leading-5 text-rose-200">
+                                        Reject is destructive for this immutable approval decision. The server will recheck authority and state before recording it.
+                                    </p>
+                                )}
+                                <button
+                                    type="button"
+                                    disabled={isBusy}
+                                    aria-describedby={bulkResult.operation === 'reject' ? 'bulk-reject-warning' : undefined}
+                                    onClick={() => submit(bulkResult.operation, true)}
+                                    className={bulkResult.operation === 'reject'
+                                        ? 'rounded-xl border border-rose-400/30 bg-rose-400/10 px-4 py-2.5 text-sm font-semibold text-rose-100 disabled:cursor-not-allowed disabled:opacity-40'
+                                        : 'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black disabled:cursor-not-allowed disabled:opacity-40'}
+                                >
+                                    {isBusy && submitting === bulkResult.operation ? 'Submitting…' : `Confirm ${bulkResult.operation}`}
+                                </button>
+                            </div>
                         )}
                     </div>
                     <div className="mt-3 grid gap-2">
@@ -503,19 +597,22 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
 
                                 <div className="mt-4 space-y-2" aria-label="Publication targets">
                                     {publication.targets.map((target) => (
-                                        <div key={target.target_id} className="flex items-center justify-between gap-3 rounded-xl border border-white/10 px-3 py-2.5">
-                                            <div className="min-w-0">
-                                                <p className="truncate text-sm capitalize text-neutral-200">{target.channel}</p>
-                                                <p className="mt-0.5 font-mono text-[11px] text-neutral-600">{shortHash(target.target_id)}</p>
+                                        <div key={target.target_id} className="rounded-xl border border-white/10 px-3 py-2.5">
+                                            <div className="flex items-center justify-between gap-3">
+                                                <div className="min-w-0">
+                                                    <p className="truncate text-sm capitalize text-neutral-200">{target.channel}</p>
+                                                    <p className="mt-0.5 font-mono text-[11px] text-neutral-600">{shortHash(target.target_id)}</p>
+                                                </div>
+                                                <div className="flex flex-wrap items-center justify-end gap-2">
+                                                    {target.retry_eligible && (
+                                                        <span className="rounded-full border border-amber-400/20 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-amber-200">
+                                                            eligible
+                                                        </span>
+                                                    )}
+                                                    <Badge value={target.state} />
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                {target.retry_eligible && (
-                                                    <span className="rounded-full border border-amber-400/20 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-amber-200">
-                                                        eligible
-                                                    </span>
-                                                )}
-                                                <Badge value={target.state} />
-                                            </div>
+                                            {target.provider && <ProviderNotice provider={target.provider} />}
                                         </div>
                                     ))}
                                 </div>
@@ -555,11 +652,12 @@ export default function PublishingOperator({ workspace, campaigns, summary, perm
                         </div>
                     </header>
 
-                    <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Workspace publishing summary">
+                    <section className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5" aria-label="Workspace publishing summary">
                         <StatCard label="Campaigns" value={summary.campaigns} hint="Canonical records" />
                         <StatCard label="Approval queue" value={summary.needs_approval} hint="Needs review" />
                         <StatCard label="Scheduled" value={summary.scheduled} hint="Immutable timing" />
                         <StatCard label="Partial success" value={summary.partial_success} hint="Mixed target outcomes" />
+                        <StatCard label="Provider attention" value={summary.provider_attention} hint="Actionable safe states" />
                     </section>
 
                     <ApprovalQueue

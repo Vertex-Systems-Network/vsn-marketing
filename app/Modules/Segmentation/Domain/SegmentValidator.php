@@ -160,7 +160,7 @@ final readonly class SegmentValidator
         $normalized = ['type' => 'event', 'name' => $name, 'mode' => $mode, 'window' => $window];
         if ($mode === 'count') {
             $minimum = $node['minimum'] ?? null;
-            if (! is_int($minimum) || $minimum < 1 || $minimum > 100) {
+            if (is_int($minimum) === false || $minimum < 1 || $minimum > 100) {
                 throw new SegmentDefinitionException('invalid_event_count', $path.'.minimum');
             }
             $normalized['minimum'] = $minimum;
@@ -178,7 +178,7 @@ final readonly class SegmentValidator
         if (($window['kind'] ?? null) === 'relative') {
             $this->keys($window, ['kind', 'days'], $path);
             $days = $window['days'] ?? null;
-            if (! is_int($days) || $days < 1 || $days > (int) $this->setting('segmentation.max_event_days', 365)) {
+            if (is_int($days) === false || $days < 1 || $days > (int) $this->setting('segmentation.max_event_days', 365)) {
                 throw new SegmentDefinitionException('invalid_relative_window', $path.'.days');
             }
             return ['kind' => 'relative', 'days' => $days];
@@ -200,7 +200,7 @@ final readonly class SegmentValidator
 
     private function instant(mixed $value, string $path): string
     {
-        if (! is_string($value) || strlen($value) > 40 || ! preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/', $value)) {
+        if (is_string($value) === false || strlen($value) > 40 || ! preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/', $value)) {
             throw new SegmentDefinitionException('invalid_timestamp', $path);
         }
         try {
@@ -241,7 +241,7 @@ final readonly class SegmentValidator
             }
         }
         unset($item);
-        if (! array_is_list($value)) {
+        if (array_is_list($value) === false) {
             ksort($value, SORT_STRING);
         }
         return $value;

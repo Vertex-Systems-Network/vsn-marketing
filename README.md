@@ -4,23 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=54.75 phase=75 current_phase=PHASE-08 active_task=TASK-0047 milestone=PHASE-08-TASK-0047-FINAL-CERTIFICATION status=IN_PROGRESS -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=56 phase=100 current_phase=PHASE-08 active_task=TASK-0047 milestone=PHASE-08-FINALIZED status=COMPLETE -->
 
-> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. TASK-0043 through TASK-0046 are complete; TASK-0047 final PHASE-08 certification is active. PHASE-09 remains planned.
+> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. TASK-0043 through TASK-0047 and PHASE-08 are complete; PHASE-09 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 54.75%**<br />
-**Current phase: PHASE-08 — 75.00%**<br />
-**Last completed task: TASK-0046 — Implement preview/count/freshness/cost guards and audience UX**<br />
-**Current milestone: PHASE-08-TASK-0047-FINAL-CERTIFICATION — IN_PROGRESS**
+**Overall roadmap progress: 56.00%**<br />
+**Current phase: PHASE-08 — 100.00%**<br />
+**Last completed task: TASK-0047 — Certify PHASE-08**<br />
+**Current milestone: PHASE-08-FINALIZED — COMPLETE**
 
 ```text
-Overall  [███████████░░░░░░░░░] 54.75%
-Phase 08 [███████████████░░░░░] 75.00%
+Overall  [███████████░░░░░░░░░] 56.00%
+Phase 08 [████████████████████] 100.00%
 ```
 
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0046 are complete and TASK-0047 final certification is active.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 remains inactive.
 
 ### Phase / module progress
 
@@ -34,7 +34,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
 | **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Certified on protected main via TASK-0041 / PR #405** | **100.00%** |
-| PHASE-08 | 5% | Segmentation, deterministic AST/compiler, AI proposal and preview UX | 🔄 In progress | 75.00% |
+| **PHASE-08** | **5%** | **Segmentation, deterministic AST/compiler, AI proposal and preview UX** | ✅ **Complete** | **100.00%** |
 | PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
@@ -54,11 +54,11 @@ The integration push correctly exposed a missing global continuity-ledger handof
 
 TASK-0041 AC-1..AC-8 were accepted by PR #405. Its exact head passed Continuity, Application Foundation and Security Supply Chain before merging as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main gates passed and were reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.
 
-The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; TASK-0043 through TASK-0046 are complete, TASK-0047 final certification is active, and PHASE-09 remains inactive.
+The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; TASK-0043 through TASK-0047 and PHASE-08 are complete, and PHASE-09 remains inactive.
 
 ### Current execution snapshot
 
-PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, and TASK-0046 bounded preview/count UX are complete. TASK-0047 final certification is active. PHASE-08 progress is 75.00%; deterministic roadmap progress is 54.75%. PHASE-09 remains inactive.
+PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 certification are complete. PHASE-08 progress is 100.00%; deterministic roadmap progress is 56.00%. PHASE-09 remains inactive.
 
 ### README progress-sync contract
 

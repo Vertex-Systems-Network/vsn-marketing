@@ -156,7 +156,6 @@ it('uses a pinned instant and half-open UTC event intervals', function () {
         ->and($first->evaluationFingerprint)->not->toBe($second->evaluationFingerprint);
 });
 
-
 it('limits first and last event selection to the requested window', function () {
     $workspaceId = task0044Workspace('first-last-window');
     $contactId = task0044Contact($workspaceId);

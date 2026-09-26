@@ -17,7 +17,7 @@ final readonly class SegmentProposalResponse
         public ?string $routeVersion = null,
         public ?string $failureCode = null,
     ) {
-        if (! in_array($status, ['proposed', 'clarification_required', 'unavailable', 'refused', 'failed'], true)) {
+        if (!in_array($status, ['proposed', 'clarification_required', 'unavailable', 'refused', 'failed'], true)) {
             throw new InvalidArgumentException('Unsupported segment proposal status.');
         }
 

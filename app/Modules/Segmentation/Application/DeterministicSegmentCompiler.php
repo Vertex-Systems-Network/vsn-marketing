@@ -67,6 +67,7 @@ final readonly class DeterministicSegmentCompiler
                     $this->apply($nested, $child, $childBoolean, $scope, $at);
                 }
             });
+
             return;
         }
         if ($node['type'] === 'not') {
@@ -74,18 +75,22 @@ final readonly class DeterministicSegmentCompiler
             $query->{$method}(function (Builder $nested) use ($node, $scope, $at): void {
                 $this->apply($nested, $node['child'], 'and', $scope, $at);
             });
+
             return;
         }
         if ($node['type'] === 'attribute') {
             $this->attribute($query, $node, $boolean, $scope);
+
             return;
         }
         if ($node['type'] === 'membership') {
             $this->membership($query, $node, $boolean, $scope);
+
             return;
         }
         if ($node['type'] === 'event') {
             $this->event($query, $node, $boolean, $scope, $at);
+
             return;
         }
         throw new SegmentDefinitionException('unknown_node_type', '$.root');
@@ -108,6 +113,7 @@ final readonly class DeterministicSegmentCompiler
         };
         if (in_array($node['operator'], ['is_set', 'is_not_set'], true)) {
             $this->attributeExists($query, $node['field'], $node['operator'] === 'is_set', $boolean, $scope);
+
             return;
         }
         if ($sqlOperator === null) {
@@ -120,6 +126,7 @@ final readonly class DeterministicSegmentCompiler
                 ? (new DateTimeImmutable($node['value']))->format('Y-m-d H:i:s')
                 : $node['value'];
             $query->{$method}($column, $sqlOperator, $value);
+
             return;
         }
         $method = $boolean === 'or' ? 'orWhereExists' : 'whereExists';
@@ -142,6 +149,7 @@ final readonly class DeterministicSegmentCompiler
         if ($field['table'] === 'contacts') {
             $method = ($boolean === 'or' ? 'orWhere' : 'where').($isSet ? 'NotNull' : 'Null');
             $query->{$method}('c.'.$field['column']);
+
             return;
         }
         $method = $isSet
@@ -250,6 +258,7 @@ final readonly class DeterministicSegmentCompiler
                 default => throw new SegmentDefinitionException('invalid_event_mode', '$.root.mode'),
             };
         }
+
         return 1;
     }
 
@@ -261,6 +270,7 @@ final readonly class DeterministicSegmentCompiler
                 $at->format('Y-m-d H:i:s'),
             ];
         }
+
         return [
             (new DateTimeImmutable($window['from']))->format('Y-m-d H:i:s'),
             (new DateTimeImmutable($window['to']))->format('Y-m-d H:i:s'),

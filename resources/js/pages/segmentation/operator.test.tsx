@@ -52,3 +52,18 @@ describe('SegmentationOperator', () => {
         expect(screen.getByText(/failed deterministic validation/i)).toBeInTheDocument();
     });
 });
+
+it('loads returned AST into the editable proposal review field', () => {
+    const definition = {
+        schema_version: 1,
+        subject: 'contact',
+        root: { type: 'group', operator: 'all', children: [{ type: 'attribute', field: 'company.domain', operator: 'equals', value: 'example.test' }] },
+    };
+    render(<SegmentationOperator {...props} proposal_result={{
+        status: 'proposed',
+        definition,
+        explanation: 'ALL of',
+        definition_hash: 'a'.repeat(64),
+    }} />);
+    expect(screen.getByLabelText('Structured definition (JSON)')).toHaveValue(JSON.stringify(definition, null, 2));
+});

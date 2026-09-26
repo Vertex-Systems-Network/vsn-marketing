@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type Field = { id: string; type: string; operators: string[] };
 type Proposal = {
@@ -45,6 +45,13 @@ export default function SegmentationOperator({
     const [confirmed, setConfirmed] = useState(false);
     const [busy, setBusy] = useState(false);
     const result = proposal_result;
+
+    useEffect(() => {
+        if (result?.status === 'proposed' && result.definition) {
+            setDefinitionText(JSON.stringify(result.definition, null, 2));
+            setConfirmed(false);
+        }
+    }, [result]);
     const definition = useMemo(() => {
         if (definitionText.trim() === '') return null;
         try {

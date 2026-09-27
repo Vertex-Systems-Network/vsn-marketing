@@ -2,8 +2,8 @@
 
 ## State
 
-- Timestamp: `2026-09-27T21:47:20+00:00`
-- Observed main: `1b0a0ed7c650d1a9476c1ab2d919b17f50677146`
+- Timestamp: `2026-09-27T21:59:59+00:00`
+- Observed main: `a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25`
 - Active issue: `none`
 - Active PR: `none`
 - Active branch: `main`
@@ -15,11 +15,13 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `bef6b0d610d9a56789fb9bb82e9f032aa7a7eb2a2cd52657aa353880819f7fd8`
+- State fingerprint: `544731313cfb543d3e94ed1d873e579e047e43354128f4182da16f95caebe666`
 
 ## Completed / observed this session
 
-PR #420 merged durable leases, fenced attempts, retries, recovery, cancellation, replay, transition history and configurable fan-out on main `85b7103830525c82f23a5ec2a7b790775cd2c9c0`. PR #421 merged serialized workspace enrollment admission, fail-closed configuration, capacity and duplicate-delivery coverage on main `1b0a0ed7c650d1a9476c1ab2d919b17f50677146`. TASK-0051 AC-1 through AC-4 are accepted; AC-5 awaits the separate journey benchmark RBT-052. RBT-004 remains the earlier delivery benchmark.
+PR #420 merged durable leases, fenced attempts, retries, recovery, cancellation, replay, transition history and configurable fan-out on main `85b7103830525c82f23a5ec2a7b790775cd2c9c0`. PR #421 merged serialized workspace enrollment admission, fail-closed configuration, capacity and duplicate-delivery coverage on main `a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25`. TASK-0051 AC-1 through AC-4 are accepted; AC-5 awaits the separate journey benchmark RBT-052. RBT-004 remains the earlier delivery benchmark.
+
+PR #422 reconciled the TASK-0051 blocked state on protected main a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25. PR #423 documents RBT-052 fixture, isolation and evidence requirements; its journey capture harness and authorized runtime remain outstanding.
 
 ## Tests
 

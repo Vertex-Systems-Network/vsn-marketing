@@ -7,7 +7,7 @@
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "40a58564741930e75b5583858e10c827f1d8ea5f7c9735a1121581a5bdf4cb1d",
+  "instruction_fingerprint": "2512255da8f6198edc6558c45a316e31b4acc6d45a2fae8e046aaa5b73148a10",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,

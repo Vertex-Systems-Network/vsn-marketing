@@ -13,6 +13,6 @@ Use this on every fresh Supervisor session, `continue`/resume, interruption, too
 9. If evidence conflicts, set/reconcile a blocked or needs-reconciliation state, persist the conflict, and stop the affected action.
 10. Before handoff run `python tools/supervisor_contract.py validate`, `python tools/runner_benchmark.py validate`, continuity validators, and resume only from `exact_next_safe_action`.
 
-CI is a durable external boundary: default to one consolidated refresh per milestone. If checks remain running, preserve the already-persisted VERIFYING/WAITING_EXTERNAL state, write run IDs to a PR/Issue status surface when possible, and end the milestone without a source-head state-only commit.
+CI is a durable external boundary for the dependent artifact, not for the whole active 5-hour batch: default to one consolidated refresh per milestone. If checks remain running, preserve the already-persisted VERIFYING/WAITING_EXTERNAL evidence and write run IDs to a PR/Issue status surface when possible, but continue safe dependency-ready work inside the declared batch objective that does not consume the pending artifact. End the batch for CI waiting only when no safe independent work remains and the external result is the sole remaining path. Do not create a source-head state-only commit merely to narrate pending CI.
 
 Repository/runtime evidence outranks chat memory. Compact state is only a resume index.

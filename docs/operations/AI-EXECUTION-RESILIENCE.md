@@ -26,9 +26,9 @@ Do **not** create a standalone post-merge reconciliation PR by default. Immediat
 
 Do not use batching to cross into unrelated tasks, bypass task dependencies, broaden write authority, skip required checks, or hide unresolved failures.
 
-## 2. External CI is a durable boundary, not a polling loop
+## 2. External CI is a dependency boundary, not a whole-batch stop or polling loop
 
-When GitHub Actions or another external gate has started:
+When GitHub Actions or another external gate has started, the artifact being verified cannot be consumed until green, but an active 5-hour batch continues safe independent dependency-ready work inside its scope:
 
 1. record the exact branch/PR/head SHA and required gate names;
 2. perform an initial status read;

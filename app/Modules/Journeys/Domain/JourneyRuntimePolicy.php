@@ -11,8 +11,7 @@ final readonly class JourneyRuntimePolicy
         public int $maxWaitSeconds = 31536000,
         public int $maxRetries = 3,
         public int $maxFanOut = 1000,
-    ) {
-    }
+    ) {}
 
     public function assertWait(int $seconds): void
     {

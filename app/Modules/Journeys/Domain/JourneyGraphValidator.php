@@ -14,7 +14,10 @@ final class JourneyGraphValidator
 
     public const NODE_TYPES = ['trigger', 'wait', 'condition', 'branch', 'action', 'goal', 'exit', 'end'];
 
-    public function __construct(private readonly JourneyNodeRegistry $registry = new JourneyNodeRegistry) {}
+    public function __construct(
+        private readonly JourneyNodeRegistry $registry = new JourneyNodeRegistry,
+        private readonly JourneyRuntimePolicy $runtimePolicy = new JourneyRuntimePolicy,
+    ) {}
 
     /**
      * @param  array<string, mixed>  $graph
@@ -96,6 +99,9 @@ final class JourneyGraphValidator
             $seenEdges[$identity] = true;
             $edges[] = $normalizedEdge;
             $adjacency[$from][] = $to;
+            if (count($adjacency[$from]) > $this->runtimePolicy->maxFanOut) {
+                throw new JourneyDefinitionException('fan_out_limit_exceeded', '$.edges.'.$i);
+            }
         }
 
         $this->assertAcyclicAndBounded($adjacency);

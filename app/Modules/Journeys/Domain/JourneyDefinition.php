@@ -12,7 +12,8 @@ final readonly class JourneyDefinition
         public string $versionId,
         public array $graph,
         public string $hash,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $graph

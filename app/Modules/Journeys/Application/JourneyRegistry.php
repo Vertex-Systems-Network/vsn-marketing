@@ -9,7 +9,8 @@ final readonly class JourneyRegistry
 {
     public function __construct(
         private JourneyGraphValidator $validator,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $graph

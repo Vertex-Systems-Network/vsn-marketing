@@ -7,7 +7,7 @@ use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 final class JourneyEnrollmentGuard
 {
     /**
-     * @param array<string, mixed> $event
+     * @param  array<string, mixed>  $event
      */
     public function key(string $workspaceId, string $journeyVersionId, string $subjectId, array $event): string
     {

@@ -151,3 +151,29 @@ it('deduplicates trigger delivery and enforces explicit re-entry policy on pinne
         $fixture['scope'], $boundedVersion['definition']->versionId, $subjectId, (string) Str::uuid(),
     ))->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
 });
+
+it('refuses to enroll against a journey version owned by another workspace', function () {
+    $fixture = journeyPublisherFixture();
+    $published = app(JourneyRegistry::class)->publish(
+        $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,
+    );
+    $foreignOrganization = Organization::query()->create(['name' => 'Foreign Org', 'slug' => 'foreign-org']);
+    $foreignWorkspace = Workspace::query()->create([
+        'organization_id' => $foreignOrganization->getKey(),
+        'name' => 'Foreign Workspace',
+        'slug' => 'foreign-workspace',
+    ]);
+    $foreignScope = new TenantContext(
+        organizationId: (string) $foreignOrganization->getKey(),
+        workspaceId: (string) $foreignWorkspace->getKey(),
+        brandId: null,
+        actorId: (string) $fixture['user']->getKey(),
+    );
+
+    expect(fn () => app(EnrollSubjectInJourney::class)->enroll(
+        $foreignScope,
+        $published['definition']->versionId,
+        (string) Str::uuid(),
+        (string) Str::uuid(),
+    ))->toThrow(InvalidArgumentException::class, 'unavailable in this workspace');
+});

@@ -11,6 +11,15 @@
   },
   "items": [
     {
+      "kind": "pr",
+      "number": 414,
+      "title": "control(phase09): activate research and register journey engine tasks",
+      "disposition": "active_phase09_research_gate",
+      "accepted_actionable": true,
+      "branch": "supervisor/phase09-research",
+      "head_sha": "47229d2167e367ed410f39eab4f37f04a7673c32"
+    },
+    {
       "kind": "issue",
       "number": 134,
       "title": "[TASK-0024] Capture production benchmark evidence and approve numeric SLO thresholds",

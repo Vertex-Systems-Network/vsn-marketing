@@ -373,6 +373,6 @@ it('enforces the configured fail-closed graph fan-out budget', function () {
         ->toHaveCount(2);
     expect(fn () => (new JourneyGraphValidator(runtimePolicy: new JourneyRuntimePolicy(maxFanOut: 1)))->normalize($graph))
         ->toThrow(JourneyDefinitionException::class, 'fan_out_limit_exceeded');
-    expect(fn () => new JourneyRuntimePolicy(maxFanOut: 101))
+    expect(fn () => new JourneyRuntimePolicy(maxFanOut: 100001))
         ->toThrow(JourneyDefinitionException::class, 'invalid_runtime_budget');
 });

@@ -4,6 +4,7 @@ use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
+use App\Modules\Journeys\Domain\JourneyExecutionState;
 
 function journeyGraph(): array { return ['schema_version'=>1,'nodes'=>[['id'=>'start','type'=>'trigger','config'=>['event'=>'customer.created']],['id'=>'wait','type'=>'wait','config'=>['seconds'=>60]],['id'=>'end','type'=>'end']], 'edges'=>[['from'=>'start','to'=>'wait'],['from'=>'wait','to'=>'end']]]; }
 
@@ -30,4 +31,11 @@ it('bounds durable waits and produces UTC deadlines', function () {
     $policy = new JourneyRuntimePolicy(maxWaitSeconds: 3600);
     expect($policy->deadline(new DateTimeImmutable('2026-09-27 00:00:00', new DateTimeZone('UTC')), 60)->format('Y-m-d H:i:s'))->toBe('2026-09-27 00:01:00');
     expect(fn () => $policy->assertWait(3601))->toThrow(JourneyDefinitionException::class);
+});
+
+it('allows only durable execution state transitions', function () {
+    $state = new JourneyExecutionState('w1', 'e1');
+    $state->transition('running'); $state->transition('waiting'); $state->transition('running'); $state->transition('succeeded');
+    expect($state->status)->toBe('succeeded')->and($state->revision)->toBe(4);
+    expect(fn () => $state->transition('running'))->toThrow(JourneyDefinitionException::class);
 });

@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "a28d48f6dcc73f79d71c3a13d769bf6a871e709a",
   "active_issue": null,
-  "active_pr": 415,
+  "active_pr": 414,
   "active_branch": "supervisor/phase09-research",
   "current_milestone": "PHASE-09-TASK-0049-ARCHITECTURE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted from current workflow/automation evidence; protected main reconciled at a28d48f6dcc73f79d71c3a13d769bf6a871e709a.",
-  "exact_next_safe_action": "Complete TASK-0049 integration after PR #415 CI; then continue TASK-0050.",
+  "exact_next_safe_action": "Run one full CI validation on unchanged PR #414 head, then begin TASK-0049 implementation after merge.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete TASK-0049 integration after PR #415 CI; then continue TASK-0050."
+  "exact_next_action": "Run one full CI validation on unchanged PR #414 head, then begin TASK-0049 implementation after merge."
 }

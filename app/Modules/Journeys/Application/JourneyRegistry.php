@@ -75,16 +75,16 @@ final readonly class JourneyRegistry
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            $this->audit->record(
+                workspaceId: $scope->workspaceId,
+                action: 'journey.version.published',
+                evidence: ['definition_hash' => $definition->hash, 'version_number' => $versionNumber],
+                brandId: $scope->brandId,
+                actorId: $scope->actorId,
+                subjectType: 'journey',
+                subjectId: $journeyId,
+            );
         });
-        $this->audit->record(
-            workspaceId: $scope->workspaceId,
-            action: 'journey.version.published',
-            evidence: ['definition_hash' => $definition->hash, 'version_number' => $versionNumber],
-            brandId: $scope->brandId,
-            actorId: $scope->actorId,
-            subjectType: 'journey',
-            subjectId: $journeyId,
-        );
 
         return [
             'definition' => $definition,

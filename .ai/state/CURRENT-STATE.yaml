@@ -24,7 +24,7 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9",
+  "observed_main_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08",
   "active_issue": null,
   "active_pr": 417,
   "active_branch": "control/ai-native-5h-continuous-batch",

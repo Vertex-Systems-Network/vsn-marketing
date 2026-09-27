@@ -1616,6 +1616,24 @@
         },
         "test_surface_note": "Application Foundation passed backend, architecture/static/format, frontend typecheck/unit/build, PHP 8.3 floor, PostgreSQL integration and live Playwright E2E; Continuity and Security also passed on the identical candidate SHA. The subsequent closeout commit contains only durable certification/state surfaces and must independently repeat all full gates before merge."
       }
+    },
+    {
+      "id": "RBT-052",
+      "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
+      "command_workflow": "authorized external PostgreSQL/Redis journey execution benchmark; pin the reviewed capture harness and exact source SHA before execution",
+      "exact_source_identity": {
+        "git_sha": null,
+        "resolution_required_before_execution": true,
+        "evidence_surface": "TASK-0051 representative journey execution workload on exact reviewed source"
+      },
+      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes",
+      "authorization_state": "awaiting_explicit_runtime_authority",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_external_runtime",
+      "dedup_key": "runner:task0051:representative-journey-execution:v1",
+      "status": "deferred_authorization_required",
+      "immutable_evidence": null
     }
   ]
 }

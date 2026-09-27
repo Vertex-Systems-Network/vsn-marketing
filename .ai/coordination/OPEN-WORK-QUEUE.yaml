@@ -1,12 +1,10 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "85b7103830525c82f23a5ec2a7b790775cd2c9c0",
+  "reconciled_main_sha": "1b0a0ed7c650d1a9476c1ab2d919b17f50677146",
   "active_work_path": {
-    "kind": "pr",
-    "number": 421,
-    "title": "feat(phase09): bound journey enrollment backpressure",
-    "branch": "supervisor/phase09-task51-enrollment-backpressure",
-    "disposition": "active_task0051_carrier"
+    "kind": "runner",
+    "id": "RBT-052",
+    "disposition": "deferred_authorization_required"
   },
   "items": [
     {
@@ -14,8 +12,9 @@
       "number": 421,
       "title": "feat(phase09): bound journey enrollment backpressure",
       "branch": "supervisor/phase09-task51-enrollment-backpressure",
-      "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "1b0a0ed7c650d1a9476c1ab2d919b17f50677146"
     },
     {
       "kind": "pr",

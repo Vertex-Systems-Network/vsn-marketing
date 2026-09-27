@@ -5,7 +5,7 @@ namespace App\Modules\Journeys\Domain;
 final readonly class JourneyDefinition
 {
     /**
-     * @param array<string, mixed> $graph
+     * @param  array<string, mixed>  $graph
      */
     private function __construct(
         public string $workspaceId,
@@ -15,7 +15,7 @@ final readonly class JourneyDefinition
     ) {}
 
     /**
-     * @param array<string, mixed> $graph
+     * @param  array<string, mixed>  $graph
      */
     public static function publish(string $workspaceId, string $versionId, array $graph, JourneyGraphValidator $validator): self
     {

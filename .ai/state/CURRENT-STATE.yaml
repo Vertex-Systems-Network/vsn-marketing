@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-09",
-    "active_task": "TASK-0049",
-    "last_completed_task": "TASK-0048",
-    "next_task": "TASK-0050"
+    "active_task": "TASK-0050",
+    "last_completed_task": "TASK-0049",
+    "next_task": "TASK-0051"
   },
   "progress": {
-    "roadmap_percent": 57.05,
-    "phase_percent": 15,
+    "roadmap_percent": 58.45,
+    "phase_percent": 35.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0049-ARCHITECTURE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Complete remaining TASK-0049 registered config schema, immutable version publication, re-entry/idempotency and workspace-authority acceptance; then verify exact-head full gates, merge PR #416, reconcile main, and activate TASK-0050.",
+  "exact_next_safe_action": "Research and implement bounded workspace-scoped journey triggers, durable waits, typed branching, and guarded actions; do not touch PHASE-10.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete remaining TASK-0049 registered config schema, immutable version publication, re-entry/idempotency and workspace-authority acceptance; then verify exact-head full gates, merge PR #416, reconcile main, and activate TASK-0050."
+  "exact_next_action": "Research and implement bounded workspace-scoped journey triggers, durable waits, typed branching, and guarded actions; do not touch PHASE-10."
 }

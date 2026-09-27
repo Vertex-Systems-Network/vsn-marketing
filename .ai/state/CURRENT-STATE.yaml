@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0050-RUNTIME",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Verify final exact-head workflows on PR #418, repair any failures, then continue TASK-0050 integration and acceptance.",
+  "exact_next_safe_action": "Verify exact-head required CI for PR #418 and repair any failure; continue remaining TASK-0050 acceptance and durable execution integration.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify final exact-head workflows on PR #418, repair any failures, then continue TASK-0050 integration and acceptance."
+  "exact_next_action": "Verify exact-head required CI for PR #418 and repair any failure; continue remaining TASK-0050 acceptance and durable execution integration."
 }

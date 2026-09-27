@@ -77,7 +77,9 @@ it('publishes a workspace-authorized canonical immutable version', function () {
     expect($version)->not->toBeNull()
         ->and($version->workspace_id)->toBe($fixture['scope']->workspaceId)
         ->and($version->definition_hash)->toBe($result['definition']->hash)
-        ->and($version->status)->toBe('published');
+        ->and($version->status)->toBe('published')
+        ->and(DB::table('audit_events')->where('action', 'journey.version.published')
+            ->where('subject_id', $fixture['journeyId'])->count())->toBe(1);
 
     expect(fn () => app(JourneyRegistry::class)->publish(
         $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,

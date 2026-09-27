@@ -36,10 +36,10 @@ final class JourneyGraphValidator
                 throw new JourneyDefinitionException('duplicate_node_id', '$.nodes.'.$i.'.id');
             }
             $ids[$node['id']] = true;
-            if (!in_array($node['type'] ?? null, self::NODE_TYPES, true)) {
+            if (! in_array($node['type'] ?? null, self::NODE_TYPES, true)) {
                 throw new JourneyDefinitionException('unknown_node_type', '$.nodes.'.$i.'.type');
             }
-            if (isset($node['config']) && !is_array($node['config'])) {
+            if (isset($node['config']) && ! is_array($node['config'])) {
                 throw new JourneyDefinitionException('invalid_node_config', '$.nodes.'.$i.'.config');
             }
             if (isset($node['code']) || isset($node['sql']) || isset($node['expression'])) {
@@ -47,7 +47,7 @@ final class JourneyGraphValidator
             }
         }
         foreach (($graph['edges'] ?? []) as $i => $edge) {
-            if (!is_array($edge) || !isset($ids[$edge['from'] ?? ''], $ids[$edge['to'] ?? ''])) {
+            if (! is_array($edge) || ! isset($ids[$edge['from'] ?? ''], $ids[$edge['to'] ?? ''])) {
                 throw new JourneyDefinitionException('edge_references_unknown_node', '$.edges.'.$i);
             }
             if (($edge['from'] ?? null) === ($edge['to'] ?? null)) {

@@ -17,6 +17,18 @@ final class JourneyNodeRegistry
         'end' => [],
     ];
 
+    /** @var array<string, list<string>> */
+    private const REQUIRED_CONFIG_KEYS = [
+        'trigger' => ['event'],
+        'wait' => ['seconds'],
+        'condition' => ['field', 'operator'],
+        'branch' => ['field', 'operator'],
+        'action' => ['capability'],
+        'goal' => ['event'],
+        'exit' => ['event'],
+        'end' => [],
+    ];
+
     /** @param mixed $input @return array<string, mixed> */
     public function validate(string $type, mixed $input, string $path): array
     {
@@ -31,6 +43,11 @@ final class JourneyNodeRegistry
         if (array_is_list($config) && $config !== []) {
             throw new JourneyDefinitionException('invalid_node_config', $path.'.config');
         }
+        foreach (self::REQUIRED_CONFIG_KEYS[$type] as $requiredKey) {
+            if (! array_key_exists($requiredKey, $config)) {
+                throw new JourneyDefinitionException('required_node_config_missing', $path.'.config.'.$requiredKey);
+            }
+        }
         foreach ($config as $key => $value) {
             if (! is_string($key) || ! array_key_exists($key, $schema)) {
                 throw new JourneyDefinitionException('unsupported_node_config', $path.'.config.'.$key);
@@ -38,7 +55,7 @@ final class JourneyNodeRegistry
             $valid = $schema[$key] === 'object'
                 ? $this->isObjectInput($value)
                 : match ($schema[$key]) {
-                    'string' => is_string($value) && $value !== '',
+                    'string' => is_string($value) && preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $value) === 1,
                     'identifier' => is_string($value) && preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $value) === 1,
                     'positive_int' => is_int($value) && $value > 0 && $value <= 31536000,
                     default => false,

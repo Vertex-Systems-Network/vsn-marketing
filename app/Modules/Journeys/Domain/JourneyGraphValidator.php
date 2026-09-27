@@ -14,6 +14,8 @@ final class JourneyGraphValidator
 
     public const NODE_TYPES = ['trigger', 'wait', 'condition', 'branch', 'action', 'goal', 'exit', 'end'];
 
+    public function __construct(private readonly JourneyNodeRegistry $registry = new JourneyNodeRegistry) {}
+
     /**
      * @param  array<string, mixed>  $graph
      * @return array<string, mixed>
@@ -51,8 +53,9 @@ final class JourneyGraphValidator
             }
 
             $normalizedNode = ['id' => $node['id'], 'type' => $node['type']];
-            if (array_key_exists('config', $node)) {
-                $normalizedNode['config'] = $this->normalizeValue($node['config'], $path.'.config', 0);
+            $config = $this->registry->validate($node['type'], $node['config'] ?? null, $path);
+            if ($config !== []) {
+                $normalizedNode['config'] = $this->normalizeValue($config, $path.'.config', 0);
             }
             $nodes[] = $normalizedNode;
         }

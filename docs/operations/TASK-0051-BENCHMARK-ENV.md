@@ -11,7 +11,7 @@ This document freezes the capture contract. The journey-specific capture harness
 1. Pin a full 40-character commit SHA containing the reviewed harness and this contract. Record the actual runtime source identity from a real Git checkout or immutable deployment metadata and verify equality to the explicit selected SHA. A synthetic Git ref is invalid.
 2. Use dedicated private PostgreSQL and Redis instances and a visibly named benchmark/test database. Confirm the runtime uses PostgreSQL, Redis, the intended migrations, `APP_ENV=benchmark`, and no production or shared customer endpoint. Record PHP, PostgreSQL, Redis, container/image, CPU, memory, storage, worker count and configuration revisions.
 3. Record the database identity, benchmark run ID, UTC start/end times, source SHA, fixture revision, graph hash, pseudonymous workspace identifiers and resource limits. Do not record credentials, raw recipients, provider tokens or private payloads.
-4. Run the reviewed harness's non-destructive preflight first. It must reject missing or mismatched source identity, production/shared database names, missing explicit acknowledgement, unsupported drivers, invalid fixture/budget inputs and an existing output path. Do not use `migrate:fresh`, `FLUSHDB`, `FLUSHALL` or automatic execution at deployment startup.
+4. Run the non-destructive preflight first with `php tools/task0051_benchmark_preflight.php --commit-sha=<exact-source-sha> --database=<dedicated-database> --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT`. This command reports environment identity and explicitly does not collect benchmark evidence. Then run the reviewed capture harness's own preflight. It must reject missing or mismatched source identity, production/shared database names, missing explicit acknowledgement, unsupported drivers, invalid fixture/budget inputs and an existing output path. Do not use `migrate:fresh`, `FLUSHDB`, `FLUSHALL` or automatic execution at deployment startup.
 
 ## Fixture and workload
 
@@ -27,4 +27,4 @@ Publish an immutable evidence document with its cryptographic digest and source/
 
 ## Open prerequisite
 
-No journey-specific reviewed capture harness or authorized external runtime is currently recorded for RBT-052. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.
+A read-only safety preflight exists, but no journey-specific reviewed measurement harness or authorized external runtime is currently recorded for RBT-052. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.

@@ -24,7 +24,7 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25",
+  "observed_main_sha": "e0f431e4313f3a5b2079fb85bc4a48ac91f21457",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",

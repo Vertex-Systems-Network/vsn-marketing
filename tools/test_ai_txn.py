@@ -35,6 +35,34 @@ class TransactionCoordinatorTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_coordination_queue_reconciles_completed_and_active_pr_atomically(self):
+        queue_path = self.root / "queue.json"
+        queue_path.write_text(json.dumps({
+            "schema_version": 1,
+            "reconciled_main_sha": "old",
+            "active_work_path": {"kind": "pr", "number": 416},
+            "items": [
+                {"kind": "pr", "number": 416, "title": "old", "branch": "old", "accepted_actionable": True},
+            ],
+        }), encoding="utf-8")
+        self.module.reconcile_coordination_queue(
+            queue_path,
+            main_sha="a" * 40,
+            active_pr=418,
+            branch="supervisor/phase09-task50-runtime",
+            title="TASK-0050 runtime",
+            completed_pr=416,
+            completion_sha="b" * 40,
+        )
+        queue = json.loads(queue_path.read_text(encoding="utf-8"))
+        self.assertEqual("a" * 40, queue["reconciled_main_sha"])
+        self.assertEqual(418, queue["active_work_path"]["number"])
+        active = [row for row in queue["items"] if row.get("accepted_actionable") is True]
+        self.assertEqual([418], [row["number"] for row in active])
+        old = next(row for row in queue["items"] if row["number"] == 416)
+        self.assertEqual("terminal_merged_reconciled", old["disposition"])
+        self.assertEqual("b" * 40, old["merge_sha"])
+
     def _mark_owner_dead(self):
         lock = json.loads(self.txn.lock_path.read_text(encoding="utf-8"))
         lock["pid"] = 999999999

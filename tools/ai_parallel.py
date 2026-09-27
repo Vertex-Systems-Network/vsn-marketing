@@ -137,8 +137,8 @@ def validate() -> list[str]:
         if doc.get("schema_version") != 2:
             errors.append(f"{name} schema_version must be 2")
 
-    if control.get("protocol_version") != "2.7.0":
-        errors.append("protocol_version must be 2.7.0")
+    if control.get("protocol_version") != "2.8.0":
+        errors.append("protocol_version must be 2.8.0")
     if control.get("protected_main_branch") != "main":
         errors.append("protected_main_branch must be main")
     if control.get("required_completion_signal") != "Work Done and Submitted":
@@ -229,10 +229,42 @@ def validate() -> list[str]:
         "observed_main_semantics": "snapshot_basis_anchor",
         "self_reconciliation_descendant_is_current": True,
         "self_reconciliation_recursive_commit_forbidden": True,
+        "workspace_continuous_batch_enabled": True,
+        "workspace_continuous_batch_contract_path": ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md",
+        "workspace_continuous_batch_duration_minutes": 300,
+        "workspace_continuous_batch_default_for_mutating_resume": True,
+        "workspace_continuous_batch_no_reconfirmation_for_repo_scope": True,
+        "workspace_continuous_batch_auto_advance_related_tasks": True,
+        "workspace_continuous_batch_phase_boundary_requires_declared_scope": True,
+        "workspace_continuous_batch_suppress_intermediate_handoffs": True,
+        "workspace_continuous_batch_final_handoff_only": True,
+        "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
+        "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_checkpoint_waiting_external",
+        "workspace_continuous_batch_duplicate_pr_policy": "select_clean_authoritative_carrier_and_supersede_stale",
+        "workspace_continuous_batch_merge_policy": "merge_verified_green_head_without_reconfirmation",
+        "workspace_continuous_batch_checkpoint_policy": "material_boundary_credit_end_or_hard_blocker",
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
+    if control.get("workspace_continuous_batch_stop_conditions") != [
+        "declared_batch_objective_complete",
+        "workspace_credit_or_300_minute_window_exhausted",
+        "human_only_external_authority_is_sole_remaining_path",
+        "unresolved_safety_security_correctness_conflict",
+        "tooling_prevents_further_execution_after_recovery",
+    ]:
+        errors.append("workspace_continuous_batch_stop_conditions drift")
+    if control.get("workspace_continuous_batch_human_only_boundaries") != [
+        "production_or_provider_side_effect",
+        "secret_disclosure_rotation_or_external_credential_action",
+        "billing_or_payment_action",
+        "destructive_data_or_migration_action",
+        "branch_protection_or_required_check_weakening",
+        "deployment_or_release_authority",
+        "legal_compliance_owner_approval",
+    ]:
+        errors.append("workspace_continuous_batch_human_only_boundaries drift")
     if control.get("immediate_reconciliation_exceptions") != [
         "task_or_phase_final_acceptance",
         "guarded_task_transition",
@@ -450,6 +482,10 @@ def onboarding_check(branch: str | None) -> tuple[int, str]:
     main = str(control.get("protected_main_branch", "main"))
     if current != main:
         return 2, f"New agent onboarding must start from {main}."
+    active = current_active_task()
+    parent = str(registry.get("parent_task", ""))
+    if parent != active:
+        return 4, f"No current parallel onboarding cycle: staged parent {parent} does not match active task {active}."
     slots = open_slots(registry)
     if not slots:
         return 3, str(control.get("onboarding_no_slot_message"))
@@ -488,6 +524,10 @@ def onboard(agent: str, start_branch: str) -> tuple[int, str]:
     main = str(control.get("protected_main_branch", "main"))
     if start_branch != main:
         return 2, f"New agent onboarding must start from {main}."
+    active = current_active_task()
+    parent = str(registry.get("parent_task", ""))
+    if parent != active:
+        return 4, f"Cannot onboard against stale parallel registry {parent}; canonical active task is {active}."
     if any(row.get("assigned_agent") == agent for row in rows(registry)):
         return 2, f"Agent {agent} is already assigned."
     slots = open_slots(registry)
@@ -519,6 +559,17 @@ def status() -> None:
         print(f"- {row.get('id')}: slot={row.get('slot_status')} agent={row.get('assigned_agent')} branch={row.get('branch')} start={row.get('start_status')}")
 
 
+def batch_status() -> None:
+    control = load(CONTROL)
+    print("Workspace continuous batch: ENABLED" if control.get("workspace_continuous_batch_enabled") else "Workspace continuous batch: DISABLED")
+    print(f"Duration minutes: {control.get('workspace_continuous_batch_duration_minutes')}")
+    print(f"Contract: {control.get('workspace_continuous_batch_contract_path')}")
+    print(f"No routine reconfirmation: {control.get('workspace_continuous_batch_no_reconfirmation_for_repo_scope')}")
+    print(f"CI failure policy: {control.get('workspace_continuous_batch_ci_failure_policy')}")
+    print(f"Merge policy: {control.get('workspace_continuous_batch_merge_policy')}")
+    print(f"Intermediate handoffs suppressed: {control.get('workspace_continuous_batch_suppress_intermediate_handoffs')}")
+
+
 def print_errors(errors: list[str]) -> int:
     if not errors:
         return 0
@@ -534,6 +585,7 @@ def main() -> int:
     sub.add_parser("validate-remote-branches")
     sub.add_parser("status")
     sub.add_parser("fingerprint")
+    sub.add_parser("batch-status")
     sync = sub.add_parser("sync-check"); sync.add_argument("--branch")
     pr = sub.add_parser("validate-pr-event"); pr.add_argument("--event-path", default=os.environ.get("GITHUB_EVENT_PATH"))
     oc = sub.add_parser("onboarding-check"); oc.add_argument("--branch")
@@ -554,6 +606,10 @@ def main() -> int:
             status(); return 0
         if args.command == "fingerprint":
             print(instruction_fingerprint(load(CONTROL))); return 0
+        if args.command == "batch-status":
+            errors = validate()
+            if errors: return print_errors(errors)
+            batch_status(); return 0
         if args.command == "sync-check":
             errors = sync_check(args.branch)
             if errors: return print_errors(errors)

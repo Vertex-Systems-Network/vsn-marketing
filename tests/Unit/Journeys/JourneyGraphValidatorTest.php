@@ -3,6 +3,7 @@
 use App\Modules\Journeys\Application\JourneyEnrollmentGuard;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
 use App\Modules\Journeys\Domain\JourneyActionGate;
+use App\Modules\Journeys\Domain\JourneyBranchResolver;
 use App\Modules\Journeys\Domain\JourneyConditionEvaluator;
 use App\Modules\Journeys\Domain\JourneyConditionOperator;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
@@ -118,6 +119,18 @@ it('restricts graph condition operators and operand types to the typed evaluator
     $invalid = $validExists;
     $invalid['nodes'][0]['config']['value'] = true;
     expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
+});
+
+it('routes a branch through exactly one matching typed edge', function () {
+    $resolver = new JourneyBranchResolver;
+    $edges = [
+        ['from' => 'branch', 'to' => 'yes', 'type' => 'true'],
+        ['from' => 'branch', 'to' => 'no', 'type' => 'false'],
+    ];
+    expect($resolver->resolve('branch', true, $edges))->toBe('yes')
+        ->and($resolver->resolve('branch', false, $edges))->toBe('no');
+    expect(fn () => $resolver->resolve('branch', true, [$edges[1]]))->toThrow(JourneyDefinitionException::class);
+    expect(fn () => $resolver->resolve('branch', true, [$edges[0], $edges[0]]))->toThrow(JourneyDefinitionException::class);
 });
 
 it('allows only durable execution state transitions', function () {

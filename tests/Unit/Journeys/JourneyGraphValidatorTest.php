@@ -213,6 +213,23 @@ it('allows only durable execution state transitions', function () {
     expect(fn () => $state->transition('running'))->toThrow(JourneyDefinitionException::class);
 });
 
+it('maps goal and exit outcomes to terminal execution states', function () {
+    $goal = new JourneyExecutionState('workspace-1', 'execution-goal');
+    $goal->transition('running');
+    $goal->applyTerminalOutcome(JourneyTerminalOutcome::GoalAchieved);
+    expect($goal->status)->toBe('succeeded');
+
+    $exit = new JourneyExecutionState('workspace-1', 'execution-exit');
+    $exit->transition('running');
+    $exit->applyTerminalOutcome(JourneyTerminalOutcome::Exited);
+    expect($exit->status)->toBe('exited');
+
+    $unmatched = new JourneyExecutionState('workspace-1', 'execution-unmatched');
+    $unmatched->transition('running');
+    $unmatched->applyTerminalOutcome(JourneyTerminalOutcome::Unmatched);
+    expect($unmatched->status)->toBe('running');
+});
+
 it('rejects unknown graph node and edge fields instead of accepting executable extensions', function () {
     $v = new JourneyGraphValidator;
     $graph = journeyGraph();

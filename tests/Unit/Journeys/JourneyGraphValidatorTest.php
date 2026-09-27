@@ -73,6 +73,10 @@ it('rejects unknown graph node and edge fields instead of accepting executable e
     $graph = journeyGraph();
     $graph['edges'][0]['script'] = 'run';
     expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = journeyGraph();
+    $graph['edges'][0]['type'] = 'execute arbitrary callback';
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
 });
 
 it('rejects malformed, duplicate, cyclic, and over-depth edges', function () {

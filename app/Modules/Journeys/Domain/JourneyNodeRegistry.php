@@ -8,7 +8,7 @@ final class JourneyNodeRegistry
     /** @var array<string, array<string, string>> */
     private const CONFIG_SCHEMAS = [
         'trigger' => ['event' => 'string'],
-        'wait' => ['seconds' => 'positive_int'],
+        'wait' => ['seconds' => 'positive_int', 'field' => 'string', 'operator' => 'condition_operator', 'value' => 'scalar'],
         'condition' => ['field' => 'string', 'operator' => 'condition_operator', 'value' => 'scalar'],
         'branch' => ['field' => 'string', 'operator' => 'condition_operator', 'value' => 'scalar'],
         'action' => ['capability' => 'identifier', 'input' => 'object'],
@@ -72,7 +72,12 @@ final class JourneyNodeRegistry
         if ($type === 'end' && $config !== []) {
             throw new JourneyDefinitionException('unexpected_node_config', $path.'.config');
         }
-        if (in_array($type, ['condition', 'branch'], true)) {
+        $hasCondition = in_array($type, ['condition', 'branch'], true)
+            || ($type === 'wait' && (array_key_exists('field', $config) || array_key_exists('operator', $config) || array_key_exists('value', $config)));
+        if ($hasCondition) {
+            if (! isset($config['field'], $config['operator'])) {
+                throw new JourneyDefinitionException('condition_definition_incomplete', $path.'.config');
+            }
             $operator = JourneyConditionOperator::from($config['operator']);
             $hasValue = array_key_exists('value', $config);
             if (($operator === JourneyConditionOperator::Exists) === $hasValue) {

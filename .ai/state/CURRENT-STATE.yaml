@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-09",
     "active_task": "TASK-0051",
     "last_completed_task": "TASK-0050",

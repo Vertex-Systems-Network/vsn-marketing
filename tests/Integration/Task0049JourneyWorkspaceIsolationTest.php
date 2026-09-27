@@ -39,7 +39,7 @@ function task0049PgWorkspace(string $label): string
     return $workspaceId;
 }
 
-it('rejects cross-workspace journey version execution and node-attempt references', function () {
+it('rejects cross-workspace enrollment, execution, and node-attempt references', function () {
     $inside = task0049PgWorkspace('journey-inside');
     $outside = task0049PgWorkspace('journey-outside');
     $journeyId = (string) Str::uuid();
@@ -68,6 +68,23 @@ it('rejects cross-workspace journey version execution and node-attempt reference
     expect(fn () => DB::transaction(fn () => DB::table('journey_versions')->insert([...$version, 'id' => (string) Str::uuid(), 'workspace_id' => $outside])))
         ->toThrow(QueryException::class);
     DB::table('journey_versions')->insert($version);
+
+    $enrollmentId = (string) Str::uuid();
+    $enrollment = [
+        'id' => $enrollmentId,
+        'workspace_id' => $inside,
+        'journey_version_id' => $versionId,
+        'subject_id' => (string) Str::uuid(),
+        'trigger_event_id' => (string) Str::uuid(),
+        'enrollment_key' => str_repeat('d', 64),
+        'generation' => 1,
+        'status' => 'active',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ];
+    expect(fn () => DB::transaction(fn () => DB::table('journey_enrollments')->insert([...$enrollment, 'id' => (string) Str::uuid(), 'workspace_id' => $outside])))
+        ->toThrow(QueryException::class);
+    DB::table('journey_enrollments')->insert($enrollment);
 
     $executionId = (string) Str::uuid();
     $execution = [

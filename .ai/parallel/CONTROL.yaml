@@ -5,10 +5,9 @@
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
-    ".ai/parallel/AI-NATIVE-PLAN.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "eb41e5ef9343d4b3cffbd1127e83ad5a0d2b05f91c289d1febe16b24fe10bd64",
+  "instruction_fingerprint": "8ce40c92e18587c99f6dabf22e29bee0a47ed4436b0c9b4f6cc0b8ccd8b755ed",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,

@@ -3,6 +3,7 @@
 namespace App\Modules\Journeys\Application;
 
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyEnrollmentAdmissionPolicy;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 
@@ -16,6 +17,13 @@ final class JourneyEnrollmentGuard
     ): void {
         if (! $policy->allows($priorEnrollmentCount, $latestStatus, $maximumEnrollments)) {
             throw new JourneyDefinitionException('reentry_not_allowed', '$.enrollment');
+        }
+    }
+
+    public function assertWorkspaceAdmissionAllowed(int $activeEnrollmentCount, JourneyEnrollmentAdmissionPolicy $policy): void
+    {
+        if ($activeEnrollmentCount < 0 || $activeEnrollmentCount >= $policy->maxActiveEnrollmentsPerWorkspace) {
+            throw new JourneyDefinitionException('workspace_enrollment_budget_exceeded', '$.enrollment');
         }
     }
 

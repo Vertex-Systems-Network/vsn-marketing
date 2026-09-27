@@ -9,6 +9,7 @@ use App\Modules\Identity\Domain\Tenancy\Workspace;
 use App\Modules\Journeys\Application\EnrollSubjectInJourney;
 use App\Modules\Journeys\Application\JourneyRegistry;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyEnrollmentAdmissionPolicy;
 use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,6 +21,7 @@ uses(RefreshDatabase::class);
 
 function journeyPublisherFixture(): array
 {
+    config(['journeys.max_active_enrollments_per_workspace' => 100]);
     $user = User::query()->create([
         'name' => 'Journey Publisher',
         'email' => 'journey-publisher@example.test',
@@ -194,4 +196,38 @@ it('fails closed when a stored pinned graph no longer matches its published hash
         (string) Str::uuid(),
         (string) Str::uuid(),
     ))->toThrow(JourneyDefinitionException::class, 'published_version_integrity_failed');
+});
+
+it('fails closed when the workspace enrollment budget is exhausted', function () {
+    $fixture = journeyPublisherFixture();
+    config(['journeys.max_active_enrollments_per_workspace' => 1]);
+    $published = app(JourneyRegistry::class)->publish(
+        $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,
+    );
+    $enrollments = app(EnrollSubjectInJourney::class);
+    $first = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, (string) Str::uuid(), (string) Str::uuid(),
+    );
+
+    $duplicate = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId,
+        DB::table('journey_enrollments')->where('id', $first['id'])->value('subject_id'),
+        DB::table('journey_enrollments')->where('id', $first['id'])->value('trigger_event_id'),
+    );
+    expect($duplicate['duplicate'])->toBeTrue();
+    expect(fn () => $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, (string) Str::uuid(), (string) Str::uuid(),
+    ))->toThrow(JourneyDefinitionException::class, 'workspace_enrollment_budget_exceeded');
+
+    DB::table('journey_enrollments')->where('id', $first['id'])->update(['status' => 'exited']);
+    $next = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, (string) Str::uuid(), (string) Str::uuid(),
+    );
+    expect($next['duplicate'])->toBeFalse();
+});
+
+it('fails closed when no workspace enrollment budget is configured', function () {
+    config(['journeys.max_active_enrollments_per_workspace' => null]);
+    expect(fn () => app(JourneyEnrollmentAdmissionPolicy::class))
+        ->toThrow(JourneyDefinitionException::class, 'enrollment_budget_not_configured');
 });

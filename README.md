@@ -71,7 +71,7 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 ## For coding agents and contributors
 
 Agent instruction revision: `parallel-v2.8.0-workspace-5h-continuous`  
-Agent instruction fingerprint: `eb41e5ef9343d4b3cffbd1127e83ad5a0d2b05f91c289d1febe16b24fe10bd64`
+Agent instruction fingerprint: `8ce40c92e18587c99f6dabf22e29bee0a47ed4436b0c9b4f6cc0b8ccd8b755ed`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 

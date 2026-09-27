@@ -1,21 +1,44 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "a28d48f6dcc73f79d71c3a13d769bf6a871e709a",
+  "reconciled_main_sha": "3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9",
   "active_work_path": {
     "kind": "pr",
-    "number": 414,
-    "title": "control(phase09): activate research and register journey engine tasks",
-    "branch": "supervisor/phase09-research",
-    "head_sha": "81e94ce4f989442b509d4e2966bffb868f3931ad",
-    "disposition": "active_phase09_research_gate"
+    "number": 417,
+    "title": "control(ai): enforce 5-hour continuous Workspace batches",
+    "branch": "control/ai-native-5h-continuous-batch",
+    "disposition": "active_ai_native_5h_control_certification"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 417,
+      "title": "control(ai): enforce 5-hour continuous Workspace batches",
+      "disposition": "active_ai_native_5h_control_certification",
+      "accepted_actionable": true,
+      "branch": "control/ai-native-5h-continuous-batch"
+    },
+    {
+      "kind": "pr",
+      "number": 416,
+      "title": "feat(phase09): add tenant-safe journey graph foundation",
+      "disposition": "authoritative_task0049_product_carrier_waiting_control_certification",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-task49-clean"
+    },
+    {
+      "kind": "pr",
+      "number": 415,
+      "title": "feat(phase09): add journey graph and execution foundation",
+      "disposition": "superseded_duplicate_do_not_merge",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-research"
+    },
+    {
+      "kind": "pr",
       "number": 414,
       "title": "control(phase09): activate research and register journey engine tasks",
-      "disposition": "active_phase09_research_gate",
-      "accepted_actionable": true,
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
       "branch": "supervisor/phase09-research",
       "head_sha": "47229d2167e367ed410f39eab4f37f04a7673c32"
     },
@@ -44,7 +67,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
+      "title": "AI Continuity Guard — Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

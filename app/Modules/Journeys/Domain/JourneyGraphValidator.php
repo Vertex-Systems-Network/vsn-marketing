@@ -81,7 +81,7 @@ final class JourneyGraphValidator
             if ($from === $to) {
                 throw new JourneyDefinitionException('self_loop_forbidden', $path);
             }
-            if (isset($edge['type']) && (! is_string($edge['type']) || $edge['type'] === '')) {
+            if (isset($edge['type']) && (! is_string($edge['type']) || JourneyEdgeType::tryFrom($edge['type']) === null)) {
                 throw new JourneyDefinitionException('invalid_edge_type', $path.'.type');
             }
 

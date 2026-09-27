@@ -24,6 +24,7 @@ final readonly class JourneyRuntimePolicy
     {
         $this->assertWait($seconds);
         $zone = new DateTimeZone($timezone ?: 'UTC');
+
         return $now->setTimezone($zone)->modify('+'.$seconds.' seconds')->setTimezone(new DateTimeZone('UTC'));
     }
 }

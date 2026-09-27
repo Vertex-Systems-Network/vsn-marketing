@@ -1,14 +1,22 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08",
+  "reconciled_main_sha": "075cf2f58fe8a0e132b233d9b6ab51a395aca8dd",
   "active_work_path": {
     "kind": "pr",
-    "number": 416,
-    "title": "feat(phase09): add tenant-safe journey graph foundation",
-    "branch": "supervisor/phase09-task49-clean",
-    "disposition": "active_task0049_product_carrier"
+    "number": 418,
+    "title": "feat(phase09): advance TASK-0050 runtime semantics",
+    "branch": "supervisor/phase09-task50-runtime",
+    "disposition": "active_task0050_runtime_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 418,
+      "title": "feat(phase09): advance TASK-0050 runtime semantics",
+      "branch": "supervisor/phase09-task50-runtime",
+      "disposition": "active_task0050_runtime_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 417,
@@ -22,9 +30,10 @@
       "kind": "pr",
       "number": 416,
       "title": "feat(phase09): add tenant-safe journey graph foundation",
-      "disposition": "active_task0049_product_carrier",
-      "accepted_actionable": true,
-      "branch": "supervisor/phase09-task49-clean"
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-task49-clean",
+      "merge_sha": "075cf2f58fe8a0e132b233d9b6ab51a395aca8dd"
     },
     {
       "kind": "pr",
@@ -68,7 +77,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

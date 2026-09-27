@@ -438,7 +438,7 @@ def mark_acceptance_criteria(path: Path, criterion_ids: list[str]) -> None:
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
-def reconcile_coordination_queue(path: Path, *, main_sha: str, active_pr: int, branch: str, title: str, completed_pr: int | None = None, completion_sha: str | None = None) -> None:
+def reconcile_coordination_queue(path: Path, *, main_sha: str, active_pr: int, branch: str, title: str, task_id: str, completed_pr: int | None = None, completion_sha: str | None = None) -> None:
     queue = json.loads(path.read_text(encoding="utf-8"))
     items = queue.get("items")
     if not isinstance(items, list):
@@ -454,9 +454,10 @@ def reconcile_coordination_queue(path: Path, *, main_sha: str, active_pr: int, b
     if len(matches) > 1:
         raise TransactionError("active PR has duplicate coordination queue rows")
     row = matches[0] if matches else {"kind": "pr", "number": active_pr}
+    disposition = f"active_{task_id.lower().replace('-', '')}_carrier"
     row.update({
         "kind": "pr", "number": active_pr, "title": title, "branch": branch,
-        "disposition": "active_task0050_runtime_carrier", "accepted_actionable": True,
+        "disposition": disposition, "accepted_actionable": True,
     })
     if not matches:
         items.insert(0, row)
@@ -468,7 +469,7 @@ def reconcile_coordination_queue(path: Path, *, main_sha: str, active_pr: int, b
     queue["reconciled_main_sha"] = main_sha
     queue["active_work_path"] = {
         "kind": "pr", "number": active_pr, "title": title, "branch": branch,
-        "disposition": "active_task0050_runtime_carrier",
+        "disposition": disposition,
     }
     path.write_text(json.dumps(queue, indent=2) + "\n", encoding="utf-8")
 
@@ -505,6 +506,7 @@ def checkpoint(args) -> None:
                 active_pr=args.active_pr,
                 branch=args.active_branch,
                 title=args.carrier_title,
+                task_id=json.loads((ROOT / ".ai/state/CURRENT-STATE.yaml").read_text(encoding="utf-8"))["execution"]["active_task"],
                 completed_pr=args.completed_pr,
                 completion_sha=args.completion_sha,
             )

@@ -5,6 +5,8 @@ use App\Modules\Identity\Domain\Tenancy\Workspace;
 use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
+use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
+use App\Modules\Journeys\Domain\JourneyAttemptPolicy;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -84,4 +86,19 @@ it('rejects a persisted wait that pairs one workspace with another workspace exe
 
     expect(fn () => app(JourneyWaitRepository::class)->store($wait))
         ->toThrow(QueryException::class);
+});
+
+it('claims and audits node attempts only inside the execution workspace', function () {
+    $inside = createJourneyWaitPostgresExecution('attempt-scope-inside');
+    $outside = createJourneyWaitPostgresExecution('attempt-scope-outside');
+    $repository = app(JourneyNodeAttemptRepository::class);
+    $now = new DateTimeImmutable('2026-09-27T12:00:00Z');
+
+    $policy = new JourneyAttemptPolicy(maxWorkspaceConcurrent: 3, leaseSeconds: 30);
+    expect($repository->claim($outside['workspace_id'], $inside['execution_id'], 'safe-node', 1, $now, $policy))->toBeNull();
+
+    $claim = $repository->claim($inside['workspace_id'], $inside['execution_id'], 'safe-node', 1, $now, $policy);
+    expect($claim)->not->toBeNull()
+        ->and(DB::table('journey_execution_transitions')->where('workspace_id', $inside['workspace_id'])->where('execution_id', $inside['execution_id'])->count())->toBe(1)
+        ->and(DB::table('journey_execution_transitions')->where('workspace_id', $outside['workspace_id'])->count())->toBe(0);
 });

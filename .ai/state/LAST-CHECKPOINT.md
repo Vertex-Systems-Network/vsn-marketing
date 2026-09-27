@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-09-27T12:24:05+00:00`
-- Observed main: `30c6a70bdc3faf1faa9b2e7ff7a89e502baee725`
+- Timestamp: `2026-09-27T15:47:58+00:00`
+- Observed main: `fe450e2d0c80dab8fa63882859618e9c0618f7a4`
 - Active issue: `none`
-- Active PR: `419`
-- Active branch: `supervisor/phase09-task50-wait-resume`
-- Current milestone: `PHASE-09-TASK-0050-RUNTIME`
+- Active PR: `420`
+- Active branch: `supervisor/phase09-task51-execution`
+- Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0050`
-- Next task: `TASK-0051`
+- Active task: `TASK-0051`
+- Next task: `TASK-0052`
 - Current phase: `PHASE-09`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `943192d2796b235a4f9bc531a51f7441ad0a8a1b6f4414aaa34f5f14314d5faa`
+- State fingerprint: `cc3b1b2e00f943d74a367c2463e9ea2e5b2d6784087317b4c0f6155ac5178c37`
 
 ## Completed / observed this session
 
-PR #419 head 60cf6e891cad0c72e9b5949e038246d8216b9490 passed Continuity/Security and foundation, PostgreSQL integration, PHP-floor, but its E2E gate reproduced the TASK-0046 count-preview failure. Authenticated route tests prove preview_result exact count=1 reaches Inertia response props. Added Playwright response/props assertions to isolate the browser update on the next exact head.
+TASK-0051 runtime slice now persists append-only execution revisions, fences stale leases, recovers expired claims, applies bounded retry/dead-letter/operator-review rules, redacts diagnostics, and serializes caller-configured per-workspace concurrency. Also fixed checkpoint queue disposition to derive its task ID rather than hard-code TASK-0050.
 
 ## Tests
 
-Full Pest 696 passed / 133 infrastructure-gated skips (3842 assertions); PHASE-09 Journeys 37 passed / 154 assertions; TASK-0046 authenticated preview route suite 3 passed / 21 assertions; Pint, PHPStan Journeys, npm typecheck, transaction/state/journal/parallel/Runner/Supervisor validators pass. PR #419 head 60cf6e891cad0c72e9b5949e038246d8216b9490: Continuity/Security and application foundation, PG integration, PHP-floor success; E2E failed on preview count UI.
+22 transactional AI-state Python tests pass; ai_txn validation and parallel main-sync pass; npm typecheck passes; git diff --check passes. PHP/Pest/Pint/PHPStan unavailable locally.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Full Pest 696 passed / 133 infrastructure-gated skips (3842 assertions); PHASE-0
 
 ## Exact next action
 
-Publish the Playwright response/page-prop diagnostics and preview-route regression on PR #419; use the resulting exact-head CI evidence to identify and repair the UI update failure, rerun all required gates, merge only when green, then complete TASK-0050 and activate TASK-0051.
+Publish the TASK-0051 transition ledger, workspace budget, and dynamic queue reconciliation fix to PR #420. Run exact-head app/security/continuity gates; diagnose and repair all failures; then continue immutable replay/recovery and representative benchmark evidence.

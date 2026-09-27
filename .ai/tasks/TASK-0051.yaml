@@ -1,1 +1,44 @@
-{"id":"TASK-0051","phase":"PHASE-09","title":"Implement durable concurrency retries replay and recovery","weight":20,"status":"ready","dependencies":["TASK-0050"],"objective":"Implement bounded durable execution, leases, node idempotency, retry classification, cancellation, replay, backpressure, and recovery evidence.","acceptance_criteria":[{"id":"AC-1","description":"Execution and node-attempt identities make duplicate workers and event redelivery safe.","status":"pending"},{"id":"AC-2","description":"Leases, optimistic version checks, retries, timeouts, dead-letter/operator review, and cancellation are durable.","status":"pending"},{"id":"AC-3","description":"Replay and recovery pin the original journey version and preserve transition history.","status":"pending"},{"id":"AC-4","description":"Fan-out, enrollment storms, workspace concurrency, and resource budgets have configurable fail-closed guards.","status":"pending"},{"id":"AC-5","description":"Representative benchmark evidence is captured before production numeric limits are claimed.","status":"pending"}],"required_tests":["concurrency-and-idempotency-tests","retry-replay-recovery-tests","representative-execution-benchmark"]}
+{
+  "id": "TASK-0051",
+  "phase": "PHASE-09",
+  "title": "Implement durable concurrency retries replay and recovery",
+  "weight": 20,
+  "status": "ready",
+  "dependencies": [
+    "TASK-0050"
+  ],
+  "objective": "Implement bounded durable execution, leases, node idempotency, retry classification, cancellation, replay, backpressure, and recovery evidence.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "description": "Execution and node-attempt identities make duplicate workers and event redelivery safe.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-2",
+      "description": "Leases, optimistic version checks, retries, timeouts, dead-letter/operator review, and cancellation are durable.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-3",
+      "description": "Replay and recovery pin the original journey version and preserve transition history.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-4",
+      "description": "Fan-out, enrollment storms, workspace concurrency, and resource budgets have configurable fail-closed guards.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-5",
+      "description": "Representative benchmark evidence is captured before production numeric limits are claimed.",
+      "status": "pending"
+    }
+  ],
+  "required_tests": [
+    "concurrency-and-idempotency-tests",
+    "retry-replay-recovery-tests",
+    "representative-execution-benchmark"
+  ],
+  "exact_next_action": "Implement durable execution leases, node-attempt idempotency, retry/replay/recovery, cancellation, and workspace backpressure with fail-closed budgets; capture representative benchmark evidence without asserting production numeric SLOs. Keep PHASE-10 planned and inactive."
+}

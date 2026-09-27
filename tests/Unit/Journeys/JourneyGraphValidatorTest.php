@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Events\Domain\CanonicalEvent;
+use App\Modules\Journeys\Application\DispatchJourneyAction;
 use App\Modules\Journeys\Application\JourneyEnrollmentGuard;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
 use App\Modules\Journeys\Domain\JourneyActionGate;
@@ -103,6 +104,20 @@ it('fails closed for action capability consent policy authorization quota or ide
     expect($gate->blockers($blocked))->toBe(['consent', 'suppression_clear'])
         ->and(fn () => $gate->assertAllowed($blocked))->toThrow(JourneyDefinitionException::class);
     expect($gate->blockers([]))->toHaveCount(6);
+});
+
+it('does not dispatch an action until all execution-time gates pass', function () {
+    $dispatcher = new DispatchJourneyAction;
+    $checks = ['provider_capability' => true, 'consent' => true, 'suppression_clear' => true, 'authorized' => true, 'quota_available' => true, 'idempotent' => true];
+    expect($dispatcher->handle($checks, fn () => 'dispatched'))->toBe('dispatched');
+    $called = false;
+    $checks['consent'] = false;
+    expect(fn () => $dispatcher->handle($checks, function () use (&$called): string {
+        $called = true;
+
+        return 'dispatched';
+    }))->toThrow(JourneyDefinitionException::class);
+    expect($called)->toBeFalse();
 });
 
 it('restricts graph condition operators and operand types to the typed evaluator contract', function () {

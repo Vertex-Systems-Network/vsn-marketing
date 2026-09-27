@@ -3,15 +3,17 @@
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Journeys\Application\ReplayJourneyExecution;
 use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\JourneyAttemptPolicy;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
-use Illuminate\Auth\Access\AuthorizationException;
+use Mockery;
 
 uses(RefreshDatabase::class);
 
@@ -112,8 +114,8 @@ it('replays only an authorized terminal execution against its pinned version ide
     DB::table('journey_executions')->where('id', $fixture['execution_id'])->update(['status' => 'failed']);
     $organizationId = (string) Workspace::query()->whereKey($fixture['workspace_id'])->value('organization_id');
     $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, 'operator-1');
-    Gate::shouldReceive('authorize')->twice()->with('replay-journey-execution', \Mockery::type('array'))->andReturnNull();
-    $service = app(\App\Modules\Journeys\Application\ReplayJourneyExecution::class);
+    Gate::shouldReceive('authorize')->twice()->with('replay-journey-execution', Mockery::type('array'))->andReturnNull();
+    $service = app(ReplayJourneyExecution::class);
 
     $first = $service->handle($tenant, $fixture['execution_id'], 'operator-request-1');
     $duplicate = $service->handle($tenant, $fixture['execution_id'], 'operator-request-1');
@@ -134,7 +136,7 @@ it('rejects cross-workspace and non-terminal replays before authorization', func
     $organizationId = (string) Workspace::query()->whereKey($other['workspace_id'])->value('organization_id');
     $tenant = new TenantContext($organizationId, $other['workspace_id'], null, 'operator-2');
     Gate::shouldReceive('authorize')->never();
-    $service = app(\App\Modules\Journeys\Application\ReplayJourneyExecution::class);
+    $service = app(ReplayJourneyExecution::class);
 
     expect(fn () => $service->handle($tenant, $source['execution_id'], 'request-cross-tenant'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $service->handle(new TenantContext($organizationId, $source['workspace_id'], null, 'operator-2'), $source['execution_id'], 'request-running'))->toThrow(InvalidArgumentException::class);
@@ -146,7 +148,7 @@ it('does not create a replay when operator authorization is denied', function ()
     $organizationId = (string) Workspace::query()->whereKey($fixture['workspace_id'])->value('organization_id');
     $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, 'operator-denied');
     Gate::shouldReceive('authorize')->once()->andThrow(new AuthorizationException);
-    $service = app(\App\Modules\Journeys\Application\ReplayJourneyExecution::class);
+    $service = app(ReplayJourneyExecution::class);
 
     expect(fn () => $service->handle($tenant, $fixture['execution_id'], 'request-denied'))->toThrow(AuthorizationException::class)
         ->and(DB::table('journey_executions')->where('workspace_id', $fixture['workspace_id'])->count())->toBe(1);

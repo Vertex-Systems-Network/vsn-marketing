@@ -2,11 +2,11 @@
 
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
-use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
-use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\JourneyAttemptPolicy;
+use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

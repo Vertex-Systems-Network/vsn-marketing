@@ -2,8 +2,8 @@
 
 namespace App\Modules\Journeys\Domain\Contracts;
 
-use DateTimeImmutable;
 use App\Modules\Journeys\Domain\JourneyAttemptPolicy;
+use DateTimeImmutable;
 
 interface JourneyNodeAttemptRepository
 {

@@ -176,7 +176,7 @@ final class DatabaseJourneyNodeAttemptRepository implements JourneyNodeAttemptRe
             ]);
             DB::table('journey_node_attempts')->where('workspace_id', $workspaceId)->where('execution_id', $executionId)
                 ->whereIn('status', ['queued', 'running', 'retryable'])->update([
-                'status' => 'cancelled', 'lease_until' => null, 'lease_token' => null, 'updated_at' => $now,
+                    'status' => 'cancelled', 'lease_until' => null, 'lease_token' => null, 'updated_at' => $now,
                 ]);
             $this->recordTransition($workspaceId, $executionId, $revision, 'execution_cancelled', null, null, [], $now);
 

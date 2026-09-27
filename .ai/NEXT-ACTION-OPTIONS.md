@@ -4,7 +4,7 @@ This repository adopts the Vertex Systems Network interactive AI-development han
 
 ## User-facing handoff
 
-After every repository-development response, expose 1 to 3 currently valid next actions derived from live repository evidence.
+Outside an active 5-hour continuous Workspace batch, expose 1 to 3 currently valid next actions derived from live repository evidence. During an active batch, do not emit an intermediate handoff merely because a PR was opened, CI failed/passed, a merge completed, or a dependency-ready task became available. Continue automatically under `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md` and expose options only when the batch ends or a genuine hard stop is reached.
 
 - Always include the canonical/recommended next action, but do not bind it permanently to option 1.
 - When two or more valid options exist, reshuffle the visible 1/2/3 numbering on every handoff.

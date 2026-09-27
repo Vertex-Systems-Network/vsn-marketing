@@ -28,6 +28,8 @@ return new class extends Migration
                 $table->unsignedInteger('version_number');
                 $table->json('graph');
                 $table->char('definition_hash', 64);
+                $table->string('reentry_policy', 20)->default('never');
+                $table->unsignedInteger('max_enrollments')->nullable();
                 $table->string('status', 20)->default('draft');
                 $table->timestampsTz();
                 $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
@@ -64,7 +66,6 @@ return new class extends Migration
                 $table->uuid('subject_id');
                 $table->string('trigger_event_id', 191);
                 $table->char('enrollment_key', 64);
-                $table->string('reentry_policy', 20);
                 $table->unsignedInteger('generation');
                 $table->string('status', 20)->default('active');
                 $table->timestampsTz();

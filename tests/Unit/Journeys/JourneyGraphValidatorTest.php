@@ -99,8 +99,8 @@ it('rejects malformed, duplicate, cyclic, and over-depth edges', function () {
 
 it('canonicalizes nested configuration map keys before hashing', function () {
     $v = new JourneyGraphValidator;
-    $a = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['z' => 1, 'a' => ['y' => true, 'b' => false]]]]];
-    $b = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['a' => ['b' => false, 'y' => true], 'z' => 1]]]];
+    $a = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['capability' => 'mail.send', 'input' => ['y' => true, 'b' => false]]]]];
+    $b = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['input' => ['b' => false, 'y' => true], 'capability' => 'mail.send']]]];
     expect($v->hash($a))->toBe($v->hash($b));
 });
 
@@ -110,4 +110,24 @@ it('uses unambiguous tuple identities and rejects noncanonical event identifiers
 
     $guard = new JourneyEnrollmentGuard;
     expect(fn () => $guard->key('w1', 'v1', 's1', ['event_id' => 123]))->toThrow(InvalidArgumentException::class);
+});
+
+it('validates each registered node configuration against its typed schema', function () {
+    $validator = new JourneyGraphValidator;
+    $graph = ['schema_version' => 1, 'nodes' => [
+        ['id' => 'trigger', 'type' => 'trigger', 'config' => ['event' => 'customer.created']],
+        ['id' => 'wait', 'type' => 'wait', 'config' => ['seconds' => 10]],
+        ['id' => 'end', 'type' => 'end'],
+    ], 'edges' => [['from' => 'trigger', 'to' => 'wait'], ['from' => 'wait', 'to' => 'end']]];
+    expect($validator->normalize($graph)['nodes'])->toHaveCount(3);
+
+    foreach ([
+        ['id' => 'x', 'type' => 'trigger', 'config' => ['event' => ['unsafe']]],
+        ['id' => 'x', 'type' => 'wait', 'config' => ['seconds' => -1]],
+        ['id' => 'x', 'type' => 'action', 'config' => ['endpoint' => 'https://example.invalid']],
+        ['id' => 'x', 'type' => 'end', 'config' => ['anything' => true]],
+    ] as $node) {
+        expect(fn () => $validator->normalize(['schema_version' => 1, 'nodes' => [$node]]))
+            ->toThrow(JourneyDefinitionException::class);
+    }
 });

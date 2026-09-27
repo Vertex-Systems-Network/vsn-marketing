@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "075cf2f58fe8a0e132b233d9b6ab51a395aca8dd",
+  "reconciled_main_sha": "30c6a70bdc3faf1faa9b2e7ff7a89e502baee725",
   "active_work_path": {
     "kind": "pr",
-    "number": 418,
-    "title": "feat(phase09): advance TASK-0050 runtime semantics",
-    "branch": "supervisor/phase09-task50-runtime",
+    "number": 419,
+    "title": "feat(phase09): resume and cancel durable waits",
+    "branch": "supervisor/phase09-task50-wait-resume",
     "disposition": "active_task0050_runtime_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 419,
+      "title": "feat(phase09): resume and cancel durable waits",
+      "branch": "supervisor/phase09-task50-wait-resume",
+      "disposition": "active_task0050_runtime_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 418,
       "title": "feat(phase09): advance TASK-0050 runtime semantics",
       "branch": "supervisor/phase09-task50-runtime",
-      "disposition": "active_task0050_runtime_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "30c6a70bdc3faf1faa9b2e7ff7a89e502baee725"
     },
     {
       "kind": "pr",

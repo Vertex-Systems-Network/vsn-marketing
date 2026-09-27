@@ -29,7 +29,7 @@ it('canonicalizes equivalent graphs and produces a stable hash', function () {
 });
 
 it('rejects unknown nodes, executable text, and foreign edges', function () {
-    $v = new JourneyGraphValidator;
+    $v = new JourneyGraphValidator();
     expect(fn () => $v->normalize(['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'sql', 'sql' => 'select 1']]]))->toThrow(JourneyDefinitionException::class);
     expect(fn () => $v->normalize(['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'code' => 'exec()']]]))->toThrow(JourneyDefinitionException::class);
     expect(fn () => $v->normalize(['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'end']], 'edges' => [['from' => 'x', 'to' => 'foreign']]]))->toThrow(JourneyDefinitionException::class);

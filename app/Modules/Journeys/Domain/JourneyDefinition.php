@@ -20,6 +20,7 @@ final readonly class JourneyDefinition
     public static function publish(string $workspaceId, string $versionId, array $graph, JourneyGraphValidator $validator): self
     {
         $normalized = $validator->normalize($graph);
+
         return new self($workspaceId, $versionId, $normalized, $validator->hash($normalized));
     }
 }

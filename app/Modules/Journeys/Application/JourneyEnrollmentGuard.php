@@ -15,6 +15,7 @@ final class JourneyEnrollmentGuard
         if ($eventId === '') {
             throw new \InvalidArgumentException('canonical event_id is required');
         }
+
         return JourneyExecutionIdentity::for($workspaceId, $journeyVersionId, $subjectId, $eventId);
     }
 }

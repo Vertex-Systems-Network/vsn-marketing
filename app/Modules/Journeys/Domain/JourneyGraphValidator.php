@@ -21,7 +21,7 @@ final class JourneyGraphValidator
         if (($graph['schema_version'] ?? null) !== self::SCHEMA_VERSION) {
             throw new JourneyDefinitionException('unsupported_schema_version', '$.schema_version');
         }
-        if (! isset($graph['nodes']) || ! is_array($graph['nodes']) || $graph['nodes'] === []) {
+        if (!isset($graph['nodes']) || !is_array($graph['nodes']) || $graph['nodes'] === []) {
             throw new JourneyDefinitionException('nodes_required', '$.nodes');
         }
         if (count($graph['nodes']) > self::MAX_NODES) {

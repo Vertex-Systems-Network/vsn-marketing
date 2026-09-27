@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0050-RUNTIME",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Sync the atomic queue reconciliation and complete journal to PR #418. Validate local Supervisor contract and inspect new exact-head CI; repair any remaining failure.",
+  "exact_next_safe_action": "Publish the durable wait persistence and synchronized state on PR #418 with complete migration review markers, verify all checks on the exact new head, repair failures, and merge only after required gates pass. Then finish predicate wake/resume and cancellation semantics for TASK-0050.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Sync the atomic queue reconciliation and complete journal to PR #418. Validate local Supervisor contract and inspect new exact-head CI; repair any remaining failure."
+  "exact_next_action": "Publish the durable wait persistence and synchronized state on PR #418 with complete migration review markers, verify all checks on the exact new head, repair failures, and merge only after required gates pass. Then finish predicate wake/resume and cancellation semantics for TASK-0050."
 }

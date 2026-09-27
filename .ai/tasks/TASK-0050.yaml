@@ -39,5 +39,5 @@
     "trigger-wait-branch-integration-tests",
     "consent-suppression-action-gate-tests"
   ],
-  "exact_next_action": "Research and implement bounded workspace-scoped journey triggers, durable waits, typed branching, and guarded actions; do not touch PHASE-10."
+  "exact_next_action": "Publish and certify the tenant-scoped durable wait persistence slice on PR #418; then finish predicate wake/resume and cancellation semantics for TASK-0050 without touching PHASE-10."
 }

@@ -9,8 +9,8 @@ final class JourneyNodeRegistry
     private const CONFIG_SCHEMAS = [
         'trigger' => ['event' => 'string'],
         'wait' => ['seconds' => 'positive_int'],
-        'condition' => ['field' => 'string', 'operator' => 'string', 'value' => 'scalar'],
-        'branch' => ['field' => 'string', 'operator' => 'string', 'value' => 'scalar'],
+        'condition' => ['field' => 'string', 'operator' => 'condition_operator', 'value' => 'scalar'],
+        'branch' => ['field' => 'string', 'operator' => 'condition_operator', 'value' => 'scalar'],
         'action' => ['capability' => 'identifier', 'input' => 'object'],
         'goal' => ['event' => 'string'],
         'exit' => ['event' => 'string'],
@@ -58,6 +58,7 @@ final class JourneyNodeRegistry
                     'string' => is_string($value) && preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $value) === 1,
                     'identifier' => is_string($value) && preg_match('/^[a-z][a-z0-9_.-]{1,190}$/', $value) === 1,
                     'positive_int' => is_int($value) && $value > 0 && $value <= 31536000,
+                    'condition_operator' => is_string($value) && JourneyConditionOperator::tryFrom($value) !== null,
                     default => false,
                 };
             if ($schema[$key] === 'scalar') {
@@ -70,6 +71,20 @@ final class JourneyNodeRegistry
 
         if ($type === 'end' && $config !== []) {
             throw new JourneyDefinitionException('unexpected_node_config', $path.'.config');
+        }
+        if (in_array($type, ['condition', 'branch'], true)) {
+            $operator = JourneyConditionOperator::from($config['operator']);
+            $hasValue = array_key_exists('value', $config);
+            if (($operator === JourneyConditionOperator::Exists) === $hasValue) {
+                throw new JourneyDefinitionException('condition_value_mismatch', $path.'.config.value');
+            }
+            if (in_array($operator, [JourneyConditionOperator::GreaterThan, JourneyConditionOperator::LessThan], true)
+                && $hasValue && ! is_numeric($config['value'])) {
+                throw new JourneyDefinitionException('numeric_condition_value_required', $path.'.config.value');
+            }
+            if ($operator === JourneyConditionOperator::Contains && $hasValue && ! is_string($config['value'])) {
+                throw new JourneyDefinitionException('string_condition_value_required', $path.'.config.value');
+            }
         }
 
         return $config;

@@ -211,6 +211,24 @@ class TransactionCoordinatorTests(unittest.TestCase):
         self.assertTrue((actual_git_dir / "vsn-ai-txn").exists())
         txn.commit()
 
+    def test_mark_acceptance_criteria_updates_only_named_criteria(self):
+        task = self.root / "TASK-TEST.yaml"
+        task.write_text(json.dumps({"acceptance_criteria": [
+            {"id": "AC-1", "done": False}, {"id": "AC-2", "done": False},
+        ]}), encoding="utf-8")
+        self.module.mark_acceptance_criteria(task, ["AC-1"])
+        result = json.loads(task.read_text(encoding="utf-8"))
+        self.assertTrue(result["acceptance_criteria"][0]["done"])
+        self.assertFalse(result["acceptance_criteria"][1]["done"])
+
+    def test_mark_acceptance_criteria_rejects_unknown_ids_without_writing(self):
+        task = self.root / "TASK-TEST.yaml"
+        before = json.dumps({"acceptance_criteria": [{"id": "AC-1", "done": False}]})
+        task.write_text(before, encoding="utf-8")
+        with self.assertRaises(self.module.TransactionError):
+            self.module.mark_acceptance_criteria(task, ["AC-404"])
+        self.assertEqual(before, task.read_text(encoding="utf-8"))
+
 
 class RepositoryTransactionTests(unittest.TestCase):
     def test_repository_transaction_state_is_clean(self):

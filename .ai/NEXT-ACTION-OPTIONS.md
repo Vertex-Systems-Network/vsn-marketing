@@ -10,7 +10,7 @@ Outside an active 5-hour continuous Workspace batch, expose 1 to 3 currently val
 - When two or more valid options exist, reshuffle the visible 1/2/3 numbering on every handoff.
 - If the previously selected action identity and number are known, that same action must move to a different visible number on the next handoff. With only one valid action, number reuse is allowed.
 - Mark the canonical action as **Recommended**. Numbering is ephemeral presentation state and never changes priority, safety, scope, or authorization.
-- A reply containing only an option number is a request to start the corresponding next turn. Re-read current repository state before any mutation. If the option became stale or unsafe, fail closed and show the new valid options instead.
+- A reply containing only an option number starts/resumes the corresponding continuous batch after repository revalidation. Re-read current repository state before the first mutation. If the option became stale or unsafe, fail closed and show the new valid options instead. Once revalidated, do not ask again for routine in-scope repository consent at internal PR/CI/task boundaries.
 - Prefer substantial product/control batches over micro-options. Do not offer a standalone post-merge reconciliation option when its evidence can safely ride with the next substantial PR; reserve standalone reconciliation for task/phase acceptance, guarded transitions, release/security/recovery, material drift, or no-safe-successor cases.
 - Interactive buttons may be used when the host supports them; otherwise numbered one-line options are the mandatory fallback.
 

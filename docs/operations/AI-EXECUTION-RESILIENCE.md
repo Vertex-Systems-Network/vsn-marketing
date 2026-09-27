@@ -36,8 +36,8 @@ When GitHub Actions or another external gate has started, the artifact being ver
    - a gate changed state and needs diagnosis;
    - a failure needs logs and a bounded fix;
    - the remaining checks are already completing and one final read is enough to close the milestone;
-4. if required external checks are still running, end at the durable repository checkpoint instead of tight-polling;
-5. on the next `continue`, re-read the actual GitHub state and resume from that evidence.
+4. if required external checks are still running, do not consume that pending artifact and do not tight-poll; continue safe independent dependency-ready work inside an active 5-hour batch;
+5. if no such work exists and the external result is the sole remaining path, end at the durable repository checkpoint; on the next resume, re-read the actual GitHub state and continue from that evidence.
 
 Never weaken, skip, cancel, or replace a required gate merely to avoid a timeout.
 

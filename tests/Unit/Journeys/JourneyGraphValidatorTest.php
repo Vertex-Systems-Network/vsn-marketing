@@ -8,6 +8,7 @@ use App\Modules\Journeys\Domain\JourneyBranchResolver;
 use App\Modules\Journeys\Domain\JourneyConditionEvaluator;
 use App\Modules\Journeys\Domain\JourneyConditionOperator;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyEventTriggerMatcher;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyExecutionState;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
@@ -16,6 +17,8 @@ use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 use App\Modules\Journeys\Domain\JourneyTerminalEvaluator;
 use App\Modules\Journeys\Domain\JourneyTerminalOutcome;
 use App\Modules\Journeys\Domain\JourneyTrigger;
+use App\Modules\Journeys\Domain\JourneyWaitEvaluator;
+use App\Modules\Journeys\Domain\JourneyWaitOutcome;
 
 function journeyGraph(): array
 {
@@ -153,6 +156,51 @@ it('matches goal and exit nodes only against same-workspace canonical events', f
         ->toBe(JourneyTerminalOutcome::Unmatched);
     expect(fn () => $evaluator->evaluate('workspace-2', ['type' => 'goal', 'config' => ['event' => 'customer.purchase']], $event))
         ->toThrow(JourneyDefinitionException::class);
+});
+
+it('matches event trigger nodes against canonical events within their workspace only', function () {
+    $event = new CanonicalEvent(
+        eventId: 'event-trigger', eventType: 'customer.created', occurredAt: new DateTimeImmutable('2026-09-27T12:00:00Z'),
+        receivedAt: new DateTimeImmutable('2026-09-27T12:00:01Z'), workspaceId: 'workspace-1', brandId: null,
+        subjects: ['customer' => 'customer-1'], source: 'test', sourceEventId: 'source-10', schemaVersion: 1,
+        payload: [], sourceMetadata: [],
+    );
+    $matcher = new JourneyEventTriggerMatcher;
+    $node = ['type' => 'trigger', 'config' => ['event' => 'customer.created']];
+    expect($matcher->match('workspace-1', $node, $event)?->idempotencyKey)
+        ->toBe($matcher->match('workspace-1', $node, $event)?->idempotencyKey)
+        ->and($matcher->match('workspace-1', ['type' => 'trigger', 'config' => ['event' => 'customer.updated']], $event))
+        ->toBeNull();
+    expect(fn () => $matcher->match('workspace-2', $node, $event))->toThrow(JourneyDefinitionException::class);
+});
+
+it('resumes predicate waits when true or at the bounded deadline', function () {
+    $now = new DateTimeImmutable('2026-09-27T12:00:00Z');
+    $wait = DurableJourneyWait::schedule('workspace-1', 'execution-1', 'wait-1', $now, 60, new JourneyRuntimePolicy);
+    $evaluator = new JourneyWaitEvaluator;
+    $predicate = ['field' => 'state', 'operator' => 'equals', 'value' => 'ready'];
+    expect($evaluator->evaluate($wait, 'workspace-1', $now->modify('+30 seconds'), ['state' => 'ready'], $predicate))
+        ->toBe(JourneyWaitOutcome::Ready)
+        ->and($evaluator->evaluate($wait, 'workspace-1', $now->modify('+30 seconds'), ['state' => 'pending'], $predicate))
+        ->toBe(JourneyWaitOutcome::Waiting)
+        ->and($evaluator->evaluate($wait, 'workspace-1', $now->modify('+60 seconds'), ['state' => 'pending'], $predicate))
+        ->toBe(JourneyWaitOutcome::Ready);
+    expect(fn () => $evaluator->evaluate($wait, 'workspace-2', $now, [], $predicate))->toThrow(JourneyDefinitionException::class);
+});
+
+it('accepts only bounded, well-formed wait predicates', function () {
+    $validator = new JourneyGraphValidator;
+    $graph = ['schema_version' => 1, 'nodes' => [
+        ['id' => 'wait', 'type' => 'wait', 'config' => ['seconds' => 300, 'field' => 'state', 'operator' => 'equals', 'value' => 'ready']],
+        ['id' => 'end', 'type' => 'end'],
+    ], 'edges' => [['from' => 'wait', 'to' => 'end']]];
+    expect($validator->normalize($graph)['nodes'][1]['type'])->toBe('wait');
+    $invalid = $graph;
+    $invalid['nodes'][0]['config'] = ['seconds' => 300, 'field' => 'state'];
+    expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
+    $invalid = $graph;
+    $invalid['nodes'][0]['config'] = ['seconds' => 300, 'field' => 'state', 'operator' => 'exists', 'value' => 'ready'];
+    expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
 });
 
 it('allows only durable execution state transitions', function () {

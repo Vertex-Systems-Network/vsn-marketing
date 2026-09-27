@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Publish the TASK-0051 transition ledger, workspace budget, and dynamic queue reconciliation fix to PR #420. Run exact-head app/security/continuity gates; diagnose and repair all failures; then continue immutable replay/recovery and representative benchmark evidence.",
+  "exact_next_safe_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish the TASK-0051 transition ledger, workspace budget, and dynamic queue reconciliation fix to PR #420. Run exact-head app/security/continuity gates; diagnose and repair all failures; then continue immutable replay/recovery and representative benchmark evidence."
+  "exact_next_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence."
 }

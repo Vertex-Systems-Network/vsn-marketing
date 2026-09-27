@@ -14,7 +14,7 @@ Journey node workers can overlap, lose their lease, or observe a provider timeou
 - Retry budgets, lease durations, and delay bounds are validated fail-closed. Retryable outcomes may be rescheduled only within the configured attempt budget. Exhausted/non-retryable outcomes become dead letters; unknown side-effect outcomes go to operator review and are never blindly retried.
 - Cancellation is workspace-scoped, durable, and terminal for the execution. It clears active lease tokens; later worker completion is rejected. External action handlers remain responsible for propagating the attempt key as their provider idempotency key.
 - Stored error metadata is allowlisted and bounded. Raw exception messages, payloads, and credentials are not persisted as attempt diagnostics.
-- Executions continue to reference their immutable journey version. Replay must create a separate explicitly authorized operation that pins that same version and records a new execution identity; this repository slice does not silently replay or re-evaluate newer drafts.
+- Executions continue to reference their immutable journey version. Replay is a separate idempotent operation guarded by the `replay-journey-execution` authorization ability; it pins the source version and records the source execution ID and definition hash without mutating or re-evaluating the source.
 
 ## Consequences
 

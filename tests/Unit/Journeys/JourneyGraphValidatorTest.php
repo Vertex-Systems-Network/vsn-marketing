@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Events\Domain\CanonicalEvent;
 use App\Modules\Journeys\Application\JourneyEnrollmentGuard;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
 use App\Modules\Journeys\Domain\JourneyActionGate;
@@ -12,6 +13,8 @@ use App\Modules\Journeys\Domain\JourneyExecutionState;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
+use App\Modules\Journeys\Domain\JourneyTerminalEvaluator;
+use App\Modules\Journeys\Domain\JourneyTerminalOutcome;
 use App\Modules\Journeys\Domain\JourneyTrigger;
 
 function journeyGraph(): array
@@ -131,6 +134,25 @@ it('routes a branch through exactly one matching typed edge', function () {
         ->and($resolver->resolve('branch', false, $edges))->toBe('no');
     expect(fn () => $resolver->resolve('branch', true, [$edges[1]]))->toThrow(JourneyDefinitionException::class);
     expect(fn () => $resolver->resolve('branch', true, [$edges[0], $edges[0]]))->toThrow(JourneyDefinitionException::class);
+});
+
+it('matches goal and exit nodes only against same-workspace canonical events', function () {
+    $event = new CanonicalEvent(
+        eventId: 'event-goal', eventType: 'customer.purchase',
+        occurredAt: new DateTimeImmutable('2026-09-27T12:00:00Z'),
+        receivedAt: new DateTimeImmutable('2026-09-27T12:00:01Z'), workspaceId: 'workspace-1',
+        brandId: null, subjects: ['customer' => 'customer-1'], source: 'test', sourceEventId: 'source-9',
+        schemaVersion: 1, payload: [], sourceMetadata: [],
+    );
+    $evaluator = new JourneyTerminalEvaluator;
+    expect($evaluator->evaluate('workspace-1', ['type' => 'goal', 'config' => ['event' => 'customer.purchase']], $event))
+        ->toBe(JourneyTerminalOutcome::GoalAchieved)
+        ->and($evaluator->evaluate('workspace-1', ['type' => 'exit', 'config' => ['event' => 'customer.purchase']], $event))
+        ->toBe(JourneyTerminalOutcome::Exited)
+        ->and($evaluator->evaluate('workspace-1', ['type' => 'goal', 'config' => ['event' => 'customer.refund']], $event))
+        ->toBe(JourneyTerminalOutcome::Unmatched);
+    expect(fn () => $evaluator->evaluate('workspace-2', ['type' => 'goal', 'config' => ['event' => 'customer.purchase']], $event))
+        ->toThrow(JourneyDefinitionException::class);
 });
 
 it('allows only durable execution state transitions', function () {

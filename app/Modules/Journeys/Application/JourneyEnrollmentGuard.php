@@ -2,10 +2,23 @@
 
 namespace App\Modules\Journeys\Application;
 
+use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
+use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 
 final class JourneyEnrollmentGuard
 {
+    public function assertReentryAllowed(
+        JourneyReentryPolicy $policy,
+        int $priorEnrollmentCount,
+        ?string $latestStatus = null,
+        ?int $maximumEnrollments = null,
+    ): void {
+        if (! $policy->allows($priorEnrollmentCount, $latestStatus, $maximumEnrollments)) {
+            throw new JourneyDefinitionException('reentry_not_allowed', '$.enrollment');
+        }
+    }
+
     /**
      * @param  array<string, mixed>  $event
      */

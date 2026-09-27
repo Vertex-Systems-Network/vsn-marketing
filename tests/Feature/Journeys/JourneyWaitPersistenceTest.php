@@ -142,7 +142,8 @@ it('cancels pending waits only for the specified workspace execution and cannot 
         ->and($repository->cancelPending($fixture['workspace_id'], $fixture['execution_id'], new DateTimeImmutable('2026-09-27T12:00:02Z')))->toBe(0)
         ->and($repository->markResumed($fixture['workspace_id'], $wait->idempotencyKey, new DateTimeImmutable('2026-09-27T12:00:03Z')))->toBeFalse()
         ->and(DB::table('journey_waits')->where('wait_key', $wait->idempotencyKey)->value('status'))->toBe('cancelled')
-        ->and(DB::table('journey_waits')->where('wait_key', $otherWait->idempotencyKey)->value('status'))->toBe('pending');
+        ->and(DB::table('journey_waits')->where('wait_key', $otherWait->idempotencyKey)->value('status'))->toBe('pending')
+        ->and($repository->due($fixture['workspace_id'], new DateTimeImmutable('2026-09-27T13:00:00Z')))->toHaveCount(0);
 });
 
 it('enforces the composite workspace execution foreign key', function () {

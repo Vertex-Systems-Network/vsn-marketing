@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0050-RUNTIME",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Verify PR #419 exact-head checks; diagnose and repair any failures, merge only when its required gates are green and review/thread conditions are satisfied, then reconcile protected main and continue remaining TASK-0050 acceptance without touching PHASE-10.",
+  "exact_next_safe_action": "Publish the Playwright response/page-prop diagnostics and preview-route regression on PR #419; use the resulting exact-head CI evidence to identify and repair the UI update failure, rerun all required gates, merge only when green, then complete TASK-0050 and activate TASK-0051.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #419 exact-head checks; diagnose and repair any failures, merge only when its required gates are green and review/thread conditions are satisfied, then reconcile protected main and continue remaining TASK-0050 acceptance without touching PHASE-10."
+  "exact_next_action": "Publish the Playwright response/page-prop diagnostics and preview-route regression on PR #419; use the resulting exact-head CI evidence to identify and repair the UI update failure, rerun all required gates, merge only when green, then complete TASK-0050 and activate TASK-0051."
 }

@@ -41,8 +41,18 @@ test('authorized operator reviews states, previews, saves and publishes a pinned
         await new Promise((resolve) => setTimeout(resolve, 300));
         await route.continue();
     }, { times: 1 });
+    const previewResponse = page.waitForResponse((response) =>
+        response.request().method() === 'POST' && response.url().endsWith('/segments/preview'));
     await page.getByRole('button', { name: 'Preview bounded count' }).click();
     await expect(page.getByRole('button', { name: 'Evaluating…' })).toBeDisabled();
+    const response = await previewResponse;
+    expect(response.status()).toBe(200);
+    const previewPage = await response.json() as {
+        component: string;
+        props: { preview_result: { count_kind: string; count: number | null } | null };
+    };
+    expect(previewPage.component).toBe('segmentation/operator');
+    expect(previewPage.props.preview_result).toMatchObject({ count_kind: 'exact', count: 1 });
     await expect(page.getByText('1 contacts · exact at evaluation time')).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/Source freshness is unknown/)).toBeVisible();
     await expect(page.getByText(/Member identities and personal details are hidden/)).toBeVisible();

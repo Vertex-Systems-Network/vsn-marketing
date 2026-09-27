@@ -5,6 +5,7 @@ use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyExecutionState;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
+use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 
 function journeyGraph(): array
@@ -130,4 +131,18 @@ it('validates each registered node configuration against its typed schema', func
         expect(fn () => $validator->normalize(['schema_version' => 1, 'nodes' => [$node]]))
             ->toThrow(JourneyDefinitionException::class);
     }
+});
+
+it('enforces never, after-exit, and bounded re-entry policies', function () {
+    $guard = new JourneyEnrollmentGuard;
+    $guard->assertReentryAllowed(JourneyReentryPolicy::Never, 0);
+    $guard->assertReentryAllowed(JourneyReentryPolicy::AfterExit, 3, 'exited');
+    $guard->assertReentryAllowed(JourneyReentryPolicy::Bounded, 2, maximumEnrollments: 3);
+
+    expect(fn () => $guard->assertReentryAllowed(JourneyReentryPolicy::Never, 1))
+        ->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
+    expect(fn () => $guard->assertReentryAllowed(JourneyReentryPolicy::AfterExit, 1, 'running'))
+        ->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
+    expect(fn () => $guard->assertReentryAllowed(JourneyReentryPolicy::Bounded, 2, maximumEnrollments: 2))
+        ->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
 });

@@ -354,3 +354,25 @@ it('enforces never, after-exit, and bounded re-entry policies', function () {
     expect(fn () => $guard->assertReentryAllowed(JourneyReentryPolicy::Bounded, 2, maximumEnrollments: 2))
         ->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
 });
+
+it('enforces the configured fail-closed graph fan-out budget', function () {
+    $graph = [
+        'schema_version' => 1,
+        'nodes' => [
+            ['id' => 'branch', 'type' => 'branch', 'config' => ['field' => 'profile.ready', 'operator' => 'exists']],
+            ['id' => 'left', 'type' => 'end'],
+            ['id' => 'right', 'type' => 'end'],
+        ],
+        'edges' => [
+            ['from' => 'branch', 'to' => 'left', 'type' => 'true'],
+            ['from' => 'branch', 'to' => 'right', 'type' => 'false'],
+        ],
+    ];
+
+    expect((new JourneyGraphValidator(runtimePolicy: new JourneyRuntimePolicy(maxFanOut: 2)))->normalize($graph)['edges'])
+        ->toHaveCount(2);
+    expect(fn () => (new JourneyGraphValidator(runtimePolicy: new JourneyRuntimePolicy(maxFanOut: 1)))->normalize($graph))
+        ->toThrow(JourneyDefinitionException::class, 'fan_out_limit_exceeded');
+    expect(fn () => new JourneyRuntimePolicy(maxFanOut: 100001))
+        ->toThrow(JourneyDefinitionException::class, 'invalid_runtime_budget');
+});

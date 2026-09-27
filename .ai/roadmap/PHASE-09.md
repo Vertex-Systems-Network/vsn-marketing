@@ -1,10 +1,10 @@
 # PHASE-09 — Journey and Automation Engine
 
 Status: `in_progress`  
-Progress: `35.00%` (TASK-0048 and TASK-0049 of 0048–0053 complete)  
-Roadmap progress: `58.45%` (deterministic task-weight calculation)  
-Active task: `TASK-0050`  
-Protected main anchor: `075cf2f58fe8a0e132b233d9b6ab51a395aca8dd`
+Progress: `55.00%` (TASK-0048 through TASK-0050 complete)
+Roadmap progress: `59.85%` (deterministic task-weight calculation)
+Active task: `TASK-0051`
+Protected main anchor: `fe450e2d0c80dab8fa63882859618e9c0618f7a4`
 
 ## Scope
 
@@ -14,8 +14,8 @@ Build a deterministic, versioned, tenant-safe journey engine over canonical even
 
 - TASK-0048 — research and benchmark journey/automation patterns — **complete**
 - TASK-0049 — versioned journey graph, node registry, validation, enrollment — **complete**
-- TASK-0050 — triggers, waits, conditions, branches, actions, goals, exits, re-entry — **in progress**
-- TASK-0051 — concurrency, idempotency, retries, cancellation, replay, recovery — ready
+- TASK-0050 — triggers, waits, conditions, branches, actions, goals, exits, re-entry — **complete**
+- TASK-0051 — concurrency, idempotency, retries, cancellation, replay, recovery — **in progress**
 - TASK-0052 — builder, simulator, validation UX, execution timeline — ready
 - TASK-0053 — PHASE-09 certification — ready
 

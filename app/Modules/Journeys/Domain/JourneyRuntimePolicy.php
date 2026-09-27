@@ -11,7 +11,11 @@ final readonly class JourneyRuntimePolicy
         public int $maxWaitSeconds = 31536000,
         public int $maxRetries = 3,
         public int $maxFanOut = 1000,
-    ) {}
+    ) {
+        if ($maxWaitSeconds < 0 || $maxRetries < 0 || $maxFanOut < 1 || $maxFanOut > 100000) {
+            throw new JourneyDefinitionException('invalid_runtime_budget', '$.runtime_policy');
+        }
+    }
 
     public function assertWait(int $seconds): void
     {

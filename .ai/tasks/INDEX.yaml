@@ -493,7 +493,7 @@
       "id": "TASK-0050",
       "phase": "PHASE-09",
       "title": "Implement journey triggers waits conditions branches actions goals exits and re-entry",
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0049"
       ],
@@ -503,7 +503,7 @@
       "id": "TASK-0051",
       "phase": "PHASE-09",
       "title": "Implement durable concurrency retries replay and recovery",
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0050"
       ],

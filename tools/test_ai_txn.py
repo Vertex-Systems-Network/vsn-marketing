@@ -51,12 +51,14 @@ class TransactionCoordinatorTests(unittest.TestCase):
             active_pr=418,
             branch="supervisor/phase09-task50-runtime",
             title="TASK-0050 runtime",
+            task_id="TASK-0050",
             completed_pr=416,
             completion_sha="b" * 40,
         )
         queue = json.loads(queue_path.read_text(encoding="utf-8"))
         self.assertEqual("a" * 40, queue["reconciled_main_sha"])
         self.assertEqual(418, queue["active_work_path"]["number"])
+        self.assertEqual("active_task0050_carrier", queue["active_work_path"]["disposition"])
         active = [row for row in queue["items"] if row.get("accepted_actionable") is True]
         self.assertEqual([418], [row["number"] for row in active])
         old = next(row for row in queue["items"] if row["number"] == 416)

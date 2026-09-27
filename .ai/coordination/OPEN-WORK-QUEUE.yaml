@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "30c6a70bdc3faf1faa9b2e7ff7a89e502baee725",
+  "reconciled_main_sha": "fe450e2d0c80dab8fa63882859618e9c0618f7a4",
   "active_work_path": {
     "kind": "pr",
-    "number": 419,
-    "title": "feat(phase09): resume and cancel durable waits",
-    "branch": "supervisor/phase09-task50-wait-resume",
-    "disposition": "active_task0050_runtime_carrier"
+    "number": 420,
+    "title": "feat(phase09): add durable leased node attempts",
+    "branch": "supervisor/phase09-task51-execution",
+    "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 420,
+      "title": "feat(phase09): add durable leased node attempts",
+      "branch": "supervisor/phase09-task51-execution",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 419,
       "title": "feat(phase09): resume and cancel durable waits",
       "branch": "supervisor/phase09-task50-wait-resume",
-      "disposition": "active_task0050_runtime_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "fe450e2d0c80dab8fa63882859618e9c0618f7a4"
     },
     {
       "kind": "pr",

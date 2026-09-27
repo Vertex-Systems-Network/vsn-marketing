@@ -3,7 +3,7 @@
   "phase": "PHASE-09",
   "title": "Implement journey triggers waits conditions branches actions goals exits and re-entry",
   "weight": 20,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0049"
   ],
@@ -12,27 +12,32 @@
     {
       "id": "AC-1",
       "description": "Canonical event and schedule triggers use explicit workspace/timezone and ordering semantics.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-2",
       "description": "Waits are durable bounded timers or predicates and never worker sleeps.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-3",
       "description": "Conditions, branches, goals, exits, and re-entry are typed, deterministic, and explainable.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-4",
       "description": "Actions pass provider capability, consent, suppression, authorization, quota, and idempotency gates.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-5",
       "description": "Late events, duplicate delivery, cancellation, and blocked action behavior are tested.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     }
   ],
   "required_tests": [

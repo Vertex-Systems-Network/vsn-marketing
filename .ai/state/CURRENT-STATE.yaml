@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-09",
-    "active_task": "TASK-0050",
-    "last_completed_task": "TASK-0049",
-    "next_task": "TASK-0051"
+    "active_task": "TASK-0051",
+    "last_completed_task": "TASK-0050",
+    "next_task": "TASK-0052"
   },
   "progress": {
-    "roadmap_percent": 58.45,
-    "phase_percent": 35.0,
+    "roadmap_percent": 59.85,
+    "phase_percent": 55.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "30c6a70bdc3faf1faa9b2e7ff7a89e502baee725",
+  "observed_main_sha": "fe450e2d0c80dab8fa63882859618e9c0618f7a4",
   "active_issue": null,
-  "active_pr": 419,
-  "active_branch": "supervisor/phase09-task50-wait-resume",
-  "current_milestone": "PHASE-09-TASK-0050-RUNTIME",
+  "active_pr": 420,
+  "active_branch": "supervisor/phase09-task51-execution",
+  "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Publish the Playwright response/page-prop diagnostics and preview-route regression on PR #419; use the resulting exact-head CI evidence to identify and repair the UI update failure, rerun all required gates, merge only when green, then complete TASK-0050 and activate TASK-0051.",
+  "exact_next_safe_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish the Playwright response/page-prop diagnostics and preview-route regression on PR #419; use the resulting exact-head CI evidence to identify and repair the UI update failure, rerun all required gates, merge only when green, then complete TASK-0050 and activate TASK-0051."
+  "exact_next_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence."
 }

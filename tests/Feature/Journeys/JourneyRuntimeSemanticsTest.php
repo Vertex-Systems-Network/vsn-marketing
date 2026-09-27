@@ -11,8 +11,30 @@ use App\Modules\Journeys\Domain\JourneyExecutionState;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 use App\Modules\Journeys\Domain\JourneyTerminalEvaluator;
 use App\Modules\Journeys\Domain\JourneyTerminalOutcome;
+use App\Modules\Journeys\Domain\JourneyTrigger;
+use App\Modules\Journeys\Domain\JourneyTriggerOrdering;
 use App\Modules\Journeys\Domain\JourneyWaitEvaluator;
 use App\Modules\Journeys\Domain\JourneyWaitOutcome;
+
+it('orders late-delivered events by occurrence time and keeps redelivery identity stable', function () {
+    $occurredAt = new DateTimeImmutable('2026-09-27T12:00:00Z');
+    $late = new CanonicalEvent(
+        eventId: 'evt-late', eventType: 'customer.updated', occurredAt: $occurredAt,
+        receivedAt: $occurredAt->modify('+2 hours'), workspaceId: 'workspace-1', brandId: null,
+        subjects: ['customer' => 'customer-1'], source: 'test', sourceEventId: 'late-source-1',
+        schemaVersion: 1, payload: [], sourceMetadata: [],
+    );
+    $matcher = new JourneyEventTriggerMatcher;
+    $node = ['type' => 'trigger', 'config' => ['event' => 'customer.updated']];
+    $trigger = $matcher->match('workspace-1', $node, $late);
+    $redelivery = $matcher->match('workspace-1', $node, $late);
+    $onTime = JourneyTrigger::event('workspace-1', 'evt-on-time', $occurredAt->modify('+30 minutes'));
+
+    expect($trigger)->not->toBeNull()
+        ->and($trigger->effectiveAt)->toEqual($occurredAt)
+        ->and($trigger->idempotencyKey)->toBe($redelivery->idempotencyKey)
+        ->and((new JourneyTriggerOrdering)->compare($trigger, $onTime))->toBeLessThan(0);
+});
 
 it('runs the canonical trigger through wait branch gated action and goal semantics', function () {
     $occurredAt = new DateTimeImmutable('2026-09-27T12:00:00Z');

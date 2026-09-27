@@ -78,6 +78,22 @@ it('bounds counts, withholds identities and rejects foreign pinned versions', fu
         ->toThrow(AuthorizationException::class);
 });
 
+it('returns the exact count through the authenticated preview page response', function () {
+    [$actor, $scope] = task46Scope('preview-route');
+    task46MatchingContact($scope, 'example.test');
+
+    $response = $this->actingAs($actor)->post('/workspaces/'.$scope->workspaceId.'/segments/preview', [
+        'definition' => task46Definition('example.test'),
+    ], [
+        'Accept' => 'text/html',
+        'X-Inertia' => 'true',
+        'X-Requested-With' => 'XMLHttpRequest',
+    ]);
+
+    $response->assertOk()->assertJsonPath('props.preview_result.count_kind', 'exact')
+        ->assertJsonPath('props.preview_result.count', 1);
+});
+
 it('appends immutable versions while publication remains pinned to its chosen version', function () {
     [, $scope] = task46Scope('versioned');
     $saved = app(SaveSegmentVersion::class)->create('Audience', task46Definition('one.test'), $scope);

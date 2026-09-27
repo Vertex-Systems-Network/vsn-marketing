@@ -6,6 +6,8 @@ use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;
 use App\Modules\Journeys\Domain\DurableJourneyWait;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
+use App\Modules\Journeys\Domain\JourneyWaitEvaluator;
+use App\Modules\Journeys\Domain\JourneyWaitOutcome;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -109,6 +111,39 @@ it('returns only bounded due waits for the requested workspace in deterministic 
         ->and($due[0]->wait->idempotencyKey)->toBe($early->idempotencyKey)
         ->and($due[0]->predicate)->toBe(['field' => 'ready', 'operator' => 'exists'])
         ->and($repository->due($first['workspace_id'], new DateTimeImmutable('2026-09-27T13:00:00Z'), 0))->toHaveCount(0);
+});
+
+it('reevaluates predicates before deadlines and atomically resumes a wait once', function () {
+    $fixture = persistedJourneyWaitFixture();
+    $wait = scheduledJourneyWait($fixture, 600);
+    $repository = app(JourneyWaitRepository::class);
+    $repository->store($wait, ['field' => 'ready', 'operator' => 'equals', 'value' => true]);
+
+    $candidates = $repository->due($fixture['workspace_id'], new DateTimeImmutable('2026-09-27T12:00:01Z'));
+    expect($candidates)->toHaveCount(1)
+        ->and($candidates[0]->predicate)->toBe(['field' => 'ready', 'operator' => 'equals', 'value' => true])
+        ->and((new JourneyWaitEvaluator)->evaluate($wait, $fixture['workspace_id'], new DateTimeImmutable('2026-09-27T12:00:01Z'), ['ready' => false], $candidates[0]->predicate))->toBe(JourneyWaitOutcome::Waiting)
+        ->and((new JourneyWaitEvaluator)->evaluate($wait, $fixture['workspace_id'], new DateTimeImmutable('2026-09-27T12:00:02Z'), ['ready' => true], $candidates[0]->predicate))->toBe(JourneyWaitOutcome::Ready)
+        ->and($repository->markResumed($fixture['workspace_id'], $wait->idempotencyKey, new DateTimeImmutable('2026-09-27T12:00:02Z')))->toBeTrue()
+        ->and($repository->markResumed($fixture['workspace_id'], $wait->idempotencyKey, new DateTimeImmutable('2026-09-27T12:00:03Z')))->toBeFalse()
+        ->and(DB::table('journey_waits')->where('wait_key', $wait->idempotencyKey)->value('status'))->toBe('resumed');
+});
+
+it('cancels pending waits only for the specified workspace execution and cannot resume them afterward', function () {
+    $fixture = persistedJourneyWaitFixture();
+    $other = persistedJourneyWaitFixture();
+    $wait = scheduledJourneyWait($fixture, 60);
+    $otherWait = scheduledJourneyWait($other, 60);
+    $repository = app(JourneyWaitRepository::class);
+    $repository->store($wait);
+    $repository->store($otherWait);
+
+    expect($repository->cancelPending($fixture['workspace_id'], $fixture['execution_id'], new DateTimeImmutable('2026-09-27T12:00:01Z')))->toBe(1)
+        ->and($repository->cancelPending($fixture['workspace_id'], $fixture['execution_id'], new DateTimeImmutable('2026-09-27T12:00:02Z')))->toBe(0)
+        ->and($repository->markResumed($fixture['workspace_id'], $wait->idempotencyKey, new DateTimeImmutable('2026-09-27T12:00:03Z')))->toBeFalse()
+        ->and(DB::table('journey_waits')->where('wait_key', $wait->idempotencyKey)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_waits')->where('wait_key', $otherWait->idempotencyKey)->value('status'))->toBe('pending')
+        ->and($repository->due($fixture['workspace_id'], new DateTimeImmutable('2026-09-27T13:00:00Z')))->toHaveCount(0);
 });
 
 it('enforces the composite workspace execution foreign key', function () {

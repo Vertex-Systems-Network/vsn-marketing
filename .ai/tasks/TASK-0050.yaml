@@ -39,5 +39,5 @@
     "trigger-wait-branch-integration-tests",
     "consent-suppression-action-gate-tests"
   ],
-  "exact_next_action": "Publish and certify the tenant-scoped durable wait persistence slice on PR #418; then finish predicate wake/resume and cancellation semantics for TASK-0050 without touching PHASE-10."
+  "exact_next_action": "After exact PR #418 head CI completes, publish the locally tested predicate reevaluation, atomic resume, and scoped cancellation slice with synchronized state; certify every required gate on the resulting exact head, then complete the remaining TASK-0050 integration acceptance without touching PHASE-10."
 }

@@ -75,7 +75,10 @@ final readonly class DatabaseJourneyWaitRepository implements JourneyWaitReposit
         return $this->database->connection()->table('journey_waits')
             ->where('workspace_id', $workspaceId)
             ->where('status', 'pending')
-            ->where('wake_at', '<=', $instant)
+            ->where(function ($query) use ($instant): void {
+                // Predicate waits must be reevaluated on bounded scheduler passes before their deadline.
+                $query->where('wake_at', '<=', $instant)->orWhereNotNull('predicate');
+            })
             ->orderBy('wake_at')
             ->orderBy('id')
             ->limit($limit)
@@ -99,6 +102,39 @@ final readonly class DatabaseJourneyWaitRepository implements JourneyWaitReposit
                 return new JourneyWaitRecord($wait, $predicate);
             })
             ->all();
+    }
+
+    public function markResumed(string $workspaceId, string $waitKey, DateTimeImmutable $resumedAt): bool
+    {
+        if (trim($workspaceId) === '' || trim($waitKey) === '') {
+            throw new JourneyDefinitionException('invalid_wait_identity', '$.wait');
+        }
+
+        return $this->database->connection()->table('journey_waits')
+            ->where('workspace_id', $workspaceId)
+            ->where('wait_key', $waitKey)
+            ->where('status', 'pending')
+            ->update([
+                'status' => 'resumed',
+                'resumed_at' => $resumedAt->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.uP'),
+                'updated_at' => now(),
+            ]) === 1;
+    }
+
+    public function cancelPending(string $workspaceId, string $executionId, DateTimeImmutable $cancelledAt): int
+    {
+        if (trim($workspaceId) === '' || trim($executionId) === '') {
+            throw new JourneyDefinitionException('invalid_wait_identity', '$.wait');
+        }
+
+        return $this->database->connection()->table('journey_waits')
+            ->where('workspace_id', $workspaceId)
+            ->where('execution_id', $executionId)
+            ->where('status', 'pending')
+            ->update([
+                'status' => 'cancelled',
+                'updated_at' => $cancelledAt->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.uP'),
+            ]);
     }
 
     /** @param array<string, mixed>|null $value */

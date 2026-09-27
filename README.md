@@ -6,7 +6,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 <!-- AI_PROGRESS_SNAPSHOT roadmap=58.45 phase=35 current_phase=PHASE-09 active_task=TASK-0050 milestone=PHASE-09-TASK-0050-RUNTIME status=IN_PROGRESS -->
 
-> PHASE-08 is complete on protected main `a28d48f6dcc73f79d71c3a13d769bf6a871e709a`. TASK-0048 research and TASK-0049 graph foundation are complete; TASK-0050 runtime semantics are active; PHASE-10 remains planned and inactive.
+> PHASE-08 is complete on protected main `a28d48f6dcc73f79d71c3a13d769bf6a871e709a`. TASK-0048 research and TASK-0049 graph foundation are complete; TASK-0050 runtime semantics are active, with durable tenant-scoped waits implemented and predicate reevaluation/resume/cancel behavior under exact-head validation; PHASE-10 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 

@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-09-27T11:22:47+00:00`
+- Timestamp: `2026-09-27T11:24:40+00:00`
 - Observed main: `075cf2f58fe8a0e132b233d9b6ab51a395aca8dd`
 - Active issue: `none`
 - Active PR: `418`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `f8e8f3806cc9a9f3096b28f6a66d3c892c7181f7b4128fa7ac117f2367d0ec9c`
+- State fingerprint: `11f878c9edae86c38f0e47e846469319e1df9fff1b6e1af3781e2c3bc7949e71`
 
 ## Completed / observed this session
 
-Added canonical-event trigger matching, bounded predicate wait evaluation, and workspace-scoped goal/exit semantics to TASK-0050.
+TASK-0050 terminal goal and exit matches now transition execution state to succeeded/exited; unmatched canonical events keep execution active.
 
 ## Tests
 
-Focused journey unit/feature tests: 26 passed/105 assertions; Pint passed; PHPStan Journeys passed; transaction/continuity/journal/parallel validators passed.
+Focused journey unit/feature tests: 27 passed/108 assertions; Pint passed; PHPStan Journeys passed.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Focused journey unit/feature tests: 26 passed/105 assertions; Pint passed; PHPSt
 
 ## Exact next action
 
-Inspect exact-head CI for PR #418 and fix same-scope failures. Continue TASK-0050 integration for waits, branches, goals, exits, and action authorization gates.
+Reconcile final PR #418 head and its required CI; repair any failures, then continue TASK-0050 through acceptance-tested action gates and schedule semantics.

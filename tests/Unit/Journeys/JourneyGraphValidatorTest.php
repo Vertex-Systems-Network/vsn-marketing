@@ -96,7 +96,7 @@ it('rejects malformed, duplicate, cyclic, and over-depth edges', function () {
 
     $graph = [
         'schema_version' => 1,
-        'nodes' => array_map(fn (int $i): array => ['id' => 'n'.$i, 'type' => 'action'], range(1, JourneyGraphValidator::MAX_DEPTH + 1)),
+        'nodes' => array_map(fn (int $i): array => ['id' => 'n'.$i, 'type' => 'action', 'config' => ['capability' => 'mail.send']], range(1, JourneyGraphValidator::MAX_DEPTH + 1)),
         'edges' => array_map(fn (int $i): array => ['from' => 'n'.$i, 'to' => 'n'.($i + 1)], range(1, JourneyGraphValidator::MAX_DEPTH)),
     ];
     expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
@@ -135,6 +135,9 @@ it('validates each registered node configuration against its typed schema', func
         expect(fn () => $validator->normalize(['schema_version' => 1, 'nodes' => [$node]]))
             ->toThrow(JourneyDefinitionException::class);
     }
+
+    expect(fn () => $validator->normalize(['schema_version' => 1, 'nodes' => [['id' => 'missing-wait', 'type' => 'wait']]]))
+        ->toThrow(JourneyDefinitionException::class, 'required_node_config_missing');
 });
 
 it('enforces never, after-exit, and bounded re-entry policies', function () {

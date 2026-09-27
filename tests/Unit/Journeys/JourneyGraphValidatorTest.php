@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Journeys\Application\JourneyEnrollmentGuard;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyExecutionState;
@@ -56,4 +57,57 @@ it('allows only durable execution state transitions', function () {
     $state->transition('succeeded');
     expect($state->status)->toBe('succeeded')->and($state->revision)->toBe(4);
     expect(fn () => $state->transition('running'))->toThrow(JourneyDefinitionException::class);
+});
+
+it('rejects unknown graph node and edge fields instead of accepting executable extensions', function () {
+    $v = new JourneyGraphValidator;
+    $graph = journeyGraph();
+    $graph['unexpected'] = 'value';
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = journeyGraph();
+    $graph['nodes'][0]['handler'] = 'exec';
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = journeyGraph();
+    $graph['edges'][0]['script'] = 'run';
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+});
+
+it('rejects malformed, duplicate, cyclic, and over-depth edges', function () {
+    $v = new JourneyGraphValidator;
+
+    $graph = journeyGraph();
+    $graph['edges'] = 'invalid';
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = journeyGraph();
+    $graph['edges'][] = $graph['edges'][0];
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = journeyGraph();
+    $graph['edges'][] = ['from' => 'end', 'to' => 'start'];
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+
+    $graph = [
+        'schema_version' => 1,
+        'nodes' => array_map(fn (int $i): array => ['id' => 'n'.$i, 'type' => 'action'], range(1, JourneyGraphValidator::MAX_DEPTH + 1)),
+        'edges' => array_map(fn (int $i): array => ['from' => 'n'.$i, 'to' => 'n'.($i + 1)], range(1, JourneyGraphValidator::MAX_DEPTH)),
+    ];
+    expect(fn () => $v->normalize($graph))->toThrow(JourneyDefinitionException::class);
+});
+
+it('canonicalizes nested configuration map keys before hashing', function () {
+    $v = new JourneyGraphValidator;
+    $a = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['z' => 1, 'a' => ['y' => true, 'b' => false]]]]];
+    $b = ['schema_version' => 1, 'nodes' => [['id' => 'x', 'type' => 'action', 'config' => ['a' => ['b' => false, 'y' => true], 'z' => 1]]]];
+    expect($v->hash($a))->toBe($v->hash($b));
+});
+
+it('uses unambiguous tuple identities and rejects noncanonical event identifiers', function () {
+    expect(JourneyExecutionIdentity::for('w|v', 'x', 's', 'e'))
+        ->not->toBe(JourneyExecutionIdentity::for('w', 'v|x', 's', 'e'));
+
+    $guard = new JourneyEnrollmentGuard;
+    expect(fn () => $guard->key('w1', 'v1', 's1', ['event_id' => 123]))->toThrow(InvalidArgumentException::class);
 });

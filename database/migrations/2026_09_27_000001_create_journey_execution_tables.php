@@ -56,6 +56,26 @@ return new class extends Migration
                 $table->index(['workspace_id', 'status']);
             });
         }
+        if (! Schema::hasTable('journey_enrollments')) {
+            Schema::create('journey_enrollments', function (Blueprint $table): void {
+                $table->uuid('id')->primary();
+                $table->uuid('workspace_id');
+                $table->uuid('journey_version_id');
+                $table->uuid('subject_id');
+                $table->string('trigger_event_id', 191);
+                $table->char('enrollment_key', 64);
+                $table->string('reentry_policy', 20);
+                $table->unsignedInteger('generation');
+                $table->string('status', 20)->default('active');
+                $table->timestampsTz();
+                $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
+                $table->foreign(['workspace_id', 'journey_version_id'])->references(['workspace_id', 'id'])->on('journey_versions')->cascadeOnDelete();
+                $table->unique(['workspace_id', 'enrollment_key']);
+                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'trigger_event_id']);
+                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'generation']);
+                $table->index(['workspace_id', 'journey_version_id', 'subject_id', 'status']);
+            });
+        }
         if (! Schema::hasTable('journey_node_attempts')) {
             Schema::create('journey_node_attempts', function (Blueprint $table): void {
                 $table->uuid('id')->primary();
@@ -79,6 +99,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('journey_node_attempts');
+        Schema::dropIfExists('journey_enrollments');
         Schema::dropIfExists('journey_executions');
         Schema::dropIfExists('journey_versions');
         Schema::dropIfExists('journeys');

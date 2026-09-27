@@ -201,6 +201,10 @@ it('resumes predicate waits when true or at the bounded deadline', function () {
         ->and($evaluator->evaluate($wait, 'workspace-1', $now->modify('+60 seconds'), ['state' => 'pending'], $predicate))
         ->toBe(JourneyWaitOutcome::Ready);
     expect(fn () => $evaluator->evaluate($wait, 'workspace-2', $now, [], $predicate))->toThrow(JourneyDefinitionException::class);
+    expect(fn () => $evaluator->evaluate($wait, 'workspace-1', $now, ['state' => 'pending'], ['field' => 'state', 'operator' => 'not_equals']))
+        ->toThrow(JourneyDefinitionException::class);
+    expect(fn () => $evaluator->evaluate($wait, 'workspace-1', $now, ['state' => 'pending'], ['field' => 'state', 'operator' => 'exists', 'value' => null]))
+        ->toThrow(JourneyDefinitionException::class);
 });
 
 it('accepts only bounded, well-formed wait predicates', function () {

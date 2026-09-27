@@ -19,10 +19,25 @@ final class JourneyWaitEvaluator
             if (! is_string($field) || ! is_string($operator)) {
                 throw new JourneyDefinitionException('invalid_wait_predicate', '$.wait.predicate');
             }
+            $typedOperator = JourneyConditionOperator::tryFrom($operator);
+            if ($typedOperator === null) {
+                throw new JourneyDefinitionException('invalid_wait_predicate_operator', '$.wait.predicate.operator');
+            }
+            $hasValue = array_key_exists('value', $predicate);
+            if (($typedOperator === JourneyConditionOperator::Exists) === $hasValue) {
+                throw new JourneyDefinitionException('wait_predicate_value_mismatch', '$.wait.predicate.value');
+            }
+            if (in_array($typedOperator, [JourneyConditionOperator::GreaterThan, JourneyConditionOperator::LessThan], true)
+                && $hasValue && ! is_numeric($predicate['value'])) {
+                throw new JourneyDefinitionException('numeric_wait_predicate_value_required', '$.wait.predicate.value');
+            }
+            if ($typedOperator === JourneyConditionOperator::Contains && $hasValue && ! is_string($predicate['value'])) {
+                throw new JourneyDefinitionException('string_wait_predicate_value_required', '$.wait.predicate.value');
+            }
             $condition = (new JourneyConditionEvaluator)->evaluate(
                 $attributes,
                 $field,
-                JourneyConditionOperator::tryFrom($operator) ?? throw new JourneyDefinitionException('invalid_wait_predicate_operator', '$.wait.predicate.operator'),
+                $typedOperator,
                 $predicate['value'] ?? null,
             );
             if ($condition) {

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-27T03:12:00+00:00`
-- Observed main: `3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9`
+- Timestamp: `2026-09-27T10:18:28+00:00`
+- Observed main: `9ae3c893ef1a41d6b266599eff79214f49b74b08`
 - Active issue: `none`
-- Active PR: `417`
-- Active branch: `control/ai-native-5h-continuous-batch`
+- Active PR: `416`
+- Active branch: `supervisor/phase09-task49-clean`
 - Current milestone: `PHASE-09-TASK-0049-ARCHITECTURE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0049`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `b5d20ce925854cd76f4ea40833eb4f0ce969b29f28a8d2fe4c9271e52a3fa53d`
+- State fingerprint: `07c3f53c7eb69f41406618c8670c8bdd96ae4f00a26ea2165542f64645b5bff6`
 
 ## Completed / observed this session
 
-Audited protected main at 3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9, reconciled merged PR #414 and open TASK-0049 carriers, and created PR #417 to convert the AI-Native flow to a machine-validated 300-minute continuous Workspace batch. Initial PR #417 Continuity run 36290251278 failed only at protected-main snapshot validation because compact state still observed a28d48f6dcc73f79d71c3a13d769bf6a871e709a before the PHASE-09 registration merge. This checkpoint advances the snapshot basis to the actual PR base without weakening the guard.
+Reconciled merged PR #417 and promoted authoritative TASK-0049 PR #416. Hardened journey graph shape/depth/canonical hashing, collision-safe event identity, and composite workspace foreign keys; added adversarial unit and PostgreSQL isolation tests. README progress now reflects active PHASE-09.
 
 ## Tests
 
-Initial #417 Continuity reached and passed transactional continuity, AI state, journal, and durable Supervisor contract validation before the expected stale-main observation failure. Application Foundation CI run 36290251267 and Security Supply Chain CI run 36290251269 were started on the pre-reconciliation head; the corrected head requires fresh exact-head gates.
+Pint passed; PHPStan app/Modules/Journeys passed; 9 focused unit tests / 22 assertions passed; SQLite migration probe rejected three cross-workspace references; PostgreSQL isolation test added (requires RUN_INFRA_INTEGRATION=true). Exact-head CI is running on PR #416.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Initial #417 Continuity reached and passed transactional continuity, AI state, j
 
 ## Exact next action
 
-Certify and merge PR #417 on its unchanged exact head after Continuity, Application Foundation CI, and Security Supply Chain CI are green; then revalidate and resume the authoritative TASK-0049 product carrier PR #416 without requesting routine user reconfirmation.
+Complete remaining TASK-0049 registered config schema, immutable version publication, re-entry/idempotency and workspace-authority acceptance; then verify exact-head full gates, merge PR #416, reconcile main, and activate TASK-0050.

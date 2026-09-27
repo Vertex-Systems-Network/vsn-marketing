@@ -1,28 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9",
+  "reconciled_main_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08",
   "active_work_path": {
     "kind": "pr",
-    "number": 417,
-    "title": "control(ai): enforce 5-hour continuous Workspace batches",
-    "branch": "control/ai-native-5h-continuous-batch",
-    "disposition": "active_ai_native_5h_control_certification"
+    "number": 416,
+    "title": "feat(phase09): add tenant-safe journey graph foundation",
+    "branch": "supervisor/phase09-task49-clean",
+    "disposition": "active_task0049_product_carrier"
   },
   "items": [
     {
       "kind": "pr",
       "number": 417,
       "title": "control(ai): enforce 5-hour continuous Workspace batches",
-      "disposition": "active_ai_native_5h_control_certification",
-      "accepted_actionable": true,
-      "branch": "control/ai-native-5h-continuous-batch"
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "control/ai-native-5h-continuous-batch",
+      "merge_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08"
     },
     {
       "kind": "pr",
       "number": 416,
       "title": "feat(phase09): add tenant-safe journey graph foundation",
-      "disposition": "authoritative_task0049_product_carrier_waiting_control_certification",
-      "accepted_actionable": false,
+      "disposition": "active_task0049_product_carrier",
+      "accepted_actionable": true,
       "branch": "supervisor/phase09-task49-clean"
     },
     {

@@ -16,6 +16,10 @@ final class PermissionCatalog
 
     public const CAMPAIGN_SEND = 'campaign.send';
 
+    public const JOURNEY_CREATE = 'journey.create';
+
+    public const JOURNEY_PUBLISH = 'journey.publish';
+
     public const TEMPLATE_CREATE = 'template.create';
 
     public const TEMPLATE_PUBLISH = 'template.publish';
@@ -41,6 +45,8 @@ final class PermissionCatalog
             self::CAMPAIGN_CREATE,
             self::CAMPAIGN_APPROVE,
             self::CAMPAIGN_SEND,
+            self::JOURNEY_CREATE,
+            self::JOURNEY_PUBLISH,
             self::TEMPLATE_CREATE,
             self::TEMPLATE_PUBLISH,
             self::PROVIDER_CREATE,

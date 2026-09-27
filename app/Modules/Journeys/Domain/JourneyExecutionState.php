@@ -29,4 +29,13 @@ final class JourneyExecutionState
         $this->status = $next;
         $this->revision++;
     }
+
+    public function applyTerminalOutcome(JourneyTerminalOutcome $outcome): void
+    {
+        match ($outcome) {
+            JourneyTerminalOutcome::GoalAchieved => $this->transition('succeeded'),
+            JourneyTerminalOutcome::Exited => $this->transition('exited'),
+            JourneyTerminalOutcome::Unmatched => null,
+        };
+    }
 }

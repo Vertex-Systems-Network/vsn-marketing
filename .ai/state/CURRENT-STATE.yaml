@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-09",
-    "active_task": "TASK-0049",
-    "last_completed_task": "TASK-0048",
-    "next_task": "TASK-0050"
+    "active_task": "TASK-0050",
+    "last_completed_task": "TASK-0049",
+    "next_task": "TASK-0051"
   },
   "progress": {
-    "roadmap_percent": 57.05,
-    "phase_percent": 15,
+    "roadmap_percent": 58.45,
+    "phase_percent": 35.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08",
+  "observed_main_sha": "075cf2f58fe8a0e132b233d9b6ab51a395aca8dd",
   "active_issue": null,
-  "active_pr": 416,
-  "active_branch": "supervisor/phase09-task49-clean",
-  "current_milestone": "PHASE-09-TASK-0049-ARCHITECTURE",
+  "active_pr": 418,
+  "active_branch": "supervisor/phase09-task50-runtime",
+  "current_milestone": "PHASE-09-TASK-0050-RUNTIME",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Complete remaining TASK-0049 registered config schema, immutable version publication, re-entry/idempotency and workspace-authority acceptance; then verify exact-head full gates, merge PR #416, reconcile main, and activate TASK-0050.",
+  "exact_next_safe_action": "Publish the durable wait persistence and synchronized state on PR #418 with complete migration review markers, verify all checks on the exact new head, repair failures, and merge only after required gates pass. Then finish predicate wake/resume and cancellation semantics for TASK-0050.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete remaining TASK-0049 registered config schema, immutable version publication, re-entry/idempotency and workspace-authority acceptance; then verify exact-head full gates, merge PR #416, reconcile main, and activate TASK-0050."
+  "exact_next_action": "Publish the durable wait persistence and synchronized state on PR #418 with complete migration review markers, verify all checks on the exact new head, repair failures, and merge only after required gates pass. Then finish predicate wake/resume and cancellation semantics for TASK-0050."
 }

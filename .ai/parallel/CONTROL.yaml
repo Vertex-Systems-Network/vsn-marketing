@@ -1,12 +1,14 @@
 {
   "schema_version": 2,
-  "protocol_version": "2.7.0",
-  "instruction_revision": "parallel-v2.7.0-wave-acceleration",
+  "protocol_version": "2.8.0",
+  "instruction_revision": "parallel-v2.8.0-workspace-5h-continuous",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
-    ".ai/NEXT-ACTION-OPTIONS.md"
+    ".ai/NEXT-ACTION-OPTIONS.md",
+    ".ai/parallel/AI-NATIVE-PLAN.md",
+    ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "e1915e44d40288e0e8071860deb501ef6e808b3a393cf41fb850dc94cf8bce58",
+  "instruction_fingerprint": "eb41e5ef9343d4b3cffbd1127e83ad5a0d2b05f91c289d1febe16b24fe10bd64",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -160,5 +162,35 @@
   "shipping_worker_pr_target": "ship/week-1",
   "shipping_sync_check_uses_integration_for_workers": true,
   "wave_main_promotion_strategy": "single_full_certification_after_green_integration_wave",
-  "merge_alert_sync_boundary": "before_submission_or_dependency_consumption"
+  "merge_alert_sync_boundary": "before_submission_or_dependency_consumption",
+  "workspace_continuous_batch_enabled": true,
+  "workspace_continuous_batch_contract_path": ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md",
+  "workspace_continuous_batch_duration_minutes": 300,
+  "workspace_continuous_batch_default_for_mutating_resume": true,
+  "workspace_continuous_batch_no_reconfirmation_for_repo_scope": true,
+  "workspace_continuous_batch_auto_advance_related_tasks": true,
+  "workspace_continuous_batch_phase_boundary_requires_declared_scope": true,
+  "workspace_continuous_batch_suppress_intermediate_handoffs": true,
+  "workspace_continuous_batch_final_handoff_only": true,
+  "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
+  "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_checkpoint_waiting_external",
+  "workspace_continuous_batch_duplicate_pr_policy": "select_clean_authoritative_carrier_and_supersede_stale",
+  "workspace_continuous_batch_merge_policy": "merge_verified_green_head_without_reconfirmation",
+  "workspace_continuous_batch_checkpoint_policy": "material_boundary_credit_end_or_hard_blocker",
+  "workspace_continuous_batch_stop_conditions": [
+    "declared_batch_objective_complete",
+    "workspace_credit_or_300_minute_window_exhausted",
+    "human_only_external_authority_is_sole_remaining_path",
+    "unresolved_safety_security_correctness_conflict",
+    "tooling_prevents_further_execution_after_recovery"
+  ],
+  "workspace_continuous_batch_human_only_boundaries": [
+    "production_or_provider_side_effect",
+    "secret_disclosure_rotation_or_external_credential_action",
+    "billing_or_payment_action",
+    "destructive_data_or_migration_action",
+    "branch_protection_or_required_check_weakening",
+    "deployment_or_release_authority",
+    "legal_compliance_owner_approval"
+  ]
 }

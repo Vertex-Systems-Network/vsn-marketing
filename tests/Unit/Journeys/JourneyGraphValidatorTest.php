@@ -18,6 +18,7 @@ use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 use App\Modules\Journeys\Domain\JourneyTerminalEvaluator;
 use App\Modules\Journeys\Domain\JourneyTerminalOutcome;
 use App\Modules\Journeys\Domain\JourneyTrigger;
+use App\Modules\Journeys\Domain\JourneyTriggerOrdering;
 use App\Modules\Journeys\Domain\JourneyWaitEvaluator;
 use App\Modules\Journeys\Domain\JourneyWaitOutcome;
 
@@ -82,6 +83,17 @@ it('normalizes events to UTC and preserves explicit schedule timezone ordering',
         ->and($schedule->timezone)->toBe('America/Los_Angeles')
         ->and($event->idempotencyKey)->toBe(JourneyTrigger::event('workspace-1', 'event-9', new DateTimeImmutable('2026-09-27T19:00:00Z'))->idempotencyKey)
         ->and($schedule->idempotencyKey)->not->toBe(JourneyTrigger::schedule('workspace-1', 'schedule-2', 'America/Los_Angeles', new DateTimeImmutable('2026-09-27T12:00:00-07:00'))->idempotencyKey);
+});
+
+it('orders triggers by event time with stable tie breaks and workspace isolation', function () {
+    $at = new DateTimeImmutable('2026-09-27T12:00:00Z');
+    $event = JourneyTrigger::event('workspace-1', 'event-b', $at);
+    $schedule = JourneyTrigger::schedule('workspace-1', 'schedule-a', 'UTC', $at);
+    $ordering = new JourneyTriggerOrdering;
+    expect($ordering->compare($event, $schedule))->toBeLessThan(0)
+        ->and($ordering->compare($schedule, $event))->toBeGreaterThan(0)
+        ->and($ordering->compare(JourneyTrigger::event('workspace-1', 'event-a', $at), $event))->toBeLessThan(0)
+        ->and(fn () => $ordering->compare($event, JourneyTrigger::event('workspace-2', 'other', $at)))->toThrow(JourneyDefinitionException::class);
 });
 
 it('evaluates typed conditions deterministically without loose coercion', function () {

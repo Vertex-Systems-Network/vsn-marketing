@@ -474,15 +474,19 @@
       "phase": "PHASE-09",
       "title": "Research journey and automation engine patterns",
       "status": "completed",
-      "dependencies": ["TASK-0047"],
+      "dependencies": [
+        "TASK-0047"
+      ],
       "weight": 15
     },
     {
       "id": "TASK-0049",
       "phase": "PHASE-09",
       "title": "Implement versioned journey graph and deterministic node registry",
-      "status": "in_progress",
-      "dependencies": ["TASK-0048"],
+      "status": "completed",
+      "dependencies": [
+        "TASK-0048"
+      ],
       "weight": 20
     },
     {
@@ -490,7 +494,9 @@
       "phase": "PHASE-09",
       "title": "Implement journey triggers waits conditions branches actions goals exits and re-entry",
       "status": "ready",
-      "dependencies": ["TASK-0049"],
+      "dependencies": [
+        "TASK-0049"
+      ],
       "weight": 20
     },
     {
@@ -498,7 +504,9 @@
       "phase": "PHASE-09",
       "title": "Implement durable concurrency retries replay and recovery",
       "status": "ready",
-      "dependencies": ["TASK-0050"],
+      "dependencies": [
+        "TASK-0050"
+      ],
       "weight": 20
     },
     {
@@ -506,7 +514,9 @@
       "phase": "PHASE-09",
       "title": "Implement journey builder simulator validation UX and execution timeline",
       "status": "ready",
-      "dependencies": ["TASK-0051"],
+      "dependencies": [
+        "TASK-0051"
+      ],
       "weight": 15
     },
     {
@@ -514,7 +524,12 @@
       "phase": "PHASE-09",
       "title": "Certify PHASE-09 journey and automation engine",
       "status": "ready",
-      "dependencies": ["TASK-0049", "TASK-0050", "TASK-0051", "TASK-0052"],
+      "dependencies": [
+        "TASK-0049",
+        "TASK-0050",
+        "TASK-0051",
+        "TASK-0052"
+      ],
       "weight": 10
     }
   ]

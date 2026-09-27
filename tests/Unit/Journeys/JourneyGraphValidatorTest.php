@@ -98,6 +98,28 @@ it('fails closed for action capability consent policy authorization quota or ide
     expect($gate->blockers([]))->toHaveCount(6);
 });
 
+it('restricts graph condition operators and operand types to the typed evaluator contract', function () {
+    $validator = new JourneyGraphValidator;
+    $base = ['schema_version' => 1, 'nodes' => [
+        ['id' => 'condition', 'type' => 'condition', 'config' => ['field' => 'profile.score', 'operator' => 'greater_than', 'value' => 10]],
+        ['id' => 'end', 'type' => 'end'],
+    ], 'edges' => [['from' => 'condition', 'to' => 'end', 'type' => 'true']]];
+    expect($validator->normalize($base)['nodes'][0]['config']['operator'])->toBe('greater_than');
+
+    $invalid = $base;
+    $invalid['nodes'][0]['config']['operator'] = 'execute';
+    expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
+    $invalid = $base;
+    $invalid['nodes'][0]['config']['value'] = 'ten';
+    expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
+    $validExists = $base;
+    $validExists['nodes'][0]['config'] = ['field' => 'profile.score', 'operator' => 'exists'];
+    expect($validator->normalize($validExists)['nodes'][0]['config']['operator'])->toBe('exists');
+    $invalid = $validExists;
+    $invalid['nodes'][0]['config']['value'] = true;
+    expect(fn () => $validator->normalize($invalid))->toThrow(JourneyDefinitionException::class);
+});
+
 it('allows only durable execution state transitions', function () {
     $state = new JourneyExecutionState('w1', 'e1');
     $state->transition('running');

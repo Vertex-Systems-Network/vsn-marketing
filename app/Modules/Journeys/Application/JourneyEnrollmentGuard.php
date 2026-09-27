@@ -11,8 +11,8 @@ final class JourneyEnrollmentGuard
      */
     public function key(string $workspaceId, string $journeyVersionId, string $subjectId, array $event): string
     {
-        $eventId = (string) ($event['event_id'] ?? '');
-        if ($eventId === '') {
+        $eventId = $event['event_id'] ?? null;
+        if (! is_string($eventId) || $eventId === '') {
             throw new \InvalidArgumentException('canonical event_id is required');
         }
 

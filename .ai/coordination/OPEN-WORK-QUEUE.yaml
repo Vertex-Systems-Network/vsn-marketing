@@ -1,12 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1b0a0ed7c650d1a9476c1ab2d919b17f50677146",
+  "reconciled_main_sha": "a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
     "disposition": "deferred_authorization_required"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 423,
+      "title": "Document RBT-052 journey benchmark capture contract",
+      "branch": "task0051-rbt052-capture-contract",
+      "disposition": "control_review_pending",
+      "accepted_actionable": false,
+      "head_sha": "ea2b44beeb45900280f07d059814bbf4fee411a7"
+    },
+    {
+      "kind": "pr",
+      "number": 422,
+      "title": "control(phase09): reconcile TASK-0051 benchmark blocker",
+      "branch": "control/task0051-benchmark-reconcile",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25"
+    },
     {
       "kind": "pr",
       "number": 421,

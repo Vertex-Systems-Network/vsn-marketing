@@ -1,74 +1,76 @@
-# AI-Native Parallel Plan — TASK-0041 Accelerated Shipping
+# AI-Native Plan — 5-Hour Continuous Workspace Development
 
-Status: **PHASE-07 final acceptance — verifying protected-main gates; all TASK-0041 workstreams terminal and no active worker leases**.
+Status: **CONTINUOUS BATCH MODE ENABLED**
 
 Supervisor: `supervisor-main`  
-Control branch: `supervisor/task0041-phase07-final-acceptance`  
-Promotion PR: `#391` — merged as `8bbda80bb34423cdd4d2f42f64c7b3d182dde18f`  
-Archived pre-promotion integration head: `archive/ship-week-1-task0041-pr387` -> `df1d117ed78ca3563780444f46fcb316533f8b53`  
-Current integration branch: `ship/week-1` -> `0733c40eead4038e2c1d7f19a50df23b88aaac6a`  Parent task: `TASK-0041`  
-Protected-main baseline: `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`  
-Trusted shipping source: PR #387 exact head `acf19cb685923617d1ded39de70ec5af78e96125`, merged on `ship/week-1` as `df1d117ed78ca3563780444f46fcb316533f8b53`  
-Shipping writer cap: `5`  
-Planned worker lanes: `4` + Supervisor  
-Merge strategy: `squash`  
-Completion signal: `Work Done and Submitted`
+Protected branch: `main`  
+Continuous batch contract: `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`  
+Default mutating Workspace envelope: **300 minutes / available Workspace credits**  
+Merge strategy: `squash` unless a stricter repository rule applies  
+Security posture: fail closed
 
-## Acceleration goal
+## Purpose
 
-Use the existing Week-1 Shipping Mode as the normal TASK-0041 feedback path instead of creating overlapping direct-main implementations. Worker lanes stay file-disjoint and cannot write Supervisor-owned routes, global state, workflows, configuration, migrations or release authority. The Supervisor owns integration and protected-main promotion.
+The AI-Native flow is no longer a sequence of chat-sized micro-milestones. A mutating Workspace start/resume runs one continuous development batch and keeps advancing the accepted repository work path until the batch objective is complete, the Workspace credit window ends, or a genuine human-only/safety blocker is the sole remaining path.
 
-The target is higher coding throughput through independent lanes while keeping one trusted integration baseline and unchanged exact-head security/application requirements. No speed optimization may weaken workspace isolation, permission/capability checks, immutable snapshot authority, optimistic concurrency, secret handling, provider-policy boundaries or audit provenance.
+The detailed execution contract is `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`. Every Supervisor/Workspace agent MUST read that contract before writable work.
 
-## Trusted promotion evidence
+## Mandatory start/resume order
 
-- PR #386 remains the protected-main operator read-model/preview foundation at `792881f5c702ee38fa12b066f2eb8f65e73baca3` with RBT-037 PASS.
-- PR #387 exact source `acf19cb685923617d1ded39de70ec5af78e96125` passed Shipping Fast Gate `36074285668`.
-- Resulting `ship/week-1` head `df1d117ed78ca3563780444f46fcb316533f8b53` passed AI Continuity Guard `36074471199`, Application Foundation CI `36074471168`, and Shipping Fast Gate `36074471196`.
-- The promotion carrier copies the reviewed #387 product/test surfaces onto the current protected-main lineage and must independently pass exact-head AI Continuity Guard, Application Foundation CI and Security Supply Chain CI before merge.
-- Failed duplicate PR #390 is not promotion evidence and must not be merged.
+1. recover interrupted transactions and validate continuity;
+2. read `CURRENT-STATE.yaml` and `LAST-CHECKPOINT.md`;
+3. resolve exact live protected `main`;
+4. reconcile open Issues first, then open PRs;
+5. reconcile accepted work queue, deterministic claims, and Runner Benchmark;
+6. identify stale/duplicate carriers and choose the authoritative work path;
+7. enter the continuous execution loop without asking for another routine consent.
 
-## Safety boundaries
+Repository/runtime evidence outranks stale plan prose. If this file's audit snapshot is stale, update behavior from live repository evidence rather than pausing for the user.
 
-- Production provider credentials/API calls and provider publish/retry/edit/delete side effects stay inactive unless a later canonical TASK-0041 milestone explicitly authorizes a bounded operation.
-- Browser/UI state never grants backend authority.
-- Shared routes, global control/state, workflow, dependency, config and migration paths remain Supervisor-owned.
-- RBT-004 remains authorization-blocked; CodeQL PRs #235/#388 remain deferred under RBT-005.
-- Runner performance/cache/sizing work remains deferred to the coordinated benchmark batch.
-- TASK-0042 and deployment/release authority remain inactive.
+## Continuous execution behavior
+
+Inside the started batch, automatically perform:
+
+`implementation -> focused tests -> PR/update -> CI diagnosis -> bounded same-scope repair -> exact-head verification -> merge -> post-merge reconciliation -> next dependency-ready action`
+
+Do not stop at formatting failures, ordinary test failures, stale branches, duplicate PRs, merge conflicts, README/progress drift, or a required same-scope repair. Resolve them and continue.
+
+Do not emit next-action options at internal batch boundaries. The next-action UI/numbered options contract applies at final handoff or a genuine hard stop.
+
+## Scope and authority
+
+A started mutating batch is sufficient authorization for ordinary repository development and green-PR merge actions inside its declared objective. It is not reusable authority for production/provider side effects, secrets, destructive data/migrations, branch-protection weakening, billing, deployment/release, or other external actions whose canonical contract requires current explicit authority.
+
+If one such authority is unavailable, continue every independent safe repository action first. Stop only when it is the sole remaining path.
+
+## Current audit snapshot — revalidate before use
+
+Captured: **2026-09-27 UTC**
+
+- Protected `main` observed during audit: `3d31fe8ac6f73605c7fbe9e321e7bd027b7fefb9`.
+- Canonical phase/task on that main: `PHASE-09 / TASK-0049`.
+- PR #414 is merged into the observed main.
+- PR #415 is an older TASK-0049 carrier from the reused research branch and must be compared against the cleaner replacement before use.
+- PR #416 is the clean TASK-0049 carrier observed as mergeable; its Continuity and Security workflows passed, while Application Foundation failed at PHP formatting. Under continuous mode that failure is a same-scope repair path, not a reason to ask the user what to do.
+- `CURRENT-STATE.yaml` on observed main still references merged PR #414 and therefore must be treated as a compact stale index until live PR/main evidence is reconciled.
+- Persistent status issue #102 also lagged the open-PR reality during this audit. Live GitHub evidence wins.
+
+This snapshot is diagnostic only; it does not replace the mandatory resume reconciliation.
+
+## Legacy staged parallel registry
+
+`.ai/parallel/WORKSTREAMS.yaml` currently contains a staged historical TASK-0041 registry. It must not be treated as current PHASE-09 execution authority merely because open slots exist. New parallel onboarding must fail closed when the registry parent does not match the canonical active task.
 
 <!-- WORKSTREAM_TABLE_START -->
 | Merge group | Workstream | Module/capability | Slot | Assigned agent | Start status | Branch | PR merge strategy | Resume/sync strategy |
 |---:|---|---|---|---|---|---|---|---|
-| 10 | WS-0041-SUPERVISOR-CONTROL | Promote trusted PR #387 shipping implementation onto current protected-main lineage, own shared routes/control/state integration, reconcile RBT evidence, protect security boundaries, and integrate worker submissions without widening provider or deployment authority. | `occupied` | `supervisor-main` | `promotion_complete` | `control/task0041-shipping-acceleration` | squash | merge latest main before resume |
-| 20 | WS-0041-RETRY-CAPABILITY | Implement capability-gated retry preflight/execution over canonical publication attempts with exact eligible/excluded counts, already-successful exclusion, workspace isolation, stale capability fail-closed behavior and no raw provider credential exposure. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | latest green ship/week-1 before submission |
-| 30 | WS-0041-APPROVAL-REVOCATION | Implement focused approval revocation/material-change operator command support with server-derived current authority, exact snapshot/state-version concurrency checks and append-only audit provenance; shared route wiring remains Supervisor-owned. | **OPEN** | — | `shipping_merged_green` | `worker-2/task0041-approval-revocation` | squash | latest green ship/week-1 before submission |
-| 40 | WS-0041-PROVIDER-DRIFT | Extend the operator read model with actionable non-secret provider disconnect, permission, capability-drift, rate-limit and circuit outcomes while preserving canonical VSN authority and partial-success semantics. | **OPEN** | — | `shipping_merged_green` | `worker-3/task0041-provider-drift` | squash | latest green ship/week-1 before submission |
-| 50 | WS-0041-OPERATOR-UX-CERT | Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority. | **COMPLETE** | — | `shipping_merged_green` | `worker-4/task0041-operator-ux-cert` | squash | terminal; no active lease |
+| 10 | WS-0041-SUPERVISOR-CONTROL | Historical TASK-0041 Supervisor lane. | `occupied` | `supervisor-main` | `promotion_complete` | `control/task0041-shipping-acceleration` | squash | historical/staged |
+| 20 | WS-0041-RETRY-CAPABILITY | Historical TASK-0041 lane. | **OPEN** | — | `shipping_merged_green` | `worker-1/task0041-retry-capability` | squash | historical/staged |
+| 30 | WS-0041-APPROVAL-REVOCATION | Historical TASK-0041 lane. | **OPEN** | — | `shipping_merged_green` | `worker-2/task0041-approval-revocation` | squash | historical/staged |
+| 40 | WS-0041-PROVIDER-DRIFT | Historical TASK-0041 lane. | **OPEN** | — | `shipping_merged_green` | `worker-3/task0041-provider-drift` | squash | historical/staged |
+| 50 | WS-0041-OPERATOR-UX-CERT | Historical TASK-0041 lane. | **OPEN** | — | `shipping_merged_green` | `worker-4/task0041-operator-ux-cert` | squash | historical/staged |
 <!-- WORKSTREAM_TABLE_END -->
 
-## Development Acceleration v2.7 overlay
+## Final handoff
 
-This task inherits the repository-wide wave acceleration contract:
-
-1. batch dependency-ready disjoint leases into one control carrier when distinct real agents are available;
-2. do not insert a protected-main control PR between every independent sibling lane by default;
-3. allow already-leased independent coding to continue from the last green shipping baseline while a newer sibling integration head is verifying;
-4. require synchronization to the latest required green `ship/week-1` baseline before worker submission/merge or dependency consumption;
-5. carry terminal worker evidence into the next substantial wave-control/promotion carrier;
-6. concentrate full protected-main Application + Security certification at promotion/final-acceptance/security boundaries;
-7. never fake agents, overlap write paths, bypass permissions/security, or treat pending/failed integration as consumable.
-## Integration order
-
-1. Promote trusted #387 product behavior onto current protected-main lineage with fresh full exact-head gates.
-2. Preserve old `ship/week-1` at an archive ref, then realign the integration branch to resulting protected main only after comparison proves no trusted product loss.
-3. Fast-forward the four pre-created worker branches to the same trusted integration baseline.
-4. Onboard/lease dependency-ready disjoint lanes in wave-sized control carriers when real distinct agents are available. Worker PRs target `ship/week-1` and use Shipping Fast Gate.
-5. Independent leased lanes may continue coding from the last green integration baseline while sibling integration verification runs, but submission/merge and dependency consumption require synchronization to the latest required green integration head.
-6. Carry sibling terminal evidence forward and avoid per-lane protected-main control PRs unless a safety/authority/drift exception requires one.
-7. Full protected-main Application + Security certification remains mandatory at promotion/final-acceptance boundaries.
-8. Final TASK-0041 acceptance and TASK-0042 activation remain separate guarded milestones.
-
-## Exact next action
-
-TASK-0041 final acceptance evidence is assembled. Promote PHASE-07 only when this carrier's unchanged exact head passes AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and review. Keep PHASE-08 and TASK-0042 unmaterialized; their research-first registration is a separate milestone.
+Only when the continuous batch ends, report the durable result, exact next safe action, phase/module progress, overall roadmap progress, and then expose the normal shuffled next-action options if further work remains.

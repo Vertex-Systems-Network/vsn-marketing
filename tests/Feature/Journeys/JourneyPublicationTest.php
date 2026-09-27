@@ -6,7 +6,10 @@ use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Journeys\Application\EnrollSubjectInJourney;
 use App\Modules\Journeys\Application\JourneyRegistry;
+use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -91,4 +94,37 @@ it('rejects publication without explicit confirmation or workspace authority', f
     expect(fn () => app(JourneyRegistry::class)->publish(
         $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,
     ))->toThrow(AuthorizationException::class);
+});
+
+it('deduplicates trigger delivery and enforces explicit re-entry policy on pinned versions', function () {
+    $fixture = journeyPublisherFixture();
+    $published = app(JourneyRegistry::class)->publish(
+        $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,
+    );
+    $enrollments = app(EnrollSubjectInJourney::class);
+    $subjectId = (string) Str::uuid();
+    $eventId = (string) Str::uuid();
+    $first = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, $subjectId, $eventId, JourneyReentryPolicy::Never,
+    );
+    $redelivery = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, $subjectId, $eventId, JourneyReentryPolicy::Never,
+    );
+
+    expect($first['duplicate'])->toBeFalse()
+        ->and($redelivery['duplicate'])->toBeTrue()
+        ->and($redelivery['id'])->toBe($first['id'])
+        ->and(DB::table('journey_enrollments')->where('subject_id', $subjectId)->count())->toBe(1);
+
+    expect(fn () => $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, $subjectId, (string) Str::uuid(), JourneyReentryPolicy::Never,
+    ))->toThrow(JourneyDefinitionException::class, 'reentry_not_allowed');
+
+    DB::table('journey_enrollments')->where('id', $first['id'])->update(['status' => 'exited']);
+    $second = $enrollments->enroll(
+        $fixture['scope'], $published['definition']->versionId, $subjectId, (string) Str::uuid(), JourneyReentryPolicy::AfterExit,
+    );
+    expect($second['generation'])->toBe(2)
+        ->and($second['status'])->toBe('active')
+        ->and($second['enrollment_key'])->not->toBe($first['enrollment_key']);
 });

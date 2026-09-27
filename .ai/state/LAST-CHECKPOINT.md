@@ -2,12 +2,12 @@
 
 ## State
 
-- Timestamp: `2026-09-27T11:07:07+00:00`
-- Observed main: `9ae3c893ef1a41d6b266599eff79214f49b74b08`
+- Timestamp: `2026-09-27T11:11:59+00:00`
+- Observed main: `075cf2f58fe8a0e132b233d9b6ab51a395aca8dd`
 - Active issue: `none`
-- Active PR: `416`
-- Active branch: `supervisor/phase09-task49-clean`
-- Current milestone: `PHASE-09-TASK-0049-ARCHITECTURE`
+- Active PR: `418`
+- Active branch: `supervisor/phase09-task50-runtime`
+- Current milestone: `PHASE-09-TASK-0050-RUNTIME`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0050`
 - Next task: `TASK-0051`
@@ -15,17 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004`
-- State fingerprint: `1817e01352de12315c1302a5177f3acf0da32a0e2b9b1fcd2ffc913458c2a215`
+- State fingerprint: `f38578f6a5e02cb8ee7038a134b2d613c7c8e5c15a6c88e754201d40ea27bffd`
 
 ## Completed / observed this session
 
-Completed `TASK-0049` and activated `TASK-0050`.
-
-Transition evidence: PR #416 exact head ca01f4bf447681f60d993217807bf81f7d6b3a80 implements canonical graph hashing, registered schemas, typed transitions, immutable workspace-authorized publication, pinned re-entry, duplicate-event idempotency, and tenant-composite constraints.
+TASK-0049 exact-head carrier PR #416 merged at 075cf2f58fe8a0e132b233d9b6ab51a395aca8dd; activated TASK-0050 and opened PR #418 with guarded state transition plus typed conditions, timezone-aware triggers, durable wait descriptors, and fail-closed action gates.
 
 ## Tests
 
-Exact-head AI Continuity Guard, Application Foundation CI, and Security Supply Chain CI green; focused journey unit/feature tests 16 passed/63 assertions; PHPStan Journeys passed; Pint passed; PR #416 has no review threads.
+TASK-0049 exact-head CI green; TASK-0050 focused tests 15 passed/55 assertions; Pint passed; PHPStan Journeys passed. PR #418 exact-head required CI pending.
 
 ## Blockers
 
@@ -33,4 +31,4 @@ Exact-head AI Continuity Guard, Application Foundation CI, and Security Supply C
 
 ## Exact next action
 
-Research and implement bounded workspace-scoped journey triggers, durable waits, typed branching, and guarded actions; do not touch PHASE-10.
+Continue TASK-0050 on PR #418: inspect exact-head CI, repair any same-scope failures, then implement dependency-ready trigger/wait/branch/action integration and continue PHASE-09.

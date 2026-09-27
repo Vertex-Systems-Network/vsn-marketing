@@ -11,7 +11,7 @@ Security posture: fail closed
 
 ## Purpose
 
-The AI-Native flow is no longer a sequence of chat-sized micro-milestones. A mutating Workspace start/resume runs one continuous development batch and keeps advancing the accepted repository work path until the batch objective is complete, the Workspace credit window ends, or a genuine human-only/safety blocker is the sole remaining path.
+The AI-Native flow is no longer a sequence of chat-sized micro-milestones. A mutating Workspace start/resume runs one continuous development batch and keeps advancing the accepted repository work path until the batch objective is complete, the Workspace credit window ends, or a genuine human-only/safety blocker is the sole remaining path. Generic start/continue/resume defaults to maximum safe progress across the current active phase; an explicitly narrower PR/task/audit scope remains narrow.
 
 The detailed execution contract is `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`. Every Supervisor/Workspace agent MUST read that contract before writable work.
 

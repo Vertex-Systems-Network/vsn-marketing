@@ -233,6 +233,7 @@ def validate() -> list[str]:
         "workspace_continuous_batch_contract_path": ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md",
         "workspace_continuous_batch_duration_minutes": 300,
         "workspace_continuous_batch_default_for_mutating_resume": True,
+        "workspace_continuous_batch_default_objective": "current_active_phase_max_safe_progress",
         "workspace_continuous_batch_no_reconfirmation_for_repo_scope": True,
         "workspace_continuous_batch_auto_advance_related_tasks": True,
         "workspace_continuous_batch_phase_boundary_requires_declared_scope": True,
@@ -563,6 +564,7 @@ def batch_status() -> None:
     control = load(CONTROL)
     print("Workspace continuous batch: ENABLED" if control.get("workspace_continuous_batch_enabled") else "Workspace continuous batch: DISABLED")
     print(f"Duration minutes: {control.get('workspace_continuous_batch_duration_minutes')}")
+    print(f"Default objective: {control.get('workspace_continuous_batch_default_objective')}")
     print(f"Contract: {control.get('workspace_continuous_batch_contract_path')}")
     print(f"No routine reconfirmation: {control.get('workspace_continuous_batch_no_reconfirmation_for_repo_scope')}")
     print(f"CI failure policy: {control.get('workspace_continuous_batch_ci_failure_policy')}")

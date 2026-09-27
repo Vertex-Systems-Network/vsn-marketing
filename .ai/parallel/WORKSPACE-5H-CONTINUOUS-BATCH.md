@@ -8,6 +8,7 @@ This contract exists to keep repository development moving for one Workspace ses
 
 - Target runtime: **300 minutes / the available Workspace credit window**, whichever ends first.
 - A mutating `start`, `continue`, numeric next-action selection, or explicitly scoped development request starts or resumes this continuous batch mode unless the request says otherwise.
+- A generic mutating `start`, `continue`, or `resume` with no narrower scope defaults to **maximum safe progress across the current active phase**, not one task or one PR. After a task is certified, automatically transition to the next canonical dependency-ready task in that phase and continue while credit remains. If research/registration is required and the canonical roadmap already defines that work, perform it automatically; never invent undeclared roadmap work.
 - URL-only repository entry remains read-only and does not start a mutating batch.
 - Repository evidence outranks chat memory. Every fresh session or recovery still performs the normal compact-state/main/Issues/PRs/queue/Runner reconciliation before writes.
 - The batch objective is the highest-priority accepted repository work path consistent with the user's request and canonical state. Do not ask the user to choose again when repository evidence already determines the next safe action.
@@ -81,6 +82,8 @@ When two PRs cover the same accepted work:
 ## Scope chaining
 
 Continuous mode may cross internal milestones and dependent tasks **only when they are part of the same declared batch objective**.
+
+For a generic `start`/`continue`/`resume`, the declared batch objective is the current active phase by default. An explicit PR-only, task-only, audit-only, or other narrower user instruction overrides that default.
 
 - A phase-closure batch may automatically advance across dependency-ready tasks in that phase.
 - A task-only batch stops when that task is certified/merged.

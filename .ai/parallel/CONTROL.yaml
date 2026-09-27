@@ -7,7 +7,7 @@
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "8ce40c92e18587c99f6dabf22e29bee0a47ed4436b0c9b4f6cc0b8ccd8b755ed",
+  "instruction_fingerprint": "40a58564741930e75b5583858e10c827f1d8ea5f7c9735a1121581a5bdf4cb1d",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -191,5 +191,6 @@
     "branch_protection_or_required_check_weakening",
     "deployment_or_release_authority",
     "legal_compliance_owner_approval"
-  ]
+  ],
+  "workspace_continuous_batch_default_objective": "current_active_phase_max_safe_progress"
 }

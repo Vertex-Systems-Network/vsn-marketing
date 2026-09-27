@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "fe450e2d0c80dab8fa63882859618e9c0618f7a4",
+  "observed_main_sha": "85b7103830525c82f23a5ec2a7b790775cd2c9c0",
   "active_issue": null,
-  "active_pr": 420,
-  "active_branch": "supervisor/phase09-task51-execution",
+  "active_pr": 421,
+  "active_branch": "supervisor/phase09-task51-enrollment-backpressure",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence.",
+  "exact_next_safe_action": "Verify exact-head PR #421 CI for workspace enrollment backpressure, PostgreSQL isolation, PHP formatting, and security; merge only when green. Keep TASK-0051 in progress until RBT-004 representative benchmark evidence is authorized and captured; make no production SLO claims.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
@@ -44,5 +44,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish TASK-0051 bounded attempt/replay fix to PR #420. Recheck exact-head full CI including the migration markers, PHP formatting, PostgreSQL integration and backend tests; repair any failure, then add representative execution benchmark evidence."
+  "exact_next_action": "Verify exact-head PR #421 CI for workspace enrollment backpressure, PostgreSQL isolation, PHP formatting, and security; merge only when green. Keep TASK-0051 in progress until RBT-004 representative benchmark evidence is authorized and captured; make no production SLO claims."
 }

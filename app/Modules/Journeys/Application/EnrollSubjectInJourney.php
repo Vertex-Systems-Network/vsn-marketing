@@ -4,6 +4,7 @@ namespace App\Modules\Journeys\Application;
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyEnrollmentAdmissionPolicy;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use Illuminate\Database\DatabaseManager;
@@ -16,6 +17,7 @@ final readonly class EnrollSubjectInJourney
         private DatabaseManager $database,
         private JourneyEnrollmentGuard $guard,
         private JourneyGraphValidator $validator,
+        private JourneyEnrollmentAdmissionPolicy $admissionPolicy,
     ) {}
 
     /** @return array{id: string, enrollment_key: string, generation: int, status: string, duplicate: bool} */
@@ -30,6 +32,12 @@ final readonly class EnrollSubjectInJourney
         }
 
         return $this->database->transaction(function () use ($scope, $journeyVersionId, $subjectId, $eventId): array {
+            $workspace = $this->database->table('workspaces')
+                ->where('id', $scope->workspaceId)->lockForUpdate()->first();
+            if ($workspace === null) {
+                throw new InvalidArgumentException('Enrollment workspace is unavailable.');
+            }
+
             $version = $this->database->table('journey_versions')
                 ->where('workspace_id', $scope->workspaceId)->where('id', $journeyVersionId)
                 ->lockForUpdate()->first();
@@ -58,6 +66,10 @@ final readonly class EnrollSubjectInJourney
                     'duplicate' => true,
                 ];
             }
+
+            $activeEnrollments = $this->database->table('journey_enrollments')
+                ->where('workspace_id', $scope->workspaceId)->where('status', 'active')->count();
+            $this->guard->assertWorkspaceAdmissionAllowed((int) $activeEnrollments, $this->admissionPolicy);
 
             $prior = $this->database->table('journey_enrollments')
                 ->where('workspace_id', $scope->workspaceId)->where('journey_version_id', $journeyVersionId)

@@ -179,3 +179,19 @@ it('refuses to enroll against a journey version owned by another workspace', fun
         (string) Str::uuid(),
     ))->toThrow(InvalidArgumentException::class, 'unavailable in this workspace');
 });
+
+it('fails closed when a stored pinned graph no longer matches its published hash', function () {
+    $fixture = journeyPublisherFixture();
+    $published = app(JourneyRegistry::class)->publish(
+        $fixture['journeyId'], 1, $fixture['scope'], $fixture['user'], publishableJourneyGraph(), true,
+    );
+    DB::table('journey_versions')->where('id', $published['definition']->versionId)
+        ->update(['graph' => json_encode(['schema_version' => 1, 'nodes' => [['id' => 'tampered', 'type' => 'end']], 'edges' => []])]);
+
+    expect(fn () => app(EnrollSubjectInJourney::class)->enroll(
+        $fixture['scope'],
+        $published['definition']->versionId,
+        (string) Str::uuid(),
+        (string) Str::uuid(),
+    ))->toThrow(JourneyDefinitionException::class, 'published_version_integrity_failed');
+});

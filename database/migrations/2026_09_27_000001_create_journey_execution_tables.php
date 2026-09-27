@@ -71,10 +71,10 @@ return new class extends Migration
                 $table->timestampsTz();
                 $table->foreign('workspace_id')->references('id')->on('workspaces')->cascadeOnDelete();
                 $table->foreign(['workspace_id', 'journey_version_id'])->references(['workspace_id', 'id'])->on('journey_versions')->cascadeOnDelete();
-                $table->unique(['workspace_id', 'enrollment_key']);
-                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'trigger_event_id']);
-                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'generation']);
-                $table->index(['workspace_id', 'journey_version_id', 'subject_id', 'status']);
+                $table->unique(['workspace_id', 'enrollment_key'], 'journey_enrollment_key_uq');
+                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'trigger_event_id'], 'journey_enrollment_event_uq');
+                $table->unique(['workspace_id', 'journey_version_id', 'subject_id', 'generation'], 'journey_enrollment_generation_uq');
+                $table->index(['workspace_id', 'journey_version_id', 'subject_id', 'status'], 'journey_enrollment_scope_status_idx');
             });
         }
         if (! Schema::hasTable('journey_node_attempts')) {

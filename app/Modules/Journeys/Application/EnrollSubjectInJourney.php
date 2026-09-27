@@ -21,19 +21,21 @@ final readonly class EnrollSubjectInJourney
         string $journeyVersionId,
         string $subjectId,
         string $eventId,
-        JourneyReentryPolicy $policy,
-        ?int $maximumEnrollments = null,
     ): array {
         if ($subjectId === '' || $eventId === '' || strlen($eventId) > 191) {
             throw new InvalidArgumentException('Canonical subject and event identifiers are required.');
         }
 
-        return $this->database->transaction(function () use ($scope, $journeyVersionId, $subjectId, $eventId, $policy, $maximumEnrollments): array {
+        return $this->database->transaction(function () use ($scope, $journeyVersionId, $subjectId, $eventId): array {
             $version = $this->database->table('journey_versions')
                 ->where('workspace_id', $scope->workspaceId)->where('id', $journeyVersionId)
                 ->lockForUpdate()->first();
             if ($version === null || $version->status !== 'published') {
                 throw new InvalidArgumentException('Published journey version is unavailable in this workspace.');
+            }
+            $policy = JourneyReentryPolicy::tryFrom((string) $version->reentry_policy);
+            if ($policy === null) {
+                throw new InvalidArgumentException('Published journey version has an unsupported re-entry policy.');
             }
 
             $key = $this->guard->key($scope->workspaceId, $journeyVersionId, $subjectId, ['event_id' => $eventId]);
@@ -54,7 +56,7 @@ final readonly class EnrollSubjectInJourney
                 ->where('workspace_id', $scope->workspaceId)->where('journey_version_id', $journeyVersionId)
                 ->where('subject_id', $subjectId)->orderByDesc('generation')->get();
             $latestStatus = $prior->first()?->status;
-            $this->guard->assertReentryAllowed($policy, $prior->count(), $latestStatus, $maximumEnrollments);
+            $this->guard->assertReentryAllowed($policy, $prior->count(), $latestStatus, $version->max_enrollments === null ? null : (int) $version->max_enrollments);
             $generation = $prior->count() + 1;
             $id = (string) Str::uuid();
             $now = now();
@@ -65,7 +67,6 @@ final readonly class EnrollSubjectInJourney
                 'subject_id' => $subjectId,
                 'trigger_event_id' => $eventId,
                 'enrollment_key' => $key,
-                'reentry_policy' => $policy->value,
                 'generation' => $generation,
                 'status' => 'active',
                 'created_at' => $now,

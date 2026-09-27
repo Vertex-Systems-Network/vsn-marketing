@@ -1,1 +1,43 @@
-{"id":"TASK-0050","phase":"PHASE-09","title":"Implement journey triggers waits conditions branches actions goals exits and re-entry","weight":20,"status":"ready","dependencies":["TASK-0049"],"objective":"Implement bounded event/attribute triggers, durable waits, typed conditions, deterministic branches, registered actions, goals, exits, timezone semantics, and re-entry policy.","acceptance_criteria":[{"id":"AC-1","description":"Canonical event and schedule triggers use explicit workspace/timezone and ordering semantics.","status":"pending"},{"id":"AC-2","description":"Waits are durable bounded timers or predicates and never worker sleeps.","status":"pending"},{"id":"AC-3","description":"Conditions, branches, goals, exits, and re-entry are typed, deterministic, and explainable.","status":"pending"},{"id":"AC-4","description":"Actions pass provider capability, consent, suppression, authorization, quota, and idempotency gates.","status":"pending"},{"id":"AC-5","description":"Late events, duplicate delivery, cancellation, and blocked action behavior are tested.","status":"pending"}],"required_tests":["trigger-wait-branch-integration-tests","consent-suppression-action-gate-tests"]}
+{
+  "id": "TASK-0050",
+  "phase": "PHASE-09",
+  "title": "Implement journey triggers waits conditions branches actions goals exits and re-entry",
+  "weight": 20,
+  "status": "ready",
+  "dependencies": [
+    "TASK-0049"
+  ],
+  "objective": "Implement bounded event/attribute triggers, durable waits, typed conditions, deterministic branches, registered actions, goals, exits, timezone semantics, and re-entry policy.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "description": "Canonical event and schedule triggers use explicit workspace/timezone and ordering semantics.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-2",
+      "description": "Waits are durable bounded timers or predicates and never worker sleeps.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-3",
+      "description": "Conditions, branches, goals, exits, and re-entry are typed, deterministic, and explainable.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-4",
+      "description": "Actions pass provider capability, consent, suppression, authorization, quota, and idempotency gates.",
+      "status": "pending"
+    },
+    {
+      "id": "AC-5",
+      "description": "Late events, duplicate delivery, cancellation, and blocked action behavior are tested.",
+      "status": "pending"
+    }
+  ],
+  "required_tests": [
+    "trigger-wait-branch-integration-tests",
+    "consent-suppression-action-gate-tests"
+  ],
+  "exact_next_action": "Research and implement bounded workspace-scoped journey triggers, durable waits, typed branching, and guarded actions; do not touch PHASE-10."
+}

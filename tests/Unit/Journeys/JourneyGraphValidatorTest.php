@@ -3,6 +3,7 @@
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
+use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
 
 function journeyGraph(): array { return ['schema_version'=>1,'nodes'=>[['id'=>'start','type'=>'trigger','config'=>['event'=>'customer.created']],['id'=>'wait','type'=>'wait','config'=>['seconds'=>60]],['id'=>'end','type'=>'end']], 'edges'=>[['from'=>'start','to'=>'wait'],['from'=>'wait','to'=>'end']]]; }
 
@@ -23,4 +24,10 @@ it('keeps execution and node-attempt identities deterministic and scoped', funct
     expect($execution)->toBe(JourneyExecutionIdentity::for('w1','v1','s1','e1'))
         ->not->toBe(JourneyExecutionIdentity::for('w2','v1','s1','e1'))
         ->not->toBe(JourneyExecutionIdentity::nodeAttempt($execution,'node',1));
+});
+
+it('bounds durable waits and produces UTC deadlines', function () {
+    $policy = new JourneyRuntimePolicy(maxWaitSeconds: 3600);
+    expect($policy->deadline(new DateTimeImmutable('2026-09-27 00:00:00', new DateTimeZone('UTC')), 60)->format('Y-m-d H:i:s'))->toBe('2026-09-27 00:01:00');
+    expect(fn () => $policy->assertWait(3601))->toThrow(JourneyDefinitionException::class);
 });

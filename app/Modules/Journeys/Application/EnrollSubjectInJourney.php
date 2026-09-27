@@ -3,6 +3,8 @@
 namespace App\Modules\Journeys\Application;
 
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use App\Modules\Journeys\Domain\JourneyDefinitionException;
+use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use App\Modules\Journeys\Domain\JourneyReentryPolicy;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Str;
@@ -13,6 +15,7 @@ final readonly class EnrollSubjectInJourney
     public function __construct(
         private DatabaseManager $database,
         private JourneyEnrollmentGuard $guard,
+        private JourneyGraphValidator $validator,
     ) {}
 
     /** @return array{id: string, enrollment_key: string, generation: int, status: string, duplicate: bool} */
@@ -32,6 +35,10 @@ final readonly class EnrollSubjectInJourney
                 ->lockForUpdate()->first();
             if ($version === null || $version->status !== 'published') {
                 throw new InvalidArgumentException('Published journey version is unavailable in this workspace.');
+            }
+            $graph = is_string($version->graph) ? json_decode($version->graph, true) : null;
+            if (! is_array($graph) || $this->validator->hash($graph) !== $version->definition_hash) {
+                throw new JourneyDefinitionException('published_version_integrity_failed', '$.version');
             }
             $policy = JourneyReentryPolicy::tryFrom((string) $version->reentry_policy);
             if ($policy === null) {

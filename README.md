@@ -4,19 +4,19 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=56 phase=100 current_phase=PHASE-08 active_task=TASK-0047 milestone=PHASE-08-FINALIZED status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=57.05 phase=15 current_phase=PHASE-09 active_task=TASK-0049 milestone=PHASE-09-TASK-0049-ARCHITECTURE status=IN_PROGRESS -->
 
-> PHASE-07 and TASK-0041 are complete on protected main `87e65b1d458a79f925376d4cf49792d3771ef192`. TASK-0043 through TASK-0047 and PHASE-08 are complete; PHASE-09 remains planned and inactive.
+> PHASE-08 is complete on protected main `a28d48f6dcc73f79d71c3a13d769bf6a871e709a`. TASK-0048 research is accepted and TASK-0049 is active; PHASE-10 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 56.00%**<br />
-**Current phase: PHASE-08 — 100.00%**<br />
-**Last completed task: TASK-0047 — Certify PHASE-08**<br />
-**Current milestone: PHASE-08-FINALIZED — COMPLETE**
+**Overall roadmap progress: 57.05%**<br />
+**Current phase: PHASE-09 — 15.00%**<br />
+**Last completed task: TASK-0048 — Research journey and automation engine patterns**<br />
+**Current milestone: PHASE-09-TASK-0049-ARCHITECTURE — IN_PROGRESS**
 
 ```text
-Overall  [███████████░░░░░░░░░] 56.00%
+ Overall  [███████████░░░░░░░░░] 57.05%
 Phase 08 [████████████████████] 100.00%
 ```
 

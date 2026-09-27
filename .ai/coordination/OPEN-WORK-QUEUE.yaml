@@ -1,8 +1,24 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
-  "active_work_path": null,
+  "reconciled_main_sha": "a28d48f6dcc73f79d71c3a13d769bf6a871e709a",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 414,
+    "title": "control(phase09): activate research and register journey engine tasks",
+    "branch": "supervisor/phase09-research",
+    "head_sha": "81e94ce4f989442b509d4e2966bffb868f3931ad",
+    "disposition": "active_phase09_research_gate"
+  },
   "items": [
+    {
+      "kind": "pr",
+      "number": 414,
+      "title": "control(phase09): activate research and register journey engine tasks",
+      "disposition": "active_phase09_research_gate",
+      "accepted_actionable": true,
+      "branch": "supervisor/phase09-research",
+      "head_sha": "47229d2167e367ed410f39eab4f37f04a7673c32"
+    },
     {
       "kind": "issue",
       "number": 134,

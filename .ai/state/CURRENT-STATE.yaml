@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "needs_reconciliation",
-    "current_phase": "PHASE-08",
-    "active_task": "TASK-0047",
-    "last_completed_task": "TASK-0047",
-    "next_task": null
+    "status": "in_progress",
+    "current_phase": "PHASE-09",
+    "active_task": "TASK-0049",
+    "last_completed_task": "TASK-0048",
+    "next_task": "TASK-0050"
   },
   "progress": {
-    "roadmap_percent": 56.0,
-    "phase_percent": 100.0,
+    "roadmap_percent": 57.05,
+    "phase_percent": 15.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,29 +24,25 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc",
+  "observed_main_sha": "a28d48f6dcc73f79d71c3a13d769bf6a871e709a",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "supervisor/phase08-final-certification",
-  "current_milestone": "PHASE-08-FINALIZED",
-  "milestone_status": "COMPLETE",
-  "last_completed_milestone": "TASK-0047 and PHASE-08 accepted on PR #413 immutable candidate head eff0d08506c408090754c72e4ea6ca4bdcd10369 after Continuity 36279523770, Application 36279523802 and Security 36279523720 passed.",
-  "exact_next_safe_action": "Keep PHASE-09 inactive; begin a separate research-first registration milestone only after explicit authorization.",
+  "active_pr": 414,
+  "active_branch": "supervisor/phase09-research",
+  "current_milestone": "PHASE-09-TASK-0049-ARCHITECTURE",
+  "milestone_status": "IN_PROGRESS",
+  "last_completed_milestone": "TASK-0048 research accepted from current workflow/automation evidence; protected main reconciled at a28d48f6dcc73f79d71c3a13d769bf6a871e709a.",
+  "exact_next_safe_action": "Run one full CI validation on unchanged PR #414 head, then begin TASK-0049 implementation after merge.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004"
   ],
-  "blockers": [
-    "PHASE-09 has no registered research-first task; it must remain inactive until a separate explicitly authorized milestone."
-  ],
-  "current_blockers": [
-    "PHASE-09 has no registered research-first task; it must remain inactive until a separate explicitly authorized milestone."
-  ],
+  "blockers": [],
+  "current_blockers": [],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 1,
     "max_ci_status_refreshes_with_recorded_exception": 2,
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Keep PHASE-09 inactive; begin a separate research-first registration milestone only after explicit authorization."
+  "exact_next_action": "Run one full CI validation on unchanged PR #414 head, then begin TASK-0049 implementation after merge."
 }

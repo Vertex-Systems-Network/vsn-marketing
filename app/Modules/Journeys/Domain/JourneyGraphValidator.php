@@ -13,7 +13,7 @@ final class JourneyGraphValidator
     public const NODE_TYPES = ['trigger', 'wait', 'condition', 'branch', 'action', 'goal', 'exit', 'end'];
 
     /**
-     * @param array<string, mixed> $graph
+     * @param  array<string, mixed>  $graph
      * @return array<string, mixed>
      */
     public function normalize(array $graph): array
@@ -21,7 +21,7 @@ final class JourneyGraphValidator
         if (($graph['schema_version'] ?? null) !== self::SCHEMA_VERSION) {
             throw new JourneyDefinitionException('unsupported_schema_version', '$.schema_version');
         }
-        if (!isset($graph['nodes']) || !is_array($graph['nodes']) || $graph['nodes'] === []) {
+        if (! isset($graph['nodes']) || ! is_array($graph['nodes']) || $graph['nodes'] === []) {
             throw new JourneyDefinitionException('nodes_required', '$.nodes');
         }
         if (count($graph['nodes']) > self::MAX_NODES) {
@@ -29,7 +29,7 @@ final class JourneyGraphValidator
         }
         $ids = [];
         foreach ($graph['nodes'] as $i => $node) {
-            if (!is_array($node) || !is_string($node['id'] ?? null) || $node['id'] === '') {
+            if (! is_array($node) || ! is_string($node['id'] ?? null) || $node['id'] === '') {
                 throw new JourneyDefinitionException('invalid_node', '$.nodes.'.$i);
             }
             if (isset($ids[$node['id']])) {
@@ -61,11 +61,12 @@ final class JourneyGraphValidator
         ];
         usort($canonical['nodes'], fn (array $a, array $b): int => $a['id'] <=> $b['id']);
         usort($canonical['edges'], fn (array $a, array $b): int => (($a['from'] ?? '').($a['to'] ?? '')) <=> (($b['from'] ?? '').($b['to'] ?? '')));
+
         return $canonical;
     }
 
     /**
-     * @param array<string, mixed> $graph
+     * @param  array<string, mixed>  $graph
      */
     public function hash(array $graph): string
     {

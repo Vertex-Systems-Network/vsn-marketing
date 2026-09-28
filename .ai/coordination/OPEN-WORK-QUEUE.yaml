@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "728ac4a6189793a1955758c5a5db2397c0edecc1",
+  "reconciled_main_sha": "705088783e9779b5c741a09dd56708f48dfbe2b9",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
     "disposition": "deferred_authorization_required"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 426,
+      "title": "Prepare RBT-052 journey execution capture harness",
+      "branch": "task0051-rbt052-measurement-harness",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "705088783e9779b5c741a09dd56708f48dfbe2b9"
+    },
     {
       "kind": "pr",
       "number": 425,

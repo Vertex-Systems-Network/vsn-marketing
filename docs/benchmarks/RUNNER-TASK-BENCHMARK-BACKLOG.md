@@ -1,10 +1,10 @@
 # Runner Task Benchmark Backlog
 
-Status: **deferred registry — collect now, execute as one coordinated runner batch later**
+Status: **deferred registry — RBT-052 is explicitly scheduled for a dedicated PHASE-09 closeout batch before PHASE-10; other items remain in the project-end coordinated batch**
 
 Owner: Supervisor control plane  
 Workstream: `WS-0036-SUPERVISOR-CONTROL`  
-Execution policy: runner tasks are deferred by default and executed in one coordinated batch; only the explicit blocker-escalation exception below permits earlier execution.  
+Execution policy: runner tasks are deferred by default and executed in one coordinated project-end batch. The user explicitly authorized RBT-052 as a dedicated PHASE-09 closeout batch before PHASE-10; this does not activate or reschedule other Runner items.  
 Security policy: existing branch protection, exact-head CI, action pinning, dependency thresholds, secret scanning, container scanning, and benchmark-environment isolation remain mandatory.
 Interaction policy: CI status polling and resume behavior follow `docs/operations/AI-EXECUTION-RESILIENCE.md`; timeout avoidance never activates the Runner batch or weakens a gate.
 
@@ -47,7 +47,11 @@ Sensitive values, credentials, recipient data, provider tokens, private payloads
 | RBT-004 | Production-representative delivery benchmark runner | Issue #134 / `tools/task0024_benchmark_capture.php` | Capture the already-required dedicated non-production delivery + reconciliation evidence with exact runner/resource assumptions; keep this evidence separate from GitHub-hosted CI timing. | Authorized benchmark environment, PostgreSQL, Redis, exact source SHA, Delivery-owner threshold approval process | deferred / external environment required |
 | RBT-005 | CodeQL runner/toolchain maintenance | Open PRs #235 and #388 | Review pinned CodeQL Action update together with runner effects (bundle/toolcache behavior, disk usage, supported runner architecture) before deciding whether to merge; do not treat release-note claims as local benchmark evidence. | RBT-002 baseline; immutable action pin review | deferred |
 | RBT-006 | Runner size / architecture / cache / concurrency evaluation | Derived from all current workflows using `ubuntu-latest` | After baselines exist, compare only justified variants (for example larger runner or ARM64 where supported, cache strategy, job topology/concurrency). Require measured benefit, cost/security review, and no weakening of required checks. | RBT-001 through RBT-005 as applicable | deferred |
-| RBT-052 | Representative journey execution benchmark | TASK-0051 AC-5 / PR #420 and #421; `docs/operations/TASK-0051-BENCHMARK-ENV.md` | Measure durable claim, duplicate rejection, bounded saturation, retry/dead-letter, cancellation fencing and replay under a declared graph/node/enrollment mix; preserve raw samples and exact source/runtime/resource identity. | Reviewed capture harness; authorized dedicated non-production PostgreSQL/Redis; exact SHA and fixture; project-end batch activation | deferred / external environment required |
+| RBT-052 | Representative journey execution benchmark | TASK-0051 AC-5 / PR #420 and #421; `docs/operations/TASK-0051-BENCHMARK-ENV.md` | Measure durable claim, duplicate rejection, bounded saturation, retry/dead-letter, cancellation fencing and replay under a declared graph/node/enrollment mix; preserve raw samples and exact source/runtime/resource identity. | Reviewed capture harness; authorized dedicated non-production PostgreSQL/Redis; exact SHA and fixture; dedicated PHASE-09 closeout before PHASE-10; isolated runtime and exact source | blocked / runtime required |
+
+## RBT-052 dedicated closeout gate
+
+RBT-052 is the sole early scheduled item. User scope authority is recorded, but source identity and an isolated, non-production PostgreSQL/Redis runtime still must be verified before execution. Its evidence remains null. Run the reviewed capture, validate the raw output and digest, and review its measured coverage before TASK-0051 AC-5; record any missing queue/graph implementation as a real prerequisite. TASK-0052, TASK-0053 and PHASE-10 cannot be certified by synthetic CI timings or a declared schedule. All other Runner items retain their existing deferred project-end policy.
 
 ## Append rule
 

@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "059eb5ddf350567f4d5e88cc2375ad673e243e5f",
+  "reconciled_main_sha": "186da7afe923d777f910315729c34c3946ad7b2c",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
-    "disposition": "deferred_authorization_required"
+    "disposition": "blocked_runtime_required"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 428,
+      "title": "Correct RBT-052 capture window and scope claims",
+      "branch": "task0051-rbt052-capture-scope",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "186da7afe923d777f910315729c34c3946ad7b2c"
+    },
     {
       "kind": "pr",
       "number": 426,

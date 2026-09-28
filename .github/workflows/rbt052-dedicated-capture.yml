@@ -1,0 +1,134 @@
+name: RBT-052 Dedicated Journey Capture
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [benchmark/rbt052-run]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rbt052-dedicated-capture
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    if: ${{ github.ref == 'refs/heads/benchmark/rbt052-run' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: vsn_marketing_benchmark
+          POSTGRES_USER: vsn_benchmark
+          POSTGRES_PASSWORD: synthetic_benchmark_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U vsn_benchmark -d vsn_marketing_benchmark"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify immutable source and dedicated ref
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/benchmark/rbt052-run
+          test ! -e rbt052-evidence.json
+      - name: Build isolated PHP runtime image
+        run: docker build --tag vsn-rbt052-runtime --file docker/app/Dockerfile .
+      - name: Build benchmark-only Python tool layer
+        run: docker build --tag vsn-rbt052-capture --file docker/benchmark/Dockerfile .
+      - name: Capture synthetic PostgreSQL journey evidence
+        shell: bash
+        env:
+          APP_ENV: benchmark
+          APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          LOG_CHANNEL: stderr
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: '5432'
+          DB_DATABASE: vsn_marketing_benchmark
+          DB_USERNAME: vsn_benchmark
+          DB_PASSWORD: synthetic_benchmark_only
+          DB_SSLMODE: disable
+          CACHE_STORE: redis
+          REDIS_CLIENT: phpredis
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: '6379'
+          REDIS_DB: '0'
+          REDIS_CACHE_DB: '1'
+          REDIS_QUEUE_DB: '2'
+          REDIS_LOCK_DB: '3'
+          REDIS_QUEUE_CONNECTION: queue
+          QUEUE_CONNECTION: redis
+          QUEUE_FAILED_DRIVER: database-uuids
+          SESSION_DRIVER: array
+          FILESYSTEM_DISK: local
+          OBJECT_STORE_DISK: local
+          JOURNEY_MAX_ACTIVE_ENROLLMENTS_PER_WORKSPACE: '2000'
+        run: |
+          set -euo pipefail
+          runtime_sha="$(docker image inspect vsn-rbt052-capture --format '{{.Id}}')"
+          runtime_sha="${runtime_sha#sha256:}"
+          test "${#runtime_sha}" -eq 64
+          docker run --rm --network host --cpus=2 --memory=4096m \
+            --env APP_ENV --env APP_KEY --env LOG_CHANNEL \
+            --env DB_CONNECTION --env DB_HOST --env DB_PORT --env DB_DATABASE \
+            --env DB_USERNAME --env DB_PASSWORD --env DB_SSLMODE \
+            --env CACHE_STORE --env REDIS_CLIENT --env REDIS_HOST --env REDIS_PORT \
+            --env REDIS_DB --env REDIS_CACHE_DB --env REDIS_QUEUE_DB --env REDIS_LOCK_DB \
+            --env REDIS_QUEUE_CONNECTION --env QUEUE_CONNECTION --env QUEUE_FAILED_DRIVER \
+            --env SESSION_DRIVER --env FILESYSTEM_DISK --env OBJECT_STORE_DISK \
+            --env JOURNEY_MAX_ACTIVE_ENROLLMENTS_PER_WORKSPACE \
+            --env BENCHMARK_SOURCE_SHA="$GITHUB_SHA" \
+            --env BENCHMARK_IMAGE_SHA="$runtime_sha" \
+            --env BENCHMARK_RUN_ID="$GITHUB_RUN_ID" \
+            --volume "$GITHUB_WORKSPACE:/workspace" --workdir /workspace \
+            vsn-rbt052-capture sh -euc '
+              touch .env
+              composer install --no-interaction --prefer-dist --no-progress
+              php artisan migrate --force
+              php tools/task0051_benchmark_preflight.php \
+                --commit-sha="$BENCHMARK_SOURCE_SHA" --database="$DB_DATABASE" \
+                --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
+              php tools/task0051_benchmark_capture.php \
+                --benchmark-id="rbt052-gh-${BENCHMARK_RUN_ID}" \
+                --commit-sha="$BENCHMARK_SOURCE_SHA" --database="$DB_DATABASE" \
+                --resource-profile=gh-ubuntu2404-app2cpu4g-ephemeral-pg18-redis8 \
+                --runner-image-sha="$BENCHMARK_IMAGE_SHA" \
+                --cpu-count=2 --memory-mib=4096 \
+                --runs=2 --operations=100 --concurrency=4 --seed=51 \
+                --output=/workspace/rbt052-evidence.json \
+                --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
+              python3 tools/task0051_benchmark_evidence.py /workspace/rbt052-evidence.json
+              sha256sum /workspace/rbt052-evidence.json > /workspace/rbt052-evidence.sha256
+            '
+      - name: Upload immutable raw evidence and digest
+        if: ${{ success() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rbt052-raw-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            rbt052-evidence.json
+            rbt052-evidence.sha256
+          if-no-files-found: error
+          retention-days: 90

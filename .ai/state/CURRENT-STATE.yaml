@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "186da7afe923d777f910315729c34c3946ad7b2c",
+  "observed_main_sha": "1a44c7122565212c9f11caef00ad08352fbb7a21",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
-  "last_completed_milestone": "PR #428 merged RBT-052 timing and coverage truthfulness on protected main 186da7afe923d777f910315729c34c3946ad7b2c after exact-head Continuity, Supervisor, Application and Security checks. No benchmark measurement has run.",
-  "exact_next_safe_action": "Complete RBT-052 as a dedicated PHASE-09 batch before TASK-0051 AC-5 and PHASE-10: close representative queue/graph coverage gaps, verify exact source and isolated non-production PostgreSQL/Redis runtime, capture and independently validate raw evidence and digest; keep numeric SLOs unset until approval.",
+  "last_completed_milestone": "PR #429 merged the user-authorized dedicated RBT-052 PHASE-09 closeout schedule on protected main 1a44c7122565212c9f11caef00ad08352fbb7a21. No measurement has run.",
+  "exact_next_safe_action": "After exact-head review of the isolated RBT-052 workflow, run its dedicated benchmark ref on a fresh synthetic PostgreSQL/Redis environment; independently inspect raw samples, image/source identity, digest and coverage. Keep TASK-0051 AC-5 blocked if queue/graph traversal or runtime representativeness remains unproven.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete RBT-052 as a dedicated PHASE-09 batch before TASK-0051 AC-5 and PHASE-10: close representative queue/graph coverage gaps, verify exact source and isolated non-production PostgreSQL/Redis runtime, capture and independently validate raw evidence and digest; keep numeric SLOs unset until approval."
+  "exact_next_action": "After exact-head review of the isolated RBT-052 workflow, run its dedicated benchmark ref on a fresh synthetic PostgreSQL/Redis environment; independently inspect raw samples, image/source identity, digest and coverage. Keep TASK-0051 AC-5 blocked if queue/graph traversal or runtime representativeness remains unproven."
 }

@@ -2,21 +2,31 @@
 
 namespace App\Modules\Journeys\Application;
 
+use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 final readonly class ReplayJourneyExecution
 {
-    public function __construct(private DatabaseManager $database) {}
+    public function __construct(
+        private DatabaseManager $database,
+        private WorkspaceAuthorizer $authorizer,
+    ) {}
 
     /** @return array{id: string, replay_of: string, journey_version_id: string, execution_key: string, status: string, duplicate: bool} */
-    public function handle(TenantContext $scope, string $sourceExecutionId, string $replayRequestId): array
+    public function handle(TenantContext $scope, User $actor, string $sourceExecutionId, string $replayRequestId): array
     {
         if ($replayRequestId === '' || strlen($replayRequestId) > 191) {
             throw new InvalidArgumentException('A bounded replay request identity is required.');
+        }
+        if ((string) $actor->getKey() !== $scope->actorId
+            || ! $this->authorizer->allows($actor, $scope, PermissionCatalog::JOURNEY_REPLAY)) {
+            throw new AuthorizationException('Journey replay requires workspace replay permission.');
         }
 
         return $this->database->transaction(function () use ($scope, $sourceExecutionId, $replayRequestId): array {
@@ -26,7 +36,6 @@ final readonly class ReplayJourneyExecution
             if ($source === null || ! in_array($source->status, ['failed', 'blocked', 'cancelled', 'succeeded', 'exited'], true)) {
                 throw new InvalidArgumentException('Only a terminal execution in the active workspace can be replayed.');
             }
-            Gate::authorize('replay-journey-execution', [$scope, $source]);
 
             $version = $this->database->table('journey_versions')
                 ->where('workspace_id', $scope->workspaceId)->where('id', $source->journey_version_id)->first();

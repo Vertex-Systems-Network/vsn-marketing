@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "e0f431e4313f3a5b2079fb85bc4a48ac91f21457",
+  "observed_main_sha": "3e338d29d6392804d93b1d5f4b4830f07aa9b246",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
-  "last_completed_milestone": "TASK-0048 research accepted; PR #417 merged continuous-batch controls to protected main 9ae3c893ef1a41d6b266599eff79214f49b74b08; resumed TASK-0049 on authoritative PR #416.",
-  "exact_next_safe_action": "In the project-end aggregated Runner batch, authorize and execute RBT-052 on a representative PostgreSQL/Redis journey workload with exact source, fixture and resource identity. Record immutable evidence, verify TASK-0051 AC-5, then resume TASK-0052; make no production numeric SLO claim before acceptance.",
+  "last_completed_milestone": "TASK-0051 AC-1..AC-4 product capabilities merged; PR #424 added the read-only RBT-052 environment preflight on protected main 3e338d29d6392804d93b1d5f4b4830f07aa9b246.",
+  "exact_next_safe_action": "Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "In the project-end aggregated Runner batch, authorize and execute RBT-052 on a representative PostgreSQL/Redis journey workload with exact source, fixture and resource identity. Record immutable evidence, verify TASK-0051 AC-5, then resume TASK-0052; make no production numeric SLO claim before acceptance."
+  "exact_next_action": "Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim."
 }

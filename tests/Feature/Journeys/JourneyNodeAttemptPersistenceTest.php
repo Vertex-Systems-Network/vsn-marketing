@@ -1,5 +1,8 @@
 <?php
 
+use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
@@ -11,9 +14,7 @@ use App\Modules\Journeys\Domain\JourneyExecutionIdentity;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
-use Mockery;
 
 uses(RefreshDatabase::class);
 
@@ -109,16 +110,34 @@ it('enforces a serialized workspace concurrency budget and releases capacity on 
         ->and($repository->claim($second['workspace_id'], $second['execution_id'], 'node-b', 1, $now->modify('+2 seconds'), $policy))->not->toBeNull();
 });
 
+function replayActorFixture(string $workspaceId, bool $grant): User
+{
+    $actor = User::query()->create([
+        'name' => 'Journey Replay Operator',
+        'email' => 'journey-replay-'.Str::lower(Str::random(12)).'@example.test',
+        'password' => 'test-password',
+    ]);
+    $roles = app(WorkspaceRoleManager::class);
+    $membership = $roles->addMember($actor, $workspaceId);
+    $role = $roles->createRole($workspaceId, 'journey-replay-'.Str::lower(Str::random(8)), 'Journey Replay');
+    if ($grant) {
+        $roles->grantPermission($role, PermissionCatalog::JOURNEY_REPLAY);
+    }
+    $roles->assignRole($membership, $role);
+
+    return $actor;
+}
+
 it('replays only an authorized terminal execution against its pinned version idempotently', function () {
     $fixture = persistedNodeAttemptFixture();
     DB::table('journey_executions')->where('id', $fixture['execution_id'])->update(['status' => 'failed']);
     $organizationId = (string) Workspace::query()->whereKey($fixture['workspace_id'])->value('organization_id');
-    $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, 'operator-1');
-    Gate::shouldReceive('authorize')->twice()->with('replay-journey-execution', Mockery::type('array'))->andReturnNull();
+    $actor = replayActorFixture($fixture['workspace_id'], true);
+    $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, (string) $actor->getKey());
     $service = app(ReplayJourneyExecution::class);
 
-    $first = $service->handle($tenant, $fixture['execution_id'], 'operator-request-1');
-    $duplicate = $service->handle($tenant, $fixture['execution_id'], 'operator-request-1');
+    $first = $service->handle($tenant, $actor, $fixture['execution_id'], 'operator-request-1');
+    $duplicate = $service->handle($tenant, $actor, $fixture['execution_id'], 'operator-request-1');
     $source = DB::table('journey_executions')->where('id', $fixture['execution_id'])->first();
     $replay = DB::table('journey_executions')->where('id', $first['id'])->first();
 
@@ -130,26 +149,32 @@ it('replays only an authorized terminal execution against its pinned version ide
         ->and(DB::table('journey_execution_transitions')->where('execution_id', $first['id'])->value('metadata'))->toContain('source_transition_revision');
 });
 
-it('rejects cross-workspace and non-terminal replays before authorization', function () {
+it('rejects cross-workspace and non-terminal replay despite valid workspace permission', function () {
     $source = persistedNodeAttemptFixture();
     $other = persistedNodeAttemptFixture();
-    $organizationId = (string) Workspace::query()->whereKey($other['workspace_id'])->value('organization_id');
-    $tenant = new TenantContext($organizationId, $other['workspace_id'], null, 'operator-2');
-    Gate::shouldReceive('authorize')->never();
+    $otherOrganizationId = (string) Workspace::query()->whereKey($other['workspace_id'])->value('organization_id');
+    $sourceOrganizationId = (string) Workspace::query()->whereKey($source['workspace_id'])->value('organization_id');
+    $otherActor = replayActorFixture($other['workspace_id'], true);
+    $sourceActor = replayActorFixture($source['workspace_id'], true);
+    $otherScope = new TenantContext($otherOrganizationId, $other['workspace_id'], null, (string) $otherActor->getKey());
+    $sourceScope = new TenantContext($sourceOrganizationId, $source['workspace_id'], null, (string) $sourceActor->getKey());
     $service = app(ReplayJourneyExecution::class);
 
-    expect(fn () => $service->handle($tenant, $source['execution_id'], 'request-cross-tenant'))->toThrow(InvalidArgumentException::class)
-        ->and(fn () => $service->handle(new TenantContext($organizationId, $source['workspace_id'], null, 'operator-2'), $source['execution_id'], 'request-running'))->toThrow(InvalidArgumentException::class);
+    expect(fn () => $service->handle($otherScope, $otherActor, $source['execution_id'], 'request-cross-tenant'))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->handle($sourceScope, $sourceActor, $source['execution_id'], 'request-running'))->toThrow(InvalidArgumentException::class)
+        ->and(DB::table('journey_executions')->where('workspace_id', $source['workspace_id'])->count())->toBe(1);
 });
 
-it('does not create a replay when operator authorization is denied', function () {
+it('does not create a replay without scoped operator permission or with a mismatched actor', function () {
     $fixture = persistedNodeAttemptFixture();
     DB::table('journey_executions')->where('id', $fixture['execution_id'])->update(['status' => 'failed']);
     $organizationId = (string) Workspace::query()->whereKey($fixture['workspace_id'])->value('organization_id');
-    $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, 'operator-denied');
-    Gate::shouldReceive('authorize')->once()->andThrow(new AuthorizationException);
+    $actor = replayActorFixture($fixture['workspace_id'], false);
+    $tenant = new TenantContext($organizationId, $fixture['workspace_id'], null, (string) $actor->getKey());
+    $authorizedActor = replayActorFixture($fixture['workspace_id'], true);
     $service = app(ReplayJourneyExecution::class);
 
-    expect(fn () => $service->handle($tenant, $fixture['execution_id'], 'request-denied'))->toThrow(AuthorizationException::class)
+    expect(fn () => $service->handle($tenant, $actor, $fixture['execution_id'], 'request-denied'))->toThrow(AuthorizationException::class)
+        ->and(fn () => $service->handle($tenant, $authorizedActor, $fixture['execution_id'], 'request-mismatch'))->toThrow(AuthorizationException::class)
         ->and(DB::table('journey_executions')->where('workspace_id', $fixture['workspace_id'])->count())->toBe(1);
 });

@@ -20,6 +20,8 @@ final class PermissionCatalog
 
     public const JOURNEY_PUBLISH = 'journey.publish';
 
+    public const JOURNEY_REPLAY = 'journey.replay';
+
     public const TEMPLATE_CREATE = 'template.create';
 
     public const TEMPLATE_PUBLISH = 'template.publish';
@@ -47,6 +49,7 @@ final class PermissionCatalog
             self::CAMPAIGN_SEND,
             self::JOURNEY_CREATE,
             self::JOURNEY_PUBLISH,
+            self::JOURNEY_REPLAY,
             self::TEMPLATE_CREATE,
             self::TEMPLATE_PUBLISH,
             self::PROVIDER_CREATE,

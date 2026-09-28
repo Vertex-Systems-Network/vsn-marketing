@@ -2,7 +2,7 @@
 
 ## Scope and authority
 
-RBT-052 is the representative execution measurement for TASK-0051 AC-5. Its registration does not authorize a run. Execute it in a dedicated PHASE-09 closeout batch before PHASE-10. The user authorized this scheduling and implementation scope; execution still requires verified exact source and isolated, non-production PostgreSQL/Redis resources. Required exact-head correctness and security CI remain separate. Do not infer production numeric limits or provider latency from CI duration or this internal workload.
+RBT-052 is the representative execution measurement for TASK-0051 AC-5. Its registration does not authorize a run. Execute it in the coordinated project-end Runner batch after explicit runtime authority and an isolated, non-production PostgreSQL/Redis environment are available. Required exact-head correctness and security CI remain separate. Do not infer production numeric limits or provider latency from CI duration or this internal workload.
 
 This document freezes the capture contract. The journey-specific capture harness is `tools/task0051_benchmark_capture.php`, with structural validator `tools/task0051_benchmark_evidence.py`. Its reviewed source must be pinned before execution. It has not been run in an authorized external environment, so it is not TASK-0051 AC-5 evidence.
 
@@ -22,7 +22,7 @@ Measure normal claim/complete, duplicate claim or redelivery, capacity saturatio
 
 ## Capture command for the authorized end batch
 
-After source, environment and resource identity are frozen, run the reviewed harness on the dedicated runtime. This is a future operator command, not authorization to execute it now:
+After source, environment and resource identity are frozen, run the reviewed harness manually on the dedicated runtime. This is a future operator command, not authorization to execute it now:
 
 ```bash
 php tools/task0051_benchmark_capture.php \\
@@ -44,6 +44,10 @@ The harness first invokes the read-only preflight. It creates uniquely named syn
 
 The current workload measures application-service enrollment and PostgreSQL attempt persistence, with concurrent workers and synthetic provider actions. Its elapsed window starts before enrollment and ends after concurrent attempt workers finish; throughput covers both, while per-operation attempt end-to-end duration covers only claim through completion. Fault checks and persisted verification happen outside that timed window. Redis is checked for health only. There is no journey Redis queue worker or full graph traversal orchestrator in the current TASK-0051 runtime, so this capture explicitly marks both as unmeasured. It cannot alone establish queue age, traversal end-to-end latency, or a production numeric SLO. Before accepting AC-5, review the captured evidence against this implementation scope; if representative execution requires those paths, implement and measure them in a separate reviewed workload first.
 
+## Isolated GitHub Actions baseline
+
+The manual or dedicated `benchmark/rbt052-run` branch trigger in `.github/workflows/rbt052-dedicated-capture.yml` provisions fresh per-job PostgreSQL and Redis services with synthetic credentials, builds a content-addressed benchmark-only PHP/Python image, pins the checkout to the run SHA, and uploads raw JSON plus SHA-256 sidecar. The bounded app container has two CPUs and 4096 MiB; service containers share the GitHub host and are outside that app container limit. The workflow uses a fixed 100-operation, two-run fixture with four worker processes and a separate warmup. Its run ID, commit, image ID, service versions, workflow SHA and artifact digest must be reviewed together. This provides real measurements for that ephemeral environment, not an automatic production-representative SLO. The reviewer must still decide whether queue/graph coverage and a more representative runtime are needed before AC-5.
+
 ## Capture and acceptance
 
 The reviewed harness must preserve raw per-operation durations and outcomes as well as run-level counts: enrollment accepted/rejected/duplicate; attempt claimed/duplicate/saturated/reclaimed/completed; stale completion refused; retry/dead-letter/operator-review; cancellation/late completion; replay duplicate/pinned-version; queue age and end-to-end duration where observable; throughput and the measurement window. Record p50/p95/p99 with sample counts and the percentile method, resource/connection observations, and the exact configuration and fixture identity. Check invariants against persisted PostgreSQL transition and attempt state, including no cap overshoot and no cross-workspace data access. Redis health and queue behavior must be included only when the workload actually uses them.
@@ -52,4 +56,4 @@ Publish an immutable evidence document with its cryptographic digest and source/
 
 ## Open prerequisite
 
-The harness and read-only preflight exist, but no isolated runtime execution or reviewed evidence is currently recorded for RBT-052. The dedicated batch is scheduled before PHASE-10 and remains blocked on verified runtime resources and representative coverage. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.
+The harness and read-only preflight exist, but no authorized external runtime execution or reviewed evidence is currently recorded for RBT-052. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.

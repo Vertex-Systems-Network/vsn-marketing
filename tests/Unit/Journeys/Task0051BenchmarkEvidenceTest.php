@@ -38,7 +38,7 @@ function task0051SyntheticEvidence(): array
         'resource_profile' => 'test', 'runner_image_sha' => str_repeat('d', 64), 'cpu_count' => 2,
         'memory_mib' => 1024, 'fixture_seed' => 51, 'database' => 'vsn_marketing_benchmark',
         'preflight' => ['preflight' => 'passed', 'source_sha' => str_repeat('a', 40), 'database' => 'vsn_marketing_benchmark'],
-        'provider_latency_measured' => false, 'redis_queue_measured' => false,
+        'provider_latency_measured' => false, 'redis_queue_measured' => false, 'graph_traversal_measured' => false,
         'warmup' => ['operations' => 20, 'elapsed_ms' => 300, 'fault_checks' => $checks],
         'runs' => [$run, $run],
     ];
@@ -76,6 +76,10 @@ it('rejects sample loss, source drift, and false external-latency claims', funct
     $claim = task0051SyntheticEvidence();
     $claim['provider_latency_measured'] = true;
     expect(task0051ValidateEvidence($claim)->getExitCode())->toBe(2);
+
+    $graphClaim = task0051SyntheticEvidence();
+    $graphClaim['graph_traversal_measured'] = true;
+    expect(task0051ValidateEvidence($graphClaim)->getExitCode())->toBe(2);
 
     $sensitive = task0051SyntheticEvidence();
     $sensitive['runs'][0]['attempt_samples'][0]['email'] = 'private@example.test';

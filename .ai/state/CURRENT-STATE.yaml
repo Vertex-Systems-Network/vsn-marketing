@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "705088783e9779b5c741a09dd56708f48dfbe2b9",
+  "observed_main_sha": "059eb5ddf350567f4d5e88cc2375ad673e243e5f",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
-  "last_completed_milestone": "PR #426 merged RBT-052 synthetic capture harness and evidence validator after exact-head Continuity, Supervisor, Application and Security checks on protected main 705088783e9779b5c741a09dd56708f48dfbe2b9. TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Review whether Redis queue latency and complete graph traversal need additional RBT-052 coverage. In the authorized project-end Runner batch, pin exact source and dedicated PostgreSQL/Redis resources, execute and review real evidence, then accept TASK-0051 AC-5 only if representative; keep numeric SLOs unset until approval.",
+  "last_completed_milestone": "PR #427 reconciled the RBT-052 capture harness on protected main 059eb5ddf350567f4d5e88cc2375ad673e243e5f. RBT-052 measurement remains deferred; PR #428 corrects workload timing and explicit scope.",
+  "exact_next_safe_action": "In the authorized project-end Runner batch, pin the merged RBT-052 source and dedicated PostgreSQL/Redis resources, execute and review real evidence. Decide whether separate Redis queue and full graph traversal implementation/measurement is required before accepting TASK-0051 AC-5; keep numeric SLOs unset until approval.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review whether Redis queue latency and complete graph traversal need additional RBT-052 coverage. In the authorized project-end Runner batch, pin exact source and dedicated PostgreSQL/Redis resources, execute and review real evidence, then accept TASK-0051 AC-5 only if representative; keep numeric SLOs unset until approval."
+  "exact_next_action": "In the authorized project-end Runner batch, pin the merged RBT-052 source and dedicated PostgreSQL/Redis resources, execute and review real evidence. Decide whether separate Redis queue and full graph traversal implementation/measurement is required before accepting TASK-0051 AC-5; keep numeric SLOs unset until approval."
 }

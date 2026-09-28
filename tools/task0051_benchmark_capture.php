@@ -270,6 +270,7 @@ function task0051CaptureRun(array $options, int $run): array
     $scopes = [task0051CaptureWorkspace($tag.'-a', $graph, $hash), task0051CaptureWorkspace($tag.'-b', $graph, $hash)];
     $items = [];
     $enrollmentSamples = [];
+    $started = hrtime(true);
     for ($i = 0; $i < $options['operations']; $i++) {
         $slot = ($i + $options['seed']) % 2;
         $result = task0051CaptureExecution($scopes[$slot], $i);
@@ -282,7 +283,6 @@ function task0051CaptureRun(array $options, int $run): array
         $groups[$i % $options['concurrency']][] = $item;
     }
     $workers = [];
-    $started = hrtime(true);
     foreach ($groups as $group) {
         $payload = base64_encode(json_encode([
             'ack' => TASK0051_CAPTURE_ACK, 'sha' => $options['sha'], 'database' => $options['database'],
@@ -450,7 +450,8 @@ try {
         'cpu_count' => $normalized['cpu'], 'memory_mib' => $normalized['memory'], 'fixture_seed' => $normalized['seed'],
         'database' => $normalized['database'], 'preflight' => $preflight,
         'provider_latency_measured' => false, 'redis_queue_measured' => false,
-        'sample_scope' => 'synthetic enrollment and PostgreSQL node-attempt persistence with concurrent workers',
+        'graph_traversal_measured' => false,
+        'sample_scope' => 'synthetic enrollment and PostgreSQL node-attempt persistence with concurrent workers; no journey graph traversal or queue delivery',
         'warmup' => ['operations' => $warmup['operations'], 'elapsed_ms' => $warmup['elapsed_ms'], 'fault_checks' => $warmup['fault_checks']],
         'runs' => $runs, 'captured_at_utc' => gmdate(DATE_ATOM),
     ];

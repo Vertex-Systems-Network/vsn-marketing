@@ -57,7 +57,7 @@ def validate(document: object) -> None:
     require(isinstance(document.get("cpu_count"), int) and 1 <= document["cpu_count"] <= 256, "invalid CPU count")
     require(isinstance(document.get("memory_mib"), int) and 512 <= document["memory_mib"] <= 1048576, "invalid memory allocation")
     require(isinstance(document.get("fixture_seed"), int) and 1 <= document["fixture_seed"] <= 1000000, "invalid fixture seed")
-    require(document.get("provider_latency_measured") is False and document.get("redis_queue_measured") is False, "unsupported measurement claim")
+    require(document.get("provider_latency_measured") is False and document.get("redis_queue_measured") is False and document.get("graph_traversal_measured") is False, "unsupported measurement claim")
     preflight = document.get("preflight")
     require(isinstance(preflight, dict) and preflight.get("preflight") == "passed" and preflight.get("source_sha") == document["source_sha"], "preflight source mismatch")
     require(preflight.get("database") == document.get("database"), "database identity mismatch")
@@ -82,6 +82,7 @@ def validate(document: object) -> None:
         expected_concurrency = expected_concurrency or concurrency
         require(count == expected_operations and concurrency == expected_concurrency, "run fixture drift")
         require(duration(run.get("elapsed_ms")) and run["elapsed_ms"] > 0 and duration(run.get("throughput_per_second")), "invalid elapsed time or throughput")
+        require(run["throughput_per_second"] == round(count * 1000 / max(run["elapsed_ms"], 0.001), 3), "throughput does not match the workload window")
         mix = run.get("node_mix")
         require(isinstance(mix, dict) and set(mix) == NODE_TYPES and sum(mix.values()) == count and all(isinstance(n, int) and n > 0 for n in mix.values()), "invalid node mix")
         faults = run.get("fault_checks")

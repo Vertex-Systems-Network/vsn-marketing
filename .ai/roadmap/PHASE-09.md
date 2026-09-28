@@ -21,6 +21,10 @@ Build a deterministic, versioned, tenant-safe journey engine over canonical even
 
 All executable behavior must be registered and deterministic. Journey executions pin an immutable version, enforce workspace scope independently of graph input, and re-check consent/suppression before side effects.
 
+## Dedicated RBT-052 closeout
+
+Before TASK-0051 AC-5 and PHASE-09 certification, execute the user-authorized RBT-052 dedicated batch on a verified isolated non-production PostgreSQL/Redis runtime. Pin exact source, preserve raw samples and digest, review coverage and failures, and accept only representative evidence. If queue or graph traversal is required for a representative journey claim, implement and measure those paths first. The unrelated Runner backlog remains deferred to the project-end coordinated batch. No PHASE-10 implementation begins before PHASE-09 certification.
+
 ## Explicit PHASE-10 boundary
 
 PHASE-10 remains `planned` and `inactive`. TASK-0054 through TASK-0061, AI-agent/gateway architecture, and PHASE-10 implementation are not materialized or touched by this phase. Any future PHASE-10 work requires its own research-first authorization and transition.

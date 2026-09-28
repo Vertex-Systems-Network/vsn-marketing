@@ -1620,19 +1620,19 @@
     {
       "id": "RBT-052",
       "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
-      "command_workflow": "tools/task0051_benchmark_capture.php + tools/task0051_benchmark_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and runtime authority required",
+      "command_workflow": "tools/task0051_benchmark_capture.php + tools/task0051_benchmark_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and runtime authority required; PHASE-09 closeout before PHASE-10",
       "exact_source_identity": {
         "git_sha": null,
         "resolution_required_before_execution": true,
         "evidence_surface": "TASK-0051 representative journey execution workload on exact reviewed source"
       },
-      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes",
-      "authorization_state": "awaiting_explicit_runtime_authority",
+      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
+      "authorization_state": "user_authorized_pre_phase10_dedicated_batch",
       "security_critical": false,
       "merge_blocking": false,
       "expected_runner_time": "unmeasured_external_runtime",
       "dedup_key": "runner:task0051:representative-journey-execution:v1",
-      "status": "deferred_authorization_required",
+      "status": "blocked_runtime_required",
       "immutable_evidence": null
     }
   ]

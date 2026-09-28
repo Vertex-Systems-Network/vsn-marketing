@@ -6,7 +6,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 <!-- AI_PROGRESS_SNAPSHOT roadmap=59.85 phase=55 current_phase=PHASE-09 active_task=TASK-0051 milestone=PHASE-09-TASK-0051-EXECUTION status=WAITING_EXTERNAL -->
 
-> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete; TASK-0051 leases, concurrency and enrollment budgets merged through PR #420 and PR #421; PR #424 added benchmark environment preflight; PR #425 repaired actor-bound workspace replay permission. PR #426 merged the RBT-052 synthetic PostgreSQL capture harness after exact-head checks. TASK-0051 awaits authorized RBT-052 representative evidence and coverage review in the project-end Runner batch. PHASE-10 remains planned and inactive.
+> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete; TASK-0051 leases, concurrency and enrollment budgets merged through PR #420 and PR #421; PR #424 added benchmark environment preflight; PR #425 repaired actor-bound workspace replay permission. PR #426 merged the RBT-052 synthetic PostgreSQL capture harness; PR #428 corrected its measured workload window and explicit queue/graph exclusions after exact-head checks. RBT-052 now has a user-authorized dedicated PHASE-09 closeout before PHASE-10, but isolated runtime resources and real representative evidence are outstanding. PHASE-10 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 

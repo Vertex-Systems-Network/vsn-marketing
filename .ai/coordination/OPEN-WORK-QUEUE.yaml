@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3e338d29d6392804d93b1d5f4b4830f07aa9b246",
+  "reconciled_main_sha": "728ac4a6189793a1955758c5a5db2397c0edecc1",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
     "disposition": "deferred_authorization_required"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 425,
+      "title": "Fix actor-bound journey replay authorization",
+      "branch": "fix/task0051-scoped-replay-authorization",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "728ac4a6189793a1955758c5a5db2397c0edecc1"
+    },
     {
       "kind": "pr",
       "number": 424,

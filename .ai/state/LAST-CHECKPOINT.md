@@ -2,8 +2,8 @@
 
 ## State
 
-- Timestamp: `2026-09-28T09:35:33+00:00`
-- Observed main: `3e338d29d6392804d93b1d5f4b4830f07aa9b246`
+- Timestamp: `2026-09-28T09:57:17+00:00`
+- Observed main: `728ac4a6189793a1955758c5a5db2397c0edecc1`
 - Active issue: `none`
 - Active PR: `none`
 - Active branch: `main`
@@ -15,7 +15,7 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `2f20d2838160010503cee50a9185a8711220afeec9b8562977604c23103ccf83`
+- State fingerprint: `26251b45e5ea724fc76126ff2327f01845c05f78b64311075702d4c77a178bd3`
 
 ## Completed / observed this session
 
@@ -27,6 +27,8 @@ The RBT-052 preflight slice verifies immutable source identity, dedicated Postgr
 
 PR #424 merged the read-only journey benchmark preflight on protected main 3e338d29d6392804d93b1d5f4b4830f07aa9b246. The replay path audit found an unregistered Gate ability; this branch replaces it with explicit scoped workspace replay permission and actor identity checks. AC-5 remains blocked.
 
+PR #425 merged real scoped replay authorization on protected main 728ac4a6189793a1955758c5a5db2397c0edecc1. The RBT-052 capture harness now prepares concurrent PostgreSQL synthetic enrollment/attempt samples, separate warmup, fault/replay checks and structural validation. No authorized external measurement has run; AC-5 stays blocked.
+
 ## Tests
 
 PR #421 exact head `0edc2111343a7d4ba62ba48cd0d2889a340d9423`: AI Continuity Guard `36352481564`, Application Foundation `36352481575` including PostgreSQL integration and Playwright E2E, and Security Supply Chain `36352481567` all passed. PR #420 exact head `8de9fa16588be2cb2b343257c3fbf9f39cb7787d` passed the same required gates before merge.
@@ -37,4 +39,4 @@ PR #421 exact head `0edc2111343a7d4ba62ba48cd0d2889a340d9423`: AI Continuity Gua
 
 ## Exact next action
 
-Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim.
+Review and merge the RBT-052 measurement harness on exact-head CI. In the project-end authorized Runner batch, pin its source and dedicated PostgreSQL/Redis runtime, capture and review real evidence and any missing queue/graph coverage before accepting TASK-0051 AC-5; keep numeric SLOs unset until approval.

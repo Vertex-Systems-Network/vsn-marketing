@@ -4,7 +4,7 @@
 
 RBT-052 is the representative execution measurement for TASK-0051 AC-5. Its registration does not authorize a run. Execute it in the coordinated project-end Runner batch after explicit runtime authority and an isolated, non-production PostgreSQL/Redis environment are available. Required exact-head correctness and security CI remain separate. Do not infer production numeric limits or provider latency from CI duration or this internal workload.
 
-This document freezes the capture contract. The journey-specific capture harness is still required, must be reviewed on the exact measured source, and must fail closed before the benchmark is run. A command or evidence location is intentionally not invented here.
+This document freezes the capture contract. The journey-specific capture harness is `tools/task0051_benchmark_capture.php`, with structural validator `tools/task0051_benchmark_evidence.py`. Its reviewed source must be pinned before execution. It has not been run in an authorized external environment, so it is not TASK-0051 AC-5 evidence.
 
 ## Source and environment preflight
 
@@ -19,6 +19,31 @@ Freeze the fixture before measurement. It must state a reproducible seed, graph 
 
 Measure normal claim/complete, duplicate claim or redelivery, capacity saturation and release, expired lease/reclaim with stale-token fencing, retryable and unknown-outcome failure, dead-letter/operator review, cancellation with late completion, and authorized replay on its pinned journey version. Vary only one declared factor per comparison. Keep warmup samples separate from measured samples and repeat a fixed fixture; report failed and censored runs rather than dropping them.
 
+
+## Capture command for the authorized end batch
+
+After source, environment and resource identity are frozen, run the reviewed harness manually on the dedicated runtime. This is a future operator command, not authorization to execute it now:
+
+```bash
+php tools/task0051_benchmark_capture.php \\
+  --benchmark-id=task0051-journey-prodrep-01 \\
+  --commit-sha="$TASK0051_BENCHMARK_SOURCE_SHA" \\
+  --database="$DB_DATABASE" \\
+  --resource-profile=<reviewed-resource-id> \\
+  --runner-image-sha=<exact-64-character-image-digest> \\
+  --cpu-count=<allocated-cpu-count> \\
+  --memory-mib=<allocated-memory-mib> \\
+  --runs=2 --operations=100 --concurrency=4 --seed=51 \\
+  --output=/workspace/task0051-journey-evidence.json \\
+  --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
+python3 tools/task0051_benchmark_evidence.py /workspace/task0051-journey-evidence.json
+sha256sum /workspace/task0051-journey-evidence.json
+```
+
+The harness first invokes the read-only preflight. It creates uniquely named synthetic rows without a database reset, performs a separate 20-operation warmup, then repeats measured runs. Parallel workers use separate PHP processes against PostgreSQL. Evidence includes raw enrollment and node-attempt durations, nearest-rank p50/p95/p99, throughput, fixture graph hash and resource identity, plus persisted saturation, lease, retry, dead-letter, unknown-outcome, cancellation, tenant-scope and authorized replay checks. The evidence validator checks raw sample counts, source identity, fixture consistency, percentiles and outcome invariants before an exclusive output publication. A capture failure is not a passing benchmark.
+
+The current workload measures persistence and application-service admission, with synthetic provider actions. It checks Redis health but does not measure Redis queue latency or external provider/network behavior. The reviewer must decide whether additional queue/graph traversal workload is needed for AC-5 before accepting production-representative claims.
+
 ## Capture and acceptance
 
 The reviewed harness must preserve raw per-operation durations and outcomes as well as run-level counts: enrollment accepted/rejected/duplicate; attempt claimed/duplicate/saturated/reclaimed/completed; stale completion refused; retry/dead-letter/operator-review; cancellation/late completion; replay duplicate/pinned-version; queue age and end-to-end duration where observable; throughput and the measurement window. Record p50/p95/p99 with sample counts and the percentile method, resource/connection observations, and the exact configuration and fixture identity. Check invariants against persisted PostgreSQL transition and attempt state, including no cap overshoot and no cross-workspace data access. Redis health and queue behavior must be included only when the workload actually uses them.
@@ -27,4 +52,4 @@ Publish an immutable evidence document with its cryptographic digest and source/
 
 ## Open prerequisite
 
-A read-only safety preflight exists, but no journey-specific reviewed measurement harness or authorized external runtime is currently recorded for RBT-052. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.
+The harness and read-only preflight exist, but no authorized external runtime execution or reviewed evidence is currently recorded for RBT-052. This runbook is preparatory; it is not benchmark evidence and does not unblock TASK-0051.

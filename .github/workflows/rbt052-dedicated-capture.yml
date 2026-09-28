@@ -52,10 +52,8 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_REF" = refs/heads/benchmark/rbt052-run
-          test ! -e rbt052-evidence.json
-      - name: Build isolated PHP runtime image
-        run: docker build --tag vsn-rbt052-runtime --file docker/app/Dockerfile .
-      - name: Build benchmark-only Python tool layer
+          test ! -e rbt052-artifacts/evidence.json
+      - name: Build source-containing benchmark image
         run: docker build --tag vsn-rbt052-capture --file docker/benchmark/Dockerfile .
       - name: Capture synthetic PostgreSQL journey evidence
         shell: bash
@@ -87,6 +85,7 @@ jobs:
           JOURNEY_MAX_ACTIVE_ENROLLMENTS_PER_WORKSPACE: '2000'
         run: |
           set -euo pipefail
+          mkdir -p rbt052-artifacts
           runtime_sha="$(docker image inspect vsn-rbt052-capture --format '{{.Id}}')"
           runtime_sha="${runtime_sha#sha256:}"
           test "${#runtime_sha}" -eq 64
@@ -102,10 +101,11 @@ jobs:
             --env BENCHMARK_SOURCE_SHA="$GITHUB_SHA" \
             --env BENCHMARK_IMAGE_SHA="$runtime_sha" \
             --env BENCHMARK_RUN_ID="$GITHUB_RUN_ID" \
-            --volume "$GITHUB_WORKSPACE:/workspace" --workdir /workspace \
-            vsn-rbt052-capture sh -euc '
-              touch .env
-              composer install --no-interaction --prefer-dist --no-progress
+            --volume "$GITHUB_WORKSPACE/.git:/workspace/.git:ro" \
+            --volume "$GITHUB_WORKSPACE/rbt052-artifacts:/workspace/rbt052-artifacts" \
+            --workdir /workspace --entrypoint sh \
+            vsn-rbt052-capture -euc '
+              git config --global --add safe.directory /workspace
               php artisan migrate --force
               php tools/task0051_benchmark_preflight.php \
                 --commit-sha="$BENCHMARK_SOURCE_SHA" --database="$DB_DATABASE" \
@@ -117,10 +117,10 @@ jobs:
                 --runner-image-sha="$BENCHMARK_IMAGE_SHA" \
                 --cpu-count=2 --memory-mib=4096 \
                 --runs=2 --operations=100 --concurrency=4 --seed=51 \
-                --output=/workspace/rbt052-evidence.json \
+                --output=/workspace/rbt052-artifacts/evidence.json \
                 --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
-              python3 tools/task0051_benchmark_evidence.py /workspace/rbt052-evidence.json
-              sha256sum /workspace/rbt052-evidence.json > /workspace/rbt052-evidence.sha256
+              python3 tools/task0051_benchmark_evidence.py /workspace/rbt052-artifacts/evidence.json
+              sha256sum /workspace/rbt052-artifacts/evidence.json > /workspace/rbt052-artifacts/evidence.sha256
             '
       - name: Upload immutable raw evidence and digest
         if: ${{ success() }}
@@ -128,7 +128,7 @@ jobs:
         with:
           name: rbt052-raw-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            rbt052-evidence.json
-            rbt052-evidence.sha256
+            rbt052-artifacts/evidence.json
+            rbt052-artifacts/evidence.sha256
           if-no-files-found: error
           retention-days: 90

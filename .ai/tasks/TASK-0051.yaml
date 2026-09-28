@@ -44,5 +44,5 @@
     "retry-replay-recovery-tests",
     "representative-execution-benchmark"
   ],
-  "exact_next_action": "In the project-end aggregated Runner batch, authorize and execute RBT-052 on a representative PostgreSQL/Redis journey workload with exact source, fixture and resource identity. Record immutable evidence, verify TASK-0051 AC-5, then resume TASK-0052; make no production numeric SLO claim before acceptance."
+  "exact_next_action": "Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim."
 }

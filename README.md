@@ -6,7 +6,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 <!-- AI_PROGRESS_SNAPSHOT roadmap=59.85 phase=55 current_phase=PHASE-09 active_task=TASK-0051 milestone=PHASE-09-TASK-0051-EXECUTION status=WAITING_EXTERNAL -->
 
-> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete; TASK-0051 leases, replay, concurrency and enrollment budgets merged through PR #420 and PR #421 on protected main `1b0a0ed7c650d1a9476c1ab2d919b17f50677146`. TASK-0051 awaits RBT-052 representative journey benchmark evidence in the project-end Runner batch. PHASE-10 remains planned and inactive.
+> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete; TASK-0051 leases, concurrency and enrollment budgets merged through PR #420 and PR #421; PR #424 added benchmark environment preflight. Replay now requires an explicit actor-bound workspace permission. TASK-0051 awaits a reviewed capture harness and RBT-052 representative journey benchmark evidence in the project-end Runner batch. PHASE-10 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 

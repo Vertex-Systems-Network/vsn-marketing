@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "3e338d29d6392804d93b1d5f4b4830f07aa9b246",
+  "observed_main_sha": "728ac4a6189793a1955758c5a5db2397c0edecc1",
   "active_issue": null,
   "active_pr": null,
   "active_branch": "main",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
-  "last_completed_milestone": "TASK-0051 AC-1..AC-4 product capabilities merged; PR #424 added the read-only RBT-052 environment preflight on protected main 3e338d29d6392804d93b1d5f4b4830f07aa9b246.",
-  "exact_next_safe_action": "Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim.",
+  "last_completed_milestone": "TASK-0051 AC-1..AC-4 implemented; PR #425 repaired actor-bound workspace replay authorization on protected main 728ac4a6189793a1955758c5a5db2397c0edecc1.",
+  "exact_next_safe_action": "Review and merge the RBT-052 measurement harness on exact-head CI. In the project-end authorized Runner batch, pin its source and dedicated PostgreSQL/Redis runtime, capture and review real evidence and any missing queue/graph coverage before accepting TASK-0051 AC-5; keep numeric SLOs unset until approval.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Finish and review the RBT-052 journey measurement harness, including real workspace-authorized replay and representative concurrent PostgreSQL/Redis fixtures. Preserve TASK-0051 blocked and RBT-052 deferred until the project-end authorized Runner batch captures real evidence for AC-5; make no production numeric SLO claim."
+  "exact_next_action": "Review and merge the RBT-052 measurement harness on exact-head CI. In the project-end authorized Runner batch, pin its source and dedicated PostgreSQL/Redis runtime, capture and review real evidence and any missing queue/graph coverage before accepting TASK-0051 AC-5; keep numeric SLOs unset until approval."
 }

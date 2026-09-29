@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3d7b657f58bbf162f0c0ba0ed6e9402f74efccbb",
+  "reconciled_main_sha": "6f6b5f9e61c759e5356c9b158c0394d4d6b5e829",
   "active_work_path": {
     "kind": "pr",
-    "number": 437,
-    "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
-    "branch": "supervisor/rbt052-review",
+    "number": 438,
+    "title": "Classify journey action denials before provider invocation",
+    "branch": "supervisor/rbt052-action",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 438,
+      "title": "Classify journey action denials before provider invocation",
+      "branch": "supervisor/rbt052-action",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 437,
       "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
       "branch": "supervisor/rbt052-review",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

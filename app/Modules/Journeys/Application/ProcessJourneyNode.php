@@ -91,11 +91,15 @@ final readonly class ProcessJourneyNode
             return; // A bounded recovery sweep will redispatch when the lease or workspace budget permits.
         }
 
+        $actionInvoked = false;
         try {
             if ($context['node']['type'] === 'action') {
                 $this->actionGate->handle(
                     $this->actions->checks($workspaceId, $context['subject_id'], $context['node']),
-                    fn () => $this->actions->execute($workspaceId, $context['subject_id'], $context['node'], $claim['attempt_key']),
+                    function () use ($workspaceId, $context, $claim, &$actionInvoked): void {
+                        $actionInvoked = true;
+                        $this->actions->execute($workspaceId, $context['subject_id'], $context['node'], $claim['attempt_key']);
+                    },
                 );
             }
             $this->database->transaction(function () use ($workspaceId, $workItemId, $context, $claim, $now): void {
@@ -133,7 +137,7 @@ final readonly class ProcessJourneyNode
             });
         } catch (Throwable $error) {
             $this->attempts->fail($workspaceId, $context['execution_id'], $claim['attempt_key'], $claim['lease_token'],
-                ['code' => 'node_execution_failed', 'category' => 'runtime'], false, $context['node']['type'] === 'action', $policy, new DateTimeImmutable('now'));
+                ['code' => 'node_execution_failed', 'category' => 'runtime'], false, $actionInvoked, $policy, new DateTimeImmutable('now'));
             $this->database->table('journey_work_items')->where('workspace_id', $workspaceId)->where('id', $workItemId)
                 ->update(['status' => 'blocked', 'updated_at' => now()]);
             throw $error;

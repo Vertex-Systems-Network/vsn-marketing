@@ -2,17 +2,20 @@
 
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Journeys\Application\JourneyActionExecutor;
 use App\Modules\Journeys\Application\ProcessJourneyNode;
 use App\Modules\Journeys\Application\StartJourneyExecution;
+use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 uses(RefreshDatabase::class);
 
-function queuedJourneyFixture(): array
+function queuedJourneyFixture(bool $withAction = false): array
 {
     $slug = 'journey-queue-'.Str::lower(Str::random(10));
     $org = Organization::query()->create(['name' => $slug, 'slug' => $slug]);
@@ -46,6 +49,11 @@ function queuedJourneyFixture(): array
             ['from' => 'branch', 'to' => 'exit', 'type' => 'false'],
         ],
     ];
+    if ($withAction) {
+        $graph['nodes'][] = ['id' => 'action', 'type' => 'action', 'config' => ['capability' => 'test.action']];
+        $graph['edges'][1]['to'] = 'action';
+        $graph['edges'][] = ['from' => 'action', 'to' => 'end'];
+    }
     $validator = app(JourneyGraphValidator::class);
     DB::table('journeys')->insert(['id' => $journeyId, 'workspace_id' => $workspaceId, 'name' => 'Queue', 'status' => 'published', 'created_at' => $now, 'updated_at' => $now]);
     DB::table('journey_versions')->insert([
@@ -92,4 +100,64 @@ it('never consumes a work item under another workspace identity', function () {
 
     expect(DB::table('journey_work_items')->where('id', $itemId)->value('status'))->toBe('pending')
         ->and(DB::table('journey_node_attempts')->where('execution_id', $executionId)->count())->toBe(0);
+});
+
+it('classifies an action policy denial as known failure without invoking the adapter', function () {
+    Queue::fake();
+    $fixture = queuedJourneyFixture(true);
+    $invocation = (object) ['called' => false];
+    app()->instance(JourneyActionExecutor::class, new class($invocation) implements JourneyActionExecutor
+    {
+        public function __construct(private object $invocation) {}
+
+        public function checks(string $workspaceId, string $subjectId, array $node): array
+        {
+            return ['provider_capability' => false];
+        }
+
+        public function execute(string $workspaceId, string $subjectId, array $node, string $attemptKey): void
+        {
+            $this->invocation->called = true;
+        }
+    });
+    $execution = app(StartJourneyExecution::class)->handle($fixture['workspace_id'], $fixture['enrollment_id']);
+    foreach (['trigger', 'branch'] as $node) {
+        $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', $node)->first();
+        app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id);
+    }
+    $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', 'action')->first();
+    expect(fn () => app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id))
+        ->toThrow(JourneyDefinitionException::class, 'action_blocked');
+
+    expect($invocation->called)->toBeFalse()
+        ->and(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('failed')
+        ->and(DB::table('journey_node_attempts')->where('execution_id', $execution)->where('node_id', 'action')->value('status'))->toBe('dead_letter');
+});
+
+it('holds an invoked action with an ambiguous exception for operator review', function () {
+    Queue::fake();
+    $fixture = queuedJourneyFixture(true);
+    app()->instance(JourneyActionExecutor::class, new class implements JourneyActionExecutor
+    {
+        public function checks(string $workspaceId, string $subjectId, array $node): array
+        {
+            return array_fill_keys(['provider_capability', 'consent', 'suppression_clear', 'authorized', 'quota_available', 'idempotent'], true);
+        }
+
+        public function execute(string $workspaceId, string $subjectId, array $node, string $attemptKey): void
+        {
+            throw new RuntimeException('ambiguous action outcome');
+        }
+    });
+    $execution = app(StartJourneyExecution::class)->handle($fixture['workspace_id'], $fixture['enrollment_id']);
+    foreach (['trigger', 'branch'] as $node) {
+        $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', $node)->first();
+        app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id);
+    }
+    $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', 'action')->first();
+    expect(fn () => app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id))
+        ->toThrow(RuntimeException::class, 'ambiguous action outcome');
+
+    expect(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('blocked')
+        ->and(DB::table('journey_node_attempts')->where('execution_id', $execution)->where('node_id', 'action')->value('status'))->toBe('operator_review');
 });

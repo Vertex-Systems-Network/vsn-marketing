@@ -42,7 +42,11 @@ final readonly class DurableJourneyWait
         }
         $policy->assertWait($seconds);
         $utc = new DateTimeZone('UTC');
-        $wakeAt = $now->setTimezone($utc)->modify('+'.$seconds.' seconds');
+        // The persisted wake_at column has second precision. Round forward before
+        // hashing so the stored deadline can always restore its identity.
+        $instant = $now->setTimezone($utc);
+        $wakeAt = $instant->setTime((int) $instant->format('H'), (int) $instant->format('i'),
+            (int) $instant->format('s'))->modify('+'.($seconds + ((int) $instant->format('u') > 0 ? 1 : 0)).' seconds');
         $key = hash('sha256', json_encode([$workspaceId, $executionId, $nodeId, $wakeAt->format('Y-m-d\TH:i:s.u\Z')], JSON_THROW_ON_ERROR));
 
         return new self($workspaceId, $executionId, $nodeId, $wakeAt, $key);

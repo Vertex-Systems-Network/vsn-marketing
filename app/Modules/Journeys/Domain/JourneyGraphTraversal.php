@@ -14,9 +14,7 @@ final readonly class JourneyGraphTraversal
     public function entry(array $graph, string $eventType): string
     {
         $normalized = $this->validator->normalize($graph);
-        $matches = array_values(array_filter($normalized['nodes'], static fn (array $node): bool =>
-            $node['type'] === 'trigger' && ($node['config']['event'] ?? null) === $eventType
-        ));
+        $matches = array_values(array_filter($normalized['nodes'], static fn (array $node): bool => $node['type'] === 'trigger' && ($node['config']['event'] ?? null) === $eventType));
         if (count($matches) !== 1) {
             throw new JourneyDefinitionException('trigger_entry_ambiguous_or_missing', '$.nodes');
         }

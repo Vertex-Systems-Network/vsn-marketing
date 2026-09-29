@@ -1622,9 +1622,9 @@
       "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
       "command_workflow": "tools/task0051_benchmark_queue_capture.php + tools/task0051_benchmark_queue_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and isolated runtime; PHASE-09 closeout before PHASE-10",
       "exact_source_identity": {
-        "git_sha": "9e1962a142045fc787d40f423d967b5ad4b1bc50",
+        "git_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
         "resolution_required_before_execution": false,
-        "evidence_surface": "synthetic Redis graph, canonical policy and duplicate/tenant/cancellation probes; provider boundary excluded"
+        "evidence_surface": "synthetic Redis graph and canonical policy with 200-job/eight-worker backlog; severe tail; provider excluded"
       },
       "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
       "authorization_state": "user_authorized_pre_phase10_dedicated_batch",
@@ -1634,16 +1634,16 @@
       "dedup_key": "runner:task0051:representative-journey-execution:v1",
       "status": "captured_scope_incomplete",
       "immutable_evidence": {
-        "workflow_run": 36553385856,
-        "artifact_id": 11025900871,
-        "source_sha": "9e1962a142045fc787d40f423d967b5ad4b1bc50",
-        "main_tree_sha": "71566d2d549dc42093c25768ea1579819fcb229c",
-        "artifact_sha256": "cd762be713517fc526dcc246f3276ea368968c143a823f17770e9a46874284a2",
-        "raw_json_sha256": "78234dc3c5627ee565b55b591bc6e33ec8b1ce1263e0a35faf8b38e25a1f3047",
-        "review": "docs/benchmarks/evidence/RBT-052-36553385856-review.md",
-        "raw_json": "docs/benchmarks/evidence/RBT-052-36553385856.json",
+        "workflow_run": 36554880080,
+        "artifact_id": 11027461290,
+        "source_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
+        "main_tree_sha": "787d20147348a60e2342a57055f5c6d0d3b7d33d",
+        "artifact_sha256": "b827abe8ead2a6a3bf4422b17b7f332fc48650cab51631ebb0babbd2b1f5a70e",
+        "raw_json_sha256": "7c1ef125344e83707b27cf09160a655ab8ccf2cd90ea8f70628b21330ce0a078",
+        "review": "docs/benchmarks/evidence/RBT-052-36554880080-review.md",
+        "raw_json": "docs/benchmarks/evidence/RBT-052-36554880080.json",
         "ac5_accepted": false,
-        "scope": "isolated synthetic full graph; canonical consent/suppression, duplicate/cross-workspace/cancellation faults; production action/provider and saturation unmeasured"
+        "scope": "200-job/eight-worker backlog: 1.918 ops/s and p95 queue age 65.865s; cause unisolated; production provider/policy excluded"
       },
       "prior_evidence": [
         {
@@ -1680,6 +1680,18 @@
           "raw_json": "docs/benchmarks/evidence/RBT-052-36551834751.json",
           "ac5_accepted": false,
           "scope": "synthetic queue/full graph, canonical consent/suppression allow and deny; production provider action and full-path saturation/fault not measured"
+        },
+        {
+          "workflow_run": 36553385856,
+          "artifact_id": 11025900871,
+          "source_sha": "9e1962a142045fc787d40f423d967b5ad4b1bc50",
+          "main_tree_sha": "71566d2d549dc42093c25768ea1579819fcb229c",
+          "artifact_sha256": "cd762be713517fc526dcc246f3276ea368968c143a823f17770e9a46874284a2",
+          "raw_json_sha256": "78234dc3c5627ee565b55b591bc6e33ec8b1ce1263e0a35faf8b38e25a1f3047",
+          "review": "docs/benchmarks/evidence/RBT-052-36553385856-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36553385856.json",
+          "ac5_accepted": false,
+          "scope": "isolated synthetic full graph; canonical consent/suppression, duplicate/cross-workspace/cancellation faults; production action/provider and saturation unmeasured"
         }
       ]
     }

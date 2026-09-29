@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "270c995ba42bab434b2df6bf7f5d8fc23a2780e8",
+  "reconciled_main_sha": "3d7b657f58bbf162f0c0ba0ed6e9402f74efccbb",
   "active_work_path": {
     "kind": "pr",
-    "number": 436,
-    "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
-    "branch": "supervisor/rbt052-diagnose",
+    "number": 437,
+    "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
+    "branch": "supervisor/rbt052-review",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 437,
+      "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
+      "branch": "supervisor/rbt052-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 436,
       "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
       "branch": "supervisor/rbt052-diagnose",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

@@ -1,12 +1,22 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "73e3e117c37e911041794733f2821812aa123936",
+  "reconciled_main_sha": "246f5413e96312996c20425d6e53bfacad55b0f4",
   "active_work_path": {
-    "kind": "runner",
-    "id": "RBT-052",
-    "disposition": "captured_scope_incomplete"
+    "kind": "pr",
+    "number": 433,
+    "title": "TASK-0051 graph routing and queue worker",
+    "branch": "supervisor/task0051-graph-runtime",
+    "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 433,
+      "title": "TASK-0051 graph routing and queue worker",
+      "branch": "supervisor/task0051-graph-runtime",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 431,
@@ -184,7 +194,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

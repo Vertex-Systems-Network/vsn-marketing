@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T09:30:28+00:00`
-- Observed main: `6f6b5f9e61c759e5356c9b158c0394d4d6b5e829`
+- Timestamp: `2026-09-29T09:45:36+00:00`
+- Observed main: `137332f9cce7b333ece95c7d8bad2ab79ef3bd5e`
 - Active issue: `none`
-- Active PR: `438`
-- Active branch: `supervisor/rbt052-action`
+- Active PR: `439`
+- Active branch: `supervisor/rbt052-policy`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `8150603903a2faa6cce4445bafd6e064032ed47b263b664fc5d136e2a0872e3c`
+- State fingerprint: `8d4db2eb108210aa53434cc1a413837576a0a08e9ed03660f51e7a862a19c72e`
 
 ## Completed / observed this session
 
-Merged RBT-052 review PR #437 at 6f6b5f9; production action policy/provider and full-path fault gap remains. Corrected action failure classification to mark pre-dispatch denials known and invoked exceptions operator review, with feature regressions pending CI.
+PR #438 merged at 137332f with exact-head full CI. Implemented RBT-052 v3 canonical effective consent/suppression checks and missing-consent/suppressed probes on isolated Redis graph path; no provider/production policy claim.
 
 ## Tests
 
-Merged RBT-052 raw validator and checksum pass; new action-classification tests pending exact-head full CI.
+Archived RBT-052 v2 validator still passes; v3 source-pinned benchmark and exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Merged RBT-052 raw validator and checksum pass; new action-classification tests 
 
 ## Exact next action
 
-Run exact-head full CI on action classification fix, merge green PR; implement real action policy/provider boundary and source-pinned fault benchmarks before AC5; keep PHASE-10 inactive.
+Verify v3 harness through full exact-head CI, merge, capture isolated source-pinned v3 raw evidence, review remaining provider/production action and full-path fault coverage before AC5.

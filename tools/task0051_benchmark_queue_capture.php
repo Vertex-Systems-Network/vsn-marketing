@@ -1,5 +1,11 @@
 <?php
 
+use App\Modules\Consent\Domain\ConsentDecision;
+use App\Modules\Consent\Domain\ConsentRecord;
+use App\Modules\Consent\Domain\Contracts\ConsentRecordRepository;
+use App\Modules\Consent\Domain\Suppression\SuppressionAuthorityType;
+use App\Modules\Consent\Domain\Suppression\SuppressionRecord;
+use App\Modules\Consent\Infrastructure\Suppression\DatabaseSuppressionRepository;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
 use App\Modules\Journeys\Application\RedispatchDueJourneyWork;
@@ -74,7 +80,7 @@ function rbt052Graph(): array
             ['id' => 'entry', 'type' => 'trigger', 'config' => ['event' => 'benchmark.synthetic']],
             ['id' => 'branch', 'type' => 'branch', 'config' => ['field' => 'synthetic.score', 'operator' => 'greater_than', 'value' => 0]],
             ['id' => 'wait', 'type' => 'wait', 'config' => ['seconds' => 1]],
-            ['id' => 'action', 'type' => 'action', 'config' => ['capability' => 'benchmark.stub']],
+            ['id' => 'action', 'type' => 'action', 'config' => ['capability' => 'benchmark.stub', 'input' => ['channel' => 'email', 'purpose' => 'marketing']]],
             ['id' => 'exit', 'type' => 'exit', 'config' => ['event' => 'benchmark.synthetic']],
             ['id' => 'finish', 'type' => 'end'],
         ],
@@ -111,13 +117,27 @@ function rbt052Fixture(string $tag, array $graph, string $hash): array
 }
 
 /** @return array{execution:string,workspace:string,index:int,slot:int} */
-function rbt052Enroll(array $fixture, int $index, int $slot): array
+function rbt052Enroll(array $fixture, int $index, int $slot, string $policyCase = 'allowed'): array
 {
     $contact = (string) Str::uuid();
     $event = (string) Str::uuid();
     $enrollment = (string) Str::uuid();
     $now = now();
     DB::table('contacts')->insert(['id' => $contact, 'workspace_id' => $fixture['workspace'], 'created_at' => $now, 'updated_at' => $now]);
+    if ($policyCase !== 'missing_consent') {
+        app(ConsentRecordRepository::class)->append(new ConsentRecord(
+            (string) Str::uuid(), $fixture['workspace'], $contact, 'email', 'marketing',
+            'benchmark-fixture', ConsentDecision::Granted, new DateTimeImmutable('now'),
+        ));
+    }
+    if ($policyCase === 'suppressed') {
+        $at = new DateTimeImmutable('now');
+        app(DatabaseSuppressionRepository::class)->appendSuppression(new SuppressionRecord(
+            (string) Str::uuid(), $fixture['workspace'], $contact, 'email', 'marketing',
+            SuppressionAuthorityType::Unsubscribe, 'benchmark-fixture', null, null,
+            hash('sha256', $contact), $at, $at, null, ['fixture' => 'synthetic'],
+        ));
+    }
     DB::table('customer_events')->insert([
         'id' => $event, 'workspace_id' => $fixture['workspace'], 'event_type_id' => $fixture['type'],
         'contact_id' => $contact, 'occurred_at' => $now, 'received_at' => $now, 'source' => 'benchmark',
@@ -233,6 +253,47 @@ function rbt052Run(array $options, int $run): array
         'queue_samples' => $samples, 'worker_passes' => $passes + 1];
 }
 
+/** @return array<string, string> */
+function rbt052PolicyProbe(array $options): array
+{
+    $graph = rbt052Graph();
+    $fixture = rbt052Fixture('journey-bench-policy-'.bin2hex(random_bytes(6)), $graph,
+        app(JourneyGraphValidator::class)->hash($graph));
+    $items = [
+        'missing_consent' => rbt052Enroll($fixture, 0, 0, 'missing_consent'),
+        'suppressed' => rbt052Enroll($fixture, 1, 0, 'suppressed'),
+    ];
+    for ($pass = 0; $pass < 10; $pass++) {
+        rbt052Workers($options['concurrency'], array_values($items));
+        $complete = true;
+        foreach ($items as $item) {
+            if (DB::table('journey_executions')->where('id', $item['execution'])->value('status') !== 'failed') {
+                $complete = false;
+            }
+        }
+        if ($complete) {
+            break;
+        }
+        sleep(1);
+        app(RedispatchDueJourneyWork::class)->handle($fixture['workspace'], 10);
+    }
+    $result = [];
+    foreach ($items as $case => $item) {
+        $attempt = DB::table('journey_node_attempts')->where('execution_id', $item['execution'])
+            ->where('node_id', 'action')->first();
+        $work = DB::table('journey_work_items')->where('execution_id', $item['execution'])->where('node_id', 'action')->first();
+        if (DB::table('journey_executions')->where('id', $item['execution'])->value('status') !== 'failed'
+            || $attempt === null || $attempt->status !== 'dead_letter'
+            || $work === null || $work->status !== 'blocked'
+            || DB::table('journey_work_items')->where('execution_id', $item['execution'])->where('node_id', 'finish')->exists()) {
+            rbt052Fail('policy denial probe did not fail closed: '.$case);
+        }
+        $result[$case] = 'failed_before_action_dispatch';
+    }
+
+    return $result;
+}
+
 try {
     $options = rbt052Options();
     $preflight = rbt052Preflight($options);
@@ -250,14 +311,19 @@ try {
     for ($i = 0; $i < $options['runs']; $i++) {
         $runs[] = rbt052Run($options, $i);
     }
+    if (DB::table('failed_jobs')->exists()) {
+        rbt052Fail('normal graph runs created failed Redis jobs');
+    }
+    $policyProbe = rbt052PolicyProbe($options);
     $evidence = [
-        'schema_version' => 2, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
+        'schema_version' => 3, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
         'resource_profile' => $options['resource-profile'], 'runner_image_sha' => $options['runner-image-sha'],
         'cpu_count' => $options['cpu-count'], 'memory_mib' => $options['memory-mib'], 'database' => $options['database'],
         'fixture_seed' => $options['seed'], 'preflight' => $preflight,
         'redis_queue_measured' => true, 'graph_traversal_measured' => true,
         'synthetic_action_gate_invoked' => true, 'production_action_policy_measured' => false, 'provider_latency_measured' => false,
-        'sample_scope' => 'isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op benchmark action; production consent/provider timing excluded',
+        'canonical_consent_suppression_measured' => true, 'policy_denial_probe' => $policyProbe,
+        'sample_scope' => 'isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op action; canonical consent/suppression checked, full production action policy/provider timing excluded',
         'warmup' => $warmupRun, 'runs' => $runs, 'captured_at_utc' => gmdate(DATE_ATOM),
     ];
     $encoded = json_encode($evidence, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL;

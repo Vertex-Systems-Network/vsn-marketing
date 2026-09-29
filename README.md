@@ -4,23 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=59.85 phase=55 current_phase=PHASE-09 active_task=TASK-0051 milestone=PHASE-09-TASK-0051-EXECUTION status=WAITING_EXTERNAL -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=59.85 phase=55 current_phase=PHASE-09 active_task=TASK-0051 milestone=PHASE-09-TASK-0051-EXECUTION status=IN_PROGRESS -->
 
-> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete; TASK-0051 leases, concurrency and enrollment budgets merged through PR #420 and PR #421; PR #424 added benchmark environment preflight; PR #425 repaired actor-bound workspace replay permission. PR #426 merged the RBT-052 synthetic PostgreSQL capture harness; PR #428 corrected its measured workload window and explicit queue/graph exclusions after exact-head checks. RBT-052 now has a user-authorized dedicated PHASE-09 closeout before PHASE-10. An isolated synthetic PostgreSQL/Redis capture workflow merged in PR #430. Run #36504122827 published independently validated raw synthetic PostgreSQL evidence after PR #431 fixed artifact upload. Redis queue and full graph traversal were not measured, so TASK-0051 AC-5 remains blocked and PHASE-10 inactive. PHASE-10 remains planned and inactive.
+> PHASE-08 is complete. TASK-0048 through TASK-0050 are complete. TASK-0051 has durable leases, concurrency, replay, recovery probes, and workspace enrollment guards. RBT-052 v6 run #36556234322 was independently validated and archived through PR #446: it measured the real Redis wake-up queue and pinned five-node journey graph on isolated PostgreSQL/Redis. At a 200-job backlog, four workers completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95, implicating contention in that limited harness without establishing production limits. The current TASK-0051 implementation wires the existing bounded due-work recovery sweep into Laravel's scheduler; official Laravel guidance supports the shared-cache single-server and overlap locks used for the sweep. Production provider dispatch remains fail-closed: connector manifests do not send, and authorization, quota, secret resolution, and real provider latency are not yet measured. AC-5 and PHASE-09 remain open; PHASE-10 remains planned and inactive.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
 **Overall roadmap progress: 59.85%**<br />
 **Current phase: PHASE-09 — 55.00%**<br />
 **Last completed task: TASK-0050 — Journey runtime semantics**<br />
-**Current milestone: PHASE-09-TASK-0051-EXECUTION — WAITING_EXTERNAL**
+**Current milestone: PHASE-09-TASK-0051-EXECUTION — IN_PROGRESS**
 
 ```text
  Overall  [████████████░░░░░░░░] 59.85%
 Phase 09 [███████████░░░░░░░░░] 55.00%
 ```
 
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0050 complete; TASK-0051 awaits RBT-052 benchmark evidence.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0050 complete. TASK-0051 queue/graph capture is measured; AC-5 remains pending until action policy, provider boundary, and provider latency evidence are representative and reviewed.
 
 ### Phase / module progress
 
@@ -35,7 +35,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
 | **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Certified on protected main via TASK-0041 / PR #405** | **100.00%** |
 | **PHASE-08** | **5%** | **Segmentation, deterministic AST/compiler, AI proposal and preview UX** | ✅ **Complete** | **100.00%** |
-| **PHASE-09** | **7%** | **Journeys, automation runtime, triggers/waits/branches/replay** | ⏸️ **Waiting for RBT-052 — TASK-0051** | **55.00%** |
+| **PHASE-09** | **7%** | **Journeys, automation runtime, triggers/waits/branches/replay** | 🔄 **TASK-0051 in progress; provider evidence pending** | **55.00%** |
 | PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
 | PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
 | PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |

@@ -5,6 +5,7 @@ namespace App\Modules\Journeys;
 use App\Modules\Journeys\Application\BenchmarkSyntheticJourneyAction;
 use App\Modules\Journeys\Application\JourneyActionExecutor;
 use App\Modules\Journeys\Application\JourneyRegistry;
+use App\Modules\Journeys\Application\RedispatchDueJourneyWorkCommand;
 use App\Modules\Journeys\Application\RejectUnconfiguredJourneyAction;
 use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;
@@ -41,5 +42,12 @@ final class JourneysServiceProvider extends ServiceProvider
 
             return $app->make(RejectUnconfiguredJourneyAction::class);
         });
+    }
+
+    public function boot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([RedispatchDueJourneyWorkCommand::class]);
+        }
     }
 }

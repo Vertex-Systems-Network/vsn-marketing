@@ -3,13 +3,17 @@
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
 use App\Modules\Journeys\Application\JourneyActionExecutor;
+use App\Modules\Journeys\Application\JourneyNodeJob;
 use App\Modules\Journeys\Application\ProcessJourneyNode;
 use App\Modules\Journeys\Application\StartJourneyExecution;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -160,4 +164,37 @@ it('holds an invoked action with an ambiguous exception for operator review', fu
 
     expect(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('blocked')
         ->and(DB::table('journey_node_attempts')->where('execution_id', $execution)->where('node_id', 'action')->value('status'))->toBe('operator_review');
+});
+
+it('schedules bounded recovery of due journey work from durable workspace rows', function () {
+    Queue::fake();
+    Cache::forget('journeys:redispatch-due:workspace-cursor');
+    $fixture = queuedJourneyFixture();
+    app(StartJourneyExecution::class)->handle($fixture['workspace_id'], $fixture['enrollment_id']);
+    Queue::fake();
+
+    expect(Artisan::call('journeys:redispatch-due', [
+        '--workspace-limit' => 10,
+        '--work-limit' => 10,
+    ]))->toBe(0);
+
+    Queue::assertPushed(JourneyNodeJob::class, 1);
+    expect(collect(Schedule::events())->contains(fn ($event): bool => str_contains($event->command ?? '', 'journeys:redispatch-due')))->toBeTrue();
+});
+
+it('does not redispatch journey work before its durable available-at time', function () {
+    Queue::fake();
+    Cache::forget('journeys:redispatch-due:workspace-cursor');
+    $fixture = queuedJourneyFixture();
+    app(StartJourneyExecution::class)->handle($fixture['workspace_id'], $fixture['enrollment_id']);
+    DB::table('journey_work_items')->where('workspace_id', $fixture['workspace_id'])
+        ->update(['available_at' => now()->addHour()]);
+    Queue::fake();
+
+    expect(Artisan::call('journeys:redispatch-due'))->toBe(0);
+    Queue::assertNothingPushed();
+});
+
+it('rejects unbounded journey recovery scan limits', function () {
+    expect(Artisan::call('journeys:redispatch-due', ['--workspace-limit' => 1001]))->toBe(2);
 });

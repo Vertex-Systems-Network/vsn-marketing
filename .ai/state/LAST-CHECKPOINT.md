@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-09-29T16:52:42+00:00`
-- Observed main: `f78a3d0e1714975bd2ef71cb3abf31c82341dcf1`
+- Timestamp: `2026-09-29T17:31:07+00:00`
+- Observed main: `46100fda84e531659a89c9eacd8bb4d8013e643b`
 - Active issue: `none`
 - Active PR: `446`
-- Active branch: `supervisor/rbt052-compare`
+- Active branch: `supervisor/task0051-provider-action`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
-- Milestone status: `WAITING_EXTERNAL`
+- Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0051`
 - Next task: `TASK-0052`
 - Current phase: `PHASE-09`
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `f73375758ae43399af62ffd38516bb4bbcc4f1e889c4b8bcd7a544136e58ac8a`
+- State fingerprint: `1266ae7334c3f64f976a7f17ba702b267b71c403a242c0f9c7c842b657093ed2`
 
 ## Completed / observed this session
 
-RBT-052 v6 source-pinned capture validated: 200-job four-worker control p95 queue age 2774ms versus eight-worker stress 64266ms; concurrency tail implicated. Archive PR #446 pending exact-head gates; production provider boundary and AC-5 remain blocked.
+RBT-052 v6 capture validated/archived; this implementation wires the existing bounded RedispatchDueJourneyWork service to a rotating workspace cursor Artisan scheduler. It recovers due DB work after worker budget deferral or lost wake-ups. Production provider action remains fail-closed; no provider credentials or sends used.
 
 ## Tests
 
-RBT-052 run 36556234322 artifact 11026993958 independently validated; raw sha256 a3cb89d66bb9177bf0b9629682d4faa543eb8ef067124e88e3d75f2bac9042e0; python tools/task0051_benchmark_queue_evidence.py pass; foundation/php-floor/e2e/security v6 workflow pass
+Focused recovery tests added for due dispatch, future-work exclusion, limit rejection and schedule registration; git diff --check passes; continuity validators pass after journal compaction. PHP runtime unavailable locally; exact-head Application Foundation CI will run the Pest tests.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ RBT-052 run 36556234322 artifact 11026993958 independently validated; raw sha256
 
 ## Exact next action
 
-Merge PR #446 after exact-head gates; implement and test registered production provider action boundary before AC-5 or PHASE-09 certification.
+Verify PR exact-head gates for due-work scheduled recovery, merge on green, then continue TASK-0051 provider action authorization/idempotency design and representative evidence.

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T09:26:59+00:00`
-- Observed main: `3d7b657f58bbf162f0c0ba0ed6e9402f74efccbb`
+- Timestamp: `2026-09-29T09:30:28+00:00`
+- Observed main: `6f6b5f9e61c759e5356c9b158c0394d4d6b5e829`
 - Active issue: `none`
-- Active PR: `437`
-- Active branch: `supervisor/rbt052-review`
+- Active PR: `438`
+- Active branch: `supervisor/rbt052-action`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `0107b47715ceed3afb68a2c226f687318b251f142d15d9a24d6b45aa5e9e69bb`
+- State fingerprint: `8150603903a2faa6cce4445bafd6e064032ed47b263b664fc5d136e2a0872e3c`
 
 ## Completed / observed this session
 
-PR #436 merged at 3d7b657; source-equivalent run 36548742165 produced validated RBT-052 v2 Redis/full graph/wait evidence. Synthetic no-op excludes production action policy/provider timing and full-path fault/saturation; AC5 remains blocked.
+Merged RBT-052 review PR #437 at 6f6b5f9; production action policy/provider and full-path fault gap remains. Corrected action failure classification to mark pre-dispatch denials known and invoked exceptions operator review, with feature regressions pending CI.
 
 ## Tests
 
-PR #436 exact-head full gates green after E2E retry; run 36548742165 success; raw sha256 7c9260301daaf2b37f10bdce3d4559c2b137c4c0b5c6fa212bc946c915c548b8 validator passed.
+Merged RBT-052 raw validator and checksum pass; new action-classification tests pending exact-head full CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #436 exact-head full gates green after E2E retry; run 36548742165 success; ra
 
 ## Exact next action
 
-Merge reviewed RBT-052 evidence registry carrier; implement production-policy action adapter and representative full-path fault/scale coverage, then rerun source-pinned benchmark before AC5 and PHASE-09 certification.
+Run exact-head full CI on action classification fix, merge green PR; implement real action policy/provider boundary and source-pinned fault benchmarks before AC5; keep PHASE-10 inactive.

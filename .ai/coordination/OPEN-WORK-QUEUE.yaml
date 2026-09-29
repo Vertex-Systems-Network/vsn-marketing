@@ -1,12 +1,47 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5",
+  "reconciled_main_sha": "fe422b28df32491e7aa368df24e20fcbbc217fe6",
   "active_work_path": {
-    "kind": "runner",
-    "id": "RBT-052",
-    "disposition": "blocked_artifact_publication"
+    "kind": "pr",
+    "number": 435,
+    "title": "RBT-052 queue and graph capture",
+    "branch": "supervisor/rbt052-full-capture",
+    "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 435,
+      "title": "RBT-052 queue and graph capture",
+      "branch": "supervisor/rbt052-full-capture",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 434,
+      "title": "TASK-0051 durable queue and graph worker",
+      "branch": "supervisor/task0051-worker",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 433,
+      "title": "TASK-0051 graph routing and queue worker",
+      "branch": "supervisor/task0051-graph-runtime",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 431,
+      "title": "Fix RBT-052 evidence artifact readability",
+      "branch": "fix/rbt052-artifact-readability",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "73e3e117c37e911041794733f2821812aa123936"
+    },
     {
       "kind": "pr",
       "number": 430,
@@ -175,7 +210,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

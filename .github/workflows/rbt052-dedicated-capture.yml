@@ -55,7 +55,7 @@ jobs:
           test ! -e rbt052-artifacts/evidence.json
       - name: Build source-containing benchmark image
         run: docker build --tag vsn-rbt052-capture --file docker/benchmark/Dockerfile .
-      - name: Capture synthetic PostgreSQL journey evidence
+      - name: Capture synthetic Redis queue and pinned journey graph evidence
         shell: bash
         env:
           APP_ENV: benchmark
@@ -83,6 +83,8 @@ jobs:
           FILESYSTEM_DISK: local
           OBJECT_STORE_DISK: local
           JOURNEY_MAX_ACTIVE_ENROLLMENTS_PER_WORKSPACE: '2000'
+          JOURNEY_MAX_WORKSPACE_CONCURRENT_ATTEMPTS: '4'
+          RBT052_SYNTHETIC_ACTIONS: '1'
         run: |
           set -euo pipefail
           mkdir -p rbt052-artifacts
@@ -98,6 +100,7 @@ jobs:
             --env REDIS_QUEUE_CONNECTION --env QUEUE_CONNECTION --env QUEUE_FAILED_DRIVER \
             --env SESSION_DRIVER --env FILESYSTEM_DISK --env OBJECT_STORE_DISK \
             --env JOURNEY_MAX_ACTIVE_ENROLLMENTS_PER_WORKSPACE \
+            --env JOURNEY_MAX_WORKSPACE_CONCURRENT_ATTEMPTS --env RBT052_SYNTHETIC_ACTIONS \
             --env BENCHMARK_SOURCE_SHA="$GITHUB_SHA" \
             --env BENCHMARK_IMAGE_SHA="$runtime_sha" \
             --env BENCHMARK_RUN_ID="$GITHUB_RUN_ID" \
@@ -110,7 +113,7 @@ jobs:
               php tools/task0051_benchmark_preflight.php \
                 --commit-sha="$BENCHMARK_SOURCE_SHA" --database="$DB_DATABASE" \
                 --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
-              php tools/task0051_benchmark_capture.php \
+              php tools/task0051_benchmark_queue_capture.php \
                 --benchmark-id="rbt052-gh-${BENCHMARK_RUN_ID}" \
                 --commit-sha="$BENCHMARK_SOURCE_SHA" --database="$DB_DATABASE" \
                 --resource-profile=gh-ubuntu2404-app2cpu4g-ephemeral-pg18-redis8 \
@@ -119,7 +122,7 @@ jobs:
                 --runs=2 --operations=100 --concurrency=4 --seed=51 \
                 --output=/workspace/rbt052-artifacts/evidence.json \
                 --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
-              python3 tools/task0051_benchmark_evidence.py /workspace/rbt052-artifacts/evidence.json
+              python3 tools/task0051_benchmark_queue_evidence.py /workspace/rbt052-artifacts/evidence.json
               sha256sum /workspace/rbt052-artifacts/evidence.json > /workspace/rbt052-artifacts/evidence.sha256
               chmod 0644 /workspace/rbt052-artifacts/evidence.json /workspace/rbt052-artifacts/evidence.sha256
             '

@@ -2,7 +2,10 @@
 
 namespace App\Modules\Journeys;
 
+use App\Modules\Journeys\Application\BenchmarkSyntheticJourneyAction;
+use App\Modules\Journeys\Application\JourneyActionExecutor;
 use App\Modules\Journeys\Application\JourneyRegistry;
+use App\Modules\Journeys\Application\RejectUnconfiguredJourneyAction;
 use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;
 use App\Modules\Journeys\Domain\JourneyDefinitionException;
@@ -31,5 +34,12 @@ final class JourneysServiceProvider extends ServiceProvider
         $this->app->singleton(JourneyRegistry::class);
         $this->app->bind(JourneyWaitRepository::class, DatabaseJourneyWaitRepository::class);
         $this->app->bind(JourneyNodeAttemptRepository::class, DatabaseJourneyNodeAttemptRepository::class);
+        $this->app->bind(JourneyActionExecutor::class, function ($app): JourneyActionExecutor {
+            if ($app->environment('benchmark') && getenv('RBT052_SYNTHETIC_ACTIONS') === '1') {
+                return $app->make(BenchmarkSyntheticJourneyAction::class);
+            }
+
+            return $app->make(RejectUnconfiguredJourneyAction::class);
+        });
     }
 }

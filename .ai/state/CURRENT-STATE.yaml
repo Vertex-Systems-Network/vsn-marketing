@@ -18,30 +18,30 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #430 head 00c97c2c7096ab01a531d9716691a9615960a7e4 passed AI Continuity Guard run 36415587387 and Persistent Supervisor run 36415585025.",
-    "application_test_status": "PR #430 head 00c97c2c7096ab01a531d9716691a9615960a7e4 passed Application Foundation CI run 36415587415; dedicated capture run #36416121193 validated workload but failed artifact upload.",
-    "security_supply_chain_status": "PR #430 head 00c97c2c7096ab01a531d9716691a9615960a7e4 passed Security Supply Chain CI run 36415587330.",
+    "continuity_validation": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed AI Continuity Guard run 36503697430; Persistent Supervisor reconcile run 36503697379 was cancelled.",
+    "application_test_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Application Foundation CI run 36503697423. RBT-052 capture run 36504122827 passed with raw artifact and independent structural validation for the limited synthetic persistence scope.",
+    "security_supply_chain_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Security Supply Chain CI run 36503697416.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5",
+  "observed_main_sha": "fe422b28df32491e7aa368df24e20fcbbc217fe6",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
+  "active_pr": 435,
+  "active_branch": "supervisor/rbt052-full-capture",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
-  "last_completed_milestone": "PR #430 merged the isolated RBT-052 capture workflow on protected main e7b7097404fc36d60e8194d1a187c44f541d03c5 after exact-head Continuity, Supervisor, Application and Security checks. First run #36416121193 failed artifact upload; no durable raw evidence exists.",
-  "exact_next_safe_action": "Repair RBT-052 artifact readability, pass exact-head gates, trigger a fresh isolated source-pinned run, download and independently validate raw JSON/digest, then assess queue/graph coverage and runtime representativeness before TASK-0051 AC-5 or PHASE-10.",
+  "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
+  "exact_next_safe_action": "Verify RBT-052 v2 harness PR #435, run it on the dedicated source-pinned branch, inspect raw queue/graph samples and provenance, and accept AC-5 only if representative evidence survives review.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
     "RBT-052"
   ],
   "blockers": [
-    "RBT-052 dedicated PHASE-09 capture run #36416121193 failed artifact publication (EACCES); raw evidence is not durable and queue/graph traversal remain unmeasured. TASK-0051 AC-5 remains blocked."
+    "RBT-052 run #36504122827 has valid raw synthetic PostgreSQL evidence, but Redis queue latency and complete journey graph traversal are not implemented/measured; representativeness for TASK-0051 AC-5 remains unproven."
   ],
   "current_blockers": [
-    "RBT-052 dedicated PHASE-09 capture run #36416121193 failed artifact publication (EACCES); raw evidence is not durable and queue/graph traversal remain unmeasured. TASK-0051 AC-5 remains blocked."
+    "RBT-052 run #36504122827 has valid raw synthetic PostgreSQL evidence, but Redis queue latency and complete journey graph traversal are not implemented/measured; representativeness for TASK-0051 AC-5 remains unproven."
   ],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 1,
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Repair RBT-052 artifact readability, pass exact-head gates, trigger a fresh isolated source-pinned run, download and independently validate raw JSON/digest, then assess queue/graph coverage and runtime representativeness before TASK-0051 AC-5 or PHASE-10."
+  "exact_next_action": "Verify RBT-052 v2 harness PR #435, run it on the dedicated source-pinned branch, inspect raw queue/graph samples and provenance, and accept AC-5 only if representative evidence survives review."
 }

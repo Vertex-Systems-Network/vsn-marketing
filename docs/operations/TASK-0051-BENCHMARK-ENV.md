@@ -50,6 +50,8 @@ The manual or dedicated `benchmark/rbt052-run` branch trigger in `.github/workfl
 
 The initial isolated run [#36416121193](https://github.com/Vertex-Systems-Network/vsn-marketing/actions/runs/36416121193) generated and structurally validated samples, but artifact upload failed with file permissions. It is a failed attempt, not immutable evidence or AC-5 acceptance. A corrected fresh run must publish readable raw JSON and digest before review.
 
+Run [#36504122827](https://github.com/Vertex-Systems-Network/vsn-marketing/actions/runs/36504122827) published a valid isolated synthetic baseline; see [its raw evidence and review](../benchmarks/evidence/RBT-052-36504122827-review.md). The reviewed capture does not include Redis queue latency or complete graph traversal, so TASK-0051 AC-5 remains blocked. A new source-pinned capture with those paths and a representative resource review is required before acceptance.
+
 ## Capture and acceptance
 
 The reviewed harness must preserve raw per-operation durations and outcomes as well as run-level counts: enrollment accepted/rejected/duplicate; attempt claimed/duplicate/saturated/reclaimed/completed; stale completion refused; retry/dead-letter/operator-review; cancellation/late completion; replay duplicate/pinned-version; queue age and end-to-end duration where observable; throughput and the measurement window. Record p50/p95/p99 with sample counts and the percentile method, resource/connection observations, and the exact configuration and fixture identity. Check invariants against persisted PostgreSQL transition and attempt state, including no cap overshoot and no cross-workspace data access. Redis health and queue behavior must be included only when the workload actually uses them.

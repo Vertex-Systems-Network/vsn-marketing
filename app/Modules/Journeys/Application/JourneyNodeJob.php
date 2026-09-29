@@ -3,8 +3,8 @@
 namespace App\Modules\Journeys\Application;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 /** Redis wake-up only: every durable identity and decision is reloaded from PostgreSQL. */
 final class JourneyNodeJob implements ShouldQueue

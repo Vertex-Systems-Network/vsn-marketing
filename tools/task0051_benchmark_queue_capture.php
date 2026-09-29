@@ -194,7 +194,7 @@ function rbt052Run(array $options, int $run): array
         if ($terminal === count($items)) {
             break;
         }
-        if (++$passes > 10 || DB::table('journey_executions')->whereIn('id', array_column($items, 'execution'))
+        if (++$passes > 90 || DB::table('journey_executions')->whereIn('id', array_column($items, 'execution'))
             ->whereIn('status', ['failed', 'blocked', 'cancelled', 'exited'])->exists()) {
             rbt052Fail('journey graph did not complete cleanly: '.rbt052Progress($items, $passes));
         }

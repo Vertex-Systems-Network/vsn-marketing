@@ -1,21 +1,37 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "de9d00b5e3f651013270fde6792efa8c3b0b31c4",
+  "reconciled_main_sha": "886113d7f9e5b2c9c65bb62eef1d9472a563d310",
   "active_work_path": {
     "kind": "pr",
-    "number": 441,
-    "title": "Probe duplicate and cancelled Redis journey wake-ups in RBT-052",
-    "branch": "supervisor/rbt052-fault",
+    "number": 443,
+    "title": "Measure Redis journey backlog under bounded stress",
+    "branch": "supervisor/rbt052-load",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 443,
+      "title": "Measure Redis journey backlog under bounded stress",
+      "branch": "supervisor/rbt052-load",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 442,
+      "title": "Archive RBT-052 full-path fault evidence with explicit scope",
+      "branch": "supervisor/rbt052-v4-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
     {
       "kind": "pr",
       "number": 441,
       "title": "Probe duplicate and cancelled Redis journey wake-ups in RBT-052",
       "branch": "supervisor/rbt052-fault",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

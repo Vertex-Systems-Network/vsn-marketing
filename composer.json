@@ -47,7 +47,7 @@
     ],
     "test": "@php artisan test",
     "lint": "pint --parallel",
-    "lint:check": "pint --parallel --test",
+    "lint:check": "pint --parallel --test || (pint tools/task0051_benchmark_queue_capture.php && git diff -- tools/task0051_benchmark_queue_capture.php && exit 1)",
     "analyse": "phpstan analyse --memory-limit=1G"
   },
   "config": {

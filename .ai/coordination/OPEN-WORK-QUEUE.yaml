@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1a44c7122565212c9f11caef00ad08352fbb7a21",
+  "reconciled_main_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
-    "disposition": "blocked_runtime_required"
+    "disposition": "blocked_artifact_publication"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 430,
+      "title": "Add isolated RBT-052 synthetic capture workflow",
+      "branch": "task0051-rbt052-isolated-capture-workflow",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5"
+    },
     {
       "kind": "pr",
       "number": 429,

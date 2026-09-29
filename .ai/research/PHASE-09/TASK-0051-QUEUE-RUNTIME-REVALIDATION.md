@@ -20,3 +20,7 @@ The v2 synthetic adapter returned constant `consent=true` and `suppression_clear
 ## Full-path fault probes — 2026-09-29
 
 V4 isolated harness adds duplicate Redis wake-up, foreign-workspace work ID, and cancellation-before-worker stale wake-up to the same five-node pinned execution path. It checks exact persisted node/attempt count and cancelled execution/work state after real workers. These probes extend reliability coverage; they do not constitute saturation, outage/retry, real provider side-effect, or production capacity evidence. The v4 validator requires the three named probe results and retains v2/v3 backward validation.
+
+## Redis backlog stress — 2026-09-29
+
+V5 records the Redis queue depth after enqueue and before workers for each sample run and adds a 200-operation/eight-worker stress run on the same 2-CPU app container and two-workspace graph. The validator requires at least 200 queued items and all 200 completed raw samples. This tests bounded backlog recovery and latency under increased load; it is not proof of CPU/memory saturation because the PostgreSQL/Redis service containers share the hosted runner and no continuous resource telemetry or production workload mix is captured. Do not infer a production SLO from it.

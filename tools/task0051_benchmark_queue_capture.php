@@ -15,6 +15,7 @@ use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
@@ -209,6 +210,10 @@ function rbt052Run(array $options, int $run): array
         $slot = ($i + $options['seed']) % 2;
         $items[] = rbt052Enroll($fixtures[$slot], $i, $slot);
     }
+    $initialQueueDepth = Queue::connection('redis')->size('journeys');
+    if ($initialQueueDepth < count($items)) {
+        rbt052Fail('Redis backlog smaller than queued fixture count');
+    }
     $passes = 0;
     do {
         rbt052Workers($options['concurrency'], $items);
@@ -252,7 +257,8 @@ function rbt052Run(array $options, int $run): array
 
     return ['graph_hash' => $hash, 'operations' => count($samples), 'concurrency' => $options['concurrency'],
         'elapsed_ms' => $elapsed, 'throughput_per_second' => round(count($samples) * 1000 / max($elapsed, 0.001), 3),
-        'queue_samples' => $samples, 'worker_passes' => $passes + 1];
+        'queue_samples' => $samples, 'worker_passes' => $passes + 1,
+        'initial_queue_depth' => $initialQueueDepth];
 }
 
 /** @return array<string, string> */
@@ -356,13 +362,17 @@ try {
     for ($i = 0; $i < $options['runs']; $i++) {
         $runs[] = rbt052Run($options, $i);
     }
+    $stressOptions = $options;
+    $stressOptions['operations'] = 200;
+    $stressOptions['concurrency'] = 8;
+    $stress = rbt052Run($stressOptions, 100);
     if (DB::table('failed_jobs')->exists()) {
         rbt052Fail('normal graph runs created failed Redis jobs');
     }
     $policyProbe = rbt052PolicyProbe($options);
     $faultProbe = rbt052FaultProbe($options);
     $evidence = [
-        'schema_version' => 4, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
+        'schema_version' => 5, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
         'resource_profile' => $options['resource-profile'], 'runner_image_sha' => $options['runner-image-sha'],
         'cpu_count' => $options['cpu-count'], 'memory_mib' => $options['memory-mib'], 'database' => $options['database'],
         'fixture_seed' => $options['seed'], 'preflight' => $preflight,
@@ -371,7 +381,8 @@ try {
         'canonical_consent_suppression_measured' => true, 'policy_denial_probe' => $policyProbe,
         'fault_probe' => $faultProbe,
         'sample_scope' => 'isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op action; canonical consent/suppression checked, full production action policy/provider timing excluded',
-        'warmup' => $warmupRun, 'runs' => $runs, 'captured_at_utc' => gmdate(DATE_ATOM),
+        'warmup' => $warmupRun, 'runs' => $runs, 'backlog_stress' => $stress,
+        'captured_at_utc' => gmdate(DATE_ATOM),
     ];
     $encoded = json_encode($evidence, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL;
     $validator = new Process(['python3', __DIR__.'/task0051_benchmark_queue_evidence.py', '--stdin'], dirname(__DIR__), null, $encoded);

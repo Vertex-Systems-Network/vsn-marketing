@@ -121,7 +121,10 @@ jobs:
                 --ack=I_ACKNOWLEDGE_DEDICATED_NON_PRODUCTION_BENCHMARK_ENVIRONMENT
               python3 tools/task0051_benchmark_evidence.py /workspace/rbt052-artifacts/evidence.json
               sha256sum /workspace/rbt052-artifacts/evidence.json > /workspace/rbt052-artifacts/evidence.sha256
+              chmod 0644 /workspace/rbt052-artifacts/evidence.json /workspace/rbt052-artifacts/evidence.sha256
             '
+      - name: Verify runner can read raw evidence
+        run: test -r rbt052-artifacts/evidence.json && test -r rbt052-artifacts/evidence.sha256
       - name: Upload immutable raw evidence and digest
         if: ${{ success() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

@@ -2,14 +2,16 @@
 
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
-use App\Modules\Journeys\Application\ProcessJourneyNode;
 use App\Modules\Journeys\Application\JourneyActionExecutor;
+use App\Modules\Journeys\Application\ProcessJourneyNode;
 use App\Modules\Journeys\Application\StartJourneyExecution;
+use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 uses(RefreshDatabase::class);
 
@@ -125,7 +127,7 @@ it('classifies an action policy denial as known failure without invoking the ada
     }
     $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', 'action')->first();
     expect(fn () => app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id))
-        ->toThrow(\App\Modules\Journeys\Domain\JourneyDefinitionException::class, 'action_blocked');
+        ->toThrow(JourneyDefinitionException::class, 'action_blocked');
 
     expect($invocation->called)->toBeFalse()
         ->and(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('failed')
@@ -144,7 +146,7 @@ it('holds an invoked action with an ambiguous exception for operator review', fu
 
         public function execute(string $workspaceId, string $subjectId, array $node, string $attemptKey): void
         {
-            throw new \RuntimeException('ambiguous action outcome');
+            throw new RuntimeException('ambiguous action outcome');
         }
     });
     $execution = app(StartJourneyExecution::class)->handle($fixture['workspace_id'], $fixture['enrollment_id']);
@@ -154,7 +156,7 @@ it('holds an invoked action with an ambiguous exception for operator review', fu
     }
     $item = DB::table('journey_work_items')->where('execution_id', $execution)->where('node_id', 'action')->first();
     expect(fn () => app(ProcessJourneyNode::class)->handle($fixture['workspace_id'], (string) $item->id))
-        ->toThrow(\RuntimeException::class, 'ambiguous action outcome');
+        ->toThrow(RuntimeException::class, 'ambiguous action outcome');
 
     expect(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('blocked')
         ->and(DB::table('journey_node_attempts')->where('execution_id', $execution)->where('node_id', 'action')->value('status'))->toBe('operator_review');

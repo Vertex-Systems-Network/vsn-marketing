@@ -47,7 +47,7 @@
     ],
     "test": "@php artisan test",
     "lint": "pint --parallel",
-    "lint:check": "pint --parallel --test || (pint app/Modules/Journeys/Domain/JourneyGraphTraversal.php && git diff -- app/Modules/Journeys/Domain/JourneyGraphTraversal.php && exit 1)",
+    "lint:check": "pint --parallel --test",
     "analyse": "phpstan analyse --memory-limit=1G"
   },
   "config": {

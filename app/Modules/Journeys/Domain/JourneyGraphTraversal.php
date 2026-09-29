@@ -23,8 +23,8 @@ final readonly class JourneyGraphTraversal
     }
 
     /**
-     * @param array<string, mixed> $graph
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $graph
+     * @param  array<string, mixed>  $attributes
      * @return list<string>
      */
     public function successors(array $graph, string $nodeId, array $attributes = []): array

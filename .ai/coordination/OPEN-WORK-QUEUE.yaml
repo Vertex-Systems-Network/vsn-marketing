@@ -1,21 +1,45 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "270c995ba42bab434b2df6bf7f5d8fc23a2780e8",
+  "reconciled_main_sha": "137332f9cce7b333ece95c7d8bad2ab79ef3bd5e",
   "active_work_path": {
     "kind": "pr",
-    "number": 436,
-    "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
-    "branch": "supervisor/rbt052-diagnose",
+    "number": 439,
+    "title": "Measure canonical consent and suppression in RBT-052 action path",
+    "branch": "supervisor/rbt052-policy",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 439,
+      "title": "Measure canonical consent and suppression in RBT-052 action path",
+      "branch": "supervisor/rbt052-policy",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 438,
+      "title": "Classify journey action denials before provider invocation",
+      "branch": "supervisor/rbt052-action",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 437,
+      "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
+      "branch": "supervisor/rbt052-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
     {
       "kind": "pr",
       "number": 436,
       "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
       "branch": "supervisor/rbt052-diagnose",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

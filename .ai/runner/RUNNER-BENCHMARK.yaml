@@ -1620,11 +1620,11 @@
     {
       "id": "RBT-052",
       "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
-      "command_workflow": "tools/task0051_benchmark_capture.php + tools/task0051_benchmark_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and runtime authority required; PHASE-09 closeout before PHASE-10",
+      "command_workflow": "tools/task0051_benchmark_queue_capture.php + tools/task0051_benchmark_queue_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and isolated runtime; PHASE-09 closeout before PHASE-10",
       "exact_source_identity": {
-        "git_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
+        "git_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
         "resolution_required_before_execution": false,
-        "evidence_surface": "TASK-0051 representative journey execution workload on exact reviewed source"
+        "evidence_surface": "synthetic Redis queue and complete pinned journey graph; production action policy/provider timing still excluded"
       },
       "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
       "authorization_state": "user_authorized_pre_phase10_dedicated_batch",
@@ -1634,16 +1634,30 @@
       "dedup_key": "runner:task0051:representative-journey-execution:v1",
       "status": "captured_scope_incomplete",
       "immutable_evidence": {
-        "workflow_run": 36504122827,
-        "artifact_id": 11006421917,
-        "source_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
-        "artifact_sha256": "8d7f811c45b59eae86f4a2ee62fca2090b6da4f12b83be90e1ae0a482375dad3",
-        "raw_json_sha256": "bf4ea5127cdb957fc9694d00a80837b62281018d42a67b69d1081a2d6f19dfec",
-        "review": "docs/benchmarks/evidence/RBT-052-36504122827-review.md",
-        "raw_json": "docs/benchmarks/evidence/RBT-052-36504122827.json",
+        "workflow_run": 36548742165,
+        "artifact_id": 11024195751,
+        "source_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
+        "main_tree_sha": "70253692d7b3e06aca6d4ff51837e9d7e8a346cc",
+        "artifact_sha256": "be9da38ed39a51ad9bbbb2f66f46dbcd13b4e33752e66d7d53182532a899152d",
+        "raw_json_sha256": "7c9260301daaf2b37f10bdce3d4559c2b137c4c0b5c6fa212bc946c915c548b8",
+        "review": "docs/benchmarks/evidence/RBT-052-36548742165-review.md",
+        "raw_json": "docs/benchmarks/evidence/RBT-052-36548742165.json",
         "ac5_accepted": false,
-        "scope": "synthetic enrollment and PostgreSQL attempt persistence only; no Redis queue or full graph traversal"
-      }
+        "scope": "synthetic Redis queue, pinned full graph, wait resume and no-op action; production policy, provider latency and full-path fault/saturation not measured"
+      },
+      "prior_evidence": [
+        {
+          "workflow_run": 36504122827,
+          "artifact_id": 11006421917,
+          "source_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
+          "artifact_sha256": "8d7f811c45b59eae86f4a2ee62fca2090b6da4f12b83be90e1ae0a482375dad3",
+          "raw_json_sha256": "bf4ea5127cdb957fc9694d00a80837b62281018d42a67b69d1081a2d6f19dfec",
+          "review": "docs/benchmarks/evidence/RBT-052-36504122827-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36504122827.json",
+          "ac5_accepted": false,
+          "scope": "synthetic enrollment and PostgreSQL attempt persistence only; no Redis queue or full graph traversal"
+        }
+      ]
     }
   ]
 }

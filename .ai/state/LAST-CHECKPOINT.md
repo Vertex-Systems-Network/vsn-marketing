@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T08:38:27+00:00`
-- Observed main: `270c995ba42bab434b2df6bf7f5d8fc23a2780e8`
+- Timestamp: `2026-09-29T09:45:36+00:00`
+- Observed main: `137332f9cce7b333ece95c7d8bad2ab79ef3bd5e`
 - Active issue: `none`
-- Active PR: `436`
-- Active branch: `supervisor/rbt052-diagnose`
+- Active PR: `439`
+- Active branch: `supervisor/rbt052-policy`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `50562320c7cac4d77f86cfdae9f8ef1ce671b050b80aff8200cbfc9c444f8b64`
+- State fingerprint: `8d4db2eb108210aa53434cc1a413837576a0a08e9ed03660f51e7a862a19c72e`
 
 ## Completed / observed this session
 
-RBT-052 v2 dedicated source-pinned synthetic Redis graph capture succeeded after correcting PostgreSQL second-precision wait identity; raw run 36543585401 archived. AC5 remains BLOCKED: production action policy and provider latency unmeasured.
+PR #438 merged at 137332f with exact-head full CI. Implemented RBT-052 v3 canonical effective consent/suppression checks and missing-consent/suppressed probes on isolated Redis graph path; no provider/production policy claim.
 
 ## Tests
 
-Run 36543585401 success, v2 validator and sha256 b9dbb3c8b8bf1f10e83ee9875b0a5c9315af0800adad0f1b7baefae2ffa1ee68; exact-head PR CI pending.
+Archived RBT-052 v2 validator still passes; v3 source-pinned benchmark and exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Run 36543585401 success, v2 validator and sha256 b9dbb3c8b8bf1f10e83ee9875b0a5c9
 
 ## Exact next action
 
-Open and merge runtime fix/evidence PR after exact-head CI; rerun dedicated capture from merged main and assess remaining AC5 production policy/provider constraints before PHASE-10.
+Verify v3 harness through full exact-head CI, merge, capture isolated source-pinned v3 raw evidence, review remaining provider/production action and full-path fault coverage before AC5.

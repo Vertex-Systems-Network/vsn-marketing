@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T09:59:00+00:00`
-- Observed main: `de9d00b5e3f651013270fde6792efa8c3b0b31c4`
+- Timestamp: `2026-09-29T10:09:50+00:00`
+- Observed main: `435d54ad3055e2842ed629618faedbf41d7fe965`
 - Active issue: `none`
-- Active PR: `441`
-- Active branch: `supervisor/rbt052-fault`
+- Active PR: `442`
+- Active branch: `supervisor/rbt052-v4-review`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `662cf7c3f1fd7061bf16db38d83231e1ff46cb139b5f8eb5122db8ebac499505`
+- State fingerprint: `175aec2c3c127143faf046144165f55ef1a14b7bea4be22c59b8250d53c18d6c`
 
 ## Completed / observed this session
 
-PR #440 merged at de9d00b. Added source-pinned RBT-052 v4 duplicate Redis wake-up, cross-workspace wake-up and cancelled-stale wake-up probes with exact persisted invariants; benchmark and CI pending. AC5 remains blocked.
+PR #441 merged at 435d54a; RBT-052 v4 run 36553385856 raw validated full five-node Redis path and duplicate/tenant/cancel faults. Provider action, production policy and saturation remain unmeasured; AC5 blocked.
 
 ## Tests
 
-Existing v2/v3 raw validators pass; v4 exact-head CI and dedicated run pending.
+PR #441 exact-head full CI green; v4 run 36553385856 success; raw sha256 78234dc3c5627ee565b55b591bc6e33ec8b1ce1263e0a35faf8b38e25a1f3047 validator passed.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Existing v2/v3 raw validators pass; v4 exact-head CI and dedicated run pending.
 
 ## Exact next action
 
-Merge v4 fault probe PR after full exact-head CI, run dedicated capture and review raw evidence; build actual action/provider policy boundary and saturation evidence before AC5.
+Merge v4 evidence review carrier; implement registered production action policy/provider boundary and representative saturation/fault capture before AC5 and PHASE-09 certification.

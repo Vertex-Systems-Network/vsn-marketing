@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T01:18:03+00:00`
-- Observed main: `b3ed24d6313bde2204afb88f4d32ef339d05d38a`
+- Timestamp: `2026-09-29T01:35:38+00:00`
+- Observed main: `fe422b28df32491e7aa368df24e20fcbbc217fe6`
 - Active issue: `none`
-- Active PR: `434`
-- Active branch: `supervisor/task0051-worker`
+- Active PR: `435`
+- Active branch: `supervisor/rbt052-full-capture`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `7c63d18a4424562e451f8b7b39a50d8c390e0523b60d1b8d998a7e81b00b686e`
+- State fingerprint: `f0a9109475ec8d549153983523bfc61b8084ba7bcac143a5eb5110bab898e1bd`
 
 ## Completed / observed this session
 
-PR #433 graph routing merged on protected main b3ed24d; TASK-0051 remains blocked on representative queue and full-journey benchmark. PR #434 adds tenant-scoped durable work items and real Redis queue consumer under review.
+PR #434 durable Redis work queue merged to main fe422b2 with all required exact-head gates green. PR #435 adds source-pinned RBT-052 v2 queue/graph capture under review; no benchmark acceptance yet.
 
 ## Tests
 
-PR #433 exact head f94996f passed continuity, governance, Application Foundation including PostgreSQL/E2E/PHP floor, and Security Supply Chain; worker code requires new exact-head CI.
+PR #434 exact head 6339a71 passed AI Continuity, governance, Application Foundation including PostgreSQL/E2E/PHP floor, and Security Supply Chain. V2 capture not yet executed.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #433 exact head f94996f passed continuity, governance, Application Foundation
 
 ## Exact next action
 
-Verify and repair the durable journey queue worker on PR #434, extend source-pinned RBT-052 to measure queue age and full graph path, review raw artifact before AC-5/PHASE-10.
+Verify RBT-052 v2 harness PR #435, run it on the dedicated source-pinned branch, inspect raw queue/graph samples and provenance, and accept AC-5 only if representative evidence survives review.

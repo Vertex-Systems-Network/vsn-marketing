@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "46100fda84e531659a89c9eacd8bb4d8013e643b",
+  "reconciled_main_sha": "d0b13644661cdc22d1a7ffa389b020f050317013",
   "active_work_path": {
     "kind": "pr",
-    "number": 447,
-    "title": "feat(journeys): schedule bounded due-work recovery",
-    "branch": "supervisor/task0051-provider-action",
-    "disposition": "active_task0051_carrier"
+    "number": 448,
+    "title": "feat(journeys): build accessible journey editor and timeline",
+    "branch": "supervisor/task0052-builder",
+    "disposition": "active_task0052_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 448,
+      "title": "feat(journeys): build accessible journey editor and timeline",
+      "branch": "supervisor/task0052-builder",
+      "disposition": "active_task0052_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 447,
       "title": "feat(journeys): schedule bounded due-work recovery",
       "branch": "supervisor/task0051-provider-action",
-      "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "d0b13644661cdc22d1a7ffa389b020f050317013"
     },
     {
       "kind": "pr",

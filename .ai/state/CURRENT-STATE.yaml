@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "1e7ffddc544fde7a2a99341bf99b2e9cf546c19d",
+  "observed_main_sha": "f78a3d0e1714975bd2ef71cb3abf31c82341dcf1",
   "active_issue": null,
-  "active_pr": 444,
+  "active_pr": 446,
   "active_branch": "supervisor/rbt052-compare",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
   "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Review and merge v5 risk plus v6 comparison PR; run source-pinned v6 and diagnose tail before production numeric limits, provider boundary, AC5 and PHASE-09.",
+  "exact_next_safe_action": "Merge PR #446 after exact-head gates; implement and test registered production provider action boundary before AC-5 or PHASE-09 certification.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review and merge v5 risk plus v6 comparison PR; run source-pinned v6 and diagnose tail before production numeric limits, provider boundary, AC5 and PHASE-09."
+  "exact_next_action": "Merge PR #446 after exact-head gates; implement and test registered production provider action boundary before AC-5 or PHASE-09 certification."
 }

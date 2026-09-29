@@ -10,6 +10,8 @@ use App\Modules\Journeys\Domain\JourneyDefinitionException;
 use App\Modules\Journeys\Domain\JourneyGraphTraversal;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use App\Modules\Journeys\Domain\JourneyRuntimePolicy;
+use App\Modules\Journeys\Domain\JourneyWaitEvaluator;
+use App\Modules\Journeys\Domain\JourneyWaitOutcome;
 use DateTimeImmutable;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Str;
@@ -26,6 +28,7 @@ final readonly class ProcessJourneyNode
         private JourneyGraphTraversal $traversal,
         private DispatchJourneyAction $actionGate,
         private JourneyActionExecutor $actions,
+        private JourneyWaitEvaluator $waitEvaluator,
     ) {}
 
     public function handle(string $workspaceId, string $workItemId): void
@@ -100,8 +103,9 @@ final readonly class ProcessJourneyNode
                     $wait = DurableJourneyWait::schedule($workspaceId, $context['execution_id'], $node['id'], $now, $node['config']['seconds'], new JourneyRuntimePolicy);
                     $predicate = isset($node['config']['field']) ? array_intersect_key($node['config'], array_flip(['field', 'operator', 'value'])) : null;
                     $this->waits->store($wait, $predicate);
+                    $nextCheck = $predicate === null ? $wait->wakeAt : min($wait->wakeAt, $now->modify('+60 seconds'));
                     $this->database->table('journey_work_items')->where('workspace_id', $workspaceId)->where('id', $workItemId)
-                        ->update(['status' => 'waiting', 'available_at' => $wait->wakeAt, 'updated_at' => now()]);
+                        ->update(['status' => 'waiting', 'available_at' => $nextCheck, 'updated_at' => now()]);
                     $this->transitionExecution($workspaceId, $context['execution_id'], 'waiting', $node['id']);
 
                     return;
@@ -186,7 +190,16 @@ final readonly class ProcessJourneyNode
     {
         $waitRow = $this->database->table('journey_waits')->where('workspace_id', $workspaceId)
             ->where('execution_id', $context['execution_id'])->where('node_id', $context['node']['id'])->where('status', 'pending')->first();
-        if ($waitRow === null || new DateTimeImmutable((string) $waitRow->wake_at) > $now) {
+        if ($waitRow === null) {
+            return;
+        }
+        $wait = DurableJourneyWait::restore($workspaceId, $context['execution_id'], $context['node']['id'],
+            new DateTimeImmutable((string) $waitRow->wake_at), (string) $waitRow->wait_key);
+        $predicate = $waitRow->predicate === null ? null : json_decode((string) $waitRow->predicate, true, 512, JSON_THROW_ON_ERROR);
+        if ($this->waitEvaluator->evaluate($wait, $workspaceId, $now, $context['attributes'], $predicate) === JourneyWaitOutcome::Waiting) {
+            $this->database->table('journey_work_items')->where('workspace_id', $workspaceId)->where('id', $workItemId)
+                ->where('status', 'waiting')->update(['available_at' => min($wait->wakeAt, $now->modify('+60 seconds')), 'updated_at' => now()]);
+
             return;
         }
         $this->database->transaction(function () use ($workspaceId, $workItemId, $context, $waitRow, $now): void {

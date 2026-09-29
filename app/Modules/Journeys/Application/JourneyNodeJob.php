@@ -9,8 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 /** Redis wake-up only: every durable identity and decision is reloaded from PostgreSQL. */
 final class JourneyNodeJob implements ShouldQueue
 {
-    use Queueable;
     use Dispatchable;
+    use Queueable;
 
     public int $tries = 3;
 

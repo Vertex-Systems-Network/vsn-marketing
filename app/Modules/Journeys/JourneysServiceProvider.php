@@ -2,8 +2,8 @@
 
 namespace App\Modules\Journeys;
 
-use App\Modules\Journeys\Application\JourneyRegistry;
 use App\Modules\Journeys\Application\JourneyActionExecutor;
+use App\Modules\Journeys\Application\JourneyRegistry;
 use App\Modules\Journeys\Application\RejectUnconfiguredJourneyAction;
 use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\Contracts\JourneyWaitRepository;

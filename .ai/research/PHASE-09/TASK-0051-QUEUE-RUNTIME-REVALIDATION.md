@@ -16,3 +16,7 @@ The existing [TASK-0048 research](TASK-0048-RESEARCH.md) defines the pinned grap
 ## Canonical policy measurement extension — 2026-09-29
 
 The v2 synthetic adapter returned constant `consent=true` and `suppression_clear=true`, so neither the repository policy lookup nor a denial path was measured. The v3 isolated fixture appends granted consent through the canonical append-only record repository, evaluates effective consent and suppression through their existing services for every action, and probes missing consent plus canonical unsubscribe suppression on the same Redis graph path. The benchmark still uses a synthetic provider capability, authorization/quota booleans and no-op action. Classify this as `PARTIAL_EVIDENCE`: a measured canonical consent/suppression decision with fail-closed probes, not production action policy or provider latency. Keep AC-5 blocked until the remaining production boundary and full-path fault/scale evidence are independently reviewed.
+
+## Full-path fault probes — 2026-09-29
+
+V4 isolated harness adds duplicate Redis wake-up, foreign-workspace work ID, and cancellation-before-worker stale wake-up to the same five-node pinned execution path. It checks exact persisted node/attempt count and cancelled execution/work state after real workers. These probes extend reliability coverage; they do not constitute saturation, outage/retry, real provider side-effect, or production capacity evidence. The v4 validator requires the three named probe results and retains v2/v3 backward validation.

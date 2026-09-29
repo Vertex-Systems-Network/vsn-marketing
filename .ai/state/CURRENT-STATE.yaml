@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "137332f9cce7b333ece95c7d8bad2ab79ef3bd5e",
+  "observed_main_sha": "de9d00b5e3f651013270fde6792efa8c3b0b31c4",
   "active_issue": null,
-  "active_pr": 439,
-  "active_branch": "supervisor/rbt052-policy",
+  "active_pr": 441,
+  "active_branch": "supervisor/rbt052-fault",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
   "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Verify v3 harness through full exact-head CI, merge, capture isolated source-pinned v3 raw evidence, review remaining provider/production action and full-path fault coverage before AC5.",
+  "exact_next_safe_action": "Merge v4 fault probe PR after full exact-head CI, run dedicated capture and review raw evidence; build actual action/provider policy boundary and saturation evidence before AC5.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify v3 harness through full exact-head CI, merge, capture isolated source-pinned v3 raw evidence, review remaining provider/production action and full-path fault coverage before AC5."
+  "exact_next_action": "Merge v4 fault probe PR after full exact-head CI, run dedicated capture and review raw evidence; build actual action/provider policy boundary and saturation evidence before AC5."
 }

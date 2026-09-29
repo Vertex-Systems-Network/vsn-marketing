@@ -38,19 +38,25 @@ def validate_run(run: object, count: int, concurrency: int, graph_hash: str | No
 
 
 def validate(document: object) -> None:
-    require(isinstance(document, dict) and document.get("schema_version") in (2, 3), "v2/v3 evidence required")
+    require(isinstance(document, dict) and document.get("schema_version") in (2, 3, 4), "v2/v3/v4 evidence required")
     for field in ("benchmark_id", "resource_profile"):
         require(isinstance(document.get(field), str) and re.fullmatch(r"[A-Za-z0-9._-]{1,100}", document[field]) is not None, "invalid "+field)
     require(isinstance(document.get("source_sha"), str) and re.fullmatch(r"[0-9a-f]{40}", document["source_sha"]) is not None, "source SHA invalid")
     require(isinstance(document.get("runner_image_sha"), str) and re.fullmatch(r"[0-9a-f]{64}", document["runner_image_sha"]) is not None, "runtime image digest invalid")
     require(document.get("redis_queue_measured") is True and document.get("graph_traversal_measured") is True, "queue/graph flags missing")
     require(document.get("synthetic_action_gate_invoked") is True and document.get("production_action_policy_measured") is False and document.get("provider_latency_measured") is False, "unsupported production/provider claim")
-    if document["schema_version"] == 3:
+    if document["schema_version"] >= 3:
         require(document.get("canonical_consent_suppression_measured") is True, "canonical policy checks missing")
         require(document.get("policy_denial_probe") == {
             "missing_consent": "failed_before_action_dispatch",
             "suppressed": "failed_before_action_dispatch",
         }, "policy denial probes missing")
+    if document["schema_version"] == 4:
+        require(document.get("fault_probe") == {
+            "duplicate_redis_wakeup_idempotent": True,
+            "foreign_workspace_wakeup_rejected": True,
+            "cancelled_execution_ignored_stale_wakeup": True,
+        }, "full-path fault probes missing")
     preflight = document.get("preflight")
     require(isinstance(preflight, dict) and preflight.get("preflight") == "passed" and preflight.get("source_sha") == document["source_sha"] and preflight.get("database") == document.get("database"), "preflight identity mismatch")
     require(isinstance(document.get("cpu_count"), int) and document["cpu_count"] > 0 and isinstance(document.get("memory_mib"), int) and document["memory_mib"] >= 512, "resource identity missing")

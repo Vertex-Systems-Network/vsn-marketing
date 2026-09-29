@@ -1622,9 +1622,9 @@
       "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
       "command_workflow": "tools/task0051_benchmark_queue_capture.php + tools/task0051_benchmark_queue_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and isolated runtime; PHASE-09 closeout before PHASE-10",
       "exact_source_identity": {
-        "git_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
+        "git_sha": "6d77045191b53d596851fa999203bd5a1050d483",
         "resolution_required_before_execution": false,
-        "evidence_surface": "synthetic Redis queue and complete pinned journey graph; production action policy/provider timing still excluded"
+        "evidence_surface": "synthetic Redis full graph and canonical consent/suppression policy probes; production action/provider boundary excluded"
       },
       "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
       "authorization_state": "user_authorized_pre_phase10_dedicated_batch",
@@ -1634,16 +1634,16 @@
       "dedup_key": "runner:task0051:representative-journey-execution:v1",
       "status": "captured_scope_incomplete",
       "immutable_evidence": {
-        "workflow_run": 36548742165,
-        "artifact_id": 11024195751,
-        "source_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
-        "main_tree_sha": "70253692d7b3e06aca6d4ff51837e9d7e8a346cc",
-        "artifact_sha256": "be9da38ed39a51ad9bbbb2f66f46dbcd13b4e33752e66d7d53182532a899152d",
-        "raw_json_sha256": "7c9260301daaf2b37f10bdce3d4559c2b137c4c0b5c6fa212bc946c915c548b8",
-        "review": "docs/benchmarks/evidence/RBT-052-36548742165-review.md",
-        "raw_json": "docs/benchmarks/evidence/RBT-052-36548742165.json",
+        "workflow_run": 36551834751,
+        "artifact_id": 11024542666,
+        "source_sha": "6d77045191b53d596851fa999203bd5a1050d483",
+        "main_tree_sha": "75ec690be074a1c47ae078727f644f3e19b31d8e",
+        "artifact_sha256": "3a3b87578c3ca297a8c2955afa5e8fdb68bdec6745ead7c7a05995a9872f6585",
+        "raw_json_sha256": "887e4abf0f23fd5ce40123140a37f890d581e9e8566057f97870ca5646c8665e",
+        "review": "docs/benchmarks/evidence/RBT-052-36551834751-review.md",
+        "raw_json": "docs/benchmarks/evidence/RBT-052-36551834751.json",
         "ac5_accepted": false,
-        "scope": "synthetic Redis queue, pinned full graph, wait resume and no-op action; production policy, provider latency and full-path fault/saturation not measured"
+        "scope": "synthetic queue/full graph, canonical consent/suppression allow and deny; production provider action and full-path saturation/fault not measured"
       },
       "prior_evidence": [
         {
@@ -1656,6 +1656,18 @@
           "raw_json": "docs/benchmarks/evidence/RBT-052-36504122827.json",
           "ac5_accepted": false,
           "scope": "synthetic enrollment and PostgreSQL attempt persistence only; no Redis queue or full graph traversal"
+        },
+        {
+          "workflow_run": 36548742165,
+          "artifact_id": 11024195751,
+          "source_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
+          "main_tree_sha": "70253692d7b3e06aca6d4ff51837e9d7e8a346cc",
+          "artifact_sha256": "be9da38ed39a51ad9bbbb2f66f46dbcd13b4e33752e66d7d53182532a899152d",
+          "raw_json_sha256": "7c9260301daaf2b37f10bdce3d4559c2b137c4c0b5c6fa212bc946c915c548b8",
+          "review": "docs/benchmarks/evidence/RBT-052-36548742165-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36548742165.json",
+          "ac5_accepted": false,
+          "scope": "synthetic Redis queue, pinned full graph, wait resume and no-op action; production policy, provider latency and full-path fault/saturation not measured"
         }
       ]
     }

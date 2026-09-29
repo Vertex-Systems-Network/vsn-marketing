@@ -1,21 +1,37 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "137332f9cce7b333ece95c7d8bad2ab79ef3bd5e",
+  "reconciled_main_sha": "de9d00b5e3f651013270fde6792efa8c3b0b31c4",
   "active_work_path": {
     "kind": "pr",
-    "number": 439,
-    "title": "Measure canonical consent and suppression in RBT-052 action path",
-    "branch": "supervisor/rbt052-policy",
+    "number": 441,
+    "title": "Probe duplicate and cancelled Redis journey wake-ups in RBT-052",
+    "branch": "supervisor/rbt052-fault",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 441,
+      "title": "Probe duplicate and cancelled Redis journey wake-ups in RBT-052",
+      "branch": "supervisor/rbt052-fault",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 440,
+      "title": "Archive RBT-052 v3 canonical policy evidence without AC5 acceptance",
+      "branch": "supervisor/rbt052-v3-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
     {
       "kind": "pr",
       "number": 439,
       "title": "Measure canonical consent and suppression in RBT-052 action path",
       "branch": "supervisor/rbt052-policy",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

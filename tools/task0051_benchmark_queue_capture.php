@@ -8,8 +8,10 @@ use App\Modules\Consent\Domain\Suppression\SuppressionRecord;
 use App\Modules\Consent\Infrastructure\Suppression\DatabaseSuppressionRepository;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Journeys\Application\JourneyNodeJob;
 use App\Modules\Journeys\Application\RedispatchDueJourneyWork;
 use App\Modules\Journeys\Application\StartJourneyExecution;
+use App\Modules\Journeys\Domain\Contracts\JourneyNodeAttemptRepository;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\DB;
@@ -294,6 +296,49 @@ function rbt052PolicyProbe(array $options): array
     return $result;
 }
 
+/** @return array<string, bool> */
+function rbt052FaultProbe(array $options): array
+{
+    $graph = rbt052Graph();
+    $hash = app(JourneyGraphValidator::class)->hash($graph);
+    $fixture = rbt052Fixture('journey-bench-fault-'.bin2hex(random_bytes(6)), $graph, $hash);
+    $other = rbt052Fixture('journey-bench-other-'.bin2hex(random_bytes(6)), $graph, $hash);
+    $active = rbt052Enroll($fixture, 0, 0);
+    $cancelled = rbt052Enroll($fixture, 1, 0);
+    $activeEntry = DB::table('journey_work_items')->where('execution_id', $active['execution'])->where('node_id', 'entry')->value('id');
+    $cancelledEntry = DB::table('journey_work_items')->where('execution_id', $cancelled['execution'])->where('node_id', 'entry')->value('id');
+    JourneyNodeJob::dispatch($fixture['workspace'], (string) $activeEntry);
+    JourneyNodeJob::dispatch($fixture['workspace'], (string) $activeEntry);
+    JourneyNodeJob::dispatch($other['workspace'], (string) $activeEntry);
+    if (! app(JourneyNodeAttemptRepository::class)->cancelExecution(
+        $fixture['workspace'], $cancelled['execution'], new DateTimeImmutable('now'),
+    )) {
+        rbt052Fail('fault probe cancellation failed');
+    }
+    JourneyNodeJob::dispatch($fixture['workspace'], (string) $cancelledEntry);
+    for ($pass = 0; $pass < 10; $pass++) {
+        rbt052Workers($options['concurrency'], [$active, $cancelled]);
+        if (DB::table('journey_executions')->where('id', $active['execution'])->value('status') === 'succeeded') {
+            break;
+        }
+        sleep(1);
+        app(RedispatchDueJourneyWork::class)->handle($fixture['workspace'], 10);
+    }
+    $activeNodes = DB::table('journey_work_items')->where('execution_id', $active['execution'])->get();
+    $cancelledNodes = DB::table('journey_work_items')->where('execution_id', $cancelled['execution'])->get();
+    if (DB::table('journey_executions')->where('id', $active['execution'])->value('status') !== 'succeeded'
+        || $activeNodes->where('status', 'completed')->count() !== 5
+        || DB::table('journey_node_attempts')->where('execution_id', $active['execution'])->count() !== 5
+        || DB::table('journey_executions')->where('id', $cancelled['execution'])->value('status') !== 'cancelled'
+        || $cancelledNodes->count() !== 1 || $cancelledNodes->first()->status !== 'cancelled'
+        || DB::table('journey_node_attempts')->where('execution_id', $cancelled['execution'])->exists()) {
+        rbt052Fail('duplicate, cross-workspace, or cancellation fault invariant failed');
+    }
+
+    return ['duplicate_redis_wakeup_idempotent' => true,
+        'foreign_workspace_wakeup_rejected' => true, 'cancelled_execution_ignored_stale_wakeup' => true];
+}
+
 try {
     $options = rbt052Options();
     $preflight = rbt052Preflight($options);
@@ -315,14 +360,16 @@ try {
         rbt052Fail('normal graph runs created failed Redis jobs');
     }
     $policyProbe = rbt052PolicyProbe($options);
+    $faultProbe = rbt052FaultProbe($options);
     $evidence = [
-        'schema_version' => 3, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
+        'schema_version' => 4, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
         'resource_profile' => $options['resource-profile'], 'runner_image_sha' => $options['runner-image-sha'],
         'cpu_count' => $options['cpu-count'], 'memory_mib' => $options['memory-mib'], 'database' => $options['database'],
         'fixture_seed' => $options['seed'], 'preflight' => $preflight,
         'redis_queue_measured' => true, 'graph_traversal_measured' => true,
         'synthetic_action_gate_invoked' => true, 'production_action_policy_measured' => false, 'provider_latency_measured' => false,
         'canonical_consent_suppression_measured' => true, 'policy_denial_probe' => $policyProbe,
+        'fault_probe' => $faultProbe,
         'sample_scope' => 'isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op action; canonical consent/suppression checked, full production action policy/provider timing excluded',
         'warmup' => $warmupRun, 'runs' => $runs, 'captured_at_utc' => gmdate(DATE_ATOM),
     ];

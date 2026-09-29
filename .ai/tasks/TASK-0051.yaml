@@ -44,5 +44,5 @@
     "retry-replay-recovery-tests",
     "representative-execution-benchmark"
   ],
-  "exact_next_action": "Prepare and execute the dedicated RBT-052 PHASE-09 closeout before TASK-0051 AC-5 and PHASE-10. Verify exact source and isolated non-production PostgreSQL/Redis runtime, resolve coverage gaps, capture raw evidence, and review digest and invariants; do not accept AC-5 from CI or synthetic claims."
+  "exact_next_action": "Implement the missing journey queue worker and complete graph traversal with tenant, action-policy and durable wait gates; extend RBT-052 to time queue age and full end-to-end execution, rerun source-pinned isolated capture, and review raw evidence before TASK-0051 AC-5 and PHASE-10."
 }

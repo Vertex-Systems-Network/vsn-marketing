@@ -1622,8 +1622,8 @@
       "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
       "command_workflow": "tools/task0051_benchmark_capture.php + tools/task0051_benchmark_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and runtime authority required; PHASE-09 closeout before PHASE-10",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
+        "git_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
+        "resolution_required_before_execution": false,
         "evidence_surface": "TASK-0051 representative journey execution workload on exact reviewed source"
       },
       "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
@@ -1632,8 +1632,18 @@
       "merge_blocking": false,
       "expected_runner_time": "unmeasured_external_runtime",
       "dedup_key": "runner:task0051:representative-journey-execution:v1",
-      "status": "blocked_runtime_required",
-      "immutable_evidence": null
+      "status": "captured_scope_incomplete",
+      "immutable_evidence": {
+        "workflow_run": 36504122827,
+        "artifact_id": 11006421917,
+        "source_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
+        "artifact_sha256": "8d7f811c45b59eae86f4a2ee62fca2090b6da4f12b83be90e1ae0a482375dad3",
+        "raw_json_sha256": "bf4ea5127cdb957fc9694d00a80837b62281018d42a67b69d1081a2d6f19dfec",
+        "review": "docs/benchmarks/evidence/RBT-052-36504122827-review.md",
+        "raw_json": "docs/benchmarks/evidence/RBT-052-36504122827.json",
+        "ac5_accepted": false,
+        "scope": "synthetic enrollment and PostgreSQL attempt persistence only; no Redis queue or full graph traversal"
+      }
     }
   ]
 }

@@ -503,7 +503,7 @@
       "id": "TASK-0051",
       "phase": "PHASE-09",
       "title": "Implement durable concurrency retries replay and recovery",
-      "status": "blocked",
+      "status": "completed",
       "dependencies": [
         "TASK-0050"
       ],

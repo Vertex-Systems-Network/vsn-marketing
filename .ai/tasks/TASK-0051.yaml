@@ -3,7 +3,7 @@
   "phase": "PHASE-09",
   "title": "Implement durable concurrency retries replay and recovery",
   "weight": 20,
-  "status": "blocked",
+  "status": "completed",
   "dependencies": [
     "TASK-0050"
   ],
@@ -36,7 +36,8 @@
     {
       "id": "AC-5",
       "description": "Representative benchmark evidence is captured before production numeric limits are claimed.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     }
   ],
   "required_tests": [

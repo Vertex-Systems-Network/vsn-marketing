@@ -92,6 +92,20 @@ it('stores waits idempotently and rejects reuse of a wait key with different pre
         ->toThrow(JourneyDefinitionException::class, 'wait_idempotency_conflict');
 });
 
+it('restores a fractional-time wait from the persisted second-precision deadline', function () {
+    $fixture = persistedJourneyWaitFixture();
+    $wait = scheduledJourneyWait($fixture, 1, new DateTimeImmutable('2026-09-27T12:00:00.654321Z'));
+    $repository = app(JourneyWaitRepository::class);
+    $repository->store($wait);
+
+    $stored = DB::table('journey_waits')->where('workspace_id', $fixture['workspace_id'])->first();
+    $restored = DurableJourneyWait::restore($fixture['workspace_id'], $fixture['execution_id'],
+        'delay-node', new DateTimeImmutable((string) $stored->wake_at), (string) $stored->wait_key);
+
+    expect($restored->idempotencyKey)->toBe($wait->idempotencyKey)
+        ->and($restored->wakeAt->format('Y-m-d H:i:s.u'))->toBe('2026-09-27 12:00:02.000000');
+});
+
 it('returns only bounded due waits for the requested workspace in deterministic order', function () {
     $first = persistedJourneyWaitFixture();
     $second = persistedJourneyWaitFixture();

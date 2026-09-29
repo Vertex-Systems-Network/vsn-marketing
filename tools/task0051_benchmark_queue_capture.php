@@ -152,6 +152,28 @@ function rbt052Workers(int $concurrency, array $items): void
     }
 }
 
+/** @param list<array<string, mixed>> $items */
+function rbt052Progress(array $items, int $passes): string
+{
+    $ids = array_column($items, 'execution');
+    $executions = DB::table('journey_executions')->whereIn('id', $ids)
+        ->select('status', DB::raw('count(*) as total'))->groupBy('status')->pluck('total', 'status')->all();
+    $work = DB::table('journey_work_items')->whereIn('execution_id', $ids)
+        ->select('node_id', 'status', DB::raw('count(*) as total'))->groupBy('node_id', 'status')->get()
+        ->mapWithKeys(static fn ($row) => [$row->node_id.':'.$row->status => (int) $row->total])->all();
+    $attempts = DB::table('journey_node_attempts')->whereIn('execution_id', $ids)
+        ->select('status', DB::raw('count(*) as total'))->groupBy('status')->pluck('total', 'status')->all();
+    $due = DB::table('journey_work_items')->whereIn('execution_id', $ids)
+        ->whereIn('status', ['pending', 'running', 'waiting'])->where('available_at', '<=', now())->count();
+    $failure = DB::table('failed_jobs')->orderBy('id')->value('exception');
+    $failureType = is_string($failure) ? strtok($failure, "\r\n") : null;
+    $failureType = $failureType === false ? null : substr($failureType, 0, 240);
+
+    return json_encode(['passes' => $passes, 'executions' => $executions, 'work' => $work,
+        'attempts' => $attempts, 'due_work' => $due, 'failed_jobs' => DB::table('failed_jobs')->count(),
+        'first_failure' => $failureType], JSON_THROW_ON_ERROR);
+}
+
 /** @return array<string, mixed> */
 function rbt052Run(array $options, int $run): array
 {
@@ -174,7 +196,7 @@ function rbt052Run(array $options, int $run): array
         }
         if (++$passes > 90 || DB::table('journey_executions')->whereIn('id', array_column($items, 'execution'))
             ->whereIn('status', ['failed', 'blocked', 'cancelled', 'exited'])->exists()) {
-            rbt052Fail('journey graph did not complete cleanly in bounded worker passes');
+            rbt052Fail('journey graph did not complete cleanly: '.rbt052Progress($items, $passes));
         }
         sleep(1); // Harness scheduler tick; journey workers themselves never sleep on waits.
         foreach ($fixtures as $fixture) {

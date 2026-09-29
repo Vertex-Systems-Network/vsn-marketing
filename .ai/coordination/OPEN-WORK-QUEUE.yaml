@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "fe422b28df32491e7aa368df24e20fcbbc217fe6",
+  "reconciled_main_sha": "270c995ba42bab434b2df6bf7f5d8fc23a2780e8",
   "active_work_path": {
     "kind": "pr",
-    "number": 435,
-    "title": "RBT-052 queue and graph capture",
-    "branch": "supervisor/rbt052-full-capture",
+    "number": 436,
+    "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
+    "branch": "supervisor/rbt052-diagnose",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 436,
+      "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
+      "branch": "supervisor/rbt052-diagnose",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 435,
       "title": "RBT-052 queue and graph capture",
       "branch": "supervisor/rbt052-full-capture",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

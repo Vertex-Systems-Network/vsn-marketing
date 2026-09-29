@@ -165,9 +165,13 @@ function rbt052Progress(array $items, int $passes): string
         ->select('status', DB::raw('count(*) as total'))->groupBy('status')->pluck('total', 'status')->all();
     $due = DB::table('journey_work_items')->whereIn('execution_id', $ids)
         ->whereIn('status', ['pending', 'running', 'waiting'])->where('available_at', '<=', now())->count();
+    $failure = DB::table('failed_jobs')->orderBy('id')->value('exception');
+    $failureType = is_string($failure) ? strtok($failure, "\r\n") : null;
+    $failureType = $failureType === false ? null : substr($failureType, 0, 240);
 
     return json_encode(['passes' => $passes, 'executions' => $executions, 'work' => $work,
-        'attempts' => $attempts, 'due_work' => $due, 'failed_jobs' => DB::table('failed_jobs')->count()], JSON_THROW_ON_ERROR);
+        'attempts' => $attempts, 'due_work' => $due, 'failed_jobs' => DB::table('failed_jobs')->count(),
+        'first_failure' => $failureType], JSON_THROW_ON_ERROR);
 }
 
 /** @return array<string, mixed> */

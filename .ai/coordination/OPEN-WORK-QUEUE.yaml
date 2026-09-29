@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "246f5413e96312996c20425d6e53bfacad55b0f4",
+  "reconciled_main_sha": "b3ed24d6313bde2204afb88f4d32ef339d05d38a",
   "active_work_path": {
     "kind": "pr",
-    "number": 433,
-    "title": "TASK-0051 graph routing and queue worker",
-    "branch": "supervisor/task0051-graph-runtime",
+    "number": 434,
+    "title": "TASK-0051 durable queue and graph worker",
+    "branch": "supervisor/task0051-worker",
     "disposition": "active_task0051_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 434,
+      "title": "TASK-0051 durable queue and graph worker",
+      "branch": "supervisor/task0051-worker",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 433,
       "title": "TASK-0051 graph routing and queue worker",
       "branch": "supervisor/task0051-graph-runtime",
       "disposition": "active_task0051_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T00:52:54+00:00`
-- Observed main: `246f5413e96312996c20425d6e53bfacad55b0f4`
+- Timestamp: `2026-09-29T01:18:03+00:00`
+- Observed main: `b3ed24d6313bde2204afb88f4d32ef339d05d38a`
 - Active issue: `none`
-- Active PR: `433`
-- Active branch: `supervisor/task0051-graph-runtime`
+- Active PR: `434`
+- Active branch: `supervisor/task0051-worker`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `706523451df3b1ef187a9c5cfe51193b3224e12f3c0ee0fe3a1b22032b70a850`
+- State fingerprint: `7c63d18a4424562e451f8b7b39a50d8c390e0523b60d1b8d998a7e81b00b686e`
 
 ## Completed / observed this session
 
-PR #433 graph traversal is under exact-head CI; governance failed because previous RBT-052 evidence merge was material main drift, now reconciled to 246f541. AC-5 remains blocked.
+PR #433 graph routing merged on protected main b3ed24d; TASK-0051 remains blocked on representative queue and full-journey benchmark. PR #434 adds tenant-scoped durable work items and real Redis queue consumer under review.
 
 ## Tests
 
-Local continuity, policy, supervisor checks passed; PR #433 governance failed on stale observed_main_sha; exact-head rerun pending.
+PR #433 exact head f94996f passed continuity, governance, Application Foundation including PostgreSQL/E2E/PHP floor, and Security Supply Chain; worker code requires new exact-head CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local continuity, policy, supervisor checks passed; PR #433 governance failed on
 
 ## Exact next action
 
-Repair PR #433 exact-head CI, then implement tenant-scoped Redis worker and complete graph traversal and recapture RBT-052 before AC-5 acceptance.
+Verify and repair the durable journey queue worker on PR #434, extend source-pinned RBT-052 to measure queue age and full graph path, review raw artifact before AC-5/PHASE-10.

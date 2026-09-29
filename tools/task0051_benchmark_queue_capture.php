@@ -362,6 +362,9 @@ try {
     for ($i = 0; $i < $options['runs']; $i++) {
         $runs[] = rbt052Run($options, $i);
     }
+    $controlOptions = $options;
+    $controlOptions['operations'] = 200;
+    $control = rbt052Run($controlOptions, 99);
     $stressOptions = $options;
     $stressOptions['operations'] = 200;
     $stressOptions['concurrency'] = 8;
@@ -372,7 +375,7 @@ try {
     $policyProbe = rbt052PolicyProbe($options);
     $faultProbe = rbt052FaultProbe($options);
     $evidence = [
-        'schema_version' => 5, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
+        'schema_version' => 6, 'benchmark_id' => $options['benchmark-id'], 'source_sha' => $options['commit-sha'],
         'resource_profile' => $options['resource-profile'], 'runner_image_sha' => $options['runner-image-sha'],
         'cpu_count' => $options['cpu-count'], 'memory_mib' => $options['memory-mib'], 'database' => $options['database'],
         'fixture_seed' => $options['seed'], 'preflight' => $preflight,
@@ -381,7 +384,7 @@ try {
         'canonical_consent_suppression_measured' => true, 'policy_denial_probe' => $policyProbe,
         'fault_probe' => $faultProbe,
         'sample_scope' => 'isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op action; canonical consent/suppression checked, full production action policy/provider timing excluded',
-        'warmup' => $warmupRun, 'runs' => $runs, 'backlog_stress' => $stress,
+        'warmup' => $warmupRun, 'runs' => $runs, 'backlog_control' => $control, 'backlog_stress' => $stress,
         'captured_at_utc' => gmdate(DATE_ATOM),
     ];
     $encoded = json_encode($evidence, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL;

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T10:14:22+00:00`
-- Observed main: `886113d7f9e5b2c9c65bb62eef1d9472a563d310`
+- Timestamp: `2026-09-29T10:26:27+00:00`
+- Observed main: `1e7ffddc544fde7a2a99341bf99b2e9cf546c19d`
 - Active issue: `none`
-- Active PR: `443`
-- Active branch: `supervisor/rbt052-load`
+- Active PR: `444`
+- Active branch: `supervisor/rbt052-compare`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `145b9b2321c8acb0baea6c05b80f2f6f8b17091ba083c6d05949a35bfd972dac`
+- State fingerprint: `73b7f28d9ce60c630ff9c2da37f86704381ceab106cd15ac64ce8fab4fa14330`
 
 ## Completed / observed this session
 
-RBT-052 v4 raw reviewed and PR #442 merged at 886113d. Added v5 measured Redis initial backlog and 200-operation/eight-worker stress sample; no CPU saturation or provider claims.
+PR #443 merged at 1e7ffdd; v5 raw run 36554880080 validated, exposing 200-job/eight-worker tail p95 queue age 65.865s and 1.918 ops/s vs 100-job/four-worker ~2.3s p95 and ~4.86 ops/s. Cause unisolated; AC5 blocked. Added 200-job/four-worker comparison harness.
 
 ## Tests
 
-Archived v4 validator passed; v5 exact-head CI and dedicated capture pending.
+PR #443 exact-head CI green; run 36554880080 success, raw sha256 7c1ef125344e83707b27cf09160a655ab8ccf2cd90ea8f70628b21330ce0a078 validator passed; v6 CI/capture pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Archived v4 validator passed; v5 exact-head CI and dedicated capture pending.
 
 ## Exact next action
 
-Verify/merge v5 backlog-stress PR, capture exact-source v5 raw and review; implement real provider action boundary or record honest blocker before AC5/PHASE-09 closure.
+Review and merge v5 risk plus v6 comparison PR; run source-pinned v6 and diagnose tail before production numeric limits, provider boundary, AC5 and PHASE-09.

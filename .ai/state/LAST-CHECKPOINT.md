@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-09-29T09:55:45+00:00`
-- Observed main: `fa698f284c6931dbe78d33198e68c413fabedc2b`
+- Timestamp: `2026-09-29T09:59:00+00:00`
+- Observed main: `de9d00b5e3f651013270fde6792efa8c3b0b31c4`
 - Active issue: `none`
-- Active PR: `440`
-- Active branch: `supervisor/rbt052-v3-review`
+- Active PR: `441`
+- Active branch: `supervisor/rbt052-fault`
 - Current milestone: `PHASE-09-TASK-0051-EXECUTION`
 - Milestone status: `WAITING_EXTERNAL`
 - Active task: `TASK-0051`
@@ -15,15 +15,15 @@
 - Execution status: `blocked`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `ef002dc95269d559d7371c5e73b59d7bfda8b2c78110f5bb952c71ed92fc7b6a`
+- State fingerprint: `662cf7c3f1fd7061bf16db38d83231e1ff46cb139b5f8eb5122db8ebac499505`
 
 ## Completed / observed this session
 
-PR #439 merged at fa698f2; RBT-052 v3 run 36551834751 source tree matches main, raw validated with canonical consent/suppression allow and two fail-closed denial probes. Production provider action, full policy and saturation/fault still unmeasured; AC5 blocked.
+PR #440 merged at de9d00b. Added source-pinned RBT-052 v4 duplicate Redis wake-up, cross-workspace wake-up and cancelled-stale wake-up probes with exact persisted invariants; benchmark and CI pending. AC5 remains blocked.
 
 ## Tests
 
-Exact-head PR #439 full CI green; RBT-052 run 36551834751 success, raw SHA-256 887e4abf0f23fd5ce40123140a37f890d581e9e8566057f97870ca5646c8665e, v3 validator passed.
+Existing v2/v3 raw validators pass; v4 exact-head CI and dedicated run pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Exact-head PR #439 full CI green; RBT-052 run 36551834751 success, raw SHA-256 8
 
 ## Exact next action
 
-Merge v3 evidence review carrier; implement real registered action policy/provider boundary and full-path scale/fault benchmark, then certify AC5 only on validated representative evidence.
+Merge v4 fault probe PR after full exact-head CI, run dedicated capture and review raw evidence; build actual action/provider policy boundary and saturation evidence before AC5.

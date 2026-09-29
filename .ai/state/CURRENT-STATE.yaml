@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "73e3e117c37e911041794733f2821812aa123936",
+  "observed_main_sha": "246f5413e96312996c20425d6e53bfacad55b0f4",
   "active_issue": null,
-  "active_pr": null,
-  "active_branch": "main",
+  "active_pr": 433,
+  "active_branch": "supervisor/task0051-graph-runtime",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
   "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Implement the missing journey queue worker and complete graph traversal with tenant, action-policy and durable wait gates; extend RBT-052 to time queue age and full end-to-end execution, rerun source-pinned isolated capture, and review raw evidence before TASK-0051 AC-5 and PHASE-10.",
+  "exact_next_safe_action": "Repair PR #433 exact-head CI, then implement tenant-scoped Redis worker and complete graph traversal and recapture RBT-052 before AC-5 acceptance.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement the missing journey queue worker and complete graph traversal with tenant, action-policy and durable wait gates; extend RBT-052 to time queue age and full end-to-end execution, rerun source-pinned isolated capture, and review raw evidence before TASK-0051 AC-5 and PHASE-10."
+  "exact_next_action": "Repair PR #433 exact-head CI, then implement tenant-scoped Redis worker and complete graph traversal and recapture RBT-052 before AC-5 acceptance."
 }

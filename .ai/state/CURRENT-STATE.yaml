@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "46100fda84e531659a89c9eacd8bb4d8013e643b",
   "active_issue": null,
-  "active_pr": 446,
+  "active_pr": 447,
   "active_branch": "supervisor/task0051-provider-action",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Verify PR exact-head gates for due-work scheduled recovery, merge on green, then continue TASK-0051 provider action authorization/idempotency design and representative evidence.",
+  "exact_next_safe_action": "Inspect PR #447 exact-head gates and repair any same-scope failures; merge only after required gates pass, then continue TASK-0051 provider boundary and AC-5 evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR exact-head gates for due-work scheduled recovery, merge on green, then continue TASK-0051 provider action authorization/idempotency design and representative evidence."
+  "exact_next_action": "Inspect PR #447 exact-head gates and repair any same-scope failures; merge only after required gates pass, then continue TASK-0051 provider boundary and AC-5 evidence."
 }

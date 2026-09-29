@@ -12,3 +12,7 @@ The existing [TASK-0048 research](TASK-0048-RESEARCH.md) defines the pinned grap
 `CONFIRMS_PLAN`: Implement a bounded graph router and workspace-scoped worker on the existing queue connection. Record enqueue and start instants from the real worker path. Keep action policy checks fresh immediately before side effects and preserve unknown outcomes for operator review. Do not infer production limits from the synthetic RBT-052 PostgreSQL-only baseline.
 
 `BLOCKER`: Until the real worker, graph traversal, timer resume, and queue-age measurement are exercised in a source-pinned capture, TASK-0051 AC-5 remains pending and PHASE-10 stays inactive.
+
+## Canonical policy measurement extension — 2026-09-29
+
+The v2 synthetic adapter returned constant `consent=true` and `suppression_clear=true`, so neither the repository policy lookup nor a denial path was measured. The v3 isolated fixture appends granted consent through the canonical append-only record repository, evaluates effective consent and suppression through their existing services for every action, and probes missing consent plus canonical unsubscribe suppression on the same Redis graph path. The benchmark still uses a synthetic provider capability, authorization/quota booleans and no-op action. Classify this as `PARTIAL_EVIDENCE`: a measured canonical consent/suppression decision with fail-closed probes, not production action policy or provider latency. Keep AC-5 blocked until the remaining production boundary and full-path fault/scale evidence are independently reviewed.

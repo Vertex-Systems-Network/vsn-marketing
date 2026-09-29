@@ -6,8 +6,8 @@ use App\Modules\Journeys\Application\RedispatchDueJourneyWork;
 use App\Modules\Journeys\Application\StartJourneyExecution;
 use App\Modules\Journeys\Domain\JourneyGraphValidator;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 

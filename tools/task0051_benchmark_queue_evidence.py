@@ -38,7 +38,7 @@ def validate_run(run: object, count: int, concurrency: int, graph_hash: str | No
 
 
 def validate(document: object) -> None:
-    require(isinstance(document, dict) and document.get("schema_version") in (2, 3, 4, 5), "v2-v5 evidence required")
+    require(isinstance(document, dict) and document.get("schema_version") in (2, 3, 4, 5, 6), "v2-v6 evidence required")
     for field in ("benchmark_id", "resource_profile"):
         require(isinstance(document.get(field), str) and re.fullmatch(r"[A-Za-z0-9._-]{1,100}", document[field]) is not None, "invalid "+field)
     require(isinstance(document.get("source_sha"), str) and re.fullmatch(r"[0-9a-f]{40}", document["source_sha"]) is not None, "source SHA invalid")
@@ -70,12 +70,16 @@ def validate(document: object) -> None:
     graph = validate_run(warmup, 20, concurrency, None)
     for run in runs:
         validate_run(run, count, concurrency, graph)
-    if document["schema_version"] == 5:
+    if document["schema_version"] >= 5:
         for run in [warmup, *runs]:
             require(isinstance(run.get("initial_queue_depth"), int) and run["initial_queue_depth"] >= run["operations"], "initial Redis backlog missing")
         stress = document.get("backlog_stress")
         validate_run(stress, 200, 8, graph)
         require(isinstance(stress.get("initial_queue_depth"), int) and stress["initial_queue_depth"] >= 200, "stress backlog missing")
+    if document["schema_version"] == 6:
+        control = document.get("backlog_control")
+        validate_run(control, 200, concurrency, graph)
+        require(isinstance(control.get("initial_queue_depth"), int) and control["initial_queue_depth"] >= 200, "control backlog missing")
     forbidden = {"secret", "password", "token", "email", "recipient", "provider_payload", "raw_payload"}
     def reject(value: object) -> None:
         if isinstance(value, dict):

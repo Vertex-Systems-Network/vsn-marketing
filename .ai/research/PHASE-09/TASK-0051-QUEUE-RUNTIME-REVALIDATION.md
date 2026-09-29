@@ -24,3 +24,7 @@ V4 isolated harness adds duplicate Redis wake-up, foreign-workspace work ID, and
 ## Redis backlog stress — 2026-09-29
 
 V5 records the Redis queue depth after enqueue and before workers for each sample run and adds a 200-operation/eight-worker stress run on the same 2-CPU app container and two-workspace graph. The validator requires at least 200 queued items and all 200 completed raw samples. This tests bounded backlog recovery and latency under increased load; it is not proof of CPU/memory saturation because the PostgreSQL/Redis service containers share the hosted runner and no continuous resource telemetry or production workload mix is captured. Do not infer a production SLO from it.
+
+## Stress result and bounded comparison — 2026-09-29
+
+V5 run 36554880080 showed 200 queued jobs/eight workers on the two-CPU app container fell to 1.918 ops/s with 65.865s p95 queue age, versus 100 jobs/four workers at about 4.86–4.87 ops/s and 2.3s p95. The combined change prevents attributing cause. V6 adds a 200-job/four-worker control on the same source and resource profile; review raw samples before tuning. No performance threshold or production capacity is approved.

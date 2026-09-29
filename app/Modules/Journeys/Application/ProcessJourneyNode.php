@@ -81,6 +81,13 @@ final readonly class ProcessJourneyNode
         }
         $claim = $this->attempts->claim($workspaceId, (string) $work->execution_id, (string) $work->node_id, 1, $now, $policy);
         if ($claim === null) {
+            // A workspace budget rejection owns no node lease. Keep the durable item
+            // available for the next bounded sweep instead of holding it for 60 seconds.
+            $this->database->table('journey_work_items')->where('workspace_id', $workspaceId)->where('id', $workItemId)
+                ->where('status', 'running')->update([
+                    'status' => 'pending', 'available_at' => $now->modify('+1 second'), 'updated_at' => now(),
+                ]);
+
             return; // A bounded recovery sweep will redispatch when the lease or workspace budget permits.
         }
 

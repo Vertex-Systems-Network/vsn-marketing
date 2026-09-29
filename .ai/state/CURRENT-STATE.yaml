@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b3ed24d6313bde2204afb88f4d32ef339d05d38a",
+  "observed_main_sha": "fe422b28df32491e7aa368df24e20fcbbc217fe6",
   "active_issue": null,
-  "active_pr": 434,
-  "active_branch": "supervisor/task0051-worker",
+  "active_pr": 435,
+  "active_branch": "supervisor/rbt052-full-capture",
   "current_milestone": "PHASE-09-TASK-0051-EXECUTION",
   "milestone_status": "WAITING_EXTERNAL",
   "last_completed_milestone": "PR #431 merged artifact-readability repair on protected main 73e3e117c37e911041794733f2821812aa123936. RBT-052 run #36504122827 produced independently validated raw PostgreSQL baseline; queue and full graph traversal remain unmeasured, so TASK-0051 AC-5 remains blocked.",
-  "exact_next_safe_action": "Verify and repair the durable journey queue worker on PR #434, extend source-pinned RBT-052 to measure queue age and full graph path, review raw artifact before AC-5/PHASE-10.",
+  "exact_next_safe_action": "Verify RBT-052 v2 harness PR #435, run it on the dedicated source-pinned branch, inspect raw queue/graph samples and provenance, and accept AC-5 only if representative evidence survives review.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify and repair the durable journey queue worker on PR #434, extend source-pinned RBT-052 to measure queue age and full graph path, review raw artifact before AC-5/PHASE-10."
+  "exact_next_action": "Verify RBT-052 v2 harness PR #435, run it on the dedicated source-pinned branch, inspect raw queue/graph samples and provenance, and accept AC-5 only if representative evidence survives review."
 }

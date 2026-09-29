@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5",
+  "reconciled_main_sha": "73e3e117c37e911041794733f2821812aa123936",
   "active_work_path": {
     "kind": "runner",
     "id": "RBT-052",
-    "disposition": "blocked_artifact_publication"
+    "disposition": "captured_scope_incomplete"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 431,
+      "title": "Fix RBT-052 evidence artifact readability",
+      "branch": "fix/rbt052-artifact-readability",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "73e3e117c37e911041794733f2821812aa123936"
+    },
     {
       "kind": "pr",
       "number": 430,

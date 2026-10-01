@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c2c28e00bfe19a841752dfd9d0af9d6c1e16f21c",
+  "reconciled_main_sha": "99eec5f5fc2bcfa0ace8616a432c9e341bc391d7",
   "active_work_path": {
     "kind": "pr",
-    "number": 451,
-    "title": "docs(phase09): close TASK-0053 and certify terminal progress",
-    "branch": "supervisor/task0053-phase09-final",
-    "disposition": "active_task0053_carrier"
+    "number": 452,
+    "title": "docs(phase10): register research-first AI gateway program",
+    "branch": "supervisor/phase10-research",
+    "disposition": "active_task0054_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 452,
+      "title": "docs(phase10): register research-first AI gateway program",
+      "branch": "supervisor/phase10-research",
+      "disposition": "active_task0054_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 451,
       "title": "docs(phase09): close TASK-0053 and certify terminal progress",
       "branch": "supervisor/task0053-phase09-final",
-      "disposition": "active_task0053_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "99eec5f5fc2bcfa0ace8616a432c9e341bc391d7"
     },
     {
       "kind": "pr",

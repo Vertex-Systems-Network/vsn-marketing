@@ -106,3 +106,17 @@ it('does not broaden a missing brand scope or permit a foreign brand to delete m
         ->and((new DatabaseAiContextRepository)->delete($foreign, null, null, $row['id']))->toBeFalse()
         ->and(aiContextAssembler()->assemble($brand, null, null, [$row['id']], $at)['manifest']['brand_id'])->toBe($brandId);
 });
+
+it('rejects unsafe provenance, unregistered permission and duplicate source selection', function () {
+    $scope = aiContextScope();
+    $at = new DateTimeImmutable('2026-10-01T12:00:00Z');
+    $unsafe = aiContextRow($scope, ['provenance_reference' => 'token=private-value']);
+    $unregistered = aiContextRow($scope, ['permission' => 'billing.manage']);
+    $valid = aiContextRow($scope);
+    DB::table('ai_context_memories')->insert([$unsafe, $unregistered, $valid]);
+
+    expect(fn () => aiContextAssembler()->assemble($scope, null, null, [$unsafe['id']], $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$unregistered['id']], $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $valid['id']], $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $unsafe['id']], $at))->toThrow(InvalidArgumentException::class);
+});

@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "7262dce7c5118cd08a0874c016d8d60894273183",
   "active_issue": null,
-  "active_pr": 458,
-  "active_branch": "supervisor/phase10-agent-runtime",
+  "active_pr": 459,
+  "active_branch": "supervisor/phase10-creative-drafts",
   "current_milestone": "PHASE-10-TASK-0059-CREATIVE-DRAFTS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Publish TASK0059 substantial carrier, verify full PR and resulting-main gates before TASK0060.",
+  "exact_next_safe_action": "Verify PR459 full exact-head gates, merge reviewed green head, verify resulting main then accept TASK0059 before TASK0060 red-team.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish TASK0059 substantial carrier, verify full PR and resulting-main gates before TASK0060."
+  "exact_next_action": "Verify PR459 full exact-head gates, merge reviewed green head, verify resulting main then accept TASK0059 before TASK0060 red-team."
 }

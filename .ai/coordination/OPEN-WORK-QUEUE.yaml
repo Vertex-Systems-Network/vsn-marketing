@@ -3,19 +3,28 @@
   "reconciled_main_sha": "7262dce7c5118cd08a0874c016d8d60894273183",
   "active_work_path": {
     "kind": "pr",
-    "number": 458,
-    "title": "feat(ai): add registered specialist candidate runtime and evaluation gates",
-    "branch": "supervisor/phase10-agent-runtime",
-    "disposition": "active_task0058_carrier"
+    "number": 459,
+    "title": "feat(ai): add rights-gated creative drafts and truthful rejection traces",
+    "branch": "supervisor/phase10-creative-drafts",
+    "disposition": "active_task0059_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 459,
+      "title": "feat(ai): add rights-gated creative drafts and truthful rejection traces",
+      "branch": "supervisor/phase10-creative-drafts",
+      "disposition": "active_task0059_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 458,
       "title": "feat(ai): add registered specialist candidate runtime and evaluation gates",
       "branch": "supervisor/phase10-agent-runtime",
-      "disposition": "active_task0058_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "7262dce7c5118cd08a0874c016d8d60894273183"
     },
     {
       "kind": "pr",

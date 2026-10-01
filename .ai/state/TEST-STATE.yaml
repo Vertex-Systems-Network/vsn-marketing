@@ -58,11 +58,11 @@
     }
   ],
   "application_tests": {
-    "status": "pending",
-    "reason": "TASK-0052 has local frontend evidence only. Backend/migration and actual browser execution are pending exact-head CI; do not infer them from test discovery or the prior TASK-0012 historical suite records."
+    "status": "passing",
+    "reason": "PR #449 source head 7aaface8e63d3ef330282630356d449302802b75 passed Application Foundation CI run 36800727107: foundation 732 passed / 134 infrastructure skips (4119 assertions), architecture 4 passed, static analysis, Pint, TypeScript, 34 frontend units, build, PHP floor, PostgreSQL/Redis integration 178 passed (1123 assertions), and browser E2E. Browser suite had 6 passed and one unrelated TASK-0046 test flaky on first attempt then passed retry; both TASK-0052 scenarios passed. AI Continuity 36800727075 and Security Supply Chain 36800727050 passed on the same source head. This records CI evidence; TASK-0052 and PHASE-09 remain open pending acceptance and main promotion."
   },
   "latest_local_verification": {
-    "basis": "Uncommitted TASK-0052 patch based on main 0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5; exact-head CI is not yet available.",
+    "basis": "TASK-0052 local frontend checks on the PR #449 source tree; PHP and browser results are separately recorded from exact source-head CI.",
     "checked_at_utc": "2026-10-01",
     "suites": [
       {
@@ -86,20 +86,20 @@
       {
         "name": "journey-operator-playwright",
         "command": "npx playwright test e2e/task0052-journey-operator.spec.ts --list",
-        "status": "discovered",
-        "notes": "Two scenarios discovered; browser execution not run locally because PHP and vendor/ are unavailable."
+        "status": "passing",
+        "notes": "Two scenarios passed in PR #449 Playwright job 110174846903 on 7aaface8e63d3ef330282630356d449302802b75; full suite 6 passed, one unrelated TASK-0046 flaky retry."
       },
       {
         "name": "journey-operator-backend-and-migration",
         "command": "php artisan test --testsuite=Feature",
-        "status": "pending",
-        "notes": "PHP runtime and vendor/ are unavailable locally; exact-head Application CI must execute controller, migration, tenancy, and lifecycle tests."
+        "status": "passing",
+        "notes": "PR #449 foundation job 110174218228 passed JourneyOperatorControllerTest and backend 732 passed / 134 infrastructure skips, including migration rollback guard; PostgreSQL/Redis integration job 110174846949 passed 178 tests."
       },
       {
         "name": "journey-operator-browser",
         "command": "npm run test:e2e -- e2e/task0052-journey-operator.spec.ts",
-        "status": "pending",
-        "notes": "Requires the Laravel browser test server; exact-head E2E CI must run both scenarios."
+        "status": "passing",
+        "notes": "PR #449 Playwright job 110174846903 passed both TASK-0052 scenarios on exact source head 7aaface8e63d3ef330282630356d449302802b75."
       }
     ]
   }

@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-09-TASK-0052-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Review PR #449 full exact-head application, browser, security and continuity checks; repair failures on same PR, then certify TASK-0052 and start TASK-0053 only after evidence. Keep PHASE-10 inactive.",
+  "exact_next_safe_action": "Publish TASK-0052 CI evidence on PR #449, certify new exact head, review threads/ruleset, merge only with green required checks, then transactionally complete TASK-0052 and activate TASK-0053. Keep PHASE-10 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review PR #449 full exact-head application, browser, security and continuity checks; repair failures on same PR, then certify TASK-0052 and start TASK-0053 only after evidence. Keep PHASE-10 inactive."
+  "exact_next_action": "Publish TASK-0052 CI evidence on PR #449, certify new exact head, review threads/ruleset, merge only with green required checks, then transactionally complete TASK-0052 and activate TASK-0053. Keep PHASE-10 inactive."
 }

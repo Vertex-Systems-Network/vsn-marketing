@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0058",
+  "updated_for_task": "TASK-0059",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -58,40 +58,38 @@
     }
   ],
   "application_tests": {
-    "status": "passing",
-    "basis": "repaired resulting-main2fb294fdd4f9bce718fb436aa5b1b8901426b285",
-    "run_id": 36931825964,
-    "reason": "All four foundation/PHP-floor/E2E/PostgreSQL integration jobs passed. TASK0058 implementation requires fresh exact-head and main gates."
+    "status": "pending",
+    "reason": "TASK0059 creative draft source requires new exact-head and resulting-main gates. Last accepted main7262dce7 passed all gates."
   },
   "latest_local_verification": {
-    "basis": "TASK0058 candidate runtime source",
+    "basis": "TASK0059 portable creative drafts and truthful rejection telemetry",
     "suites": [
       {
         "name": "ai-unit-feature",
         "status": "passing",
-        "notes": "30 tests /220 assertions, including all12specialists pinned policy fixtures, exact context isolation, budget/retry/live-route denial and independent promotion."
+        "notes": "38 tests /352 assertions with fail-on-notice and fail-on-warning; text/image contracts, independent rights/review, invalid media/output and real DB rejection/circuit/cost regression pass."
       },
       {
         "name": "backend",
         "status": "passing",
-        "notes": "762 tests /4339 assertions;136 infrastructure tests skipped locally."
+        "notes": "770 tests /4471 assertions;136 infrastructure tests skipped locally."
       },
       {
         "name": "static-format-policy-continuity",
         "status": "passing",
-        "notes": "PHPStan, locked Pint, artifact hashes/history, policy negative guards, transaction/journal/supervisor/parallel checks pass."
+        "notes": "PHPStan, locked Pint, artifact hash/history and negative guards, deterministic context, transaction/journal/supervisor/parallel checks pass."
       }
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 457,
-    "head_sha": "bd878a6ee32064de1ae396ae46caf0048dcfe27d",
-    "application_run": 36931095445,
-    "continuity_run": 36931095568,
-    "security_run": 36931095497,
+    "pull_request": 458,
+    "head_sha": "103c8002c9a62caa0ecfbabbb7d462f3f31662a8",
+    "application_run": 36934001915,
+    "continuity_run": 36934001932,
+    "security_run": 36934001918,
     "status": "passing",
-    "resulting_main_sha": "2fb294fdd4f9bce718fb436aa5b1b8901426b285",
-    "resulting_main_application_run": 36931825964,
+    "resulting_main_sha": "7262dce7c5118cd08a0874c016d8d60894273183",
+    "resulting_main_application_run": 36934657336,
     "resulting_main_application": "passing"
   }
 }

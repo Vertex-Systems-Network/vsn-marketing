@@ -56,6 +56,7 @@ BASE_FILES = [
     ".ai/ai/PROMPT-REGISTRY.yaml",
     ".ai/ai/TOOL-REGISTRY.yaml",
     ".ai/ai/EVAL-REGISTRY.yaml",
+    ".ai/ai/CREATIVE-REGISTRY.yaml",
     ".ai/ai/MEMORY-POLICY.yaml",
     ".ai/ai/AI-OBSERVABILITY-SCHEMA.yaml",
     ".ai/contracts/AI-EXECUTION.md",

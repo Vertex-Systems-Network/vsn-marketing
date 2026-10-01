@@ -21,6 +21,7 @@ FILES = {
     "evals": REG / "EVAL-REGISTRY.yaml",
     "memory": REG / "MEMORY-POLICY.yaml",
     "observability": REG / "AI-OBSERVABILITY-SCHEMA.yaml",
+    "creative": REG / "CREATIVE-REGISTRY.yaml",
 }
 RISK = {"R0": 0, "R1": 1, "R2": 2, "R3": 3}
 HIGH_RISK_CLASSES = {
@@ -143,7 +144,7 @@ def immutable_version_errors(previous: dict, current: dict, rows_key: str) -> li
 def validate_artifacts(docs: dict[str, dict], root: Path = ROOT) -> list[str]:
     errors = []
     agents = {row['id']: row for row in docs['agents']['agents']}
-    for name, rows_key, kind in [('prompts', 'prompts', 'prompts'), ('evals', 'suites', 'evals')]:
+    for name, rows_key, kind in [('prompts', 'prompts', 'prompts'), ('evals', 'suites', 'evals'), ('creative', 'capabilities', 'creative')]:
         for row in docs[name].get(rows_key, []):
             versions = row.get('versions', [])
             if duplicates([v.get('version') for v in versions]):
@@ -167,10 +168,19 @@ def validate_artifacts(docs: dict[str, dict], root: Path = ROOT) -> list[str]:
                     enum = artifact.get('schema', {}).get('properties', {}).get('tool_ids', {}).get('items', {}).get('enum', [])
                     if enum != agent.get('tools'):
                         errors.append(f"prompt tool scope mismatch: {row['id']}")
-                else:
+                elif name == 'evals':
                     ids = [case.get('id') for case in artifact.get('cases', [])]
                     if artifact.get('id') != row['id'] or artifact.get('evidence_kind') != 'offline_contract' or len(ids) < 4 or duplicates(ids):
                         errors.append(f"eval fixture binding/coverage mismatch: {row['id']}")
+                else:
+                    if (row['id'] not in docs['models']['capability_keys'] or artifact.get('id') != row['id']
+                        or artifact.get('evidence_kind') != 'offline_contract' or artifact.get('rights_required') is not True
+                        or artifact.get('provenance_required') is not True or artifact.get('publication_allowed') is not False
+                        or artifact.get('review_required') != ['rights', 'brand', 'safety']
+                        or not isinstance(artifact.get('max_media_bytes'), int) or not 0 <= artifact['max_media_bytes'] <= 5242880
+                        or not isinstance(artifact.get('max_text_bytes'), int) or not 1 <= artifact['max_text_bytes'] <= 4096
+                        or not isinstance(artifact.get('max_dimension'), int) or not 1 <= artifact['max_dimension'] <= 4096):
+                        errors.append(f"creative policy binding/bounds mismatch: {row['id']}")
     return errors
 
 
@@ -178,11 +188,17 @@ def validate_version_history(base: str, docs: dict[str, dict]) -> list[str]:
     if not base or set(base) == {'0'}:
         return []
     errors = []
-    for name, key in [('prompts', 'prompts'), ('evals', 'suites')]:
+    verify = subprocess.run(['git', 'rev-parse', '--verify', base+'^{commit}'], cwd=ROOT, capture_output=True, text=True)
+    if verify.returncode:
+        return ['cannot verify immutable registry base commit']
+    for name, key in [('prompts', 'prompts'), ('evals', 'suites'), ('creative', 'capabilities')]:
         path = FILES[name].relative_to(ROOT).as_posix()
         result = subprocess.run(['git', 'show', f'{base}:{path}'], cwd=ROOT, capture_output=True, text=True)
         if result.returncode:
-            errors.append(f"cannot verify immutable registry history: {path}")
+            # A newly registered subsystem has no version history at this base.
+            exists = subprocess.run(['git', 'cat-file', '-e', f'{base}:{path}'], cwd=ROOT, capture_output=True)
+            if exists.returncode == 0:
+                errors.append(f"cannot verify immutable registry history: {path}")
         else:
             errors.extend(immutable_version_errors(json.loads(result.stdout), docs[name], key))
     return errors

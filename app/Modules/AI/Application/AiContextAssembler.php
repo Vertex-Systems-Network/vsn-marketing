@@ -9,6 +9,7 @@ use App\Modules\AI\Domain\Contracts\AiContextRepository;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
+use DateTimeZone;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -74,8 +75,7 @@ final class AiContextAssembler
                 || ! is_string($row['provenance_reference'] ?? null) || $row['provenance_reference'] === ''
                 || strlen($row['provenance_reference']) > 255 || ! $this->sanitizer->safe($row['provenance_reference'])
                 || ! is_string($row['expires_at'] ?? null)
-                || strtotime($row['expires_at']) === false
-                || strtotime($row['expires_at']) <= $at->getTimestamp()
+                || ! $this->fresh($row['expires_at'], $at)
                 || ($row['deleted_at'] ?? null) !== null) {
                 throw new InvalidArgumentException('AI context record failed permission, provenance or data policy.');
             }
@@ -95,11 +95,19 @@ final class AiContextAssembler
         $manifest = [
             'workspace_id' => $scope->workspaceId, 'brand_id' => $scope->brandId,
             'customer_id' => $customerId, 'run_id' => $runId,
-            'assembled_at' => $at->format('Y-m-d\TH:i:s\Z'), 'sources' => $manifestSources,
+            'assembled_at' => $at->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+            'sources' => $manifestSources,
         ];
 
         return ['manifest' => $manifest,
             'manifest_sha256' => hash('sha256', json_encode($manifest, JSON_THROW_ON_ERROR)),
             'untrusted_context' => $untrusted];
+    }
+
+    private function fresh(string $expiry, DateTimeImmutable $at): bool
+    {
+        $parsed = DateTimeImmutable::createFromFormat('!Y-m-d H:i:s', $expiry, new DateTimeZone('UTC'));
+
+        return $parsed !== false && $parsed > $at;
     }
 }

@@ -74,12 +74,15 @@ it('binds a deterministic manifest to authenticated workspace and exact memory d
     DB::table('ai_context_memories')->insert($row);
     $at = new DateTimeImmutable('2026-10-01T12:00:00Z');
     $assembled = aiContextAssembler()->assemble($scope, $customer, $run, [$row['id']], $at);
+    $sameInstant = new DateTimeImmutable('2026-10-01T17:00:00+05:00');
 
     expect($assembled['manifest']['workspace_id'])->toBe($scope->workspaceId)
         ->and($assembled['manifest']['sources'][0]['revision'])->toBe('v1')
         ->and($assembled['manifest']['sources'][0]['permission'])->toBe('contact.read')
         ->and($assembled['manifest_sha256'])->toMatch('/^[0-9a-f]{64}$/')
         ->and($assembled['untrusted_context'][0]['trust'])->toBe('untrusted_data')
+        ->and(aiContextAssembler()->assemble($scope, $customer, $run, [$row['id']], $sameInstant)['manifest_sha256'])
+        ->toBe($assembled['manifest_sha256'])
         ->and($assembled['manifest'])->not->toHaveKey('content');
     expect(fn () => aiContextAssembler()->assemble($other, $customer, $run, [$row['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, $run, [$row['id']], $at))->toThrow(InvalidArgumentException::class)

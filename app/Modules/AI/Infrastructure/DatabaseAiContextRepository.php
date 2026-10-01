@@ -9,6 +9,7 @@ use App\Modules\AI\Domain\Contracts\AiContextRepository;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -48,7 +49,8 @@ final class DatabaseAiContextRepository implements AiContextRepository
             'source_kind' => $source['source_kind'], 'classification' => $source['classification'],
             'permission' => $permission, 'content' => $content,
             'provenance_reference' => $provenance, 'revision' => $revision,
-            'expires_at' => $expiry->format('Y-m-d H:i:s'), 'created_at' => now(), 'updated_at' => now(),
+            'expires_at' => $expiry->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
+            'created_at' => now(), 'updated_at' => now(),
         ]);
 
         return $id;
@@ -67,7 +69,7 @@ final class DatabaseAiContextRepository implements AiContextRepository
             ->where('run_id', $runId)
             ->whereIn('id', $sourceIds)
             ->whereNull('deleted_at')
-            ->where('expires_at', '>', $at->format('Y-m-d H:i:s'))
+            ->where('expires_at', '>', $at->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
             ->orderBy('id')
             ->limit(16)
             ->get()->map(static fn (object $row): array => (array) $row)->all();

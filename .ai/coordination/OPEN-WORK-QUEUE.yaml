@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "d0b13644661cdc22d1a7ffa389b020f050317013",
+  "reconciled_main_sha": "0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5",
   "active_work_path": {
     "kind": "pr",
-    "number": 448,
-    "title": "feat(journeys): build accessible journey editor and timeline",
+    "number": 449,
+    "title": "feat(journeys): TASK-0052 accessible builder and execution timeline",
     "branch": "supervisor/task0052-builder",
     "disposition": "active_task0052_carrier"
   },
   "items": [
     {
       "kind": "pr",
-      "number": 448,
-      "title": "feat(journeys): build accessible journey editor and timeline",
+      "number": 449,
+      "title": "feat(journeys): TASK-0052 accessible builder and execution timeline",
       "branch": "supervisor/task0052-builder",
       "disposition": "active_task0052_carrier",
       "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 448,
+      "title": "chore(phase09): accept TASK-0051 benchmark and activate TASK-0052",
+      "branch": "supervisor/task0052-builder",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5"
     },
     {
       "kind": "pr",

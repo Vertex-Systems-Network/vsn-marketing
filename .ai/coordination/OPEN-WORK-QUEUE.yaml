@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5",
+  "reconciled_main_sha": "d562973d84fe2e7eb06b6bb74e5d1dab874494f7",
   "active_work_path": {
     "kind": "pr",
-    "number": 449,
-    "title": "feat(journeys): TASK-0052 accessible builder and execution timeline",
-    "branch": "supervisor/task0052-builder",
-    "disposition": "active_task0052_carrier"
+    "number": 450,
+    "title": "docs(phase09): certify journey engine evidence and activate TASK-0053",
+    "branch": "supervisor/task0053-phase09-cert",
+    "disposition": "active_task0053_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 450,
+      "title": "docs(phase09): certify journey engine evidence and activate TASK-0053",
+      "branch": "supervisor/task0053-phase09-cert",
+      "disposition": "active_task0053_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 449,
       "title": "feat(journeys): TASK-0052 accessible builder and execution timeline",
       "branch": "supervisor/task0052-builder",
-      "disposition": "active_task0052_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "d562973d84fe2e7eb06b6bb74e5d1dab874494f7"
     },
     {
       "kind": "pr",

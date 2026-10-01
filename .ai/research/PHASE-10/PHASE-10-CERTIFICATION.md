@@ -1,6 +1,6 @@
 # PHASE-10 evidence and certification report
 
-Status: TASK-0054 through TASK-0060 accepted. TASK-0061 evidence implemented; final exact-head and resulting-main full gates pending. Phase progress90%, overall70.20%. PHASE-11 remains planned/inactive.
+Status: TASK-0054 through TASK-0061 accepted after full exact-head and resulting-main gates. PHASE-10 offline architecture certified100%; overall roadmap71%. PHASE-11 remains planned/inactive; no successor task is registered.
 
 Certification scope: the registered, provider-neutral **offline AI architecture**, as explicitly permitted by TASK-0054 research. Live activation remains denied. A completed phase in this scope does not certify a hosted model, production provider account, deployment or autonomous marketing execution.
 
@@ -15,7 +15,7 @@ Certification scope: the registered, provider-neutral **offline AI architecture*
 |0058 specialists | AiAgentCatalog/Runtime/ProposalGateway, output policy, immutable prompts/evals, computed report and promotion gate |12 specialists;48 v1 golden policy cases; separate contexts, finite plan/retries, ceiling, independent promotion/rollback and live-mode denial | PR458/main7262dce7c5118cd08a0874c016d8d60894273183; TASK-0058-CERTIFICATION.md. |
 |0059 creative | Creative catalog/provider/generator/output/review gates, immutable text/image policies | Independent input rights, portable draft protocol, scoped references, bounded media, disclosure, exact candidate review; truthful rejection/accounting/circuit | PR459/mainb7ced3305224d011546e4938d4e96e9f2f3580c8; TASK-0059-CERTIFICATION.md. |
 |0060 red-team |22-case corpus, AiRedTeamTest, AiRuntimeHarness; strict eval expectations | Direct/indirect payloads, retrieval poisoning, prompt canary, hallucinated references, foreign scope, tool/exfiltration/self-modification, denied budgets/loops, four unsafe outage fallbacks | PR460/mainc2653b56f96c56cd9fc6973cf5c2a6a41b964b20; TASK-0060-CERTIFICATION.md. |
-|0061 certification | AiOfflineCertificationTest; ai_offline_certification.php; OFFLINE-MEASUREMENTS.v1.json | Independently reviewed exact v2 canary/v1 rollback selection, mode/scope denials, source-bound raw measurements and complete phase source/test/run evidence | Final certification exact-head/main gates pending. |
+|0061 certification | AiOfflineCertificationTest; ai_offline_certification.php; OFFLINE-MEASUREMENTS.v1.json | Independently reviewed exact v2 canary/v1 rollback selection, mode/scope denials, source-bound raw measurements and complete phase source/test/run evidence | PR461/main44c644331a2212ebd0b0758d04d0010c3662a789 full gates passed; detailed run/job rows below. |
 
 These are generic specialist proposal envelopes. Audience/journey/connector recommendations are not executable ASTs, graphs or connector programs. No new AI user interface, API endpoint, live provider adapter or permissive authority binding is installed.
 
@@ -45,7 +45,7 @@ Creative review is independently rights/brand/safety bound and never grants publ
 
 Local TASK-0060 accepted baseline:42 AI tests/544 assertions,774 backend tests/4663 assertions with136 local infrastructure skips. PR460 logs separately verify180 PostgreSQL/Redis integration tests/1137 assertions,4 architecture tests/2718 assertions,35 frontend tests and7 browser smoke tests. Suites overlap and are not summed into a misleading combined total.
 
-TASK-0061 local and final certification workflow/job IDs are recorded below after observation. Required gates remain full Application Foundation (backend, architecture, static/format, frontend typecheck/unit/build, PostgreSQL/Redis integration, PHP8.3 floor, browser smoke), AI Continuity, Security Supply Chain and resulting-main Release Integrity/Scorecard. No gate or assertion was removed or weakened.
+TASK-0061 local and final certification workflow/job IDs are recorded below from observed results. Required gates remain full Application Foundation (backend, architecture, static/format, frontend typecheck/unit/build, PostgreSQL/Redis integration, PHP8.3 floor, browser smoke), AI Continuity, Security Supply Chain and resulting-main Release Integrity/Scorecard. No gate or assertion was removed or weakened.
 
 Failure history matters: PR456's first resulting main failed PostgreSQL integration due to inherited PDO/libpq connection and non-terminating forked child on exception. PR457 repaired pre-fork connection isolation and guaranteed child termination/reaping. Acceptance uses the repaired green main, not the failed run. Creative invalid-output work corrected premature success telemetry; red-team work corrected unknown eval expectation certification. Detailed evidence remains in the task certification packs.
 
@@ -63,4 +63,12 @@ These are explicit live activation prerequisites from the original research, not
 
 ### TASK-0061 local verification
 
-44 AI tests/1,027 assertions pass with fail-on-notice/warning. Full backend776 tests/5,146 assertions pass with136 local infrastructure skips.4 architecture tests/2,718 assertions pass separately. PHPStan, locked Pint, artifact pinning/history/negative tests, context/transaction/journal/append-only/parallel/supervisor/Runner validation pass. New exact-head and resulting-main full CI remain pending.
+44 AI tests/1,027 assertions pass with fail-on-notice/warning. Full backend776 tests/5,146 assertions pass with136 local infrastructure skips.4 architecture tests/2,718 assertions pass separately. PHPStan, locked Pint, artifact pinning/history/negative tests, context/transaction/journal/append-only/parallel/supervisor/Runner validation pass. New exact-head and resulting-main full CI passed, as recorded below.
+
+### TASK-0061 exact-head and resulting-main certification
+
+PR461 exact head `62419134547435188f26d01060bd1b3fb78142cc`: Application36940497218 (foundation110630862066, integration110631438578, E2E110631438593, PHPfloor110631438620), Continuity36940497212 and Security36940497171 all passed. Logs verify776 backend tests/5,146 assertions,4 architecture tests/2,718 assertions,35 frontend tests,180 PostgreSQL/Redis tests/1,137 assertions and7 browser smoke tests. No unresolved review/comment was observed before merging the reviewed green head.
+
+Resulting main `44c644331a2212ebd0b0758d04d0010c3662a789`: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release Integrity36941095190 and Scorecard36941095333 all passed.
+
+The guarded terminal transition accepts TASK0061 and closes PHASE10 at100%, overall71%, with PHASE11 still inactive. The terminal closure carrier will additionally undergo full exact-head/resulting-main gates; it introduces no new product implementation or live activation. There is no registered successor, so further implementation requires explicit research-first roadmap staging.

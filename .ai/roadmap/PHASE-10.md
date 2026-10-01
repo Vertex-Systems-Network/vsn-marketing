@@ -1,6 +1,6 @@
 # PHASE-10 — AI Gateway and Specialized Marketing Agents
 
-Status: `in_progress`; TASK-0054 research and TASK-0055 gateway are complete with exact-head and resulting-main evidence. TASK-0056 isolated context and TASK-0057 typed proposals/tools are accepted. TASK-0058 runtime/evaluation is accepted with full exact-head/main gates. TASK-0059 creative drafts are accepted after full exact-head/main checks. TASK-0060 red-team is accepted. TASK-0061 certification is active. Current phase progress: 90%; roadmap progress: 70.20%. Target roadmap contribution: 8 percentage points after all registered tasks are certified.
+Status: `completed`. TASK-0054 through TASK-0061 are accepted with full exact-head and resulting-main evidence. Current phase progress:100%; roadmap progress:71%. Certification covers the registered offline AI architecture; live provider activation remains gated. PHASE-11 remains planned/inactive and no successor task is registered. Evidence: [PHASE-10-CERTIFICATION](../research/PHASE-10/PHASE-10-CERTIFICATION.md).
 
 ## Scope and order
 

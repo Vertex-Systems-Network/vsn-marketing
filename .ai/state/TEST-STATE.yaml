@@ -6,60 +6,60 @@
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "frontend-typecheck",
       "command": "npm run typecheck",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "frontend-unit-tests",
       "command": "npm run test",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "frontend-build",
       "command": "npm run build",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Latest accepted TASK0060 main c2653b56: Application36939266860 (foundation110626703139, E2E110627447541, integration110627447556, PHPfloor110627447586), Continuity36939266779, Security36939266826, Release36939266728, Scorecard36939266807 all pass."
+      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
     }
   ],
   "application_tests": {
-    "status": "pending",
-    "reason": "TASK0061 final certification exact-head/resulting-main full gates required; TASK0060 accepted on c2653b56."
+    "status": "passing",
+    "reason": "TASK0061 accepted source on PR461 head62419134547435188f26d01060bd1b3fb78142cc and main44c644331a2212ebd0b0758d04d0010c3662a789 full application/governance/security gates. Terminal control closure has its own pending verification."
   },
   "latest_local_verification": {
     "basis": "TASK0061 source-bound offline certification and exact-version canary/rollback rehearsal",
@@ -82,14 +82,22 @@
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 460,
-    "head_sha": "bc9b62c62409a953693b0973ba55fc1d10e4544a",
-    "application_run": 36938586952,
-    "continuity_run": 36938586888,
-    "security_run": 36938586866,
+    "pull_request": 461,
+    "head_sha": "62419134547435188f26d01060bd1b3fb78142cc",
+    "application_run": 36940497218,
+    "continuity_run": 36940497212,
+    "security_run": 36940497171,
     "status": "passing",
-    "resulting_main_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20",
-    "resulting_main_application_run": 36939266860,
-    "resulting_main_application": "passing"
+    "resulting_main_sha": "44c644331a2212ebd0b0758d04d0010c3662a789",
+    "resulting_main_application_run": 36941095179,
+    "resulting_main_application": "passing",
+    "resulting_main_continuity_run": 36941095138,
+    "resulting_main_security_run": 36941095206,
+    "resulting_main_release_run": 36941095190,
+    "resulting_main_scorecard_run": 36941095333
+  },
+  "closure_verification": {
+    "status": "pending",
+    "reason": "Full exact-head/resulting-main terminal carrier verification; certified source basis above already passed."
   }
 }

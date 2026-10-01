@@ -205,6 +205,62 @@ it('bounds loaded execution transition history to the newest eight events per ro
         );
 });
 
+it('cancels outstanding execution, attempt, wait, work, and enrollment state together', function () {
+    $this->withoutVite();
+    $fixture = task0052JourneyOperatorFixture();
+    $workspace = (string) $fixture['workspace']->getKey();
+    $journey = $fixture['journeyId'];
+    $version = (string) Str::uuid();
+    $execution = (string) Str::uuid();
+    $enrollment = (string) Str::uuid();
+    $now = now();
+    DB::table('journeys')->where('id', $journey)->update(['status' => 'active', 'lifecycle_revision' => 1]);
+    DB::table('journey_versions')->insert([
+        'id' => $version, 'workspace_id' => $workspace, 'journey_id' => $journey,
+        'version_number' => 1, 'graph' => '{}', 'definition_hash' => str_repeat('a', 64),
+        'status' => 'published', 'reentry_policy' => 'never', 'created_at' => $now, 'updated_at' => $now,
+    ]);
+    DB::table('journey_enrollments')->insert([
+        'id' => $enrollment, 'workspace_id' => $workspace, 'journey_version_id' => $version,
+        'subject_id' => (string) Str::uuid(), 'trigger_event_id' => 'cancel-event',
+        'enrollment_key' => str_repeat('b', 64), 'generation' => 1, 'status' => 'waiting',
+        'created_at' => $now, 'updated_at' => $now,
+    ]);
+    DB::table('journey_executions')->insert([
+        'id' => $execution, 'workspace_id' => $workspace, 'journey_version_id' => $version,
+        'subject_id' => DB::table('journey_enrollments')->where('id', $enrollment)->value('subject_id'),
+        'enrollment_id' => $enrollment, 'execution_key' => str_repeat('c', 64),
+        'status' => 'waiting', 'revision' => 0, 'created_at' => $now, 'updated_at' => $now,
+    ]);
+    DB::table('journey_node_attempts')->insert([
+        'id' => (string) Str::uuid(), 'workspace_id' => $workspace, 'execution_id' => $execution,
+        'node_id' => 'delay', 'attempt' => 1, 'attempt_key' => str_repeat('d', 64),
+        'status' => 'queued', 'created_at' => $now, 'updated_at' => $now,
+    ]);
+    DB::table('journey_waits')->insert([
+        'id' => (string) Str::uuid(), 'workspace_id' => $workspace, 'execution_id' => $execution,
+        'node_id' => 'delay', 'wait_key' => str_repeat('e', 64), 'wake_at' => $now->copy()->addMinute(),
+        'status' => 'pending', 'created_at' => $now, 'updated_at' => $now,
+    ]);
+    DB::table('journey_work_items')->insert([
+        'id' => (string) Str::uuid(), 'workspace_id' => $workspace, 'execution_id' => $execution,
+        'node_id' => 'delay', 'status' => 'pending', 'available_at' => $now,
+        'enqueued_at' => $now, 'created_at' => $now, 'updated_at' => $now,
+    ]);
+
+    $this->actingAs($fixture['user'])->post("/workspaces/{$workspace}/journeys/{$journey}/lifecycle/cancel", [
+        'expected_revision' => 1, 'confirmed' => true,
+    ])->assertOk()->assertInertia(fn (Assert $page) => $page->where('notice.status', 'cancelled'));
+
+    expect(DB::table('journey_executions')->where('id', $execution)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_executions')->where('id', $execution)->value('revision'))->toBe(1)
+        ->and(DB::table('journey_node_attempts')->where('execution_id', $execution)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_waits')->where('execution_id', $execution)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_work_items')->where('execution_id', $execution)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_enrollments')->where('id', $enrollment)->value('status'))->toBe('cancelled')
+        ->and(DB::table('journey_execution_transitions')->where('execution_id', $execution)->value('event_type'))->toBe('execution_cancelled');
+});
+
 it('refuses rolling back persisted lifecycle revision data even when no draft graph remains', function () {
     $fixture = task0052JourneyOperatorFixture();
     DB::table('journeys')->where('id', $fixture['journeyId'])->update([

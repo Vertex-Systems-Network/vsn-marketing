@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Certify PHASE-10 AI gateway and agents",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0060"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "TASK-0054 through TASK-0060 accepted with traceable source and test matrix; golden eval and deterministic policy gates pass.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Workspace privacy, provider boundaries, fallback, cost/latency, canary/rollback, browser and security evidence is captured without unmeasured claims.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Certification PR exact-head and resulting-main governance/application/security gates pass; PHASE-11 remains inactive.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

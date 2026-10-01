@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20",
+  "reconciled_main_sha": "44c644331a2212ebd0b0758d04d0010c3662a789",
   "active_work_path": {
     "kind": "pr",
-    "number": 461,
-    "title": "test(ai): capture truthful offline Phase-10 certification",
-    "branch": "supervisor/phase10-certification",
+    "number": 462,
+    "title": "docs(ai): close Phase-10 with certified offline evidence",
+    "branch": "supervisor/phase10-closure",
     "disposition": "active_task0061_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 462,
+      "title": "docs(ai): close Phase-10 with certified offline evidence",
+      "branch": "supervisor/phase10-closure",
+      "disposition": "active_task0061_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 461,
       "title": "test(ai): capture truthful offline Phase-10 certification",
       "branch": "supervisor/phase10-certification",
-      "disposition": "active_task0061_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "44c644331a2212ebd0b0758d04d0010c3662a789"
     },
     {
       "kind": "pr",

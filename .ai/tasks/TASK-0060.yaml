@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement AI red-team and abuse-resistance suite",
   "weight": 11,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0059"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Direct/indirect injection, retrieval poisoning, prompt leakage, hallucinated IDs and cross-workspace access are adversarially exercised.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Tool abuse, exfiltration, unsafe fallback, budget denial, infinite loops and self-modification fail closed.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Red-team fixtures, regression coverage and exact-head/main gates pass.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

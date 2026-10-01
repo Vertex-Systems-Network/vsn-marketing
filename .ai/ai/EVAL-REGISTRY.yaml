@@ -22,6 +22,11 @@
           "version": "v1",
           "path": "resources/ai/evals/strategy.v1.json",
           "sha256": "931fc0fd73dcd67f2f335367150008f71adf0a2979abeacd3d412bbe0a76c8e7"
+        },
+        {
+          "version": "v2",
+          "path": "resources/ai/evals/strategy.v2.json",
+          "sha256": "814cc3c57f2ed4e10ae5b6f298aac3a68d5312ebb785251d1d985399dddea034"
         }
       ]
     },

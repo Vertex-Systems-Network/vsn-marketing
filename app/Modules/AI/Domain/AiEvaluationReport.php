@@ -20,6 +20,7 @@ final readonly class AiEvaluationReport
         $cases = $definition['dataset']['cases'];
         $ids = array_column($cases, 'id');
         $complete = count($ids) >= 4 && count($ids) === count(array_unique($ids))
+            && count(array_filter($cases, fn (array $case): bool => in_array($case['expected'] ?? null, ['validated', 'rejected'], true))) === count($cases)
             && array_diff($ids, array_keys($samples)) === [] && array_diff(array_keys($samples), $ids) === [];
         $outcomes = [];
         foreach ($cases as $case) {

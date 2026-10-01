@@ -1,6 +1,6 @@
 # PHASE-10 — AI Gateway and Specialized Marketing Agents
 
-Status: `in_progress`; guarded TASK-0053 → TASK-0054 transition completed. TASK-0054 research is active. Current phase progress: 0%; roadmap progress: 63%. Target roadmap contribution: 8 percentage points after all registered tasks are certified.
+Status: `in_progress`; TASK-0054 research and TASK-0055 gateway are complete with exact-head and resulting-main evidence. TASK-0056 context isolation is active. Current phase progress: 30%; roadmap progress: 65.4%. Target roadmap contribution: 8 percentage points after all registered tasks are certified.
 
 ## Scope and order
 
@@ -13,4 +13,4 @@ Status: `in_progress`; guarded TASK-0053 → TASK-0054 transition completed. TAS
 7. TASK-0060 — injection, exfiltration, cross-tenant, tool abuse, budget and loop red-team suite.
 8. TASK-0061 — privacy, security, cost/latency, canary/rollback and exact-head/main certification.
 
-Only registered task and provider capabilities execute. Models propose; server policy authorizes. Live provider activation, credentials, billing and production numeric limits require their own evidence. Research: [TASK-0054](../research/PHASE-10/TASK-0054-RESEARCH.md).
+Only registered task and provider capabilities execute. Models propose; server policy authorizes. Live provider activation, credentials, billing and production numeric limits require their own evidence. Research: [TASK-0054](../research/PHASE-10/TASK-0054-RESEARCH.md), [TASK-0055](../research/PHASE-10/TASK-0055-RESEARCH.md), [TASK-0056](../research/PHASE-10/TASK-0056-RESEARCH.md).

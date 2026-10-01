@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement isolated context and memory assembly",
   "weight": 12,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0055"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Context manifest binds authenticated workspace, scoped sources, provenance, permission and revision/freshness without trusting model input.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Customer/brand/run memory isolation, redaction, expiry/deletion and cross-workspace/injection tests pass.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "No raw secret or prohibited personal data is sent; exact-head/main gates pass.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

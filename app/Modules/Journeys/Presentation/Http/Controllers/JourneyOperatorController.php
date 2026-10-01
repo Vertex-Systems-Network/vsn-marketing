@@ -228,14 +228,14 @@ final readonly class JourneyOperatorController
                 ->groupBy('execution_id');
         }
         $timeline = $timelineRows->map(fn (object $row): array => [
-                'id' => (string) $row->id, 'journey_id' => (string) $row->journey_id,
-                'version' => (int) $row->version_number, 'status' => (string) $row->status,
-                'revision' => (int) $row->revision, 'history' => ($histories->get($row->id) ?? collect())->map(fn (object $event): array => [
-                    'status' => (string) $event->event_type, 'node_id' => $event->node_id === null ? null : (string) $event->node_id,
-                    'at' => (string) $event->created_at,
-                ])->all(),
-                'created_at' => (string) $row->created_at, 'updated_at' => (string) $row->updated_at,
-            ])->all();
+            'id' => (string) $row->id, 'journey_id' => (string) $row->journey_id,
+            'version' => (int) $row->version_number, 'status' => (string) $row->status,
+            'revision' => (int) $row->revision, 'history' => ($histories->get($row->id) ?? collect())->map(fn (object $event): array => [
+                'status' => (string) $event->event_type, 'node_id' => $event->node_id === null ? null : (string) $event->node_id,
+                'at' => (string) $event->created_at,
+            ])->all(),
+            'created_at' => (string) $row->created_at, 'updated_at' => (string) $row->updated_at,
+        ])->all();
 
         return [
             'workspace_id' => $scope->workspaceId, 'journeys' => $journeys, 'timeline' => $timeline, 'notice' => $notice,

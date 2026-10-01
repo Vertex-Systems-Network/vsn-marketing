@@ -16,10 +16,13 @@ final class AiStructuredOutputValidator
         if (($result['status'] ?? null) !== 'complete' || ($result['schema_id'] ?? null) !== $schemaId
             || ! is_array($output) || ($output['workspace_id'] ?? null) !== $scope->workspaceId
             || ! is_array($output['reference_ids'] ?? null) || ! array_is_list($output['reference_ids'])
-            || array_diff($output['reference_ids'], $knownReferences) !== []) {
+        ) {
             throw new InvalidArgumentException('AI proposal status, schema or references rejected.');
         }
         $this->schemas->validate($output, $schema);
+        if (array_diff($output['reference_ids'], $knownReferences) !== []) {
+            throw new InvalidArgumentException('AI proposal references rejected.');
+        }
 
         return ['status' => 'validated', 'schema_id' => $schemaId,
             'workspace_id' => $scope->workspaceId, 'output' => $output,

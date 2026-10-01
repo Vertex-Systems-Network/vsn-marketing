@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6164490d180e2c83da2983fdd093d0e3ed8220cf",
+  "reconciled_main_sha": "abe7df21c195c3d5843555f70c5c1c6f16bd5850",
   "active_work_path": {
     "kind": "pr",
-    "number": 455,
-    "title": "feat(ai): certify gateway and build isolated context",
-    "branch": "supervisor/phase10-context",
-    "disposition": "active_task0056_carrier"
+    "number": 456,
+    "title": "feat(ai): certify scoped context and enforce typed tool policy",
+    "branch": "supervisor/phase10-context-acceptance",
+    "disposition": "active_task0057_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 456,
+      "title": "feat(ai): certify scoped context and enforce typed tool policy",
+      "branch": "supervisor/phase10-context-acceptance",
+      "disposition": "active_task0057_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 455,
       "title": "feat(ai): certify gateway and build isolated context",
       "branch": "supervisor/phase10-context",
-      "disposition": "active_task0056_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "abe7df21c195c3d5843555f70c5c1c6f16bd5850"
     },
     {
       "kind": "pr",

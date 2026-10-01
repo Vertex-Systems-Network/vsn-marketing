@@ -6,6 +6,7 @@ use App\Modules\AI\Domain\AiRoutePolicy;
 use App\Modules\AI\Domain\Contracts\AiAdapter;
 use App\Modules\AI\Domain\Contracts\AiBudgetLedger;
 use App\Modules\AI\Domain\Contracts\AiCircuitBreaker;
+use App\Modules\AI\Domain\Contracts\AiGatewayOutputValidator;
 use App\Modules\AI\Domain\Contracts\AiTelemetryRecorder;
 use App\Modules\AI\Infrastructure\DenyingAiCircuitBreaker;
 use App\Modules\AI\Infrastructure\DenyingAiTelemetryRecorder;
@@ -22,6 +23,7 @@ final class AiGateway
         private readonly array $adapters = [],
         private readonly AiCircuitBreaker $circuit = new DenyingAiCircuitBreaker,
         private readonly AiTelemetryRecorder $telemetry = new DenyingAiTelemetryRecorder,
+        private readonly ?AiGatewayOutputValidator $outputs = null,
     ) {}
 
     /**
@@ -107,6 +109,18 @@ final class AiGateway
                 return ['status' => 'provider_failed', 'trace_id' => $traceId, 'route_id' => $route['id']];
             }
 
+            $validatedOutput = null;
+            $validation = 'withheld';
+            if ($status === 'complete' && $this->outputs !== null) {
+                try {
+                    $validatedOutput = $this->outputs->validate($result, $request, $scope);
+                    $validation = 'validated';
+                } catch (\Throwable) {
+                    $status = 'validation_failed';
+                    $validation = 'rejected';
+                }
+            }
+
             return [
                 'status' => $status,
                 'trace_id' => $traceId,
@@ -114,8 +128,11 @@ final class AiGateway
                 'route_version' => $route['version'],
                 'cost_minor' => $actual,
                 'usage' => $usage,
-                // TASK-0057 must validate schema, semantics and tool policy before any output is released.
-                'output' => null,
+                'prompt_id' => $request['prompt_id'], 'prompt_version' => $request['prompt_version'],
+                'schema_id' => $request['output_schema_id'],
+                'context_manifest_sha256' => $request['context_manifest_sha256'],
+                'validation_status' => $validation,
+                'output' => $validatedOutput,
             ];
         }
 

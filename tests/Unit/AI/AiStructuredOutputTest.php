@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\AI;
 
+use App\Modules\AI\Application\ScopedAiGatewayOutputValidator;
 use App\Modules\AI\Domain\AiSchemaValidator;
 use App\Modules\AI\Domain\AiStructuredOutputValidator;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -62,5 +63,18 @@ final class AiStructuredOutputTest extends TestCase
                 self::assertTrue(true);
             }
         }
+    }
+
+    public function test_gateway_validation_binds_context_hash_and_withholds_invalid_references(): void
+    {
+        $scope = new TenantContext('org', 'workspace', null, 'actor');
+        $hash = str_repeat('a', 64);
+        $validator = new ScopedAiGatewayOutputValidator('proposal.v1', $this->schema(), $hash, ['known']);
+        $request = ['output_schema_id' => 'proposal.v1', 'context_manifest_sha256' => $hash];
+        $result = ['status' => 'complete', 'schema_id' => 'proposal.v1',
+            'output' => ['workspace_id' => 'workspace', 'reference_ids' => ['known'], 'decision' => 'DRAFT']];
+        self::assertSame('validated', $validator->validate($result, $request, $scope)['status']);
+        $this->expectException(InvalidArgumentException::class);
+        $validator->validate($result, array_replace($request, ['context_manifest_sha256' => str_repeat('b', 64)]), $scope);
     }
 }

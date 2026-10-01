@@ -29,20 +29,30 @@ it('serializes competing workers under the same workspace budget row', function 
 
     $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, 0);
     expect($pair)->toBeArray();
+    // libpq sockets must be closed BEFORE fork. Closing an inherited PDO in the
+    // child can terminate the server session still in use by the parent.
+    DB::purge();
     $pid = pcntl_fork();
     expect($pid)->not->toBe(-1);
     if ($pid === 0) {
-        fclose($pair[0]);
-        DB::disconnect(); // Never share the parent's PDO connection across fork.
+        $exitStatus = 1;
         try {
-            fread($pair[1], 1);
+            fclose($pair[0]);
+            stream_set_timeout($pair[1], 10);
+            if (fread($pair[1], 1) !== 'S') {
+                throw new RuntimeException('Contention worker did not receive its start signal.');
+            }
             $reserved = (new DatabaseAiBudgetLedger)->reserve($workspace, 'child', 40);
-            fwrite($pair[1], $reserved ? '1' : '0');
-        } catch (Throwable $error) {
-            fwrite($pair[1], 'E');
+            if (fwrite($pair[1], $reserved ? '1' : '0') === 1) {
+                $exitStatus = 0;
+            }
+        } catch (Throwable) {
+            // Never let a worker exception return to PHPUnit's suite runner.
+            $exitStatus = 1;
+        } finally {
+            fclose($pair[1]);
+            exit($exitStatus);
         }
-        fclose($pair[1]);
-        exit(0);
     }
 
     fclose($pair[1]);
@@ -55,6 +65,7 @@ it('serializes competing workers under the same workspace budget row', function 
         stream_set_timeout($pair[0], 10);
         expect(fread($pair[0], 1))->toBe('0');
         pcntl_waitpid($pid, $status);
+        $pid = 0;
         expect(pcntl_wexitstatus($status))->toBe(0)
             ->and((int) DB::table('ai_workspace_budgets')->where('workspace_id', $workspace)->value('reserved_minor'))->toBe(40)
             ->and(DB::table('ai_budget_reservations')->where('workspace_id', $workspace)->count())->toBe(1);
@@ -63,6 +74,9 @@ it('serializes competing workers under the same workspace budget row', function 
             DB::rollBack();
         }
         fclose($pair[0]);
+        if ($pid > 0) {
+            pcntl_waitpid($pid, $status);
+        }
         DB::table('ai_budget_reservations')->where('workspace_id', $workspace)->delete();
         DB::table('ai_workspace_budgets')->where('workspace_id', $workspace)->delete();
         DB::table('workspaces')->where('id', $workspace)->delete();

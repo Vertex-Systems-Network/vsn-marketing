@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0052",
+  "updated_for_task": "TASK-0057",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -58,49 +58,39 @@
     }
   ],
   "application_tests": {
-    "status": "passing",
-    "reason": "PR #449 source head 7aaface8e63d3ef330282630356d449302802b75 passed Application Foundation CI run 36800727107: foundation 732 passed / 134 infrastructure skips (4119 assertions), architecture 4 passed, static analysis, Pint, TypeScript, 34 frontend units, build, PHP floor, PostgreSQL/Redis integration 178 passed (1123 assertions), and browser E2E. Browser suite had 6 passed and one unrelated TASK-0046 test flaky on first attempt then passed retry; both TASK-0052 scenarios passed. AI Continuity 36800727075 and Security Supply Chain 36800727050 passed on the same source head. This records CI evidence; TASK-0052 and PHASE-09 remain open pending acceptance and main promotion."
+    "status": "failing",
+    "basis": "resulting main a3d7fa4a161c035e1373105427a03167e5dbb7ec",
+    "run_id": 36930013699,
+    "reason": "PostgreSQL integration110597582137 failed inherited PDO socket in forked contention worker. PR457 repair remains pending exact-head and resulting-main verification."
   },
   "latest_local_verification": {
-    "basis": "TASK-0052 local frontend checks on the PR #449 source tree; PHP and browser results are separately recorded from exact source-head CI.",
-    "checked_at_utc": "2026-10-01",
+    "basis": "PR457 pre-fork PDO purge and guaranteed child exit repair",
     "suites": [
       {
-        "name": "journey-operator-frontend-unit",
-        "command": "npm test",
+        "name": "php-syntax-and-locked-pint",
         "status": "passing",
-        "notes": "34 tests passed across 4 files; includes graph validator, bounded node/transition rendering, focus management, side-effect-free simulator, and loading/empty/stale/permission/timeout UI states."
+        "notes": "Focused repair checks pass on PHP8.3. PostgreSQL contention not runnable locally."
       },
       {
-        "name": "frontend-typecheck",
-        "command": "npm run typecheck",
+        "name": "merged-backend-baseline",
         "status": "passing",
-        "notes": "Local TypeScript check passed on current patch."
+        "notes": "753 tests /4251 assertions;136 infrastructure tests skipped locally, no claim that these prove PostgreSQL contention."
       },
       {
-        "name": "frontend-build",
-        "command": "npm run build",
+        "name": "continuity",
         "status": "passing",
-        "notes": "Local Vite production build passed on current patch."
-      },
-      {
-        "name": "journey-operator-playwright",
-        "command": "npx playwright test e2e/task0052-journey-operator.spec.ts --list",
-        "status": "passing",
-        "notes": "Two scenarios passed in PR #449 Playwright job 110174846903 on 7aaface8e63d3ef330282630356d449302802b75; full suite 6 passed, one unrelated TASK-0046 flaky retry."
-      },
-      {
-        "name": "journey-operator-backend-and-migration",
-        "command": "php artisan test --testsuite=Feature",
-        "status": "passing",
-        "notes": "PR #449 foundation job 110174218228 passed JourneyOperatorControllerTest and backend 732 passed / 134 infrastructure skips, including migration rollback guard; PostgreSQL/Redis integration job 110174846949 passed 178 tests."
-      },
-      {
-        "name": "journey-operator-browser",
-        "command": "npm run test:e2e -- e2e/task0052-journey-operator.spec.ts",
-        "status": "passing",
-        "notes": "PR #449 Playwright job 110174846903 passed both TASK-0052 scenarios on exact source head 7aaface8e63d3ef330282630356d449302802b75."
+        "notes": "Transaction/state/journal/supervisor/policy checks pass."
       }
     ]
+  },
+  "latest_ci_verification": {
+    "pull_request": 456,
+    "head_sha": "dbe431bfae7cf032d71b59bbb4b9d4cb4d66458b",
+    "application_run": 36911341918,
+    "continuity_run": 36911341874,
+    "security_run": 36911341967,
+    "status": "passing",
+    "resulting_main_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec",
+    "resulting_main_application": "failing"
   }
 }

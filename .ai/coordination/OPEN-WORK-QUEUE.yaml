@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c3db151aaebfb5c0d555bf2fd7514393a18e7f82",
+  "reconciled_main_sha": "6164490d180e2c83da2983fdd093d0e3ed8220cf",
   "active_work_path": {
     "kind": "pr",
-    "number": 454,
-    "title": "feat(ai): pin gateway adapter schema and budget contention",
-    "branch": "supervisor/phase10-gateway-contract",
-    "disposition": "active_task0055_carrier"
+    "number": 455,
+    "title": "feat(ai): certify gateway and build isolated context",
+    "branch": "supervisor/phase10-context",
+    "disposition": "active_task0056_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 455,
+      "title": "feat(ai): certify gateway and build isolated context",
+      "branch": "supervisor/phase10-context",
+      "disposition": "active_task0056_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 454,
       "title": "feat(ai): pin gateway adapter schema and budget contention",
       "branch": "supervisor/phase10-gateway-contract",
-      "disposition": "active_task0055_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "6164490d180e2c83da2983fdd093d0e3ed8220cf"
     },
     {
       "kind": "pr",

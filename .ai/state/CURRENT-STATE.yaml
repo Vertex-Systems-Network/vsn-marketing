@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-10-TASK-0057-TYPED-TOOLS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Complete PR #456 exact-head full CI and resulting-main checks; accept TASK-0057 only when green, then implement TASK-0058.",
+  "exact_next_safe_action": "Verify repaired PR #456 exact-head full CI, merge only when green and verify resulting main; then accept TASK-0057 and implement TASK-0058.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete PR #456 exact-head full CI and resulting-main checks; accept TASK-0057 only when green, then implement TASK-0058."
+  "exact_next_action": "Verify repaired PR #456 exact-head full CI, merge only when green and verify resulting main; then accept TASK-0057 and implement TASK-0058."
 }

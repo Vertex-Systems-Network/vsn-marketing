@@ -93,6 +93,19 @@ it('builds accessible visual rules and requests a bounded preview without confir
     }), expect.any(Object));
 });
 
+it('adds nested timestamp rules with a stable presence check rather than the current instant', () => {
+    render(<SegmentationOperator {...props} fields={[{
+        id: 'contact.created_at', type: 'timestamp', operators: ['equals', 'after', 'is_set'],
+    }]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Start visual rule builder' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add nested group' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview bounded count' }));
+    const definition = post.mock.calls[0][1].definition;
+    expect(definition.root.children[1].children[0]).toEqual({
+        type: 'attribute', field: 'contact.created_at', operator: 'is_set',
+    });
+});
+
 it('marks a returned count stale after a rule edit', () => {
     const preview = { status: 'fresh', count_kind: 'exact', count: 1,
         definition_hash: 'a'.repeat(64), definition_version: null,

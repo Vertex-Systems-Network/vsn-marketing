@@ -88,8 +88,12 @@ final class AiGateway
 
             $status = $result['status'] ?? null;
             $actual = $result['cost_minor'] ?? null;
-            if (! in_array($status, ['complete', 'refused', 'incomplete'], true)
-                || ! is_int($actual) || $actual < 0 || $actual > $reservation) {
+            $usage = $result['usage'] ?? null;
+            if (! in_array($status, ['complete', 'refused', 'incomplete', 'cancelled'], true)
+                || ! is_int($actual) || $actual < 0 || $actual > $reservation
+                || ! is_array($usage) || ! is_int($usage['input_tokens'] ?? null)
+                || ! is_int($usage['output_tokens'] ?? null)
+                || $usage['input_tokens'] < 0 || $usage['output_tokens'] < 0) {
                 $this->telemetry->finish($workspace, $attemptId, 'provider_failed', null);
 
                 return ['status' => 'provider_failed', 'trace_id' => $traceId, 'route_id' => $route['id']];
@@ -98,7 +102,7 @@ final class AiGateway
             try {
                 $this->budget->settle($workspace, $attemptId, $actual);
                 $this->circuit->succeeded($workspace, $route['id']);
-                $this->telemetry->finish($workspace, $attemptId, $status, $actual);
+                $this->telemetry->finish($workspace, $attemptId, $status, $actual, $usage['input_tokens'], $usage['output_tokens']);
             } catch (\Throwable) {
                 return ['status' => 'provider_failed', 'trace_id' => $traceId, 'route_id' => $route['id']];
             }
@@ -109,6 +113,7 @@ final class AiGateway
                 'route_id' => $route['id'],
                 'route_version' => $route['version'],
                 'cost_minor' => $actual,
+                'usage' => $usage,
                 // TASK-0057 must validate schema, semantics and tool policy before any output is released.
                 'output' => null,
             ];

@@ -21,6 +21,7 @@ final class AiGatewayPolicyTest extends TestCase
             'trace_id' => 'trace-1', 'workspace_id' => 'workspace-a', 'data_region' => 'eu',
             'data_classification' => 'public', 'required_capabilities' => ['structured_output'],
             'risk_tier' => 'R0', 'max_cost_minor' => 100,
+            'output_schema_id' => 'draft.v1', 'required_tool_ids' => [],
             'prompt_id' => 'draft', 'prompt_version' => 'v1', 'context_manifest_sha256' => str_repeat('a', 64),
         ];
     }
@@ -33,6 +34,7 @@ final class AiGatewayPolicyTest extends TestCase
             'credential_reference' => 'secret-ref', 'status' => 'active',
             'workspaces' => ['workspace-a'], 'data_regions' => ['eu'],
             'data_classes' => ['public'], 'capabilities' => ['structured_output'],
+            'output_schemas' => ['draft.v1'], 'tool_ids' => [],
             'risk_tiers' => ['R0'], 'max_reservation_minor' => 40,
         ];
     }
@@ -66,7 +68,7 @@ final class AiGatewayPolicyTest extends TestCase
                 return true;
             }
 
-            public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor): void {}
+            public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor, ?int $inputTokens = null, ?int $outputTokens = null): void {}
         };
     }
 
@@ -76,6 +78,7 @@ final class AiGatewayPolicyTest extends TestCase
         foreach ([
             ['workspace_id' => 'workspace-b'], ['data_region' => 'us'], ['risk_tier' => 'R3'],
             ['required_capabilities' => ['tool_calling']], ['max_cost_minor' => 39],
+            ['output_schema_id' => 'unknown.v1'], ['required_tool_ids' => ['publish']],
         ] as $override) {
             self::assertSame([], $policy->eligible([$this->route()], array_replace($this->request(), $override)));
         }
@@ -152,7 +155,8 @@ final class AiGatewayPolicyTest extends TestCase
         {
             public function generate(array $request, array $route): array
             {
-                return ['status' => 'complete', 'cost_minor' => 12, 'output' => ['proposal' => 'draft']];
+                return ['status' => 'complete', 'cost_minor' => 12,
+                    'usage' => ['input_tokens' => 30, 'output_tokens' => 10], 'output' => ['proposal' => 'draft']];
             }
         };
         $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter], $this->circuit(), $this->telemetry());
@@ -162,6 +166,7 @@ final class AiGatewayPolicyTest extends TestCase
         self::assertSame('candidate-1', $result['route_id']);
         self::assertNull($result['output']);
         self::assertSame(12, $ledger->actual);
+        self::assertSame(['input_tokens' => 30, 'output_tokens' => 10], $result['usage']);
     }
 
     public function test_fallback_preserves_policy_and_total_reservation_budget(): void
@@ -191,7 +196,8 @@ final class AiGatewayPolicyTest extends TestCase
         {
             public function generate(array $request, array $route): array
             {
-                return ['status' => 'complete', 'cost_minor' => 9, 'output' => 'unvalidated'];
+                return ['status' => 'complete', 'cost_minor' => 9,
+                    'usage' => ['input_tokens' => 5, 'output_tokens' => 2], 'output' => 'unvalidated'];
             }
         };
         $routes = [$this->route(), array_replace($this->route(), [
@@ -209,5 +215,40 @@ final class AiGatewayPolicyTest extends TestCase
 
         $routes[1]['data_regions'] = ['us'];
         self::assertSame('provider_failed', $gateway->generate($routes, $request, $this->scope())['status']);
+    }
+
+    public function test_offline_adapter_contract_accounts_refusal_incomplete_and_cancellation(): void
+    {
+        foreach (['refused', 'incomplete', 'cancelled'] as $status) {
+            $ledger = new class implements AiBudgetLedger
+            {
+                public ?int $settled = null;
+
+                public function reserve(string $workspaceId, string $traceId, int $minorUnits): bool
+                {
+                    return true;
+                }
+
+                public function settle(string $workspaceId, string $traceId, int $actualMinorUnits): void
+                {
+                    $this->settled = $actualMinorUnits;
+                }
+            };
+            $adapter = new class($status) implements AiAdapter
+            {
+                public function __construct(private readonly string $status) {}
+
+                public function generate(array $request, array $route): array
+                {
+                    return ['status' => $this->status, 'cost_minor' => 3,
+                        'usage' => ['input_tokens' => 4, 'output_tokens' => 0], 'output' => 'untrusted'];
+                }
+            };
+            $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter], $this->circuit(), $this->telemetry());
+            $result = $gateway->generate([$this->route()], $this->request(), $this->scope());
+            self::assertSame($status, $result['status']);
+            self::assertSame(3, $ledger->settled);
+            self::assertNull($result['output']);
+        }
     }
 }

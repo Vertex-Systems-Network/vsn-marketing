@@ -95,12 +95,14 @@ it('records only bounded provenance references and finalizes a trace once', func
 
     expect($telemetry->begin($workspace, 'attempt-a', $route, $request))->toBeTrue()
         ->and($telemetry->begin($workspace, 'attempt-a', $route, $request))->toBeFalse();
-    $telemetry->finish($workspace, 'attempt-a', 'complete', 12);
+    $telemetry->finish($workspace, 'attempt-a', 'complete', 12, 30, 10);
     expect(fn () => $telemetry->finish($workspace, 'attempt-a', 'complete', 12))->toThrow(RuntimeException::class);
 
     $row = (array) DB::table('ai_gateway_traces')->where('workspace_id', $workspace)->first();
     expect($row['status'])->toBe('complete')
         ->and((int) $row['cost_minor'])->toBe(12)
+        ->and((int) $row['input_tokens'])->toBe(30)
+        ->and((int) $row['output_tokens'])->toBe(10)
         ->and(implode(' ', array_keys($row)).json_encode($row))->not->toContain('PRIVATE');
 
     $request['context_manifest_sha256'] = 'invalid';

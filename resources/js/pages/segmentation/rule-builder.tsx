@@ -8,11 +8,14 @@ type Props = {
     onChange: (root: Rule) => void;
 };
 
-const firstRule = (fields: Field[]): Rule => ({
-    type: 'attribute', field: fields[0]?.id ?? 'contact.created_at',
-    operator: fields[0]?.operators[0] ?? 'is_set',
-    ...(fields[0]?.operators[0] === 'is_set' ? {} : { value: fields[0]?.type === 'timestamp' ? new Date().toISOString() : '' }),
-});
+const firstRule = (fields: Field[]): Rule => {
+    const field = fields[0];
+    const operator = field?.operators.includes('is_set') ? 'is_set' : field?.operators[0] ?? 'is_set';
+    return {
+        type: 'attribute', field: field?.id ?? 'contact.created_at', operator,
+        ...(['is_set', 'is_not_set'].includes(operator) ? {} : { value: field?.type === 'timestamp' ? new Date().toISOString() : '' }),
+    };
+};
 
 function editChild(root: Rule, index: number, value: Rule | null): Rule {
     const children = Array.isArray(root.children) ? [...root.children] as Rule[] : [];

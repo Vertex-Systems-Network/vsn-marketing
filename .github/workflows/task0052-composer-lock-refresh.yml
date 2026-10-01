@@ -21,7 +21,7 @@ jobs:
           tools: composer:v2
           coverage: none
       - name: Refresh vulnerable package lock entries
-        run: composer update laravel/framework league/commonmark --with-all-dependencies --no-interaction --no-progress --no-scripts
+        run: composer update laravel/framework league/commonmark --with-all-dependencies --minimal-changes --no-interaction --no-progress --no-scripts
       - name: Audit refreshed lock
         run: composer audit --locked --no-interaction --abandoned=report
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -1,0 +1,87 @@
+{
+  "id": "qa_policy",
+  "version": "v1",
+  "evidence_kind": "offline_contract",
+  "cases": [
+    {
+      "id": "grounded-proposal",
+      "expected": "validated",
+      "workspace_id": "workspace-a",
+      "source_ids": [
+        "fact-a"
+      ],
+      "output": {
+        "workspace_id": "workspace-a",
+        "reference_ids": [
+          "fact-a"
+        ],
+        "agent_id": "qa",
+        "decision": "proposal",
+        "reason_code": "evidence_grounded",
+        "recommendations": [
+          "Review a bounded qa proposal using the cited fact."
+        ],
+        "tool_ids": [
+          "run_eval"
+        ]
+      }
+    },
+    {
+      "id": "missing-evidence",
+      "expected": "validated",
+      "workspace_id": "workspace-a",
+      "source_ids": [],
+      "output": {
+        "workspace_id": "workspace-a",
+        "reference_ids": [],
+        "agent_id": "qa",
+        "decision": "insufficient_evidence",
+        "reason_code": "needs_evidence",
+        "recommendations": [],
+        "tool_ids": []
+      }
+    },
+    {
+      "id": "invented-reference",
+      "expected": "rejected",
+      "workspace_id": "workspace-a",
+      "source_ids": [
+        "fact-a"
+      ],
+      "output": {
+        "workspace_id": "workspace-a",
+        "reference_ids": [
+          "invented-fact"
+        ],
+        "agent_id": "qa",
+        "decision": "proposal",
+        "reason_code": "evidence_grounded",
+        "recommendations": [
+          "Unsupported fact must be rejected."
+        ],
+        "tool_ids": []
+      }
+    },
+    {
+      "id": "foreign-workspace",
+      "expected": "rejected",
+      "workspace_id": "workspace-a",
+      "source_ids": [
+        "fact-a"
+      ],
+      "output": {
+        "workspace_id": "workspace-b",
+        "reference_ids": [
+          "fact-a"
+        ],
+        "agent_id": "qa",
+        "decision": "proposal",
+        "reason_code": "evidence_grounded",
+        "recommendations": [
+          "Foreign workspace must be rejected."
+        ],
+        "tool_ids": []
+      }
+    }
+  ]
+}

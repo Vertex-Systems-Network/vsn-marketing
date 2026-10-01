@@ -1,16 +1,150 @@
 {
   "schema_version": 1,
   "suites": [
-    {"id":"marketing_director_plan","status":"planned","promotion_gate":true},
-    {"id":"strategy_proposal","status":"planned","promotion_gate":true},
-    {"id":"segment_ast","status":"planned","promotion_gate":true},
-    {"id":"brand_content","status":"planned","promotion_gate":true},
-    {"id":"brand_guard","status":"planned","promotion_gate":true},
-    {"id":"journey_graph","status":"planned","promotion_gate":true},
-    {"id":"experiment_design","status":"planned","promotion_gate":true},
-    {"id":"deliverability","status":"planned","promotion_gate":true},
-    {"id":"analytics_explanation","status":"planned","promotion_gate":true},
-    {"id":"connector_generation","status":"planned","promotion_gate":true}
+    {
+      "id": "marketing_director_plan",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/marketing_director.v1.json",
+          "sha256": "cc93f3dd905b725c3f17a9897be15c0536e84af2f29c2f39eda8119fe028b6a2"
+        }
+      ]
+    },
+    {
+      "id": "strategy_proposal",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/strategy.v1.json",
+          "sha256": "931fc0fd73dcd67f2f335367150008f71adf0a2979abeacd3d412bbe0a76c8e7"
+        }
+      ]
+    },
+    {
+      "id": "segment_ast",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/audience.v1.json",
+          "sha256": "e7dd6962abd0a8427e0b84b8877aeadbc8190c1aade23df1ad41befccd447dc0"
+        }
+      ]
+    },
+    {
+      "id": "brand_content",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/content.v1.json",
+          "sha256": "1e7d7d06841324c4a4abac7461c7938082dd684fbab8cc40b565179dba0dc3ec"
+        }
+      ]
+    },
+    {
+      "id": "brand_guard",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/brand_guardian.v1.json",
+          "sha256": "d608a45bbea44b5d6ba336360fed98a568077bd6d9c7455292a8df04cc7131c4"
+        }
+      ]
+    },
+    {
+      "id": "journey_graph",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/journey.v1.json",
+          "sha256": "7ea13ab80c0c315eb9f78f5fc00df60b46f91ff574ddec754a33cd84362cccf5"
+        }
+      ]
+    },
+    {
+      "id": "experiment_design",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/experiment.v1.json",
+          "sha256": "33a1493e7523a926821bed71a6d13a5f51e7c1ac1994001d5d7109f73be1b2ef"
+        }
+      ]
+    },
+    {
+      "id": "deliverability",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/deliverability.v1.json",
+          "sha256": "b594e8428c23d3b3297350dfb66e96217d871fe14639571dd490ccb58ed99a95"
+        }
+      ]
+    },
+    {
+      "id": "analytics_explanation",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/analytics.v1.json",
+          "sha256": "eb94add578a6b71bd6b8fb8cb9c38c57c3a20e7f9adac57b6ad951bb1c0d9482"
+        }
+      ]
+    },
+    {
+      "id": "connector_generation",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/connector_engineer.v1.json",
+          "sha256": "207c519e70a3be40026c063c1af4e456f3490dcad6b932430c246bcb9c21abfd"
+        }
+      ]
+    },
+    {
+      "id": "compliance_review",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/compliance_guard.v1.json",
+          "sha256": "573da83ac03fafc2a1209750e6db267b51f1b2bedcf9481cf6655cb922aa1396"
+        }
+      ]
+    },
+    {
+      "id": "qa_policy",
+      "status": "offline_contract",
+      "promotion_gate": true,
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/evals/qa.v1.json",
+          "sha256": "bb26d6ca895b6dae6477656a86ce6668f3d94002d80421fb18f3615551fbc2cc"
+        }
+      ]
+    }
   ],
   "promotion_rule": "A prompt/model/routing candidate cannot become active until every required promotion-gate suite for that candidate passes against its pinned dataset/version."
 }

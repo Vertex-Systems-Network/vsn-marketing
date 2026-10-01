@@ -1,6 +1,6 @@
 # PHASE-10 — AI Gateway and Specialized Marketing Agents
 
-Status: `in_progress`; TASK-0054 research and TASK-0055 gateway are complete with exact-head and resulting-main evidence. TASK-0056 context isolation is active. Current phase progress: 30%; roadmap progress: 65.4%. Target roadmap contribution: 8 percentage points after all registered tasks are certified.
+Status: `in_progress`; TASK-0054 research and TASK-0055 gateway are complete with exact-head and resulting-main evidence. TASK-0056 isolated context and TASK-0057 typed proposals/tools are accepted. TASK-0058 runtime/evaluation is active. Current phase progress: 57%; roadmap progress: 67.56%. Target roadmap contribution: 8 percentage points after all registered tasks are certified.
 
 ## Scope and order
 

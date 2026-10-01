@@ -566,7 +566,7 @@
       "id": "TASK-0057",
       "phase": "PHASE-10",
       "title": "Implement structured output and typed tool policy",
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0056"
       ],
@@ -576,7 +576,7 @@
       "id": "TASK-0058",
       "phase": "PHASE-10",
       "title": "Implement specialized agent runtime and evaluation",
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0057"
       ],

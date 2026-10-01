@@ -1,21 +1,179 @@
 {
   "schema_version": 1,
   "policy": {
-    "immutability":"Published prompt versions are immutable; create a new version to change behavior.",
-    "promotion":"Alias promotion requires the declared evaluation suite to pass.",
-    "execution_record":"Every run records prompt id and exact version.",
-    "rollback":"Aliases can roll back to a previously evaluated version."
+    "immutability": "Published prompt versions are immutable; create a new version to change behavior.",
+    "promotion": "Alias promotion requires the declared evaluation suite to pass.",
+    "execution_record": "Every run records prompt id and exact version.",
+    "rollback": "Aliases can roll back to a previously evaluated version."
   },
   "prompts": [
-    {"id":"marketing_director.plan","current_version":null,"status":"planned","required_eval_suite":"marketing_director_plan"},
-    {"id":"strategy.propose","current_version":null,"status":"planned","required_eval_suite":"strategy_proposal"},
-    {"id":"audience.segment","current_version":null,"status":"planned","required_eval_suite":"segment_ast"},
-    {"id":"content.generate","current_version":null,"status":"planned","required_eval_suite":"brand_content"},
-    {"id":"brand_guardian.review","current_version":null,"status":"planned","required_eval_suite":"brand_guard"},
-    {"id":"journey.design","current_version":null,"status":"planned","required_eval_suite":"journey_graph"},
-    {"id":"experiment.design","current_version":null,"status":"planned","required_eval_suite":"experiment_design"},
-    {"id":"deliverability.advise","current_version":null,"status":"planned","required_eval_suite":"deliverability"},
-    {"id":"analytics.explain","current_version":null,"status":"planned","required_eval_suite":"analytics_explanation"},
-    {"id":"connector_engineer.plan","current_version":null,"status":"planned","required_eval_suite":"connector_generation"}
+    {
+      "id": "marketing_director.plan",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "marketing_director_plan",
+      "agent_id": "marketing_director",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/marketing_director.v1.json",
+          "sha256": "555538d210e373a5de9f8c155de0879b952eae6631f81fc26d8e1327ac57a9b3"
+        }
+      ]
+    },
+    {
+      "id": "strategy.propose",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "strategy_proposal",
+      "agent_id": "strategy",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/strategy.v1.json",
+          "sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3"
+        }
+      ]
+    },
+    {
+      "id": "audience.segment",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "segment_ast",
+      "agent_id": "audience",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/audience.v1.json",
+          "sha256": "03ebed6266a21deee6204fb0f4d8122f47fec96aa0a5758fc7e9f3078afdb7af"
+        }
+      ]
+    },
+    {
+      "id": "content.generate",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "brand_content",
+      "agent_id": "content",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/content.v1.json",
+          "sha256": "25d7f9f40ab2e1746cf58ddc38dcfe0e50e667c0d87a48421eb77d4db5fde9ab"
+        }
+      ]
+    },
+    {
+      "id": "brand_guardian.review",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "brand_guard",
+      "agent_id": "brand_guardian",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/brand_guardian.v1.json",
+          "sha256": "43a72741bb47a6b7d1fa7139f29ac167a744e0a2112606ff8a7ad0fb0277e565"
+        }
+      ]
+    },
+    {
+      "id": "journey.design",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "journey_graph",
+      "agent_id": "journey",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/journey.v1.json",
+          "sha256": "b0fcd3a59a5b42d6f12483e2d5fbaf097b323303432d886f75f19aba4c46906c"
+        }
+      ]
+    },
+    {
+      "id": "experiment.design",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "experiment_design",
+      "agent_id": "experiment",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/experiment.v1.json",
+          "sha256": "7662c5d65eeb72ced7f8a384bda7c8e024c6955242f764fa5462a11964b90fe8"
+        }
+      ]
+    },
+    {
+      "id": "deliverability.advise",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "deliverability",
+      "agent_id": "deliverability",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/deliverability.v1.json",
+          "sha256": "423de0b93ebe7c488f72fe3bc50249b9f0f64aed53721bd1ee7cfc714ebab5b1"
+        }
+      ]
+    },
+    {
+      "id": "analytics.explain",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "analytics_explanation",
+      "agent_id": "analytics",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/analytics.v1.json",
+          "sha256": "6b3f73f880ea49b1c4ef459a6ff87d6c186ee7e3384a9c14b73ea27423dc161c"
+        }
+      ]
+    },
+    {
+      "id": "connector_engineer.plan",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "connector_generation",
+      "agent_id": "connector_engineer",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/connector_engineer.v1.json",
+          "sha256": "82f6078138d39e2454da06b7042dd626ddd67871c71b3b33d07bcfa8d12e6cdd"
+        }
+      ]
+    },
+    {
+      "id": "compliance_guard.review",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "compliance_review",
+      "agent_id": "compliance_guard",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/compliance_guard.v1.json",
+          "sha256": "25e12e49ebeb474aa86ee5672ca2806e6704f851244ae227f237f55a8b0739c8"
+        }
+      ]
+    },
+    {
+      "id": "qa.evaluate",
+      "current_version": null,
+      "status": "candidate",
+      "required_eval_suite": "qa_policy",
+      "agent_id": "qa",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/prompts/qa.v1.json",
+          "sha256": "5b8f720f591056eb12b4a438ae2a49f98f21178e636d14a341589dbc352062de"
+        }
+      ]
+    }
   ]
 }

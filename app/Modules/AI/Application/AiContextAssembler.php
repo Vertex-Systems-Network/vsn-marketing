@@ -3,6 +3,7 @@
 namespace App\Modules\AI\Application;
 
 use App\Modules\AI\Domain\AiContextSanitizer;
+use App\Modules\AI\Domain\AiContextSourcePolicy;
 use App\Modules\AI\Domain\Contracts\AiContextPermission;
 use App\Modules\AI\Domain\Contracts\AiContextRepository;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
@@ -18,6 +19,7 @@ final class AiContextAssembler
         private readonly AiContextRepository $repository,
         private readonly AiContextPermission $permissions,
         private readonly AiContextSanitizer $sanitizer,
+        private readonly AiContextSourcePolicy $sourcePolicy = new AiContextSourcePolicy,
     ) {}
 
     /**
@@ -57,19 +59,20 @@ final class AiContextAssembler
             $row = $byId[$id];
             $permission = $row['permission'] ?? null;
             $content = $row['content'] ?? null;
+            $contract = $this->sourcePolicy->contract($row['source_kind'] ?? null);
             if (($row['workspace_id'] ?? null) !== $scope->workspaceId
                 || ($row['brand_id'] ?? null) !== $scope->brandId
                 || ($row['customer_id'] ?? null) !== $customerId
                 || ($row['run_id'] ?? null) !== $runId
-                || ! in_array($row['classification'] ?? null, ['public', 'approved_non_personal'], true)
-                || ! is_string($permission) || ! PermissionCatalog::contains($permission)
+                || $contract === null || ($row['classification'] ?? null) !== $contract['classification']
+                || $permission !== $contract['permission']
+                || ! PermissionCatalog::contains($permission)
                 || ! $this->permissions->allows($scope, $permission)
                 || ! is_string($content) || ! $this->sanitizer->safe($content)
                 || ! is_string($row['revision'] ?? null) || $row['revision'] === ''
                 || strlen($row['revision']) > 128 || ! $this->sanitizer->safe($row['revision'])
                 || ! is_string($row['provenance_reference'] ?? null) || $row['provenance_reference'] === ''
                 || strlen($row['provenance_reference']) > 255 || ! $this->sanitizer->safe($row['provenance_reference'])
-                || ! in_array($row['source_kind'] ?? null, ['approved_fact', 'brand_guideline', 'run_note'], true)
                 || ! is_string($row['expires_at'] ?? null)
                 || strtotime($row['expires_at']) === false
                 || strtotime($row['expires_at']) <= $at->getTimestamp()

@@ -129,11 +129,13 @@ it('rejects unsafe provenance, unregistered permission and duplicate source sele
     $at = new DateTimeImmutable('2026-10-01T12:00:00Z');
     $unsafe = aiContextRow($scope, ['provenance_reference' => 'token=private-value']);
     $unregistered = aiContextRow($scope, ['permission' => 'billing.manage']);
+    $misclassified = aiContextRow($scope, ['source_kind' => 'brand_guideline', 'permission' => 'contact.read']);
     $valid = aiContextRow($scope);
-    DB::table('ai_context_memories')->insert([$unsafe, $unregistered, $valid]);
+    DB::table('ai_context_memories')->insert([$unsafe, $unregistered, $misclassified, $valid]);
 
     expect(fn () => aiContextAssembler()->assemble($scope, null, null, [$unsafe['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$unregistered['id']], $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$misclassified['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $valid['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $unsafe['id']], $at))->toThrow(InvalidArgumentException::class);
 });
@@ -152,6 +154,7 @@ it('writes only authorized bounded facts and checks source permission before del
     expect(aiContextAssembler()->assemble($scope, null, null, [$id], $at)['manifest']['sources'][0]['revision'])->toBe('v2')
         ->and(fn () => aiContextRepository(false)->put($scope, null, null, $source, $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $repository->put($scope, null, null, array_replace($source, ['content' => 'Contact +1 202 555 0199']), $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $repository->put($scope, null, null, array_replace($source, ['permission' => 'billing.manage']), $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $repository->put($scope, null, null, array_replace($source, ['expires_at' => $at->modify('+31 days')]), $at))->toThrow(InvalidArgumentException::class);
 
     DB::table('ai_context_memories')->where('id', $id)->update(['permission' => 'billing.manage']);

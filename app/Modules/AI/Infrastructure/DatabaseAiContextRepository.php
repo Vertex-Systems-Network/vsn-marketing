@@ -3,6 +3,7 @@
 namespace App\Modules\AI\Infrastructure;
 
 use App\Modules\AI\Domain\AiContextSanitizer;
+use App\Modules\AI\Domain\AiContextSourcePolicy;
 use App\Modules\AI\Domain\Contracts\AiContextPermission;
 use App\Modules\AI\Domain\Contracts\AiContextRepository;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
@@ -14,7 +15,11 @@ use InvalidArgumentException;
 
 final class DatabaseAiContextRepository implements AiContextRepository
 {
-    public function __construct(private readonly AiContextPermission $permissions, private readonly AiContextSanitizer $sanitizer) {}
+    public function __construct(
+        private readonly AiContextPermission $permissions,
+        private readonly AiContextSanitizer $sanitizer,
+        private readonly AiContextSourcePolicy $sourcePolicy = new AiContextSourcePolicy,
+    ) {}
 
     public function put(TenantContext $scope, ?string $customerId, ?string $runId, array $source, DateTimeImmutable $at): string
     {
@@ -23,14 +28,15 @@ final class DatabaseAiContextRepository implements AiContextRepository
         $provenance = $source['provenance_reference'] ?? null;
         $revision = $source['revision'] ?? null;
         $expiry = $source['expires_at'] ?? null;
+        $contract = $this->sourcePolicy->contract($source['source_kind'] ?? null);
         if (! $this->permissions->allows($scope, PermissionCatalog::AI_EXECUTE)
             || ! is_string($permission) || ! PermissionCatalog::contains($permission)
             || ! $this->permissions->allows($scope, $permission)
             || ! is_string($content) || ! $this->sanitizer->safe($content)
             || ! is_string($provenance) || strlen($provenance) > 255 || ! $this->sanitizer->safe($provenance)
             || ! is_string($revision) || strlen($revision) > 128 || ! $this->sanitizer->safe($revision)
-            || ! in_array($source['source_kind'] ?? null, ['approved_fact', 'brand_guideline', 'run_note'], true)
-            || ! in_array($source['classification'] ?? null, ['public', 'approved_non_personal'], true)
+            || $contract === null || $permission !== $contract['permission']
+            || ($source['classification'] ?? null) !== $contract['classification']
             || ! $expiry instanceof DateTimeImmutable || $expiry <= $at || $expiry > $at->modify('+30 days')) {
             throw new InvalidArgumentException('AI context write denied by scope, permission, expiry or data policy.');
         }
@@ -78,7 +84,9 @@ final class DatabaseAiContextRepository implements AiContextRepository
                 ->where('brand_id', $scope->brandId)->where('customer_id', $customerId)
                 ->where('run_id', $runId)->where('id', $sourceId)->whereNull('deleted_at');
             $row = (clone $query)->lockForUpdate()->first();
-            if ($row === null || ! PermissionCatalog::contains($row->permission)
+            $contract = $row === null ? null : $this->sourcePolicy->contract($row->source_kind);
+            if ($row === null || $contract === null || $row->permission !== $contract['permission']
+                || $row->classification !== $contract['classification']
                 || ! $this->permissions->allows($scope, $row->permission)) {
                 return false;
             }

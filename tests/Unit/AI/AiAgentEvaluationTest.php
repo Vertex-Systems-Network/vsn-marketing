@@ -56,6 +56,14 @@ final class AiAgentEvaluationTest extends TestCase
         self::assertFalse(AiEvaluationReport::evaluate($definition, $samples)->passed);
     }
 
+    public function test_unknown_expectation_cannot_disguise_a_rejected_sample_as_a_pass(): void
+    {
+        $definition = $this->catalog()->resolve('strategy', 'v1');
+        $samples = $this->samples($definition);
+        $definition['dataset']['cases'][2]['expected'] = 'model_says_pass';
+        self::assertFalse(AiEvaluationReport::evaluate($definition, $samples)->passed);
+    }
+
     public function test_promotion_and_rollback_need_exact_report_and_independent_review_and_never_enable_live_routes(): void
     {
         $definition = $this->catalog()->resolve('strategy', 'v1');

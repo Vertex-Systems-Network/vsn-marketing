@@ -1,95 +1,95 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0059",
+  "updated_for_task": "TASK-0060",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32672928382 passed exact TASK-0012 certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9, including transactional state, journal integrity, policy registries, deterministic context, append-only history, and product-change ledger guard."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed backend tests on exact TASK-0012 certified head; PHP 8.3 compatibility job 97276441360 also passed."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 integration job 97276441338 passed on PostgreSQL 18 and Redis 8 with 24 tests / 157 assertions. Phase02CustomerDataCertificationTest passed the complete Contact/Identity/Company/List/Tag/Consent/Event/EventType lifecycle and complete application-level cross-workspace fail-closed case; append-only consent and direct composite-FK isolation regressions also passed without ineffective-import PHP warnings."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Larastan/static analysis on exact TASK-0012 certified head."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed pinned Pint formatting on exact TASK-0012 certified head after the repository-authoritative formatter/runtime-warning reconciliation."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "frontend-typecheck",
       "command": "npm run typecheck",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed TypeScript typecheck on exact TASK-0012 certified head."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "frontend-unit-tests",
       "command": "npm run test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Vitest frontend unit tests on exact TASK-0012 certified head."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "frontend-build",
       "command": "npm run build",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed the production frontend build on exact TASK-0012 certified head."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 e2e job 97276441406 passed the critical Playwright smoke on exact TASK-0012 certified head."
+      "notes": "Latest accepted TASK0059 resulting main b7ced3305224d011546e4938d4e96e9f2f3580c8: Application36937371633, Continuity36937371566, Security36937371572 all pass; application jobs foundation110620681153, integration110621423646, PHPfloor110621423654, E2E110621423738."
     }
   ],
   "application_tests": {
     "status": "pending",
-    "reason": "TASK0059 creative draft source requires new exact-head and resulting-main gates. Last accepted main7262dce7 passed all gates."
+    "reason": "TASK0060 requires new full exact-head/resulting-main gates; last accepted baseline is TASK0059."
   },
   "latest_local_verification": {
-    "basis": "TASK0059 portable creative drafts and truthful rejection telemetry",
+    "basis": "TASK0060 adversarial corpus and evaluation fail-closed guard",
     "suites": [
       {
         "name": "ai-unit-feature",
         "status": "passing",
-        "notes": "38 tests /352 assertions with fail-on-notice and fail-on-warning; text/image contracts, independent rights/review, invalid media/output and real DB rejection/circuit/cost regression pass."
+        "notes": "42 tests/544 assertions, fail-on-notice and fail-on-warning;22 corpus cases plus outage/quarantine regressions."
+      },
+      {
+        "name": "static-policy-context",
+        "status": "passing",
+        "notes": "PHPStan, registry validity/history/negative guards, context integrity and supervisor contract pass."
       },
       {
         "name": "backend",
         "status": "passing",
-        "notes": "770 tests /4471 assertions;136 infrastructure tests skipped locally."
-      },
-      {
-        "name": "static-format-policy-continuity",
-        "status": "passing",
-        "notes": "PHPStan, locked Pint, artifact hash/history and negative guards, deterministic context, transaction/journal/supervisor/parallel checks pass."
+        "notes": "774 tests/4663 assertions;136 infrastructure tests skipped locally; exact PG/Redis CI still required."
       }
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 458,
-    "head_sha": "103c8002c9a62caa0ecfbabbb7d462f3f31662a8",
-    "application_run": 36934001915,
-    "continuity_run": 36934001932,
-    "security_run": 36934001918,
+    "pull_request": 459,
+    "head_sha": "fe8b8f3eedc40cee828f82be9d02450a353c8a71",
+    "application_run": 36936665193,
+    "continuity_run": 36936665146,
+    "security_run": 36936665129,
     "status": "passing",
-    "resulting_main_sha": "7262dce7c5118cd08a0874c016d8d60894273183",
-    "resulting_main_application_run": 36934657336,
+    "resulting_main_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8",
+    "resulting_main_application_run": 36937371633,
     "resulting_main_application": "passing"
   }
 }

@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement content and creative AI adapters",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0058"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Text/media routes are registered with capability, rights, provenance, safety and brand policy before producing candidates.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Creative results are reviewable drafts with disclosure and fail-closed on unsupported capability or rights.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Provider-neutral contract, invalid-output and exact-head/main tests pass.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

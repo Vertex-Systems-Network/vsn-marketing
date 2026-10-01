@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-01T08:48:14+00:00`
-- Observed main: `ce87aca5a4950e65463da91d66a60b052b7b4df1`
+- Timestamp: `2026-10-01T09:53:10+00:00`
+- Observed main: `c3db151aaebfb5c0d555bf2fd7514393a18e7f82`
 - Active issue: `none`
-- Active PR: `453`
-- Active branch: `supervisor/phase10-gateway`
+- Active PR: `454`
+- Active branch: `supervisor/phase10-gateway-contract`
 - Current milestone: `PHASE-10-TASK-0055-GATEWAY`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0055`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `73c56784e56ef10641d75d5ae8e21496213521fdc56d94599acb57e9565fbe22`
+- State fingerprint: `dec61192052c71c5e9ba3c2d5980536c8864f64abad79023da8501d9fd823fab`
 
 ## Completed / observed this session
 
-PR #452 merged to main ce87aca and TASK-0054 research accepted. PR #453 carries partial TASK-0055 gateway policy and deny-by-default budget implementation; exact-head CI pending. Durable budget, telemetry, circuit breaker and fallback remain.
+PR #453 gateway slice merged at c3db151 with all resulting-main gates; PR #454 schema, usage and PostgreSQL contention carrier opened.
 
 ## Tests
 
-PR #452 head 36835718792/36835718650/36835718754; main 36836341941/36836341572/36836341649/36836385805 passed. Local governance passed; PHP runtime unavailable locally; PR #453 CI pending.
+PR #453 exact head 4d0878b and main c3db151 continuity/application/security/supervisor pass; PR #454 local 10 passed, 1 PostgreSQL-only skip, Pint and PHPStan pass; current CI anchor needs sync.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #452 head 36835718792/36835718650/36835718754; main 36836341941/36836341572/3
 
 ## Exact next action
 
-Repair PR #453 exact-head failures, then implement durable budget/telemetry/circuit/fallback and test before TASK-0055 acceptance.
+Run PR #454 exact-head CI, repair PostgreSQL contention or contract failures, then certify TASK-0055 only with full evidence.

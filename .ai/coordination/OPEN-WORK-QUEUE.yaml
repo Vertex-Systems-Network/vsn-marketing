@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ce87aca5a4950e65463da91d66a60b052b7b4df1",
+  "reconciled_main_sha": "c3db151aaebfb5c0d555bf2fd7514393a18e7f82",
   "active_work_path": {
     "kind": "pr",
-    "number": 453,
-    "title": "feat(ai): establish fail-closed gateway route policy",
-    "branch": "supervisor/phase10-gateway",
+    "number": 454,
+    "title": "feat(ai): pin gateway adapter schema and budget contention",
+    "branch": "supervisor/phase10-gateway-contract",
     "disposition": "active_task0055_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 454,
+      "title": "feat(ai): pin gateway adapter schema and budget contention",
+      "branch": "supervisor/phase10-gateway-contract",
+      "disposition": "active_task0055_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 453,
       "title": "feat(ai): establish fail-closed gateway route policy",
       "branch": "supervisor/phase10-gateway",
-      "disposition": "active_task0055_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c3db151aaebfb5c0d555bf2fd7514393a18e7f82"
     },
     {
       "kind": "pr",

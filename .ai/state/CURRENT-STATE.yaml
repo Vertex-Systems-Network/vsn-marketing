@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-10",
-    "active_task": "TASK-0060",
-    "last_completed_task": "TASK-0059",
-    "next_task": "TASK-0061"
+    "active_task": "TASK-0061",
+    "last_completed_task": "TASK-0060",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 69.32,
-    "phase_percent": 79.0,
+    "roadmap_percent": 70.2,
+    "phase_percent": 90.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8",
+  "observed_main_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20",
   "active_issue": null,
   "active_pr": 460,
-  "active_branch": "supervisor/phase10-red-team",
-  "current_milestone": "PHASE-10-TASK-0060-RED-TEAM",
+  "active_branch": "supervisor/phase10-certification",
+  "current_milestone": "PHASE-10-TASK-0061-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060.",
+  "exact_next_safe_action": "Publish substantive final certification PR; require exact-head and resulting-main full green before TASK0061 completion and PHASE10 closure.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060."
+  "exact_next_action": "Publish substantive final certification PR; require exact-head and resulting-main full green before TASK0061 completion and PHASE10 closure."
 }

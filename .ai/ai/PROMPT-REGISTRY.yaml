@@ -32,6 +32,11 @@
           "version": "v1",
           "path": "resources/ai/prompts/strategy.v1.json",
           "sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3"
+        },
+        {
+          "version": "v2",
+          "path": "resources/ai/prompts/strategy.v2.json",
+          "sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71"
         }
       ]
     },

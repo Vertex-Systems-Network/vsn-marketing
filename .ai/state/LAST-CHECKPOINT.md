@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-01T23:02:21+00:00`
-- Observed main: `b7ced3305224d011546e4938d4e96e9f2f3580c8`
+- Timestamp: `2026-10-01T23:21:38+00:00`
+- Observed main: `c2653b56f96c56cd9fc6973cf5c2a6a41b964b20`
 - Active issue: `none`
 - Active PR: `460`
-- Active branch: `supervisor/phase10-red-team`
-- Current milestone: `PHASE-10-TASK-0060-RED-TEAM`
+- Active branch: `supervisor/phase10-certification`
+- Current milestone: `PHASE-10-TASK-0061-CERTIFICATION`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0060`
-- Next task: `TASK-0061`
+- Active task: `TASK-0061`
+- Next task: `none`
 - Current phase: `PHASE-10`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `52cab60f4a645e1697f5cc28e13b454e3e81bea54dbafc15517dcd2e653e8691`
+- State fingerprint: `a550a947e42925c75b09855bfdb1bc116e3266636f4720a9d52151c22ebcda3f`
 
 ## Completed / observed this session
 
-TASK0060 substantive adversarial carrier PR460 opened; queue registration replaces accepted TASK0059 PR459. Full exact-head/resulting-main certification remains required before TASK0061.
+TASK0061 final evidence implemented:52 pinned offline policy cases,22 hostile regression cases, source-bound40-sample timing/accounting capture and independently reviewed exact v2/v1 canary/rollback rehearsal. All aliases remain candidate/null; no live provider activation. Source/test/run matrix and unapproved live gates documented.
 
 ## Tests
 
-42 AI tests/544 assertions and774 backend tests/4663 assertions pass;136 local infra skips. PHPStan/Pint/policy/history/context/continuity pass.
+44 AI tests/1027 assertions;776 backend/5146 assertions with136 local infra skips;4 architecture/2718 assertions. PHPStan/Pint/policy/hash/history/context/transaction/journal/parallel/supervisor/Runner checks pass.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ TASK0060 substantive adversarial carrier PR460 opened; queue registration replac
 
 ## Exact next action
 
-Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060.
+Publish substantive final certification PR; require exact-head and resulting-main full green before TASK0061 completion and PHASE10 closure.

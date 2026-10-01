@@ -1,0 +1,893 @@
+{
+    "schema_version": 1,
+    "evidence_kind": "offline_contract",
+    "captured_at": "2026-10-01T23:18:39+00:00",
+    "php_version": "8.3.6",
+    "platform": "Linux",
+    "architecture": "x86_64",
+    "command": "php tools/ai_offline_certification.php",
+    "measured_scope": "Warm process, fresh synthetic ports per sample, one-step context/catalog/runtime/gateway invocation; excludes harness construction and warm-up. No external network/model.",
+    "production_slo_claim": false,
+    "cost_unit": "synthetic_fixture_units_not_currency",
+    "source_hashes": {
+        ".ai/ai/AGENT-REGISTRY.yaml": "08c6136f1de09d1f25403e2fb9469ab73f4504ce8d75c6a4e7c09e75191e3cf0",
+        ".ai/ai/AI-OBSERVABILITY-SCHEMA.yaml": "e43863ea27de7f0e450be090ca69a2d4516385440605d411730e5c6fbf678ffc",
+        ".ai/ai/AUTONOMY-POLICY.yaml": "f0564b2b6cb002fd29896508a887c9ce7e0dc37b45a05e07b6f2f3b9f7271637",
+        ".ai/ai/CREATIVE-REGISTRY.yaml": "f134e02614d76b8d3501a38026f5ea2752defb32361c1f9eb9258536aaa5869a",
+        ".ai/ai/EVAL-REGISTRY.yaml": "a33856bec89c5ac03530e71412dd01d69428a0968af936f4c940dbdf4ee6e0fa",
+        ".ai/ai/MEMORY-POLICY.yaml": "ed6d934df9ae8b3f092ce5f1ac3be95986eb8bf87618930e7e93de9e0fb6c0d8",
+        ".ai/ai/MODEL-CAPABILITY-REGISTRY.yaml": "84e15556d52a49e5662237b78e36c3b96f55e0bcd0d60f2f94e473606a5041a5",
+        ".ai/ai/PROMPT-REGISTRY.yaml": "0c1ca2293400b3128ad87d067bfdee03327ec8b536b6979b3616ef8abb6d8509",
+        ".ai/ai/TOOL-REGISTRY.yaml": "aae754a1f9330d4726fa4642fe0102f9751fefc1633f2d957e5e32e3bdbcf73e",
+        "app/Modules/AI/Application/AiAgentCatalog.php": "286fb86b43744cc2d2b94eb8da9ae673eedbf1daaec45cef937582a567e9443a",
+        "app/Modules/AI/Application/AiAgentProposalGateway.php": "4486b1e204d6e7ddd5a18a92275b677daf3e078d1c99778091482b748258e4f1",
+        "app/Modules/AI/Application/AiAgentRuntime.php": "b1db0757fcb580ceb56220b68d25ebfb3c0648b658b3a9eb1e6c966bb5993430",
+        "app/Modules/AI/Application/AiContextAssembler.php": "5d96145e1f65b37c8d56c75f1daf92167fa6121b5225d20dd54d3fc2c6e45cf1",
+        "app/Modules/AI/Application/AiCreativeCatalog.php": "e62467396766997fd1394155e39a84bb8c151dc899c0d937e6ca7b4d32f31551",
+        "app/Modules/AI/Application/AiCreativeDraftGenerator.php": "3fd1c064fbc561d19cb637410e937da4a3410e2352792cd6f33eed5ba96418d6",
+        "app/Modules/AI/Application/AiCreativeReviewGate.php": "adb5095a69a0b8ee7796fcd8c1ba02db465dff46364f677d4128aad1e4e7ced4",
+        "app/Modules/AI/Application/AiGateway.php": "d16c5ab46aeb4609acc66e661a5f6ff6eefca36bf046db935f67d920ff5bfdcd",
+        "app/Modules/AI/Application/AiTypedToolExecutor.php": "4a311691ae68bbe7259ddd0ee4afc0420eeb77d34ad89dd7dabfe625ab1c639b",
+        "app/Modules/AI/Application/ScopedAiGatewayOutputValidator.php": "363a88e620f8f6c7c9bbe337b222c36a64b08629fc93fdb2d20fead2647e93ca",
+        "app/Modules/AI/Domain/AiAgentOutputPolicy.php": "347a00a7753759669c0944608d848933404bac075174d78eb6cf657be7889100",
+        "app/Modules/AI/Domain/AiContextSanitizer.php": "76de3cbd657e6ae764939596c3e76a3e17cff385e8431921a7b44690132580dc",
+        "app/Modules/AI/Domain/AiContextSourcePolicy.php": "5ec6ba102fbcba91f6c143be67d112cf0b4ae191843f6a9e9aaba2a030ff8207",
+        "app/Modules/AI/Domain/AiCreativeDraftPolicy.php": "3fb65008e6ad10e4ab3eba43881c365ead2ec18f608af750ec1a1510f7356e25",
+        "app/Modules/AI/Domain/AiEvaluationReport.php": "5b059a0647f2d874d37f50251b0a9d5cba5a5bed0e4e8080ff135270158f7ccd",
+        "app/Modules/AI/Domain/AiPromptPromotionGate.php": "48ebadc05603ef7e32a8ee24f285e737d56434f86a12b121a6078416fad25f35",
+        "app/Modules/AI/Domain/AiRoutePolicy.php": "831fc7098456ccfcb1eef219e1fd1b85d414b5a0aa48ce99a44fe9672e938261",
+        "app/Modules/AI/Domain/AiSchemaValidator.php": "8354d24097b6405b9ff2868471128051d2b7f85a283c8e9d73f59d43ed30dab1",
+        "app/Modules/AI/Domain/AiStructuredOutputValidator.php": "6715b4769b888fb08455dcb36996096561cd35d3597a208ca33244c58577bda4",
+        "app/Modules/AI/Domain/Contracts/AiAdapter.php": "39a45efee2ee5d8a5886a78aef303b18c6d1a2ee72df551841f00dfca6bee194",
+        "app/Modules/AI/Domain/Contracts/AiBudgetLedger.php": "7e30e36c52223203e8f7e9479566e16f25b27fe47dbe4ecd3c872f033ca6b325",
+        "app/Modules/AI/Domain/Contracts/AiCircuitBreaker.php": "4831391816d1951261c7673efe8fc957828fafa51a28239eed48a95019ab6b73",
+        "app/Modules/AI/Domain/Contracts/AiContextPermission.php": "e6d677437410852c60f0cb43b421fb2c2f5c42116dedeb4295e0573a14a95473",
+        "app/Modules/AI/Domain/Contracts/AiContextRepository.php": "0f6ea1acb5a72784e5f8bb738b0159d4862ee24b73cd09d35cd1cb37100d7ca8",
+        "app/Modules/AI/Domain/Contracts/AiCreativePolicyAuthority.php": "0b89455210a8251be55be5f89b8970c69b8d13ed37765211fe5ad14c6c78b592",
+        "app/Modules/AI/Domain/Contracts/AiCreativeProvider.php": "d3e8b487c7270aba0b231b6e7e44de5b4cb48efafa7ac191d23b04a484fb8a63",
+        "app/Modules/AI/Domain/Contracts/AiGatewayOutputValidator.php": "f9a09a60e41280dde37a6e78a11f89dccd5541e71b155854796d8abc27a7e1f3",
+        "app/Modules/AI/Domain/Contracts/AiOfflineAdapter.php": "d8867fe9c4c234fd0373ed204a5de2ba42ff8c7fe21fc9c46ebf3d41c6c2f99a",
+        "app/Modules/AI/Domain/Contracts/AiPromptPromotionAuthority.php": "168fb0314da1771016265e05528725513fc72e994a894006c3fb4e3e5005d4d9",
+        "app/Modules/AI/Domain/Contracts/AiReversibleToolHandler.php": "96db948bed0dedd35f739cab12984181509ebeff9514a74ad06ed41286a3b351",
+        "app/Modules/AI/Domain/Contracts/AiTelemetryRecorder.php": "80cd33e47695243c10daf25b1571dd01fa64eff8fce411d721e2791c4d159b22",
+        "app/Modules/AI/Domain/Contracts/AiToolApproval.php": "6a11fb19721e2f6dc360ab24a74cf2e35ba4929cc8c2ad5dabbc785a21784c25",
+        "app/Modules/AI/Domain/Contracts/AiToolHandler.php": "a868d5824ff4301b7f341eee4963d438a49c9edb5bf13c9d6c75c300661e88f0",
+        "composer.lock": "352732a8e14ea599be9d44cdf50779ffd5b3ad9af1c66b0014a3b177fb772452",
+        "resources/ai/evals/analytics.v1.json": "eb94add578a6b71bd6b8fb8cb9c38c57c3a20e7f9adac57b6ad951bb1c0d9482",
+        "resources/ai/evals/audience.v1.json": "e7dd6962abd0a8427e0b84b8877aeadbc8190c1aade23df1ad41befccd447dc0",
+        "resources/ai/evals/brand_guardian.v1.json": "d608a45bbea44b5d6ba336360fed98a568077bd6d9c7455292a8df04cc7131c4",
+        "resources/ai/evals/compliance_guard.v1.json": "573da83ac03fafc2a1209750e6db267b51f1b2bedcf9481cf6655cb922aa1396",
+        "resources/ai/evals/connector_engineer.v1.json": "207c519e70a3be40026c063c1af4e456f3490dcad6b932430c246bcb9c21abfd",
+        "resources/ai/evals/content.v1.json": "1e7d7d06841324c4a4abac7461c7938082dd684fbab8cc40b565179dba0dc3ec",
+        "resources/ai/evals/deliverability.v1.json": "b594e8428c23d3b3297350dfb66e96217d871fe14639571dd490ccb58ed99a95",
+        "resources/ai/evals/experiment.v1.json": "33a1493e7523a926821bed71a6d13a5f51e7c1ac1994001d5d7109f73be1b2ef",
+        "resources/ai/evals/journey.v1.json": "7ea13ab80c0c315eb9f78f5fc00df60b46f91ff574ddec754a33cd84362cccf5",
+        "resources/ai/evals/marketing_director.v1.json": "cc93f3dd905b725c3f17a9897be15c0536e84af2f29c2f39eda8119fe028b6a2",
+        "resources/ai/evals/qa.v1.json": "bb26d6ca895b6dae6477656a86ce6668f3d94002d80421fb18f3615551fbc2cc",
+        "resources/ai/evals/strategy.v1.json": "931fc0fd73dcd67f2f335367150008f71adf0a2979abeacd3d412bbe0a76c8e7",
+        "resources/ai/evals/strategy.v2.json": "814cc3c57f2ed4e10ae5b6f298aac3a68d5312ebb785251d1d985399dddea034",
+        "resources/ai/prompts/analytics.v1.json": "6b3f73f880ea49b1c4ef459a6ff87d6c186ee7e3384a9c14b73ea27423dc161c",
+        "resources/ai/prompts/audience.v1.json": "03ebed6266a21deee6204fb0f4d8122f47fec96aa0a5758fc7e9f3078afdb7af",
+        "resources/ai/prompts/brand_guardian.v1.json": "43a72741bb47a6b7d1fa7139f29ac167a744e0a2112606ff8a7ad0fb0277e565",
+        "resources/ai/prompts/compliance_guard.v1.json": "25e12e49ebeb474aa86ee5672ca2806e6704f851244ae227f237f55a8b0739c8",
+        "resources/ai/prompts/connector_engineer.v1.json": "82f6078138d39e2454da06b7042dd626ddd67871c71b3b33d07bcfa8d12e6cdd",
+        "resources/ai/prompts/content.v1.json": "25d7f9f40ab2e1746cf58ddc38dcfe0e50e667c0d87a48421eb77d4db5fde9ab",
+        "resources/ai/prompts/deliverability.v1.json": "423de0b93ebe7c488f72fe3bc50249b9f0f64aed53721bd1ee7cfc714ebab5b1",
+        "resources/ai/prompts/experiment.v1.json": "7662c5d65eeb72ced7f8a384bda7c8e024c6955242f764fa5462a11964b90fe8",
+        "resources/ai/prompts/journey.v1.json": "b0fcd3a59a5b42d6f12483e2d5fbaf097b323303432d886f75f19aba4c46906c",
+        "resources/ai/prompts/marketing_director.v1.json": "555538d210e373a5de9f8c155de0879b952eae6631f81fc26d8e1327ac57a9b3",
+        "resources/ai/prompts/qa.v1.json": "5b8f720f591056eb12b4a438ae2a49f98f21178e636d14a341589dbc352062de",
+        "resources/ai/prompts/strategy.v1.json": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+        "resources/ai/prompts/strategy.v2.json": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+        "tests/Support/AI/AiRuntimeHarness.php": "df1285647e23370464c6c1ce0915a30627dbb1cd0e0f2b730886237491ce52f9",
+        "tools/ai_offline_certification.php": "630fce20921975f654e2c6698309a35280ccdc6a4e1c3d117de804175e718065"
+    },
+    "samples": [
+        {
+            "sample_index": 0,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.553936,
+            "gateway_latency_ms": 0.329529,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "aff9aa96905a64d8ac372c857dd7ac943dd528f709449ca86a55197f9390d1cd",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 1,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.488727,
+            "gateway_latency_ms": 0.198436,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "04dde0a0a470da0a88bf040f7e7b14126b8cdcab99b3a0fe8b04be9a5f7ff33c",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 2,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.354145,
+            "gateway_latency_ms": 0.166027,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "b49cad553296c741e15b02d1022b76757df094552ca62904720dab0798df81a2",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 3,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.307824,
+            "gateway_latency_ms": 0.159773,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "4e036f2b932a9eab3f1b4d7b6bea54ee92572127c5c2c63ffb4a0a56f0aeed2d",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 4,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.323581,
+            "gateway_latency_ms": 0.157877,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "7f97866bebe24f0a6952b0668cf109c9ca710c51338d0ac132acdeef475e1a3f",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 5,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.659063,
+            "gateway_latency_ms": 0.1779,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "a01e081f5ac8aa93d9ed1c8986d7f872e022204b4e5d2f5df60085acaf4f1d5d",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 6,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.491634,
+            "gateway_latency_ms": 0.210873,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "74223917625dabbc629d62c676863d1520d56b576bb7d91164eb7bbc9c01d222",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 7,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.308349,
+            "gateway_latency_ms": 0.157601,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "a3ad23a10be3e438da53e604bd49a91f2ad886fe824e8cfc6df1020f16d88a4d",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 8,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 1.060805,
+            "gateway_latency_ms": 0.210828,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "87a36d882db40414c75bf82dc1017a06a09516653d78c7447524d762be41df93",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 9,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.337599,
+            "gateway_latency_ms": 0.173432,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "d46ddc00ac58d954c3ffeaaa55934405cddccb08a5a3b92d12c923f203e2dc6b",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 10,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.327504,
+            "gateway_latency_ms": 0.163947,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "bc2a66d2aa6e5e35ccb548f30415085b338be7fe524d3d4bff41e01e8749be92",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 11,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.30406,
+            "gateway_latency_ms": 0.156265,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "b8314ae11a4169077da25124a9ec743f260be9f75e0e4f66132f0936bff87529",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 12,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.59805,
+            "gateway_latency_ms": 0.17386,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "061c013d3dda12587fcec11a06ee903cd6a4018e07c67c5e712ffa3874eab441",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 13,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.309155,
+            "gateway_latency_ms": 0.15851,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "45f149d4ec92347432794a453eb6fa6da6b776c50b8c14c4e2b7479111cd53a8",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 14,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.71223,
+            "gateway_latency_ms": 0.238408,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "fc5da5446034bb0a8f93924dd5d2cb2eacac7a020d3921a0b2fcf80fe87ab3be",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 15,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.318982,
+            "gateway_latency_ms": 0.160494,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "bfb0086047488eb2b08e4fff6057a63c8ef3df863ba093a7f3d6e3d9f5d56cb2",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 16,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.408074,
+            "gateway_latency_ms": 0.167114,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "2ed764a4229d87f3e0389a7e50062a9b01ed3d59193de721ff63e0a203c6b624",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 17,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.305009,
+            "gateway_latency_ms": 0.155395,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "5edbe10e81c413a686c54ade6caf813ad23c0c6f6ba452bd60348aee6228b201",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 18,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.328651,
+            "gateway_latency_ms": 0.185481,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "ad51652a9e709d58b8ca94eff1c4180b807dc1bf9034328085772b6b138815f4",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 19,
+            "version": "v1",
+            "status": "completed",
+            "elapsed_ms": 0.297651,
+            "gateway_latency_ms": 0.152834,
+            "provider_calls": 1,
+            "prompt_sha256": "f3a9ed0dfff43b5f2a4ddd3aca45dfdee2d0c6e271d29a22e53994e4a4cc64f3",
+            "context_manifest_sha256": "d4ed4fda829ad95d2805edab203c6fbd0932a2766cddf9564ff653a366f0486a",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 20,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.663986,
+            "gateway_latency_ms": 0.192965,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "cdae8452f3cef94900be9ef096fbcbe45c4603cff87f7e1154401bca2d520284",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 21,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.326694,
+            "gateway_latency_ms": 0.169879,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "1e6800d1a7636d57522dedb6f0a6f5c5c8e8b44e2749fe2d0c7f35cd42f0ff07",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 22,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.378772,
+            "gateway_latency_ms": 0.17129,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "09c464c94b42a6d1da23ee3086953c66aef9d56e87821ef67fb7e3b267fdedbb",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 23,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.308088,
+            "gateway_latency_ms": 0.158644,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "1b497a44aa8a52d70a3da3fe225c6f6fe9e29b6f91749aff0b00a2570d854425",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 24,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.444217,
+            "gateway_latency_ms": 0.222376,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "ac59fe5ad3a798198770e7e49427f1bf144f58ff2a992f84e0085d71fc0c448e",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 25,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.30286,
+            "gateway_latency_ms": 0.154291,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "cf98807698c61957c671bb7e401602d12685f1af03fc9bf97ebf6f18b6b0a9d2",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 26,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 1.099823,
+            "gateway_latency_ms": 0.823373,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "e47d3c64fc5cc2a735ae0eb080d5c916074d0c4f9a38bef09d2b600570a78b62",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 27,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.330777,
+            "gateway_latency_ms": 0.165216,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "30ef1b3ee64278c8dddd3db7a4a7634da7252c07bd92e1870e754701eed7c521",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 28,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.362823,
+            "gateway_latency_ms": 0.167575,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "a14a1e59c9b1dcea6a1411a500f78152535bf4614631bca3cca3947a6b1baac9",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 29,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.312871,
+            "gateway_latency_ms": 0.159431,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "38a1695f745a901fa4c95add69ec70f46e0615571859692c43ada14dfbbf0e96",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 30,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.839499,
+            "gateway_latency_ms": 0.175986,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "26dadb899fb44270023a5c42be84e0a93a7f9d0f86b9a2236586203763ffcfa8",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 31,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.310148,
+            "gateway_latency_ms": 0.158525,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "37500f22f7aad67781bbb8f1b7fd98cfdc953120dbed6afd1a1d0a947a8f9816",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 32,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.446353,
+            "gateway_latency_ms": 0.161319,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "df8757c8d941943db8d9c284e9e4c5916806d51278b7c4fec98a11fdfd0415cf",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 33,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.331453,
+            "gateway_latency_ms": 0.181639,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "60784bf9263eef23fc1131b2402a72cb53edbd6fdcf72c3c6587d0e9fba5454f",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 34,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.348053,
+            "gateway_latency_ms": 0.19716,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "9a6b158011957645b404863543c673623375de65295e214884de8b894538ea0f",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 35,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.308301,
+            "gateway_latency_ms": 0.15902,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "9eef5fa221b8d865ebe49f97cc19e4513ff2c0a9842d66d0cf4c27f1f433d0f2",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 36,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.70092,
+            "gateway_latency_ms": 0.213031,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "d610ac46d1fa0eb5492102d2cd0d2cd04322a5e382d3a7fc0446e430d3e2754e",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 37,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.318023,
+            "gateway_latency_ms": 0.162671,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "9825c70f4c94b820b93c6742ad81b9197cac11ab1b88a4c6e018e1b1ff35b2d9",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 38,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.530192,
+            "gateway_latency_ms": 0.383446,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "94c67f2f4cf6b1bd2668007e0784f1007c2ac05f7ae949c192a77f21802e0931",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        },
+        {
+            "sample_index": 39,
+            "version": "v2",
+            "status": "completed",
+            "elapsed_ms": 0.312739,
+            "gateway_latency_ms": 0.158126,
+            "provider_calls": 1,
+            "prompt_sha256": "642e9c961522932af0565cac0416f90db578f5242e831f1993e3518af3ad0b71",
+            "context_manifest_sha256": "92487abef2d398b8ddc6222bbe0351aef65e2d756fd422bcf821dfd856c08a78",
+            "reserved_fixture_units": [
+                10
+            ],
+            "settled_fixture_units": [
+                2
+            ],
+            "usage": {
+                "input_tokens": 3,
+                "output_tokens": 4
+            }
+        }
+    ],
+    "summary": {
+        "sample_count": 40,
+        "p50_ms_nearest_rank": 0.331453,
+        "p95_ms_nearest_rank": 0.839499,
+        "settled_fixture_units": 80
+    }
+}

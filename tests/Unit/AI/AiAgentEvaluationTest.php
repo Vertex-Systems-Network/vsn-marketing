@@ -105,7 +105,7 @@ final class AiAgentEvaluationTest extends TestCase
 
     public function test_unknown_agents_and_mutable_or_unregistered_versions_deny(): void
     {
-        foreach ([['unknown', 'v1'], ['strategy', 'latest'], ['strategy', 'v2']] as [$agent, $version]) {
+        foreach ([['unknown', 'v1'], ['strategy', 'latest'], ['strategy', 'v999']] as [$agent, $version]) {
             try {
                 $this->catalog()->resolve($agent, $version);
                 self::fail('Unknown agent/version accepted.');

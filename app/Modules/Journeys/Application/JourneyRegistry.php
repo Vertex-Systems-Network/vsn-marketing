@@ -75,6 +75,8 @@ final readonly class JourneyRegistry
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            $this->database->table('journeys')->where('workspace_id', $scope->workspaceId)->where('id', $journeyId)
+                ->increment('lifecycle_revision', 1, ['status' => 'published', 'updated_at' => now()]);
             $this->audit->record(
                 workspaceId: $scope->workspaceId,
                 action: 'journey.version.published',

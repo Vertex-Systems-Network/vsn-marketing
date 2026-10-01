@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "d0b13644661cdc22d1a7ffa389b020f050317013",
+  "observed_main_sha": "0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5",
   "active_issue": null,
-  "active_pr": 448,
+  "active_pr": 449,
   "active_branch": "supervisor/task0052-builder",
   "current_milestone": "PHASE-09-TASK-0052-EXECUTION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Implement TASK-0052 journey builder, side-effect-free simulator, explicit lifecycle confirmations and accessible execution timeline; validate unit, accessibility, frontend build and browser flows.",
+  "exact_next_safe_action": "Publish TASK-0052 CI evidence on PR #449, certify new exact head, review threads/ruleset, merge only with green required checks, then transactionally complete TASK-0052 and activate TASK-0053. Keep PHASE-10 inactive.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement TASK-0052 journey builder, side-effect-free simulator, explicit lifecycle confirmations and accessible execution timeline; validate unit, accessibility, frontend build and browser flows."
+  "exact_next_action": "Publish TASK-0052 CI evidence on PR #449, certify new exact head, review threads/ruleset, merge only with green required checks, then transactionally complete TASK-0052 and activate TASK-0053. Keep PHASE-10 inactive."
 }

@@ -89,7 +89,7 @@ final readonly class JourneyOperatorController
         }
 
         try {
-            $result = $this->database->transaction(function () use ($scope, $actor, $journey, $expected, $request): array {
+            $result = $this->database->transaction(function () use ($scope, $actor, $journey, $expected): array {
                 $record = $this->database->table('journeys')->where('workspace_id', $scope->workspaceId)->where('id', $journey)->lockForUpdate()->first();
                 if ($record === null || $record->status !== 'draft' || (int) $record->draft_revision !== $expected || $record->draft_graph === null) {
                     throw new \DomainException('journey_draft_stale');

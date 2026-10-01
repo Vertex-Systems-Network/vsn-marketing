@@ -98,6 +98,6 @@
   },
   "closure_verification": {
     "status": "pending",
-    "reason": "Full exact-head/resulting-main terminal carrier verification; certified source basis above already passed."
+    "reason": "Full terminal PR exact-head gates and policy-classified lightweight control resulting-main gates; full source main44c64433 already certified. Skipped product jobs will not be counted as full passes."
   }
 }

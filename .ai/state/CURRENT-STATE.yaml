@@ -31,7 +31,7 @@
   "current_milestone": "PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED",
   "milestone_status": "COMPLETE",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Verify PR462 full exact-head/main gates, then explicitly research/register the next task before new implementation.",
+  "exact_next_safe_action": "Verify corrected PR462 exact-head full CI and resulting-main control classification; then explicitly research/register successor before implementation.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR462 full exact-head/main gates, then explicitly research/register the next task before new implementation."
+  "exact_next_action": "Verify corrected PR462 exact-head full CI and resulting-main control classification; then explicitly research/register successor before implementation."
 }

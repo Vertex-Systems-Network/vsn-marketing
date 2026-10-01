@@ -20,8 +20,8 @@ final class AiGateway
     ) {}
 
     /**
-     * @param list<array<string, mixed>> $routes Server-owned registry, never model input.
-     * @param array<string, mixed> $request Authenticated and policy-validated envelope.
+     * @param  list<array<string, mixed>>  $routes  Server-owned registry, never model input.
+     * @param  array<string, mixed>  $request  Authenticated and policy-validated envelope.
      * @return array<string, mixed>
      */
     public function generate(array $routes, array $request, TenantContext $scope): array

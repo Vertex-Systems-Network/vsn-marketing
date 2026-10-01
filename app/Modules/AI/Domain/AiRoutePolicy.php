@@ -8,8 +8,8 @@ use InvalidArgumentException;
 final class AiRoutePolicy
 {
     /**
-     * @param list<array<string, mixed>> $routes
-     * @param array<string, mixed> $request
+     * @param  list<array<string, mixed>>  $routes
+     * @param  array<string, mixed>  $request
      * @return list<array<string, mixed>>
      */
     public function eligible(array $routes, array $request): array

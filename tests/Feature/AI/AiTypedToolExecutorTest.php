@@ -6,14 +6,20 @@ use App\Modules\AI\Domain\Contracts\AiToolApproval;
 use App\Modules\AI\Domain\Contracts\AiToolHandler;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
+use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use App\Modules\Identity\Domain\Tenancy\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
 it('authorizes typed tools independently and binds durable replays to actor and arguments', function () {
-    $scope = aiContextScope();
+    $suffix = Str::lower(Str::random(10));
+    $org = Organization::query()->create(['name' => 'Tools '.$suffix, 'slug' => 'tools-'.$suffix]);
+    $workspace = Workspace::query()->create(['organization_id' => $org->getKey(), 'name' => 'Tools '.$suffix, 'slug' => 'tools-'.$suffix]);
+    $scope = new TenantContext((string) $org->getKey(), (string) $workspace->getKey(), null, (string) Str::uuid());
     $permissions = new class implements AiContextPermission
     {
         public bool $allow = true;

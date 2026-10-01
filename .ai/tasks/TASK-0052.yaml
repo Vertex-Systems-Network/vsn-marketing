@@ -3,7 +3,7 @@
   "phase": "PHASE-09",
   "title": "Implement journey builder simulator validation UX and execution timeline",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0051"
   ],
@@ -12,27 +12,32 @@
     {
       "id": "AC-1",
       "description": "Builder supports keyboard and screen-reader navigation, focus management, responsive reflow, and non-color-only errors.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-2",
       "description": "Draft simulation is side-effect free and explains transitions, waits, exits, and blocked actions.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-3",
       "description": "Publish, activate, pause, resume, cancel, and archive confirmations are explicit and version-aware.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-4",
       "description": "Timeline exposes queued, waiting, running, retried, succeeded, blocked, cancelled, exited, and failed states.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     },
     {
       "id": "AC-5",
       "description": "Loading, empty, stale, timeout, permission-denied, and large-graph states are accessible and tested.",
-      "status": "pending"
+      "status": "pending",
+      "done": true
     }
   ],
   "required_tests": [

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0057",
+  "updated_for_task": "TASK-0058",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -58,39 +58,40 @@
     }
   ],
   "application_tests": {
-    "status": "failing",
-    "basis": "resulting main a3d7fa4a161c035e1373105427a03167e5dbb7ec",
-    "run_id": 36930013699,
-    "reason": "PostgreSQL integration110597582137 failed inherited PDO socket in forked contention worker. PR457 repair remains pending exact-head and resulting-main verification."
+    "status": "passing",
+    "basis": "repaired resulting-main2fb294fdd4f9bce718fb436aa5b1b8901426b285",
+    "run_id": 36931825964,
+    "reason": "All four foundation/PHP-floor/E2E/PostgreSQL integration jobs passed. TASK0058 implementation requires fresh exact-head and main gates."
   },
   "latest_local_verification": {
-    "basis": "PR457 pre-fork PDO purge and guaranteed child exit repair",
+    "basis": "TASK0058 candidate runtime source",
     "suites": [
       {
-        "name": "php-syntax-and-locked-pint",
+        "name": "ai-unit-feature",
         "status": "passing",
-        "notes": "Focused repair checks pass on PHP8.3. PostgreSQL contention not runnable locally."
+        "notes": "30 tests /220 assertions, including all12specialists pinned policy fixtures, exact context isolation, budget/retry/live-route denial and independent promotion."
       },
       {
-        "name": "merged-backend-baseline",
+        "name": "backend",
         "status": "passing",
-        "notes": "753 tests /4251 assertions;136 infrastructure tests skipped locally, no claim that these prove PostgreSQL contention."
+        "notes": "762 tests /4339 assertions;136 infrastructure tests skipped locally."
       },
       {
-        "name": "continuity",
+        "name": "static-format-policy-continuity",
         "status": "passing",
-        "notes": "Transaction/state/journal/supervisor/policy checks pass."
+        "notes": "PHPStan, locked Pint, artifact hashes/history, policy negative guards, transaction/journal/supervisor/parallel checks pass."
       }
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 456,
-    "head_sha": "dbe431bfae7cf032d71b59bbb4b9d4cb4d66458b",
-    "application_run": 36911341918,
-    "continuity_run": 36911341874,
-    "security_run": 36911341967,
+    "pull_request": 457,
+    "head_sha": "bd878a6ee32064de1ae396ae46caf0048dcfe27d",
+    "application_run": 36931095445,
+    "continuity_run": 36931095568,
+    "security_run": 36931095497,
     "status": "passing",
-    "resulting_main_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec",
-    "resulting_main_application": "failing"
+    "resulting_main_sha": "2fb294fdd4f9bce718fb436aa5b1b8901426b285",
+    "resulting_main_application_run": 36931825964,
+    "resulting_main_application": "passing"
   }
 }

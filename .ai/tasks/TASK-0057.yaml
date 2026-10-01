@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement structured output and typed tool policy",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0056"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Schema and semantic output validation reject unknown IDs, refusal/truncation and malformed or policy-invalid proposals.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Typed tool executor enforces registered tool ID, workspace permission, risk tier, approval, idempotency and audit independent of prompts.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adversarial tool/policy tests and exact-head/main gates pass.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

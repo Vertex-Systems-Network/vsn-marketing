@@ -21,6 +21,14 @@ def expect_error(docs, needle: str) -> None:
 def main() -> int:
     original = policy.load_documents()
     assert policy.validate_documents(original) == [], "repository AI policy registries must be valid"
+    assert policy.validate_artifacts(original) == [], "pinned runtime artifacts must be valid"
+    mutated = copy.deepcopy(original)
+    mutated['prompts']['prompts'][0]['versions'][0]['sha256'] = '0' * 64
+    assert any('hash mismatch' in e for e in policy.validate_artifacts(mutated))
+    assert policy.immutable_version_errors(original['prompts'], mutated['prompts'], 'prompts')
+    mutated = copy.deepcopy(original)
+    mutated['prompts']['prompts'][0]['agent_id'] = 'qa'
+    assert any('binding mismatch' in e for e in policy.validate_artifacts(mutated))
 
     docs = copy.deepcopy(original)
     docs["agents"]["agents"][0]["tools"].append("missing_tool")

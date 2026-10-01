@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import json
+import argparse
+import hashlib
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -125,9 +129,75 @@ def load_documents() -> dict[str, dict]:
     return {name: load(path) for name, path in FILES.items()}
 
 
+def immutable_version_errors(previous: dict, current: dict, rows_key: str) -> list[str]:
+    errors = []
+    now = {row['id']: row for row in current.get(rows_key, [])}
+    for row in previous.get(rows_key, []):
+        versions = {item['version']: item for item in now.get(row['id'], {}).get('versions', [])}
+        for old in row.get('versions', []):
+            if versions.get(old['version']) != old:
+                errors.append(f"immutable version changed/removed: {row['id']} {old['version']}")
+    return errors
+
+
+def validate_artifacts(docs: dict[str, dict], root: Path = ROOT) -> list[str]:
+    errors = []
+    agents = {row['id']: row for row in docs['agents']['agents']}
+    for name, rows_key, kind in [('prompts', 'prompts', 'prompts'), ('evals', 'suites', 'evals')]:
+        for row in docs[name].get(rows_key, []):
+            versions = row.get('versions', [])
+            if duplicates([v.get('version') for v in versions]):
+                errors.append(f"duplicate artifact version: {row['id']}")
+            for version in versions:
+                path = version.get('path', '')
+                if not re.fullmatch(r'resources/ai/'+kind+r'/[a-z_]+\.v[1-9][0-9]*\.json', path):
+                    errors.append(f"invalid artifact path: {row['id']}"); continue
+                file = root / path
+                if not file.resolve().is_relative_to((root / 'resources/ai' / kind).resolve()) or not file.is_file():
+                    errors.append(f"missing/outside artifact: {row['id']}"); continue
+                if hashlib.sha256(file.read_bytes()).hexdigest() != version.get('sha256'):
+                    errors.append(f"artifact hash mismatch: {row['id']}"); continue
+                artifact = load(file)
+                if artifact.get('version') != version['version']:
+                    errors.append(f"artifact version mismatch: {row['id']}")
+                if name == 'prompts':
+                    agent = agents.get(row.get('agent_id'), {})
+                    if not agent or artifact.get('agent_id') != row.get('agent_id') or artifact.get('prompt_id') != row['id'] or artifact.get('schema_id') != agent.get('output_contract'):
+                        errors.append(f"prompt/agent binding mismatch: {row['id']}")
+                    enum = artifact.get('schema', {}).get('properties', {}).get('tool_ids', {}).get('items', {}).get('enum', [])
+                    if enum != agent.get('tools'):
+                        errors.append(f"prompt tool scope mismatch: {row['id']}")
+                else:
+                    ids = [case.get('id') for case in artifact.get('cases', [])]
+                    if artifact.get('id') != row['id'] or artifact.get('evidence_kind') != 'offline_contract' or len(ids) < 4 or duplicates(ids):
+                        errors.append(f"eval fixture binding/coverage mismatch: {row['id']}")
+    return errors
+
+
+def validate_version_history(base: str, docs: dict[str, dict]) -> list[str]:
+    if not base or set(base) == {'0'}:
+        return []
+    errors = []
+    for name, key in [('prompts', 'prompts'), ('evals', 'suites')]:
+        path = FILES[name].relative_to(ROOT).as_posix()
+        result = subprocess.run(['git', 'show', f'{base}:{path}'], cwd=ROOT, capture_output=True, text=True)
+        if result.returncode:
+            errors.append(f"cannot verify immutable registry history: {path}")
+        else:
+            errors.extend(immutable_version_errors(json.loads(result.stdout), docs[name], key))
+    return errors
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('command', nargs='?', default='validate', choices=['validate'])
+    parser.add_argument('--base')
+    args = parser.parse_args()
     try:
-        errors = validate_documents(load_documents())
+        docs = load_documents()
+        errors = validate_documents(docs) + validate_artifacts(docs)
+        if args.base:
+            errors.extend(validate_version_history(args.base, docs))
     except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
         print(f"AI policy registry error: {exc}", file=sys.stderr)
         return 1

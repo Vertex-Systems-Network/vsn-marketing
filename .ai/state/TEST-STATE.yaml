@@ -58,28 +58,39 @@
     }
   ],
   "application_tests": {
-    "status": "pending",
-    "reason": "Repaired exact head dbe431bf Application run 36911341918 was building the PHP image at last observation. Prior head 3f62afc6 passed foundation/PHP floor/PostgreSQL integration but E2E failed nested timestamp rule equality; repair has not yet passed exact-head full CI."
+    "status": "failing",
+    "basis": "resulting main a3d7fa4a161c035e1373105427a03167e5dbb7ec",
+    "run_id": 36930013699,
+    "reason": "PostgreSQL integration110597582137 failed inherited PDO socket in forked contention worker. PR457 repair remains pending exact-head and resulting-main verification."
   },
   "latest_local_verification": {
-    "basis": "PR #456 repaired source tree dbe431bfae7cf032d71b59bbb4b9d4cb4d66458b",
-    "checked_at_utc": "2026-10-01",
+    "basis": "PR457 pre-fork PDO purge and guaranteed child exit repair",
     "suites": [
       {
-        "name": "frontend",
+        "name": "php-syntax-and-locked-pint",
         "status": "passing",
-        "notes": "35 tests passed; TypeScript and Vite build passed."
+        "notes": "Focused repair checks pass on PHP8.3. PostgreSQL contention not runnable locally."
       },
       {
-        "name": "ai-unit-feature",
+        "name": "merged-backend-baseline",
         "status": "passing",
-        "notes": "21 tests passed / 132 assertions on local PHP 8.3 SQLite."
+        "notes": "753 tests /4251 assertions;136 infrastructure tests skipped locally, no claim that these prove PostgreSQL contention."
       },
       {
         "name": "continuity",
         "status": "passing",
-        "notes": "Transaction/state/journal/supervisor/policy validation passed."
+        "notes": "Transaction/state/journal/supervisor/policy checks pass."
       }
     ]
+  },
+  "latest_ci_verification": {
+    "pull_request": 456,
+    "head_sha": "dbe431bfae7cf032d71b59bbb4b9d4cb4d66458b",
+    "application_run": 36911341918,
+    "continuity_run": 36911341874,
+    "security_run": 36911341967,
+    "status": "passing",
+    "resulting_main_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec",
+    "resulting_main_application": "failing"
   }
 }

@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "abe7df21c195c3d5843555f70c5c1c6f16bd5850",
+  "observed_main_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec",
   "active_issue": null,
-  "active_pr": 456,
-  "active_branch": "supervisor/phase10-context-acceptance",
+  "active_pr": 457,
+  "active_branch": "supervisor/phase10-budget-fork-repair",
   "current_milestone": "PHASE-10-TASK-0057-TYPED-TOOLS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Publish same-scope PostgreSQL fork isolation repair, pass exact-head/main gates, then certify TASK-0057 and continue TASK-0058.",
+  "exact_next_safe_action": "Verify PR457 full CI, merge only green exact head, verify resulting main, then certify TASK0057 and activate TASK0058.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish same-scope PostgreSQL fork isolation repair, pass exact-head/main gates, then certify TASK-0057 and continue TASK-0058."
+  "exact_next_action": "Verify PR457 full CI, merge only green exact head, verify resulting main, then certify TASK0057 and activate TASK0058."
 }

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "abe7df21c195c3d5843555f70c5c1c6f16bd5850",
+  "reconciled_main_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec",
   "active_work_path": {
     "kind": "pr",
-    "number": 456,
-    "title": "feat(ai): certify scoped context and enforce typed tool policy",
-    "branch": "supervisor/phase10-context-acceptance",
+    "number": 457,
+    "title": "test(ai): isolate PostgreSQL contention worker before fork",
+    "branch": "supervisor/phase10-budget-fork-repair",
     "disposition": "active_task0057_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 457,
+      "title": "test(ai): isolate PostgreSQL contention worker before fork",
+      "branch": "supervisor/phase10-budget-fork-repair",
+      "disposition": "active_task0057_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 456,
       "title": "feat(ai): certify scoped context and enforce typed tool policy",
       "branch": "supervisor/phase10-context-acceptance",
-      "disposition": "active_task0057_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec"
     },
     {
       "kind": "pr",

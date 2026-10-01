@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\AI\Infrastructure\DatabaseAiBudgetLedger;
+use App\Modules\AI\Infrastructure\DatabaseAiCircuitBreaker;
+use App\Modules\AI\Infrastructure\DatabaseAiTelemetryRecorder;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -57,4 +59,50 @@ it('rejects duplicate and oversized settlement without releasing reservation', f
 
     $ledger->settle($workspace, 'trace-c', 8);
     expect(fn () => $ledger->settle($workspace, 'trace-c', 8))->toThrow(RuntimeException::class);
+});
+
+it('keeps unknown routes closed and opens a failing route until its cooldown expires', function () {
+    $workspace = aiBudgetWorkspace();
+    $breaker = new DatabaseAiCircuitBreaker;
+    expect($breaker->allows($workspace, 'route-a'))->toBeFalse();
+
+    DB::table('ai_route_circuits')->insert([
+        'workspace_id' => $workspace, 'route_id' => 'route-a',
+        'failure_count' => 0, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    expect($breaker->allows($workspace, 'route-a'))->toBeTrue();
+    $breaker->failed($workspace, 'route-a');
+    $breaker->failed($workspace, 'route-a');
+    $breaker->failed($workspace, 'route-a');
+    expect($breaker->allows($workspace, 'route-a'))->toBeFalse();
+
+    DB::table('ai_route_circuits')->where('workspace_id', $workspace)->where('route_id', 'route-a')
+        ->update(['open_until' => now()->subMinute()]);
+    expect($breaker->allows($workspace, 'route-a'))->toBeTrue();
+    $breaker->succeeded($workspace, 'route-a');
+    expect((int) DB::table('ai_route_circuits')->where('workspace_id', $workspace)->value('failure_count'))->toBe(0);
+});
+
+it('records only bounded provenance references and finalizes a trace once', function () {
+    $workspace = aiBudgetWorkspace();
+    $telemetry = new DatabaseAiTelemetryRecorder;
+    $route = ['id' => 'route-a', 'version' => 'v1'];
+    $request = [
+        'trace_id' => 'trace-a', 'prompt_id' => 'prompt-a', 'prompt_version' => 'v1',
+        'context_manifest_sha256' => str_repeat('a', 64),
+        'prompt' => 'PRIVATE PROMPT', 'context' => 'PRIVATE CONTEXT', 'output' => 'PRIVATE OUTPUT',
+    ];
+
+    expect($telemetry->begin($workspace, 'attempt-a', $route, $request))->toBeTrue()
+        ->and($telemetry->begin($workspace, 'attempt-a', $route, $request))->toBeFalse();
+    $telemetry->finish($workspace, 'attempt-a', 'complete', 12);
+    expect(fn () => $telemetry->finish($workspace, 'attempt-a', 'complete', 12))->toThrow(RuntimeException::class);
+
+    $row = (array) DB::table('ai_gateway_traces')->where('workspace_id', $workspace)->first();
+    expect($row['status'])->toBe('complete')
+        ->and((int) $row['cost_minor'])->toBe(12)
+        ->and(implode(' ', array_keys($row)).json_encode($row))->not->toContain('PRIVATE');
+
+    $request['context_manifest_sha256'] = 'invalid';
+    expect($telemetry->begin($workspace, 'attempt-b', $route, $request))->toBeFalse();
 });

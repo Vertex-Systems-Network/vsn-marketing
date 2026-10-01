@@ -6,6 +6,8 @@ use App\Modules\AI\Application\AiGateway;
 use App\Modules\AI\Domain\AiRoutePolicy;
 use App\Modules\AI\Domain\Contracts\AiAdapter;
 use App\Modules\AI\Domain\Contracts\AiBudgetLedger;
+use App\Modules\AI\Domain\Contracts\AiCircuitBreaker;
+use App\Modules\AI\Domain\Contracts\AiTelemetryRecorder;
 use App\Modules\AI\Infrastructure\DenyingAiBudgetLedger;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +21,7 @@ final class AiGatewayPolicyTest extends TestCase
             'trace_id' => 'trace-1', 'workspace_id' => 'workspace-a', 'data_region' => 'eu',
             'data_classification' => 'public', 'required_capabilities' => ['structured_output'],
             'risk_tier' => 'R0', 'max_cost_minor' => 100,
+            'prompt_id' => 'draft', 'prompt_version' => 'v1', 'context_manifest_sha256' => str_repeat('a', 64),
         ];
     }
 
@@ -37,6 +40,34 @@ final class AiGatewayPolicyTest extends TestCase
     private function scope(string $workspace = 'workspace-a'): TenantContext
     {
         return new TenantContext('org-a', $workspace, null, 'actor-a');
+    }
+
+    private function circuit(): AiCircuitBreaker
+    {
+        return new class implements AiCircuitBreaker
+        {
+            public function allows(string $workspaceId, string $routeId): bool
+            {
+                return true;
+            }
+
+            public function succeeded(string $workspaceId, string $routeId): void {}
+
+            public function failed(string $workspaceId, string $routeId): void {}
+        };
+    }
+
+    private function telemetry(): AiTelemetryRecorder
+    {
+        return new class implements AiTelemetryRecorder
+        {
+            public function begin(string $workspaceId, string $attemptId, array $route, array $request): bool
+            {
+                return true;
+            }
+
+            public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor): void {}
+        };
     }
 
     public function test_route_policy_denies_foreign_workspace_region_risk_and_missing_capability(): void
@@ -65,7 +96,7 @@ final class AiGatewayPolicyTest extends TestCase
                 return ['status' => 'complete', 'cost_minor' => 1, 'output' => 'unexpected'];
             }
         };
-        $gateway = new AiGateway(new AiRoutePolicy, new DenyingAiBudgetLedger, ['fake' => $adapter]);
+        $gateway = new AiGateway(new AiRoutePolicy, new DenyingAiBudgetLedger, ['fake' => $adapter], $this->circuit(), $this->telemetry());
 
         self::assertSame(['status' => 'budget_denied', 'trace_id' => 'trace-1'], $gateway->generate([$this->route()], $this->request(), $this->scope()));
         self::assertFalse($adapter->called);
@@ -95,7 +126,7 @@ final class AiGatewayPolicyTest extends TestCase
                 return ['status' => 'complete', 'cost_minor' => 41, 'output' => 'untrusted'];
             }
         };
-        $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter]);
+        $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter], $this->circuit(), $this->telemetry());
 
         self::assertSame(['status' => 'provider_failed', 'trace_id' => 'trace-1', 'route_id' => 'candidate-1'], $gateway->generate([$this->route()], $this->request(), $this->scope()));
         self::assertSame(0, $ledger->settles);
@@ -124,12 +155,59 @@ final class AiGatewayPolicyTest extends TestCase
                 return ['status' => 'complete', 'cost_minor' => 12, 'output' => ['proposal' => 'draft']];
             }
         };
-        $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter]);
+        $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['fake' => $adapter], $this->circuit(), $this->telemetry());
         $result = $gateway->generate([$this->route()], $this->request(), $this->scope());
 
         self::assertSame('complete', $result['status']);
         self::assertSame('candidate-1', $result['route_id']);
         self::assertNull($result['output']);
         self::assertSame(12, $ledger->actual);
+    }
+
+    public function test_fallback_preserves_policy_and_total_reservation_budget(): void
+    {
+        $ledger = new class implements AiBudgetLedger
+        {
+            /** @var list<int> */
+            public array $reserved = [];
+
+            public function reserve(string $workspaceId, string $traceId, int $minorUnits): bool
+            {
+                $this->reserved[] = $minorUnits;
+
+                return true;
+            }
+
+            public function settle(string $workspaceId, string $traceId, int $actualMinorUnits): void {}
+        };
+        $failure = new class implements AiAdapter
+        {
+            public function generate(array $request, array $route): array
+            {
+                throw new RuntimeException('Transient provider failure.');
+            }
+        };
+        $success = new class implements AiAdapter
+        {
+            public function generate(array $request, array $route): array
+            {
+                return ['status' => 'complete', 'cost_minor' => 9, 'output' => 'unvalidated'];
+            }
+        };
+        $routes = [$this->route(), array_replace($this->route(), [
+            'id' => 'candidate-2', 'adapter_id' => 'success', 'max_reservation_minor' => 50,
+        ])];
+        $routes[0]['adapter_id'] = 'failure';
+        $request = array_replace($this->request(), ['max_cost_minor' => 90, 'fallback_policy' => 'compatible_only']);
+        $gateway = new AiGateway(new AiRoutePolicy, $ledger, ['failure' => $failure, 'success' => $success], $this->circuit(), $this->telemetry());
+
+        $result = $gateway->generate($routes, $request, $this->scope());
+        self::assertSame('complete', $result['status']);
+        self::assertSame('candidate-2', $result['route_id']);
+        self::assertSame([40, 50], $ledger->reserved);
+        self::assertNull($result['output']);
+
+        $routes[1]['data_regions'] = ['us'];
+        self::assertSame('provider_failed', $gateway->generate($routes, $request, $this->scope())['status']);
     }
 }

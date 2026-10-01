@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0061",
+  "phase": "PHASE-10",
+  "title": "Certify PHASE-10 AI gateway and agents",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0060"
+  ],
+  "objective": "Certify golden evals, deterministic policies, fallback, privacy/security, cost/latency, canary/rollback and exact-head gates.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "TASK-0054 through TASK-0060 accepted with traceable source and test matrix; golden eval and deterministic policy gates pass.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Workspace privacy, provider boundaries, fallback, cost/latency, canary/rollback, browser and security evidence is captured without unmeasured claims.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Certification PR exact-head and resulting-main governance/application/security gates pass; PHASE-11 remains inactive.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0061 against its research and test gates without relaxing model/tool/data policy."
+}

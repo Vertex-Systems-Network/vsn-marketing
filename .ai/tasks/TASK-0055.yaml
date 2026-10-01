@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0055",
+  "phase": "PHASE-10",
+  "title": "Implement provider-neutral AI gateway and route policy",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0054"
+  ],
+  "objective": "Implement capability routing, fallback, budgets, circuit breakers, usage and cost telemetry without hardcoded provider selection.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Capability and workspace/data-policy route eligibility fails closed for missing or incompatible routes.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Fallback preserves schema, tool, privacy, risk and budget requirements; bounded retries/circuit breaks and concurrent budget reservations are tested.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Provider adapters normalize statuses, usage, cancellation and telemetry; offline adapter and exact-head/main gates pass.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0055 against its research and test gates without relaxing model/tool/data policy."
+}

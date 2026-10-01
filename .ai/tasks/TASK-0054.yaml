@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Research AI provider routes, privacy, evaluation and agent safety",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0053"
   ],
@@ -12,22 +12,22 @@
     {
       "id": "AC-1",
       "text": "Current first-party provider/API, data controls, pricing and safety sources are captured with access dates and capability differences.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Measurable route-candidate rubric, privacy/region and cost/latency test prerequisites are defined without inventing live scores.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Existing AI gateway/context/tool/agent registries and security policy are reconciled with TASK-0055 through TASK-0061 acceptance boundaries.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Research-first and canonical governance validation pass; no provider runtime or billing action occurs.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

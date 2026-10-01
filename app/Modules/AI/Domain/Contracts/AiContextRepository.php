@@ -15,5 +15,8 @@ interface AiContextRepository
      */
     public function fetch(TenantContext $scope, ?string $customerId, ?string $runId, array $sourceIds, DateTimeImmutable $at): array;
 
+    /** @param array<string, mixed> $source */
+    public function put(TenantContext $scope, ?string $customerId, ?string $runId, array $source, DateTimeImmutable $at): string;
+
     public function delete(TenantContext $scope, ?string $customerId, ?string $runId, string $sourceId): bool;
 }

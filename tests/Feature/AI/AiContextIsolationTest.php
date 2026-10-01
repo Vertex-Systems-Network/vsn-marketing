@@ -35,7 +35,7 @@ function aiContextAssembler(bool $allow = true): AiContextAssembler
         }
     };
 
-    return new AiContextAssembler(new DatabaseAiContextRepository($permission), $permission, new AiContextSanitizer);
+    return new AiContextAssembler(new DatabaseAiContextRepository($permission, new AiContextSanitizer), $permission, new AiContextSanitizer);
 }
 
 function aiContextRepository(bool $allow = true): DatabaseAiContextRepository
@@ -46,11 +46,11 @@ function aiContextRepository(bool $allow = true): DatabaseAiContextRepository
 
         public function allows(TenantContext $scope, string $permission): bool
         {
-            return $this->allow && $permission === 'ai.execute';
+            return $this->allow && in_array($permission, ['ai.execute', 'contact.read'], true);
         }
     };
 
-    return new DatabaseAiContextRepository($permission);
+    return new DatabaseAiContextRepository($permission, new AiContextSanitizer);
 }
 
 function aiContextRow(TenantContext $scope, array $overrides = []): array
@@ -136,4 +136,25 @@ it('rejects unsafe provenance, unregistered permission and duplicate source sele
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$unregistered['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $valid['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$valid['id'], $unsafe['id']], $at))->toThrow(InvalidArgumentException::class);
+});
+
+it('writes only authorized bounded facts and checks source permission before deletion', function () {
+    $scope = aiContextScope();
+    $at = new DateTimeImmutable('2026-10-01T12:00:00Z');
+    $source = [
+        'source_kind' => 'approved_fact', 'classification' => 'approved_non_personal',
+        'permission' => 'contact.read', 'content' => 'Approved interest: reporting.',
+        'provenance_reference' => 'contact:revision-2', 'revision' => 'v2',
+        'expires_at' => $at->modify('+1 day'),
+    ];
+    $repository = aiContextRepository();
+    $id = $repository->put($scope, null, null, $source, $at);
+    expect(aiContextAssembler()->assemble($scope, null, null, [$id], $at)['manifest']['sources'][0]['revision'])->toBe('v2')
+        ->and(fn () => aiContextRepository(false)->put($scope, null, null, $source, $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $repository->put($scope, null, null, array_replace($source, ['content' => 'Contact +1 202 555 0199']), $at))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $repository->put($scope, null, null, array_replace($source, ['expires_at' => $at->modify('+31 days')]), $at))->toThrow(InvalidArgumentException::class);
+
+    DB::table('ai_context_memories')->where('id', $id)->update(['permission' => 'billing.manage']);
+    expect($repository->delete($scope, null, null, $id))->toBeFalse()
+        ->and(DB::table('ai_context_memories')->where('id', $id)->value('content'))->toBe($source['content']);
 });

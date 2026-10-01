@@ -2,16 +2,51 @@
 
 namespace App\Modules\AI\Infrastructure;
 
+use App\Modules\AI\Domain\AiContextSanitizer;
 use App\Modules\AI\Domain\Contracts\AiContextPermission;
 use App\Modules\AI\Domain\Contracts\AiContextRepository;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 final class DatabaseAiContextRepository implements AiContextRepository
 {
-    public function __construct(private readonly AiContextPermission $permissions) {}
+    public function __construct(private readonly AiContextPermission $permissions, private readonly AiContextSanitizer $sanitizer) {}
+
+    public function put(TenantContext $scope, ?string $customerId, ?string $runId, array $source, DateTimeImmutable $at): string
+    {
+        $permission = $source['permission'] ?? null;
+        $content = $source['content'] ?? null;
+        $provenance = $source['provenance_reference'] ?? null;
+        $revision = $source['revision'] ?? null;
+        $expiry = $source['expires_at'] ?? null;
+        if (! $this->permissions->allows($scope, PermissionCatalog::AI_EXECUTE)
+            || ! is_string($permission) || ! PermissionCatalog::contains($permission)
+            || ! $this->permissions->allows($scope, $permission)
+            || ! is_string($content) || ! $this->sanitizer->safe($content)
+            || ! is_string($provenance) || strlen($provenance) > 255 || ! $this->sanitizer->safe($provenance)
+            || ! is_string($revision) || strlen($revision) > 128 || ! $this->sanitizer->safe($revision)
+            || ! in_array($source['source_kind'] ?? null, ['approved_fact', 'brand_guideline', 'run_note'], true)
+            || ! in_array($source['classification'] ?? null, ['public', 'approved_non_personal'], true)
+            || ! $expiry instanceof DateTimeImmutable || $expiry <= $at || $expiry > $at->modify('+30 days')) {
+            throw new InvalidArgumentException('AI context write denied by scope, permission, expiry or data policy.');
+        }
+
+        $id = (string) Str::uuid();
+        DB::table('ai_context_memories')->insert([
+            'id' => $id, 'workspace_id' => $scope->workspaceId, 'brand_id' => $scope->brandId,
+            'customer_id' => $customerId, 'run_id' => $runId,
+            'source_kind' => $source['source_kind'], 'classification' => $source['classification'],
+            'permission' => $permission, 'content' => $content,
+            'provenance_reference' => $provenance, 'revision' => $revision,
+            'expires_at' => $expiry->format('Y-m-d H:i:s'), 'created_at' => now(), 'updated_at' => now(),
+        ]);
+
+        return $id;
+    }
 
     public function fetch(TenantContext $scope, ?string $customerId, ?string $runId, array $sourceIds, DateTimeImmutable $at): array
     {
@@ -38,9 +73,17 @@ final class DatabaseAiContextRepository implements AiContextRepository
             return false;
         }
 
-        return DB::table('ai_context_memories')->where('workspace_id', $scope->workspaceId)
-            ->where('brand_id', $scope->brandId)->where('customer_id', $customerId)
-            ->where('run_id', $runId)->where('id', $sourceId)->whereNull('deleted_at')
-            ->update(['content' => '', 'deleted_at' => now(), 'updated_at' => now()]) === 1;
+        return DB::transaction(function () use ($scope, $customerId, $runId, $sourceId): bool {
+            $query = DB::table('ai_context_memories')->where('workspace_id', $scope->workspaceId)
+                ->where('brand_id', $scope->brandId)->where('customer_id', $customerId)
+                ->where('run_id', $runId)->where('id', $sourceId)->whereNull('deleted_at');
+            $row = (clone $query)->lockForUpdate()->first();
+            if ($row === null || ! PermissionCatalog::contains($row->permission)
+                || ! $this->permissions->allows($scope, $row->permission)) {
+                return false;
+            }
+
+            return $query->update(['content' => '', 'deleted_at' => now(), 'updated_at' => now()]) === 1;
+        }, 3);
     }
 }

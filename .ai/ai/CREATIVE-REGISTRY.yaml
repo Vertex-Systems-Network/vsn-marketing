@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "capabilities": [
+    {
+      "id": "creative_text",
+      "status": "offline_candidate",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/creative/creative_text.v1.json",
+          "sha256": "4a85a18bc7599ffefbc0d4835295975eb1ee05cd9b1ded4c4e99ac3351f2474f"
+        }
+      ]
+    },
+    {
+      "id": "creative_image",
+      "status": "offline_candidate",
+      "versions": [
+        {
+          "version": "v1",
+          "path": "resources/ai/creative/creative_image.v1.json",
+          "sha256": "4bc6129c580a3a506a387e0870d3f41ed50676b0abac127e5f77e2e6f23c8acd"
+        }
+      ]
+    }
+  ],
+  "activation_rule": "Offline drafts only. Real providers require separate account/privacy/rights/quality evidence and authorization."
+}

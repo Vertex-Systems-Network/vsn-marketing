@@ -103,8 +103,6 @@ final class AiGateway
 
             try {
                 $this->budget->settle($workspace, $attemptId, $actual);
-                $this->circuit->succeeded($workspace, $route['id']);
-                $this->telemetry->finish($workspace, $attemptId, $status, $actual, $usage['input_tokens'], $usage['output_tokens']);
             } catch (\Throwable) {
                 return ['status' => 'provider_failed', 'trace_id' => $traceId, 'route_id' => $route['id']];
             }
@@ -119,6 +117,17 @@ final class AiGateway
                     $status = 'validation_failed';
                     $validation = 'rejected';
                 }
+            }
+
+            try {
+                if ($status === 'validation_failed') {
+                    $this->circuit->failed($workspace, $route['id']);
+                } else {
+                    $this->circuit->succeeded($workspace, $route['id']);
+                }
+                $this->telemetry->finish($workspace, $attemptId, $status, $actual, $usage['input_tokens'], $usage['output_tokens']);
+            } catch (\Throwable) {
+                return ['status' => 'provider_failed', 'trace_id' => $traceId, 'route_id' => $route['id']];
             }
 
             return [

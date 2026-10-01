@@ -39,7 +39,7 @@ final class DatabaseAiTelemetryRecorder implements AiTelemetryRecorder
 
     public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor, ?int $inputTokens = null, ?int $outputTokens = null): void
     {
-        if (! in_array($status, ['complete', 'refused', 'incomplete', 'cancelled', 'provider_failed', 'budget_denied'], true)
+        if (! in_array($status, ['complete', 'refused', 'incomplete', 'cancelled', 'provider_failed', 'budget_denied', 'validation_failed'], true)
             || ($costMinor !== null && $costMinor < 0) || ($inputTokens !== null && $inputTokens < 0)
             || ($outputTokens !== null && $outputTokens < 0)) {
             throw new RuntimeException('Invalid AI trace result.');

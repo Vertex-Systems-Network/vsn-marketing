@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement content and creative AI adapters",
   "weight": 10,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0058"
   ],

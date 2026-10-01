@@ -20,17 +20,25 @@ final class AiRoutePolicy
         $capabilities = $request['required_capabilities'] ?? null;
         $risk = $request['risk_tier'] ?? null;
         $maxCost = $request['max_cost_minor'] ?? null;
+        $schema = $request['output_schema_id'] ?? null;
+        $tools = $request['required_tool_ids'] ?? null;
 
         if (! is_string($workspace) || $workspace === '' || ! is_string($region) || $region === ''
             || ! is_string($classification) || $classification === '' || ! is_array($capabilities)
             || ! is_string($risk) || ! in_array($risk, ['R0', 'R1', 'R2', 'R3'], true)
-            || ! is_int($maxCost) || $maxCost < 0) {
+            || ! is_int($maxCost) || $maxCost < 0 || ! is_string($schema) || $schema === ''
+            || ! is_array($tools)) {
             throw new InvalidArgumentException('AI route request has missing or invalid policy fields.');
         }
 
         foreach ($capabilities as $capability) {
             if (! is_string($capability) || $capability === '') {
                 throw new InvalidArgumentException('Required AI capabilities must be registered identifiers.');
+            }
+        }
+        foreach ($tools as $tool) {
+            if (! is_string($tool) || $tool === '') {
+                throw new InvalidArgumentException('Required AI tools must be registered identifiers.');
             }
         }
 
@@ -43,13 +51,16 @@ final class AiRoutePolicy
                 || ! is_array($route['data_regions'] ?? null) || ! in_array($region, $route['data_regions'], true)
                 || ! is_array($route['data_classes'] ?? null) || ! in_array($classification, $route['data_classes'], true)
                 || ! is_array($route['capabilities'] ?? null)
+                || ! is_array($route['output_schemas'] ?? null) || ! in_array($schema, $route['output_schemas'], true)
+                || ! is_array($route['tool_ids'] ?? null)
                 || ! is_array($route['risk_tiers'] ?? null) || ! in_array($risk, $route['risk_tiers'], true)
                 || ! is_int($route['max_reservation_minor'] ?? null)
                 || $route['max_reservation_minor'] < 0 || $route['max_reservation_minor'] > $maxCost) {
                 continue;
             }
 
-            if (array_diff($capabilities, $route['capabilities']) !== []) {
+            if (array_diff($capabilities, $route['capabilities']) !== []
+                || array_diff($tools, $route['tool_ids']) !== []) {
                 continue;
             }
 

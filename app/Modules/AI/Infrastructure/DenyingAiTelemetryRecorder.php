@@ -11,5 +11,5 @@ final class DenyingAiTelemetryRecorder implements AiTelemetryRecorder
         return false;
     }
 
-    public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor): void {}
+    public function finish(string $workspaceId, string $attemptId, string $status, ?int $costMinor, ?int $inputTokens = null, ?int $outputTokens = null): void {}
 }

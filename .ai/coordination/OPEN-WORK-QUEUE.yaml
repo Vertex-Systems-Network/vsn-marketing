@@ -3,19 +3,28 @@
   "reconciled_main_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20",
   "active_work_path": {
     "kind": "pr",
-    "number": 460,
-    "title": "test(ai): exercise hostile outputs and bounded agent authority",
-    "branch": "supervisor/phase10-red-team",
-    "disposition": "active_task0060_carrier"
+    "number": 461,
+    "title": "test(ai): capture truthful offline Phase-10 certification",
+    "branch": "supervisor/phase10-certification",
+    "disposition": "active_task0061_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 461,
+      "title": "test(ai): capture truthful offline Phase-10 certification",
+      "branch": "supervisor/phase10-certification",
+      "disposition": "active_task0061_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 460,
       "title": "test(ai): exercise hostile outputs and bounded agent authority",
       "branch": "supervisor/phase10-red-team",
-      "disposition": "active_task0060_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20"
     },
     {
       "kind": "pr",

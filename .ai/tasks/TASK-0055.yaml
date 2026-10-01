@@ -3,7 +3,7 @@
   "phase": "PHASE-10",
   "title": "Implement provider-neutral AI gateway and route policy",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0054"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Capability and workspace/data-policy route eligibility fails closed for missing or incompatible routes.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Fallback preserves schema, tool, privacy, risk and budget requirements; bounded retries/circuit breaks and concurrent budget reservations are tested.",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Provider adapters normalize statuses, usage, cancellation and telemetry; offline adapter and exact-head/main gates pass.",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

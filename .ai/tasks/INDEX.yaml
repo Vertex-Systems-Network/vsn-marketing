@@ -546,7 +546,7 @@
       "id": "TASK-0055",
       "phase": "PHASE-10",
       "title": "Implement provider-neutral AI gateway and route policy",
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0054"
       ],
@@ -556,7 +556,7 @@
       "id": "TASK-0056",
       "phase": "PHASE-10",
       "title": "Implement isolated context and memory assembly",
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0055"
       ],

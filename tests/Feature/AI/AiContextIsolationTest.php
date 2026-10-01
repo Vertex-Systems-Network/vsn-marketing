@@ -161,3 +161,23 @@ it('writes only authorized bounded facts and checks source permission before del
     expect($repository->delete($scope, null, null, $id))->toBeFalse()
         ->and(DB::table('ai_context_memories')->where('id', $id)->value('content'))->toBe($source['content']);
 });
+
+it('does not expose stored content to an execute-only repository caller', function () {
+    $scope = aiContextScope();
+    $row = aiContextRow($scope);
+    DB::table('ai_context_memories')->insert($row);
+    $executeOnly = new class implements AiContextPermission
+    {
+        public function allows(TenantContext $scope, string $permission): bool
+        {
+            return $permission === 'ai.execute';
+        }
+    };
+    $repository = new DatabaseAiContextRepository($executeOnly, new AiContextSanitizer);
+    $at = new DateTimeImmutable('2026-10-01T12:00:00Z');
+
+    expect($repository->fetch($scope, null, null, [$row['id']], $at))->toBe([])
+        ->and($repository->delete($scope, null, null, $row['id']))->toBeFalse()
+        ->and(fn () => (new AiContextAssembler($repository, $executeOnly, new AiContextSanitizer))
+            ->assemble($scope, null, null, [$row['id']], $at))->toThrow(InvalidArgumentException::class);
+});

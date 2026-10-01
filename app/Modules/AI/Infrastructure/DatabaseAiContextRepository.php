@@ -60,7 +60,7 @@ final class DatabaseAiContextRepository implements AiContextRepository
             return [];
         }
 
-        return DB::table('ai_context_memories')
+        $rows = DB::table('ai_context_memories')
             ->where('workspace_id', $scope->workspaceId)
             ->where('brand_id', $scope->brandId)
             ->where('customer_id', $customerId)
@@ -71,6 +71,16 @@ final class DatabaseAiContextRepository implements AiContextRepository
             ->orderBy('id')
             ->limit(16)
             ->get()->map(static fn (object $row): array => (array) $row)->all();
+        foreach ($rows as $row) {
+            $contract = $this->sourcePolicy->contract($row['source_kind'] ?? null);
+            if ($contract === null || ($row['permission'] ?? null) !== $contract['permission']
+                || ($row['classification'] ?? null) !== $contract['classification']
+                || ! $this->permissions->allows($scope, $contract['permission'])) {
+                return [];
+            }
+        }
+
+        return $rows;
     }
 
     public function delete(TenantContext $scope, ?string $customerId, ?string $runId, string $sourceId): bool

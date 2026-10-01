@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0012",
+  "updated_for_task": "TASK-0052",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -58,7 +58,49 @@
     }
   ],
   "application_tests": {
-    "status": "passing",
-    "reason": "TASK-0012 exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard 32672928382 and Application Foundation CI 32672928375: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
+    "status": "pending",
+    "reason": "TASK-0052 has local frontend evidence only. Backend/migration and actual browser execution are pending exact-head CI; do not infer them from test discovery or the prior TASK-0012 historical suite records."
+  },
+  "latest_local_verification": {
+    "basis": "Uncommitted TASK-0052 patch based on main 0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5; exact-head CI is not yet available.",
+    "checked_at_utc": "2026-10-01",
+    "suites": [
+      {
+        "name": "journey-operator-frontend-unit",
+        "command": "npm test",
+        "status": "passing",
+        "notes": "34 tests passed across 4 files; includes graph validator, bounded node/transition rendering, focus management, side-effect-free simulator, and loading/empty/stale/permission/timeout UI states."
+      },
+      {
+        "name": "frontend-typecheck",
+        "command": "npm run typecheck",
+        "status": "passing",
+        "notes": "Local TypeScript check passed on current patch."
+      },
+      {
+        "name": "frontend-build",
+        "command": "npm run build",
+        "status": "passing",
+        "notes": "Local Vite production build passed on current patch."
+      },
+      {
+        "name": "journey-operator-playwright",
+        "command": "npx playwright test e2e/task0052-journey-operator.spec.ts --list",
+        "status": "discovered",
+        "notes": "Two scenarios discovered; browser execution not run locally because PHP and vendor/ are unavailable."
+      },
+      {
+        "name": "journey-operator-backend-and-migration",
+        "command": "php artisan test --testsuite=Feature",
+        "status": "pending",
+        "notes": "PHP runtime and vendor/ are unavailable locally; exact-head Application CI must execute controller, migration, tenancy, and lifecycle tests."
+      },
+      {
+        "name": "journey-operator-browser",
+        "command": "npm run test:e2e -- e2e/task0052-journey-operator.spec.ts",
+        "status": "pending",
+        "notes": "Requires the Laravel browser test server; exact-head E2E CI must run both scenarios."
+      }
+    ]
   }
 }

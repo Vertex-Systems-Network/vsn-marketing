@@ -18,6 +18,8 @@ final class PermissionCatalog
 
     public const JOURNEY_CREATE = 'journey.create';
 
+    public const JOURNEY_READ = 'journey.read';
+
     public const JOURNEY_PUBLISH = 'journey.publish';
 
     public const JOURNEY_REPLAY = 'journey.replay';
@@ -48,6 +50,7 @@ final class PermissionCatalog
             self::CAMPAIGN_APPROVE,
             self::CAMPAIGN_SEND,
             self::JOURNEY_CREATE,
+            self::JOURNEY_READ,
             self::JOURNEY_PUBLISH,
             self::JOURNEY_REPLAY,
             self::TEMPLATE_CREATE,

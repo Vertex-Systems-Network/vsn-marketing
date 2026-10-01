@@ -39,9 +39,15 @@ final readonly class EnrollSubjectInJourney
             }
 
             $version = $this->database->table('journey_versions')
-                ->where('workspace_id', $scope->workspaceId)->where('id', $journeyVersionId)
+                ->join('journeys', function ($join): void {
+                    $join->on('journeys.id', '=', 'journey_versions.journey_id')
+                        ->on('journeys.workspace_id', '=', 'journey_versions.workspace_id');
+                })
+                ->where('journey_versions.workspace_id', $scope->workspaceId)->where('journey_versions.id', $journeyVersionId)
+                ->select('journey_versions.*', 'journeys.status as journey_status')
                 ->lockForUpdate()->first();
-            if ($version === null || $version->status !== 'published') {
+            if ($version === null || $version->status !== 'published'
+                || ! in_array($version->journey_status, ['published', 'active'], true)) {
                 throw new InvalidArgumentException('Published journey version is unavailable in this workspace.');
             }
             $graph = is_string($version->graph) ? json_decode($version->graph, true) : null;

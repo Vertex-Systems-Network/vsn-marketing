@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8",
   "active_issue": null,
-  "active_pr": 459,
+  "active_pr": 460,
   "active_branch": "supervisor/phase10-red-team",
   "current_milestone": "PHASE-10-TASK-0060-RED-TEAM",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Publish substantive red-team carrier; certify exact head and resulting main before TASK0061.",
+  "exact_next_safe_action": "Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish substantive red-team carrier; certify exact head and resulting main before TASK0061."
+  "exact_next_action": "Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060."
 }

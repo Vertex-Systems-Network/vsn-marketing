@@ -2,10 +2,10 @@
 
 ## State
 
-- Timestamp: `2026-10-01T23:01:27+00:00`
+- Timestamp: `2026-10-01T23:02:21+00:00`
 - Observed main: `b7ced3305224d011546e4938d4e96e9f2f3580c8`
 - Active issue: `none`
-- Active PR: `459`
+- Active PR: `460`
 - Active branch: `supervisor/phase10-red-team`
 - Current milestone: `PHASE-10-TASK-0060-RED-TEAM`
 - Milestone status: `IN_PROGRESS`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `08b6d891b2dfd2216ed8f0bc923e3e598e026bdc20e86217b0ba4eaaed8416b4`
+- State fingerprint: `52cab60f4a645e1697f5cc28e13b454e3e81bea54dbafc15517dcd2e653e8691`
 
 ## Completed / observed this session
 
-TASK0060 substantive red-team corpus implemented:22 malicious cases through actual context/runtime/gateway plus unsafe outage fallback and quarantine invariants. Unknown eval expected outcome now fails closed. TASK0059 accepted evidence carried.
+TASK0060 substantive adversarial carrier PR460 opened; queue registration replaces accepted TASK0059 PR459. Full exact-head/resulting-main certification remains required before TASK0061.
 
 ## Tests
 
-42 AI tests/544 assertions;774 backend tests/4663 assertions with136 local infrastructure skips. PHPStan, locked Pint, policy/hash/history/context, continuity and journal pass.
+42 AI tests/544 assertions and774 backend tests/4663 assertions pass;136 local infra skips. PHPStan/Pint/policy/history/context/continuity pass.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ TASK0060 substantive red-team corpus implemented:22 malicious cases through actu
 
 ## Exact next action
 
-Publish substantive red-team carrier; certify exact head and resulting main before TASK0061.
+Verify PR460 exact-head full CI, merge reviewed green head, then verify resulting main before accepting TASK0060.

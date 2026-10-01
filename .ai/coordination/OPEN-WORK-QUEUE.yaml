@@ -3,19 +3,28 @@
   "reconciled_main_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8",
   "active_work_path": {
     "kind": "pr",
-    "number": 459,
-    "title": "feat(ai): add rights-gated creative drafts and truthful rejection traces",
-    "branch": "supervisor/phase10-creative-drafts",
-    "disposition": "active_task0059_carrier"
+    "number": 460,
+    "title": "test(ai): exercise hostile outputs and bounded agent authority",
+    "branch": "supervisor/phase10-red-team",
+    "disposition": "active_task0060_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 460,
+      "title": "test(ai): exercise hostile outputs and bounded agent authority",
+      "branch": "supervisor/phase10-red-team",
+      "disposition": "active_task0060_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 459,
       "title": "feat(ai): add rights-gated creative drafts and truthful rejection traces",
       "branch": "supervisor/phase10-creative-drafts",
-      "disposition": "active_task0059_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8"
     },
     {
       "kind": "pr",

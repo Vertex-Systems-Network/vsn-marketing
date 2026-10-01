@@ -35,7 +35,22 @@ function aiContextAssembler(bool $allow = true): AiContextAssembler
         }
     };
 
-    return new AiContextAssembler(new DatabaseAiContextRepository, $permission, new AiContextSanitizer);
+    return new AiContextAssembler(new DatabaseAiContextRepository($permission), $permission, new AiContextSanitizer);
+}
+
+function aiContextRepository(bool $allow = true): DatabaseAiContextRepository
+{
+    $permission = new class($allow) implements AiContextPermission
+    {
+        public function __construct(private readonly bool $allow) {}
+
+        public function allows(TenantContext $scope, string $permission): bool
+        {
+            return $this->allow && $permission === 'ai.execute';
+        }
+    };
+
+    return new DatabaseAiContextRepository($permission);
 }
 
 function aiContextRow(TenantContext $scope, array $overrides = []): array
@@ -86,7 +101,9 @@ it('rejects expired deleted and sensitive sources and scrubs deleted content', f
     $assembled = aiContextAssembler()->assemble($scope, null, null, [$safe['id']], $at);
     expect($assembled['untrusted_context'][0]['trust'])->toBe('untrusted_data');
 
-    $repository = new DatabaseAiContextRepository;
+    $repository = aiContextRepository();
+    expect(aiContextRepository(false)->delete($scope, null, null, $safe['id']))->toBeFalse()
+        ->and(DB::table('ai_context_memories')->where('id', $safe['id'])->value('content'))->toBe($safe['content']);
     expect($repository->delete($scope, null, null, $safe['id']))->toBeTrue()
         ->and(DB::table('ai_context_memories')->where('id', $safe['id'])->value('content'))->toBe('')
         ->and(fn () => aiContextAssembler()->assemble($scope, null, null, [$safe['id']], $at))->toThrow(InvalidArgumentException::class);
@@ -103,7 +120,7 @@ it('does not broaden a missing brand scope or permit a foreign brand to delete m
 
     expect(fn () => aiContextAssembler()->assemble($base, null, null, [$row['id']], $at))->toThrow(InvalidArgumentException::class)
         ->and(fn () => aiContextAssembler()->assemble($foreign, null, null, [$row['id']], $at))->toThrow(InvalidArgumentException::class)
-        ->and((new DatabaseAiContextRepository)->delete($foreign, null, null, $row['id']))->toBeFalse()
+        ->and(aiContextRepository()->delete($foreign, null, null, $row['id']))->toBeFalse()
         ->and(aiContextAssembler()->assemble($brand, null, null, [$row['id']], $at)['manifest']['brand_id'])->toBe($brandId);
 });
 

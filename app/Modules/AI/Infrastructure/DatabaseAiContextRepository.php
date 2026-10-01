@@ -2,16 +2,20 @@
 
 namespace App\Modules\AI\Infrastructure;
 
+use App\Modules\AI\Domain\Contracts\AiContextPermission;
 use App\Modules\AI\Domain\Contracts\AiContextRepository;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\DB;
 
 final class DatabaseAiContextRepository implements AiContextRepository
 {
+    public function __construct(private readonly AiContextPermission $permissions) {}
+
     public function fetch(TenantContext $scope, ?string $customerId, ?string $runId, array $sourceIds, DateTimeImmutable $at): array
     {
-        if ($sourceIds === []) {
+        if ($sourceIds === [] || ! $this->permissions->allows($scope, PermissionCatalog::AI_EXECUTE)) {
             return [];
         }
 
@@ -30,6 +34,10 @@ final class DatabaseAiContextRepository implements AiContextRepository
 
     public function delete(TenantContext $scope, ?string $customerId, ?string $runId, string $sourceId): bool
     {
+        if (! $this->permissions->allows($scope, PermissionCatalog::AI_EXECUTE)) {
+            return false;
+        }
+
         return DB::table('ai_context_memories')->where('workspace_id', $scope->workspaceId)
             ->where('brand_id', $scope->brandId)->where('customer_id', $customerId)
             ->where('run_id', $runId)->where('id', $sourceId)->whereNull('deleted_at')

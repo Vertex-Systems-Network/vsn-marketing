@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0059",
+  "phase": "PHASE-10",
+  "title": "Implement content and creative AI adapters",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0058"
+  ],
+  "objective": "Implement provider-neutral creative capabilities with provenance, brand/policy review and rights/safety checks.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Text/media routes are registered with capability, rights, provenance, safety and brand policy before producing candidates.",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Creative results are reviewable drafts with disclosure and fail-closed on unsupported capability or rights.",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Provider-neutral contract, invalid-output and exact-head/main tests pass.",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0059 against its research and test gates without relaxing model/tool/data policy."
+}

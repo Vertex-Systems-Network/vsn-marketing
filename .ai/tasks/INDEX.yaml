@@ -531,6 +531,86 @@
         "TASK-0052"
       ],
       "weight": 10
+    },
+    {
+      "id": "TASK-0054",
+      "phase": "PHASE-10",
+      "title": "Research AI provider routes, privacy, evaluation and agent safety",
+      "status": "ready",
+      "dependencies": [
+        "TASK-0053"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0055",
+      "phase": "PHASE-10",
+      "title": "Implement provider-neutral AI gateway and route policy",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0054"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0056",
+      "phase": "PHASE-10",
+      "title": "Implement isolated context and memory assembly",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0055"
+      ],
+      "weight": 12
+    },
+    {
+      "id": "TASK-0057",
+      "phase": "PHASE-10",
+      "title": "Implement structured output and typed tool policy",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0056"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0058",
+      "phase": "PHASE-10",
+      "title": "Implement specialized agent runtime and evaluation",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0057"
+      ],
+      "weight": 12
+    },
+    {
+      "id": "TASK-0059",
+      "phase": "PHASE-10",
+      "title": "Implement content and creative AI adapters",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0058"
+      ],
+      "weight": 10
+    },
+    {
+      "id": "TASK-0060",
+      "phase": "PHASE-10",
+      "title": "Implement AI red-team and abuse-resistance suite",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0059"
+      ],
+      "weight": 11
+    },
+    {
+      "id": "TASK-0061",
+      "phase": "PHASE-10",
+      "title": "Certify PHASE-10 AI gateway and agents",
+      "status": "planned",
+      "dependencies": [
+        "TASK-0060"
+      ],
+      "weight": 10
     }
   ]
 }

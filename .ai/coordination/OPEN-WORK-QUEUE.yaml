@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "f3a1e8f7999c17a583be55a5a3ce2002476edd84",
+  "reconciled_main_sha": "6cea8c0910c26762715573cddf41169cebcbbdf8",
   "active_work_path": {
     "kind": "pr",
-    "number": 466,
-    "title": "feat(experiments): scoped assignment and exposure foundation",
-    "branch": "supervisor/phase11-assignment",
-    "disposition": "active_task0063_carrier"
+    "number": 467,
+    "title": "TASK-0064: bound campaign experiment candidates and outcome evidence",
+    "branch": "supervisor/phase11-campaign-experiments",
+    "disposition": "active_task0064_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 467,
+      "title": "TASK-0064: bound campaign experiment candidates and outcome evidence",
+      "branch": "supervisor/phase11-campaign-experiments",
+      "disposition": "active_task0064_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 466,
       "title": "feat(experiments): scoped assignment and exposure foundation",
       "branch": "supervisor/phase11-assignment",
       "disposition": "active_task0063_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

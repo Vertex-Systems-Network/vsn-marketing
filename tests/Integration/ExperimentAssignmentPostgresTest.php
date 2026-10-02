@@ -52,7 +52,7 @@ it('keeps one assignment under competing PostgreSQL workers', function () {
         }
     };
     $service = new ExperimentAssignments(new ExperimentAllocator(str_repeat('p', 32)), $access, $witness, $eligibility);
-    $plan = new ExperimentPlan((string) Str::uuid(), $workspace, null, 'pg-layer-'.Str::random(8), 'contact',
+    $plan = new ExperimentPlan((string) Str::uuid(), $workspace, null, 'pg-layer-'.strtolower(Str::random(8)), 'contact',
         ['control' => 5000, 'variant' => 5000], 'control', null);
     $service->create($owner, $plan);
     $service->activate($reviewer, $plan->id);

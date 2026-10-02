@@ -103,6 +103,7 @@ it('keeps one assignment under competing PostgreSQL workers', function () {
         }
         DB::table('experiment_assignments')->where('experiment_id', $plan->id)->delete();
         DB::table('experiments')->where('id', $plan->id)->delete();
+        DB::table('experiment_layer_keys')->where('scope_key', $plan->layerScope())->delete();
         DB::table('workspaces')->where('id', $workspace)->delete();
         DB::table('organizations')->where('id', $org)->delete();
     }

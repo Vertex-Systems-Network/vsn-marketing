@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "564f048accabc12a2e1acfcc09ed6799914a677b",
+  "reconciled_main_sha": "f3a1e8f7999c17a583be55a5a3ce2002476edd84",
   "active_work_path": {
     "kind": "pr",
-    "number": 465,
-    "title": "plan(experiments): activate researched Phase 11 task sequence",
-    "branch": "supervisor/phase11-batch",
-    "disposition": "active_task0062_carrier"
+    "number": 466,
+    "title": "feat(experiments): scoped assignment and exposure foundation",
+    "branch": "supervisor/phase11-assignment",
+    "disposition": "active_task0063_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 466,
+      "title": "feat(experiments): scoped assignment and exposure foundation",
+      "branch": "supervisor/phase11-assignment",
+      "disposition": "active_task0063_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 465,
       "title": "plan(experiments): activate researched Phase 11 task sequence",
       "branch": "supervisor/phase11-batch",
       "disposition": "active_task0062_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

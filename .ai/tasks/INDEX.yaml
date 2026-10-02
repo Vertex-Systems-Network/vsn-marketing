@@ -617,7 +617,7 @@
       "phase": "PHASE-11",
       "title": "Research experimentation and statistical practices",
       "weight": 16,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0061"
       ]
@@ -627,7 +627,7 @@
       "phase": "PHASE-11",
       "title": "Implement experiment assignment, holdout and exposure foundation",
       "weight": 22,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0062"
       ]

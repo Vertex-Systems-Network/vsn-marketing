@@ -3,7 +3,7 @@
   "phase": "PHASE-11",
   "title": "Research experimentation and statistical practices",
   "weight": 16,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0061"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Official current sources, market workflow and dated provenance recorded",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Assignment/exposure, power, SRM, contamination, sequential peeking and multiple comparison gates mapped to tasks",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Research, roadmap and governance validators pass without live traffic or unmeasured efficacy claims",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

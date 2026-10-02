@@ -3,7 +3,7 @@
   "phase": "PHASE-11",
   "title": "Implement bounded campaign and content experiments",
   "weight": 18,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0063"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Canonical campaign/content/timing/audience experiment bindings with factorial limits and consistent assignment unit",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Exposure-before-outcome, contamination prevention, missing exposure quarantine and rollback",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Negative consent/suppression and concurrent assignment tests plus exact-head/main CI",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

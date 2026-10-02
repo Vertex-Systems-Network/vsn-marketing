@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-11",
-    "active_task": "TASK-0064",
-    "last_completed_task": "TASK-0063",
-    "next_task": "TASK-0065"
+    "active_task": "TASK-0065",
+    "last_completed_task": "TASK-0064",
+    "next_task": "TASK-0066"
   },
   "progress": {
-    "roadmap_percent": 72.9,
-    "phase_percent": 38.0,
+    "roadmap_percent": 73.8,
+    "phase_percent": 56.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -27,11 +27,11 @@
   "observed_main_sha": "6cea8c0910c26762715573cddf41169cebcbbdf8",
   "active_issue": null,
   "active_pr": 467,
-  "active_branch": "supervisor/phase11-campaign-experiments",
-  "current_milestone": "PHASE-11-CAMPAIGN-EXPERIMENTS",
+  "active_branch": "supervisor/phase11-statistical-guardrails",
+  "current_milestone": "PHASE-11-OPTIMIZATION-PROPOSALS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Review PR467 full exact-head CI including PostgreSQL contention; repair failures on the same branch, merge only after green",
+  "exact_next_safe_action": "Review TASK-0065 proposal and adversarial tests; open full CI PR; repair exact head then merge and verify resulting main",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review PR467 full exact-head CI including PostgreSQL contention; repair failures on the same branch, merge only after green"
+  "exact_next_action": "Review TASK-0065 proposal and adversarial tests; open full CI PR; repair exact head then merge and verify resulting main"
 }

@@ -2,13 +2,17 @@
 
 use App\Modules\Experiments\Application\CampaignExperiments;
 use App\Modules\Experiments\Application\ExperimentAssignments;
+use App\Modules\Experiments\Application\OptimizationProposals;
 use App\Modules\Experiments\Domain\CampaignExperimentMatrix;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentAllocator;
 use App\Modules\Experiments\Domain\ExperimentEligibility;
 use App\Modules\Experiments\Domain\ExperimentPlan;
 use App\Modules\Experiments\Domain\ExposureVerifier;
+use App\Modules\Experiments\Domain\OptimizationProposal;
+use App\Modules\Experiments\Domain\OptimizationReceiptVerifier;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -108,5 +112,81 @@ it('denies suppressed units and foreign workspace binding', function () {
         ->and(fn () => $service->candidate(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'owner'), $binding, 'unit'))
         ->toThrow(InvalidArgumentException::class)
         ->and(fn () => $service->rollback(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'reviewer'), $binding))
+        ->toThrow(InvalidArgumentException::class);
+});
+
+function optimizationFixture(bool $receipt = true, int $budget = 100): array
+{
+    [$owner, $reviewer, , $binding] = campaignExperimentFixture();
+    $access = new class implements ExperimentAccess
+    {
+        public function allows(TenantContext $actor, string $permission): bool
+        {
+            return in_array($permission, ['ai.execute', 'ai.approve', 'campaign.approve'], true);
+        }
+    };
+    $verifier = new class($receipt) implements OptimizationReceiptVerifier
+    {
+        public function __construct(private bool $verified) {}
+
+        public function verified(TenantContext $actor, string $traceId, string $promptHash, string $contextHash, array $sourceIds, int $actualMinor): bool
+        {
+            return $this->verified && in_array($traceId, ['trace-1', 'trace-2'], true) && $sourceIds === ['source:1'] && $actualMinor === 20;
+        }
+    };
+    $matrix = json_decode(DB::table('campaign_experiment_bindings')->where('id', $binding)->value('variants'), true, 16, JSON_THROW_ON_ERROR);
+    $matrix['treatment']['time'] = '2026-10-04T10:00:00Z';
+    $proposal = new OptimizationProposal('trace-1', str_repeat('a', 64), str_repeat('b', 64), ['source:1'],
+        new CampaignExperimentMatrix($matrix), 'medium', 'low', 100, 20);
+
+    return [$owner, $reviewer, new TenantContext($owner->organizationId, $owner->workspaceId, null, 'auditor'),
+        $binding, new OptimizationProposals($access, $verifier, $budget), $proposal];
+}
+
+it('requires independent evaluation and exact review and preserves a reversible offline draft', function () {
+    [$owner, $reviewer, $auditor, $binding, $service, $proposal] = optimizationFixture();
+    $id = $service->submit($owner, $binding, $proposal);
+    $replay = new OptimizationProposal($proposal->traceId, $proposal->promptHash, $proposal->contextHash,
+        $proposal->sourceIds, $proposal->candidate, 'low', 'medium', $proposal->costCeilingMinor, $proposal->actualCostMinor);
+    expect(fn () => $service->submit($owner, $binding, $replay))->toThrow(QueryException::class);
+    expect(fn () => $service->evaluate($owner, $id))->toThrow(InvalidArgumentException::class);
+    $report = $service->evaluate($auditor, $id);
+    $hash = DB::table('experiment_optimization_proposals')->where('id', $id)->value('proposal_hash');
+    expect(fn () => $service->promote($auditor, $id, $hash, $report))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->promote($owner, $id, $hash, $report))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->promote($reviewer, $id, str_repeat('f', 64), $report))->toThrow(InvalidArgumentException::class);
+    $review = $service->promote($reviewer, $id, $hash, $report);
+    expect($review['status'])->toBe('reviewed_draft')
+        ->and($review['publication_authorized'])->toBeFalse()
+        ->and(DB::table('campaign_experiment_bindings')->where('id', $binding)->value('status'))->toBe('ready');
+    $service->rollback($reviewer, $id, $hash);
+    expect(DB::table('experiment_optimization_proposals')->where('id', $id)->value('status'))->toBe('reverted')
+        ->and(fn () => $service->promote($reviewer, $id, $hash, $report))->toThrow(InvalidArgumentException::class);
+});
+
+it('rejects high-risk model recommendations and corrupted candidate provenance', function () {
+    [$owner, $reviewer, $auditor, $binding, $service, $proposal] = optimizationFixture();
+    $high = new OptimizationProposal($proposal->traceId, $proposal->promptHash, $proposal->contextHash,
+        $proposal->sourceIds, $proposal->candidate, 'high', 'high', $proposal->costCeilingMinor, $proposal->actualCostMinor);
+    $id = $service->submit($owner, $binding, $high);
+    $report = $service->evaluate($auditor, $id);
+    $hash = DB::table('experiment_optimization_proposals')->where('id', $id)->value('proposal_hash');
+    expect(DB::table('experiment_optimization_proposals')->where('id', $id)->value('status'))->toBe('rejected')
+        ->and(fn () => $service->promote($reviewer, $id, $hash, $report))->toThrow(InvalidArgumentException::class);
+    $normal = new OptimizationProposal('trace-2', $proposal->promptHash, $proposal->contextHash,
+        $proposal->sourceIds, $proposal->candidate, $proposal->uncertainty, $proposal->risk,
+        $proposal->costCeilingMinor, $proposal->actualCostMinor);
+    $normalId = $service->submit($owner, $binding, $normal);
+    DB::table('experiment_optimization_proposals')->where('id', $normalId)->update(['proposal_hash' => str_repeat('f', 64)]);
+    expect(fn () => $service->evaluate($auditor, $normalId))->toThrow(RuntimeException::class);
+});
+
+it('denies fabricated receipt, budget overflow and foreign scope', function () {
+    [$owner, , , $binding, $service, $proposal] = optimizationFixture(false);
+    expect(fn () => $service->submit($owner, $binding, $proposal))->toThrow(InvalidArgumentException::class);
+    [, , , , $limited] = optimizationFixture(true, 50);
+    [$scopedOwner, , , $scopedBinding, $valid, $scopedProposal] = optimizationFixture();
+    expect(fn () => $limited->submit($owner, $binding, $proposal))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $valid->submit(new TenantContext($scopedOwner->organizationId, (string) Str::uuid(), null, 'owner'), $scopedBinding, $scopedProposal))
         ->toThrow(InvalidArgumentException::class);
 });

@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "564f048accabc12a2e1acfcc09ed6799914a677b",
+  "observed_main_sha": "f3a1e8f7999c17a583be55a5a3ce2002476edd84",
   "active_issue": null,
-  "active_pr": 465,
-  "active_branch": "supervisor/phase11-batch",
-  "current_milestone": "PHASE-11-RESEARCH-AND-REGISTRATION",
+  "active_pr": 466,
+  "active_branch": "supervisor/phase11-assignment",
+  "current_milestone": "PHASE-11-ASSIGNMENT-FOUNDATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Implement TASK-0063 against the research and all acceptance gates; do not assert live performance from fixtures.",
+  "exact_next_safe_action": "Verify PR466 final-head PostgreSQL contention, browser, PHP floor, foundation, security and continuity; repair on same PR and merge only when green.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement TASK-0063 against the research and all acceptance gates; do not assert live performance from fixtures."
+  "exact_next_action": "Verify PR466 final-head PostgreSQL contention, browser, PHP floor, foundation, security and continuity; repair on same PR and merge only when green."
 }

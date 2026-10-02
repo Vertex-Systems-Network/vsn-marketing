@@ -637,7 +637,7 @@
       "phase": "PHASE-11",
       "title": "Implement bounded campaign and content experiments",
       "weight": 18,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0063"
       ]
@@ -647,7 +647,7 @@
       "phase": "PHASE-11",
       "title": "Implement bounded AI optimization proposals",
       "weight": 16,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0064"
       ]

@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6cea8c0910c26762715573cddf41169cebcbbdf8",
+  "reconciled_main_sha": "eae81f425dbe9a11503a3c861825a5679c19edee",
   "active_work_path": {
     "kind": "pr",
-    "number": 467,
-    "title": "TASK-0064: bound campaign experiment candidates and outcome evidence",
-    "branch": "supervisor/phase11-campaign-experiments",
-    "disposition": "active_task0064_carrier"
+    "number": 468,
+    "title": "TASK-0065: bound AI optimization proposal review",
+    "branch": "supervisor/phase11-statistical-guardrails",
+    "disposition": "active_task0065_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 468,
+      "title": "TASK-0065: bound AI optimization proposal review",
+      "branch": "supervisor/phase11-statistical-guardrails",
+      "disposition": "active_task0065_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 467,
       "title": "TASK-0064: bound campaign experiment candidates and outcome evidence",
       "branch": "supervisor/phase11-campaign-experiments",
       "disposition": "active_task0064_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

@@ -611,6 +611,66 @@
         "TASK-0060"
       ],
       "weight": 10
+    },
+    {
+      "id": "TASK-0062",
+      "phase": "PHASE-11",
+      "title": "Research experimentation and statistical practices",
+      "weight": 16,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0061"
+      ]
+    },
+    {
+      "id": "TASK-0063",
+      "phase": "PHASE-11",
+      "title": "Implement experiment assignment, holdout and exposure foundation",
+      "weight": 22,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0062"
+      ]
+    },
+    {
+      "id": "TASK-0064",
+      "phase": "PHASE-11",
+      "title": "Implement bounded campaign and content experiments",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0063"
+      ]
+    },
+    {
+      "id": "TASK-0065",
+      "phase": "PHASE-11",
+      "title": "Implement bounded AI optimization proposals",
+      "weight": 16,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0064"
+      ]
+    },
+    {
+      "id": "TASK-0066",
+      "phase": "PHASE-11",
+      "title": "Implement statistical guardrails and experiment QA",
+      "weight": 16,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0065"
+      ]
+    },
+    {
+      "id": "TASK-0067",
+      "phase": "PHASE-11",
+      "title": "Certify Phase 11 experimentation",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0066"
+      ]
     }
   ]
 }

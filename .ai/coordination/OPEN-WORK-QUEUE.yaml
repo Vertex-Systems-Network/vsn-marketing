@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "44c644331a2212ebd0b0758d04d0010c3662a789",
+  "reconciled_main_sha": "564f048accabc12a2e1acfcc09ed6799914a677b",
   "active_work_path": {
     "kind": "pr",
-    "number": 462,
-    "title": "docs(ai): close Phase-10 with certified offline evidence",
-    "branch": "supervisor/phase10-closure",
-    "disposition": "active_task0061_carrier"
+    "number": 465,
+    "title": "plan(experiments): activate researched Phase 11 task sequence",
+    "branch": "supervisor/phase11-batch",
+    "disposition": "active_task0062_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 465,
+      "title": "plan(experiments): activate researched Phase 11 task sequence",
+      "branch": "supervisor/phase11-batch",
+      "disposition": "active_task0062_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 462,
       "title": "docs(ai): close Phase-10 with certified offline evidence",
       "branch": "supervisor/phase10-closure",
       "disposition": "active_task0061_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

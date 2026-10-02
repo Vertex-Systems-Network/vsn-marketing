@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-11",
-    "active_task": "TASK-0063",
-    "last_completed_task": "TASK-0062",
-    "next_task": "TASK-0064"
+    "active_task": "TASK-0064",
+    "last_completed_task": "TASK-0063",
+    "next_task": "TASK-0065"
   },
   "progress": {
-    "roadmap_percent": 71.8,
-    "phase_percent": 16.0,
+    "roadmap_percent": 72.9,
+    "phase_percent": 38.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -27,11 +27,11 @@
   "observed_main_sha": "f3a1e8f7999c17a583be55a5a3ce2002476edd84",
   "active_issue": null,
   "active_pr": 466,
-  "active_branch": "supervisor/phase11-assignment",
-  "current_milestone": "PHASE-11-ASSIGNMENT-FOUNDATION",
+  "active_branch": "supervisor/phase11-campaign-experiments",
+  "current_milestone": "PHASE-11-CAMPAIGN-EXPERIMENTS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Verify PR466 final-head PostgreSQL contention, browser, PHP floor, foundation, security and continuity; repair on same PR and merge only when green.",
+  "exact_next_safe_action": "Review TASK-0064 negative/PG tests and migration, open full CI PR, repair exact head, merge green and verify resulting main",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR466 final-head PostgreSQL contention, browser, PHP floor, foundation, security and continuity; repair on same PR and merge only when green."
+  "exact_next_action": "Review TASK-0064 negative/PG tests and migration, open full CI PR, repair exact head, merge green and verify resulting main"
 }

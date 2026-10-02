@@ -3,7 +3,7 @@
   "phase": "PHASE-11",
   "title": "Implement experiment assignment, holdout and exposure foundation",
   "weight": 22,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0062"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Versioned experiment/variant allocation and holdout with immutable launched config and scoped permissions",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Stable unbiased assignment to an explicit unit, mutual exclusion, idempotent exposure at actual treatment and audit",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Cross-workspace, allocation drift, replay, consent and PostgreSQL concurrency tests plus exact-head/main CI",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

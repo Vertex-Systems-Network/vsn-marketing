@@ -21,7 +21,7 @@ Experiment platforms separate evaluated treatment from the subject seeing it; a 
 
 ## Security/privacy findings
 
-Store an opaque keyed subject digest, never email or raw contact identity in assignment/exposure rows. All persistence is workspace and brand bound; exact brand null semantics matter. No direct caller grants itself an experiment permission. There is no provider or live channel path in this task. A digest is pseudonymous, so retention and deletion policy still apply. A key change must fail closed for existing assignments. A caller claiming actual rendering needs a trusted application boundary; no such production boundary is certified here.
+Store an opaque keyed subject digest, never email or raw contact identity in assignment/exposure rows. All persistence is workspace and brand bound; exact brand null semantics matter. No direct caller grants itself an experiment permission. An independent eligibility interface must deny unverified canonical identity, consent, suppression or purpose before assignment. There is no provider or live channel path in this task. A digest is pseudonymous, so retention and deletion policy still apply. A key change must fail closed for existing assignments. A caller claiming actual rendering needs a trusted application boundary; no such production boundary is certified here.
 
 ## API/platform constraints
 

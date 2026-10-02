@@ -3,6 +3,7 @@
 use App\Modules\Experiments\Application\ExperimentAssignments;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentAllocator;
+use App\Modules\Experiments\Domain\ExperimentEligibility;
 use App\Modules\Experiments\Domain\ExperimentPlan;
 use App\Modules\Experiments\Domain\ExposureVerifier;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -24,7 +25,7 @@ function experimentWorkspace(): array
     return [$organization, $workspace];
 }
 
-function experimentService(bool $witness = true, bool $permission = true, ?string $key = null): ExperimentAssignments
+function experimentService(bool $witness = true, bool $permission = true, ?string $key = null, bool $eligible = true): ExperimentAssignments
 {
     $access = new class($permission) implements ExperimentAccess
     {
@@ -45,7 +46,17 @@ function experimentService(bool $witness = true, bool $permission = true, ?strin
         }
     };
 
-    return new ExperimentAssignments(new ExperimentAllocator($key ?? str_repeat('k', 32)), $access, $verifier);
+    $eligibility = new class($eligible) implements ExperimentEligibility
+    {
+        public function __construct(private bool $allowed) {}
+
+        public function allows(TenantContext $actor, string $unitKind, string $unitId): bool
+        {
+            return $this->allowed && $unitKind === 'contact' && $unitId !== '';
+        }
+    };
+
+    return new ExperimentAssignments(new ExperimentAllocator($key ?? str_repeat('k', 32)), $access, $verifier, $eligibility);
 }
 
 it('freezes scoped plan, replays assignment, and requires a separate witness for exposure', function () {
@@ -96,6 +107,8 @@ it('denies foreign workspace and brand access, missing permission, and conflicti
         ->and(fn () => $service->assign(new TenantContext($org, $workspace, (string) Str::uuid(), 'other'), $plan->id, 'unit'))
         ->toThrow(InvalidArgumentException::class)
         ->and(fn () => experimentService(true, false)->assign($owner, $plan->id, 'unit'))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(fn () => experimentService(true, true, null, false)->assign($owner, $plan->id, 'unit'))
         ->toThrow(InvalidArgumentException::class);
     $service->assign($owner, $plan->id, 'unit');
     $other = new ExperimentPlan((string) Str::uuid(), $workspace, null, 'shared-layer', 'contact',

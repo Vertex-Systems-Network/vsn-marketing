@@ -4,6 +4,7 @@ namespace App\Modules\Experiments\Application;
 
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentAllocator;
+use App\Modules\Experiments\Domain\ExperimentEligibility;
 use App\Modules\Experiments\Domain\ExperimentPlan;
 use App\Modules\Experiments\Domain\ExposureVerifier;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
@@ -18,7 +19,7 @@ use RuntimeException;
 
 final readonly class ExperimentAssignments
 {
-    public function __construct(private ExperimentAllocator $allocator, private ExperimentAccess $access, private ExposureVerifier $exposures) {}
+    public function __construct(private ExperimentAllocator $allocator, private ExperimentAccess $access, private ExposureVerifier $exposures, private ExperimentEligibility $eligibility) {}
 
     public function create(TenantContext $actor, ExperimentPlan $plan): void
     {
@@ -78,6 +79,9 @@ final readonly class ExperimentAssignments
             $plan = $this->plan($row);
             if ($plan->fingerprint() !== $row->plan_hash) {
                 throw new RuntimeException('Frozen experiment plan integrity failed.');
+            }
+            if (! $this->eligibility->allows($actor, $plan->unitKind, $unitId)) {
+                throw new InvalidArgumentException('Canonical unit eligibility or consent denied.');
             }
             $subject = $this->allocator->subjectKey($plan, $unitId);
             $variant = $this->allocator->variant($plan, $unitId);

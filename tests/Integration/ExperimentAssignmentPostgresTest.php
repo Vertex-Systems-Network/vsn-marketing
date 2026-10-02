@@ -3,6 +3,7 @@
 use App\Modules\Experiments\Application\ExperimentAssignments;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentAllocator;
+use App\Modules\Experiments\Domain\ExperimentEligibility;
 use App\Modules\Experiments\Domain\ExperimentPlan;
 use App\Modules\Experiments\Domain\ExposureVerifier;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -43,7 +44,14 @@ it('keeps one assignment under competing PostgreSQL workers', function () {
             return false;
         }
     };
-    $service = new ExperimentAssignments(new ExperimentAllocator(str_repeat('p', 32)), $access, $witness);
+    $eligibility = new class implements ExperimentEligibility
+    {
+        public function allows(TenantContext $actor, string $unitKind, string $unitId): bool
+        {
+            return $unitKind === 'contact' && $unitId === 'subject-1';
+        }
+    };
+    $service = new ExperimentAssignments(new ExperimentAllocator(str_repeat('p', 32)), $access, $witness, $eligibility);
     $plan = new ExperimentPlan((string) Str::uuid(), $workspace, null, 'pg-layer-'.Str::random(8), 'contact',
         ['control' => 5000, 'variant' => 5000], 'control', null);
     $service->create($owner, $plan);

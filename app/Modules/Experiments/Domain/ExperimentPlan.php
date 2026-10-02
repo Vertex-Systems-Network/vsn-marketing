@@ -46,6 +46,11 @@ final readonly class ExperimentPlan
             'control' => $this->control, 'holdout' => $this->holdout];
     }
 
+    public function layerScope(): string
+    {
+        return hash('sha256', json_encode([$this->workspaceId, $this->brandId, $this->layer, $this->unitKind], JSON_THROW_ON_ERROR));
+    }
+
     public function fingerprint(): string
     {
         return hash('sha256', json_encode($this->canonical(), JSON_THROW_ON_ERROR));

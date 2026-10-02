@@ -100,6 +100,9 @@ it('denies foreign workspace and brand access, missing permission, and conflicti
     $service->assign($owner, $plan->id, 'unit');
     $other = new ExperimentPlan((string) Str::uuid(), $workspace, null, 'shared-layer', 'contact',
         ['control' => 5000, 'variant' => 5000], 'control', null);
+    expect(fn () => experimentService(true, true, str_repeat('z', 32))->create($owner, $other))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(DB::table('experiments')->where('id', $other->id)->exists())->toBeFalse();
     $service->create($owner, $other);
     $service->activate($reviewer, $other->id);
     expect(fn () => $service->assign($owner, $other->id, 'unit'))->toThrow(RuntimeException::class)

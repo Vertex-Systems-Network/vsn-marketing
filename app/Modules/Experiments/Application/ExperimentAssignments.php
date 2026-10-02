@@ -28,13 +28,25 @@ final readonly class ExperimentAssignments
             ->where('workspace_id', $plan->workspaceId)->exists()) {
             throw new InvalidArgumentException('Experiment brand is outside workspace.');
         }
-        DB::table('experiments')->insert([
-            'id' => $plan->id, 'workspace_id' => $plan->workspaceId, 'brand_id' => $plan->brandId,
-            'layer' => $plan->layer, 'unit_kind' => $plan->unitKind, 'control_variant' => $plan->control,
-            'holdout_variant' => $plan->holdout, 'allocation' => json_encode($plan->canonical()['weights'], JSON_THROW_ON_ERROR),
-            'plan_hash' => $plan->fingerprint(), 'key_fingerprint' => $this->allocator->keyFingerprint(),
-            'status' => 'draft', 'created_by_actor_id' => $actor->actorId, 'created_at' => now(), 'updated_at' => now(),
-        ]);
+        DB::transaction(function () use ($actor, $plan): void {
+            DB::table('experiment_layer_keys')->insertOrIgnore([
+                'scope_key' => $plan->layerScope(), 'workspace_id' => $plan->workspaceId,
+                'brand_id' => $plan->brandId, 'layer' => $plan->layer,
+                'unit_kind' => $plan->unitKind, 'key_fingerprint' => $this->allocator->keyFingerprint(),
+                'created_at' => now(),
+            ]);
+            $key = DB::table('experiment_layer_keys')->where('scope_key', $plan->layerScope())->first();
+            if ($key === null || $key->key_fingerprint !== $this->allocator->keyFingerprint()) {
+                throw new InvalidArgumentException('Layer allocation key rotation requires an explicit migration.');
+            }
+            DB::table('experiments')->insert([
+                'id' => $plan->id, 'workspace_id' => $plan->workspaceId, 'brand_id' => $plan->brandId,
+                'layer' => $plan->layer, 'unit_kind' => $plan->unitKind, 'control_variant' => $plan->control,
+                'holdout_variant' => $plan->holdout, 'allocation' => json_encode($plan->canonical()['weights'], JSON_THROW_ON_ERROR),
+                'plan_hash' => $plan->fingerprint(), 'key_fingerprint' => $this->allocator->keyFingerprint(),
+                'status' => 'draft', 'created_by_actor_id' => $actor->actorId, 'created_at' => now(), 'updated_at' => now(),
+            ]);
+        }, 3);
     }
 
     public function activate(TenantContext $reviewer, string $experimentId): void

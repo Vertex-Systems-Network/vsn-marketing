@@ -9,6 +9,17 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::create('experiment_layer_keys', function (Blueprint $table): void {
+            $table->char('scope_key', 64)->primary();
+            $table->uuid('workspace_id');
+            $table->uuid('brand_id')->nullable();
+            $table->string('layer', 64);
+            $table->string('unit_kind', 16);
+            $table->char('key_fingerprint', 64);
+            $table->timestampTz('created_at');
+            $table->foreign('workspace_id')->references('id')->on('workspaces')->restrictOnDelete();
+            $table->index(['workspace_id', 'brand_id', 'layer'], 'experiment_layer_scope_idx');
+        });
         Schema::create('experiments', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->uuid('workspace_id');
@@ -57,7 +68,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        foreach (['experiment_exposures', 'experiment_assignments', 'experiments'] as $name) {
+        foreach (['experiment_exposures', 'experiment_assignments', 'experiments', 'experiment_layer_keys'] as $name) {
             if (DB::table($name)->exists()) {
                 throw new RuntimeException('Refusing to drop nonempty experiment evidence without approved export/restore.');
             }
@@ -65,5 +76,6 @@ return new class extends Migration
         Schema::dropIfExists('experiment_exposures');
         Schema::dropIfExists('experiment_assignments');
         Schema::dropIfExists('experiments');
+        Schema::dropIfExists('experiment_layer_keys');
     }
 };

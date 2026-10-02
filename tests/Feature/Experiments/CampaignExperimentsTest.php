@@ -106,5 +106,7 @@ it('denies suppressed units and foreign workspace binding', function () {
     [$owner, , , $binding, $service] = campaignExperimentFixture();
     expect(fn () => $service->candidate($owner, $binding, 'suppressed'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $service->candidate(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'owner'), $binding, 'unit'))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->rollback(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'reviewer'), $binding))
         ->toThrow(InvalidArgumentException::class);
 });

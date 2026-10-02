@@ -89,6 +89,9 @@ final readonly class CampaignExperiments
         }
 
         return DB::transaction(function () use ($actor, $bindingId, $assignmentId, $variant, $reference, $eventReference, $at): string {
+            $binding = $this->binding($actor, $bindingId);
+            $experiment = $this->experiment($actor, $binding->experiment_id);
+            $matrix = $this->verify($actor, $binding, $experiment);
             $existing = DB::table('campaign_experiment_outcomes')->where('workspace_id', $actor->workspaceId)->where('event_reference', $eventReference)->first();
             if ($existing !== null) {
                 if ($existing->binding_id !== $bindingId || $existing->assignment_id !== $assignmentId
@@ -99,9 +102,6 @@ final readonly class CampaignExperiments
 
                 return $existing->state;
             }
-            $binding = $this->binding($actor, $bindingId);
-            $experiment = $this->experiment($actor, $binding->experiment_id);
-            $matrix = $this->verify($actor, $binding, $experiment);
             $assignment = DB::table('experiment_assignments')->where('id', $assignmentId)
                 ->where('workspace_id', $actor->workspaceId)->where('experiment_id', $binding->experiment_id)->first();
             if ($assignment === null) {
@@ -136,8 +136,12 @@ final readonly class CampaignExperiments
     public function rollback(TenantContext $actor, string $bindingId): void
     {
         $this->permit($actor, PermissionCatalog::CAMPAIGN_APPROVE);
-        DB::table('campaign_experiment_bindings')->where('id', $bindingId)
-            ->where('workspace_id', $actor->workspaceId)->update(['status' => 'stopped', 'updated_at' => now()]);
+        DB::transaction(function () use ($actor, $bindingId): void {
+            $binding = $this->binding($actor, $bindingId);
+            $this->experiment($actor, $binding->experiment_id);
+            DB::table('campaign_experiment_bindings')->where('id', $bindingId)
+                ->where('workspace_id', $actor->workspaceId)->update(['status' => 'stopped', 'updated_at' => now()]);
+        }, 3);
     }
 
     private function reference(string $binding, string $assignment, string $variant): string

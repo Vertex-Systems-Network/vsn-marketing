@@ -4,7 +4,7 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=71 phase=0 current_phase=PHASE-11 active_task=TASK-0062 milestone=PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=71 phase=0 current_phase=PHASE-11 active_task=TASK-0062 milestone=PHASE-11-RESEARCH-AND-REGISTRATION status=IN_PROGRESS -->
 
 > PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled. PHASE-11 TASK-0062 research and six dependent tasks are registered; no experiment traffic is enrolled.
 
@@ -13,7 +13,7 @@ AI-native, provider-agnostic marketing operating system under active development
 **Overall roadmap progress: 71.00%**<br />
 **Current phase: PHASE-11 — 0.00%**<br />
 **Last completed task: TASK-0061**<br />
-**Current milestone: PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED — COMPLETE**
+**Current milestone: PHASE-11-RESEARCH-AND-REGISTRATION — IN_PROGRESS**
 
 ```text
  Overall  [██████████████░░░░░░] 71.00%

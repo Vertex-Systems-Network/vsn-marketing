@@ -4,20 +4,20 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=71 phase=100 current_phase=PHASE-10 active_task=TASK-0061 milestone=PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=71 phase=0 current_phase=PHASE-11 active_task=TASK-0062 milestone=PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED status=COMPLETE -->
 
-> PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled and PHASE-11 is inactive.
+> PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled. PHASE-11 TASK-0062 research and six dependent tasks are registered; no experiment traffic is enrolled.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
 **Overall roadmap progress: 71.00%**<br />
-**Current phase: PHASE-10 — 100.00%**<br />
+**Current phase: PHASE-11 — 0.00%**<br />
 **Last completed task: TASK-0061**<br />
 **Current milestone: PHASE-10-OFFLINE-ARCHITECTURE-CERTIFIED — COMPLETE**
 
 ```text
  Overall  [██████████████░░░░░░] 71.00%
-Phase 10 [████████████████████] 100.00%
+Phase 11 [░░░░░░░░░░░░░░░░░░░░] 0.00%
 ```
 
 The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.
@@ -37,7 +37,7 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | **PHASE-08** | **5%** | **Segmentation, deterministic AST/compiler, AI proposal and preview UX** | ✅ **Complete** | **100.00%** |
 | **PHASE-09** | **7%** | **Journeys, automation runtime, triggers/waits/branches/replay** | ✅ **TASK-0053 certified** | **100.00%** |
 | **PHASE-10** | **8%** | **AI gateway, memory/context, typed tools, agents, red-team** | ✅ **Offline architecture certified; live activation gated** | **100.00%** |
-| PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
+| **PHASE-11** | **5%** | **Experiments, variants, statistical guardrails, adaptive optimization** | 🔬 **TASK-0062 research registered** | **0.00%** |
 | PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |
 | PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | ⏳ Planned | 0% |
 | PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ⏳ Planned | 0% |
@@ -58,7 +58,7 @@ The stale preplanned TASK-0042 reservation remains an unmaterialized identifier 
 
 ### Current execution snapshot
 
-PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 certification are complete. PHASE-08 and PHASE-09 progress are 100.00%; deterministic roadmap progress is 71.00%. PHASE-10 TASK-0054 research and TASK-0055 gateway are complete; TASK-0056 context and TASK-0057 typed tools are accepted. TASK-0058 specialist candidate runtime is accepted. TASK-0059 creative drafts are accepted. TASK-0060 red-team is accepted. TASK-0061 certification is accepted. PHASE-10 offline architecture is certified100%; PHASE-11 remains inactive until an explicit research-first successor is registered. See [.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md](.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md) for the source/test/run matrix and pending live activation gates.
+PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 certification are complete. PHASE-08 and PHASE-09 progress are 100.00%; deterministic roadmap progress is 71.00%. PHASE-10 TASK-0054 research and TASK-0055 gateway are complete; TASK-0056 context and TASK-0057 typed tools are accepted. TASK-0058 specialist candidate runtime is accepted. TASK-0059 creative drafts are accepted. TASK-0060 red-team is accepted. TASK-0061 certification is accepted. PHASE-10 offline architecture is certified100%; PHASE-11 TASK-0062 is active at research stage; implementation and production enrollment are pending. See [.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md](.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md) for the source/test/run matrix and pending live activation gates.
 
 ### README progress-sync contract
 

@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-02T09:57:12+00:00`
+- Timestamp: `2026-10-02T09:59:36+00:00`
 - Observed main: `6516013fe3f3d51e32ccc3d1024beef2554771bf`
 - Active issue: `none`
 - Active PR: `469`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `a57503ccbd1d0ec1a569b695316832141b4a987292a469c6f42ee8ab460cf053`
+- State fingerprint: `efb40168f34529c00cc6ee75bcfa3fa3edb51276976411b558cfb8f9a5d8ba96`
 
 ## Completed / observed this session
 
-TASK-0066 PR #469 full CI: corrected exact migration review markers in PR body after first continuity run rejected metadata; new exact-head run required.
+TASK-0066 PR #469 review found future observation time bypass; added rejection and focused regression, requiring new exact-head CI.
 
 ## Tests
 
-Local 791 passed, 5245 assertions, 137 infrastructure skips; PHPStan/Pint pass; first PR Continuity metadata marker fail, corrected.
+Focused 9 passed, 66 assertions; PHPStan/Pint pass; prior exact-head continuity green but superseded by code fix.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local 791 passed, 5245 assertions, 137 infrastructure skips; PHPStan/Pint pass; 
 
 ## Exact next action
 
-Push new PR head to trigger full CI with corrected PR metadata and verify all jobs.
+Push new head, verify full exact-head CI then resulting-main gates.

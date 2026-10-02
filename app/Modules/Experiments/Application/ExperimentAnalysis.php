@@ -66,6 +66,9 @@ final readonly class ExperimentAnalysis
     public function analyze(TenantContext $actor, string $planId, DateTimeImmutable $at): array
     {
         $this->permit($actor, PermissionCatalog::CAMPAIGN_READ);
+        if ($at > new DateTimeImmutable('now +1 second')) {
+            throw new InvalidArgumentException('Analysis observation time cannot be in the future.');
+        }
         $row = $this->row($actor, $planId, false);
         $plan = $this->verify($row);
         [$binding, $experiment] = $this->scope($actor, $plan->bindingId);

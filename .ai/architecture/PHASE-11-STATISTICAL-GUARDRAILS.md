@@ -8,7 +8,7 @@ This service analyzes **the presence of an admitted campaign experiment outcome 
 
 A workspace-scoped binding and active experiment must have identical plan hash, allocation, unit kind, control, and holdout. The author records a canonical SHA-256 plan before any assignment; a different actor with approval permission approves the exact hash before assignments. One plan is allowed per binding. The frozen JSON includes the binary outcome, unit, allocation, alpha, power assumption, baseline rate, absolute minimum detectable difference, UTC horizon, one fixed look, Bonferroni comparison count, and a sample size floor. A database unique key prevents concurrent duplicate plans. Reads reconstruct and hash-check the stored plan and recheck the experiment and tenant scope.
 
-The power floor is a normal approximation for two independent proportions, using the larger of baseline and assumed alternative variance. It is a planning assumption, not observed power. Alpha is 0.01 or 0.05; power assumption is 0.8 or 0.9. The report is pending until the frozen horizon. Rows timestamped after that horizon are counted as a quality fault and excluded from arm counts, so a later read cannot silently improve the estimate.
+The power floor is a normal approximation for two independent proportions, using the larger of baseline and assumed alternative variance. It is a planning assumption, not observed power. Alpha is 0.01 or 0.05; power assumption is 0.8 or 0.9. The service rejects caller-supplied future observation times; the report is pending until the frozen horizon. Rows timestamped after that horizon are counted as a quality fault and excluded from arm counts, so a later read cannot silently improve the estimate.
 
 ## Diagnostics and inference
 

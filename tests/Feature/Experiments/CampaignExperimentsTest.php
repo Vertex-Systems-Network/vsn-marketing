@@ -217,11 +217,12 @@ it('freezes and independently approves an offline analysis before assignment', f
     expect(fn () => $analysis->register($owner, new ExperimentAnalysisPlan(
         $binding, 'contact', ['control' => 5000, 'treatment' => 5000], 'control', null,
         0.05, 0.8, 0.5, 0.2, new DateTimeImmutable('now +2 days'))))->toThrow(InvalidArgumentException::class);
-    $report = $analysis->analyze($owner, $id, new DateTimeImmutable('now +2 days'));
+    expect(fn () => $analysis->analyze($owner, $id, new DateTimeImmutable('now +2 days')))->toThrow(InvalidArgumentException::class);
+    $report = $analysis->analyze($owner, $id, new DateTimeImmutable('now'));
     expect($report['status'])->toBe('invalid')->and($report['diagnostics']['missing_exposure'])->toBe(1);
     DB::table('experiment_assignments')->where('id', $candidate['assignment_id'])
         ->update(['assigned_at' => now()->addDays(3)]);
-    $late = $analysis->analyze($owner, $id, new DateTimeImmutable('now +4 days'));
+    $late = $analysis->analyze($owner, $id, new DateTimeImmutable('now'));
     expect($late['status'])->toBe('invalid')->and($late['diagnostics']['crossovers'])->toBeGreaterThan(0)
         ->and($late['diagnostics']['assigned']['control'] + $late['diagnostics']['assigned']['treatment'])->toBe(0);
     expect(fn () => $analysis->analyze(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'owner'), $id,

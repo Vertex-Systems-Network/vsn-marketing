@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-02T09:22:17+00:00`
-- Observed main: `eae81f425dbe9a11503a3c861825a5679c19edee`
+- Timestamp: `2026-10-02T09:59:36+00:00`
+- Observed main: `6516013fe3f3d51e32ccc3d1024beef2554771bf`
 - Active issue: `none`
-- Active PR: `468`
-- Active branch: `supervisor/phase11-statistical-guardrails`
-- Current milestone: `PHASE-11-OPTIMIZATION-PROPOSALS`
+- Active PR: `469`
+- Active branch: `supervisor/phase11-statistical-analysis`
+- Current milestone: `PHASE-11-STATISTICAL-GUARDRAILS`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0065`
-- Next task: `TASK-0066`
+- Active task: `TASK-0066`
+- Next task: `TASK-0067`
 - Current phase: `PHASE-11`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `c9af7954c6f5b2d590f739fa01dae00aacdf0a8f27ddb5adc36bbc056b86b6a4`
+- State fingerprint: `efb40168f34529c00cc6ee75bcfa3fa3edb51276976411b558cfb8f9a5d8ba96`
 
 ## Completed / observed this session
 
-TASK-0065 PR468 opened at exact candidate tree 753a1f2; full CI pending
+TASK-0066 PR #469 review found future observation time bypass; added rejection and focused regression, requiring new exact-head CI.
 
 ## Tests
 
-Local backend 787 passed/5209 assertions, 137 infra skips; focused 6 passed/30 assertions, PHPStan/Pint and continuity clean; PR head CI pending
+Focused 9 passed, 66 assertions; PHPStan/Pint pass; prior exact-head continuity green but superseded by code fix.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local backend 787 passed/5209 assertions, 137 infra skips; focused 6 passed/30 a
 
 ## Exact next action
 
-Review PR468 full exact-head gates, repair on same branch, merge only green and verify resulting main
+Push new head, verify full exact-head CI then resulting-main gates.

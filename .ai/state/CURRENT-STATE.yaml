@@ -28,10 +28,10 @@
   "active_issue": null,
   "active_pr": 469,
   "active_branch": "supervisor/phase11-statistical-analysis",
-  "current_milestone": "PHASE-11-STATISTICAL-GUARDRAILS",
+  "current_milestone": "PHASE-11-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Push new head, verify full exact-head CI then resulting-main gates.",
+  "exact_next_safe_action": "Open TASK-0067 full-CI certification PR, verify exact-head and resulting-main gates, then guarded phase closure.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Push new head, verify full exact-head CI then resulting-main gates."
+  "exact_next_action": "Open TASK-0067 full-CI certification PR, verify exact-head and resulting-main gates, then guarded phase closure."
 }

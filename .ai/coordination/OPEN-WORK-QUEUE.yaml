@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "eae81f425dbe9a11503a3c861825a5679c19edee",
+  "reconciled_main_sha": "6516013fe3f3d51e32ccc3d1024beef2554771bf",
   "active_work_path": {
     "kind": "pr",
-    "number": 468,
-    "title": "TASK-0065: bound AI optimization proposal review",
-    "branch": "supervisor/phase11-statistical-guardrails",
-    "disposition": "active_task0065_carrier"
+    "number": 469,
+    "title": "TASK-0066: frozen offline experiment statistical guardrails",
+    "branch": "supervisor/phase11-statistical-analysis",
+    "disposition": "active_task0066_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 469,
+      "title": "TASK-0066: frozen offline experiment statistical guardrails",
+      "branch": "supervisor/phase11-statistical-analysis",
+      "disposition": "active_task0066_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 468,
       "title": "TASK-0065: bound AI optimization proposal review",
       "branch": "supervisor/phase11-statistical-guardrails",
       "disposition": "active_task0065_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

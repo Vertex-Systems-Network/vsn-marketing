@@ -3,7 +3,7 @@
   "phase": "PHASE-11",
   "title": "Implement bounded AI optimization proposals",
   "weight": 16,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0064"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Typed scoped proposal with source, context, uncertainty and risk controls",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Independent evaluation, review and exact candidate promotion/rollback; no autonomous campaign send",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adversarial self-promotion, foreign scope and budget tests plus exact-head/main CI",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

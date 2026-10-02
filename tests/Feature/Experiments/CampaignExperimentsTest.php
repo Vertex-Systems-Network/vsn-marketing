@@ -1,11 +1,13 @@
 <?php
 
 use App\Modules\Experiments\Application\CampaignExperiments;
+use App\Modules\Experiments\Application\ExperimentAnalysis;
 use App\Modules\Experiments\Application\ExperimentAssignments;
 use App\Modules\Experiments\Application\OptimizationProposals;
 use App\Modules\Experiments\Domain\CampaignExperimentMatrix;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentAllocator;
+use App\Modules\Experiments\Domain\ExperimentAnalysisPlan;
 use App\Modules\Experiments\Domain\ExperimentEligibility;
 use App\Modules\Experiments\Domain\ExperimentPlan;
 use App\Modules\Experiments\Domain\ExposureVerifier;
@@ -189,4 +191,41 @@ it('denies fabricated receipt, budget overflow and foreign scope', function () {
     expect(fn () => $limited->submit($owner, $binding, $proposal))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $valid->submit(new TenantContext($scopedOwner->organizationId, (string) Str::uuid(), null, 'owner'), $scopedBinding, $scopedProposal))
         ->toThrow(InvalidArgumentException::class);
+});
+
+it('freezes and independently approves an offline analysis before assignment', function () {
+    [$owner, $reviewer, $experiment, $binding, $campaign, $assignments] = campaignExperimentFixture();
+    $access = new class implements ExperimentAccess
+    {
+        public function allows(TenantContext $actor, string $permission): bool
+        {
+            return in_array($permission, ['campaign.create', 'campaign.approve', 'campaign.read'], true);
+        }
+    };
+    $analysis = new ExperimentAnalysis($access);
+    $plan = new ExperimentAnalysisPlan($binding, 'contact',
+        ['control' => 5000, 'treatment' => 5000], 'control', null, 0.05, 0.8, 0.5, 0.2,
+        new DateTimeImmutable('now +1 day'));
+    $id = $analysis->register($owner, $plan);
+    expect(fn () => $analysis->approve($owner, $id, $plan->fingerprint()))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $analysis->analyze($owner, $id, new DateTimeImmutable('now')))->toThrow(InvalidArgumentException::class);
+    $analysis->approve($reviewer, $id, $plan->fingerprint());
+    $pending = $analysis->analyze($owner, $id, new DateTimeImmutable('now'));
+    expect($pending['status'])->toBe('pending')->and($pending['publication_authorized'])->toBeFalse()
+        ->and($pending['evidence_kind'])->toBe('offline_admitted_outcome_event');
+    $candidate = $campaign->candidate($owner, $binding, 'contact-1');
+    expect(fn () => $analysis->register($owner, new ExperimentAnalysisPlan(
+        $binding, 'contact', ['control' => 5000, 'treatment' => 5000], 'control', null,
+        0.05, 0.8, 0.5, 0.2, new DateTimeImmutable('now +2 days'))))->toThrow(InvalidArgumentException::class);
+    $report = $analysis->analyze($owner, $id, new DateTimeImmutable('now +2 days'));
+    expect($report['status'])->toBe('invalid')->and($report['diagnostics']['missing_exposure'])->toBe(1);
+    DB::table('experiment_assignments')->where('id', $candidate['assignment_id'])
+        ->update(['assigned_at' => now()->addDays(3)]);
+    $late = $analysis->analyze($owner, $id, new DateTimeImmutable('now +4 days'));
+    expect($late['status'])->toBe('invalid')->and($late['diagnostics']['crossovers'])->toBeGreaterThan(0)
+        ->and($late['diagnostics']['assigned']['control'] + $late['diagnostics']['assigned']['treatment'])->toBe(0);
+    expect(fn () => $analysis->analyze(new TenantContext($owner->organizationId, (string) Str::uuid(), null, 'owner'), $id,
+        new DateTimeImmutable('now')))->toThrow(InvalidArgumentException::class);
+    DB::table('experiment_analysis_plans')->where('id', $id)->update(['plan_hash' => str_repeat('f', 64)]);
+    expect(fn () => $analysis->analyze($owner, $id, new DateTimeImmutable('now')))->toThrow(RuntimeException::class);
 });

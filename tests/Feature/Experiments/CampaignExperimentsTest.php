@@ -230,3 +230,40 @@ it('freezes and independently approves an offline analysis before assignment', f
     DB::table('experiment_analysis_plans')->where('id', $id)->update(['plan_hash' => str_repeat('f', 64)]);
     expect(fn () => $analysis->analyze($owner, $id, new DateTimeImmutable('now')))->toThrow(RuntimeException::class);
 });
+
+it('certifies replay, quarantine, analysis invalidation and rollback in one offline campaign', function () {
+    [$owner, $reviewer, $experiment, $binding, $campaign, $assignments] = campaignExperimentFixture();
+    $access = new class implements ExperimentAccess
+    {
+        public function allows(TenantContext $actor, string $permission): bool
+        {
+            return in_array($permission, ['campaign.create', 'campaign.approve', 'campaign.read'], true);
+        }
+    };
+    $analysis = new ExperimentAnalysis($access);
+    $plan = new ExperimentAnalysisPlan($binding, 'contact',
+        ['control' => 5000, 'treatment' => 5000], 'control', null, 0.05, 0.8, 0.5, 0.2,
+        new DateTimeImmutable('now +1 day'));
+    $id = $analysis->register($owner, $plan);
+    $analysis->approve($reviewer, $id, $plan->fingerprint());
+
+    $candidate = $campaign->candidate($owner, $binding, 'certification-unit');
+    expect($campaign->candidate($owner, $binding, 'certification-unit'))->toBe($candidate);
+    $at = new DateTimeImmutable('now +2 seconds');
+    $assignments->recordExposure($owner, $experiment->id, $candidate['assignment_id'], $candidate['variant'],
+        $candidate['reference'], new DateTimeImmutable('now'));
+    expect($campaign->admitOutcome($owner, $binding, $candidate['assignment_id'], $candidate['variant'],
+        $candidate['reference'], 'certification-event', $at))->toBe('admitted')
+        ->and($campaign->admitOutcome($owner, $binding, $candidate['assignment_id'], $candidate['variant'],
+            $candidate['reference'], 'certification-event', $at))->toBe('admitted')
+        ->and(DB::table('campaign_experiment_outcomes')->where('event_reference', 'certification-event')->count())->toBe(1);
+    expect($analysis->analyze($owner, $id, new DateTimeImmutable('now'))['status'])->toBe('pending');
+    expect($campaign->admitOutcome($owner, $binding, $candidate['assignment_id'], 'other',
+        $candidate['reference'], 'certification-conflict', $at))->toBe('quarantined');
+    $quality = $analysis->analyze($owner, $id, new DateTimeImmutable('now'));
+    expect($quality['status'])->toBe('invalid')->and($quality['effects'])->toBe([])
+        ->and($quality['diagnostics']['quarantined'])->toBe(1);
+    $campaign->rollback($reviewer, $binding);
+    expect(fn () => $campaign->candidate($owner, $binding, 'another-unit'))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $analysis->analyze($owner, $id, new DateTimeImmutable('now')))->toThrow(InvalidArgumentException::class);
+});

@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6516013fe3f3d51e32ccc3d1024beef2554771bf",
+  "reconciled_main_sha": "e0e3bc8eaac3a123d2e3130d36bc34ce1faaea76",
   "active_work_path": {
     "kind": "pr",
-    "number": 469,
-    "title": "TASK-0066: frozen offline experiment statistical guardrails",
-    "branch": "supervisor/phase11-statistical-analysis",
-    "disposition": "active_task0066_carrier"
+    "number": 470,
+    "title": "TASK-0067: certify Phase 11 offline experimentation",
+    "branch": "supervisor/phase11-certification",
+    "disposition": "active_task0067_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 470,
+      "title": "TASK-0067: certify Phase 11 offline experimentation",
+      "branch": "supervisor/phase11-certification",
+      "disposition": "active_task0067_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 469,
       "title": "TASK-0066: frozen offline experiment statistical guardrails",
       "branch": "supervisor/phase11-statistical-analysis",
       "disposition": "active_task0066_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

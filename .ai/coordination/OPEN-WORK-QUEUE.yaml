@@ -6,7 +6,7 @@
     "number": 470,
     "title": "TASK-0067: certify Phase 11 offline experimentation",
     "branch": "supervisor/phase11-certification",
-    "disposition": "active_task0066_carrier"
+    "disposition": "active_task0067_carrier"
   },
   "items": [
     {
@@ -14,7 +14,7 @@
       "number": 470,
       "title": "TASK-0067: certify Phase 11 offline experimentation",
       "branch": "supervisor/phase11-certification",
-      "disposition": "active_task0066_carrier",
+      "disposition": "active_task0067_carrier",
       "accepted_actionable": true
     },
     {

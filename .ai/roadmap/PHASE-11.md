@@ -1,6 +1,6 @@
 # PHASE-11 — Experimentation and Adaptive Optimization
 
-Status: planned until guarded transition from TASK-0061. Weight: 5% of roadmap. TASK-0062–0067 are registered in dependency order; no production traffic is enrolled by registration.
+Status: completed through TASK-0067 / PR #470 full exact-head and protected-main gates. Weight: 5% of roadmap. TASK-0062–0067 are registered in dependency order; no production traffic is enrolled by registration.
 
 1. TASK-0062 — current statistical, product and security research.
 2. TASK-0063 — scoped experiment, assignment, holdout and actual exposure foundation.

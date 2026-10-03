@@ -667,7 +667,7 @@
       "phase": "PHASE-11",
       "title": "Certify Phase 11 experimentation",
       "weight": 12,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0066"
       ]

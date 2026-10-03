@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e0e3bc8eaac3a123d2e3130d36bc34ce1faaea76",
+  "reconciled_main_sha": "cf01b147c378403ff3d97102f208dd3ed701dcf7",
   "active_work_path": {
     "kind": "pr",
-    "number": 470,
-    "title": "TASK-0067: certify Phase 11 offline experimentation",
-    "branch": "supervisor/phase11-certification",
+    "number": 471,
+    "title": "PHASE-11: terminal offline certification closure",
+    "branch": "supervisor/phase11-closure",
     "disposition": "active_task0067_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 471,
+      "title": "PHASE-11: terminal offline certification closure",
+      "branch": "supervisor/phase11-closure",
+      "disposition": "active_task0067_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 470,
       "title": "TASK-0067: certify Phase 11 offline experimentation",
       "branch": "supervisor/phase11-certification",
-      "disposition": "active_task0067_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "cf01b147c378403ff3d97102f208dd3ed701dcf7"
     },
     {
       "kind": "pr",

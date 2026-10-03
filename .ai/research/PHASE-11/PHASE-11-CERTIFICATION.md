@@ -9,7 +9,7 @@ This is the evidence ledger for source, tests and GitHub gates. It certifies the
 | TASK-0064 | PR [#467](https://github.com/Vertex-Systems-Network/vsn-marketing/pull/467) | `CampaignExperiments`, `CampaignExperimentMatrix`, `CampaignExperimentsTest`, `CampaignExperimentMatrixTest` | Frozen campaign snapshot/arm matrix, sticky candidate, admitted or quarantined offline event; rollback denies candidacy. |
 | TASK-0065 | PR [#468](https://github.com/Vertex-Systems-Network/vsn-marketing/pull/468) | `OptimizationProposals`, `OptimizationProposal`, `CampaignExperimentsTest`, `OptimizationProposalTest` | Verified receipt, budget, independent evaluator and reviewer, high risk rejection, reviewed draft and revert; no live mutation. |
 | TASK-0066 | PR [#469](https://github.com/Vertex-Systems-Network/vsn-marketing/pull/469), exact head `32755a0a51cf97a43e7157a266190efce2d1cf1f`, merged main `e0e3bc8eaac3a123d2e3130d36bc34ce1faaea76` | `ExperimentAnalysisPlan`, `ExperimentStatistics`, `ExperimentAnalysis`, numerical unit and feature tests | Frozen plan, fixed horizon, future timestamp rejection, SRM and contamination blocks, conservative Bonferroni difference intervals; binary admitted-event signal only. |
-| TASK-0067 | Certification carrier pending | This matrix and integrated replay/quarantine/rollback feature test | Exact head and resulting-main full CI required before acceptance. |
+| TASK-0067 | PR [#470](https://github.com/Vertex-Systems-Network/vsn-marketing/pull/470), exact head `38922f4668119c3a9ef9bf48db6f080a8c1b6c50`, main `cf01b147c378403ff3d97102f208dd3ed701dcf7` | This matrix and integrated replay/quarantine/rollback feature test | Exact head and resulting-main full CI required before acceptance. |
 
 ## TASK-0066 gate record carried into certification
 
@@ -29,3 +29,11 @@ This is the evidence ledger for source, tests and GitHub gates. It certifies the
 | Full CI and main | PR and main Actions runs to be appended after gates | All four Application jobs, Continuity, Security, Release Integrity, Scorecard and Supervisor successful for their respective commits. |
 
 The analysis sample-size floor is a planning approximation and the reported interval concerns only the admitted event ledger. Live experiment design, metric validity, sequential monitoring, privacy/retention and production switch are still pending.
+
+## TASK-0067 accepted gate record
+
+Exact PR head `38922f4668119c3a9ef9bf48db6f080a8c1b6c50`: Application 36995081500 (all four jobs), Continuity 36995081519, Security 36995081511, Supervisor 36995079152 succeeded. Integration job 110800701630 logs explicitly show PASS for `ExperimentAssignmentPostgresTest`: competing PostgreSQL workers yielded the same assignment and one durable row.
+
+Protected main `cf01b147c378403ff3d97102f208dd3ed701dcf7` has the same tree `d949d86323d6f7cb709e040374e5ef125be356d6` as the verified PR. Application 36995691051 (all four jobs), Continuity 36995691058, Security 36995691103, Release Integrity 36995691076, Scorecard 36995691048 and Supervisor 36995729036 succeeded. Local certification: 792 passed, 5,259 assertions, 137 infrastructure skips, PHPStan/Pint and governance validators passed.
+
+Guarded terminal transition completes TASK-0067 and PHASE-11: phase 100%, deterministic roadmap 76%. No successor is registered; PHASE-12 requires explicit research and task registration. Final closure carrier has its own full gates before publication of the final report.

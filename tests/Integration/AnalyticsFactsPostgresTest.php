@@ -133,6 +133,7 @@ it('measures bounded analytics request latency queries memory and overflow on Po
         'production_slo_certified' => false, 'production_capacity_certified' => false,
         'excluded' => ['HTTP/browser latency', 'provider latency', 'multi-tenant production load', 'scheduler saturation', 'infrastructure cost']];
     $json = json_encode($evidence, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+    \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path('app'));
     file_put_contents(storage_path('app/phase12-certification-samples.json'), $json."\n");
     fwrite(STDOUT, 'PHASE12_MEASUREMENT='.json_encode($evidence, JSON_THROW_ON_ERROR)."\n");
 });

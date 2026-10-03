@@ -1,0 +1,5 @@
+# TASK-0073 verification — acceptance pending
+
+AC1: AnalyticsQuality and exact-source-verifier port; source/time/scope/cutoff keys and content drift, duplicates/conflicts/late/unprojected/unknown totals. AC2: bounded operator quality monitor and affected metric versions with no raw recipient payload; expected count is null without independent verifier. AC3: immutable request/input fingerprint, transaction rollback/replay, altered replay denied, current unprojected receipt consent checked, erasure prevents renewed reads, corruption denied and nonempty migration down refused.
+
+Local PHP8.3.6 focused44 tests/288 assertions pass without warnings; full prior regression843/5678 with141 explicit infrastructure skips (before final operator test). PHPStan, Pint, frontend typecheck/38 tests/build pass. New PostgreSQL competing reconciliation and mobile browser quality flow are registered and require actual CI; local skips are not parity evidence. Production source verifier remains unbound; verified checkpoint tests are synthetic. Final exact-head/main gates remain pending.

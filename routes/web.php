@@ -82,6 +82,7 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
     ->group(function (): void {
         $controller = AnalyticsOperatorController::class;
         Route::get('/workspaces/{workspace}/analytics', [$controller, 'index'])->name('analytics.operator');
+        Route::post('/workspaces/{workspace}/analytics/quality', [$controller, 'quality'])->middleware('throttle:30,1')->name('analytics.quality');
         Route::post('/workspaces/{workspace}/analytics/reports', [$controller, 'generate'])->middleware('throttle:30,1')->name('analytics.generate');
         Route::post('/workspaces/{workspace}/analytics/schedules', [$controller, 'schedule'])->name('analytics.schedules');
         Route::post('/workspaces/{workspace}/analytics/schedules/{schedule}/disable', [$controller, 'disable'])->name('analytics.schedule.disable');

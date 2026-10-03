@@ -24,6 +24,12 @@ test('mobile operator reads scoped evidence, generates a report and disables the
     await page.getByRole('button', { name: 'Generate report', exact: true }).focus();
     await page.keyboard.press('Enter');
     await expect(page.getByRole('status').filter({ hasText: 'Immutable report created.' })).toBeVisible();
+    await page.getByLabel('Canonical source', { exact: true }).fill('fixture');
+    await page.getByRole('button', { name: 'Check source quality', exact: true }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByText('Immutable source quality check created.', { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'product.viewed · unknown', exact: true })).toBeVisible();
+    await expect(page.getByText('Expected source total', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Schedule daily UTC report' }).click();
     await expect(page.getByText('Daily UTC schedule created. Reports stay inside this workspace.')).toBeVisible();
     await page.getByRole('button', { name: 'Disable schedule' }).click();

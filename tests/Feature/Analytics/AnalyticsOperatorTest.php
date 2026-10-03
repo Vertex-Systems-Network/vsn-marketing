@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
+use App\Modules\Analytics\Application\AnalyticsQuality;
 use App\Modules\Analytics\Application\AnalyticsReports;
 use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Analytics\Domain\ReportCatalog;
@@ -74,4 +75,20 @@ it('exposes every registered report model with actual bounded measured component
                     && ($metrics['USD.net'] ?? null) === 101;
             });
         });
+});
+
+it('displays authorized quality checks and hides receipt lineage and unapproved source totals', function () {
+    $this->withoutVite();
+    $f = new AnalyticsFixture;
+    $f->event('not-projected');
+    app(AnalyticsQuality::class)->reconcile($f->actor, 'operator-quality', 'fixture', 'product.viewed',
+        new DateTimeImmutable('2026-10-02Z'), new DateTimeImmutable('2026-10-03Z'), $f->now());
+    $this->actingAs(User::findOrFail($f->actor->actorId))->withHeader('X-Brand-Id', $f->actor->brandId)
+        ->get('/workspaces/'.$f->actor->workspaceId.'/analytics')->assertOk()
+        ->assertInertia(fn (Assert $p) => $p->has('quality_reports', 1)->where('quality_reports.0.expected_total', null)
+            ->where('quality_reports.0.missing_projection', 1)->missing('quality_reports.0.lineage')->missing('quality_reports.0.receipt_lineage'));
+    $this->post('/workspaces/'.$f->actor->workspaceId.'/analytics/quality', ['source' => 'fixture', 'event_type' => 'product.viewed',
+        'start' => '2026-10-02', 'end' => '2026-10-03'])->assertRedirect()->assertSessionHas('analytics_notice', 'quality_created');
+    config(['analytics.purpose_approved' => false]);
+    $this->get('/workspaces/'.$f->actor->workspaceId.'/analytics')->assertInertia(fn (Assert $p) => $p->where('quality_reports', []));
 });

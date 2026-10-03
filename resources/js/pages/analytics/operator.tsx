@@ -6,16 +6,22 @@ type Report = { id: string; fingerprint: string; definition_hash: string; defini
     source_completeness: string; excluded: number; lineage_count: number; metrics: Record<string, number>;
     quality: Record<string, number>; censored_subjects: number | null };
 type Schedule = { id: string; kind: string; enabled: boolean; next_window_end: string; status_code: string | null };
-type Props = { state: string; reports: Report[]; schedules: Schedule[]; invalidated_reports: number;
+type Quality = { id: string; fingerprint: string; source_hash: string; event_type: string; start_utc: string; end_utc: string;
+    coverage: string; expected_total: number | null; missing_source_keys: number | null; unexpected_source_keys: number | null;
+    missing_projection: number; duplicates: number; conflicts: number; late: number; drifted_hashes: number;
+    max_receipt_lag_seconds: number; affected_metric_versions: { snapshot_id: string; definition_hash: string; version: number }[] };
+type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
     report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
     insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean;
     actions: { generate: string; schedules: string; base: string } };
-const notices: Record<string, string> = { report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
+const notices: Record<string, string> = { quality_created: 'Immutable source quality check created.', quality_denied: 'Quality check denied. Review scope, dates and observation bounds.', report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
     schedule_created: 'Daily UTC schedule created. Reports stay inside this workspace.', schedule_denied: 'Schedule could not be created.',
     schedule_disabled: 'Schedule disabled.', explanation_unavailable: 'No approved explanation route is configured.', insight_denied: 'Insight evidence could not be validated.' };
 const control = 'mt-2 w-full rounded-xl border border-white/20 bg-neutral-900 px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300';
 const button = 'rounded-xl bg-sky-300 px-4 py-2 font-semibold text-neutral-950 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300';
 export default function AnalyticsOperator(p: Props) {
+    const [source, setSource] = useState('');
+    const [qualityType, setQualityType] = useState('product.viewed');
     const [kind, setKind] = useState('counts');
     const [start, setStart] = useState(p.default_start);
     const [end, setEnd] = useState(p.default_end);
@@ -64,6 +70,26 @@ export default function AnalyticsOperator(p: Props) {
                     <details className="mt-4"><summary className="cursor-pointer text-sky-200 focus-visible:outline-2 focus-visible:outline-sky-300">Definition and evidence fingerprint</summary>
                         <pre className="mt-2 whitespace-pre-wrap break-all text-xs text-neutral-300">{JSON.stringify(r.definition, null, 2)}</pre><p className="mt-2 break-all text-xs">Snapshot: {r.id}<br />Fingerprint: {r.fingerprint}<br />Definition: {r.definition_hash}</p></details>
                 </article>)}</div>}
+            </section>
+            <section aria-labelledby="source-quality" className="mt-7 rounded-2xl border border-white/15 p-5">
+                <h2 id="source-quality" className="text-xl font-semibold">Source quality and reconciliation</h2>
+                <p className="mt-3 text-neutral-300">Local receipt checks show missing projections, duplicates, conflicts and late arrivals. Expected totals stay unknown without an independently verified source checkpoint. Previous reports are preserved.</p>
+                <form className="mt-4" onSubmit={(e) => { e.preventDefault(); post(`${p.actions.base}/quality`, { source, event_type: qualityType, start, end }); }}>
+                    <div className="grid gap-4 sm:grid-cols-2"><label>Canonical source<input className={control} value={source} onChange={(e) => setSource(e.target.value)} maxLength={64} pattern="[a-zA-Z0-9._-]+" required /></label>
+                        <label>Quality event type<select className={control} value={qualityType} onChange={(e) => setQualityType(e.target.value)}>{(p.quality_event_types ?? ['product.viewed']).map((k) => <option key={k}>{k}</option>)}</select></label></div>
+                    <p className="mt-3 text-sm text-neutral-300">Uses the start and end dates above, in UTC.</p><button className={`${button} mt-4`} disabled={busy || unavailable || !source || start >= end}>Check source quality</button>
+                </form>
+                {(p.quality_reports ?? []).length === 0 && <p className="mt-4 text-neutral-300">No valid source quality checks in this scope.</p>}
+                {(p.quality_reports ?? []).map((q) => <article key={q.id} className="mt-5 rounded-xl border border-white/15 p-4">
+                    <h3 className="font-semibold">{q.event_type} · {q.coverage.replaceAll('_', ' ')}</h3><p className="mt-2 break-words text-sm">{q.start_utc} to {q.end_utc}</p>
+                    <dl className="mt-3 grid grid-cols-2 gap-2 text-sm"><dt>Expected source total</dt><dd>{q.expected_total ?? 'unknown'}</dd>
+                        <dt>Missing source keys</dt><dd>{q.missing_source_keys ?? 'unknown'}</dd><dt>Unexpected source keys</dt><dd>{q.unexpected_source_keys ?? 'unknown'}</dd>
+                        <dt>Missing projections</dt><dd>{q.missing_projection}</dd><dt>Duplicate receipts</dt><dd>{q.duplicates}</dd><dt>Conflicts</dt><dd>{q.conflicts}</dd>
+                        <dt>Late receipts</dt><dd>{q.late}</dd><dt>Drifted hashes</dt><dd>{q.drifted_hashes}</dd><dt>Maximum receipt lag (seconds)</dt><dd>{q.max_receipt_lag_seconds}</dd></dl>
+                    <details className="mt-3"><summary className="cursor-pointer text-sky-200">Affected metric versions and evidence</summary>
+                        {q.affected_metric_versions.map((m) => <p key={m.snapshot_id} className="mt-2 break-all text-xs">Snapshot {m.snapshot_id} · version {m.version} · definition {m.definition_hash}</p>)}
+                        <p className="mt-2 break-all text-xs">Fingerprint: {q.fingerprint}<br />Source reference: {q.source_hash}</p></details>
+                </article>)}
             </section>
             <section aria-labelledby="report-insights" className="mt-7 rounded-2xl border border-white/15 p-5"><h2 id="report-insights" className="text-xl font-semibold">Measured insight checks</h2>
                 <label className="mt-4 block">Current snapshot<select className={control} value={selected} onChange={(e) => setSelected(e.target.value)}><option value="">Select a snapshot</option>{p.reports.map((r) => <option key={r.id} value={r.id}>{r.start_utc} · {String(r.definition.kind ?? r.definition.event_type)} · {r.id}</option>)}</select></label>

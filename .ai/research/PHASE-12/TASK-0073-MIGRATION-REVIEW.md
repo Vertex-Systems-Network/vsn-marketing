@@ -1,0 +1,5 @@
+# TASK-0073 migration safety review
+
+Additive analytics_reconciliations table; no production apply performed. Primary hashed request ID binds scope; workspace FK and scoped-history index. up validates known columns/primary/FK and refuses unknown partial DDL; successful apply/failed marker retry is safe only with known schema. PostgreSQL transactional DDL and existing workspace lock serialize writers; unique request ID prevents duplicate durable reports. Unknown partial execution must be reconciled by operator, never silently dropped. down refuses nonempty evidence. Existing subject erasure removes derived reconciliation evidence in the same approved privacy transaction, retaining canonical Events. Interrupted reconcile transaction rollback and exact request replay tested. Production migration requires independent backup/snapshot and approved recovery; no live restore or destructive migration claimed.
+
+Review: Idempotency, Transactions, Apply-Marker-Recovery, Retry, Rollback-Restore, Destructive-Recovery, Concurrency, Partial-Execution, Backup-Snapshot.

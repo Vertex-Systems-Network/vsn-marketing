@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0072",
+  "updated_for_task": "TASK-0073",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -59,20 +59,20 @@
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "TASK0070 accepted full source PR/main; TASK0071 current implementation CI acceptance pending."
+    "reason": "Local analytics regression passed; TASK0073 acceptance false pending exact-head and main gates."
   },
   "latest_local_verification": {
-    "basis": "TASK0071 offline canonical money snapshots",
+    "basis": "TASK0073 source quality on PHP8.3.6",
     "suites": [
       {
-        "name": "backend",
+        "name": "focused-analytics",
         "status": "passing",
-        "notes": "825 tests/5513 assertions,140 infrastructure skips; focused33/254 overlapping."
+        "notes": "44 tests/288 assertions; previous full backend843/5678 with141 infra skips before one operator and PG test added."
       },
       {
-        "name": "static-format",
+        "name": "static-format-frontend",
         "status": "passing",
-        "notes": "PHPStan and Pint pass. Composer executable unavailable in this resumed toolchain; invoked locked vendor tools directly."
+        "notes": "PHPStan/Pint, frontend typecheck,38 unit tests and build pass. New PG and mobile source-quality acceptance require CI."
       }
     ]
   },

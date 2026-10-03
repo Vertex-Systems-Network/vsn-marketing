@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb",
+  "reconciled_main_sha": "e9c9de20f6ab511d448c7c429bec7ff2f6f586dd",
   "active_work_path": {
     "kind": "pr",
-    "number": 476,
-    "title": "TASK-0072: authorized reports, durable schedules and guarded insights",
-    "branch": "supervisor/phase12-reports",
-    "disposition": "active_task0072_carrier"
+    "number": 477,
+    "title": "TASK0073 source quality checkpoint reconciliation",
+    "branch": "supervisor/phase12-quality",
+    "disposition": "active_task0073_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 477,
+      "title": "TASK0073 source quality checkpoint reconciliation",
+      "branch": "supervisor/phase12-quality",
+      "disposition": "active_task0073_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 476,
       "title": "TASK-0072: authorized reports, durable schedules and guarded insights",
       "branch": "supervisor/phase12-reports",
-      "disposition": "active_task0072_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "e9c9de20f6ab511d448c7c429bec7ff2f6f586dd"
     },
     {
       "kind": "pr",

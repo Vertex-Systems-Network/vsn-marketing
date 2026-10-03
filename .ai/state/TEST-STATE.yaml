@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0070",
+  "updated_for_task": "TASK-0071",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "TASK0069 PR473 finala9b78725 Application37127322637 all4,Security37127322643,Continuity37127322645,Supervisor37127615726 success; PG111215645421 actual PASS. Mainbc052d5 identicaltree45b8d979; Application37127706833 all4,Security37127706868,Continuity37127706896,Release37127706912,Scorecard37127706871,Supervisor37127869966 success. TASK0070 pending full gates."
+      "notes": "TASK0070 PR474 final4c651b0 Application37129239608 all4, Security37129239592 all9, Continuity37129239595, Supervisor37129536137 pass. Actual PG183/1157 pass. Resulting mainb71e1c0 identicaltree431be165; Application37143653804 all4, Security37143653742 all9, Continuity37143653698, Release37143653679, Scorecard37143653695, Supervisor37143681302 pass. TASK0071 full CI pending."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK0070 local final regression816 passed/5357 assertions with139 explicit infrastructure skips; analytics focused24/98 pass. PHPStan/Pint pass. Added PostgreSQL behavior snapshot/late-arrival test; actual new CI pending. Prior TASK0069 actual PostgreSQL182/1152 accepted."
+      "notes": "TASK0071 local PHP8.3.6 regression825 passed/5513 assertions with140 explicit infrastructure skips; focused analytics33/254 pass. Subsequent defensive money-input guard verified by focused tests. Actual new PG revenue test pending CI, not claimed from local skips."
     },
     {
       "name": "postgresql-integration",
@@ -59,40 +59,35 @@
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "Phase11 source full gates main cf01b147; closure471 exact-head full gates; Phase12 implementation is not yet accepted."
+    "reason": "TASK0070 accepted full source PR/main; TASK0071 current implementation CI acceptance pending."
   },
   "latest_local_verification": {
-    "basis": "TASK0061 source-bound offline certification and exact-version canary/rollback rehearsal",
+    "basis": "TASK0071 offline canonical money snapshots",
     "suites": [
-      {
-        "name": "ai-unit-feature",
-        "status": "passing",
-        "notes": "44 tests/1027 assertions with fail-on-notice/warning;52 pinned golden cases total,22 hostile corpus cases,40 measured samples source-bound."
-      },
       {
         "name": "backend",
         "status": "passing",
-        "notes": "776 tests/5146 assertions;136 local infrastructure skips.4 architecture tests/2718 assertions pass separately."
+        "notes": "825 tests/5513 assertions,140 infrastructure skips; focused33/254 overlapping."
       },
       {
-        "name": "static-format-policy-continuity",
+        "name": "static-format",
         "status": "passing",
-        "notes": "PHPStan, locked Pint, hash/history/negative guards, context, transaction/journal/parallel/supervisor and Runner validation pass."
+        "notes": "PHPStan and Pint pass. Composer executable unavailable in this resumed toolchain; invoked locked vendor tools directly."
       }
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 471,
-    "head_sha": "9cc0d83dbe183204093df3f46d7dab400f09eb99",
-    "application_run": 37124384192,
-    "continuity_run": 37124384196,
-    "security_run": 37124384191,
+    "pull_request": 474,
+    "head_sha": "4c651b00048ce9570c984ed49d13d54d58beb3d5",
+    "application_run": 37129239608,
+    "continuity_run": 37129239595,
+    "security_run": 37129239592,
     "status": "passing",
-    "resulting_main_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6",
-    "resulting_main_application_run": 37124753839,
-    "resulting_main_continuity_run": 37124753835,
-    "resulting_main_security_run": 37124753838,
-    "scope": "PR full; resulting-main control-only gates. Product jobs skipped; full source main cf01b147 previously certified."
+    "resulting_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
+    "resulting_main_application_run": 37143653804,
+    "resulting_main_continuity_run": 37143653698,
+    "resulting_main_security_run": 37143653742,
+    "scope": "Full product PR and resulting-main all required gates; no skip counted as pass."
   },
   "closure_verification": {
     "status": "passing",

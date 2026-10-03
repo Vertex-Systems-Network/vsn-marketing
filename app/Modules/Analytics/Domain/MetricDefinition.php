@@ -7,7 +7,7 @@ use InvalidArgumentException;
 final readonly class MetricDefinition
 {
     public const EVENTS = ['contact.created', 'product.viewed', 'cart.created', 'cart.abandoned',
-        'order.created', 'order.completed', 'message.sent', 'message.delivered', 'message.opened',
+        'order.created', 'order.completed', 'order.refunded', 'message.sent', 'message.delivered', 'message.opened',
         'message.clicked', 'message.bounced', 'message.complained', 'message.unsubscribed',
         'message.failed', 'journey.enrolled', 'journey.exited'];
 

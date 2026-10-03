@@ -5,6 +5,7 @@ namespace App\Modules\Analytics;
 use App\Modules\Analytics\Application\AnalyticsFacts;
 use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsPrivacy;
+use App\Modules\Analytics\Domain\RevenueExperimentVerifier;
 use App\Modules\Analytics\Infrastructure\CanonicalAnalyticsAccess;
 use App\Modules\Analytics\Infrastructure\ConsentAnalyticsPrivacy;
 use App\Modules\Audit\Application\AuditRecorder;
@@ -20,6 +21,7 @@ final class AnalyticsServiceProvider extends ServiceProvider
             $app->make(DatabaseManager::class), $app->make(AnalyticsAccess::class),
             $app->make(AnalyticsPrivacy::class), $app->make(Clock::class),
             $app->make(AuditRecorder::class), (string) $app['config']->get('app.key'),
+            $app->bound(RevenueExperimentVerifier::class) ? $app->make(RevenueExperimentVerifier::class) : null,
         ));
         $this->app->bind(AnalyticsAccess::class, CanonicalAnalyticsAccess::class);
         $this->app->bind(AnalyticsPrivacy::class, ConsentAnalyticsPrivacy::class);

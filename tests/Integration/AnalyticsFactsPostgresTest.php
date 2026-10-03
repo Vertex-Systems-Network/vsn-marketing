@@ -4,9 +4,12 @@ use App\Modules\Analytics\Application\AnalyticsFacts;
 use App\Modules\Analytics\Application\AnalyticsQuality;
 use App\Modules\Analytics\Application\ScheduledAnalyticsReports;
 use App\Modules\Analytics\Domain\BehaviorDefinition;
+use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Analytics\Domain\RevenueDefinition;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Process\Process;
 use Tests\Support\AnalyticsFixture;
 
 beforeEach(function () {
@@ -34,6 +37,104 @@ afterEach(function () {
     DB::purge();
     // Drop only this synthetic namespace; canonical append-only triggers remain intact.
     DB::statement('DROP SCHEMA '.$schema.' CASCADE');
+});
+
+it('measures bounded analytics request latency queries memory and overflow on PostgreSQL', function () {
+    $f = new AnalyticsFixture;
+    $facts = app(AnalyticsFacts::class);
+    $quality = app(AnalyticsQuality::class);
+    $start = new DateTimeImmutable('2026-10-02Z');
+    $end = new DateTimeImmutable('2026-10-03Z');
+    $stats = (object) ['enabled' => false, 'queries' => 0, 'query_ms' => 0.0];
+    DB::listen(static function (QueryExecuted $query) use ($stats): void {
+        if ($stats->enabled) {
+            $stats->queries++;
+            $stats->query_ms += $query->time;
+        }
+    });
+    $samples = $setup = $summaries = [];
+    $seeded = 0;
+    foreach ([10, 100, AnalyticsFacts::MAX_FACTS] as $size) {
+        $began = hrtime(true);
+        for (; $seeded < $size; $seeded++) {
+            expect($facts->project($f->actor, $f->event('scale-'.$seeded)))->toBe('admitted');
+        }
+        $setup[$size] = (hrtime(true) - $began) / 1e6;
+        foreach (['count_snapshot', 'source_quality'] as $operation) {
+            $latencies = [];
+            for ($sample = 0; $sample < 5; $sample++) {
+                $stats->queries = 0;
+                $stats->query_ms = 0.0;
+                memory_reset_peak_usage();
+                $baseline = memory_get_usage(true);
+                $stats->enabled = true;
+                $began = hrtime(true);
+                try {
+                    $r = $operation === 'count_snapshot'
+                        ? $facts->snapshot($f->actor, new MetricDefinition('product.viewed'), $start, $end, $f->now())
+                        : $quality->reconcile($f->actor, 'scale-'.$size.'-'.$sample, 'fixture', 'product.viewed', $start, $end, $f->now());
+                } finally {
+                    $stats->enabled = false;
+                }
+                $elapsed = (hrtime(true) - $began) / 1e6;
+                $peak = max(0, memory_get_peak_usage(true) - $baseline);
+                $latencies[] = $elapsed;
+                $samples[] = ['operation' => $operation, 'events' => $size, 'sample' => $sample + 1,
+                    'latency_ms' => $elapsed, 'queries' => $stats->queries, 'query_ms' => $stats->query_ms,
+                    'incremental_peak_bytes' => $peak, 'fingerprint' => $r['fingerprint']];
+                expect($elapsed)->toBeLessThanOrEqual(30000.0)
+                    ->and($stats->queries)->toBeLessThanOrEqual(50 * $size + 200)
+                    ->and($peak)->toBeLessThanOrEqual(128 * 1024 * 1024)
+                    ->and($r['publication_authorized'])->toBeFalse();
+                if ($operation === 'count_snapshot') {
+                    expect($r['value'])->toBe($size)->and($r['source_completeness'])->toBe('unknown');
+                } else {
+                    expect($r['observed_keys'])->toBe($size)->and($r['missing_projection'])->toBe(0)
+                        ->and($r['expected_total'])->toBeNull()->and($r['coverage'])->toBe('unknown')
+                        ->and($quality->reconcile($f->actor, 'scale-'.$size.'-'.$sample, 'fixture', 'product.viewed', $start, $end, $f->now()))->toBe($r);
+                }
+            }
+            sort($latencies);
+            $summaries[] = ['operation' => $operation, 'events' => $size, 'samples' => 5,
+                'p50_ms' => $latencies[2], 'p95_ms' => $latencies[4], 'p99_ms' => $latencies[4],
+                'percentile_method' => 'nearest_rank_five_samples_not_production_tail_estimate'];
+        }
+    }
+    $facts->project($f->actor, $f->event('overflow-1001'));
+    $snapshots = DB::table('analytics_snapshots')->count();
+    $checks = DB::table('analytics_reconciliations')->count();
+    expect(fn () => $facts->snapshot($f->actor, new MetricDefinition('product.viewed'), $start, $end, $f->now()))->toThrow(RuntimeException::class)
+        ->and(fn () => $quality->reconcile($f->actor, 'overflow', 'fixture', 'product.viewed', $start, $end, $f->now()))->toThrow(RuntimeException::class)
+        ->and(DB::table('analytics_snapshots')->count())->toBe($snapshots)
+        ->and(DB::table('analytics_reconciliations')->count())->toBe($checks);
+    $source = getenv('TARGET_SHA');
+    if (! is_string($source) || ! preg_match('/^[a-f0-9]{40}$/', $source)) {
+        $process = new Process(['git', 'rev-parse', 'HEAD'], base_path());
+        $process->mustRun();
+        $source = trim($process->getOutput());
+    }
+    $hashes = [];
+    foreach (['app/Modules/Analytics/Application/AnalyticsFacts.php', 'app/Modules/Analytics/Application/AnalyticsQuality.php',
+        'app/Modules/Analytics/Infrastructure/ConsentAnalyticsPrivacy.php', 'tests/Support/AnalyticsFixture.php',
+        'tests/Integration/AnalyticsFactsPostgresTest.php', '.github/workflows/application-ci.yml'] as $path) {
+        $hashes[$path] = hash_file('sha256', base_path($path));
+    }
+    $cpu = is_readable('/proc/cpuinfo') ? (string) file_get_contents('/proc/cpuinfo') : '';
+    preg_match('/^model name\s*:\s*(.+)$/m', $cpu, $model);
+    preg_match_all('/^processor\s*:/m', $cpu, $processors);
+    $evidence = ['schema_version' => 1, 'task' => 'TASK-0074', 'source_sha' => $source, 'file_sha256' => $hashes,
+        'environment' => ['php' => PHP_VERSION, 'postgres' => DB::selectOne('SHOW server_version')->server_version,
+            'laravel' => app()->version(), 'os' => PHP_OS_FAMILY, 'cpu_model' => $model[1] ?? null,
+            'logical_cpus' => count($processors[0]), 'load_average' => sys_getloadavg()],
+        'profile' => 'one synthetic consented contact, one workspace/brand, canonical received/projected events; loopback PostgreSQL; no provider',
+        'budgets' => ['per_operation_ms' => 30000, 'queries' => '50*events+200', 'incremental_peak_bytes' => 134217728],
+        'setup_ms_by_cardinality' => $setup, 'raw_samples' => $samples, 'summaries' => $summaries,
+        'overflow_1001' => 'both operations refused; no partial snapshot/checkpoint',
+        'production_slo_certified' => false, 'production_capacity_certified' => false,
+        'excluded' => ['HTTP/browser latency', 'provider latency', 'multi-tenant production load', 'scheduler saturation', 'infrastructure cost']];
+    $json = json_encode($evidence, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+    file_put_contents(storage_path('app/phase12-certification-samples.json'), $json."\n");
+    fwrite(STDOUT, 'PHASE12_MEASUREMENT='.json_encode($evidence, JSON_THROW_ON_ERROR)."\n");
 });
 
 it('serializes competing canonical analytics admissions on PostgreSQL', function () {

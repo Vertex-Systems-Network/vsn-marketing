@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Implement data-quality and source reconciliation",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0072"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Scoped source receipt/checkpoint reconciliation shows missing, duplicate, late, conflicting and drifted facts",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Quality monitors expose lag, discrepancies and affected metric versions without masking unknown totals",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adverse recovery and replay tests preserve original evidence and prevent duplicate reports",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

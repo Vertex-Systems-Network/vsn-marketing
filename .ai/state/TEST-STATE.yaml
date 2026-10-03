@@ -1,30 +1,30 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0073",
+  "updated_for_task": "TASK-0074",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "TASK0071 PR475 final9ad70e4 and main7a4641c verified full gates, actual PG184/1162. TASK0072 ledger remains acceptance pending; known merged-main anchor reconciled through guarded checkpoint."
+      "notes": "TASK0072/73 accepted after PR476/477 exact-head and resulting-main full gates; TASK0074 certification acceptance pending."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK0072 final local PHP8.3.6:837 passed/5640 assertions,141 explicit infrastructure skips. All six registered models displayed in authorized HTTP integration; flashed insight revoked after consent change. No local PG claim."
+      "notes": "TASK0074 local PHP8.3.6:845 passed/5706 assertions,143 explicit infrastructure skips; focused52/441. PostgreSQL measurement requires actual CI; no local parity claim."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Latest accepted main7a4641c Application37145257323 integration111268236973 actual184/1162 and revenue test PASS. New72 competing schedule-worker test pending actual CI; local skipped."
+      "notes": "TASK0073 PR477 integration111290330149 actual186/1179 including competing source reconciliation; maincbd83fdc integration111291167653 success. New TASK0074 bounded measurement and PostgreSQL browser await actual CI."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "TASK0072 locked vendor PHPStan analyse --memory-limit=1G passed; local PHP8.3.6. Composer executable unavailable locally."
+      "notes": "Locked PHPStan passed TASK0073; Composer runtime now available. New certification tests require formatting/full CI."
     },
     {
       "name": "php-formatting",
@@ -92,5 +92,15 @@
   "closure_verification": {
     "status": "passing",
     "reason": "PR471 full exact-head and policy-classified resulting-main control gates passed; no skipped product job counted as a full pass."
+  },
+  "latest_local": {
+    "task": "TASK-0074",
+    "focused_tests": 52,
+    "assertions": 441,
+    "infra_measurement_status": "pending_actual_PostgreSQL_CI",
+    "acceptance": false,
+    "full_tests": 845,
+    "full_assertions": 5706,
+    "explicit_infrastructure_skips": 143
   }
 }

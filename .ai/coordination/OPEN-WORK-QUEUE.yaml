@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe",
+  "reconciled_main_sha": "bc052d5ff499a5c31ee372386a29438766d4d885",
   "active_work_path": {
     "kind": "pr",
-    "number": 473,
-    "title": "TASK-0069: privacy guarded canonical analytics facts",
-    "branch": "supervisor/phase12-facts",
-    "disposition": "active_task0069_carrier"
+    "number": 474,
+    "title": "TASK-0070: privacy guarded funnels cohorts and performance",
+    "branch": "supervisor/phase12-behavior",
+    "disposition": "active_task0070_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 474,
+      "title": "TASK-0070: privacy guarded funnels cohorts and performance",
+      "branch": "supervisor/phase12-behavior",
+      "disposition": "active_task0070_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 473,
       "title": "TASK-0069: privacy guarded canonical analytics facts",
       "branch": "supervisor/phase12-facts",
-      "disposition": "active_task0069_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "bc052d5ff499a5c31ee372386a29438766d4d885"
     },
     {
       "kind": "pr",

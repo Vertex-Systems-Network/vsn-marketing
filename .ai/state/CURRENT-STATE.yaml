@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe",
+  "observed_main_sha": "bc052d5ff499a5c31ee372386a29438766d4d885",
   "active_issue": null,
-  "active_pr": 473,
-  "active_branch": "supervisor/phase12-facts",
+  "active_pr": 474,
+  "active_branch": "supervisor/phase12-behavior",
   "current_milestone": "PHASE-12-BEHAVIOR",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Publish TASK0070 carrier, verify full exact-head and resulting-main gates including actual PostgreSQL behavior snapshot PASS before transition to TASK0071.",
+  "exact_next_safe_action": "Inspect final PR474 full CI and actual PostgreSQL behavior snapshot PASS; merge only verified head then validate main before TASK0071.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish TASK0070 carrier, verify full exact-head and resulting-main gates including actual PostgreSQL behavior snapshot PASS before transition to TASK0071."
+  "exact_next_action": "Inspect final PR474 full CI and actual PostgreSQL behavior snapshot PASS; merge only verified head then validate main before TASK0071."
 }

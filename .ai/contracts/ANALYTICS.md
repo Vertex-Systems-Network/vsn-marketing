@@ -1,0 +1,43 @@
+# Analytics v1 contract — Phase 12 researched implementation target
+
+This is an implementation target, not proof that Phase 12 is implemented or certified. TASK-0069–0074 remain pending until their own evidence is accepted.
+
+## Authority and privacy
+
+All reads, projections, source manifests, reports, schedules and explanations require the canonical actor, workspace and optional brand scope. `analytics.read` grants read access; it does not grant tracking, source admission, purpose approval, identity rewriting, or third-party transmission. The application must validate organization/workspace ownership and brand membership as well as permission. Production composition uses canonical authorization and fails closed when no purpose/retention policy or source verifier is bound.
+
+Projection accepts an existing immutable canonical event, a verified analytics-purpose policy and canonical subject membership. No external HTTP collector or model route is activated. Project only allowlisted dimensions and event semantics; exclude raw payloads, URLs, email, names, free text, IPs, credentials and provider tokens. Source lineage is retained through immutable event/hash/receipt references. Subject pseudonyms are workspace/brand-bound keyed hashes rather than plain identifier copies. Fact retention cannot exceed configured purpose policy or survive a valid erasure. Erasure/identity merge/split invalidates derived snapshots so historical cohorts cannot silently combine subjects. Purpose/retention policy revocation prevents later reads/projection; scheduled jobs recheck current authority.
+
+## Fact identity, replay and admission
+
+Canonical event envelope version 1 remains authoritative. Stable event identity and `(workspace, scope, source, source_event_id)` identity are deduplicated durably; identical replay returns the existing fact. Distinct envelope content under the same identity is a conflict, never an overwrite. Missing source identity is explicitly disclosed rather than synthesized as verified completeness. Database constraints and PostgreSQL contention tests back application checks. Unsupported types/versions, foreign subjects, invalid times, unapproved purpose or missing provenance fail closed.
+
+Store occurred-at and received-at as UTC separately. Occurrence time orders behavior; receipt time describes source delay and report freshness. Caller-supplied future watermarks cannot turn a report complete. Reports are immutable snapshots of admitted facts at an explicit receipt cutoff and definition version, with a fingerprint, excluded count and quality diagnostics. Late data creates a new snapshot/version; old evidence remains reproducible. Freshness from the latest local receipt is not source completeness; reconcile against an independently verified source manifest to claim completeness.
+
+## Definitions and bounded aggregation
+
+Definitions are immutable and versioned. Every result discloses timezone (UTC v1), half-open `[start,end)` window, receipt cutoff, counting unit, metric ID/version, filters, numerator/denominator, source lineage and quality. Validate dimensions and registered metrics, cap window and cardinality/query work, and return an explicit bounded-query rejection when limits are exceeded. Never silently truncate and present an incomplete total as exact. Aggregate only current authorized scope. Empty denominators return undefined/null rates, not fabricated zero certainty. Source/open events have a disclosed measurement reliability boundary.
+
+## Funnels, cohorts, retention and performance
+
+V1 ordered funnels use unique scoped subjects and declared canonical event steps. Steps must increase in event time; equal-time events have a documented deterministic ID tie-break (and must not imply causality). Other unrelated events may intervene. A subject enters once at its earliest eligible start and completes only within the declared conversion window. Arrival order does not change event-time semantics. Step counts are nonincreasing, and each rate discloses its denominator. Any-order/exact-order are unsupported until separately implemented and tested.
+
+Cohort membership is derived from a declared first event in the selected period. Fixed elapsed UTC retention bins count a subject once per bin; not-yet-observed bins are censored/null and excluded from denominators. Cohort sizes, eligible sizes and observed sizes are separate. Lifecycle categories disclose their current and preceding intervals. Content/channel performance uses only allowlisted canonical references and metric definitions; identity changes cannot retroactively inflate unique-person counts.
+
+## Attribution, revenue and LTV
+
+Attribution is a deterministic disclosed model/version and lookback policy over eligible touchpoints occurring before the conversion. Unsupported model names fail closed. Credit conserves the admitted conversion value and includes explicit unattributed credit when no eligible touchpoint exists. Rule-based attribution is descriptive, not causal incrementality. Incrementality-ready references may bind independently witnessed experiment assignment/exposure; unverified linkage cannot create a causal result.
+
+Monetary amounts use integer minor units and explicit supported currency/exponent metadata; never binary floating point or implicit FX. Purchase transaction identity is unique in canonical scope/source, refunds reference that purchase and have unique reversal identity. Cumulative refunds cannot exceed the purchase unless an explicitly supported adjustment contract exists. Replayed purchase/refund and out-of-order refund have explicit outcomes; unknown/missing purchase is quarantined or pending and not subtracted from an invented purchase. Reports separate gross, refunded and net value by currency. Observed LTV is net admitted revenue per eligible cohort subject within a disclosed observation horizon, not a lifetime prediction. Unknown identity, missing money or incomplete source coverage is disclosed.
+
+## Operator reports, schedules, anomalies and AI
+
+Dashboard tables/forms follow existing first-party design, keyboard/focus, responsive, loading/empty/error/permission/quality states and WCAG 2.2 AA verification. All numeric facts reference a snapshot and immutable definition. Scheduled report generation has durable unique schedule/window identity, scoped ownership, bounded retries, due-work claim/recovery and current authorization/purpose rechecks. External delivery is a separate permission/provider action.
+
+Anomaly detection declares baseline window, minimum data, method/version and threshold. Insufficient/stale/corrupt baseline produces no confident anomaly. Explanations remain R0: measured claims reference exact allowed snapshot metric/value; inference is separately labeled and cannot insert numbers, customer data, causal effect, operational commands or fabricated source IDs. Gateway routes remain governed by Phase 10. Golden/hostile tests prove rejection of wrong numbers, wrong scope, stale snapshot, forged references and prompt-injection commands.
+
+## Quality and certification
+
+Data-quality monitors report late/missing/duplicate/conflicting/rejected facts, source lag, unresolved refunds and independent source-total drift. Unknown expected totals remain unknown. Reconciliation records source identity, period, receipt cutoff, verifier/reference, counts/value/currency and discrepancy, with immutable replay-safe history. A matching local count alone is not proof of provider accuracy.
+
+TASK-0074 requires traceable source/test/run evidence; PostgreSQL persistence/concurrency; deterministic late/replay/adverse cases; privacy and tenant negative cases; measured bounded scale/SLO workload with raw reproducible results; accessible PostgreSQL browser flows; explanation evaluations; full exact-head and resulting-main gates. Skips, pending checks and synthetic fixtures are labeled. Production efficacy, causal lift, jurisdictional compliance and unlimited scale require their own evidence and are never inferred from unit tests.

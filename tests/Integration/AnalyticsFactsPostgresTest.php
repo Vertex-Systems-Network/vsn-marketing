@@ -2,6 +2,7 @@
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
 use App\Modules\Analytics\Domain\BehaviorDefinition;
+use App\Modules\Analytics\Domain\RevenueDefinition;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\Support\AnalyticsFixture;
@@ -102,4 +103,26 @@ it('persists reproducible behavior snapshots with late-arrival lineage on Postgr
         ->and($s->readSnapshot($f->actor, $prior['id']))->toBe($prior)
         ->and($s->readSnapshot($f->actor, $new['id']))->toBe($new)
         ->and(DB::table('analytics_snapshots')->count())->toBe(2);
+});
+
+it('reconciles retained revenue identities and late refunds reproducibly on PostgreSQL', function () {
+    $f = new AnalyticsFixture;
+    $s = app(AnalyticsFacts::class);
+    $payload = ['transaction_id' => 'pg-purchase', 'amount_minor' => 101, 'currency' => 'USD', 'currency_exponent' => 2];
+    foreach (['purchase', 'semantic-replay'] as $source) {
+        $s->project($f->actor, $f->event($source, type: 'order.completed', payload: $payload));
+    }
+    $d = new RevenueDefinition;
+    $start = new DateTimeImmutable('2026-10-02Z');
+    $end = new DateTimeImmutable('2026-10-03Z');
+    $prior = $s->revenueSnapshot($f->actor, $d, $start, $end, $f->now());
+    expect($prior['result']['currencies']['USD']['net'])->toBe(101)
+        ->and($prior['result']['quality']['duplicate_money'])->toBe(1);
+    $f->time = $f->time->modify('+1 hour');
+    $s->project($f->actor, $f->event('late-refund', '2026-10-02T10:30:00Z', '2026-10-03T12:30:00Z',
+        'order.refunded', [...$payload, 'amount_minor' => 31, 'refund_id' => 'pg-refund']));
+    $next = $s->revenueSnapshot($f->actor, $d, $start, $end, $f->now());
+    expect($next['result']['currencies']['USD']['net'])->toBe(70)
+        ->and($s->readSnapshot($f->actor, $prior['id']))->toBe($prior)
+        ->and($s->readSnapshot($f->actor, $next['id']))->toBe($next);
 });

@@ -7,6 +7,9 @@ use App\Modules\Analytics\Domain\AnalyticsPrivacy;
 use App\Modules\Analytics\Domain\BehaviorDefinition;
 use App\Modules\Analytics\Domain\BehaviorMetrics;
 use App\Modules\Analytics\Domain\MetricDefinition;
+use App\Modules\Analytics\Domain\RevenueDefinition;
+use App\Modules\Analytics\Domain\RevenueExperimentVerifier;
+use App\Modules\Analytics\Domain\RevenueMetrics;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
@@ -32,6 +35,7 @@ final readonly class AnalyticsFacts
         private Clock $clock,
         private AuditRecorder $audit,
         private string $subjectSecret,
+        private ?RevenueExperimentVerifier $revenueExperiments = null,
     ) {
         if (strlen($subjectSecret) < 32) {
             throw new InvalidArgumentException('Analytics requires a stable protected pseudonym key.');
@@ -218,6 +222,93 @@ final readonly class AnalyticsFacts
         }, 3);
     }
 
+    public function revenueSnapshot(TenantContext $actor, RevenueDefinition $definition,
+        DateTimeImmutable $start, DateTimeImmutable $end, DateTimeImmutable $cutoff): array
+    {
+        $this->permit($actor);
+        if ($start->getOffset() !== 0 || $end->getOffset() !== 0 || $cutoff->getOffset() !== 0
+            || $start >= $end || $end > $cutoff || $cutoff > $this->clock->now()
+            || $end->getTimestamp() - $start->getTimestamp() > 31 * 86400) {
+            throw new InvalidArgumentException('Revenue requires bounded UTC window and trusted cutoff.');
+        }
+
+        return $this->database->transaction(function () use ($actor, $definition, $start, $end, $cutoff): array {
+            $this->database->table('workspaces')->where('id', $actor->workspaceId)->lockForUpdate()->first();
+            // Reconcile identities across ALL retained history before filtering purchases by report window.
+            $rows = $this->factsQuery($actor)->whereIn('analytics_facts.event_type',
+                array_unique(['order.completed', 'order.refunded', $definition->cohortEvent, ...RevenueDefinition::TOUCHES]))
+                ->where('analytics_facts.received_at', '<=', $cutoff)->where('analytics_facts.created_at', '<=', $cutoff)
+                ->orderBy('analytics_facts.occurred_at')->orderBy('analytics_facts.event_id')->limit(self::MAX_FACTS + 1)->get();
+            if ($rows->count() > self::MAX_FACTS) {
+                throw new RuntimeException('Revenue retained-history bound exceeded; no truncated ledger.');
+            }
+            $facts = $lineage = $experiments = [];
+            $excluded = 0;
+            foreach ($rows as $row) {
+                if (! $this->readable($actor, $row)) {
+                    $excluded++;
+
+                    continue;
+                }
+                $facts[] = ['id' => $row->id, 'subject' => $row->subject_key, 'type' => $row->event_type,
+                    'at' => (new DateTimeImmutable($row->occurred_at))->getTimestamp(),
+                    'money' => $this->money($row), 'channel' => $this->dimension($actor, $row, 'channel')];
+                $lineage[$row->id] = $row->envelope_hash;
+                if ($row->event_type === 'order.completed') {
+                    $experiments[$row->id] = $this->experimentReference($actor, $row);
+                }
+            }
+            ksort($lineage);
+            ksort($experiments);
+            $report = ['schema_version' => 1, 'workspace_id' => $actor->workspaceId, 'scope_key' => $this->scopeKey($actor),
+                'definition' => $definition->toArray(), 'definition_hash' => $definition->fingerprint(),
+                'start_utc' => $start->format(DATE_ATOM), 'end_utc' => $end->format(DATE_ATOM),
+                'receipt_cutoff_utc' => $cutoff->format(DATE_ATOM), 'source_completeness' => 'unknown',
+                'history_completeness' => 'retained_admitted_only', 'sampling' => 'none', 'excluded' => $excluded,
+                'lineage' => $lineage, 'experiment_lineage' => $experiments, 'publication_authorized' => false,
+                'result' => (new RevenueMetrics)->calculate($definition, $facts, $start, $end, $cutoff)];
+
+            return $this->persistSnapshot($actor, $report);
+        }, 3);
+    }
+
+    private function money(stdClass $fact): ?array
+    {
+        if (! in_array($fact->event_type, ['order.completed', 'order.refunded'], true)) {
+            return null;
+        }
+        $payload = json_decode($fact->payload, true, 32, JSON_THROW_ON_ERROR);
+        $transaction = $payload['transaction_id'] ?? null;
+        $refund = $payload['refund_id'] ?? null;
+        $amount = $payload['amount_minor'] ?? null;
+        $currency = $payload['currency'] ?? null;
+        $exponent = $payload['currency_exponent'] ?? null;
+        if (! is_string($transaction) || ! preg_match('/^[a-zA-Z0-9_-]{1,128}$/', $transaction)
+            || ! is_int($amount) || $amount < 1 || $amount > 1000000000000
+            || ! is_string($currency) || ! array_key_exists($currency, RevenueDefinition::CURRENCIES)
+            || $exponent !== RevenueDefinition::CURRENCIES[$currency]
+            || ($fact->event_type === 'order.refunded' && (! is_string($refund) || ! preg_match('/^[a-zA-Z0-9_-]{1,128}$/', $refund)))) {
+            return null;
+        }
+        $purchase = hash_hmac('sha256', json_encode([$fact->scope_key, $fact->source, 'purchase', $transaction], JSON_THROW_ON_ERROR), $this->subjectSecret);
+        $identity = $fact->event_type === 'order.completed' ? $purchase
+            : hash_hmac('sha256', json_encode([$fact->scope_key, $fact->source, 'refund', $refund], JSON_THROW_ON_ERROR), $this->subjectSecret);
+
+        return ['identity' => $identity, 'purchase_key' => $purchase, 'amount' => $amount, 'currency' => $currency];
+    }
+
+    private function experimentReference(TenantContext $actor, stdClass $fact): ?array
+    {
+        $payload = json_decode($fact->payload, true, 32, JSON_THROW_ON_ERROR);
+        $reference = $payload['experiment_exposure_id'] ?? null;
+        if (! is_string($reference) || ! Str::isUuid($reference) || $this->revenueExperiments === null) {
+            return null;
+        }
+        $scope = new TenantContext($actor->organizationId, $actor->workspaceId, $fact->brand_id, $actor->actorId);
+
+        return $this->revenueExperiments->reference($scope, $fact->contact_id, $reference, new DateTimeImmutable($fact->occurred_at));
+    }
+
     private function persistSnapshot(TenantContext $actor, array $report): array
     {
         $fingerprint = hash('sha256', json_encode($report, JSON_THROW_ON_ERROR));
@@ -276,6 +367,15 @@ final readonly class AnalyticsFacts
             foreach ($rows as $fact) {
                 if (($report['dimension_lineage'][$fact->id] ?? null) !== $this->dimension($actor, $fact, $report['definition']['dimension'])) {
                     throw new RuntimeException('Analytics dimension lineage invalidated.');
+                }
+            }
+        }
+
+        if (($report['definition']['kind'] ?? null) === 'revenue') {
+            foreach ($rows as $fact) {
+                if ($fact->event_type === 'order.completed'
+                    && ($report['experiment_lineage'][$fact->id] ?? null) !== $this->experimentReference($actor, $fact)) {
+                    throw new RuntimeException('Revenue experiment reference invalidated.');
                 }
             }
         }

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "bc052d5ff499a5c31ee372386a29438766d4d885",
+  "reconciled_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
   "active_work_path": {
     "kind": "pr",
-    "number": 474,
-    "title": "TASK-0070: privacy guarded funnels cohorts and performance",
-    "branch": "supervisor/phase12-behavior",
-    "disposition": "active_task0070_carrier"
+    "number": 475,
+    "title": "TASK-0071 scoped attribution revenue and observed LTV",
+    "branch": "supervisor/phase12-attribution",
+    "disposition": "active_task0071_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 475,
+      "title": "TASK-0071 scoped attribution revenue and observed LTV",
+      "branch": "supervisor/phase12-attribution",
+      "disposition": "active_task0071_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 474,
       "title": "TASK-0070: privacy guarded funnels cohorts and performance",
       "branch": "supervisor/phase12-behavior",
-      "disposition": "active_task0070_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1"
     },
     {
       "kind": "pr",

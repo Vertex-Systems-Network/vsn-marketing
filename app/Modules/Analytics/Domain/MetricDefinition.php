@@ -21,7 +21,7 @@ final readonly class MetricDefinition
     public function toArray(): array
     {
         return ['event_type' => $this->eventType, 'unit' => $this->unit, 'version' => $this->version,
-            'timezone' => 'UTC', 'semantics' => 'admitted_canonical_event_count', 'causal' => false];
+            'timezone' => 'UTC', 'semantics' => $this->unit === 'subject' ? 'admitted_scoped_subject_count' : 'admitted_canonical_event_count', 'causal' => false];
     }
 
     public function fingerprint(): string

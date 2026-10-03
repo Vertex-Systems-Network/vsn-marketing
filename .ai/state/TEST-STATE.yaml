@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0061",
+  "updated_for_task": "TASK-0069",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "Accepted TASK0068 PR472 head49b5788: Application37125089188 all4, Security37125089123, Continuity37125089137 success. Main f6948a5 control-only Application37125374030/Security37125374049 policy jobs success, heavier jobs skipped; Continuity37125374065 and Supervisor37125396404 reconcile success. TASK0069 gates pending."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0069 final local regression: 804 passed, 5306 assertions, 138 infrastructure skips; focused analytics12 passed/47 assertions. PHPStan and Pint pass. PostgreSQL execution pending exact-head CI; no production proof. PR473 head2c8ff7a Application37126756242 failed integration111213971571: synthetic cleanup violated append-only consent and contaminated audit counts. Repair isolates the contention fixture in a guarded disposable PostgreSQL schema; no protection or assertion weakened. Repaired exact-head CI pending."
     },
     {
       "name": "postgresql-integration",

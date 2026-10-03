@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Research analytics, attribution, privacy and scale",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0067"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Current authoritative source provenance and market workflow recorded",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Metric, ordering, privacy, revenue and quality findings mapped to TASK-0069 through TASK-0074",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Plan confirms canonical PostgreSQL stack; current governance gates pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

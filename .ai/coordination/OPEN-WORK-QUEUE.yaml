@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e9c9de20f6ab511d448c7c429bec7ff2f6f586dd",
+  "reconciled_main_sha": "cbd83fdc931a2da16dfca21c3479cdadfce1564a",
   "active_work_path": {
     "kind": "pr",
-    "number": 477,
-    "title": "TASK0073 source quality checkpoint reconciliation",
-    "branch": "supervisor/phase12-quality",
-    "disposition": "active_task0073_carrier"
+    "number": 478,
+    "title": "TASK-0074: certify bounded analytics and PostgreSQL operator flow",
+    "branch": "supervisor/phase12-certification",
+    "disposition": "active_task0074_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 478,
+      "title": "TASK-0074: certify bounded analytics and PostgreSQL operator flow",
+      "branch": "supervisor/phase12-certification",
+      "disposition": "active_task0074_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 477,
       "title": "TASK0073 source quality checkpoint reconciliation",
       "branch": "supervisor/phase12-quality",
-      "disposition": "active_task0073_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "cbd83fdc931a2da16dfca21c3479cdadfce1564a"
     },
     {
       "kind": "pr",

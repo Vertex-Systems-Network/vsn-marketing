@@ -727,7 +727,7 @@
       "phase": "PHASE-12",
       "title": "Implement data-quality and source reconciliation",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0072"
       ]
@@ -737,7 +737,7 @@
       "phase": "PHASE-12",
       "title": "Certify Phase 12 analytics",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0073"
       ]

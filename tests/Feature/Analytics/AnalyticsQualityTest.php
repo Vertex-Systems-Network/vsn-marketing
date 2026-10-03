@@ -7,8 +7,10 @@ use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Consent\Domain\ConsentDecision;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Tests\Support\AnalyticsFixture;
 
 uses(RefreshDatabase::class);
@@ -126,4 +128,15 @@ it('retries known migration but refuses partial schema or deletion of retained q
     $migration->up();
     app(AnalyticsQuality::class)->reconcile($f->actor, 'retained', ...qualityInput());
     expect(fn () => $migration->down())->toThrow(RuntimeException::class);
+});
+
+it('refuses unknown partial reconciliation DDL without repairing or deleting it', function () {
+    $migration = require database_path('migrations/2026_10_03_000003_create_analytics_reconciliations.php');
+    $migration->down();
+    Schema::create('analytics_reconciliations', function (Blueprint $table): void {
+        $table->char('id', 64)->primary();
+    });
+    expect(fn () => $migration->up())->toThrow(RuntimeException::class)
+        ->and(Schema::hasTable('analytics_reconciliations'))->toBeTrue()
+        ->and(Schema::hasColumn('analytics_reconciliations', 'report'))->toBeFalse();
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorController;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
 use App\Modules\Journeys\Presentation\Http\Controllers\JourneyOperatorController;
@@ -76,3 +77,15 @@ Route::middleware([
     'workspace.permission:'.PermissionCatalog::CONTACT_WRITE,
 ])->post('/workspaces/{workspace}/segments/{segment}/publish', [SegmentProposalController::class, 'publish'])
     ->name('segments.versions.publish');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::ANALYTICS_READ])
+    ->group(function (): void {
+        $controller = AnalyticsOperatorController::class;
+        Route::get('/workspaces/{workspace}/analytics', [$controller, 'index'])->name('analytics.operator');
+        Route::post('/workspaces/{workspace}/analytics/reports', [$controller, 'generate'])->middleware('throttle:30,1')->name('analytics.generate');
+        Route::post('/workspaces/{workspace}/analytics/schedules', [$controller, 'schedule'])->name('analytics.schedules');
+        Route::post('/workspaces/{workspace}/analytics/schedules/{schedule}/disable', [$controller, 'disable'])->name('analytics.schedule.disable');
+        Route::post('/workspaces/{workspace}/analytics/anomaly', [$controller, 'anomaly'])->name('analytics.anomaly');
+        Route::post('/workspaces/{workspace}/analytics/explain', [$controller, 'explain'])
+            ->middleware('workspace.permission:'.PermissionCatalog::AI_EXECUTE)->name('analytics.explain');
+    });

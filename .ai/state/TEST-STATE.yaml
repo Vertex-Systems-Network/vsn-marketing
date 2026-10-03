@@ -1,54 +1,54 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0071",
+  "updated_for_task": "TASK-0072",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "TASK0070 PR474 final4c651b0 Application37129239608 all4, Security37129239592 all9, Continuity37129239595, Supervisor37129536137 pass. Actual PG183/1157 pass. Resulting mainb71e1c0 identicaltree431be165; Application37143653804 all4, Security37143653742 all9, Continuity37143653698, Release37143653679, Scorecard37143653695, Supervisor37143681302 pass. TASK0071 full CI pending."
+      "notes": "TASK0071 PR475 final9ad70e4 and main7a4641c verified full gates, actual PG184/1162. TASK0072 ledger remains acceptance pending; known merged-main anchor reconciled through guarded checkpoint."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK0071 local PHP8.3.6 regression825 passed/5513 assertions with140 explicit infrastructure skips; focused analytics33/254 pass. Subsequent defensive money-input guard verified by focused tests. Actual new PG revenue test pending CI, not claimed from local skips."
+      "notes": "TASK0072 final local PHP8.3.6:837 passed/5640 assertions,141 explicit infrastructure skips. All six registered models displayed in authorized HTTP integration; flashed insight revoked after consent change. No local PG claim."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "Latest accepted main7a4641c Application37145257323 integration111268236973 actual184/1162 and revenue test PASS. New72 competing schedule-worker test pending actual CI; local skipped."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0072 locked vendor PHPStan analyse --memory-limit=1G passed; local PHP8.3.6. Composer executable unavailable locally."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0072 locked vendor Pint --test passed."
     },
     {
       "name": "frontend-typecheck",
       "command": "npm run typecheck",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0072 npm run typecheck passed."
     },
     {
       "name": "frontend-unit-tests",
       "command": "npm run test",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0072 full frontend38 tests passed; analytics dashboard3 tests cover labels, busy/errors, semantic measured table and separate inference."
     },
     {
       "name": "frontend-build",
       "command": "npm run build",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "TASK0072 npm run build passed."
     },
     {
       "name": "critical-e2e",

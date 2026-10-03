@@ -8,6 +8,7 @@ use App\Modules\Analytics\Domain\AnalyticsPrivacy;
 use App\Modules\Analytics\Domain\RevenueExperimentVerifier;
 use App\Modules\Analytics\Infrastructure\CanonicalAnalyticsAccess;
 use App\Modules\Analytics\Infrastructure\ConsentAnalyticsPrivacy;
+use App\Modules\Analytics\Presentation\Console\GenerateDueAnalyticsReports;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Domain\Contracts\Clock;
 use Illuminate\Database\DatabaseManager;
@@ -15,6 +16,13 @@ use Illuminate\Support\ServiceProvider;
 
 final class AnalyticsServiceProvider extends ServiceProvider
 {
+    public function boot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([GenerateDueAnalyticsReports::class]);
+        }
+    }
+
     public function register(): void
     {
         $this->app->bind(AnalyticsFacts::class, fn ($app) => new AnalyticsFacts(

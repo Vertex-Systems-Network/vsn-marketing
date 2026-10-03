@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
+  "reconciled_main_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb",
   "active_work_path": {
     "kind": "pr",
-    "number": 475,
-    "title": "TASK-0071 scoped attribution revenue and observed LTV",
-    "branch": "supervisor/phase12-attribution",
-    "disposition": "active_task0071_carrier"
+    "number": 476,
+    "title": "TASK-0072: authorized reports, durable schedules and guarded insights",
+    "branch": "supervisor/phase12-reports",
+    "disposition": "active_task0072_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 476,
+      "title": "TASK-0072: authorized reports, durable schedules and guarded insights",
+      "branch": "supervisor/phase12-reports",
+      "disposition": "active_task0072_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 475,
       "title": "TASK-0071 scoped attribution revenue and observed LTV",
       "branch": "supervisor/phase12-attribution",
-      "disposition": "active_task0071_carrier",
-      "accepted_actionable": true
+      "disposition": "active_task0072_carrier",
+      "accepted_actionable": false,
+      "merge_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb"
     },
     {
       "kind": "pr",

@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
+use App\Modules\Analytics\Application\ScheduledAnalyticsReports;
 use App\Modules\Analytics\Domain\BehaviorDefinition;
 use App\Modules\Analytics\Domain\RevenueDefinition;
 use Illuminate\Support\Facades\Artisan;
@@ -125,4 +126,56 @@ it('reconciles retained revenue identities and late refunds reproducibly on Post
     expect($next['result']['currencies']['USD']['net'])->toBe(70)
         ->and($s->readSnapshot($f->actor, $prior['id']))->toBe($prior)
         ->and($s->readSnapshot($f->actor, $next['id']))->toBe($next);
+});
+
+it('serializes scheduled report workers with one committed snapshot on PostgreSQL', function () {
+    expect(function_exists('pcntl_fork'))->toBeTrue();
+    $f = new AnalyticsFixture;
+    $s = app(ScheduledAnalyticsReports::class);
+    $id = $s->create($f->actor, 'counts');
+    $f->time = new DateTimeImmutable('2026-10-04T00:00:01Z');
+    $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, 0);
+    expect($pair)->toBeArray();
+    DB::purge();
+    $pid = pcntl_fork();
+    expect($pid)->not->toBe(-1);
+    if ($pid === 0) {
+        try {
+            fclose($pair[0]);
+            stream_set_timeout($pair[1], 10);
+            if (fread($pair[1], 1) !== 'S') {
+                throw new RuntimeException('Missing parent signal.');
+            }
+            fwrite($pair[1], $s->run($id) ? '1' : '0');
+            fclose($pair[1]);
+            exit(0);
+        } catch (Throwable) {
+            exit(1);
+        }
+    }
+    fclose($pair[1]);
+    try {
+        DB::beginTransaction();
+        DB::table('analytics_report_schedules')->where('id', $id)->lockForUpdate()->first();
+        fwrite($pair[0], 'S');
+        expect($s->run($id))->toBeTrue();
+        DB::commit();
+        stream_set_timeout($pair[0], 10);
+        expect(fread($pair[0], 1))->toBe('0');
+        pcntl_waitpid($pid, $status);
+        $pid = 0;
+        expect(pcntl_wexitstatus($status))->toBe(0)
+            ->and(DB::table('analytics_report_runs')->count())->toBe(1)
+            ->and(DB::table('analytics_report_runs')->value('status'))->toBe('complete')
+            ->and(DB::table('analytics_report_runs')->value('attempts'))->toBe(1)
+            ->and(DB::table('analytics_snapshots')->count())->toBe(1);
+    } finally {
+        if (DB::transactionLevel() > 0) {
+            DB::rollBack();
+        }
+        fclose($pair[0]);
+        if ($pid > 0) {
+            pcntl_waitpid($pid, $status);
+        }
+    }
 });

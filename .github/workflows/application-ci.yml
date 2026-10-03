@@ -248,3 +248,5 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run critical Playwright smoke
         run: npm run test:e2e
+      - name: Verify authorized analytics browser fixture
+        run: npx playwright test --config=playwright.analytics.config.ts

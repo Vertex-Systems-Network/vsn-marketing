@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Implement attribution, revenue and observed LTV",
   "weight": 18,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0070"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Versioned lookback and deterministic attribution with unattributed bucket; no causal uplift claims",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Currency-separated integer monetary ledger with purchase/refund idempotency and reconciliation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Observed cohort LTV and incrementality-ready references disclose horizon, provenance and limits",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

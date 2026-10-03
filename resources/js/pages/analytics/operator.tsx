@@ -1,0 +1,83 @@
+import { Head, router } from '@inertiajs/react';
+import { useState } from 'react';
+
+type Report = { id: string; fingerprint: string; definition_hash: string; definition: Record<string, unknown>;
+    start_utc: string; end_utc: string; receipt_cutoff_utc: string; latest_receipt_utc: string | null;
+    source_completeness: string; excluded: number; lineage_count: number; metrics: Record<string, number>;
+    quality: Record<string, number>; censored_subjects: number | null };
+type Schedule = { id: string; kind: string; enabled: boolean; next_window_end: string; status_code: string | null };
+type Props = { state: string; reports: Report[]; schedules: Schedule[]; invalidated_reports: number;
+    report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
+    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean;
+    actions: { generate: string; schedules: string; base: string } };
+const notices: Record<string, string> = { report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
+    schedule_created: 'Daily UTC schedule created. Reports stay inside this workspace.', schedule_denied: 'Schedule could not be created.',
+    schedule_disabled: 'Schedule disabled.', explanation_unavailable: 'No approved explanation route is configured.', insight_denied: 'Insight evidence could not be validated.' };
+const control = 'mt-2 w-full rounded-xl border border-white/20 bg-neutral-900 px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300';
+const button = 'rounded-xl bg-sky-300 px-4 py-2 font-semibold text-neutral-950 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300';
+export default function AnalyticsOperator(p: Props) {
+    const [kind, setKind] = useState('counts');
+    const [start, setStart] = useState(p.default_start);
+    const [end, setEnd] = useState(p.default_end);
+    const [busy, setBusy] = useState(false);
+    const [selected, setSelected] = useState('');
+    const [baseline, setBaseline] = useState<string[]>([]);
+    const [error, setError] = useState('');
+    const post = (url: string, data: Record<string, string | string[]>) => {
+        if (busy) return;
+        setBusy(true); setError('');
+        router.post(url, data, { preserveScroll: true, onFinish: () => setBusy(false),
+            onError: () => setError('The request failed validation. Review the fields and retry.') });
+    };
+    const unavailable = p.state !== 'ready';
+    return <><Head title="Analytics reports" /><main className="min-h-screen bg-neutral-950 text-neutral-100">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+            <header><p className="text-sm font-semibold text-sky-300">VSN Marketing · Analytics</p>
+                <h1 className="mt-2 text-3xl font-semibold">Analytics reports</h1>
+                <p className="mt-3 max-w-3xl text-neutral-300">Review admitted events, funnels, retention and revenue in UTC. Reports disclose their definition and receipt cutoff. Source coverage remains unknown; attribution describes credit and does not prove causal lift.</p></header>
+            {unavailable && <p role="alert" className="mt-6 rounded-xl border border-amber-300 p-4">Analytics purpose or retention approval is unavailable. Reports and schedules cannot be generated.</p>}
+            <div role="status" aria-live="polite" className="mt-4 text-sky-200">{busy ? 'Working…' : p.notice ? notices[p.notice] ?? 'Request finished.' : ''}</div>
+            {error && <p role="alert" className="mt-3 text-amber-200">{error}</p>}
+            {p.invalidated_reports > 0 && <p role="status" className="mt-3 text-amber-200">{p.invalidated_reports} reports are unavailable because current privacy or lineage checks failed.</p>}
+            <section aria-labelledby="create-report" className="mt-6 rounded-2xl border border-white/15 p-5" aria-busy={busy}>
+                <h2 id="create-report" className="text-xl font-semibold">Create an immutable report</h2>
+                <form onSubmit={(e) => { e.preventDefault(); post(p.actions.generate, { kind, start, end }); }}>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                        <label>Report kind<select className={control} value={kind} onChange={(e) => setKind(e.target.value)}>{p.report_kinds.map((k) => <option key={k}>{k}</option>)}</select></label>
+                        <label>Start date (UTC, inclusive)<input className={control} type="date" value={start} onChange={(e) => setStart(e.target.value)} required /></label>
+                        <label>End date (UTC, exclusive)<input className={control} type="date" value={end} onChange={(e) => setEnd(e.target.value)} required /></label>
+                    </div><div className="mt-5 flex flex-wrap gap-3"><button className={button} disabled={busy || unavailable || start >= end}>{busy ? 'Working…' : 'Generate report'}</button>
+                        <button className={button} type="button" disabled={busy || unavailable} onClick={() => post(p.actions.schedules, { kind })}>Schedule daily UTC report</button></div>
+                </form><p className="mt-4 text-sm text-neutral-300">Daily schedules cover the previous complete UTC day. Current owner authority is checked again at execution. No external delivery is enabled.</p>
+            </section>
+            <section aria-labelledby="report-history" className="mt-7"><h2 id="report-history" className="text-xl font-semibold">Report history</h2>
+                {p.reports.length === 0 ? <p className="mt-4 text-neutral-300">No valid reports in this scope.</p> : <div className="mt-4 grid gap-5">{p.reports.map((r) => <article key={r.id} className="min-w-0 rounded-2xl border border-white/15 p-5">
+                    <h3 className="text-lg font-semibold">{String(r.definition.kind ?? r.definition.event_type)} · version {String(r.definition.version)}</h3>
+                    <p className="mt-2 break-words text-sm text-neutral-300">UTC period: {r.start_utc} to {r.end_utc}. Receipt cutoff: {r.receipt_cutoff_utc}.</p>
+                    <p className="mt-2 text-sm text-neutral-300">Source completeness: {r.source_completeness}. Latest local receipt: {r.latest_receipt_utc ?? 'unknown'}. Excluded facts: {r.excluded}. Lineage references: {r.lineage_count}.</p>
+                    {r.censored_subjects !== null && <p className="mt-2 text-sm text-amber-200">Incomplete cohort horizons: {r.censored_subjects} subjects.</p>}
+                    <div className="mt-4 overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-sky-300" tabIndex={0} role="region" aria-label="Report metrics">
+                        <table className="w-full text-left text-sm"><caption className="mb-2 text-left text-neutral-300">Measured values; revenue amounts are integer currency minor units</caption>
+                            <thead><tr><th scope="col" className="p-2">Metric</th><th scope="col" className="p-2">Value</th></tr></thead><tbody>{Object.entries(r.metrics).map(([metric, value]) => <tr key={metric}><th scope="row" className="break-words border-t border-white/10 p-2 font-normal">{metric}</th><td className="border-t border-white/10 p-2">{value}</td></tr>)}</tbody></table>
+                    </div>
+                    {Object.values(r.quality).some((n) => n > 0) && <p className="mt-3 text-amber-200">Data quality requires review: {Object.entries(r.quality).filter(([, n]) => n > 0).map(([k, n]) => `${k}: ${n}`).join('; ')}.</p>}
+                    <details className="mt-4"><summary className="cursor-pointer text-sky-200 focus-visible:outline-2 focus-visible:outline-sky-300">Definition and evidence fingerprint</summary>
+                        <pre className="mt-2 whitespace-pre-wrap break-all text-xs text-neutral-300">{JSON.stringify(r.definition, null, 2)}</pre><p className="mt-2 break-all text-xs">Snapshot: {r.id}<br />Fingerprint: {r.fingerprint}<br />Definition: {r.definition_hash}</p></details>
+                </article>)}</div>}
+            </section>
+            <section aria-labelledby="report-insights" className="mt-7 rounded-2xl border border-white/15 p-5"><h2 id="report-insights" className="text-xl font-semibold">Measured insight checks</h2>
+                <label className="mt-4 block">Current snapshot<select className={control} value={selected} onChange={(e) => setSelected(e.target.value)}><option value="">Select a snapshot</option>{p.reports.map((r) => <option key={r.id} value={r.id}>{r.start_utc} · {String(r.definition.kind ?? r.definition.event_type)} · {r.id}</option>)}</select></label>
+                <fieldset className="mt-4"><legend>Prior daily count snapshots (7–14 comparable periods)</legend><div className="mt-2 grid gap-2">{p.reports.filter((r) => r.id !== selected && 'count' in r.metrics).map((r) => <label key={r.id} className="break-all text-sm"><input className="mr-2 focus-visible:outline-2 focus-visible:outline-sky-300" type="checkbox" checked={baseline.includes(r.id)} onChange={(e) => setBaseline(e.target.checked ? [...baseline, r.id] : baseline.filter((id) => id !== r.id))} />{r.start_utc} · {r.id}</label>)}</div></fieldset>
+                <div className="mt-4 flex flex-wrap gap-3"><button className={button} disabled={busy || unavailable || !selected} onClick={() => post(`${p.actions.base}/anomaly`, { snapshot_id: selected, baseline })}>Check local anomaly baseline</button>
+                    <button className={button} disabled={busy || unavailable || !selected || !p.explanation_available} onClick={() => post(`${p.actions.base}/explain`, { snapshot_id: selected })}>Request validated explanation</button></div>
+                {!p.explanation_available && <p className="mt-3 text-neutral-300">No approved explanation route is configured.</p>}
+                <p className="mt-3 text-sm text-neutral-300">Local signals are descriptive, not calibrated probability or proof of cause. Incomplete, stale or incomparable baselines cannot produce a confident anomaly.</p>
+                {p.insight && <p role="status" className="mt-3 text-sky-200">Insight status: {p.insight.status ?? 'validated'}. {p.insight.baseline_n !== undefined && `Baseline periods: ${p.insight.baseline_n}.`} {p.insight.z_score !== undefined && `Local z-score: ${p.insight.z_score.toFixed(3)}.`}</p>}
+                {p.insight?.output && <div className="mt-4"><h3 className="font-semibold">Validated explanation</h3><ul className="mt-2 list-inside list-disc">{p.insight.output.facts.map((fact) => <li key={fact.metric}>Measured {fact.metric}: {fact.value}.</li>)}{p.insight.output.inferences.map((inference) => <li key={inference}>Inference: {inference.replaceAll('_', ' ')}.</li>)}</ul><p className="mt-2 text-sm text-neutral-300">R0 only; measured values reference the selected immutable snapshot. Inferences are unproven.</p></div>}
+            </section>
+            <section aria-labelledby="report-schedules" className="mt-7"><h2 id="report-schedules" className="text-xl font-semibold">Your daily schedules</h2>
+                {p.schedules.length === 0 ? <p className="mt-3 text-neutral-300">No schedules owned by you in this scope.</p> : <ul className="mt-4 grid gap-3">{p.schedules.map((s) => <li key={s.id} className="rounded-xl border border-white/15 p-4"><p className="break-words">{s.kind} · {s.enabled ? 'enabled' : 'disabled'} · next UTC window end: {s.next_window_end}</p>{s.status_code && <p className="mt-2 text-amber-200">Schedule status: {s.status_code}</p>}
+                    <button className={`${button} mt-3`} disabled={busy || unavailable || !s.enabled} onClick={() => post(`${p.actions.base}/schedules/${s.id}/disable`, {})}>Disable schedule</button></li>)}</ul>}
+            </section>
+        </div></main></>;
+}

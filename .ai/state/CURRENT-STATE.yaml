@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-12",
-    "active_task": "TASK-0071",
-    "last_completed_task": "TASK-0070",
-    "next_task": "TASK-0072"
+    "active_task": "TASK-0072",
+    "last_completed_task": "TASK-0071",
+    "next_task": "TASK-0073"
   },
   "progress": {
-    "roadmap_percent": 78.88,
-    "phase_percent": 48.0,
+    "roadmap_percent": 79.96,
+    "phase_percent": 66.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
+  "observed_main_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb",
   "active_issue": null,
   "active_pr": 475,
   "active_branch": "supervisor/phase12-attribution",
-  "current_milestone": "PHASE-12-REVENUE",
+  "current_milestone": "PHASE-12-REPORTS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Inspect final PR475 full CI and actual PostgreSQL revenue PASS, repair scoped failures, merge verified head and validate resulting main before TASK0072.",
+  "exact_next_safe_action": "Open TASK0072 full-CI migration-reviewed PR, attach actual PR metadata and verify required exact-head/run logs then protected-main gates; do not accept72 from local infrastructure skips.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Inspect final PR475 full CI and actual PostgreSQL revenue PASS, repair scoped failures, merge verified head and validate resulting main before TASK0072."
+  "exact_next_action": "Open TASK0072 full-CI migration-reviewed PR, attach actual PR metadata and verify required exact-head/run logs then protected-main gates; do not accept72 from local infrastructure skips."
 }

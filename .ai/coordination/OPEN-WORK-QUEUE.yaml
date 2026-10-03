@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
+  "reconciled_main_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb",
   "active_work_path": {
     "kind": "pr",
     "number": 475,
     "title": "TASK-0071 scoped attribution revenue and observed LTV",
     "branch": "supervisor/phase12-attribution",
-    "disposition": "active_task0071_carrier"
+    "disposition": "active_task0072_carrier"
   },
   "items": [
     {
@@ -14,8 +14,9 @@
       "number": 475,
       "title": "TASK-0071 scoped attribution revenue and observed LTV",
       "branch": "supervisor/phase12-attribution",
-      "disposition": "active_task0071_carrier",
-      "accepted_actionable": true
+      "disposition": "active_task0072_carrier",
+      "accepted_actionable": true,
+      "merge_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb"
     },
     {
       "kind": "pr",

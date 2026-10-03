@@ -42,6 +42,11 @@ final readonly class AnalyticsFacts
         }
     }
 
+    public function authorize(TenantContext $actor): void
+    {
+        $this->permit($actor);
+    }
+
     /** Existing canonical event only; callers cannot supply a new envelope or asserted consent. */
     public function project(TenantContext $actor, string $eventId): string
     {

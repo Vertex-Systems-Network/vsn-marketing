@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Analytics\AnalyticsServiceProvider;
 use App\Modules\Audit\AuditServiceProvider;
 use App\Modules\Consent\ConsentServiceProvider;
 use App\Modules\Contacts\ContactsServiceProvider;
@@ -15,6 +16,7 @@ use App\Providers\HorizonServiceProvider;
 
 return [
     AppServiceProvider::class,
+    AnalyticsServiceProvider::class,
     HorizonServiceProvider::class,
     CoreServiceProvider::class,
     AuditServiceProvider::class,

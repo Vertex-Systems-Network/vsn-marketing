@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-12",
-    "active_task": "TASK-0068",
-    "last_completed_task": "TASK-0067",
-    "next_task": "TASK-0069"
+    "active_task": "TASK-0069",
+    "last_completed_task": "TASK-0068",
+    "next_task": "TASK-0070"
   },
   "progress": {
-    "roadmap_percent": 76.0,
-    "phase_percent": 0.0,
+    "roadmap_percent": 76.6,
+    "phase_percent": 10.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -28,10 +28,10 @@
   "active_issue": null,
   "active_pr": 472,
   "active_branch": "supervisor/phase12-research",
-  "current_milestone": "PHASE-12-RESEARCH",
+  "current_milestone": "PHASE-12-FACTS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Verify PR472 exact-head gates and merge, then activate TASK-0069 analytics fact foundation.",
+  "exact_next_safe_action": "Publish scoped TASK0069 PR, track actual carrier, inspect exact-head PostgreSQL and full gates before merge.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR472 exact-head gates and merge, then activate TASK-0069 analytics fact foundation."
+  "exact_next_action": "Publish scoped TASK0069 PR, track actual carrier, inspect exact-head PostgreSQL and full gates before merge."
 }

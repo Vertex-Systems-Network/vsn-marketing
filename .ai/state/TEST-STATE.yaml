@@ -12,7 +12,7 @@
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK0069 final local regression: 804 passed, 5306 assertions, 138 infrastructure skips; focused analytics12 passed/47 assertions. PHPStan and Pint pass. PostgreSQL execution pending exact-head CI; no production proof."
+      "notes": "TASK0069 final local regression: 804 passed, 5306 assertions, 138 infrastructure skips; focused analytics12 passed/47 assertions. PHPStan and Pint pass. PostgreSQL execution pending exact-head CI; no production proof. PR473 head2c8ff7a Application37126756242 failed integration111213971571: synthetic cleanup violated append-only consent and contaminated audit counts. Repair isolates the contention fixture in a guarded disposable PostgreSQL schema; no protection or assertion weakened. Repaired exact-head CI pending."
     },
     {
       "name": "postgresql-integration",

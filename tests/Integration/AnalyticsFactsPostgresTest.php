@@ -10,11 +10,30 @@ beforeEach(function () {
         || DB::connection()->getDriverName() !== 'pgsql') {
         $this->markTestSkipped('PostgreSQL integration environment required.');
     }
+    if (! app()->environment('testing') || ! str_ends_with(DB::connection()->getDatabaseName(), '_test')) {
+        throw new RuntimeException('Disposable test database required.');
+    }
+    $schema = 'analytics_test_'.bin2hex(random_bytes(8));
+    DB::statement('CREATE SCHEMA '.$schema);
+    config(['analytics.test_schema' => $schema, 'analytics.test_search_path' => config('database.connections.pgsql.search_path')]);
+    config(['database.connections.pgsql.search_path' => $schema]);
+    DB::purge();
+    Artisan::call('migrate', ['--force' => true]);
+});
+
+afterEach(function () {
+    $schema = config('analytics.test_schema');
+    if (! is_string($schema) || ! preg_match('/^analytics_test_[a-f0-9]{16}$/', $schema)) {
+        return;
+    }
+    config(['database.connections.pgsql.search_path' => config('analytics.test_search_path')]);
+    DB::purge();
+    // Drop only this synthetic namespace; canonical append-only triggers remain intact.
+    DB::statement('DROP SCHEMA '.$schema.' CASCADE');
 });
 
 it('serializes competing canonical analytics admissions on PostgreSQL', function () {
     expect(function_exists('pcntl_fork'))->toBeTrue();
-    Artisan::call('migrate', ['--force' => true]);
     $fixture = new AnalyticsFixture;
     $event = $fixture->event('postgres-source');
     $service = app(AnalyticsFacts::class);
@@ -63,11 +82,5 @@ it('serializes competing canonical analytics admissions on PostgreSQL', function
         if ($pid > 0) {
             pcntl_waitpid($pid, $status);
         }
-        foreach (['analytics_snapshots', 'analytics_conflicts', 'analytics_invalidations', 'analytics_facts', 'customer_events', 'event_types', 'consent_records'] as $table) {
-            DB::table($table)->where('workspace_id', $fixture->actor->workspaceId)->delete();
-        }
-        DB::table('workspaces')->where('id', $fixture->actor->workspaceId)->delete();
-        DB::table('organizations')->where('id', $fixture->actor->organizationId)->delete();
-        DB::table('users')->where('id', $fixture->actor->actorId)->delete();
     }
 });

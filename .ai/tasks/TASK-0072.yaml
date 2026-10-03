@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0072",
+  "phase": "PHASE-12",
+  "title": "Implement analytics operator reports and explanations",
+  "weight": 14,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0071"
+  ],
+  "objective": "Implement analytics operator reports and explanations",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Accessible responsive authorized dashboard exposes metrics, model, lineage, freshness and quality states",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Scheduled report snapshots are durable, idempotent and recheck authority before generation",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Anomaly baseline and AI explanation validators distinguish facts from inference with golden hostile-output tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0072 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

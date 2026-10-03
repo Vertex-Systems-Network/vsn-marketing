@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0071",
+  "phase": "PHASE-12",
+  "title": "Implement attribution, revenue and observed LTV",
+  "weight": 18,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0070"
+  ],
+  "objective": "Implement attribution, revenue and observed LTV",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Versioned lookback and deterministic attribution with unattributed bucket; no causal uplift claims",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Currency-separated integer monetary ledger with purchase/refund idempotency and reconciliation",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Observed cohort LTV and incrementality-ready references disclose horizon, provenance and limits",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0071 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

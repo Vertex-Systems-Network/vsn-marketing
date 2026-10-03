@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "cf01b147c378403ff3d97102f208dd3ed701dcf7",
+  "observed_main_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6",
   "active_issue": null,
-  "active_pr": 471,
-  "active_branch": "supervisor/phase11-closure",
+  "active_pr": 472,
+  "active_branch": "supervisor/phase12-research",
   "current_milestone": "PHASE-12-RESEARCH",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Publish Phase 12 research carrier, verify gates, then transition TASK-0068 to TASK-0069.",
+  "exact_next_safe_action": "Verify PR472 exact-head gates and merge, then activate TASK-0069 analytics fact foundation.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish Phase 12 research carrier, verify gates, then transition TASK-0068 to TASK-0069."
+  "exact_next_action": "Verify PR472 exact-head gates and merge, then activate TASK-0069 analytics fact foundation."
 }

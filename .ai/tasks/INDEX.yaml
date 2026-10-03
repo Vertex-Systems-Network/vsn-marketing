@@ -671,6 +671,76 @@
       "dependencies": [
         "TASK-0066"
       ]
+    },
+    {
+      "id": "TASK-0068",
+      "phase": "PHASE-12",
+      "title": "Research analytics, attribution, privacy and scale",
+      "weight": 10,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0067"
+      ]
+    },
+    {
+      "id": "TASK-0069",
+      "phase": "PHASE-12",
+      "title": "Implement analytics fact and metric foundation",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0068"
+      ]
+    },
+    {
+      "id": "TASK-0070",
+      "phase": "PHASE-12",
+      "title": "Implement funnels, cohorts and retention",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0069"
+      ]
+    },
+    {
+      "id": "TASK-0071",
+      "phase": "PHASE-12",
+      "title": "Implement attribution, revenue and observed LTV",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0070"
+      ]
+    },
+    {
+      "id": "TASK-0072",
+      "phase": "PHASE-12",
+      "title": "Implement analytics operator reports and explanations",
+      "weight": 14,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0071"
+      ]
+    },
+    {
+      "id": "TASK-0073",
+      "phase": "PHASE-12",
+      "title": "Implement data-quality and source reconciliation",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0072"
+      ]
+    },
+    {
+      "id": "TASK-0074",
+      "phase": "PHASE-12",
+      "title": "Certify Phase 12 analytics",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0073"
+      ]
     }
   ]
 }

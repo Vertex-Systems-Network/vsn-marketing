@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0069",
+  "phase": "PHASE-12",
+  "title": "Implement analytics fact and metric foundation",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0068"
+  ],
+  "objective": "Implement analytics fact and metric foundation",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Versioned canonical fact lineage, event/source dedupe and conflicts are explicit",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Workspace/brand authorization, purpose/retention and identity lifecycle fail closed",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Deterministic bounded aggregation, freshness and reconciliation covered by unit, feature and PostgreSQL tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0069 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

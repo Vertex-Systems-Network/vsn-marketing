@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "cf01b147c378403ff3d97102f208dd3ed701dcf7",
+  "reconciled_main_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6",
   "active_work_path": {
     "kind": "pr",
-    "number": 471,
-    "title": "PHASE-11: terminal offline certification closure",
-    "branch": "supervisor/phase11-closure",
-    "disposition": "active_task0067_carrier"
+    "number": 472,
+    "title": "TASK-0068: researched Phase 12 analytics acceptance sequence",
+    "branch": "supervisor/phase12-research",
+    "disposition": "active_task0068_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 472,
+      "title": "TASK-0068: researched Phase 12 analytics acceptance sequence",
+      "branch": "supervisor/phase12-research",
+      "disposition": "active_task0068_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 471,
       "title": "PHASE-11: terminal offline certification closure",
       "branch": "supervisor/phase11-closure",
-      "disposition": "active_task0067_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6"
     },
     {
       "kind": "pr",

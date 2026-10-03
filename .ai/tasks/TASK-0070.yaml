@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0070",
+  "phase": "PHASE-12",
+  "title": "Implement funnels, cohorts and retention",
+  "weight": 18,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0069"
+  ],
+  "objective": "Implement funnels, cohorts and retention",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Ordered unique-subject funnels define tie, conversion window and UTC event-time rules",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Cohort, retention and lifecycle denominators disclose incomplete observation windows",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Content/channel performance, late arrivals and adversarial isolation tested",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0070 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

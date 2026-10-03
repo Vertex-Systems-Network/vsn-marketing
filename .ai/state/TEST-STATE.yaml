@@ -59,7 +59,7 @@
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "TASK0061 accepted source on PR461 head62419134547435188f26d01060bd1b3fb78142cc and main44c644331a2212ebd0b0758d04d0010c3662a789 full application/governance/security gates. Terminal control closure has its own pending verification."
+    "reason": "Phase11 source full gates main cf01b147; closure471 exact-head full gates; Phase12 implementation is not yet accepted."
   },
   "latest_local_verification": {
     "basis": "TASK0061 source-bound offline certification and exact-version canary/rollback rehearsal",
@@ -82,22 +82,20 @@
     ]
   },
   "latest_ci_verification": {
-    "pull_request": 461,
-    "head_sha": "62419134547435188f26d01060bd1b3fb78142cc",
-    "application_run": 36940497218,
-    "continuity_run": 36940497212,
-    "security_run": 36940497171,
+    "pull_request": 471,
+    "head_sha": "9cc0d83dbe183204093df3f46d7dab400f09eb99",
+    "application_run": 37124384192,
+    "continuity_run": 37124384196,
+    "security_run": 37124384191,
     "status": "passing",
-    "resulting_main_sha": "44c644331a2212ebd0b0758d04d0010c3662a789",
-    "resulting_main_application_run": 36941095179,
-    "resulting_main_application": "passing",
-    "resulting_main_continuity_run": 36941095138,
-    "resulting_main_security_run": 36941095206,
-    "resulting_main_release_run": 36941095190,
-    "resulting_main_scorecard_run": 36941095333
+    "resulting_main_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6",
+    "resulting_main_application_run": 37124753839,
+    "resulting_main_continuity_run": 37124753835,
+    "resulting_main_security_run": 37124753838,
+    "scope": "PR full; resulting-main control-only gates. Product jobs skipped; full source main cf01b147 previously certified."
   },
   "closure_verification": {
-    "status": "pending",
-    "reason": "Full terminal PR exact-head gates and policy-classified lightweight control resulting-main gates; full source main44c64433 already certified. Skipped product jobs will not be counted as full passes."
+    "status": "passing",
+    "reason": "PR471 full exact-head and policy-classified resulting-main control gates passed; no skipped product job counted as a full pass."
   }
 }

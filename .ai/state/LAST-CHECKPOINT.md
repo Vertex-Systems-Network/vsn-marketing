@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-03T13:43:50+00:00`
+- Timestamp: `2026-10-03T14:15:07+00:00`
 - Observed main: `f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe`
 - Active issue: `none`
 - Active PR: `473`
 - Active branch: `supervisor/phase12-facts`
-- Current milestone: `PHASE-12-FACTS`
+- Current milestone: `PHASE-12-BEHAVIOR`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0069`
-- Next task: `TASK-0070`
+- Active task: `TASK-0070`
+- Next task: `TASK-0071`
 - Current phase: `PHASE-12`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `4782805415026413dce412a23cdb9a84f97ea638b7226006d66411a4153834dd`
+- State fingerprint: `29565144fd639868bfaac0826878584b677a070fb570429898de48d754df933c`
 
 ## Completed / observed this session
 
-PR473 head2c8ff7a passed foundation/E2E/PHP-floor, Security37126756194, Continuity37126756202; Application37126756242 failed PostgreSQL test cleanup. Repaired with isolated disposable test schema and unchanged consent/audit controls. Second consolidated refresh justified by acceptance boundary; failure begins bounded same-scope repair.
+TASK0070 ordered funnel/cohort/retention/lifecycle/content-channel implementation and tests staged; TASK0069 accepted with full PR/main and PostgreSQL evidence. Phase12 remains30percent until TASK0070 gates accepted.
 
 ## Tests
 
-Integration111213971571: 3 failed/179 passed; analytics cleanup consent delete rejected, subsequent audit counts contaminated. No PostgreSQL acceptance yet. Local focused repair tests pass with explicit infra skip.
+Final local816/5357 pass with139 explicit infrastructure skips; focused24/98 pass; PHPStan/Pint and policy/parallel/Runner/Supervisor pass. PostgreSQL behavior persistence test added, actual execution pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Integration111213971571: 3 failed/179 passed; analytics cleanup consent delete r
 
 ## Exact next action
 
-Publish same-PR isolated PostgreSQL fixture repair and verify exact repaired-head full CI before merge.
+Publish TASK0070 carrier, verify full exact-head and resulting-main gates including actual PostgreSQL behavior snapshot PASS before transition to TASK0071.

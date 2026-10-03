@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Implement analytics fact and metric foundation",
   "weight": 20,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0068"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Versioned canonical fact lineage, event/source dedupe and conflicts are explicit",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Workspace/brand authorization, purpose/retention and identity lifecycle fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Deterministic bounded aggregation, freshness and reconciliation covered by unit, feature and PostgreSQL tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

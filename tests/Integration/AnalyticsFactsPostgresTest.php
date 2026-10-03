@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
+use App\Modules\Analytics\Domain\BehaviorDefinition;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\Support\AnalyticsFixture;
@@ -83,4 +84,22 @@ it('serializes competing canonical analytics admissions on PostgreSQL', function
             pcntl_waitpid($pid, $status);
         }
     }
+});
+
+it('persists reproducible behavior snapshots with late-arrival lineage on PostgreSQL', function () {
+    $f = new AnalyticsFixture;
+    $s = app(AnalyticsFacts::class);
+    $s->project($f->actor, $f->event('entry'));
+    $d = new BehaviorDefinition('funnel', ['product.viewed', 'cart.created']);
+    $start = new DateTimeImmutable('2026-10-02Z');
+    $end = new DateTimeImmutable('2026-10-03Z');
+    $prior = $s->behaviorSnapshot($f->actor, $d, $start, $end, $f->now());
+    expect(array_column($prior['result']['steps'], 'subjects'))->toBe([1, 0]);
+    $f->time = $f->time->modify('+1 hour');
+    $s->project($f->actor, $f->event('late', '2026-10-02T10:30:00Z', '2026-10-03T12:30:00Z', 'cart.created'));
+    $new = $s->behaviorSnapshot($f->actor, $d, $start, $end, $f->now());
+    expect(array_column($new['result']['steps'], 'subjects'))->toBe([1, 1])
+        ->and($s->readSnapshot($f->actor, $prior['id']))->toBe($prior)
+        ->and($s->readSnapshot($f->actor, $new['id']))->toBe($new)
+        ->and(DB::table('analytics_snapshots')->count())->toBe(2);
 });

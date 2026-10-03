@@ -388,6 +388,34 @@ final readonly class AnalyticsFacts
         return ['id' => $id, 'fingerprint' => $row->fingerprint, ...$report];
     }
 
+    public function qualityReceiptAllowed(TenantContext $actor, stdClass $event): bool
+    {
+        $days = $this->permit($actor);
+        $occurred = new DateTimeImmutable($event->occurred_at);
+
+        return $occurred->modify('+'.$days.' days') > $this->clock->now()
+            && $this->contactMatches($actor, $event->contact_id)
+            && ! $this->invalidated($actor, $this->subjectKey($actor, $event->contact_id))
+            && $this->privacy->permits($actor, $event->contact_id, $occurred);
+    }
+
+    public function validateLineage(TenantContext $actor, array $lineage): void
+    {
+        $this->permit($actor);
+        if (count($lineage) > self::MAX_FACTS) {
+            throw new RuntimeException('Quality lineage bound exceeded.');
+        }
+        $rows = $this->factsQuery($actor)->whereIn('analytics_facts.id', array_keys($lineage))->get();
+        if ($rows->count() !== count($lineage)) {
+            throw new RuntimeException('Quality lineage invalidated.');
+        }
+        foreach ($rows as $fact) {
+            if (($lineage[$fact->id] ?? null) !== $fact->envelope_hash || ! $this->readable($actor, $fact, false)) {
+                throw new RuntimeException('Quality lineage privacy or integrity invalidated.');
+            }
+        }
+    }
+
     /** Privacy erasure/identity change invalidates all workspace-derived snapshots, without rewriting Events. */
     public function invalidateSubject(TenantContext $actor, string $contactId): void
     {
@@ -410,6 +438,7 @@ final readonly class AnalyticsFacts
             $this->database->table('analytics_facts')->where('workspace_id', $actor->workspaceId)->where('subject_key', $key)->delete();
             // Aggregates may include this subject; conservative erasure avoids retaining a stale small-cohort count.
             $this->database->table('analytics_snapshots')->where('workspace_id', $actor->workspaceId)->delete();
+            $this->database->table('analytics_reconciliations')->where('workspace_id', $actor->workspaceId)->delete();
             $this->record($scope, 'analytics.subject_invalidated', ['subject_key' => $key]);
         }, 3);
     }
@@ -448,7 +477,7 @@ final readonly class AnalyticsFacts
         return $query;
     }
 
-    private function readable(TenantContext $actor, stdClass $fact): bool
+    private function readable(TenantContext $actor, stdClass $fact, bool $denyConflicts = true): bool
     {
         $scope = new TenantContext($actor->organizationId, $actor->workspaceId, $fact->brand_id, $actor->actorId);
         $occurred = new DateTimeImmutable($fact->occurred_at);
@@ -460,7 +489,7 @@ final readonly class AnalyticsFacts
             && $days !== null && $occurred->modify('+'.$days.' days') > $this->clock->now()
             && ! $this->invalidated($scope, $fact->subject_key) && $this->contactMatches($scope, $fact->contact_id)
             && $this->privacy->permits($scope, $fact->contact_id, $occurred)
-            && ! $this->database->table('analytics_conflicts')->where('workspace_id', $actor->workspaceId)->where('source_key', $fact->source_key)->exists();
+            && (! $denyConflicts || ! $this->database->table('analytics_conflicts')->where('workspace_id', $actor->workspaceId)->where('source_key', $fact->source_key)->exists());
     }
 
     private function canonicalIntegrity(stdClass $fact): bool

@@ -4,10 +4,12 @@ namespace App\Modules\Analytics\Presentation\Http\Controllers;
 
 use App\Modules\Analytics\Application\AnalyticsExplanationGateway;
 use App\Modules\Analytics\Application\AnalyticsInsights;
+use App\Modules\Analytics\Application\AnalyticsQuality;
 use App\Modules\Analytics\Application\AnalyticsReports;
 use App\Modules\Analytics\Application\ScheduledAnalyticsReports;
 use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsExplanation;
+use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Analytics\Domain\ReportCatalog;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
@@ -27,7 +29,7 @@ use RuntimeException;
 final readonly class AnalyticsOperatorController
 {
     public function __construct(private AnalyticsReports $reports, private ScheduledAnalyticsReports $schedules,
-        private AnalyticsInsights $insights, private DatabaseManager $database, private Clock $clock, private AnalyticsAccess $access) {}
+        private AnalyticsInsights $insights, private AnalyticsQuality $quality, private DatabaseManager $database, private Clock $clock, private AnalyticsAccess $access) {}
 
     public function index(Request $request): Response
     {
@@ -35,8 +37,10 @@ final readonly class AnalyticsOperatorController
         $state = 'ready';
         $recent = ['reports' => [], 'invalidated_reports' => 0];
         $schedules = [];
+        $quality = [];
         try {
             $recent = $this->reports->recent($actor);
+            $quality = $this->quality->recent($actor);
             $schedules = $this->database->table('analytics_report_schedules')->where('workspace_id', $actor->workspaceId)
                 ->where('brand_id', $actor->brandId)->where('actor_id', $actor->actorId)->orderBy('created_at')->limit(20)
                 ->get(['id', 'kind', 'enabled', 'next_window_end', 'status_code'])->toArray();
@@ -75,13 +79,28 @@ final readonly class AnalyticsOperatorController
         $today = $this->clock->now()->setTimezone(new DateTimeZone('UTC'))->setTime(0, 0);
 
         return Inertia::render('analytics/operator', ['state' => $state, 'reports' => $items, 'schedules' => $schedules,
-            'invalidated_reports' => $recent['invalidated_reports'], 'report_kinds' => ReportCatalog::KINDS,
+            'invalidated_reports' => $recent['invalidated_reports'], 'quality_reports' => $quality, 'quality_event_types' => MetricDefinition::EVENTS, 'report_kinds' => ReportCatalog::KINDS,
             'default_start' => $today->modify('-1 day')->format('Y-m-d'), 'default_end' => $today->format('Y-m-d'),
             'notice' => $request->session()->get('analytics_notice'), 'insight' => $insight,
             'explanation_available' => $state === 'ready' && app()->bound(AnalyticsExplanationGateway::class) && $this->access->allows($actor, PermissionCatalog::AI_EXECUTE),
             'actions' => ['generate' => route('analytics.generate', ['workspace' => $actor->workspaceId]),
                 'schedules' => route('analytics.schedules', ['workspace' => $actor->workspaceId]),
                 'base' => '/workspaces/'.$actor->workspaceId.'/analytics']]);
+    }
+
+    public function quality(Request $request): RedirectResponse
+    {
+        $input = $request->validate(['source' => 'required|string|max:64|regex:/^[a-zA-Z0-9._-]+$/',
+            'event_type' => 'required|string|in:'.implode(',', MetricDefinition::EVENTS),
+            'start' => 'required|date_format:Y-m-d', 'end' => 'required|date_format:Y-m-d']);
+        try {
+            $this->quality->reconcile($this->scope($request), (string) Str::uuid(), $input['source'], $input['event_type'],
+                new DateTimeImmutable($input['start'].'T00:00:00Z'), new DateTimeImmutable($input['end'].'T00:00:00Z'), $this->clock->now());
+
+            return back()->with('analytics_notice', 'quality_created');
+        } catch (AuthorizationException|InvalidArgumentException|RuntimeException) {
+            return back()->with('analytics_notice', 'quality_denied');
+        }
     }
 
     public function generate(Request $request): RedirectResponse

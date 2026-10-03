@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
+use App\Modules\Analytics\Application\AnalyticsQuality;
 use App\Modules\Analytics\Application\ScheduledAnalyticsReports;
 use App\Modules\Analytics\Domain\BehaviorDefinition;
 use App\Modules\Analytics\Domain\RevenueDefinition;
@@ -169,6 +170,56 @@ it('serializes scheduled report workers with one committed snapshot on PostgreSQ
             ->and(DB::table('analytics_report_runs')->value('status'))->toBe('complete')
             ->and(DB::table('analytics_report_runs')->value('attempts'))->toBe(1)
             ->and(DB::table('analytics_snapshots')->count())->toBe(1);
+    } finally {
+        if (DB::transactionLevel() > 0) {
+            DB::rollBack();
+        }
+        fclose($pair[0]);
+        if ($pid > 0) {
+            pcntl_waitpid($pid, $status);
+        }
+    }
+});
+
+it('serializes replayed source reconciliation with one durable checkpoint on PostgreSQL', function () {
+    expect(function_exists('pcntl_fork'))->toBeTrue();
+    $f = new AnalyticsFixture;
+    $s = app(AnalyticsQuality::class);
+    app(AnalyticsFacts::class)->project($f->actor, $f->event('pg-quality'));
+    $input = [$f->actor, 'pg-replay', 'fixture', 'product.viewed', new DateTimeImmutable('2026-10-02Z'), new DateTimeImmutable('2026-10-03Z'), $f->now()];
+    $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, 0);
+    expect($pair)->toBeArray();
+    DB::purge();
+    $pid = pcntl_fork();
+    expect($pid)->not->toBe(-1);
+    if ($pid === 0) {
+        try {
+            fclose($pair[0]);
+            stream_set_timeout($pair[1], 10);
+            if (fread($pair[1], 1) !== 'S') {
+                throw new RuntimeException('Missing parent signal.');
+            }
+            fwrite($pair[1], $s->reconcile(...$input)['fingerprint']);
+            fclose($pair[1]);
+            exit(0);
+        } catch (Throwable) {
+            exit(1);
+        }
+    }
+    fclose($pair[1]);
+    try {
+        DB::beginTransaction();
+        DB::table('workspaces')->where('id', $f->actor->workspaceId)->lockForUpdate()->first();
+        fwrite($pair[0], 'S');
+        $result = $s->reconcile(...$input);
+        DB::commit();
+        stream_set_timeout($pair[0], 10);
+        expect(fread($pair[0], 64))->toBe($result['fingerprint']);
+        pcntl_waitpid($pid, $status);
+        $pid = 0;
+        expect(pcntl_wexitstatus($status))->toBe(0)
+            ->and(DB::table('analytics_reconciliations')->count())->toBe(1)
+            ->and($s->read($f->actor, $result['id']))->toBe($result);
     } finally {
         if (DB::transactionLevel() > 0) {
             DB::rollBack();

@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Implement analytics operator reports and explanations",
   "weight": 14,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0071"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Accessible responsive authorized dashboard exposes metrics, model, lineage, freshness and quality states",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Scheduled report snapshots are durable, idempotent and recheck authority before generation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Anomaly baseline and AI explanation validators distinguish facts from inference with golden hostile-output tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

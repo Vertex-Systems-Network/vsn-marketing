@@ -4,6 +4,8 @@ namespace App\Modules\Analytics\Application;
 
 use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsPrivacy;
+use App\Modules\Analytics\Domain\BehaviorDefinition;
+use App\Modules\Analytics\Domain\BehaviorMetrics;
 use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Domain\Contracts\Clock;
@@ -146,15 +148,105 @@ final readonly class AnalyticsFacts
                 'source_completeness' => 'unknown', 'latest_receipt_utc' => $latest,
                 'sampling' => 'none', 'quality' => $excluded === 0 ? 'locally_admitted' : 'excluded_facts',
                 'lineage' => $lineage, 'publication_authorized' => false];
-            $fingerprint = hash('sha256', json_encode($report, JSON_THROW_ON_ERROR));
-            $id = (string) Str::uuid();
-            $this->database->table('analytics_snapshots')->insert(['id' => $id, 'workspace_id' => $actor->workspaceId,
-                'scope_key' => $this->scopeKey($actor), 'fingerprint' => $fingerprint,
-                'report' => json_encode($report, JSON_THROW_ON_ERROR), 'created_at' => $this->clock->now()]);
-            $this->record($actor, 'analytics.snapshot_created', ['snapshot_id' => $id, 'fingerprint' => $fingerprint]);
 
-            return ['id' => $id, 'fingerprint' => $fingerprint, ...$report];
+            return $this->persistSnapshot($actor, $report);
         }, 3);
+    }
+
+    public function behaviorSnapshot(TenantContext $actor, BehaviorDefinition $definition,
+        DateTimeImmutable $start, DateTimeImmutable $end, DateTimeImmutable $cutoff): array
+    {
+        $this->permit($actor);
+        if ($start->getOffset() !== 0 || $end->getOffset() !== 0 || $cutoff->getOffset() !== 0
+            || $start >= $end || $end > $cutoff || $cutoff > $this->clock->now()) {
+            throw new InvalidArgumentException('Behavior requires bounded UTC entry and observation windows.');
+        }
+        $queryStart = $definition->kind === 'lifecycle'
+            ? $start->modify('-'.($end->getTimestamp() - $start->getTimestamp()).' seconds') : $start;
+        $horizon = match ($definition->kind) {
+            'funnel' => $definition->conversionSeconds,
+            'retention' => $definition->bins * $definition->binSeconds,
+            default => 0,
+        };
+        $queryEnd = min($end->modify('+'.$horizon.' seconds'), $cutoff);
+        if ($queryEnd->getTimestamp() - $queryStart->getTimestamp() > 31 * 86400) {
+            throw new InvalidArgumentException('Behavior requires bounded UTC entry and observation windows.');
+        }
+
+        return $this->database->transaction(function () use ($actor, $definition, $start, $end, $cutoff, $queryStart, $queryEnd): array {
+            $this->database->table('workspaces')->where('id', $actor->workspaceId)->lockForUpdate()->first();
+            $rows = $this->factsQuery($actor)->whereIn('analytics_facts.event_type', $definition->events)
+                ->where('analytics_facts.occurred_at', '>=', $queryStart)
+                ->where('analytics_facts.occurred_at', $definition->kind === 'funnel' || $definition->kind === 'retention' ? '<=' : '<', $queryEnd)
+                ->where('analytics_facts.received_at', '<=', $cutoff)->where('analytics_facts.created_at', '<=', $cutoff)
+                ->orderBy('analytics_facts.occurred_at')->orderBy('analytics_facts.event_id')
+                ->limit(self::MAX_FACTS + 1)->get();
+            if ($rows->count() > self::MAX_FACTS) {
+                throw new RuntimeException('Behavior observation bound exceeded; no truncated report.');
+            }
+            $observations = $lineage = $dimensions = [];
+            $excluded = 0;
+            $latest = null;
+            foreach ($rows as $row) {
+                if (! $this->readable($actor, $row)) {
+                    $excluded++;
+
+                    continue;
+                }
+                $dimension = $definition->kind === 'performance' ? $this->dimension($actor, $row, $definition->dimension) : null;
+                $observations[] = ['event_id' => $row->event_id, 'subject_key' => $row->subject_key,
+                    'event_type' => $row->event_type, 'occurred_at' => $row->occurred_at, 'dimension' => $dimension];
+                $lineage[$row->id] = $row->envelope_hash;
+                if ($definition->kind === 'performance') {
+                    $dimensions[$row->id] = $dimension;
+                }
+                $latest = $latest === null || $row->received_at > $latest ? $row->received_at : $latest;
+            }
+            ksort($lineage);
+            ksort($dimensions);
+            $report = ['schema_version' => 1, 'workspace_id' => $actor->workspaceId, 'scope_key' => $this->scopeKey($actor),
+                'definition' => $definition->toArray(), 'definition_hash' => $definition->fingerprint(),
+                'start_utc' => $start->format(DATE_ATOM), 'end_utc' => $end->format(DATE_ATOM),
+                'observation_start_utc' => $queryStart->format(DATE_ATOM), 'observation_end_utc' => $queryEnd->format(DATE_ATOM),
+                'receipt_cutoff_utc' => $cutoff->format(DATE_ATOM), 'source_completeness' => 'unknown',
+                'latest_receipt_utc' => $latest, 'sampling' => 'none', 'admitted_events' => count($observations),
+                'excluded' => $excluded, 'quality' => $excluded === 0 ? 'locally_admitted' : 'excluded_facts',
+                'lineage' => $lineage, 'dimension_lineage' => $dimensions, 'publication_authorized' => false,
+                'result' => (new BehaviorMetrics)->calculate($definition, $observations, $start, $end, $cutoff)];
+
+            return $this->persistSnapshot($actor, $report);
+        }, 3);
+    }
+
+    private function persistSnapshot(TenantContext $actor, array $report): array
+    {
+        $fingerprint = hash('sha256', json_encode($report, JSON_THROW_ON_ERROR));
+        $id = (string) Str::uuid();
+        $this->database->table('analytics_snapshots')->insert(['id' => $id, 'workspace_id' => $actor->workspaceId,
+            'scope_key' => $this->scopeKey($actor), 'fingerprint' => $fingerprint,
+            'report' => json_encode($report, JSON_THROW_ON_ERROR), 'created_at' => $this->clock->now()]);
+        $this->record($actor, 'analytics.snapshot_created', ['snapshot_id' => $id, 'fingerprint' => $fingerprint]);
+
+        return ['id' => $id, 'fingerprint' => $fingerprint, ...$report];
+    }
+
+    private function dimension(TenantContext $actor, stdClass $fact, string $name): ?string
+    {
+        $payload = json_decode($fact->payload, true, 32, JSON_THROW_ON_ERROR);
+        $value = $payload[$name] ?? null;
+        if (! is_string($value)) {
+            return null;
+        }
+        if ($name === 'channel') {
+            return in_array($value, ['email', 'sms', 'push', 'in_app', 'web'], true) ? $value : null;
+        }
+        $table = match ($name) {
+            'content_id' => 'content_documents', 'campaign_id' => 'campaigns', default => null
+        };
+
+        return $table !== null && Str::isUuid($value)
+            && $this->database->table($table)->where('id', $value)->where('workspace_id', $actor->workspaceId)->exists()
+            ? $value : null;
     }
 
     public function readSnapshot(TenantContext $actor, string $id): array
@@ -177,6 +269,14 @@ final readonly class AnalyticsFacts
         foreach ($rows as $fact) {
             if ($lineage[$fact->id] !== $fact->envelope_hash || ! $this->readable($actor, $fact)) {
                 throw new RuntimeException('Analytics snapshot purpose, identity, integrity or retention invalidated.');
+            }
+        }
+
+        if (($report['definition']['kind'] ?? null) === 'performance') {
+            foreach ($rows as $fact) {
+                if (($report['dimension_lineage'][$fact->id] ?? null) !== $this->dimension($actor, $fact, $report['definition']['dimension'])) {
+                    throw new RuntimeException('Analytics dimension lineage invalidated.');
+                }
             }
         }
 

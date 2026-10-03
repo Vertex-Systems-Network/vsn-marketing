@@ -1,0 +1,13 @@
+# TASK-0070 engineering research — 2026-10-03
+
+Active dependency TASK0069 accepted on mainbc052d5 with full protected-main gates and actual PostgreSQL contention evidence. Reopened current primary sources before implementation:
+
+- https://amplitude.com/docs/analytics/charts/funnel-analysis/funnel-analysis-build — named funnel ordering modes differ; ordered mode permits unrelated intervening events. VSN v1 supports only ordered unique-subject funnels with explicit conversion horizon and event-time/ID tie rule.
+- https://amplitude.com/docs/analytics/charts/retention-analysis/retention-analysis-build — declared start and return events define retention; cohort entry period and later return observation differ. VSN fixed elapsed UTC bins disclose mature eligibility and censor incomplete bins instead of treating them as zero returns.
+- https://www.postgresql.org/docs/current/transaction-iso.html — PostgreSQL18 statement snapshots do not alone prove multi-query report consistency. Derived snapshots retain exact admitted lineage, privacy rechecks and bounded observation windows; late receipt produces a new snapshot.
+
+CONFIRMS_PLAN: implement ordered funnel, cohort/retention, lifecycle and allowlisted content/channel performance on existing facts, without a new store or collector. Definitions explicitly distinguish first observed event in the selected period from first lifetime activity. Lifecycle compares current and previous intervals and reports history coverage as unknown; never label missing history as proven new-person acquisition.
+
+AC implementation: a deterministic domain calculator receives only privacy-admitted facts. Application snapshots enforce all foundation permissions, current consent, retention, identity, integrity, receipt cutoff and cardinality limits. Retention counts a subject once per fully observed elapsed bin. Funnel incomplete horizons are disclosed; same-second ties use canonical event ID and do not assert causal order. Content/campaign dimensions require canonical same-scope object references; channels are an allowlist, not arbitrary provider text. No raw payload, customer identifiers or free text enter report output.
+
+Quality controls: independent numeric fixtures, reordered input and duplicate identity tests, ties/repeated starts, late arrivals, partial horizon, empty denominator, lifecycle coverage, foreign references, revoked consent, cross-workspace/brand and stored snapshot validation. Existing PostgreSQL fact contention remains protected; add actual PostgreSQL behavior snapshot persistence validation. UI/dashboard and representative scale/SLO certification remain TASK0072/0074 obligations, not this task's completion proof.

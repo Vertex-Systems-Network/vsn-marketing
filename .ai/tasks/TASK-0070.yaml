@@ -3,7 +3,7 @@
   "phase": "PHASE-12",
   "title": "Implement funnels, cohorts and retention",
   "weight": 18,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0069"
   ],

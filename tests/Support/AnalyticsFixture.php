@@ -61,13 +61,13 @@ final class AnalyticsFixture implements Clock
         app(RecordConsent::class)->handle($this->actor, $this->contact, 'analytics', 'measurement', 'test', $decision, new DateTimeImmutable($at));
     }
 
-    public function event(?string $sourceId = null, string $occurred = '2026-10-02T10:00:00Z', string $received = '2026-10-02T10:01:00Z'): string
+    public function event(?string $sourceId = null, string $occurred = '2026-10-02T10:00:00Z', string $received = '2026-10-02T10:01:00Z', string $type = 'product.viewed', array $payload = []): string
     {
         $id = (string) Str::uuid();
         app(PersistCustomerEvent::class)->handle($this->actor, new CanonicalEvent(
-            $id, 'product.viewed', new DateTimeImmutable($occurred), new DateTimeImmutable($received),
+            $id, $type, new DateTimeImmutable($occurred), new DateTimeImmutable($received),
             $this->actor->workspaceId, $this->actor->brandId, ['contact_id' => $this->contact], 'fixture', $sourceId,
-            1, ['private_name' => 'Private name'], ['provider_event_name' => 'view'],
+            1, ['private_name' => 'Private name', ...$payload], ['provider_event_name' => 'view'],
         ));
 
         return $id;

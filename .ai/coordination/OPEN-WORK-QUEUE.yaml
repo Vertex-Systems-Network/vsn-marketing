@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6",
+  "reconciled_main_sha": "f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe",
   "active_work_path": {
     "kind": "pr",
-    "number": 472,
-    "title": "TASK-0068: researched Phase 12 analytics acceptance sequence",
-    "branch": "supervisor/phase12-research",
-    "disposition": "active_task0068_carrier"
+    "number": 473,
+    "title": "TASK-0069: privacy guarded canonical analytics facts",
+    "branch": "supervisor/phase12-facts",
+    "disposition": "active_task0069_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 473,
+      "title": "TASK-0069: privacy guarded canonical analytics facts",
+      "branch": "supervisor/phase12-facts",
+      "disposition": "active_task0069_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 472,
       "title": "TASK-0068: researched Phase 12 analytics acceptance sequence",
       "branch": "supervisor/phase12-research",
-      "disposition": "active_task0068_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe"
     },
     {
       "kind": "pr",

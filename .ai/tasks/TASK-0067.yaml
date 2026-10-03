@@ -3,7 +3,7 @@
   "phase": "PHASE-11",
   "title": "Certify Phase 11 experimentation",
   "weight": 12,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0066"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Traceable TASK-0062 through TASK-0066 source and tests with no fabricated effectiveness",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Deterministic replay, PostgreSQL contention, adverse statistical cases and independent approval/rollback proven",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Full exact-head and resulting-main application/governance/security gates pass; no unapproved production enrollment",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

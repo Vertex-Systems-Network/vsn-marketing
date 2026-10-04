@@ -13,7 +13,7 @@ The repository is the memory. Before changing anything, every agent MUST read, i
 5. `.ai/10-AI-CONTROL-PLANE.md`
 6. `.ai/11-RESEARCH-FIRST-STANDARD.md`
 7. `.ai/12-QUALITY-ENGINEERING-GATES.md`
-8. `.ai/13-PARALLEL-DEVELOPMENT.md` and `.ai/parallel/AI-NATIVE-PLAN.md` plus the machine registries under `.ai/parallel/`
+8. `.ai/13-PARALLEL-DEVELOPMENT.md`, `.ai/parallel/AI-NATIVE-PLAN.md`, `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`, plus the machine registries under `.ai/parallel/`
 9. `.ai/roadmap/PREPLANNED-IMPLEMENTATION-PLAN.md`
 10. `.ai/state/CURRENT-STATE.yaml`
 11. `.ai/state/LAST-CHECKPOINT.md`
@@ -37,6 +37,7 @@ python tools/ai_context.py manifest
 python tools/ai_state.py status
 python tools/ai_journal.py status
 python tools/ai_parallel.py status
+python tools/ai_parallel.py batch-status
 python tools/ai_parallel.py sync-check
 ```
 
@@ -45,6 +46,8 @@ python tools/ai_parallel.py sync-check
 ## Execution rules
 
 ### Durable Supervisor resume and authority rules
+
+**Workspace 5-hour continuous mode is the default for mutating resumes.** After a user starts/resumes repository development, follow `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`: continue the accepted work path for up to 300 minutes / available Workspace credits without repeated consent for ordinary repository actions. Same-scope CI/test failures, formatting failures, stale branches, duplicate PRs, merge conflicts and green exact-head merges are handled automatically inside the batch. Suppress intermediate next-action handoffs; expose them when the batch ends or hits a genuine human-only boundary. This does not grant production/provider, secret, billing, destructive data/migration, branch-protection weakening, deployment/release or other external authority that the repository requires explicitly.
 
 Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. Fast Batch Development Mode is the default: one user turn should advance one substantial coherent batch inside the active task rather than one micro-transition. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
 

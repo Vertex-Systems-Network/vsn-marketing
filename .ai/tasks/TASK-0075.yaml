@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0075",
+  "phase": "PHASE-13",
+  "title": "Research current channel APIs and policies",
+  "weight": 12,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0074"
+  ],
+  "objective": "Research current channel APIs and policies",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Current official sources cover SMS, WhatsApp, RCS, push, in-app and prioritized Instagram, Facebook, LinkedIn, TikTok, X, Pinterest, YouTube and Threads APIs, account types, review, permissions and constraints",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Provider capability/limitations matrix, permission and privacy boundaries, testability, failure modes, and implementation ordering are documented with dated provenance",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Research findings are reconciled into Phase 13 task gates; uncertainty and external approval requirements stay explicit",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0075 against dated research and all acceptance gates; retain truthfully pending criteria.",
+  "research_pack": ".ai/research/PHASE-13/TASK-0075-RESEARCH.md"
+}

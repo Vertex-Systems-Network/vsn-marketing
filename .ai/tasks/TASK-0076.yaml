@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0076",
+  "phase": "PHASE-13",
+  "title": "Implement messaging adapters and canonical channel capabilities",
+  "weight": 18,
+  "status": "ready",
+  "dependencies": [
+    "TASK-0075"
+  ],
+  "objective": "Implement messaging adapters and canonical channel capabilities",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canonical SMS, WhatsApp, push, RCS and in-app capability contracts preserve provider-specific unsupported modes and source provenance",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Offline adapters and guarded policy paths enforce consent, suppression, rate limits, tenant scope, idempotency and safe failure handling",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Focused adversarial, integration and exact-head checks verify supported paths; no live send is inferred",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0076 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

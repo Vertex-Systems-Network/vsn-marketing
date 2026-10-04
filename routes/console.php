@@ -8,3 +8,10 @@ Schedule::command(
     ->everyMinute()
     ->onOneServer()
     ->withoutOverlapping(2);
+
+Schedule::command('journeys:redispatch-due')
+    ->everyMinute()
+    ->onOneServer()
+    ->withoutOverlapping(2);
+
+Schedule::command('analytics:generate-due --limit=10')->everyMinute()->onOneServer()->withoutOverlapping(2);

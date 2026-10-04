@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "mode": "active",
+  "mode": "staged",
   "parent_task": "TASK-0041",
   "branch_creation_baseline_sha": "8bbda80bb34423cdd4d2f42f64c7b3d182dde18f",
   "branches_precreated": true,
@@ -115,12 +115,12 @@
       "role": "worker",
       "module": "Publishing",
       "capability": "Complete accessible responsive operator UX states, keyboard/destructive affordances, loading/empty/error/concurrency feedback and focused frontend/E2E certification without adding backend authority.",
-      "assigned_agent": "chatgpt-session-task0041-operator-ux",
+      "assigned_agent": null,
       "branch": "worker-4/task0041-operator-ux-cert",
       "worktree": "worktrees/task-0041-operator-ux-cert",
-      "status": "leased",
-      "slot_status": "occupied",
-      "start_status": "leased_ready_to_execute",
+      "status": "merged",
+      "slot_status": "open",
+      "start_status": "shipping_merged_green",
       "onboarded_from_branch": "main",
       "dependencies": [
         "WS-0041-SUPERVISOR-CONTROL"

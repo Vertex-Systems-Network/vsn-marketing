@@ -39,37 +39,37 @@
     {
       "id": "PHASE-07",
       "weight": 7,
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "PHASE-08",
       "weight": 5,
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "PHASE-09",
       "weight": 7,
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "PHASE-10",
       "weight": 8,
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "PHASE-11",
       "weight": 5,
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "PHASE-12",
       "weight": 6,
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "PHASE-13",
       "weight": 5,
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "PHASE-14",

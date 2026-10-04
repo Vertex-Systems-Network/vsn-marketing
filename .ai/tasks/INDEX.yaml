@@ -414,9 +414,402 @@
       "phase": "PHASE-07",
       "title": "Implement campaign/publishing operator UX",
       "weight": 15,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0040"
+      ]
+    },
+    {
+      "id": "TASK-0043",
+      "phase": "PHASE-08",
+      "title": "Research segmentation/privacy/query patterns and benchmark audience builders",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0041"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0044",
+      "phase": "PHASE-08",
+      "title": "Implement canonical segment definition AST and deterministic query compiler",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0043"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0045",
+      "phase": "PHASE-08",
+      "title": "Implement natural-language-to-segment structured compiler",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0044"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0046",
+      "phase": "PHASE-08",
+      "title": "Implement preview/count/freshness/cost guards and audience UX",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0045"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0047",
+      "phase": "PHASE-08",
+      "title": "Certify PHASE-08",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0046"
+      ],
+      "weight": 25
+    },
+    {
+      "id": "TASK-0048",
+      "phase": "PHASE-09",
+      "title": "Research journey and automation engine patterns",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0047"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0049",
+      "phase": "PHASE-09",
+      "title": "Implement versioned journey graph and deterministic node registry",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0048"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0050",
+      "phase": "PHASE-09",
+      "title": "Implement journey triggers waits conditions branches actions goals exits and re-entry",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0049"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0051",
+      "phase": "PHASE-09",
+      "title": "Implement durable concurrency retries replay and recovery",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0050"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "TASK-0052",
+      "phase": "PHASE-09",
+      "title": "Implement journey builder simulator validation UX and execution timeline",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0051"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0053",
+      "phase": "PHASE-09",
+      "title": "Certify PHASE-09 journey and automation engine",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0049",
+        "TASK-0050",
+        "TASK-0051",
+        "TASK-0052"
+      ],
+      "weight": 10
+    },
+    {
+      "id": "TASK-0054",
+      "phase": "PHASE-10",
+      "title": "Research AI provider routes, privacy, evaluation and agent safety",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0053"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0055",
+      "phase": "PHASE-10",
+      "title": "Implement provider-neutral AI gateway and route policy",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0054"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0056",
+      "phase": "PHASE-10",
+      "title": "Implement isolated context and memory assembly",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0055"
+      ],
+      "weight": 12
+    },
+    {
+      "id": "TASK-0057",
+      "phase": "PHASE-10",
+      "title": "Implement structured output and typed tool policy",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0056"
+      ],
+      "weight": 15
+    },
+    {
+      "id": "TASK-0058",
+      "phase": "PHASE-10",
+      "title": "Implement specialized agent runtime and evaluation",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0057"
+      ],
+      "weight": 12
+    },
+    {
+      "id": "TASK-0059",
+      "phase": "PHASE-10",
+      "title": "Implement content and creative AI adapters",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0058"
+      ],
+      "weight": 10
+    },
+    {
+      "id": "TASK-0060",
+      "phase": "PHASE-10",
+      "title": "Implement AI red-team and abuse-resistance suite",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0059"
+      ],
+      "weight": 11
+    },
+    {
+      "id": "TASK-0061",
+      "phase": "PHASE-10",
+      "title": "Certify PHASE-10 AI gateway and agents",
+      "status": "completed",
+      "dependencies": [
+        "TASK-0060"
+      ],
+      "weight": 10
+    },
+    {
+      "id": "TASK-0062",
+      "phase": "PHASE-11",
+      "title": "Research experimentation and statistical practices",
+      "weight": 16,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0061"
+      ]
+    },
+    {
+      "id": "TASK-0063",
+      "phase": "PHASE-11",
+      "title": "Implement experiment assignment, holdout and exposure foundation",
+      "weight": 22,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0062"
+      ]
+    },
+    {
+      "id": "TASK-0064",
+      "phase": "PHASE-11",
+      "title": "Implement bounded campaign and content experiments",
+      "weight": 18,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0063"
+      ]
+    },
+    {
+      "id": "TASK-0065",
+      "phase": "PHASE-11",
+      "title": "Implement bounded AI optimization proposals",
+      "weight": 16,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0064"
+      ]
+    },
+    {
+      "id": "TASK-0066",
+      "phase": "PHASE-11",
+      "title": "Implement statistical guardrails and experiment QA",
+      "weight": 16,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0065"
+      ]
+    },
+    {
+      "id": "TASK-0067",
+      "phase": "PHASE-11",
+      "title": "Certify Phase 11 experimentation",
+      "weight": 12,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0066"
+      ]
+    },
+    {
+      "id": "TASK-0068",
+      "phase": "PHASE-12",
+      "title": "Research analytics, attribution, privacy and scale",
+      "weight": 10,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0067"
+      ]
+    },
+    {
+      "id": "TASK-0069",
+      "phase": "PHASE-12",
+      "title": "Implement analytics fact and metric foundation",
+      "weight": 20,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0068"
+      ]
+    },
+    {
+      "id": "TASK-0070",
+      "phase": "PHASE-12",
+      "title": "Implement funnels, cohorts and retention",
+      "weight": 18,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0069"
+      ]
+    },
+    {
+      "id": "TASK-0071",
+      "phase": "PHASE-12",
+      "title": "Implement attribution, revenue and observed LTV",
+      "weight": 18,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0070"
+      ]
+    },
+    {
+      "id": "TASK-0072",
+      "phase": "PHASE-12",
+      "title": "Implement analytics operator reports and explanations",
+      "weight": 14,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0071"
+      ]
+    },
+    {
+      "id": "TASK-0073",
+      "phase": "PHASE-12",
+      "title": "Implement data-quality and source reconciliation",
+      "weight": 10,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0072"
+      ]
+    },
+    {
+      "id": "TASK-0074",
+      "phase": "PHASE-12",
+      "title": "Certify Phase 12 analytics",
+      "weight": 10,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0073"
+      ]
+    },
+    {
+      "id": "TASK-0075",
+      "phase": "PHASE-13",
+      "title": "Research current channel APIs and policies",
+      "weight": 12,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0074"
+      ]
+    },
+    {
+      "id": "TASK-0076",
+      "phase": "PHASE-13",
+      "title": "Implement messaging adapters and canonical channel capabilities",
+      "weight": 18,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0075"
+      ]
+    },
+    {
+      "id": "TASK-0077",
+      "phase": "PHASE-13",
+      "title": "Implement prioritized social publishing adapters",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0076"
+      ]
+    },
+    {
+      "id": "TASK-0078",
+      "phase": "PHASE-13",
+      "title": "Implement normalized Community inbox",
+      "weight": 16,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0077"
+      ]
+    },
+    {
+      "id": "TASK-0079",
+      "phase": "PHASE-13",
+      "title": "Implement permitted listening and market signals",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0078"
+      ]
+    },
+    {
+      "id": "TASK-0080",
+      "phase": "PHASE-13",
+      "title": "Implement cross-channel engagement and publication analytics",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0079"
+      ]
+    },
+    {
+      "id": "TASK-0081",
+      "phase": "PHASE-13",
+      "title": "Certify Phase 13 omnichannel and social operations",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0080"
       ]
     }
   ]

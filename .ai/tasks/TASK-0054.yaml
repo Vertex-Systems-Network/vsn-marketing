@@ -1,0 +1,40 @@
+{
+  "id": "TASK-0054",
+  "phase": "PHASE-10",
+  "title": "Research AI provider routes, privacy, evaluation and agent safety",
+  "weight": 15,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0053"
+  ],
+  "objective": "Research current model APIs, structured output/tooling, privacy and residency, pricing, context/media capabilities, safety and measured route candidates.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Current first-party provider/API, data controls, pricing and safety sources are captured with access dates and capability differences.",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Measurable route-candidate rubric, privacy/region and cost/latency test prerequisites are defined without inventing live scores.",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Existing AI gateway/context/tool/agent registries and security policy are reconciled with TASK-0055 through TASK-0061 acceptance boundaries.",
+      "done": true
+    },
+    {
+      "id": "AC-4",
+      "text": "Research-first and canonical governance validation pass; no provider runtime or billing action occurs.",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete and validate the dated TASK-0054 research pack, measured route prerequisites and risk classification; do not claim a live provider route without credentials and reproducible evaluation.",
+  "research_pack": ".ai/research/PHASE-10/TASK-0054-RESEARCH.md"
+}

@@ -1472,18 +1472,228 @@
       "source": "TASK-0041 Operator UX Lane-4 lease authority carrier",
       "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI",
       "exact_source_identity": {
-        "git_sha": null,
-        "resolution_required_before_execution": true,
-        "evidence_surface": "Lane-4 lease carrier exact-head status + protected-main merge evidence"
+        "git_sha": "34b1a0a2632218cd87ae070547f16a20dc76ba5a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #402 exact-head full gate + protected-main merge evidence"
       },
       "environment_matrix_input_fixture": "Lane-3 terminal release; interactive Lane-4 identity chatgpt-session-task0041-operator-ux; exclusive frontend/unit/E2E lease; corrected Playwright e2e path; green integration dependency fdd4ab92",
-      "authorization_state": "authorized_required_exact_head_ci",
+      "authorization_state": "consumed_required_exact_head_ci",
       "security_critical": true,
       "merge_blocking": true,
       "expected_runner_time": "bounded_by_required_workflow_timeouts",
       "dedup_key": "runner:task0041-operator-ux-lane4-lease:required-full-ci",
-      "status": "registered_immediate",
-      "immutable_evidence": null
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_request": 402,
+        "source_sha": "34b1a0a2632218cd87ae070547f16a20dc76ba5a",
+        "merge_sha": "ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e",
+        "workflow_runs": {
+          "ai_continuity_guard": 36240505361,
+          "application_foundation_ci": 36240505342,
+          "security_supply_chain_ci": 36240505338
+        },
+        "conclusions": {
+          "ai_continuity_guard": "success",
+          "application_foundation_ci": "success",
+          "security_supply_chain_ci": "success"
+        }
+      }
+    },
+    {
+      "id": "RBT-049",
+      "source": "PR #403 operator UX worker + PR #404 required ledger reconciliation and final TASK-0041 integration certification",
+      "command_workflow": "PR #403 Shipping Fast Gate; full Application Foundation CI on product-bearing integration; final green ship/week-1 Continuity + Application + Shipping Fast Gate",
+      "exact_source_identity": {
+        "git_sha": "0733c40eead4038e2c1d7f19a50df23b88aaac6a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #403 exact worker head plus exact green integration heads 7f43eda18cc95ab90ea0b56207e67476e7433fab / 0733c40eead4038e2c1d7f19a50df23b88aaac6a"
+      },
+      "environment_matrix_input_fixture": "accessible responsive operator UX; workspace/tenant authority; immutable preview; approval and reject confirmation; retry/revoke stale-state guards; partial-success/provider outcomes; secret-safe Playwright guard; PHP backend/integration/static/format, frontend typecheck/unit/build and Playwright smoke",
+      "authorization_state": "consumed_required_shipping_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_exact_worker_and_integration_workflow_timeouts",
+      "dedup_key": "runner:task0041-final-operator-ux-integration:403-404",
+      "status": "passed",
+      "immutable_evidence": {
+        "pull_requests": [
+          403,
+          404
+        ],
+        "worker_source_sha": "391f43b3e7ee720be878294009a5993c163da685",
+        "product_test_sha": "7f43eda18cc95ab90ea0b56207e67476e7433fab",
+        "latest_green_integration_sha": "0733c40eead4038e2c1d7f19a50df23b88aaac6a",
+        "workflow_runs": {
+          "worker_shipping_fast_gate": 36241215009,
+          "product_application_foundation_ci": 36241797924,
+          "final_ship_ai_continuity_guard": 36242518365,
+          "final_ship_application_foundation_ci": 36242518520,
+          "final_ship_shipping_fast_gate": 36242518369
+        },
+        "conclusions": {
+          "worker_shipping_fast_gate": "success",
+          "product_application_foundation_ci": "success",
+          "final_ship_ai_continuity_guard": "success",
+          "final_ship_application_foundation_ci": "success",
+          "final_ship_shipping_fast_gate": "success"
+        },
+        "test_surface_note": "The complete application suite ran successfully on product-bearing integration head 7f43eda; the subsequent latest integration head 0733c40 differs only by the Supervisor ledger reconciliation, and its required continuity/application/shipping workflow conclusions are all success."
+      }
+    },
+    {
+      "id": "RBT-050",
+      "source": "PHASE-07 final acceptance and protected-main promotion",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI + all applicable release acceptance checks",
+      "exact_source_identity": {
+        "git_sha": "30f7eda14c0589e8e75ced004642251046cfe09c",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #405 exact-head full gates and resulting protected-main checks"
+      },
+      "environment_matrix_input_fixture": "TASK-0041 AC-1..AC-8 acceptance ledger; PR #402/#403/#404 and final ship integration evidence; CI-Mode full; exact protected-main target",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_protected_main_full_workflow_timeouts",
+      "dedup_key": "runner:phase07-final-acceptance-promotion:protected-main",
+      "status": "passed",
+      "immutable_evidence": {
+        "promotion_pr": 405,
+        "source_sha": "30f7eda14c0589e8e75ced004642251046cfe09c",
+        "merge_sha": "87e65b1d458a79f925376d4cf49792d3771ef192",
+        "workflow_runs": {
+          "pr_ai_continuity_guard": 36243101029,
+          "pr_application_foundation_ci": 36243101046,
+          "pr_security_supply_chain_ci": 36243100966,
+          "resulting_main_ai_continuity_guard": 36243383256,
+          "resulting_main_application_foundation_ci": 36243383236,
+          "resulting_main_security_supply_chain_ci": 36243383257,
+          "resulting_main_release_integrity": 36243383323,
+          "resulting_main_scorecard": 36243383292,
+          "resulting_main_persistent_control_plane": 36243491699
+        },
+        "conclusions": {
+          "pr_ai_continuity_guard": "success",
+          "pr_application_foundation_ci": "success",
+          "pr_security_supply_chain_ci": "success",
+          "resulting_main_ai_continuity_guard": "success",
+          "resulting_main_application_foundation_ci": "success",
+          "resulting_main_security_supply_chain_ci": "success",
+          "resulting_main_release_integrity": "success",
+          "resulting_main_scorecard": "success",
+          "resulting_main_persistent_control_plane": "success"
+        },
+        "test_surface_note": "Application Foundation passed backend, integration, architecture/static analysis, formatting, frontend typecheck/unit/build, PHP floor and Playwright E2E on both the exact PR head and resulting main SHA."
+      }
+    },
+    {
+      "id": "RBT-051",
+      "source": "PHASE-08 final segmentation certification baseline",
+      "command_workflow": "AI Continuity Guard + Application Foundation CI + Security Supply Chain CI + PostgreSQL integration + live Playwright E2E",
+      "exact_source_identity": {
+        "git_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "PR #413 immutable candidate head full gates"
+      },
+      "environment_matrix_input_fixture": "TASK-0043 research and TASK-0044..TASK-0047 acceptance ledger; tenant-isolated AST/compiler; hostile bound values; prompt-injection and hallucination refusal; PostgreSQL cost/timeout probes; authenticated accessible count-only audience UX including empty, stale, capped-large and responsive states",
+      "authorization_state": "consumed_required_exact_head_ci",
+      "security_critical": true,
+      "merge_blocking": true,
+      "expected_runner_time": "bounded_by_protected_main_full_workflow_timeouts",
+      "dedup_key": "runner:phase08-final-segmentation-certification:protected-main",
+      "status": "passed",
+      "immutable_evidence": {
+        "promotion_pr": 413,
+        "source_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369",
+        "workflow_runs": {
+          "candidate_ai_continuity_guard": 36279523770,
+          "candidate_application_foundation_ci": 36279523802,
+          "candidate_security_supply_chain_ci": 36279523720
+        },
+        "conclusions": {
+          "candidate_ai_continuity_guard": "success",
+          "candidate_application_foundation_ci": "success",
+          "candidate_security_supply_chain_ci": "success"
+        },
+        "test_surface_note": "Application Foundation passed backend, architecture/static/format, frontend typecheck/unit/build, PHP 8.3 floor, PostgreSQL integration and live Playwright E2E; Continuity and Security also passed on the identical candidate SHA. The subsequent closeout commit contains only durable certification/state surfaces and must independently repeat all full gates before merge."
+      }
+    },
+    {
+      "id": "RBT-052",
+      "source": "TASK-0051 journey execution representative benchmark after PR #420 and PR #421",
+      "command_workflow": "tools/task0051_benchmark_queue_capture.php + tools/task0051_benchmark_queue_evidence.py; docs/operations/TASK-0051-BENCHMARK-ENV.md; exact reviewed source and isolated runtime; PHASE-09 closeout before PHASE-10",
+      "exact_source_identity": {
+        "git_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
+        "resolution_required_before_execution": false,
+        "evidence_surface": "synthetic Redis graph and canonical policy with 200-job/eight-worker backlog; severe tail; provider excluded"
+      },
+      "environment_matrix_input_fixture": "authorized non-production PostgreSQL/Redis journey execution environment; record runtime versions, runner resources, fixture seed/graph, enrollment count, node mix, concurrency, attempt lease/retry/cancellation and replay rates, measurement window and saturation/fault outcomes; isolated runtime must be verified before execution; no production/shared resources",
+      "authorization_state": "user_authorized_pre_phase10_dedicated_batch",
+      "security_critical": false,
+      "merge_blocking": false,
+      "expected_runner_time": "unmeasured_external_runtime",
+      "dedup_key": "runner:task0051:representative-journey-execution:v1",
+      "status": "captured_scope_incomplete",
+      "immutable_evidence": {
+        "workflow_run": 36554880080,
+        "artifact_id": 11027461290,
+        "source_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
+        "main_tree_sha": "787d20147348a60e2342a57055f5c6d0d3b7d33d",
+        "artifact_sha256": "b827abe8ead2a6a3bf4422b17b7f332fc48650cab51631ebb0babbd2b1f5a70e",
+        "raw_json_sha256": "7c1ef125344e83707b27cf09160a655ab8ccf2cd90ea8f70628b21330ce0a078",
+        "review": "docs/benchmarks/evidence/RBT-052-36554880080-review.md",
+        "raw_json": "docs/benchmarks/evidence/RBT-052-36554880080.json",
+        "ac5_accepted": false,
+        "scope": "200-job/eight-worker backlog: 1.918 ops/s and p95 queue age 65.865s; cause unisolated; production provider/policy excluded"
+      },
+      "prior_evidence": [
+        {
+          "workflow_run": 36504122827,
+          "artifact_id": 11006421917,
+          "source_sha": "9dc6c9e2420ba5dbf44ffa00aacf83581a6c61f8",
+          "artifact_sha256": "8d7f811c45b59eae86f4a2ee62fca2090b6da4f12b83be90e1ae0a482375dad3",
+          "raw_json_sha256": "bf4ea5127cdb957fc9694d00a80837b62281018d42a67b69d1081a2d6f19dfec",
+          "review": "docs/benchmarks/evidence/RBT-052-36504122827-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36504122827.json",
+          "ac5_accepted": false,
+          "scope": "synthetic enrollment and PostgreSQL attempt persistence only; no Redis queue or full graph traversal"
+        },
+        {
+          "workflow_run": 36548742165,
+          "artifact_id": 11024195751,
+          "source_sha": "4450f748aca171af9ba1ed5e6954a7ccc879a044",
+          "main_tree_sha": "70253692d7b3e06aca6d4ff51837e9d7e8a346cc",
+          "artifact_sha256": "be9da38ed39a51ad9bbbb2f66f46dbcd13b4e33752e66d7d53182532a899152d",
+          "raw_json_sha256": "7c9260301daaf2b37f10bdce3d4559c2b137c4c0b5c6fa212bc946c915c548b8",
+          "review": "docs/benchmarks/evidence/RBT-052-36548742165-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36548742165.json",
+          "ac5_accepted": false,
+          "scope": "synthetic Redis queue, pinned full graph, wait resume and no-op action; production policy, provider latency and full-path fault/saturation not measured"
+        },
+        {
+          "workflow_run": 36551834751,
+          "artifact_id": 11024542666,
+          "source_sha": "6d77045191b53d596851fa999203bd5a1050d483",
+          "main_tree_sha": "75ec690be074a1c47ae078727f644f3e19b31d8e",
+          "artifact_sha256": "3a3b87578c3ca297a8c2955afa5e8fdb68bdec6745ead7c7a05995a9872f6585",
+          "raw_json_sha256": "887e4abf0f23fd5ce40123140a37f890d581e9e8566057f97870ca5646c8665e",
+          "review": "docs/benchmarks/evidence/RBT-052-36551834751-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36551834751.json",
+          "ac5_accepted": false,
+          "scope": "synthetic queue/full graph, canonical consent/suppression allow and deny; production provider action and full-path saturation/fault not measured"
+        },
+        {
+          "workflow_run": 36553385856,
+          "artifact_id": 11025900871,
+          "source_sha": "9e1962a142045fc787d40f423d967b5ad4b1bc50",
+          "main_tree_sha": "71566d2d549dc42093c25768ea1579819fcb229c",
+          "artifact_sha256": "cd762be713517fc526dcc246f3276ea368968c143a823f17770e9a46874284a2",
+          "raw_json_sha256": "78234dc3c5627ee565b55b591bc6e33ec8b1ce1263e0a35faf8b38e25a1f3047",
+          "review": "docs/benchmarks/evidence/RBT-052-36553385856-review.md",
+          "raw_json": "docs/benchmarks/evidence/RBT-052-36553385856.json",
+          "ac5_accepted": false,
+          "scope": "isolated synthetic full graph; canonical consent/suppression, duplicate/cross-workspace/cancellation faults; production action/provider and saturation unmeasured"
+        }
+      ]
     }
   ]
 }

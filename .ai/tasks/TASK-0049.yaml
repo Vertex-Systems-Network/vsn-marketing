@@ -1,0 +1,44 @@
+{
+  "id": "TASK-0049",
+  "phase": "PHASE-09",
+  "title": "Implement versioned journey graph and deterministic node registry",
+  "weight": 20,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0048"
+  ],
+  "objective": "Implement immutable journey versions, registered node/config schemas, validation, enrollment identity, and workspace-safe publication boundaries.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Journey drafts publish immutable versioned canonical graphs with deterministic serialization and definition hash.",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Only registered node types/configurations and typed transitions are executable; arbitrary code/SQL is rejected.",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Enrollment identity, re-entry policy, pinned journey version, and duplicate-event idempotency are enforced.",
+      "done": true
+    },
+    {
+      "id": "AC-4",
+      "text": "Workspace authority and permission/policy validation are independent of graph input.",
+      "done": true
+    },
+    {
+      "id": "AC-5",
+      "text": "Adversarial malformed, deep, cross-workspace, unknown-node, and version-confusion tests pass.",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "journey-graph-unit-tests",
+    "tenant-isolation-adversarial-tests",
+    "deterministic-version-hash-tests"
+  ],
+  "exact_next_action": "Implement and test immutable journey graph/version registry with workspace-owned validation; do not touch PHASE-10."
+}

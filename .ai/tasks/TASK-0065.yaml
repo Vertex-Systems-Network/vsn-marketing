@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0065",
+  "phase": "PHASE-11",
+  "title": "Implement bounded AI optimization proposals",
+  "weight": 16,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0064"
+  ],
+  "objective": "Versioned AI experiment recommendations that cannot approve themselves",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Typed scoped proposal with source, context, uncertainty and risk controls",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Independent evaluation, review and exact candidate promotion/rollback; no autonomous campaign send",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Adversarial self-promotion, foreign scope and budget tests plus exact-head/main CI",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0065 against the research and all acceptance gates; do not assert live performance from fixtures."
+}

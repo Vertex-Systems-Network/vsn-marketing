@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0058",
+  "phase": "PHASE-10",
+  "title": "Implement specialized agent runtime and evaluation",
+  "weight": 12,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0057"
+  ],
+  "objective": "Implement registered agents, prompt/version integration, evaluation harness and candidate promotion flow.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Only registered agents and versioned prompts/tools/context scopes run with bounded step and budget policy.",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Golden evals and candidate promotion require deterministic policy plus independent review; agent cannot self-approve.",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Multi-agent isolation, retry/loop and exact-head/main tests pass.",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0058 against its research and test gates without relaxing model/tool/data policy."
+}

@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0068",
+  "phase": "PHASE-12",
+  "title": "Research analytics, attribution, privacy and scale",
+  "weight": 10,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0067"
+  ],
+  "objective": "Research analytics, attribution, privacy and scale",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Current authoritative source provenance and market workflow recorded",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Metric, ordering, privacy, revenue and quality findings mapped to TASK-0069 through TASK-0074",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Plan confirms canonical PostgreSQL stack; current governance gates pass",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0068 against dated research and all acceptance gates; retain truthfully pending criteria.",
+  "research_pack": ".ai/research/PHASE-12/TASK-0068-RESEARCH.md"
+}

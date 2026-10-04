@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Analytics\AnalyticsServiceProvider;
 use App\Modules\Audit\AuditServiceProvider;
 use App\Modules\Consent\ConsentServiceProvider;
 use App\Modules\Contacts\ContactsServiceProvider;
@@ -7,19 +8,24 @@ use App\Modules\Core\CoreServiceProvider;
 use App\Modules\DeliveryEngine\DeliveryEngineServiceProvider;
 use App\Modules\Events\EventsServiceProvider;
 use App\Modules\Identity\IdentityServiceProvider;
+use App\Modules\Journeys\JourneysServiceProvider;
 use App\Modules\Providers\ProvidersServiceProvider;
+use App\Modules\Segmentation\SegmentationServiceProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\HorizonServiceProvider;
 
 return [
     AppServiceProvider::class,
+    AnalyticsServiceProvider::class,
     HorizonServiceProvider::class,
     CoreServiceProvider::class,
     AuditServiceProvider::class,
     EventsServiceProvider::class,
     IdentityServiceProvider::class,
+    JourneysServiceProvider::class,
     ContactsServiceProvider::class,
     ConsentServiceProvider::class,
     ProvidersServiceProvider::class,
     DeliveryEngineServiceProvider::class,
+    SegmentationServiceProvider::class,
 ];

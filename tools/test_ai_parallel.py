@@ -42,6 +42,8 @@ def main() -> int:
         item["start_status"] = "awaiting_agent"
         item.pop("onboarded_from_branch", None)
 
+    onboarding_registry["parent_task"] = mod.current_active_task()
+
     original = mod.load
     try:
         def fixture_load(path):
@@ -53,6 +55,23 @@ def main() -> int:
         mod.load = fixture_load
         code, message = mod.onboarding_check("main")
         require(code == 0 and message.startswith("Open slots:"), "main onboarding should find capacity")
+    finally:
+        mod.load = original
+
+    stale_registry = copy.deepcopy(onboarding_registry)
+    stale_registry["parent_task"] = "TASK-STALE-REGISTRY"
+    original = mod.load
+    try:
+        def stale_fixture_load(path):
+            if path == mod.CONTROL:
+                return control
+            if path == mod.WORKSTREAMS:
+                return stale_registry
+            return original(path)
+        mod.load = stale_fixture_load
+        code, rejection = mod.onboarding_check("main")
+        require(code == 4, "stale parent task must reject onboarding")
+        require("does not match active task" in rejection, "stale parent rejection must explain active-task mismatch")
     finally:
         mod.load = original
 
@@ -101,7 +120,7 @@ def main() -> int:
     require(mod.overlaps("app/Modules/Foo/**", "app/Modules/Foo/Bar/**"), "nested scopes must overlap")
     require(not mod.overlaps("app/Modules/Foo/**", "app/Modules/Bar/**"), "disjoint scopes must not overlap")
 
-    print("ai_parallel Supervisor guard tests: PASS (main-first onboarding, open-slot assignment, full-capacity rejection, completion signal, scope overlap)")
+    print("ai_parallel Supervisor guard tests: PASS (main-first onboarding, stale-registry rejection, open-slot assignment, full-capacity rejection, completion signal, scope overlap)")
     return 0
 
 

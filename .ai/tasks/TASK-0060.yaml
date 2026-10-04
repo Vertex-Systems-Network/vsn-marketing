@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0060",
+  "phase": "PHASE-10",
+  "title": "Implement AI red-team and abuse-resistance suite",
+  "weight": 11,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0059"
+  ],
+  "objective": "Test injection, exfiltration, cross-tenant leakage, tool abuse, unsafe fallback, budget denial and loops.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Direct/indirect injection, retrieval poisoning, prompt leakage, hallucinated IDs and cross-workspace access are adversarially exercised.",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Tool abuse, exfiltration, unsafe fallback, budget denial, infinite loops and self-modification fail closed.",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Red-team fixtures, regression coverage and exact-head/main gates pass.",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0060 against its research and test gates without relaxing model/tool/data policy."
+}

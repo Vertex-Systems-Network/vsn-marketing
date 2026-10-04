@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0079",
+  "phase": "PHASE-13",
+  "title": "Implement permitted listening and market signals",
+  "weight": 12,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0078"
+  ],
+  "objective": "Implement permitted listening and market signals",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Only officially permitted provider signals enter bounded listening; unauthorized scraping is absent",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Provenance, retention, scopes, rate limits, tenant isolation and missing coverage are explicit",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Contract and adversarial tests pass with unknown source completeness disclosed",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0079 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

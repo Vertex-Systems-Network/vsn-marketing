@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0081",
+  "phase": "PHASE-13",
+  "title": "Certify Phase 13 omnichannel and social operations",
+  "weight": 12,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0080"
+  ],
+  "objective": "Certify Phase 13 omnichannel and social operations",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Requirements, source, policy and test matrix covers TASK-0075 through TASK-0080 and unsupported paths",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Channel contracts, tenant isolation, consent/privacy, rate limits, moderation, UI accessibility and failure reconciliation are evidenced",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Exact-head and resulting-main application, security, continuity and release gates pass without production claims",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0081 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

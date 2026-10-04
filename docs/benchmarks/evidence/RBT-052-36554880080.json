@@ -1,0 +1,3024 @@
+{
+    "schema_version": 5,
+    "benchmark_id": "rbt052-gh-36554880080",
+    "source_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
+    "resource_profile": "gh-ubuntu2404-app2cpu4g-ephemeral-pg18-redis8",
+    "runner_image_sha": "ce6f79691412120be3c5e0c03330fc70b9213804e86f1bb2eb758b7045339f8a",
+    "cpu_count": 2,
+    "memory_mib": 4096,
+    "database": "vsn_marketing_benchmark",
+    "fixture_seed": 51,
+    "preflight": {
+        "preflight": "passed",
+        "benchmark_evidence": false,
+        "source_sha": "63da5921e01d5cd5033e279506285cb23311e56a",
+        "database": "vsn_marketing_benchmark",
+        "php_version": "8.5.11",
+        "postgresql_version": "18.6",
+        "enrollment_cap": 2000,
+        "checked_at_utc": "2026-09-29T10:21:23+00:00"
+    },
+    "redis_queue_measured": true,
+    "graph_traversal_measured": true,
+    "synthetic_action_gate_invoked": true,
+    "production_action_policy_measured": false,
+    "provider_latency_measured": false,
+    "canonical_consent_suppression_measured": true,
+    "policy_denial_probe": {
+        "missing_consent": "failed_before_action_dispatch",
+        "suppressed": "failed_before_action_dispatch"
+    },
+    "fault_probe": {
+        "duplicate_redis_wakeup_idempotent": true,
+        "foreign_workspace_wakeup_rejected": true,
+        "cancelled_execution_ignored_stale_wakeup": true
+    },
+    "sample_scope": "isolated synthetic Redis queue, PostgreSQL pinned graph, bounded wait and no-op action; canonical consent/suppression checked, full production action policy/provider timing excluded",
+    "warmup": {
+        "graph_hash": "2e7161f5ec1529208874791b8896ee16c5919a544279e3d77caed393e0003662",
+        "operations": 20,
+        "concurrency": 4,
+        "elapsed_ms": 15476.0298,
+        "throughput_per_second": 1.292,
+        "queue_samples": [
+            {
+                "index": 0,
+                "workspace_slot": 1,
+                "queue_age_ms": 1146.81,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 1,
+                "workspace_slot": 0,
+                "queue_age_ms": 1144.842,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 2,
+                "workspace_slot": 1,
+                "queue_age_ms": 1136.621,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 3,
+                "workspace_slot": 0,
+                "queue_age_ms": 1150.503,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 4,
+                "workspace_slot": 1,
+                "queue_age_ms": 991.959,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 5,
+                "workspace_slot": 0,
+                "queue_age_ms": 999.633,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 6,
+                "workspace_slot": 1,
+                "queue_age_ms": 1000.361,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 7,
+                "workspace_slot": 0,
+                "queue_age_ms": 1005.141,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 8,
+                "workspace_slot": 1,
+                "queue_age_ms": 1029.335,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 9,
+                "workspace_slot": 0,
+                "queue_age_ms": 1036.7,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 10,
+                "workspace_slot": 1,
+                "queue_age_ms": 1040.374,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 11,
+                "workspace_slot": 0,
+                "queue_age_ms": 1042.416,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 12,
+                "workspace_slot": 1,
+                "queue_age_ms": 1060.992,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 13,
+                "workspace_slot": 0,
+                "queue_age_ms": 1072.341,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 14,
+                "workspace_slot": 1,
+                "queue_age_ms": 1075.113,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 15,
+                "workspace_slot": 0,
+                "queue_age_ms": 1080.705,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 16,
+                "workspace_slot": 1,
+                "queue_age_ms": 1099.624,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 17,
+                "workspace_slot": 0,
+                "queue_age_ms": 1108.924,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 18,
+                "workspace_slot": 1,
+                "queue_age_ms": 1109.613,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            },
+            {
+                "index": 19,
+                "workspace_slot": 0,
+                "queue_age_ms": 1116.646,
+                "end_to_end_ms": 9000,
+                "node_attempts": 5
+            }
+        ],
+        "worker_passes": 2,
+        "initial_queue_depth": 20
+    },
+    "runs": [
+        {
+            "graph_hash": "2e7161f5ec1529208874791b8896ee16c5919a544279e3d77caed393e0003662",
+            "operations": 100,
+            "concurrency": 4,
+            "elapsed_ms": 20535.2861,
+            "throughput_per_second": 4.87,
+            "queue_samples": [
+                {
+                    "index": 0,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2093.202,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 1,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2094.345,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 2,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2095.369,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 3,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2101.017,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 4,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2192.758,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 5,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2193.811,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 6,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2200.053,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 7,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2204.146,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 8,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2227.836,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 9,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2231.308,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 10,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2235.612,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 11,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2236.06,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 12,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2264.298,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 13,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2267.227,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 14,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2273.513,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 15,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2274.359,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 16,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2297.369,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 17,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2303.411,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 18,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2307.835,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 19,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2308.8,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 20,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2333.032,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 21,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2337.316,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 22,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1971.295,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 23,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1686.83,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 24,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1969.297,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 25,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1727.938,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 26,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1375.923,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 27,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1524.392,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 28,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1405.075,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 29,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1685.343,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 30,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2008.808,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 31,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1730.137,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 32,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1803.942,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 33,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1569.041,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 34,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1452.246,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 35,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1732.798,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 36,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2034.902,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 37,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1518.694,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 38,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1846.213,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 39,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1491.35,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 40,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1888.365,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 41,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1520.821,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 42,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2081.75,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 43,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1648.082,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 44,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1845.196,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 45,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1556.127,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 46,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2009.69,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 47,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1563.71,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 48,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2021.014,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 49,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1590.706,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 50,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1928.822,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 51,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1767.041,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 52,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1935.428,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 53,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1624.202,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 54,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1852.052,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 55,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1644.168,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 56,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1928.316,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 57,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1728.963,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 58,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1664.546,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 59,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1670.772,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 60,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1692.747,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 61,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1697.648,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 62,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1699.848,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 63,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1705.615,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 64,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1727.84,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 65,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1734.633,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 66,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1812.48,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 67,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1742.285,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 68,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1976.497,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 69,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1770.899,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 70,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1771.956,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 71,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1778.925,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 72,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1799.889,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 73,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1806.151,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 74,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2010.066,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 75,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1814.309,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 76,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1995.682,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 77,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1842.111,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 78,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2023.195,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 79,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1849.651,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 80,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1869.038,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 81,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1876.171,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 82,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1929.333,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 83,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1884.986,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 84,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1971.815,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 85,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1911.312,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 86,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1913.111,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 87,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1919.866,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 88,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2100.703,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 89,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1947.886,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 90,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1948.258,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 91,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1953.609,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 92,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2069.2,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 93,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1982.423,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 94,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2065.994,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 95,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1987.147,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 96,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2011.829,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 97,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2018.146,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 98,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2017.511,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 99,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2021.25,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                }
+            ],
+            "worker_passes": 2,
+            "initial_queue_depth": 100
+        },
+        {
+            "graph_hash": "2e7161f5ec1529208874791b8896ee16c5919a544279e3d77caed393e0003662",
+            "operations": 100,
+            "concurrency": 4,
+            "elapsed_ms": 20576.763,
+            "throughput_per_second": 4.86,
+            "queue_samples": [
+                {
+                    "index": 0,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1816.834,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 1,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1814.116,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 2,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1816.253,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 3,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2055.828,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 4,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1911.077,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 5,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1937.052,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 6,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1951.069,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 7,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2098.048,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 8,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1968.044,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 9,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2061.068,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 10,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1985.301,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 11,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2024.807,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 12,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2002.704,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 13,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2011.182,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 14,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2021.073,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 15,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2022.962,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 16,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2046.743,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 17,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2050.485,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 18,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2052.261,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 19,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2055.473,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 20,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2082.734,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 21,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2086.258,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 22,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2092.057,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 23,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2093.214,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 24,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2120.51,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 25,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2124.061,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 26,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2127.191,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 27,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2130.094,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 28,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2154.536,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 29,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2158.173,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 30,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2164.047,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 31,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2165.345,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 32,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2190.709,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 33,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2192.003,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 34,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2199.537,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 35,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2202.024,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 36,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2227.351,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 37,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2227.399,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 38,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2236.149,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 39,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2236.126,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 40,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2263.406,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 41,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2264.52,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 42,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2271.911,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 43,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2271.715,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 44,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2299.052,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 45,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2299.91,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 46,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2306.503,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 47,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2307.296,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 48,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2335.728,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 49,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2336.422,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 50,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2344.634,
+                    "end_to_end_ms": 15000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 51,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 2344.337,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 52,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 2373.397,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 53,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1430.347,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 54,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1778.945,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 55,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1380.288,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 56,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1857.422,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 57,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1415.399,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 58,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1897.194,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 59,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1424.81,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 60,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1940.896,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 61,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1463.057,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 62,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1897.521,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 63,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1468.314,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 64,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1858.323,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 65,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1498.541,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 66,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1717.179,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 67,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1506.346,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 68,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1744.186,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 69,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1533.591,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 70,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1671.187,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 71,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1540.831,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 72,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1864.195,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 73,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1568.072,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 74,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1822.622,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 75,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1574.016,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 76,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1897.6,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 77,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1605.674,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 78,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1978.478,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 79,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1610.205,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 80,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1814.184,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 81,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1640.402,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 82,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1775.073,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 83,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1648.043,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 84,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1743.908,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 85,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1675.661,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 86,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1979.93,
+                    "end_to_end_ms": 14000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 87,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1683.644,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 88,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1938.731,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 89,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1709.302,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 90,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1904.613,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 91,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1719.237,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 92,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1945.075,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 93,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1745.78,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 94,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1939.809,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 95,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1753.353,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 96,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1858,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 97,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1779.879,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 98,
+                    "workspace_slot": 1,
+                    "queue_age_ms": 1781.96,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                },
+                {
+                    "index": 99,
+                    "workspace_slot": 0,
+                    "queue_age_ms": 1786.723,
+                    "end_to_end_ms": 13000,
+                    "node_attempts": 5
+                }
+            ],
+            "worker_passes": 2,
+            "initial_queue_depth": 100
+        }
+    ],
+    "backlog_stress": {
+        "graph_hash": "2e7161f5ec1529208874791b8896ee16c5919a544279e3d77caed393e0003662",
+        "operations": 200,
+        "concurrency": 8,
+        "elapsed_ms": 104270.2516,
+        "throughput_per_second": 1.918,
+        "queue_samples": [
+            {
+                "index": 0,
+                "workspace_slot": 1,
+                "queue_age_ms": 2661.988,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 1,
+                "workspace_slot": 0,
+                "queue_age_ms": 2648.258,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 2,
+                "workspace_slot": 1,
+                "queue_age_ms": 56592.404,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 3,
+                "workspace_slot": 0,
+                "queue_age_ms": 2751.614,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 4,
+                "workspace_slot": 1,
+                "queue_age_ms": 56743.547,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 5,
+                "workspace_slot": 0,
+                "queue_age_ms": 10330.013,
+                "end_to_end_ms": 27000,
+                "node_attempts": 5
+            },
+            {
+                "index": 6,
+                "workspace_slot": 1,
+                "queue_age_ms": 2862.956,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 7,
+                "workspace_slot": 0,
+                "queue_age_ms": 2893.963,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 8,
+                "workspace_slot": 1,
+                "queue_age_ms": 2894.107,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 9,
+                "workspace_slot": 0,
+                "queue_age_ms": 65419.544,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 10,
+                "workspace_slot": 1,
+                "queue_age_ms": 2940.473,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 11,
+                "workspace_slot": 0,
+                "queue_age_ms": 3019.186,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 12,
+                "workspace_slot": 1,
+                "queue_age_ms": 3042.234,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 13,
+                "workspace_slot": 0,
+                "queue_age_ms": 73945.123,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 14,
+                "workspace_slot": 1,
+                "queue_age_ms": 65871.179,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 15,
+                "workspace_slot": 0,
+                "queue_age_ms": 65421.698,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 16,
+                "workspace_slot": 1,
+                "queue_age_ms": 3104.165,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 17,
+                "workspace_slot": 0,
+                "queue_age_ms": 3115.946,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 18,
+                "workspace_slot": 1,
+                "queue_age_ms": 3149.181,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 19,
+                "workspace_slot": 0,
+                "queue_age_ms": 12505.27,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 20,
+                "workspace_slot": 1,
+                "queue_age_ms": 3201.525,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 21,
+                "workspace_slot": 0,
+                "queue_age_ms": 3202.73,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 22,
+                "workspace_slot": 1,
+                "queue_age_ms": 65864.627,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 23,
+                "workspace_slot": 0,
+                "queue_age_ms": 34803.33,
+                "end_to_end_ms": 51000,
+                "node_attempts": 5
+            },
+            {
+                "index": 24,
+                "workspace_slot": 1,
+                "queue_age_ms": 16552.805,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 25,
+                "workspace_slot": 0,
+                "queue_age_ms": 3242.6,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 26,
+                "workspace_slot": 1,
+                "queue_age_ms": 56692.17,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 27,
+                "workspace_slot": 0,
+                "queue_age_ms": 3288.273,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 28,
+                "workspace_slot": 1,
+                "queue_age_ms": 13566.843,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 29,
+                "workspace_slot": 0,
+                "queue_age_ms": 74117.109,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 30,
+                "workspace_slot": 1,
+                "queue_age_ms": 56798.359,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 31,
+                "workspace_slot": 0,
+                "queue_age_ms": 3303.892,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 32,
+                "workspace_slot": 1,
+                "queue_age_ms": 65800.385,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 33,
+                "workspace_slot": 0,
+                "queue_age_ms": 3304.622,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 34,
+                "workspace_slot": 1,
+                "queue_age_ms": 56592.321,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 35,
+                "workspace_slot": 0,
+                "queue_age_ms": 56110.726,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 36,
+                "workspace_slot": 1,
+                "queue_age_ms": 56641.005,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 37,
+                "workspace_slot": 0,
+                "queue_age_ms": 3359.659,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 38,
+                "workspace_slot": 1,
+                "queue_age_ms": 56709.432,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 39,
+                "workspace_slot": 0,
+                "queue_age_ms": 56376.858,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 40,
+                "workspace_slot": 1,
+                "queue_age_ms": 3364.155,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 41,
+                "workspace_slot": 0,
+                "queue_age_ms": 3367.332,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 42,
+                "workspace_slot": 1,
+                "queue_age_ms": 56679.604,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 43,
+                "workspace_slot": 0,
+                "queue_age_ms": 3412.477,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 44,
+                "workspace_slot": 1,
+                "queue_age_ms": 56871.285,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 45,
+                "workspace_slot": 0,
+                "queue_age_ms": 3423.087,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 46,
+                "workspace_slot": 1,
+                "queue_age_ms": 65815.515,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 47,
+                "workspace_slot": 0,
+                "queue_age_ms": 74046.316,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 48,
+                "workspace_slot": 1,
+                "queue_age_ms": 3428.841,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 49,
+                "workspace_slot": 0,
+                "queue_age_ms": 65728.127,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 50,
+                "workspace_slot": 1,
+                "queue_age_ms": 56619.319,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 51,
+                "workspace_slot": 0,
+                "queue_age_ms": 56500.803,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 52,
+                "workspace_slot": 1,
+                "queue_age_ms": 3480.236,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 53,
+                "workspace_slot": 0,
+                "queue_age_ms": 56044.138,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 54,
+                "workspace_slot": 1,
+                "queue_age_ms": 56777.432,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 55,
+                "workspace_slot": 0,
+                "queue_age_ms": 3484.058,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 56,
+                "workspace_slot": 1,
+                "queue_age_ms": 65762.674,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 57,
+                "workspace_slot": 0,
+                "queue_age_ms": 3489.021,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 58,
+                "workspace_slot": 1,
+                "queue_age_ms": 3544.337,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 59,
+                "workspace_slot": 0,
+                "queue_age_ms": 3547.858,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 60,
+                "workspace_slot": 1,
+                "queue_age_ms": 3544.907,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 61,
+                "workspace_slot": 0,
+                "queue_age_ms": 65740.823,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 62,
+                "workspace_slot": 1,
+                "queue_age_ms": 3545.894,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 63,
+                "workspace_slot": 0,
+                "queue_age_ms": 3548.537,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 64,
+                "workspace_slot": 1,
+                "queue_age_ms": 3553.248,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 65,
+                "workspace_slot": 0,
+                "queue_age_ms": 65641.104,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 66,
+                "workspace_slot": 1,
+                "queue_age_ms": 3608.626,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 67,
+                "workspace_slot": 0,
+                "queue_age_ms": 3608.167,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 68,
+                "workspace_slot": 1,
+                "queue_age_ms": 3609.775,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 69,
+                "workspace_slot": 0,
+                "queue_age_ms": 3612.765,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 70,
+                "workspace_slot": 1,
+                "queue_age_ms": 65810.205,
+                "end_to_end_ms": 82000,
+                "node_attempts": 5
+            },
+            {
+                "index": 71,
+                "workspace_slot": 0,
+                "queue_age_ms": 56355.809,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 72,
+                "workspace_slot": 1,
+                "queue_age_ms": 3616.589,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 73,
+                "workspace_slot": 0,
+                "queue_age_ms": 56451.427,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 74,
+                "workspace_slot": 1,
+                "queue_age_ms": 56639.211,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 75,
+                "workspace_slot": 0,
+                "queue_age_ms": 56566.501,
+                "end_to_end_ms": 73000,
+                "node_attempts": 5
+            },
+            {
+                "index": 76,
+                "workspace_slot": 1,
+                "queue_age_ms": 74294.347,
+                "end_to_end_ms": 90000,
+                "node_attempts": 5
+            },
+            {
+                "index": 77,
+                "workspace_slot": 0,
+                "queue_age_ms": 2676.261,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 78,
+                "workspace_slot": 1,
+                "queue_age_ms": 2675.292,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 79,
+                "workspace_slot": 0,
+                "queue_age_ms": 74999.407,
+                "end_to_end_ms": 97000,
+                "node_attempts": 5
+            },
+            {
+                "index": 80,
+                "workspace_slot": 1,
+                "queue_age_ms": 2681.115,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 81,
+                "workspace_slot": 0,
+                "queue_age_ms": 56105.126,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 82,
+                "workspace_slot": 1,
+                "queue_age_ms": 2734.838,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 83,
+                "workspace_slot": 0,
+                "queue_age_ms": 22567.061,
+                "end_to_end_ms": 38000,
+                "node_attempts": 5
+            },
+            {
+                "index": 84,
+                "workspace_slot": 1,
+                "queue_age_ms": 2735.844,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 85,
+                "workspace_slot": 0,
+                "queue_age_ms": 65410.209,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 86,
+                "workspace_slot": 1,
+                "queue_age_ms": 2738.568,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 87,
+                "workspace_slot": 0,
+                "queue_age_ms": 2738.875,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 88,
+                "workspace_slot": 1,
+                "queue_age_ms": 56723.367,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 89,
+                "workspace_slot": 0,
+                "queue_age_ms": 28684.431,
+                "end_to_end_ms": 44000,
+                "node_attempts": 5
+            },
+            {
+                "index": 90,
+                "workspace_slot": 1,
+                "queue_age_ms": 2795.634,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 91,
+                "workspace_slot": 0,
+                "queue_age_ms": 2797.765,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 92,
+                "workspace_slot": 1,
+                "queue_age_ms": 56807.636,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 93,
+                "workspace_slot": 0,
+                "queue_age_ms": 2799.475,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 94,
+                "workspace_slot": 1,
+                "queue_age_ms": 56921.768,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 95,
+                "workspace_slot": 0,
+                "queue_age_ms": 2801.235,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 96,
+                "workspace_slot": 1,
+                "queue_age_ms": 2807.328,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 97,
+                "workspace_slot": 0,
+                "queue_age_ms": 2808.261,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 98,
+                "workspace_slot": 1,
+                "queue_age_ms": 2890.355,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 99,
+                "workspace_slot": 0,
+                "queue_age_ms": 56330.947,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 100,
+                "workspace_slot": 1,
+                "queue_age_ms": 2865.164,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 101,
+                "workspace_slot": 0,
+                "queue_age_ms": 2866.414,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 102,
+                "workspace_slot": 1,
+                "queue_age_ms": 2869.185,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 103,
+                "workspace_slot": 0,
+                "queue_age_ms": 2870.678,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 104,
+                "workspace_slot": 1,
+                "queue_age_ms": 3208.108,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 105,
+                "workspace_slot": 0,
+                "queue_age_ms": 2877.406,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 106,
+                "workspace_slot": 1,
+                "queue_age_ms": 40921.824,
+                "end_to_end_ms": 56000,
+                "node_attempts": 5
+            },
+            {
+                "index": 107,
+                "workspace_slot": 0,
+                "queue_age_ms": 73693.29,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 108,
+                "workspace_slot": 1,
+                "queue_age_ms": 2930.03,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 109,
+                "workspace_slot": 0,
+                "queue_age_ms": 2935.038,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 110,
+                "workspace_slot": 1,
+                "queue_age_ms": 2994.722,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 111,
+                "workspace_slot": 0,
+                "queue_age_ms": 2936.214,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 112,
+                "workspace_slot": 1,
+                "queue_age_ms": 55916.485,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 113,
+                "workspace_slot": 0,
+                "queue_age_ms": 2947.389,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 114,
+                "workspace_slot": 1,
+                "queue_age_ms": 3186.655,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 115,
+                "workspace_slot": 0,
+                "queue_age_ms": 56343.337,
+                "end_to_end_ms": 88000,
+                "node_attempts": 5
+            },
+            {
+                "index": 116,
+                "workspace_slot": 1,
+                "queue_age_ms": 56653.934,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 117,
+                "workspace_slot": 0,
+                "queue_age_ms": 2997.517,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 118,
+                "workspace_slot": 1,
+                "queue_age_ms": 73327.551,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 119,
+                "workspace_slot": 0,
+                "queue_age_ms": 56436.641,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 120,
+                "workspace_slot": 1,
+                "queue_age_ms": 3004.279,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 121,
+                "workspace_slot": 0,
+                "queue_age_ms": 3021.422,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 122,
+                "workspace_slot": 1,
+                "queue_age_ms": 11686.262,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 123,
+                "workspace_slot": 0,
+                "queue_age_ms": 3046.625,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 124,
+                "workspace_slot": 1,
+                "queue_age_ms": 55863.039,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 125,
+                "workspace_slot": 0,
+                "queue_age_ms": 3056.292,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 126,
+                "workspace_slot": 1,
+                "queue_age_ms": 56750.183,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 127,
+                "workspace_slot": 0,
+                "queue_age_ms": 56429.554,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 128,
+                "workspace_slot": 1,
+                "queue_age_ms": 74367.27,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 129,
+                "workspace_slot": 0,
+                "queue_age_ms": 3083.704,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 130,
+                "workspace_slot": 1,
+                "queue_age_ms": 56592.041,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 131,
+                "workspace_slot": 0,
+                "queue_age_ms": 3108.909,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 132,
+                "workspace_slot": 1,
+                "queue_age_ms": 55777.627,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 133,
+                "workspace_slot": 0,
+                "queue_age_ms": 3119.873,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 134,
+                "workspace_slot": 1,
+                "queue_age_ms": 3125.329,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 135,
+                "workspace_slot": 0,
+                "queue_age_ms": 3124.746,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 136,
+                "workspace_slot": 1,
+                "queue_age_ms": 3126.914,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 137,
+                "workspace_slot": 0,
+                "queue_age_ms": 65732.485,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 138,
+                "workspace_slot": 1,
+                "queue_age_ms": 3166.69,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 139,
+                "workspace_slot": 0,
+                "queue_age_ms": 3177.716,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 140,
+                "workspace_slot": 1,
+                "queue_age_ms": 3178.863,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 141,
+                "workspace_slot": 0,
+                "queue_age_ms": 3178.238,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 142,
+                "workspace_slot": 1,
+                "queue_age_ms": 3190.354,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 143,
+                "workspace_slot": 0,
+                "queue_age_ms": 3190.517,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 144,
+                "workspace_slot": 1,
+                "queue_age_ms": 3192.488,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 145,
+                "workspace_slot": 0,
+                "queue_age_ms": 56444.454,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 146,
+                "workspace_slot": 1,
+                "queue_age_ms": 55811.181,
+                "end_to_end_ms": 80000,
+                "node_attempts": 5
+            },
+            {
+                "index": 147,
+                "workspace_slot": 0,
+                "queue_age_ms": 3253.714,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 148,
+                "workspace_slot": 1,
+                "queue_age_ms": 3261.912,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 149,
+                "workspace_slot": 0,
+                "queue_age_ms": 3264.605,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 150,
+                "workspace_slot": 1,
+                "queue_age_ms": 3266.673,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 151,
+                "workspace_slot": 0,
+                "queue_age_ms": 56509.361,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 152,
+                "workspace_slot": 1,
+                "queue_age_ms": 3269.243,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 153,
+                "workspace_slot": 0,
+                "queue_age_ms": 3274.868,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 154,
+                "workspace_slot": 1,
+                "queue_age_ms": 48041.79,
+                "end_to_end_ms": 63000,
+                "node_attempts": 5
+            },
+            {
+                "index": 155,
+                "workspace_slot": 0,
+                "queue_age_ms": 3324.244,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 156,
+                "workspace_slot": 1,
+                "queue_age_ms": 3325.801,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 157,
+                "workspace_slot": 0,
+                "queue_age_ms": 56561.347,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 158,
+                "workspace_slot": 1,
+                "queue_age_ms": 3333.06,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 159,
+                "workspace_slot": 0,
+                "queue_age_ms": 65395.181,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 160,
+                "workspace_slot": 1,
+                "queue_age_ms": 3337.479,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 161,
+                "workspace_slot": 0,
+                "queue_age_ms": 3338.644,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 162,
+                "workspace_slot": 1,
+                "queue_age_ms": 56895.082,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 163,
+                "workspace_slot": 0,
+                "queue_age_ms": 3386.174,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 164,
+                "workspace_slot": 1,
+                "queue_age_ms": 56665.827,
+                "end_to_end_ms": 80000,
+                "node_attempts": 5
+            },
+            {
+                "index": 165,
+                "workspace_slot": 0,
+                "queue_age_ms": 3385.728,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 166,
+                "workspace_slot": 1,
+                "queue_age_ms": 3397.532,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 167,
+                "workspace_slot": 0,
+                "queue_age_ms": 56497.594,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 168,
+                "workspace_slot": 1,
+                "queue_age_ms": 56842.175,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 169,
+                "workspace_slot": 0,
+                "queue_age_ms": 3401.321,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 170,
+                "workspace_slot": 1,
+                "queue_age_ms": 74367.128,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 171,
+                "workspace_slot": 0,
+                "queue_age_ms": 3452.125,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 172,
+                "workspace_slot": 1,
+                "queue_age_ms": 3452.993,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 173,
+                "workspace_slot": 0,
+                "queue_age_ms": 3453.998,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 174,
+                "workspace_slot": 1,
+                "queue_age_ms": 3455.274,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 175,
+                "workspace_slot": 0,
+                "queue_age_ms": 56095.214,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 176,
+                "workspace_slot": 1,
+                "queue_age_ms": 3458.006,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 177,
+                "workspace_slot": 0,
+                "queue_age_ms": 65674.925,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 178,
+                "workspace_slot": 1,
+                "queue_age_ms": 56894.668,
+                "end_to_end_ms": 72000,
+                "node_attempts": 5
+            },
+            {
+                "index": 179,
+                "workspace_slot": 0,
+                "queue_age_ms": 3514.591,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 180,
+                "workspace_slot": 1,
+                "queue_age_ms": 3516.153,
+                "end_to_end_ms": 19000,
+                "node_attempts": 5
+            },
+            {
+                "index": 181,
+                "workspace_slot": 0,
+                "queue_age_ms": 3516.146,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 182,
+                "workspace_slot": 1,
+                "queue_age_ms": 64811.056,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 183,
+                "workspace_slot": 0,
+                "queue_age_ms": 3518.862,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 184,
+                "workspace_slot": 1,
+                "queue_age_ms": 3520.215,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 185,
+                "workspace_slot": 0,
+                "queue_age_ms": 56515.334,
+                "end_to_end_ms": 89000,
+                "node_attempts": 5
+            },
+            {
+                "index": 186,
+                "workspace_slot": 1,
+                "queue_age_ms": 3525.099,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 187,
+                "workspace_slot": 0,
+                "queue_age_ms": 3576.285,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 188,
+                "workspace_slot": 1,
+                "queue_age_ms": 3576.17,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 189,
+                "workspace_slot": 0,
+                "queue_age_ms": 65654.362,
+                "end_to_end_ms": 81000,
+                "node_attempts": 5
+            },
+            {
+                "index": 190,
+                "workspace_slot": 1,
+                "queue_age_ms": 3079.327,
+                "end_to_end_ms": 20000,
+                "node_attempts": 5
+            },
+            {
+                "index": 191,
+                "workspace_slot": 0,
+                "queue_age_ms": 2580.754,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 192,
+                "workspace_slot": 1,
+                "queue_age_ms": 17446.582,
+                "end_to_end_ms": 31000,
+                "node_attempts": 5
+            },
+            {
+                "index": 193,
+                "workspace_slot": 0,
+                "queue_age_ms": 2586.515,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 194,
+                "workspace_slot": 1,
+                "queue_age_ms": 56843.031,
+                "end_to_end_ms": 71000,
+                "node_attempts": 5
+            },
+            {
+                "index": 195,
+                "workspace_slot": 0,
+                "queue_age_ms": 65628.321,
+                "end_to_end_ms": 80000,
+                "node_attempts": 5
+            },
+            {
+                "index": 196,
+                "workspace_slot": 1,
+                "queue_age_ms": 10577.105,
+                "end_to_end_ms": 71000,
+                "node_attempts": 5
+            },
+            {
+                "index": 197,
+                "workspace_slot": 0,
+                "queue_age_ms": 2636.705,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            },
+            {
+                "index": 198,
+                "workspace_slot": 1,
+                "queue_age_ms": 2952.624,
+                "end_to_end_ms": 18000,
+                "node_attempts": 5
+            },
+            {
+                "index": 199,
+                "workspace_slot": 0,
+                "queue_age_ms": 2829.903,
+                "end_to_end_ms": 17000,
+                "node_attempts": 5
+            }
+        ],
+        "worker_passes": 6,
+        "initial_queue_depth": 200
+    },
+    "captured_at_utc": "2026-09-29T10:24:33+00:00"
+}

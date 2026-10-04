@@ -1,0 +1,49 @@
+{
+  "id": "TASK-0051",
+  "phase": "PHASE-09",
+  "title": "Implement durable concurrency retries replay and recovery",
+  "weight": 20,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0050"
+  ],
+  "objective": "Implement bounded durable execution, leases, node idempotency, retry classification, cancellation, replay, backpressure, and recovery evidence.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "description": "Execution and node-attempt identities make duplicate workers and event redelivery safe.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "description": "Leases, optimistic version checks, retries, timeouts, dead-letter/operator review, and cancellation are durable.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "description": "Replay and recovery pin the original journey version and preserve transition history.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-4",
+      "description": "Fan-out, enrollment storms, workspace concurrency, and resource budgets have configurable fail-closed guards.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-5",
+      "description": "Representative benchmark evidence is captured before production numeric limits are claimed.",
+      "status": "pending",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "concurrency-and-idempotency-tests",
+    "retry-replay-recovery-tests",
+    "representative-execution-benchmark"
+  ],
+  "exact_next_action": "Implement the missing journey queue worker and complete graph traversal with tenant, action-policy and durable wait gates; extend RBT-052 to time queue age and full end-to-end execution, rerun source-pinned isolated capture, and review raw evidence before TASK-0051 AC-5 and PHASE-10."
+}

@@ -2,10 +2,10 @@
 
 ## State
 
-- Timestamp: `2026-10-04T00:57:30+00:00`
-- Observed main: `de701dfc96b969d7316f237e8247522cb731c095`
+- Timestamp: `2026-10-04T17:29:38+00:00`
+- Observed main: `ee845ac8a8d98fe9abe1fe368a683629dae3b084`
 - Active issue: `none`
-- Active PR: `481`
+- Active PR: `484`
 - Active branch: `supervisor/task0076`
 - Current milestone: `TASK-0076-MESSAGING`
 - Milestone status: `IN_PROGRESS`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b86369bdf95af85372d95c07112acb031ca1344c053240d26a2aa94420760627`
+- State fingerprint: `65c7d0dece5a781852e3ff6ab36910441a878c569c552c4b0550bd66e83e2de2`
 
 ## Completed / observed this session
 
-TASK0075 accepted PR480; PR481 carries first TASK0076 guarded five-channel offline adapter slice, dispatch still disabled.
+Official-source correction replaces invented RCS scope with documented Google OAuth scope and explicitly distinguishes internal SMS/in-app permissions from provider OAuth scope labels; regression refuses old RCS label. Durable offline criteria remain unaccepted pending exact final-head gates.
 
 ## Tests
 
-Local continuity/supervisor/policy pass; PR481 exact-head full CI pending, PHP unavailable locally.
+Local PHP8.3.6 focused16/79; full861/5785 with144 infra skips and4 existing PHPUnit notices; PHPStan/Pint pass. Final source change legitimately requires fresh CI rather than counting predecessor gates.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local continuity/supervisor/policy pass; PR481 exact-head full CI pending, PHP u
 
 ## Exact next action
 
-Repair PR481 exact-head CI as needed, merge reviewed green slice, then continue TASK0076 durable reservation, connector and outcome reconciliation.
+Verify corrected PR484 final-head Application Security Continuity and PostgreSQL reservation contention; verify shipping wave, merge reviewed green head and accept TASK0076 only after main checks.

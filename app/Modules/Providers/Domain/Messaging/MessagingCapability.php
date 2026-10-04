@@ -37,6 +37,12 @@ final readonly class MessagingCapability
             && count(array_diff($this->requiredScopes, $grantedScopes)) === 0;
     }
 
+    public function authorizationKind(): string
+    {
+        return in_array($this->channel, [MessagingChannel::Sms, MessagingChannel::InApp], true)
+            ? 'internal_permission' : 'provider_oauth_scope';
+    }
+
     public function permitsLiveDelivery(): bool
     {
         // Phase 13 adapter candidates do not bind authorized production credentials.

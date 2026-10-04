@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0062",
+  "phase": "PHASE-11",
+  "title": "Research experimentation and statistical practices",
+  "weight": 16,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0061"
+  ],
+  "objective": "Research current randomization, power, bias, multiple testing, stopping and operator workflow",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Official current sources, market workflow and dated provenance recorded",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Assignment/exposure, power, SRM, contamination, sequential peeking and multiple comparison gates mapped to tasks",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Research, roadmap and governance validators pass without live traffic or unmeasured efficacy claims",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete dated current official research and reconcile TASK-0063 through TASK-0067 before implementation.",
+  "research_pack": ".ai/research/PHASE-11/TASK-0062-RESEARCH.md"
+}

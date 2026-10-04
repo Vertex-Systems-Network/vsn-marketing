@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0074",
+  "phase": "PHASE-12",
+  "title": "Certify Phase 12 analytics",
+  "weight": 10,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0073"
+  ],
+  "objective": "Certify Phase 12 analytics",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Traceable requirements/source/test evidence for all Phase 12 tasks including privacy and reconciliation",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "PostgreSQL parity, measured bounded scale/SLO, accessible browser flows and explanation evals pass",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Exact-head and resulting-main application, governance, security and release gates pass; unmeasured production claims excluded",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0074 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

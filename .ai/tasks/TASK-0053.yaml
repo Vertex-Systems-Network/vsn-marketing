@@ -1,0 +1,60 @@
+{
+  "id": "TASK-0053",
+  "phase": "PHASE-09",
+  "title": "Certify PHASE-09 journey and automation engine",
+  "weight": 10,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0049",
+    "TASK-0050",
+    "TASK-0051",
+    "TASK-0052"
+  ],
+  "objective": "Certify PHASE-09 isolation, determinism, durable execution, consent/suppression, scale guards, provider boundaries, UX, and browser evidence.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "description": "No cross-workspace graph, event, execution, action, count, cache, or audit access is possible.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "description": "Only registered graph semantics execute and all side effects are idempotent, authorized, and policy-gated.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "description": "Version pinning, deterministic hashes, replay, retry, cancellation, and recovery are proven.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-4",
+      "description": "Fan-out, timeout, concurrency, and cost guards fail closed with benchmark evidence.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-5",
+      "description": "Accessible builder, simulator, timeline, lifecycle confirmation, and responsive browser flows are green.",
+      "status": "pending",
+      "done": true
+    },
+    {
+      "id": "AC-6",
+      "description": "PHASE-10 remains planned/inactive and no PHASE-10 implementation is included in the carrier.",
+      "status": "pending",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "full-governance-validation",
+    "backend-integration-and-security-tests",
+    "frontend-typecheck-unit-build",
+    "playwright-e2e",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Build the PHASE-09 acceptance matrix from TASK-0049 through TASK-0052 and RBT-052 source-pinned evidence; run tenant isolation, deterministic graph/replay/cancellation, policy-gated action, scale-guard, accessible browser, governance and security checks on one certification head. Repair gaps in TASK-0053, record exact PR and protected-main evidence, then close PHASE-09 without activating PHASE-10."
+}

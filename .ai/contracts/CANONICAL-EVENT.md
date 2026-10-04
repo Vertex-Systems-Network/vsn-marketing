@@ -35,7 +35,7 @@ Customer/product:
 - `contact.created`, `contact.updated`
 - `consent.granted`, `consent.revoked`
 - `product.viewed`, `cart.created`, `cart.abandoned`
-- `order.created`, `order.completed`
+- `order.created`, `order.completed`, `order.refunded`
 
 Messaging:
 - `message.queued`, `message.sent`, `message.delivered`

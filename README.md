@@ -4,24 +4,23 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=49.83 phase=83.33 current_phase=PHASE-07 active_task=TASK-0041 milestone=TASK-0041-OPERATOR-UX-CERT-LEASE status=VERIFYING -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=82.6 phase=12 current_phase=PHASE-13 active_task=TASK-0076 milestone=TASK-0076-MESSAGING status=IN_PROGRESS -->
 
-> Trusted TASK-0041 operator read-model/preview foundation: **2026-09-25** via PR #386. Exact source `efcd1b02950f6c49073ad6e75fb958a5fdef1818` passed AI Continuity Guard `36069312197`, Application Foundation CI `36069312115`, and Security Supply Chain CI `36069312124`; review threads were clean and the change merged to protected main as `792881f5c702ee38fa12b066f2eb8f65e73baca3`. RBT-037 is terminal PASS.
->
+> PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled. PHASE-11 TASK-0063 offline assignment foundation passed PR #466 exact-head and resulting-main gates. TASK-0064 campaign matrix passed PR #467 exact-head and resulting-main gates. TASK-0065 offline optimization passed PR #468 exact-head and resulting-main gates. TASK-0066 offline statistical guardrails passed PR #469 exact-head and resulting-main gates. TASK-0067 offline certification passed PR #470 full exact-head and resulting-main gates; no experiment traffic is enrolled. PHASE-12 TASK-0068 research and TASK-0069 canonical fact/privacy foundation are accepted through PRs #472/#473; TASK-0070 behavior reports are accepted through PR #474 and full resulting-main gates; TASK-0071 revenue/attribution is accepted through PR #475 and full resulting-main gates; TASK-0072 operator reports, schedules and guarded explanations are accepted through PR #476 full exact-head and resulting-main gates; TASK-0073 source reconciliation is accepted through PR #477 full exact-head and resulting-main gates; TASK-0074 bounded analytics certification passed PR #478 and full protected-main gates; PHASE-12 is complete. The source verifier remains unbound and production readiness requires separate evidence. Source completeness, live effectiveness and production scale remain unproven.
+
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 49.83%**  
-**Current phase: PHASE-07 — 83.33%**  
-**Active task: TASK-0041 — Implement campaign/publishing operator UX**  
-**Last completed task: TASK-0040 — Implement channel-neutral publication lifecycle and provider reconciliation**  
-**Current milestone: TASK-0041-OPERATOR-UX-CERT-LEASE — VERIFYING**
+**Overall roadmap progress: 82.60%**<br />
+**Current phase: PHASE-13 — 12.00%**<br />
+**Last completed task: TASK-0075**<br />
+**Current milestone: TASK-0076-MESSAGING — IN_PROGRESS**
 
 ```text
-Overall  [██████████░░░░░░░░░░] 49.83%
-Phase 07 [█████████████████░░░] 83.33%
+ Overall  [████████████████░░░░] 82.60%
+Phase 13 [██░░░░░░░░░░░░░░░░░░] 12.00%
 ```
 
-The deterministic roadmap percentage advances only from completed task weights. Canonical progress remains roadmap 49.83% / PHASE-07 83.33% while TASK-0041 stays in progress; provider-drift is trusted and the next bounded slice is accessible, responsive, secret-safe Operator UX certification.
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.
 
 ### Phase / module progress
 
@@ -34,26 +33,32 @@ The deterministic roadmap percentage advances only from completed task weights. 
 | PHASE-04 | 7% | Delivery, routing, throttling, idempotency, retry/failover, SLOs | ✅ Complete | 100% |
 | PHASE-05 | 6% | Domains, sender identity, Suppressions, Deliverability | ✅ Complete | 100% |
 | PHASE-06 | 6% | Templates, Content, Assets, creative/editor pipeline | ✅ Complete | 100% |
-| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar** | 🚧 **In progress — TASK-0041 Operator UX Lane-4 lease** | **83.33%** |
-| PHASE-08 | 5% | Segments, deterministic query compiler, NL-to-segment compiler | ⏳ Planned | 0% |
-| PHASE-09 | 7% | Journeys, automation runtime, triggers/waits/branches/replay | ⏳ Planned | 0% |
-| PHASE-10 | 8% | AI gateway, memory/context, typed tools, agents, red-team | ⏳ Planned | 0% |
-| PHASE-11 | 5% | Experiments, variants, statistical guardrails, adaptive optimization | ⏳ Planned | 0% |
-| PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ⏳ Planned | 0% |
-| PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | ⏳ Planned | 0% |
+| **PHASE-07** | **7%** | **Campaigns, Publishing, approvals, scheduling, unified calendar, operator UX** | ✅ **Certified on protected main via TASK-0041 / PR #405** | **100.00%** |
+| **PHASE-08** | **5%** | **Segmentation, deterministic AST/compiler, AI proposal and preview UX** | ✅ **Complete** | **100.00%** |
+| **PHASE-09** | **7%** | **Journeys, automation runtime, triggers/waits/branches/replay** | ✅ **TASK-0053 certified** | **100.00%** |
+| **PHASE-10** | **8%** | **AI gateway, memory/context, typed tools, agents, red-team** | ✅ **Offline architecture certified; live activation gated** | **100.00%** |
+| **PHASE-11** | **5%** | **Experiments, variants, statistical guardrails, adaptive optimization** | ✅ **TASK-0062–0067 offline architecture certified** | **100.00%** |
+| PHASE-12 | 6% | Analytics, funnels, cohorts, Attribution, revenue/LTV, data quality | ✅ TASK-0068–0074 bounded certification via PR #478 | 100% |
+| PHASE-13 | 5% | Omnichannel Connectors, social Publishing, Community, listening | 🔄 TASK-0075 research accepted; TASK-0076 messaging active | 12% |
 | PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ⏳ Planned | 0% |
 | PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ⏳ Planned | 0% |
 | PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | ⏳ Planned | 0% |
 
+### PHASE-07 closeout evidence (historical)
+
+PR #402 exact head `34b1a0a2632218cd87ae070547f16a20dc76ba5a` passed AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and all applicable E2E/integration checks before merging as `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`; it staged the exclusive TASK-0041 Operator UX lane.
+
+PR #403 merged exact worker head `391f43b3e7ee720be878294009a5993c163da685` into `ship/week-1` as `7f43eda18cc95ab90ea0b56207e67476e7433fab`. Its exact worker Shipping Fast Gate passed. Product-bearing integration Application Foundation CI passed backend tests, infrastructure integration, architecture checks, PHP static analysis/formatting, frontend typecheck/unit tests/build, PHP 8.3 compatibility, and Playwright smoke.
+
+The integration push correctly exposed a missing global continuity-ledger handoff. PR #404 synchronized PR #402's current Lane-4 authority, appended the hash-chained checkpoint, and passed its exact Shipping Fast Gate. Resulting integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed Continuity, Application Foundation and Shipping Fast Gate. Product/test files are unchanged from the fully tested `7f43eda` snapshot.
+
+TASK-0041 AC-1..AC-8 were accepted by PR #405. Its exact head passed Continuity, Application Foundation and Security Supply Chain before merging as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main gates passed and were reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.
+
+The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 tasks TASK-0048 through TASK-0053 are complete.
+
 ### Current execution snapshot
 
-Development Acceleration v2.7 is trusted on protected main. PR #399 exact source `30b4db16bcdf3f18575065313fa59fe62a1a3456` passed AI Continuity Guard `36231899742`, Application Foundation CI `36231899743`, and Security Supply Chain CI `36231899714`, then merged as `6510597557611466200293a2e68ec9e2c4ece073`. RBT-046 is terminal PASS.
-
-Provider Drift Lane-3 is trusted. PR #401 exact source `fe23d4528b71b4d3a4aba9652f11f2aa90e4a46b` passed Shipping Fast Gate `36237884166` and merged to `ship/week-1` as `fdd4ab9206384ea44b1bd99fe71681f19f6e5e4c`; that resulting integration head passed Continuity `36238008876`, Application `36238008880`, and Shipping Fast Gate `36238008958`. RBT-047 is terminal PASS.
-
-Lane-3 is released and `WS-0041-OPERATOR-UX-CERT` is assigned exclusively to `chatgpt-session-task0041-operator-ux`. Its worker paths are `resources/js/pages/publishing/operator.tsx`, `resources/js/pages/publishing/operator.test.tsx`, and the corrected Playwright path `e2e/task0041-publishing-operator.spec.ts`. The lane may improve accessibility, responsive/error/concurrency feedback, guarded destructive affordances and provider-status rendering only; backend authority remains unchanged.
-
-TASK-0042, deployment/release authority and deferred Runner optimization remain inactive.
+PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 certification are complete. PHASE-08 and PHASE-09 progress are 100.00%; deterministic roadmap progress is 71.00%. PHASE-10 TASK-0054 research and TASK-0055 gateway are complete; TASK-0056 context and TASK-0057 typed tools are accepted. TASK-0058 specialist candidate runtime is accepted. TASK-0059 creative drafts are accepted. TASK-0060 red-team is accepted. TASK-0061 certification is accepted. PHASE-10 offline architecture is certified100%; PHASE-11 TASK-0062 research is accepted on PR #465 full exact-head and resulting-main control gates; TASK-0063 offline assignment foundation passed full exact-head and resulting-main gates in PR #466. TASK-0064 campaign matrix passed exact-head and resulting-main gates in PR #467. TASK-0065 offline optimization passed PR #468 exact-head and resulting-main gates. TASK-0066 statistical guardrails passed PR #469 exact-head and resulting-main gates. TASK-0067 offline certification passed PR #470 full exact-head and resulting-main gates; production enrollment remains disabled. See [.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md](.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md) for the source/test/run matrix and pending live activation gates.
 
 ### README progress-sync contract
 
@@ -65,18 +70,20 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 
 ## For coding agents and contributors
 
-Agent instruction revision: `parallel-v2.7.0-wave-acceleration`  
-Agent instruction fingerprint: `e1915e44d40288e0e8071860deb501ef6e808b3a393cf41fb850dc94cf8bce58`
+Agent instruction revision: `parallel-v2.8.0-workspace-5h-continuous`  
+Agent instruction fingerprint: `c9e490f45b15511875acac44fbbc830e9a4d57879b1ebfb2023ca8fbc6a6cdb2`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 
-**Interactive next-action handoff:** Every development response exposes 1-3 repository-valid next actions. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the Fast Batch Development scope boundary.
+**5-hour continuous Workspace mode:** after a mutating start/continue/next-action selection, the Supervisor follows [`.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`](.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md) for up to 300 minutes / available Workspace credits. Generic start/continue/resume defaults to maximum safe progress across the current active phase, automatically advancing dependency-ready canonical tasks while credit remains; explicitly narrower PR/task/audit instructions stay narrow. Routine repository decisions do not return to the user for repeated consent: same-scope implementation, tests, CI diagnosis/repair, stale/duplicate PR handling, ordinary merge conflicts, and verified green-head merges continue automatically. Intermediate next-action handoffs are suppressed until the batch ends or a genuine human-only authority/safety boundary is the sole remaining path. Production/provider, secrets, billing, destructive data/migration, branch-protection weakening and deployment/release authority remain separate.
+
+**Interactive next-action handoff:** Outside an active 5-hour continuous batch, every development handoff exposes 1-3 repository-valid next actions. During an active batch, internal PR/CI/task boundaries do not generate handoffs; options return at the final batch boundary or a genuine hard stop. When two or more options exist, their visible 1/2/3 numbers are reshuffled each handoff; if the previously selected action/number is known, that action must move to a different number next time. The canonical action is marked Recommended instead of being fixed to option 1. When the chat host supports clickable action controls, selecting one submits its exact request to start the next turn; the Supervisor still revalidates compact state, exact main, Issues/PRs, coordination and Runner evidence before acting. If buttons are unavailable, the same shuffled actions are shown as numbered one-line commands that can be sent unchanged. A selection never bypasses exact-head CI, security, merge authority, deferred Runner rules, or the Fast Batch Development scope boundary.
 
 VSN uses a **Supervisor-controlled multi-agent workflow**. The agent operating the main-repository context is the Supervisor; protected `main` is not a scratch branch. Worker and Supervisor implementation happens on pre-created dedicated branches/worktrees listed in [`.ai/parallel/AI-NATIVE-PLAN.md`](.ai/parallel/AI-NATIVE-PLAN.md).
 
 **Week-1 Shipping Mode is active.** Sprint feature/workstream PRs use `ship/week-1` as the integration target, `ai_parallel.py sync-check` validates that shipping baseline for workers, and PRs must pass `Shipping Fast Gate`. Independent leased lanes can keep coding from the last green integration baseline while a sibling merge is still verifying, but must sync the latest required green integration head before submission/merge/dependency consumption. Work is promoted to `main` only from a green integration baseline. Full protected-main application, security and governance gates remain mandatory. The activation-time `TASK-0026` workstreams are grandfathered as a drain wave: existing occupied slots may finish, but no new writable slot may be added or reassigned above the five-writer shipping cap; the cap becomes hard after TASK-0026 transitions. See [`.ai/parallel/WEEK-1-SHIPPING-PLAN.md`](.ai/parallel/WEEK-1-SHIPPING-PLAN.md).
 
-**Strict plan-following, change-aware CI, and Development Acceleration v2.7 are mandatory.** Work is wave-oriented: batch dependency-ready disjoint leases into one control carrier when distinct real agents are available; independent leased lanes may code from the last green shipping baseline while a newer sibling integration head verifies; synchronize latest required green `ship/week-1` before submission/merge/dependency consumption; worker PRs use Shipping Fast Gate; terminal worker evidence rides into the next substantial wave-control/promotion PR; full protected-main Application + Security gates remain concentrated at promotion/final-acceptance/security boundaries. Per-lane protected-main orchestration PRs are not the default. No acceleration may fake agents, overlap write paths, consume pending/failed integration, or weaken permissions/security. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
+**Strict plan-following, change-aware CI, Development Acceleration v2.8, and 5-hour continuous Workspace execution are mandatory.** Work is wave-oriented: batch dependency-ready disjoint leases into one control carrier when distinct real agents are available; independent leased lanes may code from the last green shipping baseline while a newer sibling integration head verifies; synchronize latest required green `ship/week-1` before submission/merge/dependency consumption; worker PRs use Shipping Fast Gate; terminal worker evidence rides into the next substantial wave-control/promotion PR; full protected-main Application + Security gates remain concentrated at promotion/final-acceptance/security boundaries. Per-lane protected-main orchestration PRs are not the default. No acceleration may fake agents, overlap write paths, consume pending/failed integration, or weaken permissions/security. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` diffs default to lightweight control CI; unknown/non-control paths fail closed to full Application + Security CI. Add the exact standalone PR line `CI-Mode: full` whenever a control-only certification/release/security milestone still requires full gates. Runner optimization tasks remain deferred in the persistent benchmark backlog and are not executed opportunistically.
 
 **Protected-main observation is non-recursive.** `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. An anchor descendant containing only approved durable reconciliation surfaces is already current and must not trigger another state-only PR; material drift still fails closed.
 
@@ -96,6 +103,7 @@ python tools/ai_context.py manifest
 python tools/ai_state.py status
 python tools/ai_journal.py status
 python tools/ai_parallel.py status
+python tools/ai_parallel.py batch-status
 python tools/ai_parallel.py sync-check
 ```
 
@@ -145,3 +153,5 @@ The active task, exact next action, progress, blockers, tests, roadmap, architec
 - Future AI Connector Factory for controlled provider integration generation.
 
 Implementation sequence is defined in [`.ai/roadmap/MASTER-ROADMAP.md`](.ai/roadmap/MASTER-ROADMAP.md).
+
+Phase 11 terminal closure PR #471 merged after full exact-head gates. Phase 12 tasks TASK-0068–0074 are certified. Phase 13 tasks TASK-0075–0081 are registered; TASK-0075 research passed PR #480 and TASK-0076 messaging is active.

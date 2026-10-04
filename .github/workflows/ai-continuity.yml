@@ -61,7 +61,7 @@ jobs:
       - name: Validate machine Runner Benchmark
         run: python tools/runner_benchmark.py validate
       - name: Validate AI policy registries
-        run: python tools/ai_policy.py
+        run: python tools/ai_policy.py --base "${BASE_SHA}"
       - name: Validate parallel Supervisor control plane
         run: python tools/ai_parallel.py validate
       - name: Require pre-created workstream branches

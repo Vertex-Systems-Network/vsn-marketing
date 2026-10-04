@@ -1,17 +1,31 @@
 {
   "schema_version": 1,
   "registry_policy": "Concrete provider/model routes are configuration; core workflows request capabilities.",
-  "capability_keys": ["structured_output","tool_calling","streaming","vision","long_context","reasoning","batch","embeddings","json_schema","regional_processing","usage_telemetry"],
+  "capability_keys": [
+    "structured_output",
+    "tool_calling",
+    "streaming",
+    "vision",
+    "long_context",
+    "reasoning",
+    "batch",
+    "embeddings",
+    "json_schema",
+    "regional_processing",
+    "usage_telemetry",
+    "creative_text",
+    "creative_image"
+  ],
   "route_schema": {
-    "id":"string",
-    "provider_adapter":"string",
-    "model_reference":"secret/config reference, not hardcoded in core",
-    "capabilities":"map<boolean|number|string>",
-    "data_regions":"list",
-    "status":"candidate|active|degraded|disabled",
-    "cost_profile":"dynamic configuration",
-    "latency_profile":"measured telemetry",
-    "eval_profile":"versioned measured scores"
+    "id": "string",
+    "provider_adapter": "string",
+    "model_reference": "secret/config reference, not hardcoded in core",
+    "capabilities": "map<boolean|number|string>",
+    "data_regions": "list",
+    "status": "candidate|active|degraded|disabled",
+    "cost_profile": "dynamic configuration",
+    "latency_profile": "measured telemetry",
+    "eval_profile": "versioned measured scores"
   },
   "routing_rules": [
     "All required capabilities must match before ranking.",

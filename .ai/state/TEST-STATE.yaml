@@ -1,64 +1,119 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0012",
+  "updated_for_task": "TASK-0074",
   "suites": [
     {
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "AI Continuity Guard run 32672928382 passed exact TASK-0012 certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9, including transactional state, journal integrity, policy registries, deterministic context, append-only history, and product-change ledger guard."
+      "notes": "TASK0074 guarded terminal transition, journal/continuity, exact PR478/main continuity and Supervisor gates passed. PHASE12 complete."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed backend tests on exact TASK-0012 certified head; PHP 8.3 compatibility job 97276441360 also passed."
+      "notes": "TASK0074 local PHP8.3.6 full845/5706 with143 explicit PostgreSQL infrastructure skips; PR/main full Application foundation and PHP8.3 floor passed."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 integration job 97276441338 passed on PostgreSQL 18 and Redis 8 with 24 tests / 157 assertions. Phase02CustomerDataCertificationTest passed the complete Contact/Identity/Company/List/Tag/Consent/Event/EventType lifecycle and complete application-level cross-workspace fail-closed case; append-only consent and direct composite-FK isolation regressions also passed without ineffective-import PHP warnings."
+      "notes": "PR478 head618cea2783f385a814e6bfa9a78f722bc0ff1eab and main33475aceb1d8c1f57d3c4f7ad107349d1e856c96 actual PostgreSQL18 integration187/2498 each, 30 independently verified raw samples each, 1001 refusal and two PostgreSQL browser tests each; synthetic workload only."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Larastan/static analysis on exact TASK-0012 certified head."
+      "notes": "PR478 and resulting-main Application foundation PHPStan passed; no new findings."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed pinned Pint formatting on exact TASK-0012 certified head after the repository-authoritative formatter/runtime-warning reconciliation."
+      "notes": "PR478 and resulting-main Application foundation Pint pass; two preceding PR heads failed and were corrected before acceptance."
     },
     {
       "name": "frontend-typecheck",
       "command": "npm run typecheck",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed TypeScript typecheck on exact TASK-0012 certified head."
+      "notes": "PR478 and resulting-main Application foundation TypeScript check passed."
     },
     {
       "name": "frontend-unit-tests",
       "command": "npm run test",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed Vitest frontend unit tests on exact TASK-0012 certified head."
+      "notes": "PR478 and resulting-main Application foundation frontend tests passed."
     },
     {
       "name": "frontend-build",
       "command": "npm run build",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 foundation job 97276441392 passed the production frontend build on exact TASK-0012 certified head."
+      "notes": "PR478 and resulting-main Application foundation asset builds and integration PostgreSQL browser assets passed."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Application Foundation CI run 32672928375 e2e job 97276441406 passed the critical Playwright smoke on exact TASK-0012 certified head."
+      "notes": "PR478/main SQLite E2E jobs succeeded; PostgreSQL analytics browser step independently passed two guarded tests on both."
     }
   ],
   "application_tests": {
     "status": "passing",
-    "reason": "TASK-0012 exact certified head 51b856c117b51d19e3dbabcc02379b1537d69ad9 passed AI Continuity Guard 32672928382 and Application Foundation CI 32672928375: php-floor, PostgreSQL/Redis integration, Playwright e2e, backend, architecture, Larastan, Pint, TypeScript typecheck, Vitest, and production build all succeeded."
+    "reason": "Local analytics regression passed; TASK0073 acceptance false pending exact-head and main gates."
+  },
+  "latest_local_verification": {
+    "basis": "TASK0073 source quality on PHP8.3.6",
+    "suites": [
+      {
+        "name": "focused-analytics",
+        "status": "passing",
+        "notes": "44 tests/288 assertions; previous full backend843/5678 with141 infra skips before one operator and PG test added."
+      },
+      {
+        "name": "static-format-frontend",
+        "status": "passing",
+        "notes": "PHPStan/Pint, frontend typecheck,38 unit tests and build pass. New PG and mobile source-quality acceptance require CI."
+      }
+    ]
+  },
+  "latest_ci_verification": {
+    "pull_request": 474,
+    "head_sha": "4c651b00048ce9570c984ed49d13d54d58beb3d5",
+    "application_run": 37129239608,
+    "continuity_run": 37129239595,
+    "security_run": 37129239592,
+    "status": "passing",
+    "resulting_main_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1",
+    "resulting_main_application_run": 37143653804,
+    "resulting_main_continuity_run": 37143653698,
+    "resulting_main_security_run": 37143653742,
+    "scope": "Full product PR and resulting-main all required gates; no skip counted as pass."
+  },
+  "closure_verification": {
+    "status": "passing",
+    "reason": "PR471 full exact-head and policy-classified resulting-main control gates passed; no skipped product job counted as a full pass."
+  },
+  "latest_local": {
+    "task": "TASK-0074",
+    "focused_tests": 52,
+    "focused_assertions": 441,
+    "full_tests": 845,
+    "full_assertions": 5706,
+    "explicit_infrastructure_skips": 143,
+    "database_parity": "local_skip; actual CI evidence below"
+  },
+  "latest_ci": {
+    "task": "TASK-0074",
+    "status": "accepted",
+    "pr_head": "618cea2783f385a814e6bfa9a78f722bc0ff1eab",
+    "main": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96",
+    "pr_application_run": 37162980153,
+    "main_application_run": 37163508080,
+    "postgresql_integration_tests_each": 187,
+    "postgresql_integration_assertions_each": 2498,
+    "postgresql_browser_tests_each": 2,
+    "source_bound_raw_samples_each": 30,
+    "pr_artifact_id": 11288368162,
+    "main_artifact_id": 11289055473
   }
 }

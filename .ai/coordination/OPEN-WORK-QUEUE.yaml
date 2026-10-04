@@ -1,8 +1,561 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6510597557611466200293a2e68ec9e2c4ece073",
-  "active_work_path": null,
+  "reconciled_main_sha": "de701dfc96b969d7316f237e8247522cb731c095",
+  "active_work_path": {
+    "kind": "pr",
+    "number": 481,
+    "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+    "branch": "supervisor/task0076",
+    "disposition": "active_task0076_carrier"
+  },
   "items": [
+    {
+      "kind": "pr",
+      "number": 481,
+      "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+      "branch": "supervisor/task0076",
+      "disposition": "active_task0076_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 480,
+      "title": "PHASE-13: stage seven-task omnichannel roadmap and current API research",
+      "branch": "supervisor/phase13",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "de701dfc96b969d7316f237e8247522cb731c095"
+    },
+    {
+      "kind": "pr",
+      "number": 479,
+      "title": "PHASE-12: publish bounded analytics certification and 100% progress",
+      "branch": "supervisor/phase12-closure",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "695be2478a19ac4a68fe190cb657092a76a72f9e"
+    },
+    {
+      "kind": "pr",
+      "number": 478,
+      "title": "TASK-0074: certify bounded analytics and PostgreSQL operator flow",
+      "branch": "supervisor/phase12-certification",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96"
+    },
+    {
+      "kind": "pr",
+      "number": 477,
+      "title": "TASK0073 source quality checkpoint reconciliation",
+      "branch": "supervisor/phase12-quality",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "cbd83fdc931a2da16dfca21c3479cdadfce1564a"
+    },
+    {
+      "kind": "pr",
+      "number": 476,
+      "title": "TASK-0072: authorized reports, durable schedules and guarded insights",
+      "branch": "supervisor/phase12-reports",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "e9c9de20f6ab511d448c7c429bec7ff2f6f586dd"
+    },
+    {
+      "kind": "pr",
+      "number": 475,
+      "title": "TASK-0071 scoped attribution revenue and observed LTV",
+      "branch": "supervisor/phase12-attribution",
+      "disposition": "active_task0072_carrier",
+      "accepted_actionable": false,
+      "merge_sha": "7a4641c37084cdb3cde27cbc4eff9959a08094eb"
+    },
+    {
+      "kind": "pr",
+      "number": 474,
+      "title": "TASK-0070: privacy guarded funnels cohorts and performance",
+      "branch": "supervisor/phase12-behavior",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b71e1c0b571e76a64e4e3e99a69a5321e2a50ad1"
+    },
+    {
+      "kind": "pr",
+      "number": 473,
+      "title": "TASK-0069: privacy guarded canonical analytics facts",
+      "branch": "supervisor/phase12-facts",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "bc052d5ff499a5c31ee372386a29438766d4d885"
+    },
+    {
+      "kind": "pr",
+      "number": 472,
+      "title": "TASK-0068: researched Phase 12 analytics acceptance sequence",
+      "branch": "supervisor/phase12-research",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "f6948a5b48b4ec3c0a7b459599b219de6d1dcfbe"
+    },
+    {
+      "kind": "pr",
+      "number": 471,
+      "title": "PHASE-11: terminal offline certification closure",
+      "branch": "supervisor/phase11-closure",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4ca1ee7b8f4a3d1885403db4c1b96cec37a9f4d6"
+    },
+    {
+      "kind": "pr",
+      "number": 470,
+      "title": "TASK-0067: certify Phase 11 offline experimentation",
+      "branch": "supervisor/phase11-certification",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "cf01b147c378403ff3d97102f208dd3ed701dcf7"
+    },
+    {
+      "kind": "pr",
+      "number": 469,
+      "title": "TASK-0066: frozen offline experiment statistical guardrails",
+      "branch": "supervisor/phase11-statistical-analysis",
+      "disposition": "active_task0066_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 468,
+      "title": "TASK-0065: bound AI optimization proposal review",
+      "branch": "supervisor/phase11-statistical-guardrails",
+      "disposition": "active_task0065_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 467,
+      "title": "TASK-0064: bound campaign experiment candidates and outcome evidence",
+      "branch": "supervisor/phase11-campaign-experiments",
+      "disposition": "active_task0064_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 466,
+      "title": "feat(experiments): scoped assignment and exposure foundation",
+      "branch": "supervisor/phase11-assignment",
+      "disposition": "active_task0063_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 465,
+      "title": "plan(experiments): activate researched Phase 11 task sequence",
+      "branch": "supervisor/phase11-batch",
+      "disposition": "active_task0062_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 462,
+      "title": "docs(ai): close Phase-10 with certified offline evidence",
+      "branch": "supervisor/phase10-closure",
+      "disposition": "active_task0061_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 461,
+      "title": "test(ai): capture truthful offline Phase-10 certification",
+      "branch": "supervisor/phase10-certification",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "44c644331a2212ebd0b0758d04d0010c3662a789"
+    },
+    {
+      "kind": "pr",
+      "number": 460,
+      "title": "test(ai): exercise hostile outputs and bounded agent authority",
+      "branch": "supervisor/phase10-red-team",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c2653b56f96c56cd9fc6973cf5c2a6a41b964b20"
+    },
+    {
+      "kind": "pr",
+      "number": 459,
+      "title": "feat(ai): add rights-gated creative drafts and truthful rejection traces",
+      "branch": "supervisor/phase10-creative-drafts",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b7ced3305224d011546e4938d4e96e9f2f3580c8"
+    },
+    {
+      "kind": "pr",
+      "number": 458,
+      "title": "feat(ai): add registered specialist candidate runtime and evaluation gates",
+      "branch": "supervisor/phase10-agent-runtime",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "7262dce7c5118cd08a0874c016d8d60894273183"
+    },
+    {
+      "kind": "pr",
+      "number": 457,
+      "title": "test(ai): isolate PostgreSQL contention worker before fork",
+      "branch": "supervisor/phase10-budget-fork-repair",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "2fb294fdd4f9bce718fb436aa5b1b8901426b285"
+    },
+    {
+      "kind": "pr",
+      "number": 456,
+      "title": "feat(ai): certify scoped context and enforce typed tool policy",
+      "branch": "supervisor/phase10-context-acceptance",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a3d7fa4a161c035e1373105427a03167e5dbb7ec"
+    },
+    {
+      "kind": "pr",
+      "number": 455,
+      "title": "feat(ai): certify gateway and build isolated context",
+      "branch": "supervisor/phase10-context",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "abe7df21c195c3d5843555f70c5c1c6f16bd5850"
+    },
+    {
+      "kind": "pr",
+      "number": 454,
+      "title": "feat(ai): pin gateway adapter schema and budget contention",
+      "branch": "supervisor/phase10-gateway-contract",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "6164490d180e2c83da2983fdd093d0e3ed8220cf"
+    },
+    {
+      "kind": "pr",
+      "number": 453,
+      "title": "feat(ai): establish fail-closed gateway route policy",
+      "branch": "supervisor/phase10-gateway",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c3db151aaebfb5c0d555bf2fd7514393a18e7f82"
+    },
+    {
+      "kind": "pr",
+      "number": 452,
+      "title": "docs(phase10): register research-first AI gateway program",
+      "branch": "supervisor/phase10-research",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "ce87aca5a4950e65463da91d66a60b052b7b4df1"
+    },
+    {
+      "kind": "pr",
+      "number": 451,
+      "title": "docs(phase09): close TASK-0053 and certify terminal progress",
+      "branch": "supervisor/task0053-phase09-final",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "99eec5f5fc2bcfa0ace8616a432c9e341bc391d7"
+    },
+    {
+      "kind": "pr",
+      "number": 450,
+      "title": "docs(phase09): certify journey engine evidence and activate TASK-0053",
+      "branch": "supervisor/task0053-phase09-cert",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c2c28e00bfe19a841752dfd9d0af9d6c1e16f21c"
+    },
+    {
+      "kind": "pr",
+      "number": 449,
+      "title": "feat(journeys): TASK-0052 accessible builder and execution timeline",
+      "branch": "supervisor/task0052-builder",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "d562973d84fe2e7eb06b6bb74e5d1dab874494f7"
+    },
+    {
+      "kind": "pr",
+      "number": 448,
+      "title": "chore(phase09): accept TASK-0051 benchmark and activate TASK-0052",
+      "branch": "supervisor/task0052-builder",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "0b1bc95c94b8b48ec63b5e812bd3996ba1e835a5"
+    },
+    {
+      "kind": "pr",
+      "number": 447,
+      "title": "feat(journeys): schedule bounded due-work recovery",
+      "branch": "supervisor/task0051-provider-action",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "d0b13644661cdc22d1a7ffa389b020f050317013"
+    },
+    {
+      "kind": "pr",
+      "number": 446,
+      "title": "TASK-0051 provider action and queue runtime completion",
+      "branch": "supervisor/task0051-provider-action",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false,
+      "merge_sha": "46100fda84e531659a89c9eacd8bb4d8013e643b"
+    },
+    {
+      "kind": "pr",
+      "number": 444,
+      "title": "Review RBT-052 backlog tail and isolate worker concurrency",
+      "branch": "supervisor/rbt052-compare",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 443,
+      "title": "Measure Redis journey backlog under bounded stress",
+      "branch": "supervisor/rbt052-load",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 442,
+      "title": "Archive RBT-052 full-path fault evidence with explicit scope",
+      "branch": "supervisor/rbt052-v4-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 441,
+      "title": "Probe duplicate and cancelled Redis journey wake-ups in RBT-052",
+      "branch": "supervisor/rbt052-fault",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 440,
+      "title": "Archive RBT-052 v3 canonical policy evidence without AC5 acceptance",
+      "branch": "supervisor/rbt052-v3-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 439,
+      "title": "Measure canonical consent and suppression in RBT-052 action path",
+      "branch": "supervisor/rbt052-policy",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 438,
+      "title": "Classify journey action denials before provider invocation",
+      "branch": "supervisor/rbt052-action",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 437,
+      "title": "Review merged-source RBT-052 Redis graph evidence and preserve AC5 gap",
+      "branch": "supervisor/rbt052-review",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 436,
+      "title": "Fix durable wait precision and archive RBT-052 v2 Redis graph evidence",
+      "branch": "supervisor/rbt052-diagnose",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 435,
+      "title": "RBT-052 queue and graph capture",
+      "branch": "supervisor/rbt052-full-capture",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 434,
+      "title": "TASK-0051 durable queue and graph worker",
+      "branch": "supervisor/task0051-worker",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 433,
+      "title": "TASK-0051 graph routing and queue worker",
+      "branch": "supervisor/task0051-graph-runtime",
+      "disposition": "active_task0051_carrier",
+      "accepted_actionable": false
+    },
+    {
+      "kind": "pr",
+      "number": 431,
+      "title": "Fix RBT-052 evidence artifact readability",
+      "branch": "fix/rbt052-artifact-readability",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "73e3e117c37e911041794733f2821812aa123936"
+    },
+    {
+      "kind": "pr",
+      "number": 430,
+      "title": "Add isolated RBT-052 synthetic capture workflow",
+      "branch": "task0051-rbt052-isolated-capture-workflow",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "e7b7097404fc36d60e8194d1a187c44f541d03c5"
+    },
+    {
+      "kind": "pr",
+      "number": 429,
+      "title": "Schedule dedicated RBT-052 evidence before PHASE-10",
+      "branch": "control/rbt052-prephase10-dedicated-closeout",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "1a44c7122565212c9f11caef00ad08352fbb7a21"
+    },
+    {
+      "kind": "pr",
+      "number": 428,
+      "title": "Correct RBT-052 capture window and scope claims",
+      "branch": "task0051-rbt052-capture-scope",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "186da7afe923d777f910315729c34c3946ad7b2c"
+    },
+    {
+      "kind": "pr",
+      "number": 426,
+      "title": "Prepare RBT-052 journey execution capture harness",
+      "branch": "task0051-rbt052-measurement-harness",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "705088783e9779b5c741a09dd56708f48dfbe2b9"
+    },
+    {
+      "kind": "pr",
+      "number": 425,
+      "title": "Fix actor-bound journey replay authorization",
+      "branch": "fix/task0051-scoped-replay-authorization",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "728ac4a6189793a1955758c5a5db2397c0edecc1"
+    },
+    {
+      "kind": "pr",
+      "number": 424,
+      "title": "Add fail-closed TASK-0051 benchmark preflight",
+      "branch": "task0051-journey-benchmark-preflight",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "3e338d29d6392804d93b1d5f4b4830f07aa9b246"
+    },
+    {
+      "kind": "pr",
+      "number": 423,
+      "title": "Document RBT-052 journey benchmark capture contract",
+      "branch": "task0051-rbt052-capture-contract",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "e0f431e4313f3a5b2079fb85bc4a48ac91f21457"
+    },
+    {
+      "kind": "pr",
+      "number": 422,
+      "title": "control(phase09): reconcile TASK-0051 benchmark blocker",
+      "branch": "control/task0051-benchmark-reconcile",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a7f1ef551f5dbf2d25a292a7a6d183ca0f715c25"
+    },
+    {
+      "kind": "pr",
+      "number": 421,
+      "title": "feat(phase09): bound journey enrollment backpressure",
+      "branch": "supervisor/phase09-task51-enrollment-backpressure",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "1b0a0ed7c650d1a9476c1ab2d919b17f50677146"
+    },
+    {
+      "kind": "pr",
+      "number": 420,
+      "title": "feat(phase09): add durable leased node attempts",
+      "branch": "supervisor/phase09-task51-execution",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "85b7103830525c82f23a5ec2a7b790775cd2c9c0"
+    },
+    {
+      "kind": "pr",
+      "number": 419,
+      "title": "feat(phase09): resume and cancel durable waits",
+      "branch": "supervisor/phase09-task50-wait-resume",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "fe450e2d0c80dab8fa63882859618e9c0618f7a4"
+    },
+    {
+      "kind": "pr",
+      "number": 418,
+      "title": "feat(phase09): advance TASK-0050 runtime semantics",
+      "branch": "supervisor/phase09-task50-runtime",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "30c6a70bdc3faf1faa9b2e7ff7a89e502baee725"
+    },
+    {
+      "kind": "pr",
+      "number": 417,
+      "title": "control(ai): enforce 5-hour continuous Workspace batches",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "control/ai-native-5h-continuous-batch",
+      "merge_sha": "9ae3c893ef1a41d6b266599eff79214f49b74b08"
+    },
+    {
+      "kind": "pr",
+      "number": 416,
+      "title": "feat(phase09): add tenant-safe journey graph foundation",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-task49-clean",
+      "merge_sha": "075cf2f58fe8a0e132b233d9b6ab51a395aca8dd"
+    },
+    {
+      "kind": "pr",
+      "number": 415,
+      "title": "feat(phase09): add journey graph and execution foundation",
+      "disposition": "superseded_duplicate_do_not_merge",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-research"
+    },
+    {
+      "kind": "pr",
+      "number": 414,
+      "title": "control(phase09): activate research and register journey engine tasks",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase09-research",
+      "head_sha": "47229d2167e367ed410f39eab4f37f04a7673c32"
+    },
     {
       "kind": "issue",
       "number": 134,
@@ -28,7 +581,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },
@@ -203,9 +756,74 @@
       "kind": "pr",
       "number": 403,
       "title": "feat(publishing): certify accessible operator UX states",
-      "disposition": "terminal_shipping_merged_certification_pending",
+      "disposition": "terminal_shipping_merged_certified",
       "accepted_actionable": false,
-      "branch": "worker-4/task0041-operator-ux-cert"
+      "branch": "worker-4/task0041-operator-ux-cert",
+      "runner_id": "RBT-049"
+    },
+    {
+      "kind": "pr",
+      "number": 404,
+      "title": "control: reconcile TASK-0041 worker integration ledger",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "control/task0041-ship-ledger-reconcile"
+    },
+    {
+      "kind": "pr",
+      "number": 405,
+      "title": "control: accept TASK-0041 and close PHASE-07",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "runner_id": "RBT-050",
+      "branch": "supervisor/task0041-phase07-final-acceptance",
+      "merge_sha": "87e65b1d458a79f925376d4cf49792d3771ef192"
+    },
+    {
+      "kind": "pr",
+      "number": 409,
+      "title": "test(phase08): add PostgreSQL segment compiler coverage",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-ai-proposal",
+      "merge_sha": "413430693fbb15ce4e0c6f5fb26cb41192b69f84"
+    },
+    {
+      "kind": "pr",
+      "number": 410,
+      "title": "feat(phase08): finish Task44 permissions and activate Task45",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task44-acceptance",
+      "merge_sha": "c2278638788958bb9875bbc465f5bdb8c52a92a3"
+    },
+    {
+      "kind": "pr",
+      "number": 411,
+      "title": "feat(phase08): add safe natural-language segment proposal review",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task45-natural-language-compiler",
+      "merge_sha": "143b76089c1b7c5f7954cb1beda31849ff5f2d20"
+    },
+    {
+      "kind": "pr",
+      "number": 412,
+      "title": "feat(phase08): bounded audience preview and immutable segment versions",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "branch": "supervisor/phase08-task46-preview-count-ux",
+      "merge_sha": "8f12e6668b8eded05ad6282ff61f508f64ead4dc"
+    },
+    {
+      "kind": "pr",
+      "number": 413,
+      "title": "control(phase08): certify segmentation and close phase",
+      "disposition": "terminal_promotion_candidate_exact_head",
+      "accepted_actionable": false,
+      "runner_id": "RBT-051",
+      "branch": "supervisor/phase08-final-certification",
+      "candidate_sha": "eff0d08506c408090754c72e4ea6ca4bdcd10369"
     }
   ]
 }

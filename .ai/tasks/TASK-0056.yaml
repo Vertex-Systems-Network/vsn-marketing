@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0056",
+  "phase": "PHASE-10",
+  "title": "Implement isolated context and memory assembly",
+  "weight": 12,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0055"
+  ],
+  "objective": "Implement workspace, brand, customer and run memory boundaries, provenance, redaction, freshness and context manifests.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Context manifest binds authenticated workspace, scoped sources, provenance, permission and revision/freshness without trusting model input.",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Customer/brand/run memory isolation, redaction, expiry/deletion and cross-workspace/injection tests pass.",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "No raw secret or prohibited personal data is sent; exact-head/main gates pass.",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Implement TASK-0056 against its research and test gates without relaxing model/tool/data policy."
+}

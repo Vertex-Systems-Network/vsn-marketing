@@ -1,0 +1,19 @@
+{
+  "id": "creative_text",
+  "version": "v1",
+  "output_schema_id": "creative_candidate.v1",
+  "evidence_kind": "offline_contract",
+  "rights_required": true,
+  "provenance_required": true,
+  "review_required": [
+    "rights",
+    "brand",
+    "safety"
+  ],
+  "disclosure": "AI-generated draft; independent review required.",
+  "max_text_bytes": 4096,
+  "max_media_bytes": 0,
+  "media_mime_types": [],
+  "max_dimension": 4096,
+  "publication_allowed": false
+}

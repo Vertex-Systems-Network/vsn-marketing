@@ -418,15 +418,98 @@ def task_path(task_id: str) -> Path:
     return ROOT / ".ai" / "tasks" / f"{task_id}.yaml"
 
 
+def mark_acceptance_criteria(path: Path, criterion_ids: list[str]) -> None:
+    if not criterion_ids:
+        return
+    data = json.loads(path.read_text(encoding="utf-8"))
+    criteria = data.get("acceptance_criteria")
+    if not isinstance(criteria, list):
+        raise TransactionError(f"{path.name} has no valid acceptance_criteria list")
+    requested = set(criterion_ids)
+    if len(requested) != len(criterion_ids):
+        raise TransactionError("acceptance criterion IDs must be unique")
+    known = {item.get("id") for item in criteria if isinstance(item, dict)}
+    unknown = requested - known
+    if unknown:
+        raise TransactionError("unknown acceptance criterion ID(s): " + ", ".join(sorted(unknown)))
+    for item in criteria:
+        if isinstance(item, dict) and item.get("id") in requested:
+            item["done"] = True
+    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+
+def reconcile_coordination_queue(path: Path, *, main_sha: str, active_pr: int, branch: str, title: str, task_id: str, completed_pr: int | None = None, completion_sha: str | None = None) -> None:
+    queue = json.loads(path.read_text(encoding="utf-8"))
+    items = queue.get("items")
+    if not isinstance(items, list):
+        raise TransactionError("coordination queue items must be a list")
+    if completed_pr is not None:
+        completed = [row for row in items if isinstance(row, dict) and row.get("kind") == "pr" and row.get("number") == completed_pr]
+        if len(completed) != 1 or not completion_sha:
+            raise TransactionError("completed PR must resolve to one queue item and an exact merge SHA")
+        completed[0]["accepted_actionable"] = False
+        completed[0]["disposition"] = "terminal_merged_reconciled"
+        completed[0]["merge_sha"] = completion_sha
+    matches = [row for row in items if isinstance(row, dict) and row.get("kind") == "pr" and row.get("number") == active_pr]
+    if len(matches) > 1:
+        raise TransactionError("active PR has duplicate coordination queue rows")
+    row = matches[0] if matches else {"kind": "pr", "number": active_pr}
+    disposition = f"active_{task_id.lower().replace('-', '')}_carrier"
+    row.update({
+        "kind": "pr", "number": active_pr, "title": title, "branch": branch,
+        "disposition": disposition, "accepted_actionable": True,
+    })
+    if not matches:
+        items.insert(0, row)
+    for candidate in items:
+        if isinstance(candidate, dict) and candidate is not row and candidate.get("accepted_actionable") is True:
+            candidate["accepted_actionable"] = False
+            if candidate.get("number") == completed_pr:
+                candidate["disposition"] = "terminal_merged_reconciled"
+    queue["reconciled_main_sha"] = main_sha
+    queue["active_work_path"] = {
+        "kind": "pr", "number": active_pr, "title": title, "branch": branch,
+        "disposition": disposition,
+    }
+    path.write_text(json.dumps(queue, indent=2) + "\n", encoding="utf-8")
+
+
 def checkpoint(args) -> None:
     coordinator = TxnCoordinator(ROOT)
     paths = [
         ROOT / ".ai/state/CURRENT-STATE.yaml",
         ROOT / ".ai/state/LAST-CHECKPOINT.md",
         ROOT / ".ai/state/EXECUTION-JOURNAL.jsonl",
+        ROOT / ".ai/coordination/OPEN-WORK-QUEUE.yaml",
     ]
     coordinator.begin("checkpoint", paths)
     try:
+        state_path = ROOT / ".ai/state/CURRENT-STATE.yaml"
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        if args.active_pr is not None:
+            state["active_pr"] = args.active_pr
+        if args.active_branch is not None:
+            state["active_branch"] = args.active_branch
+        if args.observed_main is not None:
+            state["observed_main_sha"] = args.observed_main
+        if args.milestone is not None:
+            state["current_milestone"] = args.milestone
+        if args.milestone_status is not None:
+            state["milestone_status"] = args.milestone_status
+        state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+        if args.active_pr is not None or args.observed_main is not None:
+            if not all((args.active_pr, args.active_branch, args.observed_main, args.carrier_title)):
+                raise TransactionError("active PR checkpoint requires branch, observed main SHA, and carrier title")
+            reconcile_coordination_queue(
+                ROOT / ".ai/coordination/OPEN-WORK-QUEUE.yaml",
+                main_sha=args.observed_main,
+                active_pr=args.active_pr,
+                branch=args.active_branch,
+                title=args.carrier_title,
+                task_id=json.loads((ROOT / ".ai/state/CURRENT-STATE.yaml").read_text(encoding="utf-8"))["execution"]["active_task"],
+                completed_pr=args.completed_pr,
+                completion_sha=args.completion_sha,
+            )
         run_tool(["tools/ai_state.py", "checkpoint", "--summary", args.summary, "--tests", args.tests, "--next", args.next_action])
         run_tool(["tools/ai_journal.py", "record", "--type", "checkpoint", "--summary", args.summary])
         validate_integrity()
@@ -437,6 +520,8 @@ def checkpoint(args) -> None:
 
 
 def transition(args) -> None:
+    if args.dry_run and args.criteria:
+        raise TransactionError("--criteria cannot be combined with --dry-run; use --dry-run before acceptance")
     coordinator = TxnCoordinator(ROOT)
     paths = [
         task_path(args.complete),
@@ -448,6 +533,7 @@ def transition(args) -> None:
         paths.insert(1, task_path(args.next_task))
     coordinator.begin("task_transition", paths)
     try:
+        mark_acceptance_criteria(task_path(args.complete), args.criteria or [])
         command = [
             "tools/ai_state.py", "transition", "--complete", args.complete,
             "--evidence", args.evidence, "--tests", args.tests,
@@ -488,9 +574,13 @@ def main() -> int:
     rec = sub.add_parser("recover"); rec.add_argument("--force", action="store_true")
     cp = sub.add_parser("checkpoint")
     cp.add_argument("--summary", required=True); cp.add_argument("--tests", required=True); cp.add_argument("--next", dest="next_action", required=True)
+    cp.add_argument("--active-pr", type=int); cp.add_argument("--active-branch"); cp.add_argument("--observed-main")
+    cp.add_argument("--carrier-title"); cp.add_argument("--completed-pr", type=int); cp.add_argument("--completion-sha")
+    cp.add_argument("--milestone"); cp.add_argument("--milestone-status", choices=["IN_PROGRESS", "BLOCKED", "COMPLETE"])
     tr = sub.add_parser("transition")
     tr.add_argument("--complete", required=True); tr.add_argument("--next", dest="next_task")
     tr.add_argument("--evidence", required=True); tr.add_argument("--tests", required=True); tr.add_argument("--dry-run", action="store_true")
+    tr.add_argument("--criteria", action="append", help="acceptance criterion ID proven by the supplied evidence and tests; may be repeated")
     args = parser.parse_args()
     try:
         if args.command == "validate":

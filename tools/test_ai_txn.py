@@ -35,6 +35,36 @@ class TransactionCoordinatorTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_coordination_queue_reconciles_completed_and_active_pr_atomically(self):
+        queue_path = self.root / "queue.json"
+        queue_path.write_text(json.dumps({
+            "schema_version": 1,
+            "reconciled_main_sha": "old",
+            "active_work_path": {"kind": "pr", "number": 416},
+            "items": [
+                {"kind": "pr", "number": 416, "title": "old", "branch": "old", "accepted_actionable": True},
+            ],
+        }), encoding="utf-8")
+        self.module.reconcile_coordination_queue(
+            queue_path,
+            main_sha="a" * 40,
+            active_pr=418,
+            branch="supervisor/phase09-task50-runtime",
+            title="TASK-0050 runtime",
+            task_id="TASK-0050",
+            completed_pr=416,
+            completion_sha="b" * 40,
+        )
+        queue = json.loads(queue_path.read_text(encoding="utf-8"))
+        self.assertEqual("a" * 40, queue["reconciled_main_sha"])
+        self.assertEqual(418, queue["active_work_path"]["number"])
+        self.assertEqual("active_task0050_carrier", queue["active_work_path"]["disposition"])
+        active = [row for row in queue["items"] if row.get("accepted_actionable") is True]
+        self.assertEqual([418], [row["number"] for row in active])
+        old = next(row for row in queue["items"] if row["number"] == 416)
+        self.assertEqual("terminal_merged_reconciled", old["disposition"])
+        self.assertEqual("b" * 40, old["merge_sha"])
+
     def _mark_owner_dead(self):
         lock = json.loads(self.txn.lock_path.read_text(encoding="utf-8"))
         lock["pid"] = 999999999
@@ -210,6 +240,24 @@ class TransactionCoordinatorTests(unittest.TestCase):
         txn.begin("worktree", [self.a])
         self.assertTrue((actual_git_dir / "vsn-ai-txn").exists())
         txn.commit()
+
+    def test_mark_acceptance_criteria_updates_only_named_criteria(self):
+        task = self.root / "TASK-TEST.yaml"
+        task.write_text(json.dumps({"acceptance_criteria": [
+            {"id": "AC-1", "done": False}, {"id": "AC-2", "done": False},
+        ]}), encoding="utf-8")
+        self.module.mark_acceptance_criteria(task, ["AC-1"])
+        result = json.loads(task.read_text(encoding="utf-8"))
+        self.assertTrue(result["acceptance_criteria"][0]["done"])
+        self.assertFalse(result["acceptance_criteria"][1]["done"])
+
+    def test_mark_acceptance_criteria_rejects_unknown_ids_without_writing(self):
+        task = self.root / "TASK-TEST.yaml"
+        before = json.dumps({"acceptance_criteria": [{"id": "AC-1", "done": False}]})
+        task.write_text(before, encoding="utf-8")
+        with self.assertRaises(self.module.TransactionError):
+            self.module.mark_acceptance_criteria(task, ["AC-404"])
+        self.assertEqual(before, task.read_text(encoding="utf-8"))
 
 
 class RepositoryTransactionTests(unittest.TestCase):

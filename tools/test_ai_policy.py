@@ -21,6 +21,18 @@ def expect_error(docs, needle: str) -> None:
 def main() -> int:
     original = policy.load_documents()
     assert policy.validate_documents(original) == [], "repository AI policy registries must be valid"
+    assert policy.validate_artifacts(original) == [], "pinned runtime artifacts must be valid"
+    mutated = copy.deepcopy(original)
+    mutated['prompts']['prompts'][0]['versions'][0]['sha256'] = '0' * 64
+    assert any('hash mismatch' in e for e in policy.validate_artifacts(mutated))
+    assert policy.immutable_version_errors(original['prompts'], mutated['prompts'], 'prompts')
+    mutated = copy.deepcopy(original)
+    mutated['prompts']['prompts'][0]['agent_id'] = 'qa'
+    assert any('binding mismatch' in e for e in policy.validate_artifacts(mutated))
+    mutated = copy.deepcopy(original)
+    mutated['creative']['capabilities'][0]['versions'][0]['sha256'] = '0' * 64
+    assert any('hash mismatch' in e for e in policy.validate_artifacts(mutated))
+    assert policy.immutable_version_errors(original['creative'], mutated['creative'], 'capabilities')
 
     docs = copy.deepcopy(original)
     docs["agents"]["agents"][0]["tools"].append("missing_tool")
@@ -47,7 +59,7 @@ def main() -> int:
     docs["tools"]["tools"].append(copy.deepcopy(docs["tools"]["tools"][0]))
     expect_error(docs, "duplicate tool id")
 
-    print("ai_policy tests: PASS (registry validity + six negative guards)")
+    print("ai_policy tests: PASS (registry validity, artifact pinning/history and negative guards)")
     return 0
 
 

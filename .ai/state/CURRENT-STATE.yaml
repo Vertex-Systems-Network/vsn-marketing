@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96",
+  "observed_main_sha": "695be2478a19ac4a68fe190cb657092a76a72f9e",
   "active_issue": null,
-  "active_pr": 479,
+  "active_pr": 480,
   "active_branch": "supervisor/phase13",
   "current_milestone": "PHASE-13-RESEARCH",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Review Phase13 research matrix and complete TASK0075 exact-head control/full gates, then implement TASK0076.",
+  "exact_next_safe_action": "Verify PR480 exact-head full gates, merge green reviewed head, then transition TASK0075 into TASK0076 with guarded criteria.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review Phase13 research matrix and complete TASK0075 exact-head control/full gates, then implement TASK0076."
+  "exact_next_action": "Verify PR480 exact-head full gates, merge green reviewed head, then transition TASK0075 into TASK0076 with guarded criteria."
 }

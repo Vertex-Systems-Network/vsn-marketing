@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "695be2478a19ac4a68fe190cb657092a76a72f9e",
+  "reconciled_main_sha": "de701dfc96b969d7316f237e8247522cb731c095",
   "active_work_path": {
     "kind": "pr",
-    "number": 480,
-    "title": "PHASE-13: stage seven-task omnichannel roadmap and current API research",
-    "branch": "supervisor/phase13",
-    "disposition": "active_task0075_carrier"
+    "number": 481,
+    "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+    "branch": "supervisor/task0076",
+    "disposition": "active_task0076_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 481,
+      "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+      "branch": "supervisor/task0076",
+      "disposition": "active_task0076_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 480,
       "title": "PHASE-13: stage seven-task omnichannel roadmap and current API research",
       "branch": "supervisor/phase13",
-      "disposition": "active_task0075_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "de701dfc96b969d7316f237e8247522cb731c095"
     },
     {
       "kind": "pr",

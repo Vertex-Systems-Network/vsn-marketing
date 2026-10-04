@@ -747,7 +747,7 @@
       "phase": "PHASE-13",
       "title": "Research current channel APIs and policies",
       "weight": 12,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0074"
       ]
@@ -757,7 +757,7 @@
       "phase": "PHASE-13",
       "title": "Implement messaging adapters and canonical channel capabilities",
       "weight": 18,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0075"
       ]

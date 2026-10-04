@@ -18,25 +18,22 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed AI Continuity Guard run 36503697430; Persistent Supervisor reconcile run 36503697379 was cancelled.",
-    "application_test_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Application Foundation CI run 36503697423. RBT-052 capture run 36504122827 passed with raw artifact and independent structural validation for the limited synthetic persistence scope.",
-    "security_supply_chain_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Security Supply Chain CI run 36503697416.",
-    "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
-    "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
+    "continuity_validation": "PR #484 state reconciliation in progress; previous runs rejected stale protected-main snapshot.",
+    "application_test_status": "Awaiting exact-head PR #484 application evidence.",
+    "security_supply_chain_status": "Awaiting exact-head PR #484 security evidence.",
+    "release_integrity_status": "Awaiting resulting-main verification for TASK-0076 durable outcome slice.",
+    "scorecard_status": "Awaiting resulting-main verification for TASK-0076 durable outcome slice."
   },
-  "observed_main_sha": "de701dfc96b969d7316f237e8247522cb731c095",
+  "observed_main_sha": "ee845ac8a8d98fe9abe1fe368a683629dae3b084",
   "active_issue": null,
-  "active_pr": 481,
+  "active_pr": 484,
   "active_branch": "supervisor/task0076",
   "current_milestone": "TASK-0076-MESSAGING",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Repair PR481 exact-head CI as needed, merge reviewed green slice, then continue TASK0076 durable reservation, connector and outcome reconciliation.",
+  "last_completed_milestone": "TASK-0075 accepted through research carrier; TASK-0076 durable reservation and outcome reconciliation remains pending exact-head gates.",
+  "exact_next_safe_action": "Run and verify PR484 exact-head CI, merge only after all required gates pass, then reconcile TASK0076 acceptance.",
   "pending_runner_ids": [],
-  "blocked_runner_ids": [
-    "RBT-004",
-    "RBT-052"
-  ],
+  "blocked_runner_ids": ["RBT-004", "RBT-052"],
   "blockers": [],
   "current_blockers": [],
   "timeout_control": {
@@ -45,5 +42,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Repair PR481 exact-head CI as needed, merge reviewed green slice, then continue TASK0076 durable reservation, connector and outcome reconciliation."
+  "exact_next_action": "Run and verify PR484 exact-head CI, merge only after all required gates pass, then reconcile TASK0076 acceptance."
 }

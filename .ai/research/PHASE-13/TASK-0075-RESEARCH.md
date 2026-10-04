@@ -1,6 +1,6 @@
 # TASK-0075 Research Pack — channel and social API reality
 
-- researched_at: 2026-10-04T00:45:00Z
+- researched_at: 2026-10-04T00:37:00Z
 - task: TASK-0075
 - phase: PHASE-13
 - scope: permission-based messaging, social publishing, Community, listening and cross-channel evidence

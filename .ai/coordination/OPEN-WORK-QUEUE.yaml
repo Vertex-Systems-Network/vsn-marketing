@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "de701dfc96b969d7316f237e8247522cb731c095",
+  "reconciled_main_sha": "ee845ac8a8d98fe9abe1fe368a683629dae3b084",
   "active_work_path": {
     "kind": "pr",
-    "number": 481,
-    "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+    "number": 484,
+    "title": "TASK-0076: complete durable messaging outcome layer",
     "branch": "supervisor/task0076",
     "disposition": "active_task0076_carrier"
   },
   "items": [
     {
       "kind": "pr",
-      "number": 481,
-      "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+      "number": 484,
+      "title": "TASK-0076: complete durable messaging outcome layer",
       "branch": "supervisor/task0076",
       "disposition": "active_task0076_carrier",
       "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 481,
+      "title": "TASK-0076: introduce fail-closed offline messaging capability candidates",
+      "branch": "supervisor/task0076",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "ee845ac8a8d98fe9abe1fe368a683629dae3b084"
     },
     {
       "kind": "pr",

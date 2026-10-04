@@ -2,10 +2,10 @@
 
 ## State
 
-- Timestamp: `2026-10-04T00:57:30+00:00`
-- Observed main: `de701dfc96b969d7316f237e8247522cb731c095`
+- Timestamp: `2026-10-04T17:18:56+00:00`
+- Observed main: `ee845ac8a8d98fe9abe1fe368a683629dae3b084`
 - Active issue: `none`
-- Active PR: `481`
+- Active PR: `484`
 - Active branch: `supervisor/task0076`
 - Current milestone: `TASK-0076-MESSAGING`
 - Milestone status: `IN_PROGRESS`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b86369bdf95af85372d95c07112acb031ca1344c053240d26a2aa94420760627`
+- State fingerprint: `282a05fd862cb339356635625539ca6f937e343b7965e1388044478d132ecf97`
 
 ## Completed / observed this session
 
-TASK0075 accepted PR480; PR481 carries first TASK0076 guarded five-channel offline adapter slice, dispatch still disabled.
+PR484 code repaired: concurrent durable reservation, scoped row-lock reconciliation, monotonic outcomes, ambiguity recovery, privacy evidence allowlist, policy-gated request digests and safe migration re-entry. Main ancestry and canonical ledger conflict repaired; acceptance remains false.
 
 ## Tests
 
-Local continuity/supervisor/policy pass; PR481 exact-head full CI pending, PHP unavailable locally.
+Local PHP8.3.6 focused15/73; full860/5779 with144 explicit infrastructure skips; PHPStan pass. PostgreSQL contention test awaits exact-head CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local continuity/supervisor/policy pass; PR481 exact-head full CI pending, PHP u
 
 ## Exact next action
 
-Repair PR481 exact-head CI as needed, merge reviewed green slice, then continue TASK0076 durable reservation, connector and outcome reconciliation.
+Verify repaired PR484 exact-head full Application Security Continuity gates; repair actual failures, merge only green reviewed head, then verify main and accept TASK0076.

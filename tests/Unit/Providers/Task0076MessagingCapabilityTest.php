@@ -5,8 +5,12 @@ use App\Modules\DeliveryEngine\Domain\Eligibility\EligibilityContext;
 use App\Modules\DeliveryEngine\Domain\Eligibility\EligibilityOutcome;
 use App\Modules\DeliveryEngine\Domain\Eligibility\PolicyBasisType;
 use App\Modules\DeliveryEngine\Domain\MessageIntentType;
+use App\Modules\Providers\Application\Messaging\ReserveOfflineMessagingIntent;
+use App\Modules\Providers\Domain\Messaging\Contracts\MessagingOperationRepository;
 use App\Modules\Providers\Domain\Messaging\MessagingChannel;
 use App\Modules\Providers\Domain\Messaging\MessagingIntent;
+use App\Modules\Providers\Domain\Messaging\MessagingOperation;
+use App\Modules\Providers\Domain\Messaging\MessagingOperationState;
 use App\Modules\Providers\Infrastructure\Messaging\OfflineMessagingAdapter;
 use App\Modules\Providers\Infrastructure\Messaging\ResearchBackedMessagingAdapters;
 
@@ -97,4 +101,30 @@ it('refuses absent scopes and stale capability evidence without falling back acr
 
     $wrongChannel = task0076Intent($adapter, ['channel' => MessagingChannel::Sms]);
     expect($adapter->prepare($wrongChannel, $adapter->capability()->requiredScopes, new DateTimeImmutable('2026-10-05T00:00:00Z'))->offlinePreparationAllowed)->toBeFalse();
+});
+
+it('binds an offline reservation to brand recipient and payload without persisting them', function () {
+    $adapter = ResearchBackedMessagingAdapters::candidates()[0];
+    $intent = task0076Intent($adapter);
+    $hash = hash('sha256', 'synthetic-payload');
+    $repository = Mockery::mock(MessagingOperationRepository::class);
+    $repository->shouldReceive('reserve')->once()->with('workspace-a', 'sms', $intent->providerKey, 'intent-1', Mockery::on(fn (string $digest): bool => $digest === hash('sha256', json_encode([
+        $intent->workspaceId, $intent->brandId, $intent->accountWorkspaceId, $intent->providerKey,
+        $intent->channel->value, $intent->recipientIdentityType, $intent->recipientReference, $hash,
+    ], JSON_THROW_ON_ERROR))))->andReturn(new MessagingOperation('operation-1', 'workspace-a', 'sms', $intent->providerKey, 'intent-1', $hash, MessagingOperationState::Reserved, null, false, [], new DateTimeImmutable, new DateTimeImmutable));
+    $service = new ReserveOfflineMessagingIntent($repository);
+    expect($service->reserve($adapter, $intent, $adapter->capability()->requiredScopes, new DateTimeImmutable('2026-10-05Z'), $hash)->state)->toBe(MessagingOperationState::Reserved);
+    Mockery::close();
+});
+
+it('rechecks suppression and rejects invalid payload digests before any durable reservation', function () {
+    $repository = Mockery::mock(MessagingOperationRepository::class);
+    $repository->shouldNotReceive('reserve');
+    $service = new ReserveOfflineMessagingIntent($repository);
+    $adapter = ResearchBackedMessagingAdapters::candidates()[0];
+    foreach ([['canonicalSuppressionApplies' => true], ['channelPurposeAuthorized' => false], ['providerOptOutApplies' => true]] as $overrides) {
+        expect(fn () => $service->reserve($adapter, task0076Intent($adapter, $overrides), $adapter->capability()->requiredScopes, new DateTimeImmutable('2026-10-05Z'), hash('sha256', 'payload')))->toThrow(InvalidArgumentException::class);
+    }
+    expect(fn () => $service->reserve($adapter, task0076Intent($adapter), [], new DateTimeImmutable('2026-10-05Z'), 'raw content'))->toThrow(InvalidArgumentException::class);
+    Mockery::close();
 });

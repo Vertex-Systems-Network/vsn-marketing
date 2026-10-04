@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_for_task": "TASK-0074",
+  "updated_for_task": "TASK-0076",
   "suites": [
     {
       "name": "ai-continuity-validation",
@@ -94,26 +94,19 @@
     "reason": "PR471 full exact-head and policy-classified resulting-main control gates passed; no skipped product job counted as a full pass."
   },
   "latest_local": {
-    "task": "TASK-0074",
-    "focused_tests": 52,
-    "focused_assertions": 441,
-    "full_tests": 845,
-    "full_assertions": 5706,
-    "explicit_infrastructure_skips": 143,
-    "database_parity": "local_skip; actual CI evidence below"
+    "task": "TASK-0076",
+    "focused_tests": 15,
+    "focused_assertions": 73,
+    "full_tests": 860,
+    "full_assertions": 5779,
+    "explicit_infrastructure_skips": 144,
+    "database_parity": "PostgreSQL contention test local skip; exact-head CI required",
+    "runtime": "PHP 8.3.6"
   },
   "latest_ci": {
-    "task": "TASK-0074",
-    "status": "accepted",
-    "pr_head": "618cea2783f385a814e6bfa9a78f722bc0ff1eab",
-    "main": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96",
-    "pr_application_run": 37162980153,
-    "main_application_run": 37163508080,
-    "postgresql_integration_tests_each": 187,
-    "postgresql_integration_assertions_each": 2498,
-    "postgresql_browser_tests_each": 2,
-    "source_bound_raw_samples_each": 30,
-    "pr_artifact_id": 11288368162,
-    "main_artifact_id": 11289055473
+    "task": "TASK-0076",
+    "pull_request": 484,
+    "status": "pending",
+    "scope": "No exact-head run on conflicting predecessor73de0c5; repaired carrier requires full checks before acceptance."
   }
 }

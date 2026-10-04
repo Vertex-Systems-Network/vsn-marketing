@@ -128,3 +128,12 @@ it('rechecks suppression and rejects invalid payload digests before any durable 
     expect(fn () => $service->reserve($adapter, task0076Intent($adapter), [], new DateTimeImmutable('2026-10-05Z'), 'raw content'))->toThrow(InvalidArgumentException::class);
     Mockery::close();
 });
+
+it('distinguishes internal permissions from actual provider OAuth scopes', function () {
+    $adapters = ResearchBackedMessagingAdapters::candidates();
+    expect($adapters[0]->capability()->authorizationKind())->toBe('internal_permission')
+        ->and($adapters[4]->capability()->authorizationKind())->toBe('internal_permission')
+        ->and($adapters[2]->capability()->authorizationKind())->toBe('provider_oauth_scope')
+        ->and($adapters[2]->capability()->requiredScopes)->toBe(['https://www.googleapis.com/auth/rcsbusinessmessaging']);
+    expect($adapters[2]->prepare(task0076Intent($adapters[2]), ['rcs.agent.send'], new DateTimeImmutable('2026-10-05Z'))->offlinePreparationAllowed)->toBeFalse();
+});

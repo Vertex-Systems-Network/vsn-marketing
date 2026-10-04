@@ -31,7 +31,7 @@
   "current_milestone": "TASK-0076-MESSAGING",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0051 completed after independently validating RBT-052 v6 Redis/PostgreSQL queue and pinned graph evidence; PR #447 scheduled bounded durable-work recovery and merged to protected main d0b13644661cdc22d1a7ffa389b020f050317013. Provider dispatch remains fail-closed and no production numeric/provider latency limits are claimed.",
-  "exact_next_safe_action": "Verify final PR484 full Application Security Continuity and actual PostgreSQL contention evidence; verify shipping wave, merge only current green head then accept TASK0076 after main gates.",
+  "exact_next_safe_action": "Verify corrected PR484 final-head Application Security Continuity and PostgreSQL reservation contention; verify shipping wave, merge reviewed green head and accept TASK0076 only after main checks.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify final PR484 full Application Security Continuity and actual PostgreSQL contention evidence; verify shipping wave, merge only current green head then accept TASK0076 after main gates."
+  "exact_next_action": "Verify corrected PR484 final-head Application Security Continuity and PostgreSQL reservation contention; verify shipping wave, merge reviewed green head and accept TASK0076 only after main checks."
 }

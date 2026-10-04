@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-04T17:25:36+00:00`
+- Timestamp: `2026-10-04T17:29:38+00:00`
 - Observed main: `ee845ac8a8d98fe9abe1fe368a683629dae3b084`
 - Active issue: `none`
 - Active PR: `484`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `01503b80460252f5cf0f60dcec4f3b57d45c365a38dc15e34be5d0c4b641ea08`
+- State fingerprint: `65c7d0dece5a781852e3ff6ab36910441a878c569c552c4b0550bd66e83e2de2`
 
 ## Completed / observed this session
 
-Material review repair adds application container binding for the offline reservation service; tests prove DI resolves real repository. PR486 shipping ancestry sync merged at3e68802 with exact main tree and green shipping gate; shipping full wave verification remains pending.
+Official-source correction replaces invented RCS scope with documented Google OAuth scope and explicitly distinguishes internal SMS/in-app permissions from provider OAuth scope labels; regression refuses old RCS label. Durable offline criteria remain unaccepted pending exact final-head gates.
 
 ## Tests
 
-PHP8.3.6 focused15/74; full860/5780,144 explicit infra skips and4 existing PHPUnit notices; PHPStan/Pint pass. PR484 prior34e543 continuity success; product wiring change requires fresh exact-head CI.
+Local PHP8.3.6 focused16/79; full861/5785 with144 infra skips and4 existing PHPUnit notices; PHPStan/Pint pass. Final source change legitimately requires fresh CI rather than counting predecessor gates.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PHP8.3.6 focused15/74; full860/5780,144 explicit infra skips and4 existing PHPUn
 
 ## Exact next action
 
-Verify final PR484 full Application Security Continuity and actual PostgreSQL contention evidence; verify shipping wave, merge only current green head then accept TASK0076 after main gates.
+Verify corrected PR484 final-head Application Security Continuity and PostgreSQL reservation contention; verify shipping wave, merge reviewed green head and accept TASK0076 only after main checks.

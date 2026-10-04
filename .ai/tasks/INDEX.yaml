@@ -737,7 +737,7 @@
       "phase": "PHASE-12",
       "title": "Certify Phase 12 analytics",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0073"
       ]

@@ -6,55 +6,55 @@
       "name": "ai-continuity-validation",
       "command": "python tools/ai_state.py validate",
       "status": "passing",
-      "notes": "TASK0072/73 accepted after PR476/477 exact-head and resulting-main full gates; TASK0074 certification acceptance pending."
+      "notes": "TASK0074 guarded terminal transition, journal/continuity, exact PR478/main continuity and Supervisor gates passed. PHASE12 complete."
     },
     {
       "name": "backend-tests",
       "command": "php artisan test",
       "status": "passing",
-      "notes": "TASK0074 local PHP8.3.6:845 passed/5706 assertions,143 explicit infrastructure skips; focused52/441. PostgreSQL measurement requires actual CI; no local parity claim."
+      "notes": "TASK0074 local PHP8.3.6 full845/5706 with143 explicit PostgreSQL infrastructure skips; PR/main full Application foundation and PHP8.3 floor passed."
     },
     {
       "name": "postgresql-integration",
       "command": "php artisan test --testsuite=Integration",
       "status": "passing",
-      "notes": "TASK0073 PR477 integration111290330149 actual186/1179 including competing source reconciliation; maincbd83fdc integration111291167653 success. New TASK0074 bounded measurement and PostgreSQL browser await actual CI."
+      "notes": "PR478 head618cea2783f385a814e6bfa9a78f722bc0ff1eab and main33475aceb1d8c1f57d3c4f7ad107349d1e856c96 actual PostgreSQL18 integration187/2498 each, 30 independently verified raw samples each, 1001 refusal and two PostgreSQL browser tests each; synthetic workload only."
     },
     {
       "name": "php-static-analysis",
       "command": "composer analyse",
       "status": "passing",
-      "notes": "Locked PHPStan passed TASK0073; Composer runtime now available. New certification tests require formatting/full CI."
+      "notes": "PR478 and resulting-main Application foundation PHPStan passed; no new findings."
     },
     {
       "name": "php-formatting",
       "command": "composer lint:check",
       "status": "passing",
-      "notes": "TASK0072 locked vendor Pint --test passed."
+      "notes": "PR478 and resulting-main Application foundation Pint pass; two preceding PR heads failed and were corrected before acceptance."
     },
     {
       "name": "frontend-typecheck",
       "command": "npm run typecheck",
       "status": "passing",
-      "notes": "TASK0072 npm run typecheck passed."
+      "notes": "PR478 and resulting-main Application foundation TypeScript check passed."
     },
     {
       "name": "frontend-unit-tests",
       "command": "npm run test",
       "status": "passing",
-      "notes": "TASK0072 full frontend38 tests passed; analytics dashboard3 tests cover labels, busy/errors, semantic measured table and separate inference."
+      "notes": "PR478 and resulting-main Application foundation frontend tests passed."
     },
     {
       "name": "frontend-build",
       "command": "npm run build",
       "status": "passing",
-      "notes": "TASK0072 npm run build passed."
+      "notes": "PR478 and resulting-main Application foundation asset builds and integration PostgreSQL browser assets passed."
     },
     {
       "name": "critical-e2e",
       "command": "npm run test:e2e",
       "status": "passing",
-      "notes": "Latest accepted TASK0061 main44c64433: Application36941095179 (foundation110632505468, E2E110633249504, PHPfloor110633249535, integration110633249544), Continuity36941095138, Security36941095206, Release36941095190, Scorecard36941095333 all pass. Integration180/1137; browser7; frontend35; backend776/5146 with136 foundation-only skips; architecture4/2718. Suites overlap."
+      "notes": "PR478/main SQLite E2E jobs succeeded; PostgreSQL analytics browser step independently passed two guarded tests on both."
     }
   ],
   "application_tests": {
@@ -96,11 +96,24 @@
   "latest_local": {
     "task": "TASK-0074",
     "focused_tests": 52,
-    "assertions": 441,
-    "infra_measurement_status": "pending_actual_PostgreSQL_CI",
-    "acceptance": false,
+    "focused_assertions": 441,
     "full_tests": 845,
     "full_assertions": 5706,
-    "explicit_infrastructure_skips": 143
+    "explicit_infrastructure_skips": 143,
+    "database_parity": "local_skip; actual CI evidence below"
+  },
+  "latest_ci": {
+    "task": "TASK-0074",
+    "status": "accepted",
+    "pr_head": "618cea2783f385a814e6bfa9a78f722bc0ff1eab",
+    "main": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96",
+    "pr_application_run": 37162980153,
+    "main_application_run": 37163508080,
+    "postgresql_integration_tests_each": 187,
+    "postgresql_integration_assertions_each": 2498,
+    "postgresql_browser_tests_each": 2,
+    "source_bound_raw_samples_each": 30,
+    "pr_artifact_id": 11288368162,
+    "main_artifact_id": 11289055473
   }
 }

@@ -1,6 +1,6 @@
 # PHASE-12 — Analytics, Funnels, Attribution, Revenue, and LTV
 
-Status: researched task sequence staged. Weight: 6% of roadmap. No production effectiveness or scale claim follows from registration.
+Status: bounded offline analytics certification complete through TASK-0074 and PR #478 on 2026-10-04. Weight: 6% of roadmap. Exact PR and resulting-main evidence, raw PostgreSQL samples, browser flow and limitations are recorded in `.ai/research/PHASE-12/PHASE-12-CERTIFICATION.md`. This does not establish production effectiveness, source completeness or representative production scale.
 
 1. TASK-0068 — dated official analytics, privacy and database research.
 2. TASK-0069 — canonical fact lineage, authorization, privacy, dedupe, aggregation and freshness.

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0080",
+  "phase": "PHASE-13",
+  "title": "Implement cross-channel engagement and publication analytics",
+  "weight": 12,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0079"
+  ],
+  "objective": "Implement cross-channel engagement and publication analytics",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Normalized facts retain provider-specific definitions, source lineage, timestamps and unknown totals",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Consent, privacy, retention, aggregation and data-quality checks cover delayed, duplicate and missing provider events",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "PostgreSQL and operator-facing evidence passes relevant tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0080 against dated research and all acceptance gates; retain truthfully pending criteria."
+}

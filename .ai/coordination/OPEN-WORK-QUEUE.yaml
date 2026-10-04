@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "33475aceb1d8c1f57d3c4f7ad107349d1e856c96",
+  "reconciled_main_sha": "695be2478a19ac4a68fe190cb657092a76a72f9e",
   "active_work_path": {
     "kind": "pr",
-    "number": 479,
-    "title": "PHASE-12: publish bounded analytics certification and 100% progress",
-    "branch": "supervisor/phase12-closure",
-    "disposition": "active_task0074_carrier"
+    "number": 480,
+    "title": "PHASE-13: stage seven-task omnichannel roadmap and current API research",
+    "branch": "supervisor/phase13",
+    "disposition": "active_task0075_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 480,
+      "title": "PHASE-13: stage seven-task omnichannel roadmap and current API research",
+      "branch": "supervisor/phase13",
+      "disposition": "active_task0075_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 479,
       "title": "PHASE-12: publish bounded analytics certification and 100% progress",
       "branch": "supervisor/phase12-closure",
-      "disposition": "active_task0074_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "695be2478a19ac4a68fe190cb657092a76a72f9e"
     },
     {
       "kind": "pr",

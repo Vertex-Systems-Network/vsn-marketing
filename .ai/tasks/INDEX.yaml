@@ -741,6 +741,76 @@
       "dependencies": [
         "TASK-0073"
       ]
+    },
+    {
+      "id": "TASK-0075",
+      "phase": "PHASE-13",
+      "title": "Research current channel APIs and policies",
+      "weight": 12,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0074"
+      ]
+    },
+    {
+      "id": "TASK-0076",
+      "phase": "PHASE-13",
+      "title": "Implement messaging adapters and canonical channel capabilities",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0075"
+      ]
+    },
+    {
+      "id": "TASK-0077",
+      "phase": "PHASE-13",
+      "title": "Implement prioritized social publishing adapters",
+      "weight": 18,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0076"
+      ]
+    },
+    {
+      "id": "TASK-0078",
+      "phase": "PHASE-13",
+      "title": "Implement normalized Community inbox",
+      "weight": 16,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0077"
+      ]
+    },
+    {
+      "id": "TASK-0079",
+      "phase": "PHASE-13",
+      "title": "Implement permitted listening and market signals",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0078"
+      ]
+    },
+    {
+      "id": "TASK-0080",
+      "phase": "PHASE-13",
+      "title": "Implement cross-channel engagement and publication analytics",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0079"
+      ]
+    },
+    {
+      "id": "TASK-0081",
+      "phase": "PHASE-13",
+      "title": "Certify Phase 13 omnichannel and social operations",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0080"
+      ]
     }
   ]
 }

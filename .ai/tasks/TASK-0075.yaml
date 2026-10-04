@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Research current channel APIs and policies",
   "weight": 12,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0074"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Current official sources cover SMS, WhatsApp, RCS, push, in-app and prioritized Instagram, Facebook, LinkedIn, TikTok, X, Pinterest, YouTube and Threads APIs, account types, review, permissions and constraints",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Provider capability/limitations matrix, permission and privacy boundaries, testability, failure modes, and implementation ordering are documented with dated provenance",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Research findings are reconciled into Phase 13 task gates; uncertainty and external approval requirements stay explicit",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

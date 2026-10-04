@@ -11,6 +11,15 @@
   "items": [
     {
       "kind": "pr",
+      "number": 486,
+      "title": "control: reconcile shipping baseline with protected main",
+      "branch": "supervisor/reconcile-shipping-main",
+      "disposition": "terminal_shipping_merged_verification_pending",
+      "accepted_actionable": false,
+      "merge_sha": "3e68802ea8b924cff8ed56b50fba78dc883dad65"
+    },
+    {
+      "kind": "pr",
       "number": 484,
       "title": "TASK-0076: complete durable messaging outcome layer",
       "branch": "supervisor/task0076",

@@ -2,7 +2,9 @@
 
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use App\Modules\Providers\Application\Messaging\ReserveOfflineMessagingIntent;
 use App\Modules\Providers\Domain\Connectors\ReconciliationSource;
+use App\Modules\Providers\Domain\Messaging\Contracts\MessagingOperationRepository;
 use App\Modules\Providers\Domain\Messaging\MessagingOperation;
 use App\Modules\Providers\Domain\Messaging\MessagingOperationState;
 use App\Modules\Providers\Domain\Messaging\MessagingProviderOutcome;
@@ -23,7 +25,8 @@ function messagingPersistenceWorkspace(): string
 }
 
 it('replays a durable reservation and rejects payload channel and provider conflicts', function () {
-    $r = new DatabaseMessagingOperationRepository;
+    $r = app(MessagingOperationRepository::class);
+    expect(app(ReserveOfflineMessagingIntent::class))->toBeInstanceOf(ReserveOfflineMessagingIntent::class);
     $workspace = messagingPersistenceWorkspace();
     $hash = hash('sha256', 'payload');
     $first = $r->reserve($workspace, 'sms', 'azure', 'same-key', $hash);

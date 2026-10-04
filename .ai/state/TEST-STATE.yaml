@@ -96,12 +96,13 @@
   "latest_local": {
     "task": "TASK-0076",
     "focused_tests": 15,
-    "focused_assertions": 73,
+    "focused_assertions": 74,
     "full_tests": 860,
-    "full_assertions": 5779,
+    "full_assertions": 5780,
     "explicit_infrastructure_skips": 144,
     "database_parity": "PostgreSQL contention test local skip; exact-head CI required",
-    "runtime": "PHP 8.3.6"
+    "runtime": "PHP 8.3.6",
+    "notes": "Application container resolves the offline reservation service and durable repository. Four existing PHP8.3 PHPUnit notices disclosed; no warnings/failures."
   },
   "latest_ci": {
     "task": "TASK-0076",

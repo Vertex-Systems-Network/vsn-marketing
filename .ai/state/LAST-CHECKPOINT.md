@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-04T17:18:56+00:00`
+- Timestamp: `2026-10-04T17:25:36+00:00`
 - Observed main: `ee845ac8a8d98fe9abe1fe368a683629dae3b084`
 - Active issue: `none`
 - Active PR: `484`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `282a05fd862cb339356635625539ca6f937e343b7965e1388044478d132ecf97`
+- State fingerprint: `01503b80460252f5cf0f60dcec4f3b57d45c365a38dc15e34be5d0c4b641ea08`
 
 ## Completed / observed this session
 
-PR484 code repaired: concurrent durable reservation, scoped row-lock reconciliation, monotonic outcomes, ambiguity recovery, privacy evidence allowlist, policy-gated request digests and safe migration re-entry. Main ancestry and canonical ledger conflict repaired; acceptance remains false.
+Material review repair adds application container binding for the offline reservation service; tests prove DI resolves real repository. PR486 shipping ancestry sync merged at3e68802 with exact main tree and green shipping gate; shipping full wave verification remains pending.
 
 ## Tests
 
-Local PHP8.3.6 focused15/73; full860/5779 with144 explicit infrastructure skips; PHPStan pass. PostgreSQL contention test awaits exact-head CI.
+PHP8.3.6 focused15/74; full860/5780,144 explicit infra skips and4 existing PHPUnit notices; PHPStan/Pint pass. PR484 prior34e543 continuity success; product wiring change requires fresh exact-head CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local PHP8.3.6 focused15/73; full860/5779 with144 explicit infrastructure skips;
 
 ## Exact next action
 
-Verify repaired PR484 exact-head full Application Security Continuity gates; repair actual failures, merge only green reviewed head, then verify main and accept TASK0076.
+Verify final PR484 full Application Security Continuity and actual PostgreSQL contention evidence; verify shipping wave, merge only current green head then accept TASK0076 after main gates.

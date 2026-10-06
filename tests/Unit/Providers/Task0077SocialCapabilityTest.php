@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\Providers\Domain\CapabilitySupport;
+use App\Modules\Providers\Domain\ProviderReadinessStatus;
+use App\Modules\Providers\Domain\Social\SocialCapability;
 use App\Modules\Providers\Domain\Social\SocialOperation;
 use App\Modules\Providers\Domain\Social\SocialPlatform;
 use App\Modules\Providers\Infrastructure\Social\ResearchBackedSocialCapabilities;
@@ -32,9 +34,9 @@ it('fails closed on stale, missing scope or role evidence', function () {
 });
 
 it('rejects live-enabled social candidates', function () {
-    expect(fn () => new \App\Modules\Providers\Domain\Social\SocialCapability(
+    expect(fn () => new SocialCapability(
         SocialPlatform::LinkedIn, SocialOperation::Create, 'x', CapabilitySupport::Supported,
-        \App\Modules\Providers\Domain\ProviderReadinessStatus::Ready, [], [], [], 'https://example.test',
+        ProviderReadinessStatus::Ready, [], [], [], 'https://example.test',
         new DateTimeImmutable('2026-10-04T00:00:00+00:00'), null, true,
     ))->toThrow(InvalidArgumentException::class, 'live provider publication');
 });

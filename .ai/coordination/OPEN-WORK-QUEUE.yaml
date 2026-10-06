@@ -1,14 +1,22 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ee845ac8a8d98fe9abe1fe368a683629dae3b084",
+  "reconciled_main_sha": "a6d0d39f12b84c13a01ff332b95b3dfebfb1c012",
   "active_work_path": {
     "kind": "pr",
-    "number": 484,
-    "title": "TASK-0076: complete durable messaging outcome layer",
-    "branch": "supervisor/task0076",
-    "disposition": "active_task0076_carrier"
+    "number": 487,
+    "title": "TASK-0077: add researched social capability matrix",
+    "branch": "supervisor/task0077",
+      "disposition": "active_task0077_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 487,
+      "title": "TASK-0077: add researched social capability matrix",
+      "branch": "supervisor/task0077",
+      "disposition": "active_task0077_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 486,
@@ -24,7 +32,7 @@
       "title": "TASK-0076: complete durable messaging outcome layer",
       "branch": "supervisor/task0076",
       "disposition": "active_task0076_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

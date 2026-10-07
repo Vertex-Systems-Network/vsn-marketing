@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.2-autonomous-frontier",
+  "instruction_revision": "parallel-v2.8.3-autonomous-frontier",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "a1c38f1f47e347ea46fa422240ce12c522f190d141e185f9c5dc108829c8082d",
+  "instruction_fingerprint": "1a5d046f08dd3e1047adb67552f6c63c6b382ca1c384c319a8905e865558b35c",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -123,6 +123,7 @@
   "next_action_click_initiates_request_only": true,
   "next_action_selection_requires_full_resume_revalidation": true,
   "next_action_stale_selection_fails_closed": true,
+  "next_action_stale_selection_continuous_fallback": "auto_route_current_canonical_safe_equivalent_or_successor",
   "next_action_fallback_format": "numbered_one_line_commands",
   "next_action_option_order_policy": "shuffle_each_handoff",
   "next_action_previous_selected_action_same_number_forbidden": true,

@@ -17,6 +17,23 @@ test('labels UTC inputs and keeps purpose and unavailable explanation actions di
     expect(screen.getByRole('button', { name: 'Request validated explanation' })).toBeDisabled();
     expect(screen.getByRole('alert')).toHaveTextContent('purpose or retention');
 });
+test('renders source-specific provider aggregate evidence without cross-provider equivalence claims', () => {
+    render(<Operator {...props} provider_engagement={[{
+        id: 'provider-fact', provider_key: 'linkedin', metric: 'post.impressions', value: 42,
+        definition: { provider_key: 'linkedin', provider_metric: 'post.impressions', unit: 'count', version: 1,
+            semantics: 'provider_reported_aggregate', cross_provider_equivalent: false,
+            limitation: 'Provider-defined impressions; not cross-provider equivalent.' },
+        observed_at: '2026-10-02T10:00:00+00:00', received_at: '2026-10-02T10:05:00+00:00',
+        receipt_lag_seconds: 300, delayed: true, provider_total_status: 'provider_reported_total',
+        source_completeness: 'unknown', missing_provider_events: 'unknown', source_lineage_hash: 'hash', fingerprint: 'fingerprint',
+    }]} />);
+    expect(screen.getByRole('heading', { name: 'Provider engagement evidence' })).toBeInTheDocument();
+    expect(screen.getByText('linkedin · post.impressions')).toBeInTheDocument();
+    expect(screen.getByText('Provider-defined impressions; not cross-provider equivalent.')).toBeInTheDocument();
+    expect(screen.getByText('unknown', { selector: 'dd' })).toBeInTheDocument();
+    expect(screen.getByText(/delayed receipt/)).toBeInTheDocument();
+});
+
 test('prevents repeated requests while busy and announces validation failures', () => {
     render(<Operator {...props} />);
     fireEvent.click(screen.getByRole('button', { name: 'Generate report' }));

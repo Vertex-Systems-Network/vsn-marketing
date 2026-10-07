@@ -5,10 +5,10 @@ namespace App\Modules\Providers\Domain\ConnectorFactory;
 final readonly class ConnectorCapabilityCandidate
 {
     /**
-     * @param list<string> $authSchemes
-     * @param array<string, list<string>> $scopes
-     * @param array<string, mixed> $declaredLimits
-     * @param list<string> $unknownSemantics
+     * @param  list<string>  $authSchemes
+     * @param  array<string, list<string>>  $scopes
+     * @param  array<string, mixed>  $declaredLimits
+     * @param  list<string>  $unknownSemantics
      */
     public function __construct(
         public string $method,

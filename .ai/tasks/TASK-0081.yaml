@@ -12,12 +12,12 @@
     {
       "id": "AC-1",
       "text": "Requirements, source, policy and test matrix covers TASK-0075 through TASK-0080 and unsupported paths",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Channel contracts, tenant isolation, consent/privacy, rate limits, moderation, UI accessibility and failure reconciliation are evidenced",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",

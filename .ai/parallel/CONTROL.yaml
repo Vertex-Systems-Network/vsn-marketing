@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.1-credit-frontier",
+  "instruction_revision": "parallel-v2.8.2-autonomous-frontier",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "79a1f5f33583ea1013106f71911e980d0d6f3be4720582ad2894ce0af0f5d7d8",
+  "instruction_fingerprint": "a1c38f1f47e347ea46fa422240ce12c522f190d141e185f9c5dc108829c8082d",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,

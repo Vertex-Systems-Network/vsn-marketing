@@ -807,7 +807,7 @@
       "phase": "PHASE-13",
       "title": "Certify Phase 13 omnichannel and social operations",
       "weight": 12,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0080"
       ]

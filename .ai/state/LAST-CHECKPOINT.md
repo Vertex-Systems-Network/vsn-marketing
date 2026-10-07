@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-07T19:18:00+00:00`
-- Observed main: `a98333bc87b1a24f1e6ad04699d5990f416497e4`
+- Timestamp: `2026-10-07T20:12:00+00:00`
+- Observed main: `b58eeb869d1f70c4d804ee6543dafc239569b00e`
 - Active issue: `none`
-- Active PR: `494`
-- Active branch: `control/workspace-autonomy-v282`
+- Active PR: `496`
+- Active branch: `supervisor/no-confirmation-ci-budget`
 - Current milestone: `TASK-0080-ANALYTICS`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0080`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `150971b1e6b61184083baa2a71a889434691abfe65e5633b50260eaacda793e2`
+- State fingerprint: `f471ca869e20703657f693185db15a3e589261baa5b08de95f10d0df7eb7a38a`
 
 ## Completed / observed this session
 
-Reconciled protected-main observation after PR #492 merged as a98333bc87b1a24f1e6ad04699d5990f416497e4 and synchronized PR #494 as the active blocker-autonomous Workspace governance carrier.
+PR #494 merged blocker-autonomous Workspace execution to protected main `b58eeb869d1f70c4d804ee6543dafc239569b00e`. PR #496 carries the remaining no-confirmation hardening: bounded CI observation 4/12, validator/tool failure recovery, independent work during CI waits, and automatic stale-action recovery.
 
 ## Tests
 
-AI Continuity Guard run 37673217890 passed transactional state, AI state, execution journal, and Supervisor contract validation before correctly failing the protected-main snapshot check on stale material drift from 49c790e2c82865b89b6fc9231dbf50139ebc6180 to a98333bc87b1a24f1e6ad04699d5990f416497e4. PR #494 static policy audit confirms legacy active-task/current-phase handoff wording is removed; exact-head CI must rerun on this reconciled head.
+PR #496 exact-head full CI is required. The carrier updates machine validators so the bounded CI policy is enforced rather than advisory.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ AI Continuity Guard run 37673217890 passed transactional state, AI state, execut
 
 ## Exact next action
 
-Validate PR #494 exact-head governance after protected-main reconciliation; merge only if required gates pass, then resume TASK-0080 from canonical state.
+Validate PR #496 exact-head governance and full CI; repair failures automatically, merge when required gates are green, then resume TASK-0080 without routine blocker/error confirmation prompts.

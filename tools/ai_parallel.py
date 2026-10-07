@@ -20,6 +20,8 @@ SHARED = PARALLEL / "SHARED-PATHS.yaml"
 PLAN = PARALLEL / "AI-NATIVE-PLAN.md"
 STATE = ROOT / ".ai" / "state" / "CURRENT-STATE.yaml"
 README = ROOT / "README.md"
+CLAUDE = ROOT / "CLAUDE.md"
+RESILIENCE = ROOT / "docs" / "operations" / "AI-EXECUTION-RESILIENCE.md"
 
 VALID_SLOT = {"open", "occupied"}
 WRITABLE = {"leased", "in_progress", "paused_for_review", "submitted", "approved", "ready_for_merge"}
@@ -219,6 +221,7 @@ def validate() -> list[str]:
         "next_action_click_initiates_request_only": True,
         "next_action_selection_requires_full_resume_revalidation": True,
         "next_action_stale_selection_fails_closed": True,
+        "next_action_stale_selection_continuous_fallback": "auto_route_current_canonical_safe_equivalent_or_successor",
         "next_action_fallback_format": "numbered_one_line_commands",
         "next_action_option_order_policy": "shuffle_each_handoff",
         "next_action_previous_selected_action_same_number_forbidden": True,
@@ -235,6 +238,11 @@ def validate() -> list[str]:
         "workspace_continuous_batch_default_for_mutating_resume": True,
         "workspace_continuous_batch_default_objective": "safe_canonical_roadmap_frontier_until_credit_exhaustion",
         "workspace_continuous_batch_no_reconfirmation_for_repo_scope": True,
+        "workspace_continuous_batch_user_prompt_policy": "no_user_prompt_while_safe_canonical_work_exists",
+        "workspace_continuous_batch_blocker_policy": "self_resolve_repo_blockers_quarantine_external_authority_continue_frontier",
+        "workspace_continuous_batch_ambiguous_choice_policy": "deterministic_repository_evidence_precedence",
+        "workspace_continuous_batch_scope_transition_policy": "guarded_transition_then_auto_advance_canonical_successor",
+        "workspace_continuous_batch_entrypoint_consistency_guard": True,
         "workspace_continuous_batch_auto_advance_related_tasks": True,
         "workspace_continuous_batch_phase_boundary_requires_declared_scope": False,
         "workspace_continuous_batch_cross_phase_auto_advance": True,
@@ -315,6 +323,20 @@ def validate() -> list[str]:
             errors.append("README instruction revision is stale")
         if f"Agent instruction fingerprint: `{configured}`" not in readme:
             errors.append("README instruction fingerprint is stale")
+
+        claude = CLAUDE.read_text(encoding="utf-8")
+        if "Do not jump ahead to a later phase." in claude:
+            errors.append("CLAUDE.md contains legacy phase-stop instruction")
+        if "automatically while Workspace credit remains" not in claude:
+            errors.append("CLAUDE.md continuous cross-phase routing instruction is missing")
+
+        resilience = RESILIENCE.read_text(encoding="utf-8")
+        if "complete one substantial coherent batch inside the active task" in resilience:
+            errors.append("AI execution resilience contains legacy task-sized batch instruction")
+        if "execute one substantial approved batch inside the active task" in resilience:
+            errors.append("AI execution resilience contains legacy active-task execution boundary")
+        if "safe canonical roadmap frontier" not in resilience:
+            errors.append("AI execution resilience roadmap-frontier instruction is missing")
     except (OSError, ValueError) as exc:
         errors.append(str(exc))
 

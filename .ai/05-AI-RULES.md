@@ -49,7 +49,8 @@ AI MUST:
 - require every completed workstream PR to announce exactly `Work Done and Submitted`;
 - require the Supervisor to process submitted work before resuming optional own-module work, then broadcast the exact merge alert through issue #43 and remaining open workstream PRs;
 - require alerted agents to synchronize latest `main` before resuming;
-- keep `README.md` synchronized whenever canonical agent-working instructions change, including the deterministic instruction revision/fingerprint enforced by `tools/ai_parallel.py`.
+- keep `README.md` synchronized whenever canonical agent-working instructions change, including the deterministic instruction revision/fingerprint enforced by `tools/ai_parallel.py`;
+- whenever canonical roadmap/phase/task/milestone progress changes, update the README progress snapshot, headline percentages, text progress bars, current-task/milestone labels, and matching phase/module table row in the same scoped PR; stale or partially synchronized README progress is governance drift and MUST be repaired automatically without asking the user.
 
 ## Development AI no-confirmation rule
 

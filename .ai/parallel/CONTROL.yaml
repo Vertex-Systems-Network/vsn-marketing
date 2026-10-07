@@ -208,5 +208,14 @@
   "workspace_continuous_batch_routine_confirmation_policy": "forbidden",
   "workspace_continuous_batch_ci_wait_confirmation_forbidden": true,
   "workspace_continuous_batch_human_boundary_policy": "record_exact_requirement_skip_lane_continue_frontier",
-  "workspace_continuous_batch_hard_stop_prompt_policy": "report_exact_requirement_not_broad_yes_no_question"
+  "workspace_continuous_batch_hard_stop_prompt_policy": "report_exact_requirement_not_broad_yes_no_question",
+  "readme_progress_sync_atomic_with_state": true,
+  "readme_progress_surfaces_required": [
+    "machine_marker",
+    "headline_metrics",
+    "text_progress_bars",
+    "current_task_and_milestone",
+    "phase_module_table"
+  ],
+  "readme_partial_progress_sync_is_drift": true
 }

@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement cross-channel engagement and publication analytics",
   "weight": 12,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0079"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Normalized facts retain provider-specific definitions, source lineage, timestamps and unknown totals",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Consent, privacy, retention, aggregation and data-quality checks cover delayed, duplicate and missing provider events",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "PostgreSQL and operator-facing evidence passes relevant tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Execute TASK-0080 against dated research and all acceptance gates; retain truthfully pending criteria."
+  "exact_next_action": "TASK-0080 accepted from PR #497 exact-head Application, Security and AI Continuity gates; proceed to TASK-0081 Phase 13 certification."
 }

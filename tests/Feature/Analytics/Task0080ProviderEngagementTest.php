@@ -13,6 +13,18 @@ use Tests\Support\AnalyticsFixture;
 
 uses(RefreshDatabase::class);
 
+it('fails closed when provider source evidence has no explicit verifier composition', function () {
+    $f = new AnalyticsFixture;
+    $fact = new EngagementFact(
+        $f->actor->workspaceId, 'linkedin', 'post.impressions', 1, 'unverified-source',
+        '2026-10-02T10:00:00Z', false, '2026-10-02T10:01:00Z', brandId: $f->actor->brandId,
+    );
+
+    expect(fn () => app(ProviderEngagementAnalytics::class)->admit($f->actor, $fact))
+        ->toThrow(RuntimeException::class)
+        ->and(DB::table('provider_engagement_facts')->count())->toBe(0);
+});
+
 it('admits bounded provider aggregates without storing raw lineage and renders source-specific operator evidence', function () {
     $this->withoutVite();
     $f = new AnalyticsFixture;

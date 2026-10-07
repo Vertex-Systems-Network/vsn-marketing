@@ -59,7 +59,7 @@ final readonly class ProviderEngagementAnalytics
             $actor->workspaceId, $actor->brandId, $fact->providerKey, $fact->metric, $lineageHash, $observed->format(DATE_ATOM),
         ], JSON_THROW_ON_ERROR));
         $fingerprint = hash('sha256', json_encode([
-            $sourceKey, $definition, $fact->value, $fact->isTotalKnown, $observed->format(DATE_ATOM), $received->format(DATE_ATOM),
+            $sourceKey, $lineageHash, $definition, $fact->value, $fact->isTotalKnown, $observed->format(DATE_ATOM), $received->format(DATE_ATOM),
         ], JSON_THROW_ON_ERROR));
 
         return $this->database->transaction(function () use ($actor, $fact, $definition, $lineageHash, $sourceKey, $fingerprint, $observed, $received, $expires, $now): string {
@@ -124,8 +124,19 @@ final readonly class ProviderEngagementAnalytics
             $observed = new DateTimeImmutable((string) $row->observed_at);
             $received = new DateTimeImmutable((string) $row->received_at);
             $definition = json_decode((string) $row->metric_definition, true, 32, JSON_THROW_ON_ERROR);
-            if (! is_array($definition)) {
+            if (! is_array($definition)
+                || ($definition['provider_key'] ?? null) !== $row->provider_key
+                || ($definition['provider_metric'] ?? null) !== $row->metric
+                || ($definition['cross_provider_equivalent'] ?? true) !== false) {
                 throw new RuntimeException('Provider engagement metric definition is invalid.');
+            }
+            $expectedFingerprint = hash('sha256', json_encode([
+                (string) $row->source_key, (string) $row->source_lineage_hash, $definition, (int) $row->value,
+                (bool) $row->is_total_known, $observed->format(DATE_ATOM), $received->format(DATE_ATOM),
+            ], JSON_THROW_ON_ERROR));
+            if (! preg_match('/^[a-f0-9]{64}$/', (string) $row->source_lineage_hash)
+                || ! hash_equals((string) $row->fingerprint, $expectedFingerprint)) {
+                throw new RuntimeException('Provider engagement evidence integrity failed.');
             }
 
             return [

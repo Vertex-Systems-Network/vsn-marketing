@@ -61,7 +61,7 @@ Migration changes require the explicit safety review contract enforced by `tools
 
 ### Strict plan-following order
 
-AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute one substantial approved batch -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
+AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute a substantial approved slice -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state -> **repeat the loop in the same user turn while continuous-batch credit and safe canonical work remain**. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
 
 `tools/ci_change_policy.py` is authoritative for CI class selection. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight control CI. Any unknown/non-control path fails closed to full Application + Security CI. If a control-only milestone is a certification, release/promotion, security-sensitive acceptance, or its task contract explicitly demands full gates, the PR body MUST contain this exact standalone line:
 
@@ -71,7 +71,7 @@ Runner benchmarking/optimization is never part of ordinary task execution. Add r
 
 No agent may skip/reorder this plan for convenience. Only a bounded, evidence-backed security/correctness/release blocker may interrupt the order, and that exception must be recorded.
 
-- Start from the recorded active task. In a generic continuous batch, after its guarded completion/transition automatically advance to the next canonical dependency-ready task/phase while credit remains. User confirmation is required only to leave the accepted canonical roadmap frontier, override an explicitly narrow request, or grant authority the repository explicitly reserves to a human/external system.
+- Start from the recorded active task. In a generic continuous batch, after each substantial slice and after any guarded completion/transition, automatically advance to the next canonical dependency-ready slice/task/phase while credit remains. Completion of one substantial slice is never by itself a user-handoff boundary. User confirmation is required only to leave the accepted canonical roadmap frontier, override an explicitly narrow request, or grant authority the repository explicitly reserves to a human/external system.
 - Do not silently change architecture, stack, module boundaries, canonical contracts, security policy, or product terminology. Create an ADR and mark it `PROPOSED` first.
 - Do not start a task whose dependencies are incomplete.
 - Do not mark work complete while required tests fail or acceptance criteria are false.

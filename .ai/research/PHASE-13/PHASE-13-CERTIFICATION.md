@@ -1,6 +1,6 @@
 # PHASE-13 certification matrix — TASK-0081
 
-Status: **candidate certification; final acceptance remains gated on this carrier's exact-head checks and resulting protected-main verification.**
+Status: **certified for the bounded repository-side/offline PHASE-13 scope.**
 
 This certification is intentionally bounded to repository-side/offline capability. It does not claim production provider approval, live credentials, live publication/send authority, source completeness, production-scale SLOs, or deployment/release authority.
 
@@ -12,7 +12,7 @@ This certification is intentionally bounded to repository-side/offline capabilit
 | TASK-0078 | Tenant-scoped Community inbox boundary, moderation and operator approval | Replay/privacy/access controls; AI remains proposal-only | Accepted |
 | TASK-0079 | Permitted listening/market-signal contracts | Unauthorized scraping absent; provenance/retention/rate limits and unknown coverage explicit | Accepted |
 | TASK-0080 | Provider-specific engagement/publication analytics, PostgreSQL evidence and operator view | Verified source admission, hashed lineage, retention, replay/conflict, tamper detection, unknown completeness | Accepted from PR #497 exact head |
-| TASK-0081 | Cross-task requirements/source/policy/test certification | Exact-head and resulting-main gates required before final closure | Pending this carrier |
+| TASK-0081 | Cross-task requirements/source/policy/test certification | Exact-head and resulting-main gates plus product-bearing release evidence required before final closure | Accepted |
 
 ## TASK-0080 acceptance evidence
 
@@ -29,3 +29,25 @@ The implementation preserves provider-specific metric definitions, verified and 
 2. Full exact-head Application Foundation, Security Supply Chain and AI Continuity gates must pass for the certification carrier.
 3. After merge, protected-main/release-relevant gates must be verified before PHASE-13 is reported complete.
 4. Any unavailable production/provider authority remains explicitly outside certification rather than being silently inferred.
+
+
+## Final certification evidence
+
+PR #498 exact head `6778f7db02face83f8534e072c056196067b0b1c` passed:
+- AI Continuity Guard run 37690117431
+- Security Supply Chain CI run 37690117411
+- Application Foundation CI run 37690117464, including foundation, PHP 8.3 floor, E2E and infrastructure integration
+
+PR #498 merged as protected main `bf6bd9fada7cb2a1e5bada3904dba634de99e9e8`; resulting main passed:
+- Application Foundation CI run 37691472800
+- Security Supply Chain CI run 37691472767
+- AI Continuity Guard run 37691472762
+
+Release Integrity and OpenSSF Scorecard intentionally ignore control/documentation-only commits. The immediately preceding product-bearing TASK-0080 protected main `10be052fa1183d8f9249a192fba0b7e1074aec30` passed:
+- Release Integrity run 37687219350
+- OpenSSF Scorecard run 37687219271
+- Application Foundation CI run 37687219266
+- Security Supply Chain CI run 37687219442
+- AI Continuity Guard run 37687219268
+
+This evidence certifies only the bounded repository/offline architecture. Live provider credentials, provider approval, production send/publication, deployment/release authority, source completeness and production SLO claims remain outside this certification.

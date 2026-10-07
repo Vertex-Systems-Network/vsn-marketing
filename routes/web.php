@@ -6,6 +6,7 @@ use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
 use App\Modules\Journeys\Presentation\Http\Controllers\JourneyOperatorController;
 use App\Modules\Publishing\Presentation\Http\Controllers\PublishingBulkApprovalController;
 use App\Modules\Publishing\Presentation\Http\Controllers\PublishingOperatorController;
+use App\Modules\Providers\Presentation\Http\Controllers\CommunityOperatorController;
 use App\Modules\Segmentation\Presentation\Http\Controllers\SegmentProposalController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,35 @@ Route::middleware([
     'workspace.permission:'.PermissionCatalog::CONTACT_WRITE,
 ])->post('/workspaces/{workspace}/segments/{segment}/publish', [SegmentProposalController::class, 'publish'])
     ->name('segments.versions.publish');
+
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_READ])
+    ->get('/workspaces/{workspace}/community', [CommunityOperatorController::class, 'index'])
+    ->name('community.operator');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_MODERATE])
+    ->post('/workspaces/{workspace}/community/{item}/assign', [CommunityOperatorController::class, 'assign'])
+    ->name('community.assign');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_MODERATE])
+    ->post('/workspaces/{workspace}/community/{item}/moderate', [CommunityOperatorController::class, 'moderate'])
+    ->name('community.moderate');
+
+Route::middleware([
+    'auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_READ,
+    'workspace.permission:'.PermissionCatalog::AI_EXECUTE,
+])->post('/workspaces/{workspace}/community/{item}/proposals', [CommunityOperatorController::class, 'propose'])
+    ->name('community.proposals');
+
+Route::middleware([
+    'auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_MODERATE,
+    'workspace.permission:'.PermissionCatalog::AI_APPROVE,
+])->post('/workspaces/{workspace}/community/{item}/proposals/approve', [CommunityOperatorController::class, 'approve'])
+    ->name('community.proposals.approve');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::COMMUNITY_MODERATE])
+    ->post('/workspaces/{workspace}/community/{item}/proposals/reject', [CommunityOperatorController::class, 'reject'])
+    ->name('community.proposals.reject');
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::ANALYTICS_READ])
     ->group(function (): void {

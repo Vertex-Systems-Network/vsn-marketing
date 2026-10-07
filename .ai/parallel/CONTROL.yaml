@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.3-autonomous-frontier",
+  "instruction_revision": "parallel-v2.8.4-no-confirmation-ci",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
@@ -73,8 +73,8 @@
   "coordination_queue_path": ".ai/coordination/OPEN-WORK-QUEUE.yaml",
   "runner_benchmark_path": ".ai/runner/RUNNER-BENCHMARK.yaml",
   "one_user_turn_one_logical_milestone": false,
-  "default_ci_status_refreshes_per_milestone": 1,
-  "max_ci_status_refreshes_with_recorded_exception": 2,
+  "default_ci_status_refreshes_per_milestone": 4,
+  "max_ci_status_refreshes_with_recorded_exception": 12,
   "tight_polling_forbidden": true,
   "pending_ci_state_only_commit_forbidden": true,
   "issues_prs_first_hard_gate": true,
@@ -178,7 +178,7 @@
   "workspace_continuous_batch_suppress_intermediate_handoffs": true,
   "workspace_continuous_batch_final_handoff_only": true,
   "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
-  "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_checkpoint_waiting_external",
+  "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_bounded_backoff_observe_then_checkpoint",
   "workspace_continuous_batch_duplicate_pr_policy": "select_clean_authoritative_carrier_and_supersede_stale",
   "workspace_continuous_batch_merge_policy": "merge_verified_green_head_without_reconfirmation",
   "workspace_continuous_batch_checkpoint_policy": "material_boundary_credit_end_or_hard_blocker",
@@ -201,5 +201,10 @@
   "workspace_continuous_batch_default_objective": "safe_canonical_roadmap_frontier_until_credit_exhaustion",
   "workspace_continuous_batch_cross_phase_auto_advance": true,
   "workspace_continuous_batch_completed_phase_is_not_stop_condition": true,
-  "workspace_continuous_batch_tool_fallback_required": true
+  "workspace_continuous_batch_tool_fallback_required": true,
+  "workspace_continuous_batch_validator_failure_policy": "diagnose_repair_fallback_continue_without_user_confirmation",
+  "workspace_continuous_batch_routine_confirmation_policy": "forbidden",
+  "workspace_continuous_batch_ci_wait_confirmation_forbidden": true,
+  "workspace_continuous_batch_human_boundary_policy": "record_exact_requirement_skip_lane_continue_frontier",
+  "workspace_continuous_batch_hard_stop_prompt_policy": "report_exact_requirement_not_broad_yes_no_question"
 }

@@ -12,7 +12,7 @@ final class Task0083ConnectorFactoryTest extends TestCase
 {
     public function test_openapi_ingestion_preserves_raw_and_deterministic_normalized_identity(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
+        $ingestor = new ConnectorDescriptionIngestor;
 
         $first = $ingestor->ingest(
             'workspace-a',
@@ -38,7 +38,7 @@ final class Task0083ConnectorFactoryTest extends TestCase
 
     public function test_external_references_and_active_content_fail_closed(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
+        $ingestor = new ConnectorDescriptionIngestor;
 
         foreach ([
             '{"openapi":"3.2.1","paths":{},"components":{"schemas":{"Bad":{"$ref":"https://internal.example/schema.json"}}}}',
@@ -61,7 +61,7 @@ final class Task0083ConnectorFactoryTest extends TestCase
 
     public function test_unsupported_media_oversized_sources_and_missing_workspace_fail_closed(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
+        $ingestor = new ConnectorDescriptionIngestor;
 
         $cases = [
             ['', 'https://docs.example.test/openapi.json', 'application/json', '{"openapi":"3.2.1","paths":{}}'],
@@ -81,8 +81,8 @@ final class Task0083ConnectorFactoryTest extends TestCase
 
     public function test_plain_documentation_is_data_only_and_cannot_create_capabilities(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
-        $planner = new OpenApiConnectorPlanner();
+        $ingestor = new ConnectorDescriptionIngestor;
+        $planner = new OpenApiConnectorPlanner;
 
         $description = $ingestor->ingest(
             'workspace-a',
@@ -105,8 +105,8 @@ final class Task0083ConnectorFactoryTest extends TestCase
 
     public function test_openapi_plan_extracts_typed_endpoints_auth_scopes_and_declared_limits_without_authority(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
-        $planner = new OpenApiConnectorPlanner();
+        $ingestor = new ConnectorDescriptionIngestor;
+        $planner = new OpenApiConnectorPlanner;
 
         $source = json_encode([
             'openapi' => '3.2.1',
@@ -180,7 +180,7 @@ final class Task0083ConnectorFactoryTest extends TestCase
 
     public function test_plan_contract_rejects_cross_workspace_or_authority_promotion(): void
     {
-        $ingestor = new ConnectorDescriptionIngestor();
+        $ingestor = new ConnectorDescriptionIngestor;
         $description = $ingestor->ingest(
             'workspace-a',
             'https://docs.example.test/openapi.json',

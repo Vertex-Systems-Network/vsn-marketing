@@ -141,7 +141,7 @@ Mandatory order:
 1. recover and validate canonical state;
 2. read current task/plan/checkpoint and exact repository head;
 3. classify the exact change set;
-4. execute one substantial approved batch across the permitted canonical roadmap frontier, starting from the active task and automatically taking guarded dependency-ready successor transitions while credit remains;
+4. execute a substantial approved slice across the permitted canonical roadmap frontier, starting from the active task; after each slice, automatically loop into the next safe canonical slice and take guarded dependency-ready successor transitions while credit remains;
 5. run the change-class checks;
 6. require the exact-head PR gates selected by policy;
 7. perform bounded same-scope repair when needed and re-verify the new exact head;

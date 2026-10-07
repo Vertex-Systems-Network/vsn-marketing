@@ -4,10 +4,8 @@ namespace App\Modules\Providers\Application\ConnectorFactory;
 
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorPlanCandidate;
-use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
-use JsonException;
 
 final class ConnectorCandidateGenerator
 {
@@ -19,7 +17,7 @@ final class ConnectorCandidateGenerator
      * Build inert candidate artifacts as strings. This class deliberately has no filesystem,
      * process, network, package-manager, credential, or activation interface.
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function generate(ConnectorPlanCandidate $plan, string $toolchainVersion): ConnectorGeneratedCandidate
     {
@@ -147,12 +145,12 @@ final class ConnectorCandidateGenerator
     private function sourceOrigin(string $sourceUri): ?string
     {
         $parts = parse_url($sourceUri);
-        if (! is_array($parts) || ! isset($parts['scheme'], $parts['host'])) {
+        if (!is_array($parts) || !isset($parts['scheme'], $parts['host'])) {
             return null;
         }
 
         $scheme = strtolower($parts['scheme']);
-        if (! in_array($scheme, ['http', 'https'], true)) {
+        if (!in_array($scheme, ['http', 'https'], true)) {
             return null;
         }
 
@@ -164,7 +162,7 @@ final class ConnectorCandidateGenerator
 
     private function canonicalize(mixed $value): mixed
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             return $value;
         }
 

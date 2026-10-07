@@ -6,7 +6,6 @@ use App\Modules\Providers\Application\ConnectorFactory\ConnectorCandidateGenerat
 use App\Modules\Providers\Application\ConnectorFactory\ConnectorDescriptionIngestor;
 use App\Modules\Providers\Application\ConnectorFactory\OpenApiConnectorPlanner;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class Task0084ConnectorCandidateGeneratorTest extends TestCase
@@ -66,18 +65,18 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
         try {
             $generator->generate($this->plan(providerKey: '../escape'), 'php-8.3.0');
             self::fail('A path-traversal provider key was accepted.');
-        } catch (InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             self::assertTrue(true);
         }
 
         try {
             $generator->generate($this->plan(providerKey: '3example'), 'php-8.3.0');
             self::fail('A provider key that cannot form a PHP class was accepted.');
-        } catch (InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             self::assertTrue(true);
         }
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $generator->generate($this->plan(), 'php-8.3.0;system');
     }
 
@@ -138,14 +137,14 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
                 executable: true,
             );
             self::fail('Executable candidate state was accepted.');
-        } catch (InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             self::assertTrue(true);
         }
 
         $files = $values['files'];
         $files[0]['path'] = 'connector-candidates/example/../../app/Providers.php';
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new ConnectorGeneratedCandidate(
             workspaceId: $values['workspace_id'],
             providerKey: $values['provider_key'],

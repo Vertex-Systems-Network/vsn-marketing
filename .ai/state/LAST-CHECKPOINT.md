@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-07T22:31:00+00:00`
-- Observed main: `1ff9cdd388831dd526eaf86dae5a958267144b7c`
+- Timestamp: `2026-10-07T22:49:00+00:00`
+- Observed main: `30fbd7a7b200d03da09f20148d836fdf9caf9574`
 - Active issue: `none`
-- Active PR: `501`
-- Active branch: `supervisor/task0082-acceptance`
+- Active PR: `502`
+- Active branch: `supervisor/task0083-ingestion`
 - Current milestone: `TASK-0083-CONNECTOR-INGESTION`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0083`
@@ -15,20 +15,20 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b235615236c58b5eecd3ae999674fc0ef0784a437adc5713fad36a0edf9e8abf`
+- State fingerprint: `00bb37e2a16120dd27e772e414ad6450ae3b342256a183f6a8b4b631075e146c`
 
 ## Completed / observed this session
 
-TASK-0082 research is accepted. Dated/current official sources confirm the OpenAPI, untrusted-input, sandbox, supply-chain and generated-code security boundaries. PR #500 exact head passed AI Continuity, Security Supply Chain and full Application Foundation, including E2E and PostgreSQL infrastructure/browser parity. PHASE-14 progress is 15.00% and deterministic roadmap progress is 87.75%.
+Protected main was reconciled after TASK-0082 acceptance. PR #502 is the authoritative TASK-0083 carrier. The current implementation ingests caller-supplied OpenAPI JSON and plain/Markdown documentation as bounded data, preserves immutable raw/normalized provenance, rejects external references and active content, extracts typed endpoint/auth/scope/declared-limit candidates, and hard-blocks execution/authority promotion.
 
 ## Tests
 
-PR #500 exact head `0cec3ada3822e0b3f8a575c35caac7698bdb309b` passed AI Continuity Guard run 37694651443, Security Supply Chain CI run 37694651254 and Application Foundation CI run 37694651317. TASK-0082 acceptance remains bounded to repository-side research and architecture; no live connector/provider authority is inferred.
+TASK-0083 adversarial/unit coverage is present on PR #502 and exact-head CI is pending. PR #501 exact head passed AI Continuity 37696724640, Security Supply Chain 37696724563 and Application Foundation 37696724544 including E2E and PostgreSQL18 integration/browser parity.
 
 ## Blockers
 
-- None for repository-side TASK-0083 implementation.
+- None for repository-side TASK-0083 verification.
 
 ## Exact next action
 
-Implement TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning with fail-closed external-reference and active-content handling.
+Implement and validate TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning on PR #502.

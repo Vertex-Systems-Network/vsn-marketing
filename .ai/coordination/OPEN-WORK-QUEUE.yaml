@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1ff9cdd388831dd526eaf86dae5a958267144b7c",
+  "reconciled_main_sha": "30fbd7a7b200d03da09f20148d836fdf9caf9574",
   "active_work_path": {
     "kind": "pr",
-    "number": 501,
-    "title": "docs(phase14): accept TASK-0082 research and activate TASK-0083",
-    "branch": "supervisor/task0082-acceptance",
+    "number": 502,
+    "title": "feat(connector-factory): add bounded OpenAPI ingestion and planning",
+    "branch": "supervisor/task0083-ingestion",
     "disposition": "active_task0083_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 502,
+      "title": "feat(connector-factory): add bounded OpenAPI ingestion and planning",
+      "branch": "supervisor/task0083-ingestion",
+      "disposition": "active_task0083_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 501,
       "title": "docs(phase14): accept TASK-0082 research and activate TASK-0083",
       "branch": "supervisor/task0082-acceptance",
-      "disposition": "active_task0083_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "30fbd7a7b200d03da09f20148d836fdf9caf9574"
     },
     {
       "kind": "pr",

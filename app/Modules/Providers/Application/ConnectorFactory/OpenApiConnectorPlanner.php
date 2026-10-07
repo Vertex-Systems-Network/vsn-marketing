@@ -221,7 +221,6 @@ final class OpenApiConnectorPlanner
     }
 
     /**
-     * @param  mixed  $security
      * @param  array<string, array<string, mixed>>  $knownSchemes
      * @return array{0:list<string>,1:array<string,list<string>>,2:list<string>}
      */

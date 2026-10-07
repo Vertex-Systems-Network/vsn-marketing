@@ -12,6 +12,7 @@ This contract exists to keep repository development moving for one Workspace ses
 - URL-only repository entry remains read-only and does not start a mutating batch.
 - Repository evidence outranks chat memory. Every fresh session or recovery still performs the normal compact-state/main/Issues/PRs/queue/Runner reconciliation before writes.
 - The batch objective is the highest-priority accepted repository work path consistent with the user's request and canonical state. For generic start/continue/resume, the objective is the **safe ready frontier of the canonical roadmap for the remaining credit window**. Do not ask the user to choose again when repository evidence already determines the next safe action, and do not treat task/PR/phase completion as a handoff boundary while another safe canonical successor exists.
+- **A single user turn may contain multiple substantial implementation slices, PR/CI/merge cycles, guarded task transitions, and phase transitions.** “One substantial batch” is a sizing rule for each coherent work slice, never a stop/handoff rule for the Workspace turn. After each slice, immediately loop back through live-truth reconciliation and continue while safe canonical work and credit remain.
 
 ## No-reconfirmation rule
 
@@ -104,6 +105,8 @@ For a generic `start`/`continue`/`resume`, the declared batch objective is maxim
 
 ## Stop conditions
 
+**Conversation return is forbidden merely because one coherent/substantial slice finished.** Before any user-facing handoff, the Supervisor MUST prove that at least one stop condition below is true. If none is true, select the next safe canonical work item and continue in the same turn.
+
 The batch ends only when one of these is true:
 
 1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap has no safe dependency-ready work remaining;
@@ -112,7 +115,7 @@ The batch ends only when one of these is true:
 4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;
 5. all available repository execution paths are unavailable after bounded recovery/fallback attempts, leaving no safe mutation/read path to continue.
 
-Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a failed same-scope check, a transient connector failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths and continue rather than handing control back to the user.
+Normal development friction, completion of one substantial work slice, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a failed same-scope check, a transient connector failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths and continue rather than handing control back to the user.
 
 ## End-of-batch handoff
 

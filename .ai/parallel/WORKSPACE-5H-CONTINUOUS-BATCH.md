@@ -29,7 +29,7 @@ Without another user confirmation, the Supervisor may:
 - perform guarded task transitions and automatically continue to the next dependency-ready task when that next task is inside the declared batch objective;
 - update durable checkpoints, progress mirrors, queues, and coordination evidence required by the work.
 
-The Supervisor MUST NOT turn a normal CI failure, formatting failure, stale branch, duplicate PR, merge conflict, missing progress mirror, or same-scope test failure into a user confirmation request. Diagnose and continue.
+The Supervisor MUST NOT turn a validator failure, normal CI/test/lint/type failure, formatting failure, stale branch, duplicate PR, merge conflict, dependency conflict, missing progress mirror, state/journal drift, transient connector/tool failure, or reversible same-scope implementation mistake into a user confirmation request. Diagnose, repair, use documented fallback/recovery, and continue.
 
 ## Authority that is NOT implied
 
@@ -40,7 +40,7 @@ When such an action is needed:
 1. continue every independent safe repository task that does not require that authority;
 2. persist the exact blocker and next safe action;
 3. stop only when the blocker is the sole remaining path inside the batch objective;
-4. report the one concrete human-only requirement instead of repeatedly asking broad consent questions.
+4. report the one concrete human-only requirement only if it is the sole remaining safe path; do not phrase that report as a broad yes/no consent question.
 
 Never weaken security, tests, permissions, tenant isolation, required checks, migration safety, or audit controls to avoid a blocker.
 
@@ -66,7 +66,8 @@ Do not emit a user-facing next-action handoff at every internal task/PR/CI bound
 - Tight polling remains forbidden.
 - A failed required check is work, not a stop condition: diagnose and repair the same scope.
 - A running external check is not automatically a batch stop. Continue independent dependency-ready work that does not consume the pending artifact.
-- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence. Re-observe only within the repository's bounded refresh policy.
+- CI observation uses bounded backoff rather than a two-read handoff: up to **4 normal exact-head observations per gate cycle**, and up to **12** when a durable material state-transition exception is recorded. Observations must be meaningfully spaced/state-driven; unchanged rapid rereads remain forbidden.
+- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded-backoff observation budget before ending the active batch. CI waiting is never converted into a user confirmation request.
 - Never create a state-only commit just to narrate pending CI.
 
 ## Duplicate/stale work policy
@@ -100,7 +101,7 @@ The batch ends only when one of these is true:
 4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;
 5. all available repository execution paths are unavailable after bounded recovery/fallback attempts, leaving no safe mutation/read path to continue.
 
-Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a failed same-scope check, a transient connector failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths and continue rather than handing control back to the user.
+Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a validator failure, a failed same-scope check, a transient connector/tool failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths, bounded recovery, and continued safe work rather than handing control back to the user. A technical blocker never requires user confirmation merely because the first repair attempt failed.
 
 ## End-of-batch handoff
 

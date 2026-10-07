@@ -9,6 +9,8 @@ use InvalidArgumentException;
 
 final class OpenApiConnectorPlanner
 {
+    public const MAX_OPERATIONS = 2_000;
+
     /** @var list<string> */
     private const HTTP_METHODS = ['delete', 'get', 'head', 'options', 'patch', 'post', 'put', 'trace'];
 
@@ -33,9 +35,13 @@ final class OpenApiConnectorPlanner
 
         $authSchemes = $this->authSchemes($document);
         $servers = $this->servers($document);
-        $globalSecurity = is_array($document['security'] ?? null) ? $document['security'] : [];
+        if (array_key_exists('security', $document) && ! is_array($document['security'])) {
+            throw new InvalidArgumentException('OpenAPI root security must be an array.');
+        }
+
+        $globalSecurity = $document['security'] ?? [];
         $capabilities = [];
-        $unknown = [];
+        $unknown = $this->serverSemantics($servers);
 
         if (isset($document['webhooks'])) {
             $unknown[] = 'openapi_webhooks:not_activated';
@@ -52,8 +58,10 @@ final class OpenApiConnectorPlanner
 
         ksort($paths, SORT_STRING);
 
+        $operationCount = 0;
+
         foreach ($paths as $path => $pathItem) {
-            if (! is_string($path) || ! str_starts_with($path, '/') || ! is_array($pathItem)) {
+            if (! is_string($path) || ! str_starts_with($path, '/') || ! is_array($pathItem) || array_is_list($pathItem)) {
                 throw new InvalidArgumentException('OpenAPI paths must be absolute path keys with object values.');
             }
 
@@ -65,6 +73,11 @@ final class OpenApiConnectorPlanner
 
                 if (! is_array($operation) || array_is_list($operation)) {
                     throw new InvalidArgumentException('OpenAPI operations must be objects.');
+                }
+
+                $operationCount++;
+                if ($operationCount > self::MAX_OPERATIONS) {
+                    throw new InvalidArgumentException('OpenAPI operation count exceeds TASK-0083 planning bounds.');
                 }
 
                 $security = array_key_exists('security', $operation)
@@ -111,9 +124,14 @@ final class OpenApiConnectorPlanner
      */
     private function authSchemes(array $document): array
     {
-        $raw = $document['components']['securitySchemes'] ?? [];
+        $components = $document['components'] ?? [];
+        if (! is_array($components) || array_is_list($components)) {
+            throw new InvalidArgumentException('OpenAPI components must be an object.');
+        }
+
+        $raw = $components['securitySchemes'] ?? [];
         if (! is_array($raw) || array_is_list($raw)) {
-            return [];
+            throw new InvalidArgumentException('OpenAPI securitySchemes must be an object.');
         }
 
         ksort($raw, SORT_STRING);
@@ -163,8 +181,12 @@ final class OpenApiConnectorPlanner
     private function servers(array $document): array
     {
         $servers = [];
+        $rawServers = $document['servers'] ?? [];
+        if (! is_array($rawServers)) {
+            throw new InvalidArgumentException('OpenAPI servers must be an array.');
+        }
 
-        foreach (($document['servers'] ?? []) as $server) {
+        foreach ($rawServers as $server) {
             if (! is_array($server) || ! is_string($server['url'] ?? null)) {
                 continue;
             }
@@ -179,6 +201,22 @@ final class OpenApiConnectorPlanner
         sort($servers, SORT_STRING);
 
         return $servers;
+    }
+
+    /** @param list<string> $servers
+     * @return list<string>
+     */
+    private function serverSemantics(array $servers): array
+    {
+        $unknown = [];
+
+        foreach ($servers as $server) {
+            if (! str_starts_with(strtolower($server), 'https://')) {
+                $unknown[] = 'server_scheme_not_https:'.$server;
+            }
+        }
+
+        return $unknown;
     }
 
     /**

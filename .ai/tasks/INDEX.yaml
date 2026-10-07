@@ -817,7 +817,7 @@
       "phase": "PHASE-14",
       "title": "Research current API-description, code-generation, sandbox and security-review practices",
       "weight": 15,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0081"
       ]
@@ -827,7 +827,7 @@
       "phase": "PHASE-14",
       "title": "Implement documentation and OpenAPI ingestion, provenance, capability extraction and connector planning",
       "weight": 20,
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0082"
       ]

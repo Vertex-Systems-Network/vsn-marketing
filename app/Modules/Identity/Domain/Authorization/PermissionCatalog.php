@@ -38,6 +38,10 @@ final class PermissionCatalog
 
     public const ANALYTICS_READ = 'analytics.read';
 
+    public const COMMUNITY_READ = 'community.read';
+
+    public const COMMUNITY_MODERATE = 'community.moderate';
+
     public const BILLING_MANAGE = 'billing.manage';
 
     public static function all(): array
@@ -60,6 +64,8 @@ final class PermissionCatalog
             self::AI_EXECUTE,
             self::AI_APPROVE,
             self::ANALYTICS_READ,
+            self::COMMUNITY_READ,
+            self::COMMUNITY_MODERATE,
             self::BILLING_MANAGE,
         ];
     }

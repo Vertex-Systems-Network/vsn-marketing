@@ -16,7 +16,7 @@ final class OpenApiConnectorPlanner
 
     public function plan(IngestedConnectorDescription $description, string $providerKey): ConnectorPlanCandidate
     {
-        if (! $description->isOpenApi()) {
+        if (!$description->isOpenApi()) {
             return new ConnectorPlanCandidate(
                 workspaceId: $description->provenance->workspaceId,
                 providerKey: $providerKey,
@@ -35,7 +35,7 @@ final class OpenApiConnectorPlanner
 
         $authSchemes = $this->authSchemes($document);
         $servers = $this->servers($document);
-        if (array_key_exists('security', $document) && ! is_array($document['security'])) {
+        if (array_key_exists('security', $document) && !is_array($document['security'])) {
             throw new InvalidArgumentException('OpenAPI root security must be an array.');
         }
 
@@ -48,7 +48,7 @@ final class OpenApiConnectorPlanner
         }
 
         $paths = $document['paths'] ?? [];
-        if (! is_array($paths) || array_is_list($paths)) {
+        if (!is_array($paths) || array_is_list($paths)) {
             throw new InvalidArgumentException('OpenAPI paths must be an object.');
         }
 
@@ -61,7 +61,7 @@ final class OpenApiConnectorPlanner
         $operationCount = 0;
 
         foreach ($paths as $path => $pathItem) {
-            if (! is_string($path) || ! str_starts_with($path, '/') || ! is_array($pathItem) || array_is_list($pathItem)) {
+            if (!is_string($path) || !str_starts_with($path, '/') || !is_array($pathItem) || array_is_list($pathItem)) {
                 throw new InvalidArgumentException('OpenAPI paths must be absolute path keys with object values.');
             }
 
@@ -71,7 +71,7 @@ final class OpenApiConnectorPlanner
                     continue;
                 }
 
-                if (! is_array($operation) || array_is_list($operation)) {
+                if (!is_array($operation) || array_is_list($operation)) {
                     throw new InvalidArgumentException('OpenAPI operations must be objects.');
                 }
 
@@ -125,12 +125,12 @@ final class OpenApiConnectorPlanner
     private function authSchemes(array $document): array
     {
         $components = $document['components'] ?? [];
-        if (! is_array($components) || array_is_list($components)) {
+        if (!is_array($components) || array_is_list($components)) {
             throw new InvalidArgumentException('OpenAPI components must be an object.');
         }
 
         $raw = $components['securitySchemes'] ?? [];
-        if (! is_array($raw) || array_is_list($raw)) {
+        if (!is_array($raw) || array_is_list($raw)) {
             throw new InvalidArgumentException('OpenAPI securitySchemes must be an object.');
         }
 
@@ -138,7 +138,7 @@ final class OpenApiConnectorPlanner
         $result = [];
 
         foreach ($raw as $name => $scheme) {
-            if (! is_string($name) || ! is_array($scheme)) {
+            if (!is_string($name) || !is_array($scheme)) {
                 continue;
             }
 
@@ -146,7 +146,7 @@ final class OpenApiConnectorPlanner
             $flows = $scheme['flows'] ?? [];
             if (is_array($flows)) {
                 foreach ($flows as $flow) {
-                    if (! is_array($flow) || ! is_array($flow['scopes'] ?? null)) {
+                    if (!is_array($flow) || !is_array($flow['scopes'] ?? null)) {
                         continue;
                     }
 
@@ -182,12 +182,12 @@ final class OpenApiConnectorPlanner
     {
         $servers = [];
         $rawServers = $document['servers'] ?? [];
-        if (! is_array($rawServers)) {
+        if (!is_array($rawServers)) {
             throw new InvalidArgumentException('OpenAPI servers must be an array.');
         }
 
         foreach ($rawServers as $server) {
-            if (! is_array($server) || ! is_string($server['url'] ?? null)) {
+            if (!is_array($server) || !is_string($server['url'] ?? null)) {
                 continue;
             }
 
@@ -212,7 +212,7 @@ final class OpenApiConnectorPlanner
         $unknown = [];
 
         foreach ($servers as $server) {
-            if (! str_starts_with(strtolower($server), 'https://')) {
+            if (!str_starts_with(strtolower($server), 'https://')) {
                 $unknown[] = 'server_scheme_not_https:'.$server;
             }
         }
@@ -221,12 +221,13 @@ final class OpenApiConnectorPlanner
     }
 
     /**
+     * @param  mixed  $security
      * @param  array<string, array<string, mixed>>  $knownSchemes
      * @return array{0:list<string>,1:array<string,list<string>>,2:list<string>}
      */
     private function security(mixed $security, array $knownSchemes): array
     {
-        if (! is_array($security)) {
+        if (!is_array($security)) {
             return [[], [], ['security:unknown_shape']];
         }
 
@@ -235,19 +236,19 @@ final class OpenApiConnectorPlanner
         $unknown = [];
 
         foreach ($security as $requirement) {
-            if (! is_array($requirement)) {
+            if (!is_array($requirement)) {
                 $unknown[] = 'security:unknown_requirement';
 
                 continue;
             }
 
             foreach ($requirement as $scheme => $requiredScopes) {
-                if (! is_string($scheme)) {
+                if (!is_string($scheme)) {
                     continue;
                 }
 
                 $schemes[] = $scheme;
-                if (! array_key_exists($scheme, $knownSchemes)) {
+                if (!array_key_exists($scheme, $knownSchemes)) {
                     $unknown[] = 'security_scheme_unknown:'.$scheme;
                 }
 
@@ -283,7 +284,7 @@ final class OpenApiConnectorPlanner
 
         foreach ($levels as $level) {
             foreach ($level as $key => $value) {
-                if (! is_string($key) || preg_match('/^x-(?:rate|quota|limit)/i', $key) !== 1) {
+                if (!is_string($key) || preg_match('/^x-(?:rate|quota|limit)/i', $key) !== 1) {
                     continue;
                 }
 

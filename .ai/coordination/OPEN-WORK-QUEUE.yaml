@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "851f27600a1cc36c7978090ec883f93b57506e08",
+  "reconciled_main_sha": "b911ea267737da1444596762bdd4d299bc91f897",
   "active_work_path": {
     "kind": "pr",
-    "number": 490,
-    "title": "TASK-0080: add provider-neutral engagement fact contract",
+    "number": 489,
+    "title": "TASK-0079: add permitted listening signal contracts",
     "branch": "supervisor/task0077",
-    "disposition": "active_task0080_carrier"
+    "disposition": "active_task0079_carrier"
   },
   "items": [
     {
       "kind": "pr",
-      "number": 490,
-      "title": "TASK-0080: add provider-neutral engagement fact contract",
+      "number": 489,
+      "title": "TASK-0079: add permitted listening signal contracts",
       "branch": "supervisor/task0077",
-      "disposition": "active_task0080_carrier",
+      "disposition": "active_task0079_carrier",
       "accepted_actionable": true
     },
     {
@@ -607,7 +607,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

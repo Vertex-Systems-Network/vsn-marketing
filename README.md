@@ -10,8 +10,8 @@ AI-native, provider-agnostic marketing operating system under active development
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 85.20%**<br />
-**Current phase: PHASE-13 — 64.00%**<br />
+**Overall roadmap progress: 85.80%**<br />
+**Current phase: PHASE-13 — 76.00%**<br />
 **Last completed task: TASK-0079**<br />
 **Current milestone: TASK-0080-ANALYTICS — IN_PROGRESS**
 

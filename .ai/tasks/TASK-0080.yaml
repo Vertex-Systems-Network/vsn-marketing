@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement cross-channel engagement and publication analytics",
   "weight": 12,
-  "status": "in_progress",
+  "status": "planned",
   "dependencies": [
     "TASK-0079"
   ],
@@ -12,7 +12,7 @@
     {
       "id": "AC-1",
       "text": "Normalized facts retain provider-specific definitions, source lineage, timestamps and unknown totals",
-      "done": true
+      "done": false
     },
     {
       "id": "AC-2",

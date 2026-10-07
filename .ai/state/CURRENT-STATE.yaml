@@ -13,8 +13,8 @@
     "next_task": "TASK-0081"
   },
   "progress": {
-    "roadmap_percent": 85.2,
-    "phase_percent": 64,
+    "roadmap_percent": 85.8,
+    "phase_percent": 76,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {

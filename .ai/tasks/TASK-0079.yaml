@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Only officially permitted provider signals enter bounded listening; unauthorized scraping is absent",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Provenance, retention, scopes, rate limits, tenant isolation and missing coverage are explicit",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Contract and adversarial tests pass with unknown source completeness disclosed",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

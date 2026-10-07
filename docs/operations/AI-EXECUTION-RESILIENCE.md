@@ -12,7 +12,7 @@ This standard optimizes how work is sliced and resumed. It does **not** weaken r
 
 ## 1. Fast Batch Development Mode by default
 
-A single user interaction should normally complete one substantial coherent batch inside the active task, not one micro-transition.
+A generic mutating user interaction should normally advance one continuous coherent batch across the safe canonical roadmap frontier for the available Workspace credit window, not one micro-transition or one task/phase handoff. An explicitly narrow task/phase/PR request remains narrow.
 
 A substantial batch may include:
 
@@ -24,7 +24,7 @@ A substantial batch may include:
 
 Do **not** create a standalone post-merge reconciliation PR by default. Immediate standalone reconciliation is reserved for task/phase final acceptance, guarded task transition, release/promotion, security/incident recovery, material repository drift, or when no safe successor PR exists and external coordination would otherwise be stale.
 
-Do not use batching to cross into unrelated tasks, bypass task dependencies, broaden write authority, skip required checks, or hide unresolved failures.
+Do not use batching to cross into unrelated or undeclared work, bypass task dependencies, broaden write authority, skip required checks, or hide unresolved failures. A guarded dependency-ready canonical successor task/phase is part of the same generic roadmap-frontier batch, not unrelated work.
 
 ## 2. External CI is a dependency boundary, not a whole-batch stop or polling loop
 
@@ -141,7 +141,7 @@ Mandatory order:
 1. recover and validate canonical state;
 2. read current task/plan/checkpoint and exact repository head;
 3. classify the exact change set;
-4. execute one substantial approved batch inside the active task;
+4. execute one substantial approved batch across the permitted canonical roadmap frontier, starting from the active task and automatically taking guarded dependency-ready successor transitions while credit remains;
 5. run the change-class checks;
 6. require the exact-head PR gates selected by policy;
 7. perform bounded same-scope repair when needed and re-verify the new exact head;

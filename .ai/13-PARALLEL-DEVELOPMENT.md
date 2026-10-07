@@ -127,7 +127,7 @@ The following order is **mandatory** for every AI/Supervisor development interac
 3. confirm the exact active task/milestone and current protected/integration branch head before any write;
 4. classify the intended change with the repository change-aware CI policy;
 5. create/use only the registered branch/workstream allowed for that milestone;
-6. execute one **substantial development batch** within the approved task/scope; a batch may include implementation, focused tests, bounded CI repair, exact-head verification and merge when the required gates become green;
+6. execute a **substantial development slice** within the approved task/scope; a slice may include implementation, focused tests, bounded CI repair, exact-head verification and merge when the required gates become green; in active continuous Workspace mode, completion of that slice immediately loops into the next safe canonical slice while credit remains and is not a user-handoff boundary;
 7. run the local/fast checks required by that change class;
 8. open/update one scoped PR and use the exact standalone `CI-Mode: full` marker whenever a certification, release/promotion, security-sensitive acceptance, or explicit exact-head contract requires the full Application + Security gate set even if the file diff is control-only;
 9. require the selected exact-head gates; never replace a required gate with Runner benchmarking, but do not split a batch merely because one bounded repair is needed;

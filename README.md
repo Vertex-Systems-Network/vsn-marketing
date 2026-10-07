@@ -12,8 +12,8 @@ AI-native, provider-agnostic marketing operating system under active development
 
 **Overall roadmap progress: 85.20%**<br />
 **Current phase: PHASE-13 — 64.00%**<br />
-**Last completed task: TASK-0078**<br />
-**Current milestone: TASK-0079-LISTENING — IN_PROGRESS**
+**Last completed task: TASK-0079**<br />
+**Current milestone: TASK-0080-ANALYTICS — IN_PROGRESS**
 
 ```text
  Overall  [████████████████░░░░] 83.50%

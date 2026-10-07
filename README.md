@@ -16,8 +16,8 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current milestone: TASK-0080-ANALYTICS — IN_PROGRESS**
 
 ```text
- Overall  [████████████████░░░░] 83.50%
-Phase 13 [██████░░░░░░░░░░░░░░] 30.00%
+ Overall  [████████████████░░░░] 85.80%
+Phase 13 [███████████████░░░░░░░] 76.00%
 ```
 
 The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.

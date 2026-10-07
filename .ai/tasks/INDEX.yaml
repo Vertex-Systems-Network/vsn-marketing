@@ -797,7 +797,7 @@
       "phase": "PHASE-13",
       "title": "Implement cross-channel engagement and publication analytics",
       "weight": 12,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0079"
       ]
@@ -807,7 +807,7 @@
       "phase": "PHASE-13",
       "title": "Certify Phase 13 omnichannel and social operations",
       "weight": 12,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0080"
       ]

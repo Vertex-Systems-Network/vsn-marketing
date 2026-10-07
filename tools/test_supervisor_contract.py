@@ -32,13 +32,28 @@ assert any("not a descendant" in e for e in m.main_observation_errors("a"*40, "b
 
 state={
     "progress": {"roadmap_percent": 47, "phase_percent": 42.86},
-    "execution": {"current_phase": "PHASE-07", "active_task": "TASK-0038"},
+    "execution": {"current_phase": "PHASE-07", "active_task": "TASK-0038", "last_completed_task": "TASK-0037"},
     "current_milestone": "TASK-0038-APPROVAL-ORCHESTRATION",
     "milestone_status": "COMPLETE",
 }
 marker=m.readme_progress_marker(state)
 assert marker == "<!-- AI_PROGRESS_SNAPSHOT roadmap=47 phase=42.86 current_phase=PHASE-07 active_task=TASK-0038 milestone=TASK-0038-APPROVAL-ORCHESTRATION status=COMPLETE -->"
-assert m.readme_progress_errors(state, marker) == []
+visible = "\n".join([
+    marker,
+    "**Overall roadmap progress: 47.00%**<br />",
+    "**Current phase: PHASE-07 — 42.86%**<br />",
+    "**Last completed task: TASK-0037**<br />",
+    "**Current milestone: TASK-0038-APPROVAL-ORCHESTRATION — COMPLETE**",
+    " Overall  [" + m.progress_bar(47) + "] 47.00%",
+    "Phase 07 [" + m.progress_bar(42.86) + "] 42.86%",
+    "| PHASE-07 | 7% | Publishing | Active | 42.86% |",
+])
+assert m.readme_progress_errors(state, visible) == []
+assert m.progress_bar(0) == "░"*20
+assert m.progress_bar(100) == "█"*20
+assert len(m.progress_bar(42.86)) == 20
+assert any("visible progress" in error for error in m.readme_progress_errors(state, marker))
+assert any("phase table" in error for error in m.readme_progress_errors(state, visible.replace("42.86% |", "40.00% |")))
 assert m.readme_progress_errors(state, "<!-- stale -->")
 same_marker=dict(state)
 same_marker["quality"]={"application_test_status":"run-123"}

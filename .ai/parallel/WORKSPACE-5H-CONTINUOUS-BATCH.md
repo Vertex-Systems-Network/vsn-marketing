@@ -39,10 +39,22 @@ When such an action is needed:
 
 1. continue every independent safe repository task that does not require that authority;
 2. persist the exact blocker and next safe action;
-3. stop only when the blocker is the sole remaining path inside the batch objective;
-4. report the one concrete human-only requirement instead of repeatedly asking broad consent questions.
+3. quarantine the blocked action and continue on the next safe canonical roadmap-frontier item; end the batch only when no safe independent frontier work remains and the blocked human-only action is the sole remaining path;
+4. at the final handoff, report the one concrete human-only requirement as evidence; do not interrupt the active batch to ask for confirmation or a generic `continue`.
 
 Never weaken security, tests, permissions, tenant isolation, required checks, migration safety, or audit controls to avoid a blocker.
+
+## Blocker and ambiguity handling
+
+Inside an active generic continuous batch, the Supervisor resolves decisions instead of handing them back to the user:
+
+- **Repository or technical blocker:** diagnose from code, logs, tests, CI, history, and canonical contracts; apply the smallest safe root-cause repair; rerun the required checks; continue.
+- **Ambiguous but safe implementation choice:** choose deterministically using canonical plan priority, existing architecture/contracts, least privilege, smallest reversible change, and test evidence. Do not ask the user to pick between mechanically resolvable options.
+- **Human-only external authority:** quarantine only that action, record the exact missing authority/input, and continue every other safe dependency-ready roadmap-frontier item. Do not request confirmation while safe repository work remains.
+- **Tool/connector/path failure:** use an available safe fallback path, recover durable state, and continue. A transient tool failure is not a user-decision boundary.
+- **Safety/security/correctness conflict:** fail closed on the affected action, preserve evidence, and continue independent safe work. End only when no safe canonical work remains.
+
+A blocker is therefore a routing signal, not a default conversation handoff.
 
 ## Automatic execution loop
 

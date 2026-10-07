@@ -79,6 +79,31 @@ final class Task0083ConnectorFactoryTest extends TestCase
         }
     }
 
+    public function test_excessive_document_depth_fails_closed(): void
+    {
+        $ingestor = new ConnectorDescriptionIngestor;
+        $nested = ['leaf' => 'value'];
+
+        for ($index = 0; $index <= ConnectorDescriptionIngestor::MAX_DEPTH + 2; $index++) {
+            $nested = ['level' => $nested];
+        }
+
+        $source = json_encode([
+            'openapi' => '3.2.1',
+            'paths' => [],
+            'components' => ['schemas' => $nested],
+        ], JSON_THROW_ON_ERROR);
+
+        $this->expectException(InvalidArgumentException::class);
+        $ingestor->ingest(
+            'workspace-a',
+            'https://docs.example.test/openapi.json',
+            'application/json',
+            $source,
+            '2026-10-08T00:00:00+00:00',
+        );
+    }
+
     public function test_plain_documentation_is_data_only_and_cannot_create_capabilities(): void
     {
         $ingestor = new ConnectorDescriptionIngestor;

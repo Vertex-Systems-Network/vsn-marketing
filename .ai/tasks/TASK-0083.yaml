@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0083",
+  "phase": "PHASE-14",
+  "title": "Implement documentation and OpenAPI ingestion, provenance, capability extraction and connector planning",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0082"
+  ],
+  "objective": "Implement documentation/OpenAPI ingestion, source provenance, capability extraction and connector plan generation without executing untrusted documentation",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Bounded API-description ingestion preserves immutable source provenance, retrieval/version metadata and content identity while unsafe external references and active content fail closed",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Typed capability extraction records endpoints, auth/scopes, limits and unsupported or unknown semantics without inferring provider authority",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Connector plans are non-executable candidates with tenant isolation, size/depth limits, deterministic normalization and adversarial ingestion tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0083 against TASK-0082 research and all acceptance gates; retain truthfully pending criteria."
+}

@@ -62,3 +62,22 @@ Research does not authorize downloading arbitrary private provider material, usi
 ## Decision
 
 `CONFIRMS_PLAN`: proceed with TASK-0082 through TASK-0087 exactly as preplanned. Treat documentation/specification/generator input as untrusted data; keep all generated code candidate-only until independent deterministic evidence and explicit activation authority exist.
+
+## Acceptance verification — 2026-10-08
+
+TASK-0082 research was rechecked against current official sources before acceptance:
+
+- OpenAPI 3.2.1 is the current published specification (2026-09-10); it explicitly calls out untrusted external resources, required reference-cycle handling, and Markdown/HTML sanitization responsibilities.
+- GitHub Actions secure-use guidance confirms that untrusted pull-request code or artifacts must not be executed in a privileged workflow with secrets/write-capable authority; privileged and untrusted execution must be separated.
+- Docker documents default seccomp confinement and `no-new-privileges`; candidate execution therefore remains ephemeral, least-privileged and no-secret.
+- OWASP API Security Top 10 2023 directly covers SSRF, API inventory/version drift and unsafe consumption of third-party APIs.
+- NIST SSDF 1.1 remains final; SSDF 1.2 remains an initial public draft, so the architecture does not silently treat draft guidance as final normative policy.
+- PR #500 exact head `0cec3ada3822e0b3f8a575c35caac7698bdb309b` passed AI Continuity Guard run 37694651443, Security Supply Chain CI run 37694651254 and Application Foundation CI run 37694651317, including foundation, E2E/Playwright, PHP 8.3 floor and PostgreSQL infrastructure/browser-parity integration.
+
+### Acceptance mapping
+
+- **AC-1 — satisfied:** dated/current official sources cover API-description semantics, generator trust, sandbox isolation, supply-chain review and generated-code security boundaries.
+- **AC-2 — satisfied:** the threat model explicitly covers malicious docs/specs/templates, external references, parser/resource exhaustion, injection, path escape, SSRF, secret exfiltration, privileged CI misuse and vulnerable generated output.
+- **AC-3 — satisfied:** Phase-14 gates are fail-closed: docs remain data; generated output is candidate-only; sandbox execution is isolated/no-secret; activation is separated behind deterministic evidence and explicit authority.
+
+No live connector, provider credential, deployment, billing, canary or production side effect is accepted by this research closure.

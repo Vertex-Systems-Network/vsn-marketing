@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement cross-channel engagement and publication analytics",
   "weight": 12,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0079"
   ],
@@ -12,17 +12,20 @@
     {
       "id": "AC-1",
       "text": "Normalized facts retain provider-specific definitions, source lineage, timestamps and unknown totals",
-      "done": false
+      "done": true,
+      "evidence": "PR #497 exact head f061d52eee18e8e01565fa7bbe0756610be57bf6 and resulting main 10be052fa1183d8f9249a192fba0b7e1074aec30 retain provider-specific definitions, hashed verified lineage, observed/received UTC timestamps and explicit unknown completeness/total semantics."
     },
     {
       "id": "AC-2",
       "text": "Consent, privacy, retention, aggregation and data-quality checks cover delayed, duplicate and missing provider events",
-      "done": false
+      "done": true,
+      "evidence": "PR #497 replay/conflict, delayed receipt, purpose/retention, tenant/brand scope, tamper detection and missing-provider-event unknown-state tests passed full exact-head and resulting-main gates."
     },
     {
       "id": "AC-3",
       "text": "PostgreSQL and operator-facing evidence passes relevant tests",
-      "done": false
+      "done": true,
+      "evidence": "PR #497 Application Foundation 37685772727 including PostgreSQL integration/E2E, Security 37685772542 and Continuity 37685772541 passed; resulting main passed Application 37687219266, Security 37687219442, Continuity 37687219268, Release 37687219350 and Scorecard 37687219271."
     }
   ],
   "required_tests": [
@@ -30,5 +33,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Execute TASK-0080 against dated research and all acceptance gates; retain truthfully pending criteria."
+  "exact_next_action": "Accepted on protected main 10be052fa1183d8f9249a192fba0b7e1074aec30; dependency-ready TASK-0081 certification is active."
 }

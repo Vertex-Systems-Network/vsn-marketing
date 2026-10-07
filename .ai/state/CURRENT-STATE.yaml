@@ -8,30 +8,30 @@
   "execution": {
     "status": "in_progress",
     "current_phase": "PHASE-14",
-    "active_task": "TASK-0082",
-    "last_completed_task": "TASK-0081",
-    "next_task": "TASK-0083"
+    "active_task": "TASK-0083",
+    "last_completed_task": "TASK-0082",
+    "next_task": "TASK-0084"
   },
   "progress": {
-    "roadmap_percent": 87,
-    "phase_percent": 0,
+    "roadmap_percent": 87.75,
+    "phase_percent": 15,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed AI Continuity Guard run 36503697430; Persistent Supervisor reconcile run 36503697379 was cancelled.",
-    "application_test_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Application Foundation CI run 36503697423. RBT-052 capture run 36504122827 passed with raw artifact and independent structural validation for the limited synthetic persistence scope.",
-    "security_supply_chain_status": "PR #431 head fd576360845e95dfb30869fba587b0768ea37d8e passed Security Supply Chain CI run 36503697416.",
+    "continuity_validation": "PR #500 head 0cec3ada3822e0b3f8a575c35caac7698bdb309b passed AI Continuity Guard run 37694651443.",
+    "application_test_status": "PR #500 head 0cec3ada3822e0b3f8a575c35caac7698bdb309b passed Application Foundation CI run 37694651317, including foundation, E2E/Playwright, PHP 8.3 compatibility floor, infrastructure integration and PostgreSQL18 browser parity.",
+    "security_supply_chain_status": "PR #500 head 0cec3ada3822e0b3f8a575c35caac7698bdb309b passed Security Supply Chain CI run 37694651254.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "88e2780bd749e82cab2926fac529947ba909728d",
+  "observed_main_sha": "1ff9cdd388831dd526eaf86dae5a958267144b7c",
   "active_issue": null,
-  "active_pr": 500,
-  "active_branch": "supervisor/phase14-activation",
-  "current_milestone": "TASK-0082-PHASE14-RESEARCH",
+  "active_pr": 501,
+  "active_branch": "supervisor/task0082-acceptance",
+  "current_milestone": "TASK-0083-CONNECTOR-INGESTION",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0081 bounded PHASE-13 certification accepted after PR #498 exact-head Application 37690117464, Security 37690117411 and AI Continuity 37690117431 passed; resulting main bf6bd9fada7cb2a1e5bada3904dba634de99e9e8 passed Application 37691472800, Security 37691472767 and AI Continuity 37691472762; product-bearing main 10be052fa1183d8f9249a192fba0b7e1074aec30 passed Release Integrity 37687219350 and OpenSSF Scorecard 37687219271.",
-  "exact_next_safe_action": "Validate PHASE-14 TASK-0082 dated connector-factory research on exact head, merge only after required gates pass, then accept research and continue TASK-0083 ingestion planning.",
+  "last_completed_milestone": "TASK-0082 research accepted from dated current official sources and PR #500 exact-head AI Continuity, Security Supply Chain and full Application Foundation evidence, including E2E and PostgreSQL infrastructure/browser parity.",
+  "exact_next_safe_action": "Implement TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning with fail-closed external-reference and active-content handling.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Validate PHASE-14 TASK-0082 dated connector-factory research on exact head, merge only after required gates pass, then accept research and continue TASK-0083 ingestion planning."
+  "exact_next_action": "Implement TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning with fail-closed external-reference and active-content handling."
 }

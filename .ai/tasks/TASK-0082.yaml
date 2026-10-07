@@ -3,7 +3,7 @@
   "phase": "PHASE-14",
   "title": "Research current API-description, code-generation, sandbox and security-review practices",
   "weight": 15,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0081"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Dated official sources cover current OpenAPI/API-description semantics, code-generation practices, sandbox isolation, supply-chain review and generated-code security boundaries",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Threat model covers malicious documentation/specs/templates, external references, parser/resource exhaustion, code or script injection, path/file escape, SSRF, secret exfiltration and vulnerable generated output",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Research is reconciled into fail-closed Phase 14 gates: untrusted docs remain data, generated code remains candidate-only, sandbox execution is isolated/no-secret, and activation requires deterministic review plus explicit authority",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,6 +30,6 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Execute TASK-0082 against dated official research and all acceptance gates; retain truthfully pending criteria.",
+  "exact_next_action": "TASK-0082 accepted from dated current official research and PR #500 exact-head AI Continuity, Security Supply Chain and full Application Foundation evidence; proceed to TASK-0083 bounded connector ingestion.",
   "research_pack": ".ai/research/PHASE-14/TASK-0082-RESEARCH.md"
 }

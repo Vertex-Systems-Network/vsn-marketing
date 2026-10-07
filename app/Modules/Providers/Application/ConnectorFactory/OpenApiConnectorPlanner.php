@@ -175,7 +175,7 @@ final class OpenApiConnectorPlanner
     }
 
     /**
-     * @param array<string, mixed> $document
+     * @param  array<string, mixed>  $document
      * @return list<string>
      */
     private function servers(array $document): array

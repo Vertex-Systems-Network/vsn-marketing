@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.0-workspace-5h-continuous",
+  "instruction_revision": "parallel-v2.8.1-credit-frontier",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "c9e490f45b15511875acac44fbbc830e9a4d57879b1ebfb2023ca8fbc6a6cdb2",
+  "instruction_fingerprint": "79a1f5f33583ea1013106f71911e980d0d6f3be4720582ad2894ce0af0f5d7d8",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -168,7 +168,7 @@
   "workspace_continuous_batch_default_for_mutating_resume": true,
   "workspace_continuous_batch_no_reconfirmation_for_repo_scope": true,
   "workspace_continuous_batch_auto_advance_related_tasks": true,
-  "workspace_continuous_batch_phase_boundary_requires_declared_scope": true,
+  "workspace_continuous_batch_phase_boundary_requires_declared_scope": false,
   "workspace_continuous_batch_suppress_intermediate_handoffs": true,
   "workspace_continuous_batch_final_handoff_only": true,
   "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
@@ -177,11 +177,11 @@
   "workspace_continuous_batch_merge_policy": "merge_verified_green_head_without_reconfirmation",
   "workspace_continuous_batch_checkpoint_policy": "material_boundary_credit_end_or_hard_blocker",
   "workspace_continuous_batch_stop_conditions": [
-    "declared_batch_objective_complete",
+    "explicit_narrow_objective_complete_or_no_safe_canonical_ready_work",
     "workspace_credit_or_300_minute_window_exhausted",
-    "human_only_external_authority_is_sole_remaining_path",
-    "unresolved_safety_security_correctness_conflict",
-    "tooling_prevents_further_execution_after_recovery"
+    "human_only_external_authority_is_sole_remaining_frontier_path",
+    "unresolved_safety_security_correctness_conflict_and_no_independent_safe_work",
+    "all_available_repository_execution_paths_unavailable_after_bounded_recovery"
   ],
   "workspace_continuous_batch_human_only_boundaries": [
     "production_or_provider_side_effect",
@@ -192,5 +192,8 @@
     "deployment_or_release_authority",
     "legal_compliance_owner_approval"
   ],
-  "workspace_continuous_batch_default_objective": "current_active_phase_max_safe_progress"
+  "workspace_continuous_batch_default_objective": "safe_canonical_roadmap_frontier_until_credit_exhaustion",
+  "workspace_continuous_batch_cross_phase_auto_advance": true,
+  "workspace_continuous_batch_completed_phase_is_not_stop_condition": true,
+  "workspace_continuous_batch_tool_fallback_required": true
 }

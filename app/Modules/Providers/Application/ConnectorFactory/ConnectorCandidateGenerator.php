@@ -31,8 +31,8 @@ final class ConnectorCandidateGenerator
             throw new InvalidArgumentException('Connector plan workspace does not match its source provenance.');
         }
 
-        if (preg_match('/^[a-z0-9][a-z0-9_-]{0,63}$/D', $plan->providerKey) !== 1) {
-            throw new InvalidArgumentException('Provider key must be a lowercase slug before candidate generation.');
+        if (preg_match('/^[a-z][a-z0-9_-]{0,63}$/D', $plan->providerKey) !== 1) {
+            throw new InvalidArgumentException('Provider key must be a lowercase, letter-leading slug before candidate generation.');
         }
 
         if (preg_match('/^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$/D', $toolchainVersion) !== 1) {

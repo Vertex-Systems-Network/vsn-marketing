@@ -70,6 +70,13 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
             self::assertTrue(true);
         }
 
+        try {
+            $generator->generate($this->plan(providerKey: '3example'), 'php-8.3.0');
+            self::fail('A provider key that cannot form a PHP class was accepted.');
+        } catch (InvalidArgumentException) {
+            self::assertTrue(true);
+        }
+
         $this->expectException(InvalidArgumentException::class);
         $generator->generate($this->plan(), 'php-8.3.0;system');
     }

@@ -22,7 +22,7 @@ final readonly class ConnectorGeneratedCandidate
         public bool $authorityGranted = false,
         public string $activationState = 'candidate_only',
     ) {
-        if (trim($workspaceId) === '' || preg_match('/^[a-z0-9][a-z0-9_-]{0,63}$/D', $providerKey) !== 1) {
+        if (trim($workspaceId) === '' || preg_match('/^[a-z][a-z0-9_-]{0,63}$/D', $providerKey) !== 1) {
             throw new InvalidArgumentException('Generated connector candidate requires a workspace and safe provider key.');
         }
 

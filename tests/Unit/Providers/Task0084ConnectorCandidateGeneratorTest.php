@@ -137,6 +137,11 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
         $source = json_encode([
             'openapi' => '3.2.1',
             'info' => ['title' => 'Example API', 'version' => '1'],
+            'components' => [
+                'securitySchemes' => [
+                    'ExampleKey' => ['type' => 'apiKey', 'in' => 'header', 'name' => 'X-API-Key'],
+                ],
+            ],
             'paths' => [
                 '/contacts' => [
                     'get' => ['operationId' => $operationId],

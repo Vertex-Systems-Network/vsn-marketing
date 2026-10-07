@@ -30,7 +30,7 @@ test('renders source-specific provider aggregate evidence without cross-provider
     expect(screen.getByRole('heading', { name: 'Provider engagement evidence' })).toBeInTheDocument();
     expect(screen.getByText('linkedin · post.impressions')).toBeInTheDocument();
     expect(screen.getByText('Provider-defined impressions; not cross-provider equivalent.')).toBeInTheDocument();
-    expect(screen.getByText('unknown', { selector: 'dd' })).toBeInTheDocument();
+    expect(screen.getAllByText('unknown', { selector: 'dd' })).toHaveLength(2);
     expect(screen.getByText(/delayed receipt/)).toBeInTheDocument();
 });
 

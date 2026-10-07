@@ -172,6 +172,7 @@
   "workspace_continuous_batch_blocker_policy": "self_resolve_repo_blockers_quarantine_external_authority_continue_frontier",
   "workspace_continuous_batch_ambiguous_choice_policy": "deterministic_repository_evidence_precedence",
   "workspace_continuous_batch_scope_transition_policy": "guarded_transition_then_auto_advance_canonical_successor",
+  "workspace_continuous_batch_entrypoint_consistency_guard": true,
   "workspace_continuous_batch_auto_advance_related_tasks": true,
   "workspace_continuous_batch_phase_boundary_requires_declared_scope": false,
   "workspace_continuous_batch_suppress_intermediate_handoffs": true,

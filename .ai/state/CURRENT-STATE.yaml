@@ -26,7 +26,7 @@
   },
   "observed_main_sha": "bf6bd9fada7cb2a1e5bada3904dba634de99e9e8",
   "active_issue": null,
-  "active_pr": null,
+  "active_pr": 499,
   "active_branch": "supervisor/phase13-terminal-closure",
   "current_milestone": "TASK-0081-PHASE13-CERTIFIED",
   "milestone_status": "COMPLETE",

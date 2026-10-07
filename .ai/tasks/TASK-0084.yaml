@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0084",
+  "phase": "PHASE-14",
+  "title": "Implement generated adapter and test candidate pipeline",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0083"
+  ],
+  "objective": "Implement deterministic generated adapter/test candidates while generated code remains candidate-only",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Generation is deterministic from an approved connector plan and records generator, template, toolchain and input provenance",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Generated files stay candidate-only inside an allowlisted isolated workspace with no secrets, provider authority or automatic runtime activation",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Adversarial tests prevent path escape, workflow/runtime injection, hidden executable payloads and unreviewed dependency introduction",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0084 against accepted TASK-0083 contracts and all acceptance gates; retain truthfully pending criteria."
+}

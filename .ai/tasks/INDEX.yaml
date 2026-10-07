@@ -811,6 +811,66 @@
       "dependencies": [
         "TASK-0080"
       ]
+    },
+    {
+      "id": "TASK-0082",
+      "phase": "PHASE-14",
+      "title": "Research current API-description, code-generation, sandbox and security-review practices",
+      "weight": 15,
+      "status": "in_progress",
+      "dependencies": [
+        "TASK-0081"
+      ]
+    },
+    {
+      "id": "TASK-0083",
+      "phase": "PHASE-14",
+      "title": "Implement documentation and OpenAPI ingestion, provenance, capability extraction and connector planning",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0082"
+      ]
+    },
+    {
+      "id": "TASK-0084",
+      "phase": "PHASE-14",
+      "title": "Implement generated adapter and test candidate pipeline",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0083"
+      ]
+    },
+    {
+      "id": "TASK-0085",
+      "phase": "PHASE-14",
+      "title": "Implement connector static, contract, sandbox, security and canary activation gates",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0084"
+      ]
+    },
+    {
+      "id": "TASK-0086",
+      "phase": "PHASE-14",
+      "title": "Implement compatibility scoring, deprecation monitoring, rollback and connector lifecycle observability",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0085"
+      ]
+    },
+    {
+      "id": "TASK-0087",
+      "phase": "PHASE-14",
+      "title": "Certify Phase 14 AI Connector Factory",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0086"
+      ]
     }
   ]
 }

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0085",
+  "phase": "PHASE-14",
+  "title": "Implement connector static, contract, sandbox, security and canary activation gates",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0084"
+  ],
+  "objective": "Implement static checks, contract tests, sandbox tests, security review, provenance and canary activation pipeline",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Candidate connectors produce immutable static-analysis, dependency/supply-chain, contract, sandbox and adversarial security evidence",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Generated candidates cannot self-approve; deterministic review and explicit authorized approval are required before any activation state",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Canary activation is disabled by default, bounded and reversible, and production/provider side effects remain outside repository-only authority",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0085 against accepted candidate generation and all acceptance gates; retain truthfully pending criteria."
+}

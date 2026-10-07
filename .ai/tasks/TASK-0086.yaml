@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0086",
+  "phase": "PHASE-14",
+  "title": "Implement compatibility scoring, deprecation monitoring, rollback and connector lifecycle observability",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0085"
+  ],
+  "objective": "Implement compatibility scoring, deprecation monitoring, rollback/disable and connector lifecycle observability so provider changes do not silently break core",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Compatibility scoring is derived from versioned capabilities/contracts with unknown or breaking changes failing closed",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Deprecation and version monitoring preserves dated provenance and alerts without silently auto-upgrading connector contracts",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Disable/rollback and tenant-scoped lifecycle health evidence are deterministic, auditable and covered by failure-reconciliation tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0086 against accepted activation gates and all acceptance gates; retain truthfully pending criteria."
+}

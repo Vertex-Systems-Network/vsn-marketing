@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0082",
+  "phase": "PHASE-14",
+  "title": "Research current API-description, code-generation, sandbox and security-review practices",
+  "weight": 15,
+  "status": "in_progress",
+  "dependencies": [
+    "TASK-0081"
+  ],
+  "objective": "Research current API-description, code-generation, sandbox and security-review practices and threat-model untrusted documentation and generated code",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Dated official sources cover current OpenAPI/API-description semantics, code-generation practices, sandbox isolation, supply-chain review and generated-code security boundaries",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Threat model covers malicious documentation/specs/templates, external references, parser/resource exhaustion, code or script injection, path/file escape, SSRF, secret exfiltration and vulnerable generated output",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Research is reconciled into fail-closed Phase 14 gates: untrusted docs remain data, generated code remains candidate-only, sandbox execution is isolated/no-secret, and activation requires deterministic review plus explicit authority",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Execute TASK-0082 against dated official research and all acceptance gates; retain truthfully pending criteria.",
+  "research_pack": ".ai/research/PHASE-14/TASK-0082-RESEARCH.md"
+}

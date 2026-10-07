@@ -95,14 +95,67 @@ def readme_progress_marker(state: dict[str, Any]) -> str:
     )
 
 
+def progress_bar(value: Any, cells: int = 20) -> str:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError("canonical progress values must be numeric")
+    percent = float(value)
+    if percent < 0 or percent > 100:
+        raise ValueError("canonical progress values must be between 0 and 100")
+    filled = max(0, min(cells, int((percent * cells / 100) + 0.5)))
+    return "█" * filled + "░" * (cells - filled)
+
+
 def readme_progress_errors(state: dict[str, Any], readme: str) -> list[str]:
     try:
         marker = readme_progress_marker(state)
-    except ValueError as exc:
+        progress = state.get("progress")
+        execution = state.get("execution")
+        if not isinstance(progress, dict) or not isinstance(execution, dict):
+            raise ValueError("CURRENT-STATE progress/execution must be objects")
+        roadmap = float(progress.get("roadmap_percent"))
+        phase = float(progress.get("phase_percent"))
+        current_phase = str(execution.get("current_phase"))
+        last_completed = str(execution.get("last_completed_task"))
+        milestone = str(state.get("current_milestone"))
+        milestone_status = str(state.get("milestone_status"))
+        phase_match = re.fullmatch(r"PHASE-(\\d+)", current_phase)
+        if phase_match is None:
+            raise ValueError("CURRENT-STATE current_phase must use PHASE-NN format")
+        phase_number = int(phase_match.group(1))
+        required_lines = [
+            f"**Overall roadmap progress: {roadmap:.2f}%**<br />",
+            f"**Current phase: {current_phase} — {phase:.2f}%**<br />",
+            f"**Last completed task: {last_completed}**<br />",
+            f"**Current milestone: {milestone} — {milestone_status}**",
+            f" Overall  [{progress_bar(roadmap)}] {roadmap:.2f}%",
+            f"Phase {phase_number:02d} [{progress_bar(phase)}] {phase:.2f}%",
+        ]
+    except (TypeError, ValueError) as exc:
         return [str(exc)]
+
+    errors: list[str] = []
     if marker not in readme:
-        return [f"README progress snapshot is stale; expected exact marker: {marker}"]
-    return []
+        errors.append(f"README progress snapshot is stale; expected exact marker: {marker}")
+    for line in required_lines:
+        if line not in readme:
+            errors.append(f"README visible progress is stale; expected exact line: {line}")
+
+    phase_rows = []
+    for line in readme.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|") or current_phase not in stripped:
+            continue
+        cells = [cell.strip().replace("**", "") for cell in stripped.strip("|").split("|")]
+        if cells and cells[0] == current_phase:
+            phase_rows.append(cells)
+    expected_phase_percent = f"{phase:.2f}%"
+    if not phase_rows:
+        errors.append(f"README phase table is missing current phase row: {current_phase}")
+    elif all(not row or row[-1] != expected_phase_percent for row in phase_rows):
+        errors.append(
+            f"README phase table progress is stale for {current_phase}; expected {expected_phase_percent}"
+        )
+    return errors
 
 
 def readme_progress_sync_required(before: dict[str, Any], after: dict[str, Any]) -> bool:

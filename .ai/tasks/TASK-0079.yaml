@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement permitted listening and market signals",
   "weight": 12,
-  "status": "planned",
+  "status": "in_progress",
   "dependencies": [
     "TASK-0078"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Execute TASK-0079 against dated research and all acceptance gates; retain truthfully pending criteria."
+  "exact_next_action": "Execute TASK-0079 implementation, adversarial tests, and all acceptance gates; retain truthfully pending criteria."
 }

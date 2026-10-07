@@ -32,12 +32,9 @@ When GitHub Actions or another external gate has started, the artifact being ver
 
 1. record the exact branch/PR/head SHA and required gate names;
 2. perform an initial status read;
-3. perform at most one additional status refresh in the same interaction unless:
-   - a gate changed state and needs diagnosis;
-   - a failure needs logs and a bounded fix;
-   - the remaining checks are already completing and one final read is enough to close the milestone;
+3. use bounded, meaningfully spaced/state-driven observation: up to 4 normal exact-head observations per gate cycle and up to 12 only when a durable material state-transition exception is recorded;
 4. if required external checks are still running, do not consume that pending artifact and do not tight-poll; continue safe independent dependency-ready work inside an active 5-hour batch;
-5. if no such work exists and the external result is the sole remaining path, end at the durable repository checkpoint; on the next resume, re-read the actual GitHub state and continue from that evidence.
+5. if no such work exists, use the remaining bounded observation budget before ending at the durable repository checkpoint; CI waiting itself never becomes a user-confirmation question.
 
 Never weaken, skip, cancel, or replace a required gate merely to avoid a timeout.
 
@@ -192,3 +189,7 @@ This standard is working when:
 - required security/application/governance gates remain unchanged;
 - Runner optimization remains separately governed;
 - future AI-Native plans retain this standard across task and phase transitions.
+
+## 12. Continuous no-confirmation behavior
+
+Routine technical failures must not become user confirmation prompts. Diagnose, repair, use documented fallbacks, or continue independent safe roadmap work. Human-only authority boundaries are recorded precisely and quarantined until they become the sole remaining path; final reporting states the exact required action rather than asking a broad yes/no question.

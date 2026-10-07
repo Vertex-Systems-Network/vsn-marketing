@@ -2,15 +2,17 @@
   "schema_version": 1,
   "reconciled_main_sha": "10be052fa1183d8f9249a192fba0b7e1074aec30",
   "active_work_path": {
-    "kind": "branch",
-    "title": "PHASE-13 final certification",
+    "kind": "pr",
+    "number": 498,
+    "title": "docs(phase13): certify TASK-0080 and activate final PHASE-13 closure",
     "branch": "supervisor/phase13-final-certification",
     "disposition": "active_task0081_certification"
   },
   "items": [
     {
-      "kind": "branch",
-      "title": "PHASE-13 final certification",
+      "kind": "pr",
+      "number": 498,
+      "title": "docs(phase13): certify TASK-0080 and activate final PHASE-13 closure",
       "branch": "supervisor/phase13-final-certification",
       "disposition": "active_task0081_certification",
       "accepted_actionable": true

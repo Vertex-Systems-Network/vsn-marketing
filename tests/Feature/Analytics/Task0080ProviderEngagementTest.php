@@ -1,7 +1,9 @@
 <?php
 
 use App\Modules\Analytics\Application\ProviderEngagementAnalytics;
+use App\Modules\Analytics\Domain\ProviderEngagementSourceVerifier;
 use App\Modules\Identity\Domain\Identity\User;
+use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Providers\Domain\Analytics\EngagementFact;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,6 +16,13 @@ uses(RefreshDatabase::class);
 it('admits bounded provider aggregates without storing raw lineage and renders source-specific operator evidence', function () {
     $this->withoutVite();
     $f = new AnalyticsFixture;
+    app()->bind(ProviderEngagementSourceVerifier::class, fn () => new class implements ProviderEngagementSourceVerifier
+    {
+        public function verify(TenantContext $actor, EngagementFact $fact): ?string
+        {
+            return $actor->workspaceId === $fact->tenantId ? 'verified:'.$fact->sourceLineage : null;
+        }
+    });
     $service = app(ProviderEngagementAnalytics::class);
     $lineage = 'https://provider.test/post/abc?opaque-secret=do-not-store';
     $fact = new EngagementFact(

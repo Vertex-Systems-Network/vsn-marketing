@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "bf6bd9fada7cb2a1e5bada3904dba634de99e9e8",
+  "reconciled_main_sha": "88e2780bd749e82cab2926fac529947ba909728d",
   "active_work_path": {
     "kind": "pr",
     "number": 499,
     "title": "docs(phase13): close certified omnichannel phase at 100 percent",
     "branch": "supervisor/phase13-terminal-closure",
-    "disposition": "active_phase13_terminal_closure"
+    "disposition": "terminal_merged_reconciled"
   },
   "items": [
     {
@@ -14,8 +14,9 @@
       "number": 499,
       "title": "docs(phase13): close certified omnichannel phase at 100 percent",
       "branch": "supervisor/phase13-terminal-closure",
-      "disposition": "active_phase13_terminal_closure",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "88e2780bd749e82cab2926fac529947ba909728d"
     },
     {
       "kind": "pr",

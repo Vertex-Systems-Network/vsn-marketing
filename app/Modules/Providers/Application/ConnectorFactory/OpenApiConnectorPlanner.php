@@ -119,7 +119,7 @@ final class OpenApiConnectorPlanner
     }
 
     /**
-     * @param array<string, mixed> $document
+     * @param  array<string, mixed>  $document
      * @return array<string, array<string, mixed>>
      */
     private function authSchemes(array $document): array
@@ -203,7 +203,8 @@ final class OpenApiConnectorPlanner
         return $servers;
     }
 
-    /** @param list<string> $servers
+    /**
+     * @param  list<string>  $servers
      * @return list<string>
      */
     private function serverSemantics(array $servers): array
@@ -220,8 +221,8 @@ final class OpenApiConnectorPlanner
     }
 
     /**
-     * @param mixed $security
-     * @param array<string, array<string, mixed>> $knownSchemes
+     * @param  mixed  $security
+     * @param  array<string, array<string, mixed>>  $knownSchemes
      * @return array{0:list<string>,1:array<string,list<string>>,2:list<string>}
      */
     private function security(mixed $security, array $knownSchemes): array
@@ -237,6 +238,7 @@ final class OpenApiConnectorPlanner
         foreach ($security as $requirement) {
             if (! is_array($requirement)) {
                 $unknown[] = 'security:unknown_requirement';
+
                 continue;
             }
 
@@ -273,7 +275,7 @@ final class OpenApiConnectorPlanner
     }
 
     /**
-     * @param array<string, mixed> ...$levels
+     * @param  array<string, mixed>  ...$levels
      * @return array<string, mixed>
      */
     private function declaredLimits(array ...$levels): array

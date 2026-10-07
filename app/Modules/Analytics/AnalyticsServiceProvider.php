@@ -4,9 +4,11 @@ namespace App\Modules\Analytics;
 
 use App\Modules\Analytics\Application\AnalyticsFacts;
 use App\Modules\Analytics\Application\AnalyticsQuality;
+use App\Modules\Analytics\Application\ProviderEngagementAnalytics;
 use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsPrivacy;
 use App\Modules\Analytics\Domain\AnalyticsSourceVerifier;
+use App\Modules\Analytics\Domain\ProviderEngagementSourceVerifier;
 use App\Modules\Analytics\Domain\RevenueExperimentVerifier;
 use App\Modules\Analytics\Infrastructure\CanonicalAnalyticsAccess;
 use App\Modules\Analytics\Infrastructure\ConsentAnalyticsPrivacy;
@@ -37,6 +39,11 @@ final class AnalyticsServiceProvider extends ServiceProvider
             $app->make(AnalyticsFacts::class), $app->make(AnalyticsPrivacy::class),
             $app->make(DatabaseManager::class), $app->make(Clock::class), $app->make(AuditRecorder::class),
             $app->bound(AnalyticsSourceVerifier::class) ? $app->make(AnalyticsSourceVerifier::class) : null,
+        ));
+        $this->app->bind(ProviderEngagementAnalytics::class, fn ($app) => new ProviderEngagementAnalytics(
+            $app->make(AnalyticsFacts::class), $app->make(AnalyticsPrivacy::class),
+            $app->make(DatabaseManager::class), $app->make(Clock::class), $app->make(AuditRecorder::class),
+            $app->bound(ProviderEngagementSourceVerifier::class) ? $app->make(ProviderEngagementSourceVerifier::class) : null,
         ));
         $this->app->bind(AnalyticsAccess::class, CanonicalAnalyticsAccess::class);
         $this->app->bind(AnalyticsPrivacy::class, ConsentAnalyticsPrivacy::class);

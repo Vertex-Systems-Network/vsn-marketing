@@ -6,11 +6,17 @@ type Report = { id: string; fingerprint: string; definition_hash: string; defini
     source_completeness: string; excluded: number; lineage_count: number; metrics: Record<string, number>;
     quality: Record<string, number>; censored_subjects: number | null };
 type Schedule = { id: string; kind: string; enabled: boolean; next_window_end: string; status_code: string | null };
+type ProviderEngagement = { id: string; provider_key: string; metric: string; value: number;
+    definition: { provider_key: string; provider_metric: string; unit: string; version: number; semantics: string;
+        cross_provider_equivalent: boolean; limitation: string };
+    observed_at: string; received_at: string; receipt_lag_seconds: number; delayed: boolean;
+    provider_total_status: string; source_completeness: string; missing_provider_events: string;
+    source_lineage_hash: string; fingerprint: string };
 type Quality = { id: string; fingerprint: string; source_hash: string; event_type: string; start_utc: string; end_utc: string;
     coverage: string; expected_total: number | null; missing_source_keys: number | null; unexpected_source_keys: number | null;
     missing_projection: number; duplicates: number; conflicts: number; late: number; drifted_hashes: number;
     max_receipt_lag_seconds: number; affected_metric_versions: { snapshot_id: string; definition_hash: string; version: number }[] };
-type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
+type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; provider_engagement?: ProviderEngagement[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
     report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
     insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean;
     actions: { generate: string; schedules: string; base: string } };
@@ -70,6 +76,29 @@ export default function AnalyticsOperator(p: Props) {
                     <details className="mt-4"><summary className="cursor-pointer text-sky-200 focus-visible:outline-2 focus-visible:outline-sky-300">Definition and evidence fingerprint</summary>
                         <pre className="mt-2 whitespace-pre-wrap break-all text-xs text-neutral-300">{JSON.stringify(r.definition, null, 2)}</pre><p className="mt-2 break-all text-xs">Snapshot: {r.id}<br />Fingerprint: {r.fingerprint}<br />Definition: {r.definition_hash}</p></details>
                 </article>)}</div>}
+            </section>
+            <section aria-labelledby="provider-engagement" className="mt-7 rounded-2xl border border-white/15 p-5">
+                <h2 id="provider-engagement" className="text-xl font-semibold">Provider engagement evidence</h2>
+                <p className="mt-3 text-neutral-300">Provider-reported aggregate metrics stay source-specific. They are not summed or compared across providers unless a separate verified mapping exists. Source completeness and missing provider events remain unknown without independent provider evidence.</p>
+                {(p.provider_engagement ?? []).length === 0 && <p className="mt-4 text-neutral-300">No retained provider aggregate evidence in this scope.</p>}
+                {(p.provider_engagement ?? []).map((fact) => <article key={fact.id} className="mt-5 rounded-xl border border-white/15 p-4">
+                    <h3 className="font-semibold">{fact.provider_key} · {fact.metric}</h3>
+                    <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+                        <dt>Provider-reported value</dt><dd>{fact.value}</dd>
+                        <dt>Metric unit / version</dt><dd>{fact.definition.unit} / v{fact.definition.version}</dd>
+                        <dt>Observed at</dt><dd>{fact.observed_at}</dd>
+                        <dt>Received at</dt><dd>{fact.received_at}</dd>
+                        <dt>Receipt lag</dt><dd>{fact.receipt_lag_seconds} seconds{fact.delayed ? ' · delayed receipt' : ''}</dd>
+                        <dt>Provider total status</dt><dd>{fact.provider_total_status.replaceAll('_', ' ')}</dd>
+                        <dt>Source completeness</dt><dd>{fact.source_completeness}</dd>
+                        <dt>Missing provider events</dt><dd>{fact.missing_provider_events}</dd>
+                    </dl>
+                    <p className="mt-3 text-sm text-amber-200">{fact.definition.limitation}</p>
+                    <details className="mt-3"><summary className="cursor-pointer text-sky-200">Definition and hashed lineage evidence</summary>
+                        <pre className="mt-2 whitespace-pre-wrap break-all text-xs text-neutral-300">{JSON.stringify(fact.definition, null, 2)}</pre>
+                        <p className="mt-2 break-all text-xs">Lineage hash: {fact.source_lineage_hash}<br />Fingerprint: {fact.fingerprint}</p>
+                    </details>
+                </article>)}
             </section>
             <section aria-labelledby="source-quality" className="mt-7 rounded-2xl border border-white/15 p-5">
                 <h2 id="source-quality" className="text-xl font-semibold">Source quality and reconciliation</h2>

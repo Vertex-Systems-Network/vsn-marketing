@@ -71,7 +71,7 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 ## For coding agents and contributors
 
 Agent instruction revision: `parallel-v2.8.4-credit-window-loop`  
-Agent instruction fingerprint: `74fa09a921a4b679a10a20616fbf7730b687b384c4eeee5f814124ef75627059`
+Agent instruction fingerprint: `d8642c9518eb636e8462152ea10d92438940dc792e2fc05eef13e1bc7cb7af01`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 

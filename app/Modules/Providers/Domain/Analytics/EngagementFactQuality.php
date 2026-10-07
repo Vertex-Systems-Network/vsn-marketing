@@ -6,9 +6,6 @@ use InvalidArgumentException;
 
 final class EngagementFactQuality
 {
-    /**
-     * @param list<EngagementFact> $facts
-     */
     public static function validate(array $facts): void
     {
         $seen = [];

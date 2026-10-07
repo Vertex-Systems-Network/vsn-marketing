@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b58eeb869d1f70c4d804ee6543dafc239569b00e",
+  "reconciled_main_sha": "78e50a8531189e4e7527c0d1238ffd5a961d1ea3",
   "active_work_path": {
     "kind": "pr",
-    "number": 495,
-    "title": "fix(ai): make Workspace turn consume the safe credit window",
-    "branch": "supervisor/credit-window-continuous-loop",
+    "number": 497,
+    "title": "feat(analytics): add TASK-0080 provider engagement evidence",
+    "branch": "supervisor/task0080-postgres-operator",
     "disposition": "active_task0080_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 497,
+      "title": "feat(analytics): add TASK-0080 provider engagement evidence",
+      "branch": "supervisor/task0080-postgres-operator",
+      "disposition": "active_task0080_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 495,
       "title": "fix(ai): make Workspace turn consume the safe credit window",
       "branch": "supervisor/credit-window-continuous-loop",
-      "disposition": "active_task0080_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "78e50a8531189e4e7527c0d1238ffd5a961d1ea3"
     },
     {
       "kind": "pr",

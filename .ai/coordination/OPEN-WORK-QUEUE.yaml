@@ -3,12 +3,20 @@
   "reconciled_main_sha": "88e2780bd749e82cab2926fac529947ba909728d",
   "active_work_path": {
     "kind": "pr",
-    "number": 499,
-    "title": "docs(phase13): close certified omnichannel phase at 100 percent",
-    "branch": "supervisor/phase13-terminal-closure",
-    "disposition": "terminal_merged_reconciled"
+    "number": 500,
+    "title": "plan(phase14): activate researched AI Connector Factory sequence",
+    "branch": "supervisor/phase14-activation",
+    "disposition": "active_task0082_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 500,
+      "title": "plan(phase14): activate researched AI Connector Factory sequence",
+      "branch": "supervisor/phase14-activation",
+      "disposition": "active_task0082_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 499,

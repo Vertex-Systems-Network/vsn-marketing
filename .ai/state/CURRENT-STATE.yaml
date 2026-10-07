@@ -26,7 +26,7 @@
   },
   "observed_main_sha": "88e2780bd749e82cab2926fac529947ba909728d",
   "active_issue": null,
-  "active_pr": null,
+  "active_pr": 500,
   "active_branch": "supervisor/phase14-activation",
   "current_milestone": "TASK-0082-PHASE14-RESEARCH",
   "milestone_status": "IN_PROGRESS",

@@ -7,10 +7,10 @@ use InvalidArgumentException;
 final readonly class ConnectorPlanCandidate
 {
     /**
-     * @param list<ConnectorCapabilityCandidate> $capabilities
-     * @param array<string, array<string, mixed>> $authSchemes
-     * @param list<string> $servers
-     * @param list<string> $unknownSemantics
+     * @param  list<ConnectorCapabilityCandidate>  $capabilities
+     * @param  array<string, array<string, mixed>>  $authSchemes
+     * @param  list<string>  $servers
+     * @param  list<string>  $unknownSemantics
      */
     public function __construct(
         public string $workspaceId,

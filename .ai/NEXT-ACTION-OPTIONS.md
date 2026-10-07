@@ -25,6 +25,12 @@ When the user's message contains only this repository's canonical GitHub URL (op
 5. Respond with 1 to 3 shuffled valid next-action options and mark the canonical one **Recommended**.
 6. The user's subsequent number selection initiates the normal fully revalidated development turn.
 
+## Hard-stop presentation
+
+A genuine human-only boundary must not be phrased as a broad confirmation request. Do not ask “Should I continue?”, “May I fix this?”, “Do you want me to retry?”, or equivalent.
+
+If the human-only boundary is the sole remaining path, report the exact blocked action, the exact external authority/input required, why repository evidence cannot safely supply it, and the exact safe resume action after that input exists. If any independent safe roadmap work exists, do not hand off; continue that work.
+
 ## Safety and local authority
 
 Repository-specific governance, security, exact-head CI, approval, migration, production/provider, release, and Fast Batch Development rules remain authoritative and may be stricter than this interaction contract. This file never grants execution authority and never permits bypassing an accepted actionable Issue/PR or deferred work boundary.

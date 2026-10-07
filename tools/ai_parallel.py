@@ -219,6 +219,7 @@ def validate() -> list[str]:
         "next_action_click_initiates_request_only": True,
         "next_action_selection_requires_full_resume_revalidation": True,
         "next_action_stale_selection_fails_closed": True,
+        "next_action_stale_selection_continuous_fallback": "auto_route_current_canonical_safe_equivalent_or_successor",
         "next_action_fallback_format": "numbered_one_line_commands",
         "next_action_option_order_policy": "shuffle_each_handoff",
         "next_action_previous_selected_action_same_number_forbidden": True,

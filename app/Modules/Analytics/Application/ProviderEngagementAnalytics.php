@@ -3,6 +3,7 @@
 namespace App\Modules\Analytics\Application;
 
 use App\Modules\Analytics\Domain\AnalyticsPrivacy;
+use App\Modules\Analytics\Domain\ProviderEngagementSourceVerifier;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -26,6 +27,7 @@ final readonly class ProviderEngagementAnalytics
         private DatabaseManager $database,
         private Clock $clock,
         private AuditRecorder $audit,
+        private ?ProviderEngagementSourceVerifier $verifier = null,
     ) {}
 
     public function admit(TenantContext $actor, EngagementFact $fact): string
@@ -35,6 +37,13 @@ final readonly class ProviderEngagementAnalytics
             throw new AuthorizationException('Provider engagement analytics scope denied.');
         }
         EngagementFactQuality::validate([$fact]);
+        if ($this->verifier === null) {
+            throw new RuntimeException('Provider engagement source verifier is not configured.');
+        }
+        $verifiedReference = $this->verifier->verify($actor, $fact);
+        if (! is_string($verifiedReference) || trim($verifiedReference) === '' || strlen($verifiedReference) > 512) {
+            throw new InvalidArgumentException('Provider engagement source evidence could not be verified.');
+        }
 
         $observed = new DateTimeImmutable($fact->observedAt);
         $received = new DateTimeImmutable($fact->receivedAtValue());
@@ -45,7 +54,7 @@ final readonly class ProviderEngagementAnalytics
         }
 
         $definition = $fact->definition();
-        $lineageHash = hash('sha256', $fact->sourceLineage);
+        $lineageHash = hash('sha256', $verifiedReference);
         $sourceKey = hash('sha256', json_encode([
             $actor->workspaceId, $actor->brandId, $fact->providerKey, $fact->metric, $lineageHash, $observed->format(DATE_ATOM),
         ], JSON_THROW_ON_ERROR));

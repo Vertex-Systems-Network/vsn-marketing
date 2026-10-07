@@ -787,7 +787,7 @@
       "phase": "PHASE-13",
       "title": "Implement permitted listening and market signals",
       "weight": 12,
-      "status": "in_progress",
+      "status": "planned",
       "dependencies": [
         "TASK-0078"
       ]

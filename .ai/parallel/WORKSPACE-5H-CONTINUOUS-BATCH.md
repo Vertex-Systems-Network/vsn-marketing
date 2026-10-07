@@ -8,10 +8,10 @@ This contract exists to keep repository development moving for one Workspace ses
 
 - Target runtime: **300 minutes / the available Workspace credit window**, whichever ends first.
 - A mutating `start`, `continue`, numeric next-action selection, or explicitly scoped development request starts or resumes this continuous batch mode unless the request says otherwise.
-- A generic mutating `start`, `continue`, or `resume` with no narrower scope defaults to **maximum safe progress across the current active phase**, not one task or one PR. After a task is certified, automatically transition to the next canonical dependency-ready task in that phase and continue while credit remains. If research/registration is required and the canonical roadmap already defines that work, perform it automatically; never invent undeclared roadmap work.
+- A generic mutating `start`, `continue`, or `resume` with no narrower scope defaults to **maximum safe roadmap-frontier progress for the entire available Workspace credit window**, not one task, one PR, or one phase. After a task or phase is certified, automatically transition to the next canonical dependency-ready task/phase and continue while credit remains. Crossing a phase boundary is routine when the roadmap already defines the successor and no separate human/external authority is required. If research/registration is required and the canonical roadmap already defines that work, perform it automatically; never invent undeclared roadmap work.
 - URL-only repository entry remains read-only and does not start a mutating batch.
 - Repository evidence outranks chat memory. Every fresh session or recovery still performs the normal compact-state/main/Issues/PRs/queue/Runner reconciliation before writes.
-- The batch objective is the highest-priority accepted repository work path consistent with the user's request and canonical state. Do not ask the user to choose again when repository evidence already determines the next safe action.
+- The batch objective is the highest-priority accepted repository work path consistent with the user's request and canonical state. For generic start/continue/resume, the objective is the **safe ready frontier of the canonical roadmap for the remaining credit window**. Do not ask the user to choose again when repository evidence already determines the next safe action, and do not treat task/PR/phase completion as a handoff boundary while another safe canonical successor exists.
 
 ## No-reconfirmation rule
 
@@ -56,7 +56,7 @@ Repeat this loop while Workspace credit remains and the batch objective is not c
 6. **Carrier management.** Create/update the scoped PR. Avoid micro-PRs and evidence-only churn.
 7. **CI failure handling.** If required CI fails, inspect the failed job/step/logs, identify the same-scope root cause, patch it, test it, and rerun. Do not ask the user what to do.
 8. **Merge handling.** When exact-head gates/review are green, merge according to repository policy without asking for a second confirmation.
-9. **Post-merge continuation.** Re-read live state and continue directly to the next dependency-ready action within the batch objective.
+9. **Post-merge continuation.** Re-read live state and continue directly to the next dependency-ready action. If the active phase closes, enter the next canonical dependency-ready phase automatically when no separate authority boundary applies.
 10. **Checkpoint.** Persist a checkpoint at material boundaries, before context/tool exhaustion, at a hard external wait, or when the Workspace credit window ends.
 
 Do not emit a user-facing next-action handoff at every internal task/PR/CI boundary. Next-action options are for the final batch handoff or a genuine hard stop.
@@ -81,26 +81,26 @@ When two PRs cover the same accepted work:
 
 ## Scope chaining
 
-Continuous mode may cross internal milestones and dependent tasks **only when they are part of the same declared batch objective**.
+Continuous mode may cross internal milestones, dependent tasks, and canonical phase boundaries **when they remain on the same safe roadmap frontier and require no separate authority**.
 
-For a generic `start`/`continue`/`resume`, the declared batch objective is the current active phase by default. An explicit PR-only, task-only, audit-only, or other narrower user instruction overrides that default.
+For a generic `start`/`continue`/`resume`, the declared batch objective is maximum safe canonical roadmap progress until the Workspace credit window is exhausted or no safe ready work remains. An explicit PR-only, task-only, phase-only, audit-only, or other narrower user instruction overrides that default.
 
-- A phase-closure batch may automatically advance across dependency-ready tasks in that phase.
-- A task-only batch stops when that task is certified/merged.
-- Do not cross into a later phase, deployment/release, or unrelated roadmap work unless the starting batch objective includes that boundary and repository policy permits it.
+- A generic continuous batch automatically advances across dependency-ready tasks and phases while credit remains.
+- A phase-only batch stops at that phase boundary; a task-only batch stops when that task is certified/merged.
+- Do not cross into deployment/release, production/provider actions, destructive operations, or unrelated/undeclared roadmap work without the separate authority or canonical declaration those actions require.
 - Research-first and guarded-transition requirements still apply; satisfy them automatically when possible rather than asking for routine permission.
 
 ## Stop conditions
 
 The batch ends only when one of these is true:
 
-1. the declared batch objective is complete and durably reconciled;
-2. the 300-minute / Workspace credit window is exhausted;
-3. a genuine human-only external authority/input is the sole remaining path;
-4. a safety/security/correctness conflict cannot be resolved from repository evidence;
-5. the host/tooling makes further repository execution impossible after recovery attempts.
+1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap has no safe dependency-ready work remaining;
+2. the 300-minute / available Workspace credit window is exhausted;
+3. a genuine human-only external authority/input is the sole remaining path across the safe roadmap frontier;
+4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;
+5. all available repository execution paths are unavailable after bounded recovery/fallback attempts, leaving no safe mutation/read path to continue.
 
-Normal development friction is not a stop condition.
+Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a failed same-scope check, a transient connector failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths and continue rather than handing control back to the user.
 
 ## End-of-batch handoff
 
@@ -114,4 +114,4 @@ At the end, provide one compact report with:
 - current module/phase progress and overall roadmap progress from canonical state;
 - 1–3 next-action options only now, unless the objective is fully complete.
 
-Never claim work continued in the background after the Workspace/session ended. Resume from durable repository state on the next session.
+Never claim work continued in the background after the Workspace/session ended. The contract governs what the agent must do **within each active Workspace turn/session**; once the host ends execution, resume from durable repository state on the next session.

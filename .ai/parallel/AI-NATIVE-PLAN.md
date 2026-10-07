@@ -11,7 +11,7 @@ Security posture: fail closed
 
 ## Purpose
 
-The AI-Native flow is no longer a sequence of chat-sized micro-milestones. A mutating Workspace start/resume runs one continuous development batch and keeps advancing the accepted repository work path until the batch objective is complete, the Workspace credit window ends, or a genuine human-only/safety blocker is the sole remaining path. Generic start/continue/resume defaults to maximum safe progress across the current active phase; an explicitly narrower PR/task/audit scope remains narrow.
+The AI-Native flow is no longer a sequence of chat-sized micro-milestones. A mutating Workspace start/resume runs one continuous development batch and keeps advancing the accepted repository work path across task and phase boundaries until the Workspace credit window ends, the canonical roadmap has no safe dependency-ready work, or a genuine human-only/safety blocker is the sole remaining path. Generic start/continue/resume defaults to maximum safe canonical roadmap-frontier progress for the available credits; an explicitly narrower PR/task/phase/audit scope remains narrow.
 
 The detailed execution contract is `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`. Every Supervisor/Workspace agent MUST read that contract before writable work.
 
@@ -31,7 +31,7 @@ Repository/runtime evidence outranks stale plan prose. If this file's audit snap
 
 Inside the started batch, automatically perform:
 
-`implementation -> focused tests -> PR/update -> CI diagnosis -> bounded same-scope repair -> exact-head verification -> merge -> post-merge reconciliation -> next dependency-ready action`
+`implementation -> focused tests -> PR/update -> CI diagnosis -> bounded same-scope repair -> exact-head verification -> merge -> post-merge reconciliation -> next dependency-ready task -> next dependency-ready phase -> repeat until credit/window exhaustion or hard boundary`
 
 Do not stop at formatting failures, ordinary test failures, stale branches, duplicate PRs, merge conflicts, README/progress drift, or a required same-scope repair. Resolve them and continue.
 

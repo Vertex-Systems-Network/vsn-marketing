@@ -10,11 +10,19 @@ return new class extends Migration
     public function up(): void
     {
         if (Schema::hasTable('provider_engagement_facts')) {
+            $indexes = Schema::getIndexes('provider_engagement_facts');
+            $primary = array_filter($indexes, fn (array $index): bool => $index['primary'] && $index['columns'] === ['id']);
+            $sourceUnique = array_filter($indexes, fn (array $index): bool => $index['unique'] && $index['columns'] === ['source_key']);
+            $foreignKeys = Schema::getForeignKeys('provider_engagement_facts');
+            $workspaceForeign = array_filter($foreignKeys, fn (array $key): bool => $key['columns'] === ['workspace_id']
+                && $key['foreign_table'] === 'workspaces' && $key['foreign_columns'] === ['id']);
+            $brandForeign = array_filter($foreignKeys, fn (array $key): bool => $key['columns'] === ['brand_id', 'workspace_id']
+                && $key['foreign_table'] === 'brands' && $key['foreign_columns'] === ['id', 'workspace_id']);
             if (! Schema::hasColumns('provider_engagement_facts', [
                 'id', 'workspace_id', 'brand_id', 'provider_key', 'metric', 'metric_definition', 'value',
                 'source_key', 'source_lineage_hash', 'fingerprint', 'observed_at', 'received_at',
                 'expires_at', 'is_total_known', 'created_at',
-            ])) {
+            ]) || $primary === [] || $sourceUnique === [] || $workspaceForeign === [] || $brandForeign === []) {
                 throw new RuntimeException('Unexpected partial provider engagement analytics schema.');
             }
 

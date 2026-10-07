@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement prioritized social publishing adapters",
   "weight": 18,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0076"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Only officially researched platform/account/scope combinations expose supported create, media, schedule, status, edit, delete and analytics capabilities",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Publication approval, tenant isolation, quotas, idempotency and ambiguous-result reconciliation fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Contract, negative-policy, integration and exact-head checks pass without claiming unapproved live publication",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

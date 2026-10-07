@@ -10,8 +10,11 @@ use JsonException;
 final class ConnectorDescriptionIngestor
 {
     public const MAX_BYTES = 1_048_576;
+
     public const MAX_DEPTH = 32;
+
     public const MAX_NODES = 20_000;
+
     public const PARSER_VERSION = 'task0083-v1';
 
     /** @var list<string> */
@@ -109,7 +112,6 @@ final class ConnectorDescriptionIngestor
         throw new InvalidArgumentException('Unsupported connector source media type; unsupported formats fail closed.');
     }
 
-    /** @param mixed $value */
     private function validateNode(mixed $value, int $depth, int &$nodes, ?string $key = null): void
     {
         $nodes++;
@@ -148,7 +150,6 @@ final class ConnectorDescriptionIngestor
         }
     }
 
-    /** @param mixed $value */
     private function canonicalize(mixed $value): mixed
     {
         if (! is_array($value)) {

@@ -2,15 +2,17 @@
   "schema_version": 1,
   "reconciled_main_sha": "bf6bd9fada7cb2a1e5bada3904dba634de99e9e8",
   "active_work_path": {
-    "kind": "branch",
-    "title": "PHASE-13 terminal closure",
+    "kind": "pr",
+    "number": 499,
+    "title": "docs(phase13): close certified omnichannel phase at 100 percent",
     "branch": "supervisor/phase13-terminal-closure",
     "disposition": "active_phase13_terminal_closure"
   },
   "items": [
     {
-      "kind": "branch",
-      "title": "PHASE-13 terminal closure",
+      "kind": "pr",
+      "number": 499,
+      "title": "docs(phase13): close certified omnichannel phase at 100 percent",
       "branch": "supervisor/phase13-terminal-closure",
       "disposition": "active_phase13_terminal_closure",
       "accepted_actionable": true

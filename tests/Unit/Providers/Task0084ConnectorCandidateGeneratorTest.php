@@ -74,6 +74,28 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
         $generator->generate($this->plan(), 'php-8.3.0;system');
     }
 
+    public function test_hidden_payloads_cannot_add_workflows_runtime_commands_or_unreviewed_dependencies(): void
+    {
+        $payload = 'HIDDEN_PAYLOAD_91; composer require attacker/package; system("id"); .github/workflows/pwn.yml';
+        $candidate = (new ConnectorCandidateGenerator)->generate(
+            $this->plan(hostilePayload: $payload),
+            'php-8.3.0',
+        );
+        $allContent = implode("\n", array_column($candidate->files, 'content'));
+        $manifest = json_decode($candidate->files[0]['content'], true, flags: JSON_THROW_ON_ERROR);
+
+        self::assertStringNotContainsString('HIDDEN_PAYLOAD_91', $allContent);
+        self::assertStringNotContainsString('composer require', $allContent);
+        self::assertStringNotContainsString('system(', $allContent);
+        self::assertStringNotContainsString('.github/workflows', $allContent);
+        self::assertSame([], $manifest['dependencies']);
+        self::assertSame([
+            'connector-candidates/example/candidate.json',
+            'connector-candidates/example/src/ExampleConnectorCandidate.php',
+            'connector-candidates/example/tests/ExampleConnectorCandidateTest.php',
+        ], array_column($candidate->files, 'path'));
+    }
+
     public function test_artifact_paths_and_hashes_are_fixed_and_content_bound(): void
     {
         $candidate = (new ConnectorCandidateGenerator)->generate($this->plan(), 'php-8.3.0');
@@ -133,10 +155,12 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
         string $sourceUri = 'https://docs.example.test/openapi.json',
         string $operationId = 'listContacts',
         string $providerKey = 'example',
+        ?string $hostilePayload = null,
     ): \App\Modules\Providers\Domain\ConnectorFactory\ConnectorPlanCandidate {
         $source = json_encode([
             'openapi' => '3.2.1',
             'info' => ['title' => 'Example API', 'version' => '1'],
+            'description' => $hostilePayload,
             'components' => [
                 'securitySchemes' => [
                     'ExampleKey' => ['type' => 'apiKey', 'in' => 'header', 'name' => 'X-API-Key'],
@@ -144,7 +168,7 @@ final class Task0084ConnectorCandidateGeneratorTest extends TestCase
             ],
             'paths' => [
                 '/contacts' => [
-                    'get' => ['operationId' => $operationId],
+                    'get' => ['operationId' => $operationId, 'description' => $hostilePayload],
                 ],
             ],
         ], JSON_THROW_ON_ERROR);

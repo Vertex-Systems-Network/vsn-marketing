@@ -33,7 +33,7 @@ Inside the started batch, automatically perform:
 
 `implementation -> focused tests -> PR/update -> CI diagnosis -> bounded same-scope repair -> exact-head verification -> merge -> post-merge reconciliation -> next dependency-ready task -> next dependency-ready phase -> repeat until credit/window exhaustion or hard boundary`
 
-Do not stop at formatting failures, ordinary test failures, stale branches, duplicate PRs, merge conflicts, README/progress drift, or a required same-scope repair. Resolve them and continue.
+Do not stop or ask the user at validator failures, formatting/type/lint/test failures, ordinary CI failures, stale branches, duplicate PRs, merge conflicts, dependency conflicts, README/progress drift, transient connector/tool failures, or a required same-scope repair. Resolve them, use documented fallbacks, and continue.
 
 Do not emit next-action options at internal batch boundaries. The next-action UI/numbered options contract applies at final handoff or a genuine hard stop.
 
@@ -41,7 +41,7 @@ Do not emit next-action options at internal batch boundaries. The next-action UI
 
 A started mutating batch is sufficient authorization for ordinary repository development and green-PR merge actions inside its declared objective. It is not reusable authority for production/provider side effects, secrets, destructive data/migrations, branch-protection weakening, billing, deployment/release, or other external actions whose canonical contract requires current explicit authority.
 
-If one such authority is unavailable, continue every independent safe repository action first. Stop only when it is the sole remaining path.
+If one such authority is unavailable, continue every independent safe repository action first. Do not ask a broad confirmation question. Stop only when it is the sole remaining path, and then report the exact external authority/input required.
 
 ## Current audit snapshot — revalidate before use
 
@@ -74,3 +74,5 @@ This snapshot is diagnostic only; it does not replace the mandatory resume recon
 ## Final handoff
 
 Only when the continuous batch ends, report the durable result, exact next safe action, phase/module progress, overall roadmap progress, and then expose the normal shuffled next-action options if further work remains.
+
+A recorded technical blocker or a failed first repair attempt is not a handoff boundary. Continue through repair, fallback, or independent safe work while Workspace credit remains.

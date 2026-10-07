@@ -242,8 +242,8 @@ def validate() -> list[str]:
         errors.append("current_blockers must mirror blockers")
     timeout = state.get("timeout_control")
     expected_timeout = {
-        "default_ci_status_refreshes_per_milestone": 1,
-        "max_ci_status_refreshes_with_recorded_exception": 2,
+        "default_ci_status_refreshes_per_milestone": 4,
+        "max_ci_status_refreshes_with_recorded_exception": 12,
         "tight_polling_forbidden": True,
         "pending_ci_state_only_commit_forbidden": True,
     }

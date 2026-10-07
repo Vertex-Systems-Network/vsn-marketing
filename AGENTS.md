@@ -41,7 +41,7 @@ python tools/ai_parallel.py batch-status
 python tools/ai_parallel.py sync-check
 ```
 
-`ai_txn.py recover` rolls back an interrupted continuity mutation before any new work begins. `ai_state.py recover` then compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. No implementation work may begin if a validator fails. Reconcile state first.
+`ai_txn.py recover` rolls back an interrupted continuity mutation before any new work begins. `ai_state.py recover` then compares the machine ledger with the working tree and exposes continuity drift. The execution journal is append-only and hash-chained; it proves the ordered history of state handoffs. The context compiler gives the agent a deterministic ordered manifest of the exact repository sources it must use. A validator failure is repair work, not a user-confirmation boundary. Diagnose and reconcile it automatically before dependent implementation; if one recovery path fails, use the next repository-supported fallback and continue safe independent work.
 
 ## Execution rules
 
@@ -49,11 +49,11 @@ python tools/ai_parallel.py sync-check
 
 **Workspace 5-hour continuous mode is the default for mutating resumes.** After a user starts/resumes repository development, follow `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`: continue the accepted work path for up to 300 minutes / available Workspace credits without repeated consent for ordinary repository actions. Same-scope CI/test failures, formatting failures, stale branches, duplicate PRs, merge conflicts and green exact-head merges are handled automatically inside the batch. Suppress intermediate next-action handoffs. A genuine human-only boundary blocks only that action: record/quarantine it and continue other safe canonical frontier work; expose it to the user only when the batch ends because no safe independent work remains. This does not grant production/provider, secret, billing, destructive data/migration, branch-protection weakening, deployment/release or other external authority that the repository requires explicitly.
 
-Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. Fast Batch Development Mode is the default: one user turn should advance the safe canonical roadmap frontier for the available Workspace credit window rather than one micro-transition. The recorded active task is the first execution unit, not a conversation stop boundary; after a guarded transition, generic continuous mode advances to the next dependency-ready canonical task/phase automatically. One consolidated CI/status refresh is the default maximum; a second refresh requires a recorded material safety/state-transition exception.
+Every Supervisor start/resume/timeout recovery MUST use this order before writable work: compact state -> exact `main` -> open Issues -> open PRs -> deterministic claims + coordination queue -> Runner Benchmark -> new work. Fast Batch Development Mode is the default: one user turn should advance the safe canonical roadmap frontier for the available Workspace credit window rather than one micro-transition. The recorded active task is the first execution unit, not a conversation stop boundary; after a guarded transition, generic continuous mode advances to the next dependency-ready canonical task/phase automatically. CI observation uses bounded backoff rather than a one-read handoff: up to 4 normal exact-head observations per gate cycle, and up to 12 when a durable material state-transition exception is recorded. Tight polling is still forbidden, but ordinary CI duration must not become a user confirmation request.
 
 `observed_main_sha` is a snapshot-basis anchor, not a self-updating HEAD pointer. After resolving live main, run the main-observation validator. If the only intervening changes are approved durable reconciliation surfaces, accept the state as current and do not create another state-only PR; any material drift remains fail-closed.
 
-Before reporting a milestone complete/blocked/verifying/waiting, durable state must already reflect that status. Pending CI must not cause a state-only source commit that invalidates the exact head under test. Open accepted actionable work is a hard gate against unrelated new development.
+Before reporting a milestone complete/blocked/verifying/waiting, durable state must already reflect that status. Pending CI must not cause a state-only source commit that invalidates the exact head under test. Open accepted actionable work is a hard gate against duplicating or bypassing that work, not against independent dependency-ready work that can safely proceed while its carrier is waiting on external CI.
 
 Run `python tools/supervisor_contract.py validate` and `python tools/runner_benchmark.py validate` as part of normal startup/CI. The rolling journal may archive immutable historical segments, but the active resume journal must remain <=32 KiB. Runtime/provider/deployment/release/destructive authority is never inferred from `continue`, old grants, prior chat, registration, or a timeout.
 
@@ -61,7 +61,7 @@ Migration changes require the explicit safety review contract enforced by `tools
 
 ### Strict plan-following order
 
-AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute one substantial approved batch -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
+AI agents MUST execute repository work in this exact order: recover/validate -> read canonical state/task/plan -> verify current branch/SHA -> classify the change -> execute a substantial approved slice -> run class-appropriate checks -> exact-head PR gates -> bounded repair on the same scoped PR when needed -> merge the verified head when green -> re-read state -> **repeat the loop in the same user turn while continuous-batch credit and safe canonical work remain**. Standalone post-merge reconciliation is not the default; merge/run evidence is carried into the next substantial PR unless a task/phase transition, release/security/recovery boundary, material drift, or lack of a safe successor requires immediate reconciliation.
 
 `tools/ci_change_policy.py` is authoritative for CI class selection. Pure `.ai/**`, `docs/**`, `README.md`, and `AGENTS.md` changes default to lightweight control CI. Any unknown/non-control path fails closed to full Application + Security CI. If a control-only milestone is a certification, release/promotion, security-sensitive acceptance, or its task contract explicitly demands full gates, the PR body MUST contain this exact standalone line:
 
@@ -71,7 +71,7 @@ Runner benchmarking/optimization is never part of ordinary task execution. Add r
 
 No agent may skip/reorder this plan for convenience. Only a bounded, evidence-backed security/correctness/release blocker may interrupt the order, and that exception must be recorded.
 
-- Start from the recorded active task. In a generic continuous batch, after its guarded completion/transition automatically advance to the next canonical dependency-ready task/phase while credit remains. User confirmation is required only to leave the accepted canonical roadmap frontier, override an explicitly narrow request, or grant authority the repository explicitly reserves to a human/external system.
+- Start from the recorded active task. In a generic continuous batch, after each substantial slice and after any guarded completion/transition, automatically advance to the next canonical dependency-ready slice/task/phase while credit remains. Completion of one substantial slice is never by itself a user-handoff boundary. User confirmation is required only to leave the accepted canonical roadmap frontier, override an explicitly narrow request, or grant authority the repository explicitly reserves to a human/external system.
 - Do not silently change architecture, stack, module boundaries, canonical contracts, security policy, or product terminology. Create an ADR and mark it `PROPOSED` first.
 - Do not start a task whose dependencies are incomplete.
 - Do not mark work complete while required tests fail or acceptance criteria are false.
@@ -130,9 +130,19 @@ Every task must evaluate the applicable controls in `.ai/12-QUALITY-ENGINEERING-
 
 A phase cannot be certified merely because feature code exists.
 
+## Non-interactive blocker and error policy
+
+During an active continuous Workspace batch, routine development problems are never user questions. The Supervisor must diagnose and act on them autonomously within repository authority.
+
+This includes validator failures, test/lint/type failures, CI failures, stale branches, merge conflicts, stale/duplicate PRs, dependency/version conflicts, state/checkpoint/journal drift, formatting errors, transient connector/API failures, missing generated artifacts, ordinary documentation drift, and reversible implementation mistakes.
+
+Required behavior is: diagnose -> repair -> fallback/recovery -> continue independent safe work -> checkpoint only when necessary. Do not ask “continue?”, “fix?”, “retry?”, or “merge?” for work already inside the active batch scope.
+
+A genuine human-only boundary blocks only that lane. Record the exact missing authority/input, skip it, and continue the safe frontier. Only when that boundary is the sole remaining path may the batch end, and the handoff must state the exact required action rather than asking a broad yes/no confirmation.
+
 ## Interruption / context-limit protocol
 
-If execution is interrupted, context is nearly full, tooling fails, or the agent must stop:
+A single validator/tool/connector/CI failure is not an interruption condition. Use repository-supported repair, retry, fallback, or independent safe work first. Apply this protocol only when the host/session is actually ending, context is genuinely exhausted, or all available execution paths are unavailable after bounded recovery:
 
 1. Do not begin another task.
 2. Preserve working code; do not fabricate completion.
@@ -143,7 +153,7 @@ If execution is interrupted, context is nearly full, tooling fails, or the agent
 7. Rebuild/inspect `python tools/ai_context.py manifest`.
 8. Run all continuity validators before handing off.
 
-The next agent must resume from that exact next action.
+If the host still permits execution after checkpointing and safe work remains, continue the active batch instead of handing control back merely because a checkpoint was written. The next agent resumes from the exact next action only when the current execution session actually ends.
 
 ## Recovery when state and code disagree
 

@@ -141,7 +141,7 @@ Mandatory order:
 1. recover and validate canonical state;
 2. read current task/plan/checkpoint and exact repository head;
 3. classify the exact change set;
-4. execute one substantial approved batch across the permitted canonical roadmap frontier, starting from the active task and automatically taking guarded dependency-ready successor transitions while credit remains;
+4. execute a substantial approved slice across the permitted canonical roadmap frontier, starting from the active task; after each slice, automatically loop into the next safe canonical slice and take guarded dependency-ready successor transitions while credit remains;
 5. run the change-class checks;
 6. require the exact-head PR gates selected by policy;
 7. perform bounded same-scope repair when needed and re-verify the new exact head;
@@ -192,3 +192,7 @@ This standard is working when:
 - required security/application/governance gates remain unchanged;
 - Runner optimization remains separately governed;
 - future AI-Native plans retain this standard across task and phase transitions.
+
+## Continuous no-confirmation behavior
+
+Routine technical failures must not become user confirmation prompts. Diagnose, repair, use documented fallbacks, or continue independent safe roadmap work. CI uses bounded backoff (4 normal exact-head observations, up to 12 with a durable material state-transition exception). Human-only authority boundaries are recorded precisely and skipped until they become the sole remaining path; they are not presented as broad yes/no questions.

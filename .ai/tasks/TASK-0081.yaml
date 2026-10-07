@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Certify Phase 13 omnichannel and social operations",
   "weight": 12,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0080"
   ],
@@ -22,7 +22,7 @@
     {
       "id": "AC-3",
       "text": "Exact-head and resulting-main application, security, continuity and release gates pass without production claims",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PHASE-13 across TASK-0075 through TASK-0080 with the requirements/source/policy/test matrix, run full exact-head gates, then close PHASE-13 only if all acceptance criteria are proven."
+  "exact_next_action": "PHASE-13 certification is complete from exact-head and resulting-main evidence; no successor task is registered, so further implementation requires explicit roadmap staging."
 }

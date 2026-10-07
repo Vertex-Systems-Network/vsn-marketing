@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "10be052fa1183d8f9249a192fba0b7e1074aec30",
+  "reconciled_main_sha": "bf6bd9fada7cb2a1e5bada3904dba634de99e9e8",
   "active_work_path": {
     "kind": "pr",
-    "number": 498,
-    "title": "docs(phase13): certify TASK-0080 and activate final PHASE-13 closure",
-    "branch": "supervisor/phase13-final-certification",
-    "disposition": "active_task0081_certification"
+    "number": 499,
+    "title": "docs(phase13): close certified omnichannel phase at 100 percent",
+    "branch": "supervisor/phase13-terminal-closure",
+    "disposition": "active_phase13_terminal_closure"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 499,
+      "title": "docs(phase13): close certified omnichannel phase at 100 percent",
+      "branch": "supervisor/phase13-terminal-closure",
+      "disposition": "active_phase13_terminal_closure",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 498,
       "title": "docs(phase13): certify TASK-0080 and activate final PHASE-13 closure",
       "branch": "supervisor/phase13-final-certification",
-      "disposition": "active_task0081_certification",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "bf6bd9fada7cb2a1e5bada3904dba634de99e9e8"
     },
     {
       "kind": "pr",

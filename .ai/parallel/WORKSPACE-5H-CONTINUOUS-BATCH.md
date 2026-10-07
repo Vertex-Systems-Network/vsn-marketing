@@ -29,7 +29,7 @@ Without another user confirmation, the Supervisor may:
 - perform guarded task transitions and automatically continue to the next dependency-ready task when that next task is inside the declared batch objective;
 - update durable checkpoints, progress mirrors, queues, and coordination evidence required by the work.
 
-The Supervisor MUST NOT turn a normal CI failure, formatting failure, stale branch, duplicate PR, merge conflict, missing progress mirror, or same-scope test failure into a user confirmation request. Diagnose and continue.
+The Supervisor MUST NOT turn a validator failure, normal CI/test/lint/type failure, formatting failure, stale branch, duplicate PR, merge conflict, dependency conflict, missing progress mirror, state/journal drift, transient connector/tool failure, or reversible same-scope implementation mistake into a user confirmation request. Diagnose, repair, use documented fallback/recovery, and continue.
 
 ## Authority that is NOT implied
 
@@ -40,7 +40,7 @@ When such an action is needed:
 1. continue every independent safe repository task that does not require that authority;
 2. persist the exact blocker and next safe action;
 3. quarantine the blocked action and continue on the next safe canonical roadmap-frontier item; end the batch only when no safe independent frontier work remains and the blocked human-only action is the sole remaining path;
-4. at the final handoff, report the one concrete human-only requirement as evidence; do not interrupt the active batch to ask for confirmation or a generic `continue`.
+4. at the final handoff, report the one concrete human-only requirement as evidence and the exact resume action after it exists; do not interrupt the active batch or phrase the handoff as a broad yes/no confirmation or generic `continue` request.
 
 Never weaken security, tests, permissions, tenant isolation, required checks, migration safety, or audit controls to avoid a blocker.
 
@@ -78,7 +78,8 @@ Do not emit a user-facing next-action handoff at every internal task/PR/CI bound
 - Tight polling remains forbidden.
 - A failed required check is work, not a stop condition: diagnose and repair the same scope.
 - A running external check is not automatically a batch stop. Continue independent dependency-ready work that does not consume the pending artifact.
-- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence. Re-observe only within the repository's bounded refresh policy.
+- CI observation uses bounded, meaningfully spaced/state-driven backoff rather than a two-read handoff: up to **4 normal exact-head observations per gate cycle**, and up to **12** only when a durable material state-transition exception is recorded. Unchanged rapid rereads remain forbidden.
+- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded observation budget before ending the active batch. CI waiting is never converted into a user confirmation request.
 - Never create a state-only commit just to narrate pending CI.
 
 ## Duplicate/stale work policy
@@ -112,7 +113,7 @@ The batch ends only when one of these is true:
 4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;
 5. all available repository execution paths are unavailable after bounded recovery/fallback attempts, leaving no safe mutation/read path to continue.
 
-Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a failed same-scope check, a transient connector failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths and continue rather than handing control back to the user.
+Normal development friction, a completed task, a completed PR, a completed phase, a stale carrier, a merge conflict, a validator failure, a failed same-scope check, a transient connector/tool failure, or a pending external check is not a stop condition when any independent safe canonical work remains. Prefer alternate available repository/tool paths, bounded recovery, and continued safe work rather than handing control back to the user. A technical blocker never requires user confirmation merely because the first repair attempt failed.
 
 ## End-of-batch handoff
 

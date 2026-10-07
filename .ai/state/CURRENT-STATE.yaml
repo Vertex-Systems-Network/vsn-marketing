@@ -8,30 +8,30 @@
   "execution": {
     "status": "in_progress",
     "current_phase": "PHASE-14",
-    "active_task": "TASK-0083",
-    "last_completed_task": "TASK-0082",
-    "next_task": "TASK-0084"
+    "active_task": "TASK-0084",
+    "last_completed_task": "TASK-0083",
+    "next_task": "TASK-0085"
   },
   "progress": {
-    "roadmap_percent": 87.75,
-    "phase_percent": 15,
+    "roadmap_percent": 88.75,
+    "phase_percent": 35,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #501 head a95979ab7aeff6907f114255e2ae4dd03046dbd4 passed AI Continuity Guard run 37696724640.",
-    "application_test_status": "PR #501 head a95979ab7aeff6907f114255e2ae4dd03046dbd4 passed Application Foundation CI run 37696724544, including foundation, E2E/Playwright, PHP 8.3 compatibility floor, infrastructure integration and PostgreSQL18 browser parity.",
-    "security_supply_chain_status": "PR #501 head a95979ab7aeff6907f114255e2ae4dd03046dbd4 passed Security Supply Chain CI run 37696724563.",
+    "continuity_validation": "PR #502 head 1214a96480fc6701eb90287424b8cf77525ebb7f passed AI Continuity Guard run 37700727063.",
+    "application_test_status": "PR #502 head 1214a96480fc6701eb90287424b8cf77525ebb7f passed Application Foundation CI run 37700727106.",
+    "security_supply_chain_status": "PR #502 head 1214a96480fc6701eb90287424b8cf77525ebb7f passed Security Supply Chain CI run 37700727136.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "30fbd7a7b200d03da09f20148d836fdf9caf9574",
+  "observed_main_sha": "711d89d503a7a407e05e0af838d8ddb71640e6ab",
   "active_issue": null,
-  "active_pr": 502,
-  "active_branch": "supervisor/task0083-ingestion",
-  "current_milestone": "TASK-0083-CONNECTOR-INGESTION",
+  "active_pr": 503,
+  "active_branch": "supervisor/task0083-acceptance",
+  "current_milestone": "TASK-0084-GENERATED-CANDIDATE",
   "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0082 research accepted from dated current official sources and PR #501 exact-head AI Continuity, Security Supply Chain and full Application Foundation evidence, including E2E and PostgreSQL infrastructure/browser parity.",
-  "exact_next_safe_action": "Implement and validate TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning on PR #502.",
+  "last_completed_milestone": "TASK-0083 accepted from merged PR #502 exact-head Application, Security Supply Chain and AI Continuity evidence; bounded ingestion/provenance/capability planning is on protected main.",
+  "exact_next_safe_action": "Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement and validate TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning on PR #502."
+  "exact_next_action": "Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards."
 }

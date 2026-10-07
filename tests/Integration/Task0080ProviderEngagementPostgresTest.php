@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\Analytics\Application\ProviderEngagementAnalytics;
+use App\Modules\Analytics\Domain\ProviderEngagementSourceVerifier;
+use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use App\Modules\Providers\Domain\Analytics\EngagementFact;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +36,13 @@ afterEach(function () {
 
 it('persists replay-safe source-specific provider engagement evidence on PostgreSQL', function () {
     $f = new AnalyticsFixture;
+    app()->bind(ProviderEngagementSourceVerifier::class, fn () => new class implements ProviderEngagementSourceVerifier
+    {
+        public function verify(TenantContext $actor, EngagementFact $fact): ?string
+        {
+            return $actor->workspaceId === $fact->tenantId ? 'verified:'.$fact->sourceLineage : null;
+        }
+    });
     $service = app(ProviderEngagementAnalytics::class);
     $lineage = 'provider-object-123';
     $fact = new EngagementFact(
@@ -50,7 +59,7 @@ it('persists replay-safe source-specific provider engagement evidence on Postgre
             'Provider-defined impressions; no cross-provider equivalence.', $f->actor->brandId,
         )))->toBe('conflict')
         ->and(DB::table('provider_engagement_facts')->count())->toBe(1)
-        ->and((string) DB::table('provider_engagement_facts')->value('source_lineage_hash'))->toBe(hash('sha256', $lineage));
+        ->and((string) DB::table('provider_engagement_facts')->value('source_lineage_hash'))->toBe(hash('sha256', 'verified:'.$lineage));
 
     $row = $service->recent($f->actor)[0];
     expect($row['value'])->toBe(250)

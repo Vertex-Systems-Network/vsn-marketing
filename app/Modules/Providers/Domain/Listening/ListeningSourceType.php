@@ -2,7 +2,6 @@
 
 namespace App\Modules\Providers\Domain\Listening;
 
-
 enum ListeningSourceType: string
 {
     case OfficialApi = 'official_api';

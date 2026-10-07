@@ -192,3 +192,7 @@ This standard is working when:
 - required security/application/governance gates remain unchanged;
 - Runner optimization remains separately governed;
 - future AI-Native plans retain this standard across task and phase transitions.
+
+## Continuous no-confirmation behavior
+
+Routine technical failures must not become user confirmation prompts. Diagnose, repair, use documented fallbacks, or continue independent safe roadmap work. Human-only authority boundaries are recorded precisely and skipped until they become the sole remaining path; they are not presented as broad yes/no questions.

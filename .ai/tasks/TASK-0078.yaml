@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement normalized Community inbox",
   "weight": 16,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0077"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "ADR-0002 Community boundary models permitted comments, mentions and messages with provider provenance and tenant isolation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Assignments, moderation and AI response proposals preserve operator approval and inbound webhook security",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Access, replay, moderation, privacy and accessible operator workflow tests pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

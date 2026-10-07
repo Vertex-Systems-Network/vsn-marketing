@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "24d3d7a1d6fb1dff95d6297e2378e1df486c0cec",
+  "reconciled_main_sha": "b911ea267737da1444596762bdd4d299bc91f897",
   "active_work_path": {
     "kind": "pr",
-    "number": 488,
-    "title": "TASK-0078: add tenant-scoped community boundary contracts",
+    "number": 489,
+    "title": "TASK-0079: add permitted listening signal contracts",
     "branch": "supervisor/task0077",
-    "disposition": "active_task0078_carrier"
+    "disposition": "active_task0079_carrier"
   },
   "items": [
     {
       "kind": "pr",
-      "number": 488,
-      "title": "TASK-0078: add tenant-scoped community boundary contracts",
+      "number": 489,
+      "title": "TASK-0079: add permitted listening signal contracts",
       "branch": "supervisor/task0077",
-      "disposition": "active_task0078_carrier",
+      "disposition": "active_task0079_carrier",
       "accepted_actionable": true
     },
     {

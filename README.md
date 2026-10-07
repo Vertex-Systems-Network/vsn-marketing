@@ -4,16 +4,16 @@ AI-native, provider-agnostic marketing operating system under active development
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=84.4 phase=48 current_phase=PHASE-13 active_task=TASK-0078 milestone=TASK-0078-COMMUNITY status=IN_PROGRESS -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=85.3 phase=60 current_phase=PHASE-13 active_task=TASK-0079 milestone=TASK-0079-LISTENING status=IN_PROGRESS -->
 
 > PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled. PHASE-11 TASK-0063 offline assignment foundation passed PR #466 exact-head and resulting-main gates. TASK-0064 campaign matrix passed PR #467 exact-head and resulting-main gates. TASK-0065 offline optimization passed PR #468 exact-head and resulting-main gates. TASK-0066 offline statistical guardrails passed PR #469 exact-head and resulting-main gates. TASK-0067 offline certification passed PR #470 full exact-head and resulting-main gates; no experiment traffic is enrolled. PHASE-12 TASK-0068 research and TASK-0069 canonical fact/privacy foundation are accepted through PRs #472/#473; TASK-0070 behavior reports are accepted through PR #474 and full resulting-main gates; TASK-0071 revenue/attribution is accepted through PR #475 and full resulting-main gates; TASK-0072 operator reports, schedules and guarded explanations are accepted through PR #476 full exact-head and resulting-main gates; TASK-0073 source reconciliation is accepted through PR #477 full exact-head and resulting-main gates; TASK-0074 bounded analytics certification passed PR #478 and full protected-main gates; PHASE-12 is complete. The source verifier remains unbound and production readiness requires separate evidence. Source completeness, live effectiveness and production scale remain unproven.
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
 
-**Overall roadmap progress: 84.40%**<br />
-**Current phase: PHASE-13 — 48.00%**<br />
-**Last completed task: TASK-0077**<br />
-**Current milestone: TASK-0078-COMMUNITY — IN_PROGRESS**
+**Overall roadmap progress: 85.30%**<br />
+**Current phase: PHASE-13 — 60.00%**<br />
+**Last completed task: TASK-0078**<br />
+**Current milestone: TASK-0079-LISTENING — IN_PROGRESS**
 
 ```text
  Overall  [████████████████░░░░] 83.50%

@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Implement normalized Community inbox",
   "weight": 16,
-  "status": "planned",
+  "status": "in_progress",
   "dependencies": [
     "TASK-0077"
   ],

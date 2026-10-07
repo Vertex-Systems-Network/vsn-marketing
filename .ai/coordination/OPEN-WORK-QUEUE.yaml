@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "a6d0d39f12b84c13a01ff332b95b3dfebfb1c012",
+  "reconciled_main_sha": "24d3d7a1d6fb1dff95d6297e2378e1df486c0cec",
   "active_work_path": {
     "kind": "pr",
-    "number": 487,
-    "title": "TASK-0077: add researched social capability matrix",
+    "number": 488,
+    "title": "TASK-0078: add tenant-scoped community boundary contracts",
     "branch": "supervisor/task0077",
-      "disposition": "active_task0077_carrier"
+    "disposition": "active_task0078_carrier"
   },
   "items": [
     {
       "kind": "pr",
-      "number": 487,
-      "title": "TASK-0077: add researched social capability matrix",
+      "number": 488,
+      "title": "TASK-0078: add tenant-scoped community boundary contracts",
       "branch": "supervisor/task0077",
-      "disposition": "active_task0077_carrier",
+      "disposition": "active_task0078_carrier",
       "accepted_actionable": true
     },
     {

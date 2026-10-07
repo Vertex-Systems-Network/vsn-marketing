@@ -14,7 +14,7 @@ final class EngagementFactQuality
         $seen = [];
 
         foreach ($facts as $fact) {
-            if (! $fact instanceof EngagementFact) {
+            if (!$fact instanceof EngagementFact) {
                 throw new InvalidArgumentException('Analytics quality checks require engagement facts.');
             }
 

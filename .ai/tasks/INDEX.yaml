@@ -787,7 +787,7 @@
       "phase": "PHASE-13",
       "title": "Implement permitted listening and market signals",
       "weight": 12,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0078"
       ]
@@ -797,7 +797,7 @@
       "phase": "PHASE-13",
       "title": "Implement cross-channel engagement and publication analytics",
       "weight": 12,
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0079"
       ]

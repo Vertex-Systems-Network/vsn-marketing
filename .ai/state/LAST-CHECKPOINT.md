@@ -1,34 +1,14 @@
 # Last Checkpoint
 
-## State
+- Observed main: `851f27600a1cc36c7978090ec883f93b57506e08`
+- Active PR: `490`
+- Active task: `TASK-0080`
+- Next task: `TASK-0081`
+- Current milestone: `TASK-0080-ANALYTICS` — `IN_PROGRESS`
+- State fingerprint: `7496105df67bc4632357d70c7ecea017b504efd3d6955e5802a82b8c75c5e718`
 
-- Timestamp: `2026-10-07T07:39:31+00:00`
-- Observed main: `b911ea267737da1444596762bdd4d299bc91f897`
-- Active issue: `none`
-- Active PR: `489`
-- Active branch: `supervisor/task0077`
-- Current milestone: `TASK-0079-LISTENING`
-- Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0079`
-- Next task: `TASK-0080`
-- Current phase: `PHASE-13`
-- Execution status: `in_progress`
-- Pending Runner IDs: `none`
-- Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `291658c79d8f6eff1c6d603c67a40339efc25bcbff8e6b84ff0ccb3a7a51388d`
-
-## Completed / observed this session
-
-TASK-0078 accepted; TASK-0079 permitted listening active in PR #489.
-
-## Tests
-
-TASK-0079 focused boundary tests are implemented; exact-head CI pending.
-
-## Blockers
-
-- None
+TASK-0079 acceptance criteria are now fully reconciled and accepted on protected main. TASK-0080 provider-neutral engagement fact contract is active; exact-head CI and remaining acceptance evidence are pending.
 
 ## Exact next action
 
-Execute TASK-0079 against dated research and all acceptance gates; retain truthfully pending criteria.
+Execute TASK-0080 against dated research and all acceptance gates; retain truthfully pending criteria.

@@ -204,13 +204,13 @@ Every Supervisor development handoff MUST expose the next valid repository actio
 
 ### Remote-call and timeout budget
 
-Batch related reads. Read only evidence required by the active batch. Perform at most one consolidated CI/status refresh per exact-head gate cycle/milestone by default; a 5-hour continuous batch may contain multiple such gate cycles. Tight polling and repeated unchanged reads are forbidden. A second refresh for the same exact-head gate cycle is allowed only after a material security/merge/incident/provider state transition and the exception must be recorded on a durable PR/Issue surface.
+Batch related reads. Read only evidence required by the active batch. CI observation is bounded and backoff-driven: up to **4 normal exact-head status observations per gate cycle/milestone**, and up to **12** when a material security/merge/incident/provider/workflow state-transition exception is recorded on a durable PR/Issue surface. Tight polling and repeated unchanged rapid reads are forbidden. The larger bounded budget exists specifically to prevent ordinary CI duration from becoming a user handoff.
 
 Before final exact-head CI observation, persist the artifact/milestone as `VERIFYING` or `WAITING_EXTERNAL` when canonical state requires it. If CI remains running, do not create a source/state-only commit merely to record pending CI; record run IDs externally when possible, continue safe independent work inside the active batch objective, and end the whole batch only when that external result is the sole remaining path.
 
 ### Issues and PRs first — hard gate
 
-New development is forbidden while an accepted actionable open Issue or PR is bypassed. An Issue already represented by an accepted PR is one work path; finish/review/fix that PR instead of duplicating work.
+New development may not bypass or duplicate an accepted actionable open Issue or PR. An Issue already represented by an accepted PR is one work path; finish/review/fix that PR instead of duplicating it. While that carrier waits on external CI, independent dependency-ready work is allowed when file/dependency safe and it does not consume the pending artifact.
 
 Required order before new development:
 

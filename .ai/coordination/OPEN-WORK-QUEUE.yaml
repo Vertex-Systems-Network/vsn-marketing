@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "a98333bc87b1a24f1e6ad04699d5990f416497e4",
+  "reconciled_main_sha": "b58eeb869d1f70c4d804ee6543dafc239569b00e",
   "active_work_path": {
     "kind": "pr",
-    "number": 494,
-    "title": "docs(ai): make Workspace continuous flow blocker-autonomous",
-    "branch": "control/workspace-autonomy-v282",
+    "number": 495,
+    "title": "fix(ai): make Workspace turn consume the safe credit window",
+    "branch": "supervisor/credit-window-continuous-loop",
     "disposition": "active_task0080_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 495,
+      "title": "fix(ai): make Workspace turn consume the safe credit window",
+      "branch": "supervisor/credit-window-continuous-loop",
+      "disposition": "active_task0080_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 494,
       "title": "docs(ai): make Workspace continuous flow blocker-autonomous",
       "branch": "control/workspace-autonomy-v282",
-      "disposition": "active_task0080_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b58eeb869d1f70c4d804ee6543dafc239569b00e"
     },
     {
       "kind": "pr",

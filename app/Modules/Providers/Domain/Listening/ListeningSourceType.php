@@ -2,7 +2,6 @@
 
 namespace App\Modules\Providers\Domain\Listening;
 
-use InvalidArgumentException;
 
 enum ListeningSourceType: string
 {

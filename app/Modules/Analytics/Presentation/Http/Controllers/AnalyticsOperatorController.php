@@ -5,8 +5,8 @@ namespace App\Modules\Analytics\Presentation\Http\Controllers;
 use App\Modules\Analytics\Application\AnalyticsExplanationGateway;
 use App\Modules\Analytics\Application\AnalyticsInsights;
 use App\Modules\Analytics\Application\AnalyticsQuality;
-use App\Modules\Analytics\Application\ProviderEngagementAnalytics;
 use App\Modules\Analytics\Application\AnalyticsReports;
+use App\Modules\Analytics\Application\ProviderEngagementAnalytics;
 use App\Modules\Analytics\Application\ScheduledAnalyticsReports;
 use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsExplanation;
@@ -29,9 +29,8 @@ use RuntimeException;
 
 final readonly class AnalyticsOperatorController
 {
-    public function __construct(private AnalyticsReports $reports, private ScheduledAnalyticsReports $schedules,
-        private AnalyticsInsights $insights, private AnalyticsQuality $quality, private ProviderEngagementAnalytics $providerEngagement,
-        private DatabaseManager $database, private Clock $clock, private AnalyticsAccess $access) {}
+    public function __construct(private AnalyticsReports $reports, private ScheduledAnalyticsReports $schedules, private ProviderEngagementAnalytics $providerEngagement,
+        private AnalyticsInsights $insights, private AnalyticsQuality $quality, private DatabaseManager $database, private Clock $clock, private AnalyticsAccess $access) {}
 
     public function index(Request $request): Response
     {

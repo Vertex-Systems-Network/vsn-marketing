@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "49c790e2c82865b89b6fc9231dbf50139ebc6180",
+  "reconciled_main_sha": "a98333bc87b1a24f1e6ad04699d5990f416497e4",
   "active_work_path": {
     "kind": "pr",
-    "number": 492,
-    "title": "chore(ai): keep Workspace batches running across safe roadmap frontier",
-    "branch": "supervisor/continuous-credit-frontier",
-    "disposition": "active_continuous_workspace_governance_carrier"
+    "number": 493,
+    "title": "fix(ai): eliminate routine Workspace confirmation stops",
+    "branch": "supervisor/no-confirmation-continuous-flow",
+    "disposition": "active_no_confirmation_governance_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 493,
+      "title": "fix(ai): eliminate routine Workspace confirmation stops",
+      "branch": "supervisor/no-confirmation-continuous-flow",
+      "disposition": "active_no_confirmation_governance_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 492,
       "title": "chore(ai): keep Workspace batches running across safe roadmap frontier",
       "branch": "supervisor/continuous-credit-frontier",
-      "disposition": "active_continuous_workspace_governance_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a98333bc87b1a24f1e6ad04699d5990f416497e4"
     },
     {
       "kind": "pr",

@@ -29,7 +29,7 @@ Without another user confirmation, the Supervisor may:
 - perform guarded task transitions and automatically continue to the next dependency-ready task when that next task is inside the declared batch objective;
 - update durable checkpoints, progress mirrors, queues, and coordination evidence required by the work.
 
-The Supervisor MUST NOT turn a normal CI failure, formatting failure, stale branch, duplicate PR, merge conflict, missing progress mirror, or same-scope test failure into a user confirmation request. Diagnose and continue.
+The Supervisor MUST NOT turn a validator failure, normal CI/test/lint/type failure, formatting failure, stale branch, duplicate PR, merge conflict, dependency conflict, missing progress mirror, state/journal drift, transient connector/tool failure, or reversible same-scope implementation mistake into a user confirmation request. Diagnose, repair, use documented fallback/recovery, and continue.
 
 ## Authority that is NOT implied
 
@@ -78,7 +78,8 @@ Do not emit a user-facing next-action handoff at every internal task/PR/CI bound
 - Tight polling remains forbidden.
 - A failed required check is work, not a stop condition: diagnose and repair the same scope.
 - A running external check is not automatically a batch stop. Continue independent dependency-ready work that does not consume the pending artifact.
-- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence. Re-observe only within the repository's bounded refresh policy.
+- CI observation uses bounded backoff: up to **4 normal exact-head observations per gate cycle**, and up to **12** when a durable material state-transition exception is recorded. Observations must be state-driven/meaningfully spaced; unchanged rapid rereads remain forbidden.
+- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded observation budget before ending the batch. CI waiting never becomes a user confirmation request.
 - Never create a state-only commit just to narrate pending CI.
 
 ## Duplicate/stale work policy

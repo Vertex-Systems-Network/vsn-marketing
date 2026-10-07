@@ -827,7 +827,7 @@
       "phase": "PHASE-14",
       "title": "Implement documentation and OpenAPI ingestion, provenance, capability extraction and connector planning",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0082"
       ]
@@ -837,7 +837,7 @@
       "phase": "PHASE-14",
       "title": "Implement generated adapter and test candidate pipeline",
       "weight": 20,
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0083"
       ]

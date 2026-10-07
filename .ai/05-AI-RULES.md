@@ -42,7 +42,7 @@ AI MUST:
 - reconcile research findings into task/acceptance/ADR/roadmap state before writing newly discovered implementation;
 - evaluate applicable Quality Engineering Gates for every task and phase certification;
 - preserve exact next-action handoff on interruption;
-- record blockers rather than guessing;
+- record blockers rather than guessing, but treat ordinary technical blockers as work to diagnose/repair rather than reasons to ask the user;
 - keep implementation, tests, task state, registry, research evidence, and checkpoint synchronized;
 - validate `.ai/13-PARALLEL-DEVELOPMENT.md` and `.ai/parallel/` before writable parallel work;
 - require the Supervisor to create all declared parallel branches before any planning/code write for that parallel cycle;
@@ -50,6 +50,16 @@ AI MUST:
 - require the Supervisor to process submitted work before resuming optional own-module work, then broadcast the exact merge alert through issue #43 and remaining open workstream PRs;
 - require alerted agents to synchronize latest `main` before resuming;
 - keep `README.md` synchronized whenever canonical agent-working instructions change, including the deterministic instruction revision/fingerprint enforced by `tools/ai_parallel.py`.
+
+## Development AI no-confirmation rule
+
+Inside an active mutating Workspace batch, repository-authorized development is non-interactive by default.
+
+- Routine validator/test/lint/type/CI failures, merge conflicts, stale branches, duplicate carriers, dependency conflicts, state drift, documentation drift and transient tool/connector failures MUST be diagnosed and repaired automatically.
+- A failed first repair MUST trigger the next documented recovery/fallback route or independent safe dependency-ready work; it MUST NOT trigger a “continue?”, “retry?”, “fix?”, or “merge?” question.
+- A recorded blocker is evidence, not a handoff by itself. If the blocked lane is not the only safe ready path, continue other canonical work.
+- Human-only authority boundaries remain fail-closed. Record the exact missing authority/input and skip that lane. Only when it becomes the sole remaining path may the batch end with the exact required action.
+- Canonical task/phase transitions are automatic after guarded acceptance; they do not require a fresh user message.
 
 ## Research and roadmap rule
 

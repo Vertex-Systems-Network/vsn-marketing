@@ -233,10 +233,13 @@ def validate() -> list[str]:
         "workspace_continuous_batch_contract_path": ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md",
         "workspace_continuous_batch_duration_minutes": 300,
         "workspace_continuous_batch_default_for_mutating_resume": True,
-        "workspace_continuous_batch_default_objective": "current_active_phase_max_safe_progress",
+        "workspace_continuous_batch_default_objective": "safe_canonical_roadmap_frontier_until_credit_exhaustion",
         "workspace_continuous_batch_no_reconfirmation_for_repo_scope": True,
         "workspace_continuous_batch_auto_advance_related_tasks": True,
-        "workspace_continuous_batch_phase_boundary_requires_declared_scope": True,
+        "workspace_continuous_batch_phase_boundary_requires_declared_scope": False,
+        "workspace_continuous_batch_cross_phase_auto_advance": True,
+        "workspace_continuous_batch_completed_phase_is_not_stop_condition": True,
+        "workspace_continuous_batch_tool_fallback_required": True,
         "workspace_continuous_batch_suppress_intermediate_handoffs": True,
         "workspace_continuous_batch_final_handoff_only": True,
         "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
@@ -249,11 +252,11 @@ def validate() -> list[str]:
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
     if control.get("workspace_continuous_batch_stop_conditions") != [
-        "declared_batch_objective_complete",
+        "explicit_narrow_objective_complete_or_no_safe_canonical_ready_work",
         "workspace_credit_or_300_minute_window_exhausted",
-        "human_only_external_authority_is_sole_remaining_path",
-        "unresolved_safety_security_correctness_conflict",
-        "tooling_prevents_further_execution_after_recovery",
+        "human_only_external_authority_is_sole_remaining_frontier_path",
+        "unresolved_safety_security_correctness_conflict_and_no_independent_safe_work",
+        "all_available_repository_execution_paths_unavailable_after_bounded_recovery",
     ]:
         errors.append("workspace_continuous_batch_stop_conditions drift")
     if control.get("workspace_continuous_batch_human_only_boundaries") != [

@@ -1,21 +1,28 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "78e50a8531189e4e7527c0d1238ffd5a961d1ea3",
+  "reconciled_main_sha": "10be052fa1183d8f9249a192fba0b7e1074aec30",
   "active_work_path": {
-    "kind": "pr",
-    "number": 497,
-    "title": "feat(analytics): add TASK-0080 provider engagement evidence",
-    "branch": "supervisor/task0080-postgres-operator",
-    "disposition": "active_task0080_carrier"
+    "kind": "branch",
+    "title": "PHASE-13 final certification",
+    "branch": "supervisor/phase13-final-certification",
+    "disposition": "active_task0081_certification"
   },
   "items": [
+    {
+      "kind": "branch",
+      "title": "PHASE-13 final certification",
+      "branch": "supervisor/phase13-final-certification",
+      "disposition": "active_task0081_certification",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 497,
       "title": "feat(analytics): add TASK-0080 provider engagement evidence",
       "branch": "supervisor/task0080-postgres-operator",
-      "disposition": "active_task0080_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "10be052fa1183d8f9249a192fba0b7e1074aec30"
     },
     {
       "kind": "pr",

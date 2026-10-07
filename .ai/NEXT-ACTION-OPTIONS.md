@@ -4,13 +4,13 @@ This repository adopts the Vertex Systems Network interactive AI-development han
 
 ## User-facing handoff
 
-Outside an active 5-hour continuous Workspace batch, expose 1 to 3 currently valid next actions derived from live repository evidence. During an active batch, do not emit an intermediate handoff merely because a PR was opened, CI failed/passed, a merge completed, or a dependency-ready task became available. Continue automatically under `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md` and expose options only when the batch ends or a genuine hard stop is reached.
+Outside an active 5-hour continuous Workspace batch, expose 1 to 3 currently valid next actions derived from live repository evidence. During an active batch, do not emit an intermediate handoff merely because a PR was opened, CI failed/passed, a validator failed, a tool/connector failed, a merge completed, a blocker was recorded, or a dependency-ready task/phase became available. Continue automatically under `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`. A blocked lane is not a handoff while any independent safe canonical work remains.
 
 - Always include the canonical/recommended next action, but do not bind it permanently to option 1.
 - When two or more valid options exist, reshuffle the visible 1/2/3 numbering on every handoff.
 - If the previously selected action identity and number are known, that same action must move to a different visible number on the next handoff. With only one valid action, number reuse is allowed.
 - Mark the canonical action as **Recommended**. Numbering is ephemeral presentation state and never changes priority, safety, scope, or authorization.
-- A reply containing only an option number starts/resumes the corresponding continuous batch after repository revalidation. Re-read current repository state before the first mutation. If the option became stale or unsafe, fail closed and show the new valid options instead. Once revalidated, do not ask again for routine in-scope repository consent at internal PR/CI/task boundaries.
+- A reply containing only an option number starts/resumes the corresponding continuous batch after repository revalidation. Re-read current repository state before the first mutation. If the option became stale or unsafe, fail closed, select the new canonical safe action automatically when it is mechanically determined, and continue; only return new options when no safe automatic continuation exists. Once revalidated, do not ask again for routine in-scope repository consent at internal validator/error/PR/CI/task/phase boundaries.
 - Prefer substantial product/control batches over micro-options. Do not offer a standalone post-merge reconciliation option when its evidence can safely ride with the next substantial PR; reserve standalone reconciliation for task/phase acceptance, guarded transitions, release/security/recovery, material drift, or no-safe-successor cases.
 - Interactive buttons may be used when the host supports them; otherwise numbered one-line options are the mandatory fallback.
 
@@ -24,6 +24,18 @@ When the user's message contains only this repository's canonical GitHub URL (op
 4. Do **not** create a branch, commit, PR, merge, deployment, provider call, destructive action, or other mutation from the URL alone.
 5. Respond with 1 to 3 shuffled valid next-action options and mark the canonical one **Recommended**.
 6. The user's subsequent number selection initiates the normal fully revalidated development turn.
+
+## Hard-stop presentation
+
+A genuine human-only boundary must not be phrased as a broad confirmation request. Do not ask “Should I continue?”, “May I fix this?”, “Do you want me to retry?”, or equivalent.
+
+If the human-only boundary is the sole remaining path, report:
+- the exact blocked action;
+- the exact external authority/input required;
+- why it cannot be derived safely from repository evidence;
+- the exact safe resume action after that input exists.
+
+If any independent safe roadmap work exists, do not hand off at all; continue that work.
 
 ## Safety and local authority
 

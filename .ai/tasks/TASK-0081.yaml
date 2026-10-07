@@ -3,7 +3,7 @@
   "phase": "PHASE-13",
   "title": "Certify Phase 13 omnichannel and social operations",
   "weight": 12,
-  "status": "planned",
+  "status": "in_progress",
   "dependencies": [
     "TASK-0080"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Execute TASK-0081 against dated research and all acceptance gates; retain truthfully pending criteria."
+  "exact_next_action": "Repair audit-discovered TASK-0077/TASK-0078 evidence gaps, certify TASK-0075 through TASK-0080 requirements/policy/test matrix, enforce README progress mirroring, and pass exact-head plus resulting-main full gates before PHASE-13 closure."
 }

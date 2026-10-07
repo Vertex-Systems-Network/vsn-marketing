@@ -85,6 +85,26 @@ it('admits bounded provider aggregates without storing raw lineage and renders s
         ->assertInertia(fn (Assert $page) => $page->where('state', 'purpose_unavailable')->where('provider_engagement', []));
 });
 
+it('fails closed when retained provider aggregate evidence is tampered', function () {
+    $f = new AnalyticsFixture;
+    app()->bind(ProviderEngagementSourceVerifier::class, fn () => new class implements ProviderEngagementSourceVerifier
+    {
+        public function verify(TenantContext $actor, EngagementFact $fact): ?string
+        {
+            return 'verified:'.$fact->sourceLineage;
+        }
+    });
+    $service = app(ProviderEngagementAnalytics::class);
+    $fact = new EngagementFact(
+        $f->actor->workspaceId, 'linkedin', 'post.impressions', 7, 'tamper-source',
+        '2026-10-02T10:00:00Z', false, '2026-10-02T10:01:00Z', brandId: $f->actor->brandId,
+    );
+    expect($service->admit($f->actor, $fact))->toBe('admitted');
+    DB::table('provider_engagement_facts')->update(['value' => 999]);
+
+    expect(fn () => $service->recent($f->actor))->toThrow(RuntimeException::class);
+});
+
 it('rejects foreign workspace provider aggregates before persistence', function () {
     $f = new AnalyticsFixture;
     $other = new AnalyticsFixture;

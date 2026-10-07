@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-07T23:29:00+00:00`
-- Observed main: `711d89d503a7a407e05e0af838d8ddb71640e6ab`
+- Timestamp: `2026-10-07T23:46:53+00:00`
+- Observed main: `dace976739d5ad67353d3ff9d77ec25d208c96aa`
 - Active issue: `none`
-- Active PR: `503`
-- Active branch: `supervisor/task0083-acceptance`
+- Active PR: `504`
+- Active branch: `supervisor/task0084-generated-candidates`
 - Current milestone: `TASK-0084-GENERATED-CANDIDATE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0084`
@@ -15,20 +15,20 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `70dd3dce7011383e8abe921a9e67e4c2dff5a0adb639eb3fbd0c08d941c1b7c1`
+- State fingerprint: `6edd385d77b085c342f29cea9dbbc08b20d0443fcfbbf3669c87bdc9a1616f4e`
 
 ## Completed / observed this session
 
-TASK-0083 bounded connector ingestion is accepted from merged PR #502. Its exact final head passed AI Continuity Guard, Security Supply Chain CI and Application Foundation CI. PHASE-14 is now 35.00% complete and deterministic roadmap progress is 88.75%. TASK-0084 deterministic generated candidate work is active.
+Bound TASK-0084 candidate-generation implementation to draft PR #504 on protected main dace976739d5ad67353d3ff9d77ec25d208c96aa. Added deterministic candidate manifest, adapter-shell source, contract-test artifacts and adversarial coverage. No acceptance criteria are claimed complete; exact-head verification is pending.
 
 ## Tests
 
-PR #502 exact head `1214a96480fc6701eb90287424b8cf77525ebb7f` passed AI Continuity Guard run 37700727063, Security Supply Chain CI run 37700727136 and Application Foundation CI run 37700727106. PR #503 must pass its own exact-head closure gates before merge.
+PHP CLI is unavailable in this Workspace. Source was reviewed and focused tests were added for deterministic output, provenance, candidate-only state, source credential redaction, provider/toolchain injection, path allowlisting and content hashes. Exact-head CI is pending.
 
 ## Blockers
 
-- None for repository-side TASK-0084 implementation.
+- None
 
 ## Exact next action
 
-Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards.
+Continue TASK-0084 candidate generation and adversarial coverage; run focused tests, repair same-scope failures, and then complete exact-head certification.

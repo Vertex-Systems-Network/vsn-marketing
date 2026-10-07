@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "711d89d503a7a407e05e0af838d8ddb71640e6ab",
+  "observed_main_sha": "dace976739d5ad67353d3ff9d77ec25d208c96aa",
   "active_issue": null,
-  "active_pr": 503,
-  "active_branch": "supervisor/task0083-acceptance",
+  "active_pr": 504,
+  "active_branch": "supervisor/task0084-generated-candidates",
   "current_milestone": "TASK-0084-GENERATED-CANDIDATE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0083 accepted from merged PR #502 exact-head Application, Security Supply Chain and AI Continuity evidence; bounded ingestion/provenance/capability planning is on protected main.",
-  "exact_next_safe_action": "Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards.",
+  "exact_next_safe_action": "Continue TASK-0084 candidate generation and adversarial coverage; run focused tests, repair same-scope failures, and then complete exact-head certification.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards."
+  "exact_next_action": "Continue TASK-0084 candidate generation and adversarial coverage; run focused tests, repair same-scope failures, and then complete exact-head certification."
 }

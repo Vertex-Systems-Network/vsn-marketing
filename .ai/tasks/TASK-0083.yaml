@@ -3,7 +3,7 @@
   "phase": "PHASE-14",
   "title": "Implement documentation and OpenAPI ingestion, provenance, capability extraction and connector planning",
   "weight": 20,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0082"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Bounded API-description ingestion preserves immutable source provenance, retrieval/version metadata and content identity while unsafe external references and active content fail closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Typed capability extraction records endpoints, auth/scopes, limits and unsupported or unknown semantics without inferring provider authority",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Connector plans are non-executable candidates with tenant isolation, size/depth limits, deterministic normalization and adversarial ingestion tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Implement TASK-0083 bounded documentation/OpenAPI ingestion, immutable provenance, typed capability extraction and non-executable connector planning with fail-closed external-reference and active-content handling."
+  "exact_next_action": "TASK-0083 accepted from PR #502 exact-head green Application, Security and AI Continuity evidence; proceed to TASK-0084 deterministic candidate generation."
 }

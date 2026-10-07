@@ -7,7 +7,7 @@ use InvalidArgumentException;
 final readonly class ConnectorGeneratedCandidate
 {
     /**
-     * @param  list<array{path: string, content: string, sha256: string}>  $files
+     * @param  list<array<string, mixed>>  $files
      */
     public function __construct(
         public string $workspaceId,

@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-07T20:13:00+00:00`
+- Timestamp: `2026-10-07T20:20:00+00:00`
 - Observed main: `b58eeb869d1f70c4d804ee6543dafc239569b00e`
 - Active issue: `none`
 - Active PR: `495`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `5c61e32ee50480cf75b3269ea93f79dfc4db48e32f6c4ac8073f368c2ec7568b`
+- State fingerprint: `17da21546b668541df5a6ff6f6780ac5f3e2cce69635dfaa5ad2886e40e25dfa`
 
 ## Completed / observed this session
 
-Reconciled protected-main observation after PR #494 merged as b58eeb869d1f70c4d804ee6543dafc239569b00e and synchronized PR #495 as the active credit-window multi-slice Workspace governance carrier.
+Unified PR #495 with the non-confirmation CI/fallback safeguards from concurrent PR #496 while preserving the multi-slice credit-window loop; bounded CI observation is now 4 normal / 12 exceptional observations and PR #495 remains the authoritative carrier.
 
 ## Tests
 
-PR #495 head f3d53777baa730f85e413c65326674104fcf22e2 passed transactional state, AI state, journal, and Supervisor contract validation before AI Continuity Guard run 37680082897 correctly failed only on the stale protected-main snapshot anchor. This checkpoint reconciles that exact material drift; fresh exact-head CI is required before merge.
+Source-level union now includes multi-slice execution, forbidden routine confirmation prompts, validator/tool fallback, independent safe work during CI waits, and 4/12 bounded CI observation. Fresh exact-head AI Continuity, Application, and Security gates must rerun on the new PR #495 head before merge.
 
 ## Blockers
 

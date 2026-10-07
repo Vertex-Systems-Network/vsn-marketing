@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "851f27600a1cc36c7978090ec883f93b57506e08",
+  "reconciled_main_sha": "b7bfa0431127d7d0e6195d5ec92ed39d3837213f",
   "active_work_path": {
     "kind": "pr",
-    "number": 490,
-    "title": "TASK-0080: add provider-neutral engagement fact contract",
-    "branch": "supervisor/task0077",
+    "number": 491,
+    "title": "TASK-0080: add fail-closed engagement quality checks",
+    "branch": "supervisor/task0080-quality",
     "disposition": "active_task0080_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 491,
+      "title": "TASK-0080: add fail-closed engagement quality checks",
+      "branch": "supervisor/task0080-quality",
+      "disposition": "active_task0080_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 490,
       "title": "TASK-0080: add provider-neutral engagement fact contract",
       "branch": "supervisor/task0077",
-      "disposition": "active_task0080_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b7bfa0431127d7d0e6195d5ec92ed39d3837213f"
     },
     {
       "kind": "pr",

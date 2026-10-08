@@ -92,6 +92,26 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         self::assertFalse($observation->toArray()['automatic_upgrade']);
     }
 
+    public function test_deprecation_evidence_requires_explicit_semantic_version(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new ConnectorDeprecationObservation(
+            'workspace-a', 'example', 'latest', 'https://docs.example.test/changelog',
+            hash('sha256', 'source'), new DateTimeImmutable('2026-10-08T00:00:00+00:00'),
+            null, null,
+        );
+    }
+
+    public function test_deprecation_evidence_rejects_credentialed_or_non_https_sources(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new ConnectorDeprecationObservation(
+            'workspace-a', 'example', '1.2.0', 'https://user:secret@docs.example.test/changelog',
+            hash('sha256', 'source'), new DateTimeImmutable('2026-10-08T00:00:00+00:00'),
+            null, null,
+        );
+    }
+
     public function test_sunset_requires_an_existing_deprecation(): void
     {
         $this->expectException(InvalidArgumentException::class);

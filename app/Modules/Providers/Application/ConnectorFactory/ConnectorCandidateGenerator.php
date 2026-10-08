@@ -145,12 +145,12 @@ final class ConnectorCandidateGenerator
     private function sourceOrigin(string $sourceUri): ?string
     {
         $parts = parse_url($sourceUri);
-        if (!is_array($parts) || !isset($parts['scheme'], $parts['host'])) {
+        if (is_array($parts) === false || isset($parts['scheme'], $parts['host']) === false) {
             return null;
         }
 
         $scheme = strtolower($parts['scheme']);
-        if (!in_array($scheme, ['http', 'https'], true)) {
+        if (in_array($scheme, ['http', 'https'], true) === false) {
             return null;
         }
 
@@ -162,7 +162,7 @@ final class ConnectorCandidateGenerator
 
     private function canonicalize(mixed $value): mixed
     {
-        if (!is_array($value)) {
+        if (is_array($value) === false) {
             return $value;
         }
 

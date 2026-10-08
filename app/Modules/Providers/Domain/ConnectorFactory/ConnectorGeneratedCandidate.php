@@ -42,15 +42,15 @@ final readonly class ConnectorGeneratedCandidate
 
         $paths = [];
         foreach ($files as $file) {
-            if (!isset($file['path'], $file['content'], $file['sha256'])
-                || !is_string($file['path'])
-                || !is_string($file['content'])
-                || !is_string($file['sha256'])
-                || !str_starts_with($file['path'], 'connector-candidates/'.$providerKey.'/')
+            if (isset($file['path'], $file['content'], $file['sha256']) === false
+                || is_string($file['path']) === false
+                || is_string($file['content']) === false
+                || is_string($file['sha256']) === false
+                || str_starts_with($file['path'], 'connector-candidates/'.$providerKey.'/') === false
                 || str_contains($file['path'], '..')
                 || str_starts_with($file['path'], '/')
                 || preg_match('/^[a-f0-9]{64}$/D', $file['sha256']) !== 1
-                || !hash_equals(hash('sha256', $file['content']), $file['sha256'])) {
+                || hash_equals(hash('sha256', $file['content']), $file['sha256']) === false) {
                 throw new InvalidArgumentException('Generated connector candidate contains an invalid or out-of-root artifact.');
             }
 

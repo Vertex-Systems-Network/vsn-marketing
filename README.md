@@ -71,7 +71,7 @@ Delivery timing depends on exact-head CI, production-representative recovery/rec
 ## For coding agents and contributors
 
 Agent instruction revision: `parallel-v2.8.7-no-premature-handoff`  
-Agent instruction fingerprint: `c2b2ba815fbed96a54a247a8371f34efb556439f82fb50153f66d7f330b6fa13`
+Agent instruction fingerprint: `0aed039deb6b98bffaeba084c14dc3f490dd065c5829bc14a212d714d6f6f0a1`
 
 **URL-only repository entry:** A message containing only this repository's GitHub URL is read-only: reconcile current repo state and show shuffled numbered next actions; do not mutate until a later numeric selection is revalidated.
 

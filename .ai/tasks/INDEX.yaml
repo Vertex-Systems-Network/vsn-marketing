@@ -847,7 +847,7 @@
       "phase": "PHASE-14",
       "title": "Implement connector static, contract, sandbox, security and canary activation gates",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0084"
       ]
@@ -857,7 +857,7 @@
       "phase": "PHASE-14",
       "title": "Implement compatibility scoring, deprecation monitoring, rollback and connector lifecycle observability",
       "weight": 15,
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0085"
       ]

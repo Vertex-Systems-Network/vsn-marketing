@@ -8,30 +8,30 @@
   "execution": {
     "status": "in_progress",
     "current_phase": "PHASE-14",
-    "active_task": "TASK-0085",
-    "last_completed_task": "TASK-0084",
-    "next_task": "TASK-0086"
+    "active_task": "TASK-0086",
+    "last_completed_task": "TASK-0085",
+    "next_task": "TASK-0087"
   },
   "progress": {
-    "roadmap_percent": 89.75,
-    "phase_percent": 55,
+    "roadmap_percent": 90.75,
+    "phase_percent": 75,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed AI Continuity Guard run 37705581893.",
-    "application_test_status": "PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911.",
-    "security_supply_chain_status": "PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Security Supply Chain CI run 37705581937.",
+    "continuity_validation": "PR #505 exact head f6499624779c6b2df2222385fc80f31b7b547032 passed AI Continuity Guard run 37769584235 before merge.",
+    "application_test_status": "PR #505 exact head f6499624779c6b2df2222385fc80f31b7b547032 passed Application Foundation CI run 37769584036 before merge.",
+    "security_supply_chain_status": "PR #505 exact head f6499624779c6b2df2222385fc80f31b7b547032 passed Security Supply Chain CI run 37769584041 before merge.",
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "106071d421f696ac3adf180f8dafeebc808488ba",
+  "observed_main_sha": "6bdee5a903a4f888aa37d5948e88edebdd26409f",
   "active_issue": null,
-  "active_pr": 505,
-  "active_branch": "supervisor/task0085-validation-sandbox-activation",
-  "current_milestone": "TASK-0085-STATIC-CONTRACT-SANDBOX-ACTIVATION-GATES",
-  "milestone_status": "VERIFYING",
-  "last_completed_milestone": "TASK-0084 candidate pipeline accepted from PR #504 exact-head Application Foundation, Security Supply Chain and AI Continuity evidence.",
-  "exact_next_safe_action": "Run and repair TASK-0085 exact-head Application Foundation, Security Supply Chain and AI Continuity gates; reconcile verified evidence before task acceptance.",
+  "active_pr": 506,
+  "active_branch": "supervisor/autonomous-decision-no-prompts",
+  "current_milestone": "TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE",
+  "milestone_status": "IN_PROGRESS",
+  "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
+  "exact_next_safe_action": "Implement TASK-0086 compatibility scoring, deprecation monitoring, rollback/disable and connector lifecycle observability automatically from the accepted TASK-0085 baseline.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Run and repair TASK-0085 exact-head Application Foundation, Security Supply Chain and AI Continuity gates; reconcile verified evidence before task acceptance."
+  "exact_next_action": "Implement TASK-0086 compatibility scoring, deprecation monitoring, rollback/disable and connector lifecycle observability automatically from the accepted TASK-0085 baseline."
 }

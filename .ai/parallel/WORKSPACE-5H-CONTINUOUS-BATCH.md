@@ -7,7 +7,7 @@ This contract exists to keep repository development moving for one Workspace ses
 ## Runtime envelope
 
 - Target runtime: **300 minutes / the available Workspace credit window**, whichever ends first.
-- A mutating `start`, `continue`, numeric next-action selection, or explicitly scoped development request starts or resumes this continuous batch mode unless the request says otherwise.
+- A mutating `start`, `continue`, `resume`, numeric next-action selection, or explicitly scoped development request starts or resumes this continuous batch mode unless the request says otherwise. For mutating intent, the Supervisor selects the canonical safe action itself; a fresh user choice is never required when repository evidence determines the route.
 - A generic mutating `start`, `continue`, or `resume` with no narrower scope defaults to **maximum safe roadmap-frontier progress for the entire available Workspace credit window**, not one task, one PR, or one phase. After a task or phase is certified, automatically transition to the next canonical dependency-ready task/phase and continue while credit remains. Crossing a phase boundary is routine when the roadmap already defines the successor and no separate human/external authority is required. If research/registration is required and the canonical roadmap already defines that work, perform it automatically; never invent undeclared roadmap work.
 - URL-only repository entry remains read-only and does not start a mutating batch.
 - Repository evidence outranks chat memory. Every fresh session or recovery still performs the normal compact-state/main/Issues/PRs/queue/Runner reconciliation before writes.
@@ -50,7 +50,7 @@ Never weaken security, tests, permissions, tenant isolation, required checks, mi
 Inside an active generic continuous batch, the Supervisor resolves decisions instead of handing them back to the user:
 
 - **Repository or technical blocker:** diagnose from code, logs, tests, CI, history, and canonical contracts; apply the smallest safe root-cause repair; rerun the required checks; continue.
-- **Ambiguous but safe implementation choice:** choose deterministically using canonical plan priority, existing architecture/contracts, least privilege, smallest reversible change, and test evidence. Do not ask the user to pick between mechanically resolvable options.
+- **Ambiguous but safe implementation choice:** choose deterministically using canonical plan priority, existing architecture/contracts, least privilege, smallest reversible change, and test evidence. The Supervisor owns this decision and MUST NOT ask the user to pick between mechanically resolvable approaches, libraries, repair strategies, PRs, task successors, or implementation details.
 - **Human-only external authority:** quarantine only that action, record the exact missing authority/input, and continue every other safe dependency-ready roadmap-frontier item. Do not request confirmation while safe repository work remains.
 - **Tool/connector/path failure:** use an available safe fallback path, recover durable state, and continue. A transient tool failure is not a user-decision boundary.
 - **Safety/security/correctness conflict:** fail closed on the affected action, preserve evidence, and continue independent safe work. End only when no safe canonical work remains.
@@ -72,7 +72,7 @@ Repeat this loop while Workspace credit remains and the batch objective is not c
 9. **Post-merge continuation.** Re-read live state and continue directly to the next dependency-ready action. If the active phase closes, enter the next canonical dependency-ready phase automatically when no separate authority boundary applies.
 10. **Checkpoint.** Persist a checkpoint at material boundaries, before context/tool exhaustion, at a hard external wait, or when the Workspace credit window ends.
 
-Do not emit a user-facing next-action handoff at every internal task/PR/CI boundary. Next-action options are for the final batch handoff or a genuine hard stop.
+Do not emit a user-facing next-action handoff at internal task/PR/CI boundaries. Normal mutating batches do not require next-action options at all: select and execute the canonical action automatically. URL-only read-only entry or an explicit request for choices are the only normal option surfaces. At a genuine hard stop, report the single exact human requirement instead of presenting a menu.
 
 ## CI and external waits
 
@@ -128,6 +128,6 @@ At the end, provide one compact report with:
 - unresolved blocker(s), if any;
 - exact next safe action;
 - current module/phase progress and overall roadmap progress from canonical state;
-- 1–3 next-action options only now, unless the objective is fully complete.
+- one canonical resume action as information only; do not require the user to choose from a menu. Show 1–3 options only if the user explicitly asked for choices or entered via URL-only read-only mode.
 
 Never claim work continued in the background after the Workspace/session ended. The contract governs what the agent must do **within each active Workspace turn/session**; once the host ends execution, resume from durable repository state on the next session.

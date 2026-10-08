@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T14:42:55+00:00`
-- Observed main: `3c8c9be306437b62287cf7bb611836b4779509c7`
+- Timestamp: `2026-10-08T14:53:40+00:00`
+- Observed main: `46381af47b282806c0b575cf3d9aa0c0581ebcf9`
 - Active issue: `none`
-- Active PR: `509`
-- Active branch: `supervisor/task0086-temporal-evidence`
+- Active PR: `510`
+- Active branch: `supervisor/task0086-main-reconciliation`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `f854ffac7746cab790b7915a90d954bf22bc0014279d029dcf3b2c86b94ef5c0`
+- State fingerprint: `f121887d609aeb6539096a8c04266db22a03f20ef57c97e360cdbcda14db1935`
 
 ## Completed / observed this session
 
-TASK-0086: reject lifecycle evidence timestamped after reconciliation observation; add regression coverage; PR #509 opened from main 3c8c9be.
+PR #509 merged at 46381af47b282806c0b575cf3d9aa0c0581ebcf9 after Application Foundation CI, Security Supply Chain CI and AI Continuity Guard passed on exact head b252a52f8de9dde504ad62187008625b3c4b9015. TASK-0086 remains in progress; reconcile merged milestone state through PR #510.
 
 ## Tests
 
-AI policy registry, supervisor contract, runner benchmark, transaction/state/journal/context validations passed in fetched-file snapshot. PHP/Pint/Composer unavailable locally; exact-head CI pending.
+PR #509 exact-head Application Foundation CI passed (foundation, E2E, PHP floor, integration); Security Supply Chain CI passed; AI Continuity Guard passed. Post-merge governance checks pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ AI policy registry, supervisor contract, runner benchmark, transaction/state/jou
 
 ## Exact next action
 
-Wait for PR #509 exact-head CI. If required checks pass, merge with head SHA validation; then capture merge SHA and reconcile main state through follow-up transaction.
+Run PR #510 exact-head CI and verify main governance after merge. Then continue TASK-0086 acceptance criteria AC-1 through AC-3; do not mark TASK-0086 complete until all criteria and tests are evidenced.

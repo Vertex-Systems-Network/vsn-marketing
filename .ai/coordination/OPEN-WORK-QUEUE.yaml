@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "3c8c9be306437b62287cf7bb611836b4779509c7",
+  "reconciled_main_sha": "46381af47b282806c0b575cf3d9aa0c0581ebcf9",
   "active_work_path": {
     "kind": "pr",
-    "number": 509,
-    "title": "fix(phase14): reject future-dated connector lifecycle evidence",
-    "branch": "supervisor/task0086-temporal-evidence",
+    "number": 510,
+    "title": "control: reconcile TASK-0086 merge state",
+    "branch": "supervisor/task0086-main-reconciliation",
     "disposition": "active_task0086_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 510,
+      "title": "control: reconcile TASK-0086 merge state",
+      "branch": "supervisor/task0086-main-reconciliation",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 509,
       "title": "fix(phase14): reject future-dated connector lifecycle evidence",
       "branch": "supervisor/task0086-temporal-evidence",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "46381af47b282806c0b575cf3d9aa0c0581ebcf9"
     },
     {
       "kind": "pr",

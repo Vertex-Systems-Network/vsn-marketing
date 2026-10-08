@@ -116,7 +116,7 @@ The following are explicitly **not** valid terminal reasons while execution rema
 
 The batch ends only when one of these is true:
 
-1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap has no safe dependency-ready work remaining;
+1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap is truly exhausted **and there is no pending/recoverable internal dependency such as CI, review, merge, reconciliation, or a repository-supported retry/fallback that can unlock the frontier**;
 2. the 300-minute / available Workspace credit window is exhausted;
 3. a genuine human-only external authority/input is the sole remaining path across the safe roadmap frontier;
 4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;

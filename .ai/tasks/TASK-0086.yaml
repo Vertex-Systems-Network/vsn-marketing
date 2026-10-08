@@ -3,7 +3,7 @@
   "phase": "PHASE-14",
   "title": "Implement compatibility scoring, deprecation monitoring, rollback and connector lifecycle observability",
   "weight": 15,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0085"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Compatibility scoring is derived from versioned capabilities/contracts with unknown or breaking changes failing closed",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Deprecation and version monitoring preserves dated provenance and alerts without silently auto-upgrading connector contracts",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Disable/rollback and tenant-scoped lifecycle health evidence are deterministic, auditable and covered by failure-reconciliation tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

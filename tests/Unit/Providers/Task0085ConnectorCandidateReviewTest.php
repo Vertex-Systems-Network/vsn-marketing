@@ -10,8 +10,8 @@ use App\Modules\Providers\Application\ConnectorFactory\ConnectorDescriptionInges
 use App\Modules\Providers\Application\ConnectorFactory\OpenApiConnectorPlanner;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateApproval;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateCanaryPolicy;
-use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateSandboxPolicy;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorPlanCandidate;
 use InvalidArgumentException;

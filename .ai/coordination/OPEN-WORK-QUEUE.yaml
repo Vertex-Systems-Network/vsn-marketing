@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b6a581ed83d0552a2ba6990f0a3c4e4adaa7e62d",
+  "reconciled_main_sha": "3c8c9be306437b62287cf7bb611836b4779509c7",
   "active_work_path": {
     "kind": "pr",
-    "number": 507,
-    "title": "feat(phase14): add connector lifecycle compatibility evidence",
-    "branch": "supervisor/task0086-lifecycle",
+    "number": 509,
+    "title": "fix(phase14): reject future-dated connector lifecycle evidence",
+    "branch": "supervisor/task0086-temporal-evidence",
     "disposition": "active_task0086_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 509,
+      "title": "fix(phase14): reject future-dated connector lifecycle evidence",
+      "branch": "supervisor/task0086-temporal-evidence",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 507,
       "title": "feat(phase14): add connector lifecycle compatibility evidence",
       "branch": "supervisor/task0086-lifecycle",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "3c8c9be306437b62287cf7bb611836b4779509c7"
     },
     {
       "kind": "pr",

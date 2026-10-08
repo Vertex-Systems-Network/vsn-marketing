@@ -2,6 +2,7 @@
 
 namespace App\Modules\Providers\Application\ConnectorFactory;
 
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateSandboxPolicy;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
 use JsonException;
@@ -10,20 +11,6 @@ final class ConnectorCandidateReviewService
 {
     public const REVIEWER_VERSION = 'candidate-review-v1';
 
-    private const SANDBOX_POLICY = [
-        'name' => 'connector-candidate-sandbox-v1',
-        'execution_performed' => false,
-        'network_access' => 'denied',
-        'secret_mounts' => false,
-        'provider_authority' => false,
-        'input_filesystem' => 'read_only',
-        'no_new_privileges' => true,
-        'seccomp' => 'default',
-        'cpu_millis' => 2500,
-        'memory_mib' => 256,
-        'process_limit' => 32,
-        'timeout_seconds' => 30,
-    ];
 
     /**
      * Inspect candidate bytes as data only. No generated candidate code is executed.
@@ -56,7 +43,8 @@ final class ConnectorCandidateReviewService
         ], $testPath, $className, $candidate->providerKey, $retrievedAt);
         $dependencyFindings = $this->dependencyFindings($files, is_array($manifest) ? $manifest : []);
         $contractFindings = $this->contractFindings($candidate, is_array($manifest) ? $manifest : [], $adapterContent, $testContent);
-        $sandboxFindings = $this->sandboxFindings();
+        $sandboxPolicy = new ConnectorCandidateSandboxPolicy;
+        $sandboxFindings = $this->sandboxFindings($sandboxPolicy);
         $adversarialFindings = $this->adversarialFindings($files, $pathFindings);
 
         $findings = [
@@ -84,7 +72,7 @@ final class ConnectorCandidateReviewService
                 ),
                 'check' => $name,
                 'findings' => $items,
-                'sandbox_policy' => $name === 'sandbox_policy' ? self::SANDBOX_POLICY : null,
+                'sandbox_policy' => $name === 'sandbox_policy' ? $sandboxPolicy->toArray() : null,
             ];
             $checks[$name] = [
                 'status' => $items === [] ? 'passed' : 'failed',
@@ -232,20 +220,19 @@ final class ConnectorCandidateReviewService
     }
 
     /** @return list<string> */
-    private function sandboxFindings(): array
+    private function sandboxFindings(ConnectorCandidateSandboxPolicy $policy): array
     {
-        $policy = self::SANDBOX_POLICY;
-        if ($policy['execution_performed'] !== false
-            || $policy['network_access'] !== 'denied'
-            || $policy['secret_mounts'] !== false
-            || $policy['provider_authority'] !== false
-            || $policy['input_filesystem'] !== 'read_only'
-            || $policy['no_new_privileges'] !== true
-            || $policy['seccomp'] !== 'default'
-            || $policy['cpu_millis'] > 5000
-            || $policy['memory_mib'] > 512
-            || $policy['process_limit'] > 64
-            || $policy['timeout_seconds'] > 60) {
+        if ($policy->executionPerformed !== false
+            || $policy->networkAccess !== 'denied'
+            || $policy->secretMounts !== false
+            || $policy->providerAuthority !== false
+            || $policy->inputFilesystem !== 'read_only'
+            || $policy->noNewPrivileges !== true
+            || $policy->seccomp !== 'default'
+            || $policy->cpuMillis > 5000
+            || $policy->memoryMib > 512
+            || $policy->processLimit > 64
+            || $policy->timeoutSeconds > 60) {
             return ['candidate_sandbox_policy_exceeds_declared_bounds'];
         }
 

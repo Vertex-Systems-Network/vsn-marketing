@@ -10,6 +10,7 @@ use App\Modules\Providers\Application\ConnectorFactory\ConnectorDescriptionInges
 use App\Modules\Providers\Application\ConnectorFactory\OpenApiConnectorPlanner;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateApproval;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateCanaryPolicy;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateSandboxPolicy;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorPlanCandidate;
 use InvalidArgumentException;
@@ -171,6 +172,23 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         try {
             new ConnectorCandidateCanaryPolicy(true, 1, 1, 60, false);
             self::fail('An irreversible canary was accepted.');
+        } catch (InvalidArgumentException) {
+            self::assertTrue(true);
+        }
+    }
+
+    public function test_sandbox_policy_rejects_network_secrets_and_unbounded_resources(): void
+    {
+        try {
+            new ConnectorCandidateSandboxPolicy(networkAccess: 'enabled');
+            self::fail('Network access in the sandbox policy was accepted.');
+        } catch (InvalidArgumentException) {
+            self::assertTrue(true);
+        }
+
+        try {
+            new ConnectorCandidateSandboxPolicy(memoryMib: 513);
+            self::fail('An unbounded sandbox memory limit was accepted.');
         } catch (InvalidArgumentException) {
             self::assertTrue(true);
         }

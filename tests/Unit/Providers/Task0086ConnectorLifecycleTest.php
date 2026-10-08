@@ -180,7 +180,6 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         (new ConnectorLifecycleReconciler())->reconcile($assessment, null, $decision, $at);
     }
 
-
     public function test_disable_and_rollback_decisions_are_reported_without_claiming_execution(): void
     {
         $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');

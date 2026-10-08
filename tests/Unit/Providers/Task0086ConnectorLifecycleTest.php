@@ -218,4 +218,50 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $reconciler->reconcile($assessment, null, null, $at, 'unknown_failure');
     }
+
+    public function test_reconciliation_rejects_future_dated_compatibility_evidence(): void
+    {
+        $observedAt = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'],
+            $observedAt->modify('+1 minute'),
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler)->reconcile($assessment, null, null, $observedAt);
+    }
+
+    public function test_reconciliation_rejects_future_dated_deprecation_evidence(): void
+    {
+        $observedAt = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $observedAt,
+        );
+        $deprecation = new ConnectorDeprecationObservation(
+            'workspace-a', 'example', '1.2.0', 'https://docs.example.test/changelog',
+            hash('sha256', 'source'), $observedAt->modify('+1 minute'), null, null,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler)->reconcile($assessment, $deprecation, null, $observedAt);
+    }
+
+    public function test_reconciliation_rejects_future_dated_operator_decisions(): void
+    {
+        $observedAt = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $observedAt,
+        );
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'disable', 'operator_request',
+            'operator-1', hash('sha256', 'disable'), $observedAt->modify('+1 minute'),
+            $assessment->evidenceSha256,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler)->reconcile($assessment, null, $decision, $observedAt);
+    }
 }

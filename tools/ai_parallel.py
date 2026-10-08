@@ -363,6 +363,23 @@ def validate() -> list[str]:
             errors.append("AI execution resilience contains legacy active-task execution boundary")
         if "safe canonical roadmap frontier" not in resilience:
             errors.append("AI execution resilience roadmap-frontier instruction is missing")
+
+        workspace_contract = (ROOT / ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md").read_text(encoding="utf-8")
+        parallel_contract = (ROOT / ".ai/13-PARALLEL-DEVELOPMENT.md").read_text(encoding="utf-8")
+        next_action_contract = (ROOT / ".ai/NEXT-ACTION-OPTIONS.md").read_text(encoding="utf-8")
+
+        if "CI waiting by itself is never a stop condition" not in workspace_contract:
+            errors.append("continuous instruction content regressed to CI-wait handoff")
+        if "status-only terminal reply" not in workspace_contract:
+            errors.append("continuous instruction content missing nonterminal status rule")
+        if "progress/status message never ends the batch" not in parallel_contract:
+            errors.append("parallel instruction content missing nonterminal progress rule")
+        if "Progress updates are nonterminal" not in next_action_contract:
+            errors.append("next-action instruction content missing nonterminal progress rule")
+        if "End the batch for CI waiting only when" in parallel_contract:
+            errors.append("parallel instruction content contains legacy CI-wait stop boundary")
+        if "before ending the batch. CI waiting never becomes a user confirmation request." in workspace_contract:
+            errors.append("workspace instruction content contains legacy CI-wait terminal wording")
     except (OSError, ValueError) as exc:
         errors.append(str(exc))
 

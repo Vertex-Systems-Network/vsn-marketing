@@ -1,29 +1,39 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "86c7ed169acd7d502490da8981d33d2d3279012e",
+  "reconciled_main_sha": "c3916dd82570fa632c5e5c2e363af4928d2c48d1",
   "active_work_path": {
     "kind": "pr",
-    "number": 513,
-    "title": "fix(phase14): bind lifecycle decisions to assessed evidence",
-    "branch": "supervisor/task0086-bind-decision-evidence",
-    "disposition": "active_task0086_carrier"
+    "number": 514,
+    "title": "fix(ai): prohibit premature status and CI-wait handoffs",
+    "branch": "supervisor/no-premature-status-handoff",
+    "disposition": "active_continuity_hardening_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 514,
+      "title": "fix(ai): prohibit premature status and CI-wait handoffs",
+      "branch": "supervisor/no-premature-status-handoff",
+      "disposition": "active_continuity_hardening_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 513,
       "title": "fix(phase14): bind lifecycle decisions to assessed evidence",
       "branch": "supervisor/task0086-bind-decision-evidence",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c3916dd82570fa632c5e5c2e363af4928d2c48d1"
     },
     {
       "kind": "pr",
       "number": 512,
       "title": "fix(phase14): validate connector deprecation provenance",
       "branch": "supervisor/task0086-validate-deprecation-provenance",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": false
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "86c7ed169acd7d502490da8981d33d2d3279012e"
     },
     {
       "kind": "pr",
@@ -786,7 +796,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
+      "title": "AI Continuity Guard — Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

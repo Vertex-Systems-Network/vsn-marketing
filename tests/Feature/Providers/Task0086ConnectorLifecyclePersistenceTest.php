@@ -215,3 +215,29 @@ it('rejects an unknown partial schema rather than adopting it', function () {
     Schema::drop('connector_lifecycle_health');
     $migration->up();
 });
+
+
+it('fails closed when a persisted lifecycle evidence snapshot is tampered with', function () {
+    $fixture = task0086LifecyclePersistenceFixture();
+    $health = task0086LifecycleHealth($fixture['workspace_id'], $fixture['provider_key'], '2026-10-08T00:00:00+00:00', 'tamper-check');
+    $repository = app(ConnectorLifecycleHealthRepository::class);
+    $repository->record($health);
+
+    $snapshot = json_decode((string) DB::table('connector_lifecycle_health')
+        ->where('workspace_id', $fixture['workspace_id'])
+        ->where('provider_key', $fixture['provider_key'])
+        ->where('reconciliation_key', $health->reconciliationKey)
+        ->value('compatibility_evidence'), true, 512, JSON_THROW_ON_ERROR);
+    $snapshot['reason'] = 'tampered_after_persistence';
+    DB::table('connector_lifecycle_health')
+        ->where('workspace_id', $fixture['workspace_id'])
+        ->where('provider_key', $fixture['provider_key'])
+        ->where('reconciliation_key', $health->reconciliationKey)
+        ->update(['compatibility_evidence' => json_encode($snapshot, JSON_THROW_ON_ERROR)]);
+
+    expect(fn () => $repository->findByReconciliationKey(
+        $fixture['workspace_id'],
+        $fixture['provider_key'],
+        $health->reconciliationKey,
+    ))->toThrow(RuntimeException::class, 'integrity check');
+});

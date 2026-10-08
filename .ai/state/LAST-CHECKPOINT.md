@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-08T17:54:18+00:00`
+- Timestamp: `2026-10-08T17:57:30+00:00`
 - Observed main: `4cec9d6b4f1f91733b012401c144efce090257a5`
 - Active issue: `none`
 - Active PR: `517`
@@ -19,11 +19,11 @@
 
 ## Completed / observed this session
 
-PR #516 merged at 4cec9d6b4f1f91733b012401c144efce090257a5. PR #517 adds tenant-scoped lifecycle health persistence with idempotent replay, evidence provenance snapshots, conflict rejection and fail-safe migration behavior.
+PR #516 merged at 4cec9d6b4f1f91733b012401c144efce090257a5. PR #517 adds workspace-scoped lifecycle health persistence and integrity-verified provenance. Added an adversarial test for altered persisted evidence.
 
 ## Tests
 
-PR #516 exact-head full gates passed. PR #517 exact-head full application, integration, PHP 8.3, E2E, security, continuity and governance checks are pending.
+PR #516 resulting-main application, infrastructure integration, PHP 8.3 and E2E gates passed. PR #517 governance passed; application and security workflows started, with dependency audit and initial scans passing on the prior head. Fresh full gates are required for this updated test head.
 
 ## Blockers
 

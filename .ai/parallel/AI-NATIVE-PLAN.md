@@ -73,6 +73,6 @@ This snapshot is diagnostic only; it does not replace the mandatory resume recon
 
 ## Final handoff
 
-Only when the continuous batch ends, report the durable result, exact next safe action, phase/module progress, overall roadmap progress, and then expose the normal shuffled next-action options if further work remains.
+Only when the continuous batch ends under a proven canonical stop condition, report the durable result, exact canonical resume action, phase/module progress, and overall roadmap progress. For mutating development, do **not** present a next-action menu or ask the user to choose what to do next. Numbered/shuffled options remain limited to URL-only read-only entry or an explicit user request for choices.
 
-A recorded technical blocker or a failed first repair attempt is not a handoff boundary. Continue through repair, fallback, or independent safe work while Workspace credit remains.
+A progress/status update, pending CI, an open PR, a checkpoint, a recorded technical blocker, or a failed first repair attempt is not a handoff boundary while execution remains available. Continue through observation, repair, merge, reconciliation, fallback, or independent safe work until a documented stop condition is actually true.

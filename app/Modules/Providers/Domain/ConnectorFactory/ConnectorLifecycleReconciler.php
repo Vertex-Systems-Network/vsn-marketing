@@ -35,7 +35,7 @@ final class ConnectorLifecycleReconciler
             }
         }
 
-        if ($failureCode !== null && ! in_array($failureCode, self::FAILURE_CODES, true)) {
+        if ($failureCode !== null && !in_array($failureCode, self::FAILURE_CODES, true)) {
             throw new InvalidArgumentException('Lifecycle reconciliation failure code is not registered.');
         }
 
@@ -104,7 +104,7 @@ final class ConnectorLifecycleReconciler
         }
 
         if ($assessment->status !== 'compatible') {
-            return ['blocked', 'compatibility_' . $assessment->status . ':' . $assessment->reason];
+            return ['blocked', 'compatibility_'.$assessment->status.':'.$assessment->reason];
         }
 
         if ($deprecation?->alertRequired() === true) {

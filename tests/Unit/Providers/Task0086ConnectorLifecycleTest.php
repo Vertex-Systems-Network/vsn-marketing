@@ -215,5 +215,4 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         (new ConnectorLifecycleReconciler())->reconcile($assessment, null, null, $at, 'unknown_failure');
     }
-
 }

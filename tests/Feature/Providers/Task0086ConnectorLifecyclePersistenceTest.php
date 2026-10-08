@@ -7,6 +7,7 @@ use App\Modules\Providers\Application\RegisterProvider;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCompatibilityAssessment;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorDeprecationObservation;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleReconciler;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleDecision;
 use App\Modules\Providers\Domain\ConnectorFactory\Contracts\ConnectorLifecycleHealthRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,74 @@ it('rejects idempotency-key evidence conflicts and keeps reads workspace scoped'
     $other = task0086LifecyclePersistenceFixture();
     expect($repository->findByReconciliationKey($other['workspace_id'], $fixture['provider_key'], $first->reconciliationKey))->toBeNull()
         ->and($repository->findLatestForProvider($other['workspace_id'], $fixture['provider_key']))->toBeNull();
+});
+
+it('retains dated deprecation provenance and compatibility snapshots for operator review', function () {
+    $fixture = task0086LifecyclePersistenceFixture();
+    $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+    $assessment = ConnectorCompatibilityAssessment::assess(
+        $fixture['workspace_id'],
+        $fixture['provider_key'],
+        '1.2.0',
+        '1.2.0',
+        ['contacts.read' => '1.0.0'],
+        ['contacts.read' => '1.0.0'],
+        $at,
+    );
+    $deprecation = new ConnectorDeprecationObservation(
+        $fixture['workspace_id'],
+        $fixture['provider_key'],
+        '1.2.0',
+        'https://docs.example.test/changelog',
+        hash('sha256', 'dated-source'),
+        $at,
+        new DateTimeImmutable('2026-10-01T00:00:00+00:00'),
+        new DateTimeImmutable('2026-11-01T00:00:00+00:00'),
+    );
+    $health = (new ConnectorLifecycleReconciler)->reconcile($assessment, $deprecation, null, $at);
+    $repository = app(ConnectorLifecycleHealthRepository::class);
+    $persisted = $repository->record($health);
+
+    expect($persisted->status)->toBe('degraded')
+        ->and($persisted->compatibilityEvidence['baseline_contract_version'])->toBe('1.2.0')
+        ->and($persisted->deprecationEvidence['source_uri'])->toBe('https://docs.example.test/changelog')
+        ->and($persisted->deprecationEvidence['deprecated_at'])->toBe('2026-10-01T00:00:00+00:00')
+        ->and($persisted->deprecationEvidence['automatic_upgrade'])->toBeFalse()
+        ->and($repository->findLatestForProvider($fixture['workspace_id'], $fixture['provider_key'])?->evidenceSha256)
+        ->toBe($health->evidenceSha256);
+});
+
+it('retains auditable operator decision evidence with lifecycle health', function () {
+    $fixture = task0086LifecyclePersistenceFixture();
+    $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+    $assessment = ConnectorCompatibilityAssessment::assess(
+        $fixture['workspace_id'],
+        $fixture['provider_key'],
+        '1.2.0',
+        '1.2.0',
+        ['contacts.read' => '1.0.0'],
+        ['contacts.read' => '1.0.0'],
+        $at,
+    );
+    $decision = new ConnectorLifecycleDecision(
+        $fixture['workspace_id'],
+        $fixture['provider_key'],
+        'rollback',
+        'operator_requested_recovery',
+        'operator-1',
+        hash('sha256', 'rollback-operation'),
+        $at,
+        $assessment->evidenceSha256,
+        hash('sha256', 'approved-candidate'),
+    );
+    $health = (new ConnectorLifecycleReconciler)->reconcile($assessment, null, $decision, $at);
+    $persisted = app(ConnectorLifecycleHealthRepository::class)->record($health);
+
+    expect($persisted->status)->toBe('rollback_pending')
+        ->and($persisted->decisionEvidence['action'])->toBe('rollback')
+        ->and($persisted->decisionEvidence['actor_id'])->toBe('operator-1')
+        ->and($persisted->decisionEvidence['rollback_candidate_id'])->toBe(hash('sha256', 'approved-candidate'))
+        ->and($persisted->decisionEvidence['compatibility_evidence_sha256'])->toBe($assessment->evidenceSha256);
 });
 
 it('refuses to drop non-empty lifecycle evidence during migration rollback', function () {

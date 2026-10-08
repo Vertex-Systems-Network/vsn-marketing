@@ -30,6 +30,9 @@ final class DatabaseConnectorLifecycleHealthRepository implements ConnectorLifec
                 'decision_audit_sha256' => $health->decisionAuditSha256,
                 'failure_code' => $health->failureCode,
                 'reconciliation_key' => $health->reconciliationKey,
+                'compatibility_evidence' => json_encode($health->compatibilityEvidence, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'deprecation_evidence' => $health->deprecationEvidence === null ? null : json_encode($health->deprecationEvidence, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'decision_evidence' => $health->decisionEvidence === null ? null : json_encode($health->decisionEvidence, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                 'evidence_sha256' => $health->evidenceSha256,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -96,6 +99,9 @@ final class DatabaseConnectorLifecycleHealthRepository implements ConnectorLifec
             decisionAuditSha256: $row->decision_audit_sha256 === null ? null : (string) $row->decision_audit_sha256,
             failureCode: $row->failure_code === null ? null : (string) $row->failure_code,
             reconciliationKey: (string) $row->reconciliation_key,
+            compatibilityEvidence: json_decode((string) $row->compatibility_evidence, true, 512, JSON_THROW_ON_ERROR),
+            deprecationEvidence: $row->deprecation_evidence === null ? null : json_decode((string) $row->deprecation_evidence, true, 512, JSON_THROW_ON_ERROR),
+            decisionEvidence: $row->decision_evidence === null ? null : json_decode((string) $row->decision_evidence, true, 512, JSON_THROW_ON_ERROR),
         );
 
         if ($health->evidenceSha256 !== (string) $row->evidence_sha256) {

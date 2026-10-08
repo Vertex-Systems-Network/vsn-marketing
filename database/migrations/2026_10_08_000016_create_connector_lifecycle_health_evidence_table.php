@@ -14,7 +14,7 @@ return new class extends Migration
                 'id', 'workspace_id', 'provider_key', 'status', 'reason', 'observed_at',
                 'compatibility_evidence_sha256', 'deprecation_evidence_sha256',
                 'decision_audit_sha256', 'failure_code', 'reconciliation_key',
-                'evidence_sha256', 'created_at', 'updated_at',
+                'compatibility_evidence', 'deprecation_evidence', 'decision_evidence', 'evidence_sha256', 'created_at', 'updated_at',
             ];
             $indexes = Schema::getIndexes('connector_lifecycle_health');
             $primary = array_filter($indexes, fn (array $index): bool => $index['primary'] && $index['columns'] === ['id']);
@@ -46,6 +46,9 @@ return new class extends Migration
             $table->char('decision_audit_sha256', 64)->nullable();
             $table->string('failure_code', 64)->nullable();
             $table->char('reconciliation_key', 64);
+            $table->json('compatibility_evidence');
+            $table->json('deprecation_evidence')->nullable();
+            $table->json('decision_evidence')->nullable();
             $table->char('evidence_sha256', 64);
             $table->timestampsTz();
 

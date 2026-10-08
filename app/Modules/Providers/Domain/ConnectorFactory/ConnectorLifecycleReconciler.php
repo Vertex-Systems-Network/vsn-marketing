@@ -103,6 +103,9 @@ final class ConnectorLifecycleReconciler
             decisionAuditSha256: $decision?->auditSha256,
             failureCode: $failureCode,
             reconciliationKey: $reconciliationKey,
+            compatibilityEvidence: $assessment->toArray(),
+            deprecationEvidence: $deprecation?->toArray(),
+            decisionEvidence: $decision?->toArray(),
         );
     }
 

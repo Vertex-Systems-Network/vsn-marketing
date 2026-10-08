@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T14:53:40+00:00`
-- Observed main: `46381af47b282806c0b575cf3d9aa0c0581ebcf9`
+- Timestamp: `2026-10-08T15:07:01+00:00`
+- Observed main: `10412ad085520ca5fc1949371755fd49072a3748`
 - Active issue: `none`
-- Active PR: `510`
-- Active branch: `supervisor/task0086-main-reconciliation`
+- Active PR: `511`
+- Active branch: `supervisor/task0086-require-capability-evidence`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `f121887d609aeb6539096a8c04266db22a03f20ef57c97e360cdbcda14db1935`
+- State fingerprint: `e214c3bc24a344205db296264171a4aa9075f6d4f5a6f40c1710d6d9bedcdcbb`
 
 ## Completed / observed this session
 
-PR #509 merged at 46381af47b282806c0b575cf3d9aa0c0581ebcf9 after Application Foundation CI, Security Supply Chain CI and AI Continuity Guard passed on exact head b252a52f8de9dde504ad62187008625b3c4b9015. TASK-0086 remains in progress; reconcile merged milestone state through PR #510.
+PR #510 merged at 10412ad085520ca5fc1949371755fd49072a3748, reconciling PR #509 at 46381af47b282806c0b575cf3d9aa0c0581ebcf9. Continue TASK-0086 AC-1: require capability evidence for a compatible assessment; PR #511 opened with regression coverage.
 
 ## Tests
 
-PR #509 exact-head Application Foundation CI passed (foundation, E2E, PHP floor, integration); Security Supply Chain CI passed; AI Continuity Guard passed. Post-merge governance checks pending.
+Prior PR #509 and PR #510 exact-head required gates passed. New change awaits exact-head CI.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #509 exact-head Application Foundation CI passed (foundation, E2E, PHP floor,
 
 ## Exact next action
 
-Run PR #510 exact-head CI and verify main governance after merge. Then continue TASK-0086 acceptance criteria AC-1 through AC-3; do not mark TASK-0086 complete until all criteria and tests are evidenced.
+Run PR #511 exact-head CI. If required gates pass, merge by expected head SHA, verify resulting main, then continue TASK-0086 AC-2 and AC-3 without marking task complete prematurely.

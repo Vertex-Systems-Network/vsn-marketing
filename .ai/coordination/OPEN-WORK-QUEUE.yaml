@@ -6,7 +6,7 @@
     "number": 504,
     "title": "feat(phase14): generate isolated connector candidates",
     "branch": "supervisor/task0084-generated-candidates",
-    "disposition": "active_task0084_carrier"
+    "disposition": "active_task0085_carrier"
   },
   "items": [
     {
@@ -14,7 +14,7 @@
       "number": 504,
       "title": "feat(phase14): generate isolated connector candidates",
       "branch": "supervisor/task0084-generated-candidates",
-      "disposition": "active_task0084_carrier",
+      "disposition": "active_task0085_carrier",
       "accepted_actionable": true
     },
     {

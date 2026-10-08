@@ -4,15 +4,17 @@ This repository adopts the Vertex Systems Network interactive AI-development han
 
 ## User-facing handoff
 
-Outside an active 5-hour continuous Workspace batch, expose 1 to 3 currently valid next actions derived from live repository evidence. During an active batch, do not emit an intermediate handoff merely because one substantial slice finished, a PR was opened, CI failed/passed, a merge completed, or a dependency-ready task/phase became available. Continue automatically under `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`; one user turn may contain multiple substantial slices and PR/CI/merge cycles. Expose options only when the batch ends under a documented stop condition or a genuine hard stop is reached.
+For mutating development intent (`start`, `continue`, `resume`, or an explicitly scoped implementation request), **do not ask the user to choose the next action**. Reconcile repository truth, select the highest-priority safe canonical action deterministically, and execute it under `.ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md`. During an active batch, do not emit an intermediate handoff merely because one substantial slice finished, a PR was opened, CI failed/passed, a merge completed, a blocker was recorded, or a dependency-ready task/phase became available.
 
-- Always include the canonical/recommended next action, but do not bind it permanently to option 1.
+Interactive/numbered options are reserved for (a) URL-only read-only repository entry, or (b) an explicit user request to see choices. At a genuine terminal hard stop, report the single exact required human action and the canonical resume action; do not ask a broad choice question.
+
+- When options are explicitly allowed by the rule above, always include the canonical/recommended next action, but do not bind it permanently to option 1.
 - When two or more valid options exist, reshuffle the visible 1/2/3 numbering on every handoff.
 - If the previously selected action identity and number are known, that same action must move to a different visible number on the next handoff. With only one valid action, number reuse is allowed.
 - Mark the canonical action as **Recommended**. Numbering is ephemeral presentation state and never changes priority, safety, scope, or authorization.
 - A reply containing only an option number starts/resumes the corresponding continuous batch after repository revalidation. Re-read current repository state before the first mutation. If the selected payload became stale, blocked, merged, or unsafe, fail closed on that stale payload, reconcile repository truth, and automatically route to the current canonical safe equivalent/successor when it remains inside the same authorized batch objective. Do not ask the user to select again while such a safe canonical route exists. Only return new options when no safe in-objective route exists or no active continuous batch was authorized. Once revalidated, do not ask again for routine in-scope repository consent at internal PR/CI/task boundaries.
 - Prefer substantial product/control batches over micro-options. “Substantial” controls slice size, not turn count: after one substantial slice completes inside continuous mode, automatically start the next safe canonical slice rather than returning options. Do not offer a standalone post-merge reconciliation option when its evidence can safely ride with the next substantial PR; reserve standalone reconciliation for task/phase acceptance, guarded transitions, release/security/recovery, material drift, or no-safe-successor cases.
-- Interactive buttons may be used when the host supports them; otherwise numbered one-line options are the mandatory fallback.
+- Interactive buttons/numbered commands are not part of normal mutating development flow. They may be used only for URL-only read-only entry or when the user explicitly asks for choices.
 
 ## URL-only repository entry
 

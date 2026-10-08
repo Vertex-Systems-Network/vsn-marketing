@@ -27,6 +27,10 @@ When the user's message contains only this repository's canonical GitHub URL (op
 5. Respond with 1 to 3 shuffled valid next-action options and mark the canonical one **Recommended**.
 6. The user's subsequent number selection initiates the normal fully revalidated development turn.
 
+## Progress updates are nonterminal
+
+During mutating continuous development, a status/progress update is informational only. It MUST NOT terminate the active batch while the current turn can still execute. “Next: once CI finishes…”, a pending-check summary, a checkpoint summary, or an in-progress task report is not a valid handoff. Continue with state-driven observation, repair, merge, reconciliation, or the next safe canonical slice until a documented stop condition is actually reached.
+
 ## Hard-stop presentation
 
 A genuine human-only boundary must not be phrased as a broad confirmation request. Do not ask “Should I continue?”, “May I fix this?”, “Do you want me to retry?”, or equivalent.

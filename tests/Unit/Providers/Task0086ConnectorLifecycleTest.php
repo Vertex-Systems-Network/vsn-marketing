@@ -124,7 +124,7 @@ final class Task0086ConnectorLifecycleTest extends TestCase
     public function test_lifecycle_reconciler_blocks_unknown_changes_and_tracks_deprecation(): void
     {
         $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
-        $reconciler = new ConnectorLifecycleReconciler();
+        $reconciler = new ConnectorLifecycleReconciler;
         $unknown = ConnectorCompatibilityAssessment::assess(
             'workspace-a', 'example', '1.2.0', '1.3.0',
             ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
@@ -153,7 +153,7 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             'workspace-a', 'example', '1.2.0', '2.0.0',
             ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
         );
-        $reconciler = new ConnectorLifecycleReconciler();
+        $reconciler = new ConnectorLifecycleReconciler;
         $key = hash('sha256', 'failed-rollback-attempt');
         $first = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
         $retry = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
@@ -176,7 +176,7 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             'operator-1', hash('sha256', 'operation'), $at, hash('sha256', 'evidence'),
         );
 
-        $reconciler = new ConnectorLifecycleReconciler();
+        $reconciler = new ConnectorLifecycleReconciler;
 
         $this->expectException(InvalidArgumentException::class);
         $reconciler->reconcile($assessment, null, $decision, $at);
@@ -198,7 +198,7 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             'operator-1', hash('sha256', 'rollback'), $at, $assessment->evidenceSha256,
             hash('sha256', 'rollback-candidate'),
         );
-        $reconciler = new ConnectorLifecycleReconciler();
+        $reconciler = new ConnectorLifecycleReconciler;
 
         self::assertSame('disabled', $reconciler->reconcile($assessment, null, $disable, $at)->status);
         self::assertSame('rollback_pending', $reconciler->reconcile($assessment, null, $rollback, $at)->status);
@@ -213,7 +213,7 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
         );
 
-        $reconciler = new ConnectorLifecycleReconciler();
+        $reconciler = new ConnectorLifecycleReconciler;
 
         $this->expectException(InvalidArgumentException::class);
         $reconciler->reconcile($assessment, null, null, $at, 'unknown_failure');

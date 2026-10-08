@@ -2,33 +2,35 @@
 
 ## State
 
-- Timestamp: `2026-10-08T08:52:00+00:00`
-- Observed main: `106071d421f696ac3adf180f8dafeebc808488ba`
+- Timestamp: `2026-10-08T12:23:00+00:00`
+- Observed main: `6bdee5a903a4f888aa37d5948e88edebdd26409f`
 - Active issue: `none`
-- Active PR: `505`
-- Active branch: `supervisor/task0085-validation-sandbox-activation`
-- Current milestone: `TASK-0085-STATIC-CONTRACT-SANDBOX-ACTIVATION-GATES`
-- Milestone status: `VERIFYING`
-- Active task: `TASK-0085`
-- Next task: `TASK-0086`
+- Active PR: `506`
+- Active branch: `supervisor/autonomous-decision-no-prompts`
+- Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
+- Milestone status: `IN_PROGRESS`
+- Active task: `TASK-0086`
+- Next task: `TASK-0087`
 - Current phase: `PHASE-14`
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b8f31245abf9cfe3e9e964240aafb9250ec7c0c64c6396ce3656098c8cea5012`
+- State fingerprint: `33c05b0fe21babedbbcddf60d945249d94d56f36995a8b492738d3578311c79e`
 
 ## Completed / observed this session
 
-Reconciled the TASK-0085 branch to merged main `106071d421f696ac3adf180f8dafeebc808488ba` and registered draft PR #505. Implemented deterministic static, dependency, contract, sandbox-policy and adversarial evidence plus an independent approval verifier and disabled-by-default bounded canary gate. Candidate code is parsed as data and is not executed; sandbox execution evidence is not claimed. TASK-0085 acceptance criteria remain pending exact-head CI.
+PR #505 exact head `f6499624779c6b2df2222385fc80f31b7b547032` passed Application Foundation run `37769584036`, Security Supply Chain run `37769584041`, and AI Continuity Guard run `37769584235`, then merged to protected main as `6bdee5a903a4f888aa37d5948e88edebdd26409f`. TASK-0085 acceptance criteria are satisfied and TASK-0086 is the canonical active task.
+
+PR #506 removes the remaining interactive next-action requirement from mutating Workspace development. Active mutating development now selects and executes the highest-priority safe canonical action automatically. Menus/options remain only for URL-only read-only entry or an explicit user request for choices.
 
 ## Tests
 
-Focused TASK-0085 tests added for deterministic evidence, unsafe generated-code rejection, exact-evidence approval, default-off canary behavior and exposure/reversibility bounds. PR #505 exact-head Application Foundation, Security Supply Chain and AI Continuity runs are pending.
+PR #506 requires exact-head full CI because it contains a guarded task transition plus machine-enforced AI execution behavior changes.
 
 ## Blockers
 
-- None for repository-side TASK-0085 implementation.
+- None.
 
 ## Exact next action
 
-Run and repair TASK-0085 exact-head Application Foundation, Security Supply Chain and AI Continuity gates; reconcile verified evidence before task acceptance.
+Implement TASK-0086 compatibility scoring, deprecation monitoring, rollback/disable and connector lifecycle observability automatically from the accepted TASK-0085 baseline.

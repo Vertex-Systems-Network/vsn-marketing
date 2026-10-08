@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "37114553ea437c71e52bdf4beaa52863515073da",
+  "reconciled_main_sha": "d72190d42db44d57af68a3094681de2658383f06",
   "active_work_path": {
     "kind": "pr",
-    "number": 515,
-    "title": "fix(ai): remove remaining CI-wait and stale-PR stop paths",
-    "branch": "supervisor/continuity-contradiction-cleanup",
-    "disposition": "active_continuity_contradiction_cleanup"
+    "number": 516,
+    "title": "fix(phase14): bind lifecycle failures to operator actions",
+    "branch": "supervisor/task0086-bind-lifecycle-failures",
+    "disposition": "active_task0086_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 516,
+      "title": "fix(phase14): bind lifecycle failures to operator actions",
+      "branch": "supervisor/task0086-bind-lifecycle-failures",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 515,
       "title": "fix(ai): remove remaining CI-wait and stale-PR stop paths",
       "branch": "supervisor/continuity-contradiction-cleanup",
-      "disposition": "active_continuity_contradiction_cleanup",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "d72190d42db44d57af68a3094681de2658383f06"
     },
     {
       "kind": "pr",

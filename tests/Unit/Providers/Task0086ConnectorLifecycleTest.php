@@ -5,6 +5,7 @@ namespace Tests\Unit\Providers;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCompatibilityAssessment;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorDeprecationObservation;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleDecision;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleReconciler;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -119,4 +120,100 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             hash('sha256', 'evidence'),
         );
     }
+
+    public function test_lifecycle_reconciler_blocks_unknown_changes_and_tracks_deprecation(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $reconciler = new ConnectorLifecycleReconciler();
+        $unknown = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.3.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $blocked = $reconciler->reconcile($unknown, null, null, $at);
+        self::assertSame('blocked', $blocked->status);
+        self::assertSame('blocked', $blocked->toArray()['status']);
+
+        $compatible = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $deprecated = new ConnectorDeprecationObservation(
+            'workspace-a', 'example', '1.2.0', 'https://docs.example.test/changelog',
+            hash('sha256', 'source'), $at, new DateTimeImmutable('2026-10-01T00:00:00+00:00'), null,
+        );
+        $degraded = $reconciler->reconcile($compatible, $deprecated, null, $at);
+        self::assertSame('degraded', $degraded->status);
+        self::assertNotNull($degraded->deprecationEvidenceSha256);
+    }
+
+    public function test_failed_reconciliation_is_blocked_and_idempotent_across_retries(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '2.0.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $reconciler = new ConnectorLifecycleReconciler();
+        $key = hash('sha256', 'failed-rollback-attempt');
+        $first = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
+        $retry = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
+
+        self::assertSame('blocked', $first->status);
+        self::assertSame('rollback_execution_failed', $retry->failureCode);
+        self::assertSame($first->reconciliationKey, $retry->reconciliationKey);
+        self::assertSame($first->evidenceSha256, $retry->evidenceSha256);
+    }
+
+    public function test_lifecycle_reconciliation_rejects_cross_workspace_evidence(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-b', 'example', 'disable', 'operator_request',
+            'operator-1', hash('sha256', 'operation'), $at, hash('sha256', 'evidence'),
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler())->reconcile($assessment, null, $decision, $at);
+    }
+
+
+    public function test_disable_and_rollback_decisions_are_reported_without_claiming_execution(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $disable = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'disable', 'operator_request',
+            'operator-1', hash('sha256', 'disable'), $at, $assessment->evidenceSha256,
+        );
+        $rollback = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'rollback', 'operator_request',
+            'operator-1', hash('sha256', 'rollback'), $at, $assessment->evidenceSha256,
+            hash('sha256', 'rollback-candidate'),
+        );
+        $reconciler = new ConnectorLifecycleReconciler();
+
+        self::assertSame('disabled', $reconciler->reconcile($assessment, null, $disable, $at)->status);
+        self::assertSame('rollback_pending', $reconciler->reconcile($assessment, null, $rollback, $at)->status);
+        self::assertSame('operator_rollback_requires_execution_evidence', $reconciler->reconcile($assessment, null, $rollback, $at)->reason);
+    }
+
+    public function test_failed_reconciliation_requires_a_registered_code_and_idempotency_key(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler())->reconcile($assessment, null, null, $at, 'unknown_failure');
+    }
+
 }

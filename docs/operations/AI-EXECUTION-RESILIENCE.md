@@ -107,6 +107,8 @@ Use the repository's existing canonical mechanisms as applicable:
 
 Do not mutate canonical state merely to record that a CI job is still running. The branch/PR/SHA is already durable evidence for that waiting boundary.
 
+Status text is not an execution boundary: while a mutating continuous turn still has execution capacity, pending CI/checkpoint/progress summaries must be followed by continued tool execution rather than a terminal reply. A final handoff requires a documented stop condition plus no remaining executable safe action.
+
 ## 6. Compact end-of-interaction handoff
 
 Repository development responses should end with a compact operational handoff containing:

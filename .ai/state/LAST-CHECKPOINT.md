@@ -2,33 +2,33 @@
 
 ## State
 
-- Timestamp: `2026-10-07T23:29:00+00:00`
-- Observed main: `711d89d503a7a407e05e0af838d8ddb71640e6ab`
+- Timestamp: `2026-10-08T00:13:18+00:00`
+- Observed main: `dace976739d5ad67353d3ff9d77ec25d208c96aa`
 - Active issue: `none`
-- Active PR: `503`
-- Active branch: `supervisor/task0083-acceptance`
-- Current milestone: `TASK-0084-GENERATED-CANDIDATE`
+- Active PR: `504`
+- Active branch: `supervisor/task0084-generated-candidates`
+- Current milestone: `TASK-0085-STATIC-CONTRACT-SANDBOX-ACTIVATION-GATES`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0084`
-- Next task: `TASK-0085`
+- Active task: `TASK-0085`
+- Next task: `TASK-0086`
 - Current phase: `PHASE-14`
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `70dd3dce7011383e8abe921a9e67e4c2dff5a0adb639eb3fbd0c08d941c1b7c1`
+- State fingerprint: `aef9c8ce90d950fc3590d6ac77017d73dbd1ca008aade7a6aa4b6838f7e2d0f2`
 
 ## Completed / observed this session
 
-TASK-0083 bounded connector ingestion is accepted from merged PR #502. Its exact final head passed AI Continuity Guard, Security Supply Chain CI and Application Foundation CI. PHASE-14 is now 35.00% complete and deterministic roadmap progress is 88.75%. TASK-0084 deterministic generated candidate work is active.
+TASK-0084 is complete from PR #504 exact-head evidence. PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911 (including PHP 8.3, PostgreSQL integration and browser parity), Security Supply Chain CI run 37705581937, and AI Continuity Guard run 37705581893. Deterministic roadmap progress is 89.75% and PHASE-14 progress is 55.00%. TASK-0085 static, contract, sandbox, security and canary-activation gates are active; no activation or provider-side effect is authorized.
 
 ## Tests
 
-PR #502 exact head `1214a96480fc6701eb90287424b8cf77525ebb7f` passed AI Continuity Guard run 37700727063, Security Supply Chain CI run 37700727136 and Application Foundation CI run 37700727106. PR #503 must pass its own exact-head closure gates before merge.
+PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911 (including PHP 8.3, PostgreSQL integration and browser parity), Security Supply Chain CI run 37705581937, and AI Continuity Guard run 37705581893. The guarded acceptance/transition commit is being checked at its own exact PR head.
 
 ## Blockers
 
-- None for repository-side TASK-0084 implementation.
+- None for repository-side TASK-0085 implementation.
 
 ## Exact next action
 
-Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards.
+Merge certified PR #504 after the guarded transition passes exact-head gates; then reconcile resulting main and start TASK-0085 from that baseline.

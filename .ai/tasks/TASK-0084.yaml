@@ -3,7 +3,7 @@
   "phase": "PHASE-14",
   "title": "Implement generated adapter and test candidate pipeline",
   "weight": 20,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0083"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Generation is deterministic from an approved connector plan and records generator, template, toolchain and input provenance",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Generated files stay candidate-only inside an allowlisted isolated workspace with no secrets, provider authority or automatic runtime activation",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adversarial tests prevent path escape, workflow/runtime injection, hidden executable payloads and unreviewed dependency introduction",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Implement TASK-0084 deterministic generated adapter/test candidates from accepted connector plans, with allowlisted candidate-only outputs and adversarial path/runtime/dependency guards."
+  "exact_next_action": "TASK-0084 accepted from PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911 (including PHP 8.3, PostgreSQL integration and browser parity), Security Supply Chain CI run 37705581937, and AI Continuity Guard run 37705581893; proceed to TASK-0085 connector validation and activation gates."
 }

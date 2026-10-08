@@ -837,7 +837,7 @@
       "phase": "PHASE-14",
       "title": "Implement generated adapter and test candidate pipeline",
       "weight": 20,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0083"
       ]
@@ -847,7 +847,7 @@
       "phase": "PHASE-14",
       "title": "Implement connector static, contract, sandbox, security and canary activation gates",
       "weight": 20,
-      "status": "planned",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0084"
       ]

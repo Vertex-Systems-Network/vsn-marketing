@@ -176,8 +176,10 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             'operator-1', hash('sha256', 'operation'), $at, hash('sha256', 'evidence'),
         );
 
+        $reconciler = new ConnectorLifecycleReconciler();
+
         $this->expectException(InvalidArgumentException::class);
-        (new ConnectorLifecycleReconciler())->reconcile($assessment, null, $decision, $at);
+        $reconciler->reconcile($assessment, null, $decision, $at);
     }
 
     public function test_disable_and_rollback_decisions_are_reported_without_claiming_execution(): void
@@ -211,7 +213,9 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
         );
 
+        $reconciler = new ConnectorLifecycleReconciler();
+
         $this->expectException(InvalidArgumentException::class);
-        (new ConnectorLifecycleReconciler())->reconcile($assessment, null, null, $at, 'unknown_failure');
+        $reconciler->reconcile($assessment, null, null, $at, 'unknown_failure');
     }
 }

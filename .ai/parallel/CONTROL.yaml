@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.5-autonomous-credit-window",
+  "instruction_revision": "parallel-v2.8.6-autonomous-decision",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
@@ -115,11 +115,11 @@
   "readme_progress_sync_required": true,
   "readme_progress_sync_trigger_path": ".ai/state/CURRENT-STATE.yaml",
   "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT",
-  "next_action_options_required": true,
-  "next_action_options_min_count": 1,
+  "next_action_options_required": false,
+  "next_action_options_min_count": 0,
   "next_action_options_max_count": 3,
   "next_action_primary_source": "exact_next_safe_action",
-  "next_action_interactive_control_preferred": true,
+  "next_action_interactive_control_preferred": false,
   "next_action_click_initiates_request_only": true,
   "next_action_selection_requires_full_resume_revalidation": true,
   "next_action_stale_selection_fails_closed": true,
@@ -217,5 +217,10 @@
     "current_task_and_milestone",
     "phase_module_table"
   ],
-  "readme_partial_progress_sync_is_drift": true
+  "readme_partial_progress_sync_is_drift": true,
+  "next_action_options_mode": "url_only_or_explicit_read_only_request",
+  "next_action_final_handoff_policy": "single_canonical_resume_instruction_no_question",
+  "workspace_continuous_batch_decision_authority": "ai_selects_and_executes_highest_priority_safe_canonical_action",
+  "workspace_continuous_batch_choice_prompt_forbidden": true,
+  "workspace_continuous_batch_unknown_implementation_choice_policy": "canonical_architecture_then_least_privilege_then_smallest_reversible_tested_change"
 }

@@ -33,7 +33,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         self::assertSame([
             'static_analysis', 'dependency_review', 'contract_review', 'sandbox_policy', 'adversarial_review',
         ], array_keys($first->checks));
-        self::assertFalse($first->checks['sandbox_policy']['findings'] !== []);
+        self::assertSame([], $first->checks['sandbox_policy']['findings']);
     }
 
     public function test_review_fails_closed_on_unsafe_generated_php_and_binds_failure_to_artifact_hash(): void
@@ -41,7 +41,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         $candidate = (new ConnectorCandidateGenerator)->generate($this->plan(), 'php-8.3.0');
         $values = $candidate->toArray();
         $files = $values['files'];
-        $files[1]['content'] .= "\n\$payload = system('id');\n";
+        $files[1]['content'] .= "\n\$payload = file_put_contents('/tmp/payload', 'unexpected');\n";
         $files[1]['sha256'] = hash('sha256', $files[1]['content']);
         $mutated = new ConnectorGeneratedCandidate(
             workspaceId: $values['workspace_id'],
@@ -58,7 +58,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
 
         self::assertFalse($evidence->passed);
         self::assertSame('failed', $evidence->checks['static_analysis']['status']);
-        self::assertContains('generated_php_contains_process_or_network_execution', $evidence->checks['static_analysis']['findings']);
+        self::assertContains('generated_php_differs_from_pinned_template', $evidence->checks['static_analysis']['findings']);
         self::assertSame($files[1]['sha256'], $evidence->artifacts[1]['sha256']);
         self::assertFalse($evidence->activationAllowed);
     }

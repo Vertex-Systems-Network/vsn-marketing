@@ -21,7 +21,7 @@ final readonly class ConnectorCandidateApproval
         }
 
         if (trim($approverId) === '' || $approvedAt->getOffset() !== 0) {
-            throw new InvalidArgumentException('Approval requires an identified authorized approver and UTC timestamp.');
+            throw new InvalidArgumentException('Approval requires an identified approver and UTC timestamp.');
         }
     }
 }

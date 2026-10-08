@@ -48,10 +48,12 @@ final class ConnectorCandidateReviewService
         $manifest = json_decode($manifestContent, true);
 
         $pathFindings = $this->pathFindings(array_keys($files), [$manifestPath, $adapterPath, $testPath]);
+        $retrievedAt = is_array($manifest) ? ($manifest['source_provenance']['retrieved_at'] ?? '') : '';
+        $retrievedAt = is_string($retrievedAt) ? $retrievedAt : '';
         $staticFindings = $this->staticFindings([
             ['path' => $adapterPath, 'content' => $adapterContent],
             ['path' => $testPath, 'content' => $testContent],
-        ], $testPath, $className);
+        ], $testPath, $className, $candidate->providerKey, $retrievedAt);
         $dependencyFindings = $this->dependencyFindings($files, is_array($manifest) ? $manifest : []);
         $contractFindings = $this->contractFindings($candidate, is_array($manifest) ? $manifest : [], $adapterContent, $testContent);
         $sandboxFindings = $this->sandboxFindings();
@@ -121,12 +123,20 @@ final class ConnectorCandidateReviewService
      * @param list<array{path: string, content: string}> $sources
      * @return list<string>
      */
-    private function staticFindings(array $sources, string $testPath, string $className): array
+    private function staticFindings(array $sources, string $testPath, string $className, string $providerKey, string $retrievedAt): array
     {
         $findings = [];
+        $expectedSources = [
+            'connector-candidates/'.$providerKey.'/src/'.$className.'ConnectorCandidate.php' => $this->expectedAdapterSource($className, $providerKey, $retrievedAt),
+            $testPath => $this->expectedTestSource($className, $providerKey),
+        ];
         $safeInclude = "require_once __DIR__.'/../src/{$className}ConnectorCandidate.php';";
 
         foreach ($sources as $source) {
+            if (($expectedSources[$source['path']] ?? null) !== $source['content']) {
+                $findings[] = 'generated_php_differs_from_pinned_template';
+            }
+
             try {
                 $tokens = token_get_all($source['content'], TOKEN_PARSE);
             } catch (\ParseError) {
@@ -251,6 +261,16 @@ final class ConnectorCandidateReviewService
         }
 
         return array_values(array_unique($findings));
+    }
+
+    private function expectedAdapterSource(string $className, string $providerKey, string $timestamp): string
+    {
+        return "<?php\n\ndeclare(strict_types=1);\n\nnamespace Generated\\ConnectorCandidates;\n\nuse App\\Modules\\Providers\\Domain\\Connectors\\ConnectorManifest;\nuse App\\Modules\\Providers\\Domain\\Connectors\\Contracts\\ConnectorAdapter;\nuse DateTimeImmutable;\n\nfinal readonly class {$className}ConnectorCandidate implements ConnectorAdapter\n{\n    public function manifest(): ConnectorManifest\n    {\n        return new ConnectorManifest(\n            connectorKey: ".var_export('candidate-'.$providerKey, true).",\n            connectorVersion: '0.0.0-candidate',\n            apiVersionStrategy: 'manual-review-required',\n            documentationUrl: '',\n            observedAt: new DateTimeImmutable(".var_export($timestamp, true)."),\n            sandboxLimitations: ['candidate_only', 'no_provider_io', 'no_credentials'],\n            capabilities: [],\n            metadata: ['activation_allowed' => false],\n        );\n    }\n}\n";
+    }
+
+    private function expectedTestSource(string $className, string $providerKey): string
+    {
+        return "<?php\n\nnamespace Tests\\Generated\\ConnectorCandidates;\n\nuse Generated\\ConnectorCandidates\\{$className}ConnectorCandidate;\nuse PHPUnit\\Framework\\TestCase;\n\nfinal class {$className}ConnectorCandidateTest extends TestCase\n{\n    public function testGeneratedAdapterRemainsAnInertCandidate(): void\n    {\n        require_once __DIR__.'/../src/{$className}ConnectorCandidate.php';\n\n        \$manifest = (new {$className}ConnectorCandidate)->manifest();\n\n        self::assertSame('candidate-{$providerKey}', \$manifest->connectorKey);\n        self::assertSame('0.0.0-candidate', \$manifest->connectorVersion);\n        self::assertSame([], \$manifest->capabilities);\n        self::assertContains('candidate_only', \$manifest->sandboxLimitations);\n        self::assertContains('no_provider_io', \$manifest->sandboxLimitations);\n        self::assertContains('no_credentials', \$manifest->sandboxLimitations);\n        self::assertFalse(\$manifest->metadata['activation_allowed']);\n    }\n}\n";
     }
 
     private function className(string $providerKey): string

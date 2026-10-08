@@ -20,6 +20,9 @@ final readonly class ConnectorLifecycleHealth
         public ?string $decisionAuditSha256,
         public ?string $failureCode,
         public string $reconciliationKey,
+        public ?array $compatibilityEvidence = null,
+        public ?array $deprecationEvidence = null,
+        public ?array $decisionEvidence = null,
     ) {
         if (trim($workspaceId) === '' || preg_match('/^[a-z][a-z0-9_-]{0,63}$/D', $providerKey) !== 1
             || ! in_array($status, ['healthy', 'degraded', 'blocked', 'disabled', 'rollback_pending'], true)
@@ -30,6 +33,31 @@ final readonly class ConnectorLifecycleHealth
             || ($failureCode !== null && preg_match('/^[a-z][a-z0-9_]{0,63}$/D', $failureCode) !== 1)
             || preg_match('/^[a-f0-9]{64}$/D', $reconciliationKey) !== 1) {
             throw new InvalidArgumentException('Lifecycle health must be tenant-scoped, UTC-dated and evidence-backed.');
+        }
+
+        if ($compatibilityEvidence !== null
+            && ($compatibilityEvidence['evidence_sha256'] ?? null) !== $compatibilityEvidenceSha256) {
+            throw new InvalidArgumentException('Compatibility lifecycle evidence does not match its digest.');
+        }
+
+        if ($deprecationEvidence !== null && ($deprecationEvidenceSha256 === null
+            || hash('sha256', json_encode(
+                $deprecationEvidence,
+                JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+            )) !== $deprecationEvidenceSha256)) {
+            throw new InvalidArgumentException('Deprecation lifecycle evidence does not match its digest.');
+        }
+
+        if ($decisionEvidence !== null
+            && ($decisionEvidence['audit_sha256'] ?? null) !== $decisionAuditSha256) {
+            throw new InvalidArgumentException('Decision lifecycle evidence does not match its digest.');
+        }
+
+        foreach ([$compatibilityEvidence, $deprecationEvidence, $decisionEvidence] as $evidence) {
+            if ($evidence !== null && (($evidence['workspace_id'] ?? null) !== $workspaceId
+                || ($evidence['provider_key'] ?? null) !== $providerKey)) {
+                throw new InvalidArgumentException('Lifecycle evidence snapshots cannot cross workspace or provider boundaries.');
+            }
         }
 
         $this->evidenceSha256 = hash('sha256', json_encode(
@@ -59,6 +87,9 @@ final readonly class ConnectorLifecycleHealth
             'decision_audit_sha256' => $this->decisionAuditSha256,
             'failure_code' => $this->failureCode,
             'reconciliation_key' => $this->reconciliationKey,
+            'compatibility_evidence' => $this->compatibilityEvidence,
+            'deprecation_evidence' => $this->deprecationEvidence,
+            'decision_evidence' => $this->decisionEvidence,
         ];
     }
 }

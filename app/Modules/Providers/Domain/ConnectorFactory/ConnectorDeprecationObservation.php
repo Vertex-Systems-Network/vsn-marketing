@@ -19,7 +19,7 @@ final readonly class ConnectorDeprecationObservation
     ) {
         $source = parse_url($sourceUri);
         if (trim($workspaceId) === '' || preg_match('/^[a-z][a-z0-9_-]{0,63}$/D', $providerKey) !== 1
-            || preg_match('/^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$/D', $contractVersion) !== 1
+            || preg_match('/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/D', $contractVersion) !== 1
             || ! is_array($source) || strtolower($source['scheme'] ?? '') !== 'https' || empty($source['host'])
             || isset($source['user']) || isset($source['pass'])
             || preg_match('/^[a-f0-9]{64}$/D', $sourceSha256) !== 1) {

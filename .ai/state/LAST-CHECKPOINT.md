@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T17:32:22+00:00`
-- Observed main: `d72190d42db44d57af68a3094681de2658383f06`
+- Timestamp: `2026-10-08T17:57:30+00:00`
+- Observed main: `4cec9d6b4f1f91733b012401c144efce090257a5`
 - Active issue: `none`
-- Active PR: `516`
-- Active branch: `supervisor/task0086-bind-lifecycle-failures`
+- Active PR: `517`
+- Active branch: `supervisor/task0086-persist-lifecycle-health`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `39f2d73bee98e9c6d5bef4e3cc28a204a3a8a7c0db9fcdf7053c225098778058`
+- State fingerprint: `b6e9cfe51631442d9075581123dc5da95d644fae21c832f2a56a5702f2fdf7ff`
 
 ## Completed / observed this session
 
-PR #515 merged at d72190d42db44d57af68a3094681de2658383f06; exact-head governance, application, integration, PHP 8.3, E2E, security, continuity, release-integrity and scorecard checks passed. PR #516 adds decision-bound rollback/disable failure reconciliation and adversarial tests.
+PR #516 merged at 4cec9d6b4f1f91733b012401c144efce090257a5. PR #517 adds workspace-scoped lifecycle health persistence and integrity-verified provenance. Added an adversarial test for altered persisted evidence.
 
 ## Tests
 
-PR #515 exact-head full gates passed. PR #516 exact-head CI is running; the initial governance check found the stale pre-PR-515 main anchor, now reconciled in this carrier.
+PR #516 resulting-main application, infrastructure integration, PHP 8.3 and E2E gates passed. PR #517 governance passed; application and security workflows started, with dependency audit and initial scans passing on the prior head. Fresh full gates are required for this updated test head.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #515 exact-head full gates passed. PR #516 exact-head CI is running; the init
 
 ## Exact next action
 
-Require PR #516 exact-head gates; repair any failure, merge the verified head, reconcile the resulting main, then continue TASK-0086 acceptance work.
+Require PR #517 exact-head full application, infrastructure integration, PHP 8.3, E2E, security, continuity and governance gates; repair failures, merge the verified head, reconcile resulting main, then continue TASK-0086 acceptance work.

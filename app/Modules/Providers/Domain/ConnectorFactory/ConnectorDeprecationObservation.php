@@ -17,10 +17,13 @@ final readonly class ConnectorDeprecationObservation
         public ?DateTimeImmutable $deprecatedAt,
         public ?DateTimeImmutable $sunsetAt,
     ) {
+        $source = parse_url($sourceUri);
         if (trim($workspaceId) === '' || preg_match('/^[a-z][a-z0-9_-]{0,63}$/D', $providerKey) !== 1
-            || trim($contractVersion) === '' || trim($sourceUri) === ''
+            || preg_match('/^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$/D', $contractVersion) !== 1
+            || ! is_array($source) || strtolower($source['scheme'] ?? '') !== 'https' || empty($source['host'])
+            || isset($source['user']) || isset($source['pass'])
             || preg_match('/^[a-f0-9]{64}$/D', $sourceSha256) !== 1) {
-            throw new InvalidArgumentException('Deprecation evidence requires tenant, provider, version and source provenance.');
+            throw new InvalidArgumentException('Deprecation evidence requires tenant, provider, semantic version and credential-free HTTPS provenance.');
         }
 
         foreach ([$observedAt, $deprecatedAt, $sunsetAt] as $date) {

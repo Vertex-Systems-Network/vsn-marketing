@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "d72190d42db44d57af68a3094681de2658383f06",
+  "reconciled_main_sha": "4cec9d6b4f1f91733b012401c144efce090257a5",
   "active_work_path": {
     "kind": "pr",
-    "number": 516,
-    "title": "fix(phase14): bind lifecycle failures to operator actions",
-    "branch": "supervisor/task0086-bind-lifecycle-failures",
+    "number": 517,
+    "title": "feat(phase14): persist tenant-scoped connector lifecycle evidence",
+    "branch": "supervisor/task0086-persist-lifecycle-health",
     "disposition": "active_task0086_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 517,
+      "title": "feat(phase14): persist tenant-scoped connector lifecycle evidence",
+      "branch": "supervisor/task0086-persist-lifecycle-health",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 516,
       "title": "fix(phase14): bind lifecycle failures to operator actions",
       "branch": "supervisor/task0086-bind-lifecycle-failures",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4cec9d6b4f1f91733b012401c144efce090257a5"
     },
     {
       "kind": "pr",

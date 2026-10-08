@@ -274,6 +274,9 @@ def validate() -> list[str]:
         "workspace_continuous_batch_handoff_proof_required": "documented_stop_condition_plus_no_executable_safe_action",
         "workspace_continuous_batch_ci_wait_status_phrase_policy": "never_end_with_next_once_ci_finishes_while_current_turn_can_still_execute",
         "workspace_continuous_batch_no_ready_work_policy": "pending_ci_or_recoverable_internal_dependency_is_not_roadmap_exhaustion",
+        "workspace_continuous_batch_stale_active_pr_policy": "live_merged_or_closed_pointer_is_resume_hint_auto_reconcile_and_continue",
+        "workspace_continuous_batch_legacy_external_wait_stop_forbidden": True,
+        "workspace_continuous_batch_legacy_final_option_handoff_forbidden": True,
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:
@@ -364,6 +367,8 @@ def validate() -> list[str]:
             errors.append("AI execution resilience contains legacy active-task execution boundary")
         if "safe canonical roadmap frontier" not in resilience:
             errors.append("AI execution resilience roadmap-frontier instruction is missing")
+        if "end at the durable repository checkpoint" in resilience:
+            errors.append("AI execution resilience contains legacy external-CI terminal checkpoint wording")
 
         workspace_contract = (ROOT / ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md").read_text(encoding="utf-8")
         parallel_contract = (ROOT / ".ai/13-PARALLEL-DEVELOPMENT.md").read_text(encoding="utf-8")
@@ -385,6 +390,12 @@ def validate() -> list[str]:
         ai_native_plan = (ROOT / ".ai/parallel/AI-NATIVE-PLAN.md").read_text(encoding="utf-8")
         if "expose the normal shuffled next-action options if further work remains" in ai_native_plan:
             errors.append("AI-NATIVE-PLAN contains legacy shuffled final-handoff options")
+        if "next-action UI/numbered options contract applies at final handoff" in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN contains legacy final-handoff option contract")
+        if "stale resume hint" not in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN stale merged active-PR auto-reconciliation rule is missing")
+        if "stale resume metadata" not in workspace_contract:
+            errors.append("workspace instruction missing stale merged active-PR auto-reconciliation rule")
         if "do **not** present a next-action menu or ask the user to choose what to do next" not in ai_native_plan:
             errors.append("AI-NATIVE-PLAN autonomous final-handoff rule is missing")
     except (OSError, ValueError) as exc:

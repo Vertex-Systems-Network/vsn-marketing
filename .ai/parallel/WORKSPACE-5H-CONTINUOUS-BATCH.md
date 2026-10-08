@@ -83,6 +83,8 @@ Do not emit a user-facing next-action handoff **or a status-only terminal reply*
 - If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded observation budget. **Do not turn that state into a terminal status reply while the current host turn can still execute tools.** Continue state-driven/backoff observation until the check resolves or an actual documented stop condition (credit/context/tool exhaustion or sole human-only boundary) is observed. CI waiting by itself is never a stop condition and never becomes a user confirmation request.
 - Never create a state-only commit just to narrate pending CI.
 
+A durable `active_pr` / queue pointer that resolves live as merged or closed is stale resume metadata, not a stop condition. Reconcile it from live GitHub evidence, clear/supersede the stale actionable path, and route automatically to the current safe canonical successor without asking the user or emitting a status-only reply.
+
 ## Duplicate/stale work policy
 
 When two PRs cover the same accepted work:

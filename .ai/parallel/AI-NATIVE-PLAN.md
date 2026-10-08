@@ -35,7 +35,9 @@ Inside the started batch, automatically perform:
 
 Do not stop or ask the user at validator failures, formatting/type/lint/test failures, ordinary CI failures, stale branches, duplicate PRs, merge conflicts, dependency conflicts, README/progress drift, transient connector/tool failures, or a required same-scope repair. Resolve them, use documented fallbacks, and continue.
 
-Do not emit next-action options at internal batch boundaries. The next-action UI/numbered options contract applies at final handoff or a genuine hard stop.
+A compact-state `active_pr` that is already merged/closed in live GitHub is a stale resume hint, not a blocker and not a handoff condition. Live GitHub truth wins: reconcile/clear the stale carrier automatically and continue to the current canonical successor in the same turn.
+
+Do not emit next-action options during mutating development, including final mutating handoff. Numbered/clickable options are limited to URL-only read-only entry or an explicit user request for choices.
 
 ## Scope and authority
 

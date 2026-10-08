@@ -37,7 +37,7 @@ When GitHub Actions or another external gate has started, the artifact being ver
    - a failure needs logs and a bounded fix;
    - the remaining checks are already completing and one final read is enough to close the milestone;
 4. if required external checks are still running, do not consume that pending artifact and do not tight-poll; continue safe independent dependency-ready work inside an active 5-hour batch;
-5. if no such work exists and the external result is the sole remaining path, end at the durable repository checkpoint; on the next resume, re-read the actual GitHub state and continue from that evidence.
+5. if no such work exists and the external result is the sole remaining internal dependency, keep the exact head in VERIFYING/WAITING_EXTERNAL and continue state-driven observation while the current host turn can execute; do not emit a terminal status reply merely because the gate is still running. End only on an actually observed credit/context/tool limit or another canonical stop condition.
 
 Never weaken, skip, cancel, or replace a required gate merely to avoid a timeout.
 

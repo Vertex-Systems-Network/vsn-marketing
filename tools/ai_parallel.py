@@ -255,7 +255,7 @@ def validate() -> list[str]:
         "workspace_continuous_batch_final_handoff_only": True,
         "workspace_continuous_batch_handoff_requires_stop_condition": True,
         "workspace_continuous_batch_ci_failure_policy": "diagnose_repair_rerun_same_scope",
-        "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_bounded_backoff_observe_then_checkpoint",
+        "workspace_continuous_batch_external_wait_policy": "continue_independent_ready_work_else_state_driven_observe_until_resolution_or_actual_execution_limit",
         "workspace_continuous_batch_validator_failure_policy": "diagnose_repair_fallback_continue_without_user_confirmation",
         "workspace_continuous_batch_routine_confirmation_policy": "forbidden",
         "workspace_continuous_batch_ci_wait_confirmation_forbidden": True,
@@ -267,12 +267,27 @@ def validate() -> list[str]:
         "workspace_continuous_batch_decision_authority": "ai_selects_and_executes_highest_priority_safe_canonical_action",
         "workspace_continuous_batch_choice_prompt_forbidden": True,
         "workspace_continuous_batch_unknown_implementation_choice_policy": "canonical_architecture_then_least_privilege_then_smallest_reversible_tested_change",
+        "workspace_continuous_batch_status_only_return_forbidden": True,
+        "workspace_continuous_batch_pending_ci_terminal_response_forbidden": True,
+        "workspace_continuous_batch_progress_update_policy": "nonterminal_update_then_continue_execution",
+        "workspace_continuous_batch_host_execution_default": "assume_available_until_actual_credit_context_or_tool_limit_is_observed",
+        "workspace_continuous_batch_handoff_proof_required": "documented_stop_condition_plus_no_executable_safe_action",
+        "workspace_continuous_batch_ci_wait_status_phrase_policy": "never_end_with_next_once_ci_finishes_while_current_turn_can_still_execute",
+        "workspace_continuous_batch_no_ready_work_policy": "pending_ci_or_recoverable_internal_dependency_is_not_roadmap_exhaustion",
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
+    if control.get("workspace_continuous_batch_pre_handoff_recheck_required") != [
+        "exact_main",
+        "active_pr_exact_head_checks",
+        "safe_independent_work",
+        "recoverable_tool_paths",
+        "remaining_credit_or_context",
+    ]:
+        errors.append("workspace_continuous_batch_pre_handoff_recheck_required drift")
     if control.get("workspace_continuous_batch_stop_conditions") != [
-        "explicit_narrow_objective_complete_or_no_safe_canonical_ready_work",
+        "explicit_narrow_objective_complete_or_canonical_roadmap_exhausted_without_pending_recoverable_internal_dependency",
         "workspace_credit_or_300_minute_window_exhausted",
         "human_only_external_authority_is_sole_remaining_frontier_path",
         "unresolved_safety_security_correctness_conflict_and_no_independent_safe_work",
@@ -349,6 +364,29 @@ def validate() -> list[str]:
             errors.append("AI execution resilience contains legacy active-task execution boundary")
         if "safe canonical roadmap frontier" not in resilience:
             errors.append("AI execution resilience roadmap-frontier instruction is missing")
+
+        workspace_contract = (ROOT / ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md").read_text(encoding="utf-8")
+        parallel_contract = (ROOT / ".ai/13-PARALLEL-DEVELOPMENT.md").read_text(encoding="utf-8")
+        next_action_contract = (ROOT / ".ai/NEXT-ACTION-OPTIONS.md").read_text(encoding="utf-8")
+
+        if "CI waiting by itself is never a stop condition" not in workspace_contract:
+            errors.append("continuous instruction content regressed to CI-wait handoff")
+        if "status-only terminal reply" not in workspace_contract:
+            errors.append("continuous instruction content missing nonterminal status rule")
+        if "progress/status message never ends the batch" not in parallel_contract:
+            errors.append("parallel instruction content missing nonterminal progress rule")
+        if "Progress updates are nonterminal" not in next_action_contract:
+            errors.append("next-action instruction content missing nonterminal progress rule")
+        if "End the batch for CI waiting only when" in parallel_contract:
+            errors.append("parallel instruction content contains legacy CI-wait stop boundary")
+        if "before ending the batch. CI waiting never becomes a user confirmation request." in workspace_contract:
+            errors.append("workspace instruction content contains legacy CI-wait terminal wording")
+
+        ai_native_plan = (ROOT / ".ai/parallel/AI-NATIVE-PLAN.md").read_text(encoding="utf-8")
+        if "expose the normal shuffled next-action options if further work remains" in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN contains legacy shuffled final-handoff options")
+        if "do **not** present a next-action menu or ask the user to choose what to do next" not in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN autonomous final-handoff rule is missing")
     except (OSError, ValueError) as exc:
         errors.append(str(exc))
 

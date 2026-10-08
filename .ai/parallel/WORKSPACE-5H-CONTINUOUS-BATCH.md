@@ -72,7 +72,7 @@ Repeat this loop while Workspace credit remains and the batch objective is not c
 9. **Post-merge continuation.** Re-read live state and continue directly to the next dependency-ready action. If the active phase closes, enter the next canonical dependency-ready phase automatically when no separate authority boundary applies.
 10. **Checkpoint.** Persist a checkpoint at material boundaries, before context/tool exhaustion, at a hard external wait, or when the Workspace credit window ends.
 
-Do not emit a user-facing next-action handoff at internal task/PR/CI boundaries. Normal mutating batches do not require next-action options at all: select and execute the canonical action automatically. URL-only read-only entry or an explicit request for choices are the only normal option surfaces. At a genuine hard stop, report the single exact human requirement instead of presenting a menu.
+Do not emit a user-facing next-action handoff **or a status-only terminal reply** at internal task/PR/CI boundaries. A progress update is nonterminal: after sending it, continue execution in the same turn when execution is still available. Normal mutating batches do not require next-action options at all: select and execute the canonical action automatically. URL-only read-only entry or an explicit request for choices are the only normal option surfaces. At a genuine hard stop, report the single exact human requirement instead of presenting a menu.
 
 ## CI and external waits
 
@@ -80,7 +80,7 @@ Do not emit a user-facing next-action handoff at internal task/PR/CI boundaries.
 - A failed required check is work, not a stop condition: diagnose and repair the same scope.
 - A running external check is not automatically a batch stop. Continue independent dependency-ready work that does not consume the pending artifact.
 - CI observation uses bounded backoff: up to **4 normal exact-head observations per gate cycle**, and up to **12** when a durable material state-transition exception is recorded. Observations must be state-driven/meaningfully spaced; unchanged rapid rereads remain forbidden.
-- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded observation budget before ending the batch. CI waiting never becomes a user confirmation request.
+- If no safe independent work exists, persist `WAITING_EXTERNAL` with exact run/head evidence and use the remaining bounded observation budget. **Do not turn that state into a terminal status reply while the current host turn can still execute tools.** Continue state-driven/backoff observation until the check resolves or an actual documented stop condition (credit/context/tool exhaustion or sole human-only boundary) is observed. CI waiting by itself is never a stop condition and never becomes a user confirmation request.
 - Never create a state-only commit just to narrate pending CI.
 
 ## Duplicate/stale work policy
@@ -104,13 +104,19 @@ For a generic `start`/`continue`/`resume`, the declared batch objective is maxim
 - Do not cross into deployment/release, production/provider actions, destructive operations, or unrelated/undeclared roadmap work without the separate authority or canonical declaration those actions require.
 - Research-first and guarded-transition requirements still apply; satisfy them automatically when possible rather than asking for routine permission.
 
+## Mandatory pre-handoff proof
+
+Before any terminal user-facing response in a mutating continuous batch, re-check: exact main, the active PR exact-head checks, safe independent roadmap work, recoverable tool paths, and remaining credit/context. A handoff is legal only when a documented stop condition is actually true **and** there is no executable safe action left in the current turn.
+
+The following are explicitly **not** valid terminal reasons while execution remains available: “CI is still running”, “next: merge when green”, “waiting for integration”, “PR is ready except one check”, “task still in progress”, “checkpoint written”, or a progress/status summary. These are internal states; continue observing, repairing, merging, reconciling, or executing the next safe slice.
+
 ## Stop conditions
 
 **Conversation return is forbidden merely because one coherent/substantial slice finished.** Before any user-facing handoff, the Supervisor MUST prove that at least one stop condition below is true. If none is true, select the next safe canonical work item and continue in the same turn.
 
 The batch ends only when one of these is true:
 
-1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap has no safe dependency-ready work remaining;
+1. the explicit narrow batch objective is complete, or for a generic continuous batch the canonical roadmap is truly exhausted **and there is no pending/recoverable internal dependency such as CI, review, merge, reconciliation, or a repository-supported retry/fallback that can unlock the frontier**;
 2. the 300-minute / available Workspace credit window is exhausted;
 3. a genuine human-only external authority/input is the sole remaining path across the safe roadmap frontier;
 4. a safety/security/correctness conflict cannot be resolved from repository evidence and no independent safe frontier work remains;

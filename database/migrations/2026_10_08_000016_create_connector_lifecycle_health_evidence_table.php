@@ -37,7 +37,7 @@ return new class extends Migration
         Schema::create('connector_lifecycle_health', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->uuid('workspace_id');
-            $table->string('provider_key', 64);
+            $table->string('provider_key', 120);
             $table->string('status', 32);
             $table->string('reason', 191);
             $table->timestampTz('observed_at');

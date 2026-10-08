@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T17:50:30+00:00`
-- Observed main: `4cec9d6b4f1f91733b012401c144efce090257a5`
+- Timestamp: `2026-10-08T17:32:22+00:00`
+- Observed main: `d72190d42db44d57af68a3094681de2658383f06`
 - Active issue: `none`
-- Active PR: `517`
-- Active branch: `supervisor/task0086-persist-lifecycle-health`
+- Active PR: `516`
+- Active branch: `supervisor/task0086-bind-lifecycle-failures`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `a1620c7dc6e972e2082380194ac5bf46d1cc7cb86f79838a587a096a24da8496`
+- State fingerprint: `39f2d73bee98e9c6d5bef4e3cc28a204a3a8a7c0db9fcdf7053c225098778058`
 
 ## Completed / observed this session
 
-PR #516 merged as 4cec9d6b4f1f91733b012401c144efce090257a5 after exact-head application, integration, PHP 8.3, E2E, security, continuity and governance checks passed. PR #517 adds tenant-scoped lifecycle health persistence and durable compatibility, deprecation and decision evidence.
+PR #515 merged at d72190d42db44d57af68a3094681de2658383f06; exact-head governance, application, integration, PHP 8.3, E2E, security, continuity, release-integrity and scorecard checks passed. PR #516 adds decision-bound rollback/disable failure reconciliation and adversarial tests.
 
 ## Tests
 
-PR #516 exact-head full gates passed. Resulting-main Application Foundation CI is still running; PR #517 exact-head full gates will run on the reconciled state and implementation head.
+PR #515 exact-head full gates passed. PR #516 exact-head CI is running; the initial governance check found the stale pre-PR-515 main anchor, now reconciled in this carrier.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #516 exact-head full gates passed. Resulting-main Application Foundation CI i
 
 ## Exact next action
 
-Require PR #517 exact-head and resulting-main gates; repair any failures, merge only the verified head, then continue TASK-0086 acceptance.
+Require PR #516 exact-head gates; repair any failure, merge the verified head, reconcile the resulting main, then continue TASK-0086 acceptance work.

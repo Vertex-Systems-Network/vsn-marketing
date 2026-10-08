@@ -7,6 +7,7 @@ use App\Modules\Providers\Application\RegisterProvider;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCompatibilityAssessment;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorDeprecationObservation;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleReconciler;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleHealth;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleDecision;
 use App\Modules\Providers\Domain\ConnectorFactory\Contracts\ConnectorLifecycleHealthRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -64,6 +65,35 @@ function task0086LifecycleHealth(string $workspaceId, string $providerKey, strin
         idempotencyKey: hash('sha256', $key),
     );
 }
+
+it('rejects evidence snapshots scoped to another workspace', function () {
+    $fixture = task0086LifecyclePersistenceFixture();
+    $other = task0086LifecyclePersistenceFixture();
+    $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+    $assessment = ConnectorCompatibilityAssessment::assess(
+        $other['workspace_id'],
+        $other['provider_key'],
+        '1.2.0',
+        '1.2.0',
+        ['contacts.read' => '1.0.0'],
+        ['contacts.read' => '1.0.0'],
+        $at,
+    );
+
+    expect(fn () => new ConnectorLifecycleHealth(
+        workspaceId: $fixture['workspace_id'],
+        providerKey: $fixture['provider_key'],
+        status: 'healthy',
+        reason: 'contract_compatible',
+        observedAt: $at,
+        compatibilityEvidenceSha256: $assessment->evidenceSha256,
+        deprecationEvidenceSha256: null,
+        decisionAuditSha256: null,
+        failureCode: null,
+        reconciliationKey: hash('sha256', 'cross-tenant'),
+        compatibilityEvidence: $assessment->toArray(),
+    ))->toThrow(InvalidArgumentException::class);
+});
 
 it('records lifecycle health idempotently and verifies the evidence hash on read', function () {
     $fixture = task0086LifecyclePersistenceFixture();

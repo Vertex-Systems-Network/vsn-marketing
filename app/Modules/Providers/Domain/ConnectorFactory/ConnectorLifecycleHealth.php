@@ -53,6 +53,13 @@ final readonly class ConnectorLifecycleHealth
             throw new InvalidArgumentException('Decision lifecycle evidence does not match its digest.');
         }
 
+        foreach ([$compatibilityEvidence, $deprecationEvidence, $decisionEvidence] as $evidence) {
+            if ($evidence !== null && (($evidence['workspace_id'] ?? null) !== $workspaceId
+                || ($evidence['provider_key'] ?? null) !== $providerKey)) {
+                throw new InvalidArgumentException('Lifecycle evidence snapshots cannot cross workspace or provider boundaries.');
+            }
+        }
+
         $this->evidenceSha256 = hash('sha256', json_encode(
             $this->payload(),
             JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,

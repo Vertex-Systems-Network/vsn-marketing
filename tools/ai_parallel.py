@@ -214,11 +214,11 @@ def validate() -> list[str]:
         "readme_progress_sync_required": True,
         "readme_progress_sync_trigger_path": ".ai/state/CURRENT-STATE.yaml",
         "readme_progress_sync_machine_marker": "AI_PROGRESS_SNAPSHOT",
-        "next_action_options_required": True,
-        "next_action_options_min_count": 1,
+        "next_action_options_required": False,
+        "next_action_options_min_count": 0,
         "next_action_options_max_count": 3,
         "next_action_primary_source": "exact_next_safe_action",
-        "next_action_interactive_control_preferred": True,
+        "next_action_interactive_control_preferred": False,
         "next_action_click_initiates_request_only": True,
         "next_action_selection_requires_full_resume_revalidation": True,
         "next_action_stale_selection_fails_closed": True,
@@ -229,6 +229,8 @@ def validate() -> list[str]:
         "next_action_same_number_exception": "fewer_than_two_valid_options",
         "next_action_canonical_action_may_change_number": True,
         "next_action_recommended_label_required": True,
+        "next_action_options_mode": "url_only_or_explicit_read_only_request",
+        "next_action_final_handoff_policy": "single_canonical_resume_instruction_no_question",
         "security_fail_closed": True,
         "observed_main_semantics": "snapshot_basis_anchor",
         "self_reconciliation_descendant_is_current": True,
@@ -262,6 +264,9 @@ def validate() -> list[str]:
         "workspace_continuous_batch_duplicate_pr_policy": "select_clean_authoritative_carrier_and_supersede_stale",
         "workspace_continuous_batch_merge_policy": "merge_verified_green_head_without_reconfirmation",
         "workspace_continuous_batch_checkpoint_policy": "material_boundary_credit_end_or_hard_blocker",
+        "workspace_continuous_batch_decision_authority": "ai_selects_and_executes_highest_priority_safe_canonical_action",
+        "workspace_continuous_batch_choice_prompt_forbidden": True,
+        "workspace_continuous_batch_unknown_implementation_choice_policy": "canonical_architecture_then_least_privilege_then_smallest_reversible_tested_change",
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:

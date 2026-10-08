@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "46381af47b282806c0b575cf3d9aa0c0581ebcf9",
+  "reconciled_main_sha": "10412ad085520ca5fc1949371755fd49072a3748",
   "active_work_path": {
     "kind": "pr",
-    "number": 510,
-    "title": "control: reconcile TASK-0086 merge state",
-    "branch": "supervisor/task0086-main-reconciliation",
+    "number": 511,
+    "title": "fix(phase14): fail closed on missing connector capability evidence",
+    "branch": "supervisor/task0086-require-capability-evidence",
     "disposition": "active_task0086_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 511,
+      "title": "fix(phase14): fail closed on missing connector capability evidence",
+      "branch": "supervisor/task0086-require-capability-evidence",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 510,
       "title": "control: reconcile TASK-0086 merge state",
       "branch": "supervisor/task0086-main-reconciliation",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "10412ad085520ca5fc1949371755fd49072a3748"
     },
     {
       "kind": "pr",

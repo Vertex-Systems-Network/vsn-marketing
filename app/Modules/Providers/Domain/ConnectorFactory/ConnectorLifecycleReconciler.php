@@ -28,6 +28,18 @@ final class ConnectorLifecycleReconciler
             throw new InvalidArgumentException('Lifecycle reconciliation timestamps must use UTC.');
         }
 
+        if ($assessment->assessedAt > $observedAt) {
+            throw new InvalidArgumentException('Compatibility assessment cannot be newer than its reconciliation observation.');
+        }
+
+        if ($deprecation !== null && $deprecation->observedAt > $observedAt) {
+            throw new InvalidArgumentException('Deprecation evidence cannot be newer than its reconciliation observation.');
+        }
+
+        if ($decision !== null && $decision->decidedAt > $observedAt) {
+            throw new InvalidArgumentException('Lifecycle decision cannot be newer than its reconciliation observation.');
+        }
+
         foreach ([$deprecation, $decision] as $evidence) {
             if ($evidence !== null && ($evidence->workspaceId !== $assessment->workspaceId
                 || $evidence->providerKey !== $assessment->providerKey)) {

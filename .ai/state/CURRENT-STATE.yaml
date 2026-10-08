@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b6a581ed83d0552a2ba6990f0a3c4e4adaa7e62d",
+  "observed_main_sha": "3c8c9be306437b62287cf7bb611836b4779509c7",
   "active_issue": null,
-  "active_pr": 507,
-  "active_branch": "supervisor/task0086-lifecycle",
+  "active_pr": 509,
+  "active_branch": "supervisor/task0086-temporal-evidence",
   "current_milestone": "TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Continue TASK-0086: complete lifecycle health and failure reconciliation, then validate exact-head CI.",
+  "exact_next_safe_action": "Wait for PR #509 exact-head CI. If required checks pass, merge with head SHA validation; then capture merge SHA and reconcile main state through follow-up transaction.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Continue TASK-0086: complete lifecycle health and failure reconciliation, then validate exact-head CI."
+  "exact_next_action": "Wait for PR #509 exact-head CI. If required checks pass, merge with head SHA validation; then capture merge SHA and reconcile main state through follow-up transaction."
 }

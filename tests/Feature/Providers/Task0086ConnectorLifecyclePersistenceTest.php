@@ -214,7 +214,6 @@ it('rejects an unknown partial schema rather than adopting it', function () {
     $migration->up();
 });
 
-
 it('fails closed when a persisted lifecycle evidence snapshot is tampered with', function () {
     $fixture = task0086LifecyclePersistenceFixture();
     $health = task0086LifecycleHealth($fixture['workspace_id'], $fixture['provider_key'], '2026-10-08T00:00:00+00:00', 'tamper-check');

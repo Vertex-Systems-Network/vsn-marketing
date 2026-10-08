@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T16:54:00+00:00`
-- Observed main: `37114553ea437c71e52bdf4beaa52863515073da`
+- Timestamp: `2026-10-08T17:32:22+00:00`
+- Observed main: `d72190d42db44d57af68a3094681de2658383f06`
 - Active issue: `none`
-- Active PR: `515`
-- Active branch: `supervisor/continuity-contradiction-cleanup`
+- Active PR: `516`
+- Active branch: `supervisor/task0086-bind-lifecycle-failures`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,22 +15,20 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `52eda50cc0b4ccafade62febe780294340b386a88223e4318c34a328657b7e0d`
+- State fingerprint: `39f2d73bee98e9c6d5bef4e3cc28a204a3a8a7c0db9fcdf7053c225098778058`
 
 ## Completed / observed this session
 
-PR #513 merged as `c3916dd82570fa632c5e5c2e363af4928d2c48d1`. PR #514 exact head `5bca00e765140aeabeb3f0753ec71554533e634e` passed Application Foundation, PostgreSQL integration, E2E, PHP floor, Security Supply Chain and AI Continuity/governance gates and merged as `37114553ea437c71e52bdf4beaa52863515073da`.
-
-Post-merge contradiction audit found two residual legacy instructions: AI Execution Resilience still allowed ending at a durable checkpoint when CI was the sole internal dependency, and AI-NATIVE-PLAN still allowed numbered next-action UI at final handoff. PR #515 removes both and defines a merged/closed durable active-PR pointer as stale resume metadata that must be auto-reconciled from live GitHub truth.
+PR #515 merged at d72190d42db44d57af68a3094681de2658383f06; exact-head governance, application, integration, PHP 8.3, E2E, security, continuity, release-integrity and scorecard checks passed. PR #516 adds decision-bound rollback/disable failure reconciliation and adversarial tests.
 
 ## Tests
 
-PR #515 requires exact-head full CI because it changes machine-enforced continuous-execution behavior. `tools/ai_parallel.py` now rejects reintroduction of the legacy CI-wait terminal checkpoint wording, legacy final-handoff options, or missing stale-active-PR auto-reconciliation guidance.
+PR #515 exact-head full gates passed. PR #516 exact-head CI is running; the initial governance check found the stale pre-PR-515 main anchor, now reconciled in this carrier.
 
 ## Blockers
 
-- None.
+- None
 
 ## Exact next action
 
-Require PR #515 exact-head gates; repair any failure, merge the verified head without reconfirmation, reconcile merged/closed carrier metadata automatically, then continue remaining TASK-0086 acceptance work without a status-only handoff.
+Require PR #516 exact-head gates; repair any failure, merge the verified head, reconcile the resulting main, then continue TASK-0086 acceptance work.

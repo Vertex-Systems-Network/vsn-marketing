@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6bdee5a903a4f888aa37d5948e88edebdd26409f",
+  "reconciled_main_sha": "b6a581ed83d0552a2ba6990f0a3c4e4adaa7e62d",
   "active_work_path": {
     "kind": "pr",
-    "number": 506,
-    "title": "fix(ai): make Workspace choose and continue autonomously",
-    "branch": "supervisor/autonomous-decision-no-prompts",
-    "disposition": "active_autonomous_decision_and_task0086_transition"
+    "number": 507,
+    "title": "feat(phase14): add connector lifecycle compatibility evidence",
+    "branch": "supervisor/task0086-lifecycle",
+    "disposition": "active_task0086_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 507,
+      "title": "feat(phase14): add connector lifecycle compatibility evidence",
+      "branch": "supervisor/task0086-lifecycle",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 506,
       "title": "fix(ai): make Workspace choose and continue autonomously",
       "branch": "supervisor/autonomous-decision-no-prompts",
-      "disposition": "active_autonomous_decision_and_task0086_transition",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b6a581ed83d0552a2ba6990f0a3c4e4adaa7e62d"
     },
     {
       "kind": "pr",
@@ -733,7 +742,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard — Default Branch Governance Ledger",
+      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

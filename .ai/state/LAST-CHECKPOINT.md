@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-08T17:57:30+00:00`
+- Timestamp: `2026-10-08T18:50:37+00:00`
 - Observed main: `4cec9d6b4f1f91733b012401c144efce090257a5`
 - Active issue: `none`
 - Active PR: `517`
 - Active branch: `supervisor/task0086-persist-lifecycle-health`
-- Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
+- Current milestone: `TASK-0087-PHASE14-CERTIFICATION`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0086`
-- Next task: `TASK-0087`
+- Active task: `TASK-0087`
+- Next task: `none`
 - Current phase: `PHASE-14`
-- Execution status: `in_progress`
+- Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b6e9cfe51631442d9075581123dc5da95d644fae21c832f2a56a5702f2fdf7ff`
+- State fingerprint: `a6f23f5fc2b9ca5230eedc00c6144daf8b915273b4b529d6359bcea19ce4f9ac`
 
 ## Completed / observed this session
 
-PR #516 merged at 4cec9d6b4f1f91733b012401c144efce090257a5. PR #517 adds workspace-scoped lifecycle health persistence and integrity-verified provenance. Added an adversarial test for altered persisted evidence.
+Merged TASK-0086 implementation on main after full exact-head and resulting-main gates; activated TASK-0087 for PHASE-14 certification.
 
 ## Tests
 
-PR #516 resulting-main application, infrastructure integration, PHP 8.3 and E2E gates passed. PR #517 governance passed; application and security workflows started, with dependency audit and initial scans passing on the prior head. Fresh full gates are required for this updated test head.
+PR #517 exact-head application, integration, PHP 8.3, E2E, security, continuity and governance passed; resulting main 6d6d6a92e6beab287d490143db91a3fe0e72b98e passed foundation, PostgreSQL integration/browser parity, PHP 8.3, E2E, security, continuity, governance and release-integrity.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #516 resulting-main application, infrastructure integration, PHP 8.3 and E2E 
 
 ## Exact next action
 
-Require PR #517 exact-head full application, infrastructure integration, PHP 8.3, E2E, security, continuity and governance gates; repair failures, merge the verified head, reconcile resulting main, then continue TASK-0086 acceptance work.
+Execute TASK-0087 certification: add the requirements/source/policy/test evidence matrix, run adversarial suite, and require exact-head plus resulting-main gates.

@@ -857,7 +857,7 @@
       "phase": "PHASE-14",
       "title": "Implement compatibility scoring, deprecation monitoring, rollback and connector lifecycle observability",
       "weight": 15,
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [
         "TASK-0085"
       ]
@@ -867,7 +867,7 @@
       "phase": "PHASE-14",
       "title": "Certify Phase 14 AI Connector Factory",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0086"
       ]

@@ -267,10 +267,24 @@ def validate() -> list[str]:
         "workspace_continuous_batch_decision_authority": "ai_selects_and_executes_highest_priority_safe_canonical_action",
         "workspace_continuous_batch_choice_prompt_forbidden": True,
         "workspace_continuous_batch_unknown_implementation_choice_policy": "canonical_architecture_then_least_privilege_then_smallest_reversible_tested_change",
+        "workspace_continuous_batch_status_only_return_forbidden": True,
+        "workspace_continuous_batch_pending_ci_terminal_response_forbidden": True,
+        "workspace_continuous_batch_progress_update_policy": "nonterminal_update_then_continue_execution",
+        "workspace_continuous_batch_host_execution_default": "assume_available_until_actual_credit_context_or_tool_limit_is_observed",
+        "workspace_continuous_batch_handoff_proof_required": "documented_stop_condition_plus_no_executable_safe_action",
+        "workspace_continuous_batch_ci_wait_status_phrase_policy": "never_end_with_next_once_ci_finishes_while_current_turn_can_still_execute",
     }
     for key, expected in required_contract.items():
         if control.get(key) != expected:
             errors.append(f"{key} must be {expected!r}")
+    if control.get("workspace_continuous_batch_pre_handoff_recheck_required") != [
+        "exact_main",
+        "active_pr_exact_head_checks",
+        "safe_independent_work",
+        "recoverable_tool_paths",
+        "remaining_credit_or_context",
+    ]:
+        errors.append("workspace_continuous_batch_pre_handoff_recheck_required drift")
     if control.get("workspace_continuous_batch_stop_conditions") != [
         "explicit_narrow_objective_complete_or_no_safe_canonical_ready_work",
         "workspace_credit_or_300_minute_window_exhausted",

@@ -228,8 +228,10 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             $observedAt->modify('+1 minute'),
         );
 
+        $reconciler = new ConnectorLifecycleReconciler;
+
         $this->expectException(InvalidArgumentException::class);
-        (new ConnectorLifecycleReconciler)->reconcile($assessment, null, null, $observedAt);
+        $reconciler->reconcile($assessment, null, null, $observedAt);
     }
 
     public function test_reconciliation_rejects_future_dated_deprecation_evidence(): void
@@ -244,8 +246,10 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             hash('sha256', 'source'), $observedAt->modify('+1 minute'), null, null,
         );
 
+        $reconciler = new ConnectorLifecycleReconciler;
+
         $this->expectException(InvalidArgumentException::class);
-        (new ConnectorLifecycleReconciler)->reconcile($assessment, $deprecation, null, $observedAt);
+        $reconciler->reconcile($assessment, $deprecation, null, $observedAt);
     }
 
     public function test_reconciliation_rejects_future_dated_operator_decisions(): void
@@ -261,7 +265,9 @@ final class Task0086ConnectorLifecycleTest extends TestCase
             $assessment->evidenceSha256,
         );
 
+        $reconciler = new ConnectorLifecycleReconciler;
+
         $this->expectException(InvalidArgumentException::class);
-        (new ConnectorLifecycleReconciler)->reconcile($assessment, null, $decision, $observedAt);
+        $reconciler->reconcile($assessment, null, $decision, $observedAt);
     }
 }

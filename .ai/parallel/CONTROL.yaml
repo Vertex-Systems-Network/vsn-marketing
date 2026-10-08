@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "protocol_version": "2.8.0",
-  "instruction_revision": "parallel-v2.8.7-no-premature-handoff",
+  "instruction_revision": "parallel-v2.8.8-no-legacy-stop",
   "instruction_sources": [
     ".ai/13-PARALLEL-DEVELOPMENT.md",
     ".ai/NEXT-ACTION-OPTIONS.md",
     ".ai/parallel/WORKSPACE-5H-CONTINUOUS-BATCH.md"
   ],
-  "instruction_fingerprint": "0aed039deb6b98bffaeba084c14dc3f490dd065c5829bc14a212d714d6f6f0a1",
+  "instruction_fingerprint": "cddec098def6a24e88483216a27dee590fe163c47d8e0eb53ac0282df4808d7b",
   "supervisor_agent": "supervisor-main",
   "protected_main_branch": "main",
   "branch_creation_required_before_plan_writes": true,
@@ -236,5 +236,8 @@
     "remaining_credit_or_context"
   ],
   "workspace_continuous_batch_ci_wait_status_phrase_policy": "never_end_with_next_once_ci_finishes_while_current_turn_can_still_execute",
-  "workspace_continuous_batch_no_ready_work_policy": "pending_ci_or_recoverable_internal_dependency_is_not_roadmap_exhaustion"
+  "workspace_continuous_batch_no_ready_work_policy": "pending_ci_or_recoverable_internal_dependency_is_not_roadmap_exhaustion",
+  "workspace_continuous_batch_stale_active_pr_policy": "live_merged_or_closed_pointer_is_resume_hint_auto_reconcile_and_continue",
+  "workspace_continuous_batch_legacy_external_wait_stop_forbidden": true,
+  "workspace_continuous_batch_legacy_final_option_handoff_forbidden": true
 }

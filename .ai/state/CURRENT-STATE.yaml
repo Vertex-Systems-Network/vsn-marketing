@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "86c7ed169acd7d502490da8981d33d2d3279012e",
+  "observed_main_sha": "c3916dd82570fa632c5e5c2e363af4928d2c48d1",
   "active_issue": null,
-  "active_pr": 513,
-  "active_branch": "supervisor/task0086-bind-decision-evidence",
+  "active_pr": 514,
+  "active_branch": "supervisor/no-premature-status-handoff",
   "current_milestone": "TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Repair any exact-head PR #513 CI failures; if all required checks pass, merge by expected head SHA, verify resulting main, and continue remaining TASK-0086 lifecycle criteria.",
+  "exact_next_safe_action": "Require PR #514 exact-head gates; repair any failure, merge the verified head without reconfirmation, then immediately continue remaining TASK-0086 lifecycle acceptance work in the same mutating batch.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Repair any exact-head PR #513 CI failures; if all required checks pass, merge by expected head SHA, verify resulting main, and continue remaining TASK-0086 lifecycle criteria."
+  "exact_next_action": "Require PR #514 exact-head gates; repair any failure, merge the verified head without reconfirmation, then immediately continue remaining TASK-0086 lifecycle acceptance work in the same mutating batch."
 }

@@ -381,6 +381,12 @@ def validate() -> list[str]:
             errors.append("parallel instruction content contains legacy CI-wait stop boundary")
         if "before ending the batch. CI waiting never becomes a user confirmation request." in workspace_contract:
             errors.append("workspace instruction content contains legacy CI-wait terminal wording")
+
+        ai_native_plan = (ROOT / ".ai/parallel/AI-NATIVE-PLAN.md").read_text(encoding="utf-8")
+        if "expose the normal shuffled next-action options if further work remains" in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN contains legacy shuffled final-handoff options")
+        if "do **not** present a next-action menu or ask the user to choose what to do next" not in ai_native_plan:
+            errors.append("AI-NATIVE-PLAN autonomous final-handoff rule is missing")
     except (OSError, ValueError) as exc:
         errors.append(str(exc))
 

@@ -47,6 +47,10 @@ final class ConnectorLifecycleReconciler
             }
         }
 
+        if ($decision !== null && $decision->compatibilityEvidenceSha256 !== $assessment->evidenceSha256) {
+            throw new InvalidArgumentException('Lifecycle decision must reference the compatibility evidence being reconciled.');
+        }
+
         if ($failureCode !== null && ! in_array($failureCode, self::FAILURE_CODES, true)) {
             throw new InvalidArgumentException('Lifecycle reconciliation failure code is not registered.');
         }

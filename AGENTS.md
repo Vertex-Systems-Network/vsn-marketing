@@ -140,6 +140,12 @@ Required behavior is: diagnose -> repair -> fallback/recovery -> continue indepe
 
 A genuine human-only boundary blocks only that lane. Record the exact missing authority/input, skip it, and continue the safe frontier. Only when that boundary is the sole remaining path may the batch end, and the handoff must state the exact required action rather than asking a broad yes/no confirmation.
 
+## Nonterminal progress-response rule
+
+For an active mutating continuous batch, assistant progress/status text is not a stop action. If the host still permits tool execution, the agent must continue after the update. Pending CI, a written checkpoint, an open PR, completion of one slice, or a sentence such as “Next: once the integration check finishes…” never justifies returning control to the user.
+
+Immediately before any final response, revalidate exact main, active PR exact-head checks, independent safe work, fallback/recovery tool paths, and remaining execution capacity. Finalize only when a documented stop condition is true and no executable safe action remains. Do not ask the user what to do next for repository-authorized work.
+
 ## Interruption / context-limit protocol
 
 A single validator/tool/connector/CI failure is not an interruption condition. Use repository-supported repair, retry, fallback, or independent safe work first. Apply this protocol only when the host/session is actually ending, context is genuinely exhausted, or all available execution paths are unavailable after bounded recovery:

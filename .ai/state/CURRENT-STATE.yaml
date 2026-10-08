@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "d72190d42db44d57af68a3094681de2658383f06",
+  "observed_main_sha": "4cec9d6b4f1f91733b012401c144efce090257a5",
   "active_issue": null,
-  "active_pr": 516,
-  "active_branch": "supervisor/task0086-bind-lifecycle-failures",
+  "active_pr": 517,
+  "active_branch": "supervisor/task0086-persist-lifecycle-health",
   "current_milestone": "TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Require PR #516 exact-head gates; repair any failure, merge the verified head, reconcile the resulting main, then continue TASK-0086 acceptance work.",
+  "exact_next_safe_action": "Require PR #517 exact-head full application, infrastructure integration, PHP 8.3, E2E, security, continuity and governance gates; repair failures, merge the verified head, reconcile resulting main, then continue TASK-0086 acceptance work.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Require PR #516 exact-head gates; repair any failure, merge the verified head, reconcile the resulting main, then continue TASK-0086 acceptance work."
+  "exact_next_action": "Require PR #517 exact-head full application, infrastructure integration, PHP 8.3, E2E, security, continuity and governance gates; repair failures, merge the verified head, reconcile resulting main, then continue TASK-0086 acceptance work."
 }

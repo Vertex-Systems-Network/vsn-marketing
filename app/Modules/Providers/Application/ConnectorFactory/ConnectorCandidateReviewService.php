@@ -138,6 +138,7 @@ final class ConnectorCandidateReviewService
                 $tokens = token_get_all($source['content'], TOKEN_PARSE);
             } catch (\ParseError) {
                 $findings[] = 'generated_php_has_syntax_error';
+
                 continue;
             }
 

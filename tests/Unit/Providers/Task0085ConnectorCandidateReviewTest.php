@@ -98,13 +98,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
             (new ConnectorCandidateGenerator)->generate($this->plan(), 'php-8.3.0'),
         );
         $gate = new ConnectorCandidatePromotionGate;
-        $verifier = new class implements ConnectorCandidateApprovalVerifier
-        {
-            public function isAuthorized(ConnectorCandidateApproval $approval): bool
-            {
-                return $approval->approverId === 'trusted-reviewer';
-            }
-        };
+        $verifier = new Task0085TrustedCandidateApprovalVerifier;
         $approval = new ConnectorCandidateApproval(
             candidateId: $evidence->candidateId,
             evidenceSha256: $evidence->evidenceSha256,
@@ -141,13 +135,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         );
         $policy = new ConnectorCandidateCanaryPolicy(true, 2, 3, 60, true);
         $gate = new ConnectorCandidatePromotionGate;
-        $untrusted = new class implements ConnectorCandidateApprovalVerifier
-        {
-            public function isAuthorized(ConnectorCandidateApproval $approval): bool
-            {
-                return false;
-            }
-        };
+        $untrusted = new Task0085UntrustedCandidateApprovalVerifier;
 
         self::assertSame('independent_authorized_approval_required', $gate->decide($evidence, null, $policy, $untrusted)->reason);
 
@@ -215,5 +203,21 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         );
 
         return (new OpenApiConnectorPlanner)->plan($description, 'example');
+    }
+}
+
+final class Task0085TrustedCandidateApprovalVerifier implements ConnectorCandidateApprovalVerifier
+{
+    public function isAuthorized(ConnectorCandidateApproval $approval): bool
+    {
+        return $approval->approverId === 'trusted-reviewer';
+    }
+}
+
+final class Task0085UntrustedCandidateApprovalVerifier implements ConnectorCandidateApprovalVerifier
+{
+    public function isAuthorized(ConnectorCandidateApproval $approval): bool
+    {
+        return false;
     }
 }

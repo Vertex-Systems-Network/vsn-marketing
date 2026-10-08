@@ -2,14 +2,14 @@
 
 namespace App\Modules\Providers;
 
+use App\Modules\Providers\Domain\ConnectorFactory\Contracts\ConnectorLifecycleHealthRepository;
 use App\Modules\Providers\Domain\Contracts\ProviderRepository;
 use App\Modules\Providers\Domain\Contracts\ProviderTransaction;
 use App\Modules\Providers\Domain\Messaging\Contracts\MessagingOperationRepository;
-use App\Modules\Providers\Domain\ConnectorFactory\Contracts\ConnectorLifecycleHealthRepository;
+use App\Modules\Providers\Infrastructure\ConnectorFactory\DatabaseConnectorLifecycleHealthRepository;
 use App\Modules\Providers\Infrastructure\DatabaseProviderRepository;
 use App\Modules\Providers\Infrastructure\DatabaseProviderTransaction;
 use App\Modules\Providers\Infrastructure\Messaging\DatabaseMessagingOperationRepository;
-use App\Modules\Providers\Infrastructure\ConnectorFactory\DatabaseConnectorLifecycleHealthRepository;
 use Illuminate\Support\ServiceProvider;
 
 final class ProvidersServiceProvider extends ServiceProvider

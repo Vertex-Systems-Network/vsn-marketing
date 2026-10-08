@@ -72,6 +72,7 @@ PHP;
         $directory = sys_get_temp_dir().'/vsn-connector-sandbox-'.bin2hex(random_bytes(8));
         $containerName = 'vsn-connector-sandbox-'.bin2hex(random_bytes(6));
         self::assertTrue(mkdir($directory, 0700));
+        self::assertTrue(chmod($directory, 0755));
 
         try {
             self::assertSame(
@@ -79,6 +80,8 @@ PHP;
                 file_put_contents($directory.'/ExampleConnectorCandidate.php', $candidateBytes),
             );
             self::assertNotFalse(file_put_contents($directory.'/probe.php', $this->probe()));
+            self::assertTrue(chmod($directory.'/ExampleConnectorCandidate.php', 0444));
+            self::assertTrue(chmod($directory.'/probe.php', 0444));
 
             $command = new Process([
                 'docker', 'run', '--rm', '--name', $containerName,

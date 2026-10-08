@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b5df5a34c07beb9c25ab9e590b4d4a381afcf4f1",
+  "observed_main_sha": "406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c",
   "active_issue": null,
-  "active_pr": 519,
-  "active_branch": "supervisor/task0087-phase14-certification",
+  "active_pr": 520,
+  "active_branch": "supervisor/task0087-phase14-terminal-closure",
   "current_milestone": "TASK-0087-PHASE14-CERTIFICATION",
   "milestone_status": "COMPLETE",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work.",
+  "exact_next_safe_action": "Observe PR #520 exact-head full Application Foundation, PHP 8.3, PostgreSQL integration/browser parity, E2E, Security Supply Chain, AI Continuity and governance; after merge verify resulting main and reconcile terminal state.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Explicitly define and register the next task before resuming implementation; do not infer or silently create roadmap work."
+  "exact_next_action": "Observe PR #520 exact-head full Application Foundation, PHP 8.3, PostgreSQL integration/browser parity, E2E, Security Supply Chain, AI Continuity and governance; after merge verify resulting main and reconcile terminal state."
 }

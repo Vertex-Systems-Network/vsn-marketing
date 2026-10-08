@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "106071d421f696ac3adf180f8dafeebc808488ba",
+  "reconciled_main_sha": "6bdee5a903a4f888aa37d5948e88edebdd26409f",
   "active_work_path": {
     "kind": "pr",
-    "number": 505,
-    "title": "feat(phase14): validate connector candidates and gate canary promotion",
-    "branch": "supervisor/task0085-validation-sandbox-activation",
-    "disposition": "active_task0085_carrier"
+    "number": 506,
+    "title": "fix(ai): make Workspace choose and continue autonomously",
+    "branch": "supervisor/autonomous-decision-no-prompts",
+    "disposition": "active_autonomous_decision_and_task0086_transition"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 506,
+      "title": "fix(ai): make Workspace choose and continue autonomously",
+      "branch": "supervisor/autonomous-decision-no-prompts",
+      "disposition": "active_autonomous_decision_and_task0086_transition",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 505,
       "title": "feat(phase14): validate connector candidates and gate canary promotion",
       "branch": "supervisor/task0085-validation-sandbox-activation",
-      "disposition": "active_task0085_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "6bdee5a903a4f888aa37d5948e88edebdd26409f"
     },
     {
       "kind": "pr",

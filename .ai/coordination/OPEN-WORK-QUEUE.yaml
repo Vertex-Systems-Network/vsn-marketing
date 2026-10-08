@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "10412ad085520ca5fc1949371755fd49072a3748",
+  "reconciled_main_sha": "17e363342920eb91e276adbec78286b7008325b5",
   "active_work_path": {
     "kind": "pr",
-    "number": 511,
-    "title": "fix(phase14): fail closed on missing connector capability evidence",
-    "branch": "supervisor/task0086-require-capability-evidence",
+    "number": 512,
+    "title": "fix(phase14): validate connector deprecation provenance",
+    "branch": "supervisor/task0086-validate-deprecation-provenance",
     "disposition": "active_task0086_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 512,
+      "title": "fix(phase14): validate connector deprecation provenance",
+      "branch": "supervisor/task0086-validate-deprecation-provenance",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 511,
       "title": "fix(phase14): fail closed on missing connector capability evidence",
       "branch": "supervisor/task0086-require-capability-evidence",
-      "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "17e363342920eb91e276adbec78286b7008325b5"
     },
     {
       "kind": "pr",

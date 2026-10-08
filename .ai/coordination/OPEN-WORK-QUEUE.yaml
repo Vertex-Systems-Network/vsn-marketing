@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "c3916dd82570fa632c5e5c2e363af4928d2c48d1",
+  "reconciled_main_sha": "37114553ea437c71e52bdf4beaa52863515073da",
   "active_work_path": {
     "kind": "pr",
-    "number": 514,
-    "title": "fix(ai): prohibit premature status and CI-wait handoffs",
-    "branch": "supervisor/no-premature-status-handoff",
-    "disposition": "active_continuity_hardening_carrier"
+    "number": 515,
+    "title": "fix(ai): remove remaining CI-wait and stale-PR stop paths",
+    "branch": "supervisor/continuity-contradiction-cleanup",
+    "disposition": "active_continuity_contradiction_cleanup"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 515,
+      "title": "fix(ai): remove remaining CI-wait and stale-PR stop paths",
+      "branch": "supervisor/continuity-contradiction-cleanup",
+      "disposition": "active_continuity_contradiction_cleanup",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 514,
       "title": "fix(ai): prohibit premature status and CI-wait handoffs",
       "branch": "supervisor/no-premature-status-handoff",
-      "disposition": "active_continuity_hardening_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "37114553ea437c71e52bdf4beaa52863515073da"
     },
     {
       "kind": "pr",

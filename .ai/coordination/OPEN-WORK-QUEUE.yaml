@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "17e363342920eb91e276adbec78286b7008325b5",
+  "reconciled_main_sha": "86c7ed169acd7d502490da8981d33d2d3279012e",
   "active_work_path": {
     "kind": "pr",
-    "number": 512,
-    "title": "fix(phase14): validate connector deprecation provenance",
-    "branch": "supervisor/task0086-validate-deprecation-provenance",
+    "number": 513,
+    "title": "fix(phase14): bind lifecycle decisions to assessed evidence",
+    "branch": "supervisor/task0086-bind-decision-evidence",
     "disposition": "active_task0086_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 513,
+      "title": "fix(phase14): bind lifecycle decisions to assessed evidence",
+      "branch": "supervisor/task0086-bind-decision-evidence",
+      "disposition": "active_task0086_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 512,
       "title": "fix(phase14): validate connector deprecation provenance",
       "branch": "supervisor/task0086-validate-deprecation-provenance",
       "disposition": "active_task0086_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

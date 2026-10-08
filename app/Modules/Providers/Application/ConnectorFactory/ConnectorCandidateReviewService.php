@@ -11,7 +11,6 @@ final class ConnectorCandidateReviewService
 {
     public const REVIEWER_VERSION = 'candidate-review-v1';
 
-
     /**
      * Inspect candidate bytes as data only. No generated candidate code is executed.
      *
@@ -104,7 +103,11 @@ final class ConnectorCandidateReviewService
         );
     }
 
-    /** @param list<string> $paths @param list<string> $expected @return list<string> */
+    /**
+     * @param  list<string>  $paths
+     * @param  list<string>  $expected
+     * @return list<string>
+     */
     private function pathFindings(array $paths, array $expected): array
     {
         sort($paths, SORT_STRING);
@@ -114,7 +117,7 @@ final class ConnectorCandidateReviewService
     }
 
     /**
-     * @param list<array{path: string, content: string}> $sources
+     * @param  list<array{path: string, content: string}>  $sources
      * @return list<string>
      */
     private function staticFindings(array $sources, string $testPath, string $className, string $providerKey, string $retrievedAt): array
@@ -165,7 +168,11 @@ final class ConnectorCandidateReviewService
         return array_values(array_unique($findings));
     }
 
-    /** @param array<string, string> $files @param array<string, mixed> $manifest @return list<string> */
+    /**
+     * @param  array<string, string>  $files
+     * @param  array<string, mixed>  $manifest
+     * @return list<string>
+     */
     private function dependencyFindings(array $files, array $manifest): array
     {
         $findings = [];
@@ -182,7 +189,10 @@ final class ConnectorCandidateReviewService
         return array_values(array_unique($findings));
     }
 
-    /** @param array<string, mixed> $manifest @return list<string> */
+    /**
+     * @param  array<string, mixed>  $manifest
+     * @return list<string>
+     */
     private function contractFindings(
         ConnectorGeneratedCandidate $candidate,
         array $manifest,
@@ -239,7 +249,11 @@ final class ConnectorCandidateReviewService
         return [];
     }
 
-    /** @param array<string, string> $files @param list<string> $pathFindings @return list<string> */
+    /**
+     * @param  array<string, string>  $files
+     * @param  list<string>  $pathFindings
+     * @return list<string>
+     */
     private function adversarialFindings(array $files, array $pathFindings): array
     {
         $findings = $pathFindings;
@@ -271,7 +285,7 @@ final class ConnectorCandidateReviewService
         return str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $providerKey)));
     }
 
-    /** @param array<string, mixed> $value */
+    /** @param  array<string, mixed>  $value */
     private function canonicalJson(array $value): string
     {
         return json_encode($this->canonicalize($value), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

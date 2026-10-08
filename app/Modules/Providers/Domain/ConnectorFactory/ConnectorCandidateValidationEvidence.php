@@ -3,7 +3,6 @@
 namespace App\Modules\Providers\Domain\ConnectorFactory;
 
 use InvalidArgumentException;
-use JsonException;
 
 final readonly class ConnectorCandidateValidationEvidence
 {

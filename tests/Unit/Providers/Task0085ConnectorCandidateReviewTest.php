@@ -10,6 +10,7 @@ use App\Modules\Providers\Application\ConnectorFactory\ConnectorDescriptionInges
 use App\Modules\Providers\Application\ConnectorFactory\OpenApiConnectorPlanner;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateApproval;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateCanaryPolicy;
+use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateSandboxPolicy;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorGeneratedCandidate;
 use App\Modules\Providers\Domain\ConnectorFactory\ConnectorPlanCandidate;
@@ -80,7 +81,7 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         $checks['static_analysis']['details']['reviewer_version'] = 'forged-reviewer';
 
         $this->expectException(InvalidArgumentException::class);
-        new \App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence(
+        new ConnectorCandidateValidationEvidence(
             candidateId: $values['candidate_id'],
             workspaceId: $values['workspace_id'],
             providerKey: $values['provider_key'],

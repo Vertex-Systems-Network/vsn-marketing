@@ -63,6 +63,16 @@ final class ConnectorLifecycleReconciler
             throw new InvalidArgumentException('Lifecycle idempotency key must be a SHA-256 digest.');
         }
 
+        if ($failureCode === 'rollback_execution_failed'
+            && ($decision?->action !== 'rollback' || $idempotencyKey !== $decision->idempotencyKey)) {
+            throw new InvalidArgumentException('Rollback failure must reconcile the matching rollback decision and idempotency key.');
+        }
+
+        if ($failureCode === 'disable_persistence_failed'
+            && ($decision?->action !== 'disable' || $idempotencyKey !== $decision->idempotencyKey)) {
+            throw new InvalidArgumentException('Disable persistence failure must reconcile the matching disable decision and idempotency key.');
+        }
+
         [$status, $reason] = $this->outcome($assessment, $deprecation, $decision, $failureCode);
         $deprecationSha256 = $deprecation === null
             ? null

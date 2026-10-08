@@ -187,13 +187,76 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         );
         $reconciler = new ConnectorLifecycleReconciler;
         $key = hash('sha256', 'failed-rollback-attempt');
-        $first = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
-        $retry = $reconciler->reconcile($assessment, null, null, $at, 'rollback_execution_failed', $key);
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'rollback', 'breaking_contract_major_change',
+            'operator-1', $key, $at, $assessment->evidenceSha256, hash('sha256', 'approved-rollback'),
+        );
+        $first = $reconciler->reconcile($assessment, null, $decision, $at, 'rollback_execution_failed', $key);
+        $retry = $reconciler->reconcile($assessment, null, $decision, $at, 'rollback_execution_failed', $key);
 
         self::assertSame('blocked', $first->status);
         self::assertSame('rollback_execution_failed', $retry->failureCode);
         self::assertSame($first->reconciliationKey, $retry->reconciliationKey);
         self::assertSame($first->evidenceSha256, $retry->evidenceSha256);
+    }
+
+    public function test_rollback_failure_requires_the_matching_rollback_decision(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '2.0.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $key = hash('sha256', 'rollback-operation');
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'disable', 'operator_request',
+            'operator-1', $key, $at, $assessment->evidenceSha256,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler)->reconcile(
+            $assessment, null, $decision, $at, 'rollback_execution_failed', $key,
+        );
+    }
+
+    public function test_rollback_failure_requires_the_decision_idempotency_key(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '2.0.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $decisionKey = hash('sha256', 'rollback-operation');
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'rollback', 'breaking_contract_major_change',
+            'operator-1', $decisionKey, $at, $assessment->evidenceSha256, hash('sha256', 'approved-rollback'),
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        (new ConnectorLifecycleReconciler)->reconcile(
+            $assessment, null, $decision, $at, 'rollback_execution_failed', hash('sha256', 'different-operation'),
+        );
+    }
+
+    public function test_disable_persistence_failure_requires_the_matching_disable_decision(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.0',
+            ['contacts.read' => '1.0.0'], ['contacts.read' => '1.0.0'], $at,
+        );
+        $key = hash('sha256', 'disable-operation');
+        $decision = new ConnectorLifecycleDecision(
+            'workspace-a', 'example', 'disable', 'operator_request',
+            'operator-1', $key, $at, $assessment->evidenceSha256,
+        );
+        $health = (new ConnectorLifecycleReconciler)->reconcile(
+            $assessment, null, $decision, $at, 'disable_persistence_failed', $key,
+        );
+
+        self::assertSame('degraded', $health->status);
+        self::assertSame('disable_persistence_failed', $health->failureCode);
+        self::assertSame($decision->auditSha256, $health->decisionAuditSha256);
     }
 
     public function test_lifecycle_reconciliation_rejects_cross_workspace_evidence(): void

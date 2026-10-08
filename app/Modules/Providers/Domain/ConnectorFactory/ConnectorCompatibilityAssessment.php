@@ -69,6 +69,10 @@ final readonly class ConnectorCompatibilityAssessment
             throw new InvalidArgumentException('Contract versions must use explicit major.minor.patch semantic versions.');
         }
 
+        if ($baselineCapabilities === [] && $candidateCapabilities === []) {
+            return new self($workspaceId, $providerKey, $baselineContractVersion, $candidateContractVersion, $baselineCapabilities, $candidateCapabilities, $assessedAt, 'unknown', 0, 'capability_evidence_missing');
+        }
+
         if ($baseline[0] !== $candidate[0]) {
             return new self($workspaceId, $providerKey, $baselineContractVersion, $candidateContractVersion, $baselineCapabilities, $candidateCapabilities, $assessedAt, 'incompatible', 0, 'breaking_contract_major_change');
         }

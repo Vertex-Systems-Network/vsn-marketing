@@ -28,6 +28,18 @@ final class Task0086ConnectorLifecycleTest extends TestCase
         self::assertSame($assessment->evidenceSha256, $assessment->toArray()['evidence_sha256']);
     }
 
+    public function test_missing_capability_evidence_fails_closed_for_patch_contract_updates(): void
+    {
+        $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');
+        $assessment = ConnectorCompatibilityAssessment::assess(
+            'workspace-a', 'example', '1.2.0', '1.2.1', [], [], $at,
+        );
+
+        self::assertSame('unknown', $assessment->status);
+        self::assertSame(0, $assessment->score);
+        self::assertSame('capability_evidence_missing', $assessment->reason);
+    }
+
     public function test_unknown_additive_and_minor_changes_fail_closed(): void
     {
         $at = new DateTimeImmutable('2026-10-08T00:00:00+00:00');

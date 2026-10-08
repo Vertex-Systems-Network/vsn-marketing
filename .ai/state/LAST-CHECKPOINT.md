@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-08T00:13:18+00:00`
-- Observed main: `dace976739d5ad67353d3ff9d77ec25d208c96aa`
+- Timestamp: `2026-10-08T08:52:00+00:00`
+- Observed main: `106071d421f696ac3adf180f8dafeebc808488ba`
 - Active issue: `none`
-- Active PR: `504`
-- Active branch: `supervisor/task0084-generated-candidates`
+- Active PR: `505`
+- Active branch: `supervisor/task0085-validation-sandbox-activation`
 - Current milestone: `TASK-0085-STATIC-CONTRACT-SANDBOX-ACTIVATION-GATES`
-- Milestone status: `IN_PROGRESS`
+- Milestone status: `VERIFYING`
 - Active task: `TASK-0085`
 - Next task: `TASK-0086`
 - Current phase: `PHASE-14`
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `aef9c8ce90d950fc3590d6ac77017d73dbd1ca008aade7a6aa4b6838f7e2d0f2`
+- State fingerprint: `b8f31245abf9cfe3e9e964240aafb9250ec7c0c64c6396ce3656098c8cea5012`
 
 ## Completed / observed this session
 
-TASK-0084 is complete from PR #504 exact-head evidence. PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911 (including PHP 8.3, PostgreSQL integration and browser parity), Security Supply Chain CI run 37705581937, and AI Continuity Guard run 37705581893. Deterministic roadmap progress is 89.75% and PHASE-14 progress is 55.00%. TASK-0085 static, contract, sandbox, security and canary-activation gates are active; no activation or provider-side effect is authorized.
+Reconciled the TASK-0085 branch to merged main `106071d421f696ac3adf180f8dafeebc808488ba` and registered draft PR #505. Implemented deterministic static, dependency, contract, sandbox-policy and adversarial evidence plus an independent approval verifier and disabled-by-default bounded canary gate. Candidate code is parsed as data and is not executed; sandbox execution evidence is not claimed. TASK-0085 acceptance criteria remain pending exact-head CI.
 
 ## Tests
 
-PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Foundation CI run 37705581911 (including PHP 8.3, PostgreSQL integration and browser parity), Security Supply Chain CI run 37705581937, and AI Continuity Guard run 37705581893. The guarded acceptance/transition commit is being checked at its own exact PR head.
+Focused TASK-0085 tests added for deterministic evidence, unsafe generated-code rejection, exact-evidence approval, default-off canary behavior and exposure/reversibility bounds. PR #505 exact-head Application Foundation, Security Supply Chain and AI Continuity runs are pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #504 code head a4e8d7da59f224582e20566984429febc640af58 passed Application Fo
 
 ## Exact next action
 
-Merge certified PR #504 after the guarded transition passes exact-head gates; then reconcile resulting main and start TASK-0085 from that baseline.
+Run and repair TASK-0085 exact-head Application Foundation, Security Supply Chain and AI Continuity gates; reconcile verified evidence before task acceptance.

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-08T12:23:00+00:00`
-- Observed main: `6bdee5a903a4f888aa37d5948e88edebdd26409f`
+- Timestamp: `2026-10-08T13:21:44+00:00`
+- Observed main: `b6a581ed83d0552a2ba6990f0a3c4e4adaa7e62d`
 - Active issue: `none`
-- Active PR: `506`
-- Active branch: `supervisor/autonomous-decision-no-prompts`
+- Active PR: `507`
+- Active branch: `supervisor/task0086-lifecycle`
 - Current milestone: `TASK-0086-COMPATIBILITY-DEPRECATION-ROLLBACK-LIFECYCLE`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0086`
@@ -15,22 +15,20 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `33c05b0fe21babedbbcddf60d945249d94d56f36995a8b492738d3578311c79e`
+- State fingerprint: `84d9628d591313a21c6b40d42b2f930d4527c1c73f9b2d8389d0fee44e5ce7df`
 
 ## Completed / observed this session
 
-PR #505 exact head `f6499624779c6b2df2222385fc80f31b7b547032` passed Application Foundation run `37769584036`, Security Supply Chain run `37769584041`, and AI Continuity Guard run `37769584235`, then merged to protected main as `6bdee5a903a4f888aa37d5948e88edebdd26409f`. TASK-0085 acceptance criteria are satisfied and TASK-0086 is the canonical active task.
-
-PR #506 removes the remaining interactive next-action requirement from mutating Workspace development. Active mutating development now selects and executes the highest-priority safe canonical action automatically. Menus/options remain only for URL-only read-only entry or an explicit user request for choices.
+Reconciled merged PR #506 to protected-main commit b6a581ed and registered PR #507 as the active TASK-0086 carrier. Implemented versioned connector compatibility, dated deprecation provenance, and deterministic tenant-scoped lifecycle decision evidence.
 
 ## Tests
 
-PR #506 requires exact-head full CI because it contains a guarded task transition plus machine-enforced AI execution behavior changes.
+Exact-head Application Foundation CI passed backend, architecture, PHP static analysis, Pint, frontend typecheck/unit/build, integration suite, E2E smoke, and PHP 8.3 floor. Security Supply Chain CI passed. AI Continuity Guard previously exposed the stale protected-main snapshot anchor; this checkpoint reconciles it.
 
 ## Blockers
 
-- None.
+- None
 
 ## Exact next action
 
-Implement TASK-0086 compatibility scoring, deprecation monitoring, rollback/disable and connector lifecycle observability automatically from the accepted TASK-0085 baseline.
+Continue TASK-0086: complete lifecycle health and failure reconciliation, then validate exact-head CI.

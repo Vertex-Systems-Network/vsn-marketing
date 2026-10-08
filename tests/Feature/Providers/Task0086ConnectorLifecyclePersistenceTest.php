@@ -43,7 +43,7 @@ function task0086LifecyclePersistenceFixture(): array
     return ['workspace_id' => $workspaceId, 'provider_key' => $provider->key];
 }
 
-function task0086LifecycleHealth(string $workspaceId, string $providerKey, string $observedAt, string $key): \App\Modules\Providers\Domain\ConnectorFactory\ConnectorLifecycleHealth
+function task0086LifecycleHealth(string $workspaceId, string $providerKey, string $observedAt, string $key): ConnectorLifecycleHealth
 {
     $at = new DateTimeImmutable($observedAt);
     $assessment = ConnectorCompatibilityAssessment::assess(

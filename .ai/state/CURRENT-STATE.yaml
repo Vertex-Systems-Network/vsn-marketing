@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "6d6d6a92e6beab287d490143db91a3fe0e72b98e",
+  "observed_main_sha": "b5df5a34c07beb9c25ab9e590b4d4a381afcf4f1",
   "active_issue": null,
-  "active_pr": 518,
-  "active_branch": "supervisor/task0086-phase14-certification-transition",
+  "active_pr": 519,
+  "active_branch": "supervisor/task0087-phase14-certification",
   "current_milestone": "TASK-0087-PHASE14-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Execute TASK-0087 certification against accepted Phase-14 evidence and require its own exact-head and resulting-main CI gates.",
+  "exact_next_safe_action": "Observe and repair PR #519 exact-head Application Foundation, infrastructure integration, PHP 8.3, E2E, Security Supply Chain, AI Continuity and governance gates; then verify resulting main before closing TASK-0087.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Execute TASK-0087 certification against accepted Phase-14 evidence and require its own exact-head and resulting-main CI gates."
+  "exact_next_action": "Observe and repair PR #519 exact-head Application Foundation, infrastructure integration, PHP 8.3, E2E, Security Supply Chain, AI Continuity and governance gates; then verify resulting main before closing TASK-0087."
 }

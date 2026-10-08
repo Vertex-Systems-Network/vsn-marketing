@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6d6d6a92e6beab287d490143db91a3fe0e72b98e",
+  "reconciled_main_sha": "b5df5a34c07beb9c25ab9e590b4d4a381afcf4f1",
   "active_work_path": {
     "kind": "pr",
-    "number": 518,
-    "title": "chore(phase14): reconcile TASK-0086 and activate certification",
-    "branch": "supervisor/task0086-phase14-certification-transition",
+    "number": 519,
+    "title": "docs(phase14): certify connector factory safeguards",
+    "branch": "supervisor/task0087-phase14-certification",
     "disposition": "active_task0087_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 519,
+      "title": "docs(phase14): certify connector factory safeguards",
+      "branch": "supervisor/task0087-phase14-certification",
+      "disposition": "active_task0087_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 518,
       "title": "chore(phase14): reconcile TASK-0086 and activate certification",
       "branch": "supervisor/task0086-phase14-certification-transition",
-      "disposition": "active_task0087_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "b5df5a34c07beb9c25ab9e590b4d4a381afcf4f1"
     },
     {
       "kind": "pr",

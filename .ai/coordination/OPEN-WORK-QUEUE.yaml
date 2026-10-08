@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "dace976739d5ad67353d3ff9d77ec25d208c96aa",
+  "reconciled_main_sha": "106071d421f696ac3adf180f8dafeebc808488ba",
   "active_work_path": {
     "kind": "pr",
-    "number": 504,
-    "title": "feat(phase14): generate isolated connector candidates",
-    "branch": "supervisor/task0084-generated-candidates",
+    "number": 505,
+    "title": "feat(phase14): validate connector candidates and gate canary promotion",
+    "branch": "supervisor/task0085-validation-sandbox-activation",
     "disposition": "active_task0085_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 505,
+      "title": "feat(phase14): validate connector candidates and gate canary promotion",
+      "branch": "supervisor/task0085-validation-sandbox-activation",
+      "disposition": "active_task0085_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 504,
       "title": "feat(phase14): generate isolated connector candidates",
       "branch": "supervisor/task0084-generated-candidates",
-      "disposition": "active_task0085_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "106071d421f696ac3adf180f8dafeebc808488ba"
     },
     {
       "kind": "pr",

@@ -55,6 +55,7 @@ function task0086LifecycleHealth(string $workspaceId, string $providerKey, strin
         ['contacts.read' => '1.0.0'],
         $at,
     );
+
     return (new ConnectorLifecycleReconciler)->reconcile(
         $assessment,
         null,

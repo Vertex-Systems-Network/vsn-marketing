@@ -73,6 +73,11 @@ final class ConnectorCandidateReviewService
                 'reviewer_version' => self::REVIEWER_VERSION,
                 'candidate_id' => $candidate->candidateId,
                 'input_plan_sha256' => $candidate->inputPlanSha256,
+                'generator_version' => $candidate->generatorVersion,
+                'template_version' => $candidate->templateVersion,
+                'toolchain_version' => $candidate->toolchainVersion,
+                'review_runtime' => PHP_VERSION,
+                'dependency_manifest' => $name === 'dependency_review' ? ($manifest['dependencies'] ?? null) : null,
                 'artifact_hashes' => array_map(
                     static fn (array $file): array => ['path' => $file['path'], 'sha256' => $file['sha256']],
                     $candidate->files,
@@ -85,6 +90,7 @@ final class ConnectorCandidateReviewService
                 'status' => $items === [] ? 'passed' : 'failed',
                 'evidence_sha256' => hash('sha256', $this->canonicalJson($observed)),
                 'findings' => $items,
+                'details' => $observed,
             ];
         }
 

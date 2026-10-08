@@ -34,6 +34,12 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
             'static_analysis', 'dependency_review', 'contract_review', 'sandbox_policy', 'adversarial_review',
         ], array_keys($first->checks));
         self::assertSame([], $first->checks['sandbox_policy']['findings']);
+        self::assertFalse($first->checks['sandbox_policy']['details']['sandbox_policy']['execution_performed']);
+        self::assertSame('denied', $first->checks['sandbox_policy']['details']['sandbox_policy']['network_access']);
+        self::assertSame($first->artifacts, array_map(
+            static fn (array $artifact): array => ['path' => $artifact['path'], 'sha256' => $artifact['sha256']],
+            $first->checks['contract_review']['details']['artifact_hashes'],
+        ));
     }
 
     public function test_review_fails_closed_on_unsafe_generated_php_and_binds_failure_to_artifact_hash(): void
@@ -61,6 +67,27 @@ final class Task0085ConnectorCandidateReviewTest extends TestCase
         self::assertContains('generated_php_differs_from_pinned_template', $evidence->checks['static_analysis']['findings']);
         self::assertSame($files[1]['sha256'], $evidence->artifacts[1]['sha256']);
         self::assertFalse($evidence->activationAllowed);
+    }
+
+    public function test_validation_evidence_rejects_changed_details_without_a_matching_digest(): void
+    {
+        $evidence = (new ConnectorCandidateReviewService)->review(
+            (new ConnectorCandidateGenerator)->generate($this->plan(), 'php-8.3.0'),
+        );
+        $values = $evidence->toArray();
+        $checks = $values['checks'];
+        $checks['static_analysis']['details']['reviewer_version'] = 'forged-reviewer';
+
+        $this->expectException(InvalidArgumentException::class);
+        new \App\Modules\Providers\Domain\ConnectorFactory\ConnectorCandidateValidationEvidence(
+            candidateId: $values['candidate_id'],
+            workspaceId: $values['workspace_id'],
+            providerKey: $values['provider_key'],
+            inputPlanSha256: $values['input_plan_sha256'],
+            artifacts: $values['artifacts'],
+            checks: $checks,
+            passed: $values['passed'],
+        );
     }
 
     public function test_promotion_requires_independent_exact_evidence_approval_and_enabled_bounded_canary(): void

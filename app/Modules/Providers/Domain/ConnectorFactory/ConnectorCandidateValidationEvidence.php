@@ -51,24 +51,44 @@ final readonly class ConnectorCandidateValidationEvidence
         }
 
         $allChecksPassed = true;
-        foreach ($checks as $check) {
-            if (in_array($check['status'] ?? null, ['passed', 'failed'], true) === false
-                || preg_match('/^[a-f0-9]{64}$/D', $check['evidence_sha256'] ?? '') !== 1
-                || is_array($check['findings'] ?? null) === false) {
-                throw new InvalidArgumentException('Candidate validation evidence contains an invalid review result.');
+        foreach ($checks as $checkName => $check) {
+            $status = $check['status'] ?? null;
+            $evidenceSha256 = $check['evidence_sha256'] ?? null;
+            $findings = $check['findings'] ?? null;
+            $details = $check['details'] ?? null;
+            if (in_array($status, ['passed', 'failed'], true) === false
+                || is_string($evidenceSha256) === false
+                || preg_match('/^[a-f0-9]{64}$/D', $evidenceSha256) !== 1
+                || is_array($findings) === false
+                || is_array($details) === false
+                || ($details['check'] ?? null) !== $checkName
+                || ($details['findings'] ?? null) !== $findings
+                || $status !== ($findings === [] ? 'passed' : 'failed')
+                || hash_equals($evidenceSha256, $this->digest($details)) === false) {
+                throw new InvalidArgumentException('Candidate validation evidence contains an invalid or altered review result.');
             }
 
-            foreach ($check['findings'] as $finding) {
+            foreach ($findings as $finding) {
                 if (is_string($finding) === false || trim($finding) === '') {
                     throw new InvalidArgumentException('Candidate validation findings must be non-empty strings.');
                 }
             }
 
-            $allChecksPassed = $allChecksPassed && $check['status'] === 'passed';
+            $allChecksPassed = $allChecksPassed && $status === 'passed';
         }
 
         if ($passed !== $allChecksPassed) {
             throw new InvalidArgumentException('Candidate validation result must match the recorded review checks.');
+        }
+
+        $artifactHashes = array_map(
+            static fn (array $artifact): array => ['path' => $artifact['path'], 'sha256' => $artifact['sha256']],
+            $artifacts,
+        );
+        foreach ($checks as $check) {
+            if (($check['details']['artifact_hashes'] ?? null) !== $artifactHashes) {
+                throw new InvalidArgumentException('Candidate review details must bind the complete artifact hash set.');
+            }
         }
 
         foreach ($artifacts as $artifact) {
@@ -86,6 +106,35 @@ final readonly class ConnectorCandidateValidationEvidence
             $this->payload(),
             JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
         ));
+    }
+
+    /** @param array<string, mixed> $details */
+    private function digest(array $details): string
+    {
+        $canonical = $this->canonicalize($details);
+
+        return hash('sha256', json_encode(
+            $canonical,
+            JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+        ));
+    }
+
+    private function canonicalize(mixed $value): mixed
+    {
+        if (is_array($value) === false) {
+            return $value;
+        }
+
+        if (array_is_list($value)) {
+            return array_map(fn (mixed $child): mixed => $this->canonicalize($child), $value);
+        }
+
+        ksort($value, SORT_STRING);
+        foreach ($value as $key => $child) {
+            $value[$key] = $this->canonicalize($child);
+        }
+
+        return $value;
     }
 
     /** @return array<string, mixed> */

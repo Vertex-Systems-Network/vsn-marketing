@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "610f58161a0bb68134ff75c81302ac0b65cb561b",
+  "reconciled_main_sha": "41662f896c33d393ddbce206b0224a452e28a2a5",
   "active_work_path": {
     "kind": "pr",
-    "number": 547,
-    "title": "feat(phase15): verify durable human canary decisions and current RBAC",
-    "branch": "supervisor/task0091-db-human-promotion-readback-20261009",
+    "number": 548,
+    "title": "feat(phase15): authenticate and record offline human canary decisions",
+    "branch": "supervisor/task0091-human-session-decision-writer-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 548,
+      "title": "feat(phase15): authenticate and record offline human canary decisions",
+      "branch": "supervisor/task0091-human-session-decision-writer-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 547,
       "title": "feat(phase15): verify durable human canary decisions and current RBAC",
       "branch": "supervisor/task0091-db-human-promotion-readback-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "41662f896c33d393ddbce206b0224a452e28a2a5"
     },
     {
       "kind": "pr",

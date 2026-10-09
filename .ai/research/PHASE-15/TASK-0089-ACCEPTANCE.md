@@ -2,7 +2,7 @@
 
 Task: TASK-0089 — Implement typed bounded goal-to-observe autonomous loop
 Phase: PHASE-15
-Status: **verification pending resulting-main CI** (this draft is not certification by itself)
+Status: **AC-1, AC-2, AC-3 verified for offline-only task scope; protected-main CI PASSED. TASK-0089 eligible for canonical completed transition.**
 
 ## Certified exact-head delivery carriers
 
@@ -19,12 +19,12 @@ PR #529 verified exact head `3fe2d9052f2589e7886061c0610734016b5c100d`: Applicat
 
 | Criterion | Implementation and negative evidence | Remaining terminal prerequisite |
 | --- | --- | --- |
-| AC-1: typed tenant-scoped goal/tool/state machine | `BoundedAutonomyPreview`, `BoundedAutonomyOfflineLifecycle` and tests reject foreign actor/tenant, unregistered tool, send/publish, action injection, stale/retrograde/skipped state and escalated policy | Final resulting-main CI |
-| AC-2: durable idempotent replay / failure isolation | `BoundedAutonomyOfflineReceipt`, `BoundedAutonomyOfflineEvaluation` with `IdempotentExecutor`; unit plus PostgreSQL replay/concurrency/conflicting-input tests; operator proposal produces a durable receipt | Final resulting-main CI |
-| AC-3: accessible safe preview, explainable observation and prohibited actions | `OfflineAutonomyPreviewPanel` and React tests, analytics operator feature tests, held/unverified fact tests, verified aggregate review-only decisions; send/promote controls disabled | Final resulting-main CI |
+| AC-1: typed tenant-scoped goal/tool/state machine | `BoundedAutonomyPreview`, `BoundedAutonomyOfflineLifecycle` and tests reject foreign actor/tenant, unregistered tool, send/publish, action injection, stale/retrograde/skipped state and escalated policy | PASS — resulting-main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe verified |
+| AC-2: durable idempotent replay / failure isolation | `BoundedAutonomyOfflineReceipt`, `BoundedAutonomyOfflineEvaluation` with `IdempotentExecutor`; unit plus PostgreSQL replay/concurrency/conflicting-input tests; operator proposal produces a durable receipt | PASS — resulting-main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe verified |
+| AC-3: accessible safe preview, explainable observation and prohibited actions | `OfflineAutonomyPreviewPanel` and React tests, analytics operator feature tests, held/unverified fact tests, verified aggregate review-only decisions; send/promote controls disabled | PASS — resulting-main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe verified |
 
 The default `DenyingBoundedAutonomyObservationSource` yields no positive production evidence. Offline `execute` is always disabled. No real message delivery, ad purchase, social publishing, auto-promotion, external provider activation, billing transaction, new secret or production deployment is authorized or claimed. A threshold being met is operator review evidence, **not causal uplift**.
 
 ## Evidence gating and successor
 
-Check resulting protected `main` `7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe` for the required Application/Foundation, PHP floor, PostgreSQL integration, E2E, Security and governance workflow results. **Only after those are green**, mark TASK-0089 AC-1..3 completed in canonical task/index, recompute progress deterministically, reconcile journal/checkpoint/README, and activate TASK-0090 as the next dependency-ready task. TASK-0090 must preserve the offline-only default until its own budget, approval and kill-switch gates are certified.
+Verified resulting protected `main` `7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe`: Application/Foundation, PHP floor, PostgreSQL integration, E2E, Security, Governance, release integrity and scorecard all succeeded. TASK-0089 AC-1..3 marked complete in the same canonical transition, TASK-0090 marked READY with no production authority. TASK-0090 must preserve the offline-only default until its own budget, approval and kill-switch gates are certified.

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c",
+  "reconciled_main_sha": "72244949f279e3744747b3c3935104e558ff18c6",
   "active_work_path": {
     "kind": "pr",
-    "number": 520,
-    "title": "chore(phase14): close TASK-0087 certification",
-    "branch": "supervisor/task0087-phase14-terminal-closure",
+    "number": 522,
+    "title": "plan(email): align six engagement tracking features with AI-Native roadmap",
+    "branch": "supervisor/plan-email-engagement-tracking-aligned-20261009",
     "disposition": "active_task0087_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 522,
+      "title": "plan(email): align six engagement tracking features with AI-Native roadmap",
+      "branch": "supervisor/plan-email-engagement-tracking-aligned-20261009",
+      "disposition": "active_task0087_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 520,
       "title": "chore(phase14): close TASK-0087 certification",
       "branch": "supervisor/task0087-phase14-terminal-closure",
-      "disposition": "active_task0087_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "72244949f279e3744747b3c3935104e558ff18c6"
     },
     {
       "kind": "pr",
@@ -850,7 +859,7 @@
     {
       "kind": "issue",
       "number": 6,
-      "title": "AI Continuity Guard \u2014 Default Branch Governance Ledger",
+      "title": "AI Continuity Guard — Default Branch Governance Ledger",
       "disposition": "standing_governance_ledger",
       "accepted_actionable": false
     },

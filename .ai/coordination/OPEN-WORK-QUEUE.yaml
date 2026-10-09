@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "0f416de15744f23c25d586a3a0fc1f0ec5608837",
+  "reconciled_main_sha": "47fe9ed602f5985b93f22c16912910295aef66c1",
   "active_work_path": {
     "kind": "pr",
-    "number": 550,
-    "title": "fix(phase15): reject tampered historical human canary decision proof",
-    "branch": "supervisor/task0091-human-session-proof-integrity-20261009",
+    "number": 551,
+    "title": "feat(phase15): independently verify provider attempts before offline rollback review",
+    "branch": "supervisor/task0091-provider-attempts-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 551,
+      "title": "feat(phase15): independently verify provider attempts before offline rollback review",
+      "branch": "supervisor/task0091-provider-attempts-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 550,
       "title": "fix(phase15): reject tampered historical human canary decision proof",
       "branch": "supervisor/task0091-human-session-proof-integrity-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "47fe9ed602f5985b93f22c16912910295aef66c1"
     },
     {
       "kind": "pr",

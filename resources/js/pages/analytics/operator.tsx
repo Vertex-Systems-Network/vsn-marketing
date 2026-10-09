@@ -1,5 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
+import OfflineAutonomyPreviewPanel, { type OfflineAutonomyPreview } from './autonomy-preview';
 
 type Report = { id: string; fingerprint: string; definition_hash: string; definition: Record<string, unknown>;
     start_utc: string; end_utc: string; receipt_cutoff_utc: string; latest_receipt_utc: string | null;
@@ -18,7 +19,7 @@ type Quality = { id: string; fingerprint: string; source_hash: string; event_typ
     max_receipt_lag_seconds: number; affected_metric_versions: { snapshot_id: string; definition_hash: string; version: number }[] };
 type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; provider_engagement?: ProviderEngagement[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
     report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
-    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean;
+    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean; offline_autonomy_preview?: OfflineAutonomyPreview | null;
     actions: { generate: string; schedules: string; base: string } };
 const notices: Record<string, string> = { quality_created: 'Immutable source quality check created.', quality_denied: 'Quality check denied. Review scope, dates and observation bounds.', report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
     schedule_created: 'Daily UTC schedule created. Reports stay inside this workspace.', schedule_denied: 'Schedule could not be created.',
@@ -47,6 +48,7 @@ export default function AnalyticsOperator(p: Props) {
             <header><p className="text-sm font-semibold text-sky-300">VSN Marketing · Analytics</p>
                 <h1 className="mt-2 text-3xl font-semibold">Analytics reports</h1>
                 <p className="mt-3 max-w-3xl text-neutral-300">Review admitted events, funnels, retention and revenue in UTC. Reports disclose their definition and receipt cutoff. Source coverage remains unknown; attribution describes credit and does not prove causal lift.</p></header>
+            {p.offline_autonomy_preview !== undefined && <div className="mt-6"><OfflineAutonomyPreviewPanel preview={p.offline_autonomy_preview} /></div>}
             {unavailable && <p role="alert" className="mt-6 rounded-xl border border-amber-300 p-4">Analytics purpose or retention approval is unavailable. Reports and schedules cannot be generated.</p>}
             <div role="status" aria-live="polite" className="mt-4 text-sky-200">{busy ? 'Working…' : p.notice ? notices[p.notice] ?? 'Request finished.' : ''}</div>
             {error && <p role="alert" className="mt-3 text-amber-200">{error}</p>}

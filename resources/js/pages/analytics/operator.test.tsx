@@ -56,3 +56,17 @@ test('renders semantic measured values and separate inference with evidence deta
     expect(screen.getByText(/unmatched_refund: 1/)).toBeInTheDocument();
     expect(screen.getByText('Definition and evidence fingerprint')).toBeInTheDocument();
 });
+
+test('renders offline-only autonomy proposal without enabling outbound execution', () => {
+    render(<Operator {...props} offline_autonomy_preview={{
+        status: 'preview_ready', execution_authorized: false, run_id: 'safe-run', policy_version: 'v1',
+        snapshot_sha256: 'a'.repeat(64),
+        actions: [{ tool_id: 'analytics_read', effect: 'read', risk: 'R0', arguments_sha256: 'b'.repeat(64),
+            source_ids: ['known-fact'], reason_code: 'metric_review' }],
+        stages: { goal: 'validated', plan: 'validated', propose: 'offline_preview', execute: 'disabled',
+            observe: 'unavailable', evaluate: 'not_run' },
+    }} />);
+    expect(screen.getByRole('heading', { name: 'Bounded AI marketing preview' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Execute actions (unavailable)' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Promote campaign (unavailable)' })).toBeDisabled();
+});

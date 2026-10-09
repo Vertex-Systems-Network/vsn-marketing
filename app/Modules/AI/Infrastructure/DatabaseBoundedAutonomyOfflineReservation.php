@@ -3,7 +3,6 @@
 namespace App\Modules\AI\Infrastructure;
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineSafetyGate;
-use App\Modules\AI\Domain\Contracts\BoundedAutonomySafetySnapshotSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -71,15 +70,7 @@ final class DatabaseBoundedAutonomyOfflineReservation
 
             // The source is generated solely from the row-locked database
             // snapshot, never supplied by a caller, prompt or adapter.
-            $source = new class($snapshot) implements BoundedAutonomySafetySnapshotSource
-            {
-                public function __construct(private readonly array $snapshot) {}
-
-                public function current(TenantContext $scope, DateTimeImmutable $at): array
-                {
-                    return $this->snapshot;
-                }
-            };
+            $source = new LockedBoundedAutonomySafetySnapshotSource($snapshot);
 
             // Always check an already-recorded run before evaluating *remaining*
             // budget. A replay never creates a second reservation, even when

@@ -184,8 +184,14 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
     {
         $attempts = $this->attempts();
         $attempts['attempts'][0]['outcome'] = 'confirmed_applied';
-        // Manifest tampering, even before the confirmed-applied verdict,
-        // must never become a positive candidate.
+        $attempts['source_manifest_sha256'] = hash('sha256', json_encode([
+            'tenant' => $attempts['tenant'], 'run_id' => $attempts['run_id'],
+            'snapshot_sha256' => $attempts['snapshot_sha256'],
+            'captured_at_unix' => $attempts['captured_at_unix'],
+            'expires_at_unix' => $attempts['expires_at_unix'],
+            'complete' => $attempts['complete'],
+            'attempts' => $attempts['attempts'],
+        ], JSON_THROW_ON_ERROR));
         $r = $this->inspect($this->reviewer($this->inventory($this->identities()), $attempts));
         self::assertSame('joint_provider_outcome_unresolved', $r['reason_code']);
         self::assertFalse($r['rollback_performed']);

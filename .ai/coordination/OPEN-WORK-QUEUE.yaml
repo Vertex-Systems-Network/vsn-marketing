@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "7ceab9e78d64f61d23571ca82df752fa992e91d0",
+  "reconciled_main_sha": "761abb5668dc3c726531e3f829f0bb9f88a2226c",
   "active_work_path": {
     "kind": "pr",
-    "number": 536,
-    "title": "feat(phase15): record independently authenticated offline human approvals",
-    "branch": "supervisor/task0090-human-approval-recording-20261009",
+    "number": 537,
+    "title": "feat(phase15): recheck offline final admission, emergency stops and approval",
+    "branch": "supervisor/task0090-offline-final-review-20261009",
     "disposition": "active_task0090_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 537,
+      "title": "feat(phase15): recheck offline final admission, emergency stops and approval",
+      "branch": "supervisor/task0090-offline-final-review-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 536,
       "title": "feat(phase15): record independently authenticated offline human approvals",
       "branch": "supervisor/task0090-human-approval-recording-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "761abb5668dc3c726531e3f829f0bb9f88a2226c"
     },
     {
       "kind": "pr",

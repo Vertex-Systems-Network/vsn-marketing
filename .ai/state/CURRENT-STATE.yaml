@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #535 exact head c197efd01e297541af937e459e22a31d1f1a439b passed AI Continuity and Governance; merged 7ceab9e78d64f61d23571ca82df752fa992e91d0.",
-    "application_test_status": "PR #535 exact head c197efd01e297541af937e459e22a31d1f1a439b passed Foundation, PostgreSQL, PHP 8.3 and browser E2E.",
-    "security_supply_chain_status": "PR #535 exact head c197efd01e297541af937e459e22a31d1f1a439b passed Security Supply Chain.",
+    "continuity_validation": "PR #536 exact head 34013835897b4b3ec4b9cf5f5d016d1e6ad5af0f passed AI Continuity and Governance; merged 761abb5668dc3c726531e3f829f0bb9f88a2226c.",
+    "application_test_status": "PR #536 exact head 34013835897b4b3ec4b9cf5f5d016d1e6ad5af0f passed Foundation, PHP floor, PostgreSQL integration and browser E2E.",
+    "security_supply_chain_status": "PR #536 exact head 34013835897b4b3ec4b9cf5f5d016d1e6ad5af0f passed Security Supply Chain.",
     "release_integrity_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe release-integrity check passed.",
     "scorecard_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe scorecard check passed."
   },
-  "observed_main_sha": "7ceab9e78d64f61d23571ca82df752fa992e91d0",
+  "observed_main_sha": "761abb5668dc3c726531e3f829f0bb9f88a2226c",
   "active_issue": null,
-  "active_pr": 536,
-  "active_branch": "supervisor/task0090-human-approval-recording-20261009",
+  "active_pr": 537,
+  "active_branch": "supervisor/task0090-offline-final-review-20261009",
   "current_milestone": "TASK-0090-PHASE15-SAFETY-GATES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0089 offline bounded goal-plan-propose-observe-evaluate acceptance via PRs #525/#526/#528/#529 exact-head and resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe full controls.",
-  "exact_next_safe_action": "Certify PR #536 human-session-only append-only approval recorder and independent read-back with full exact-head Foundation, PostgreSQL, PHP 8.3, browser E2E, Security and AI governance; repair and merge, then continue TASK-0090 last-boundary and rate policy.",
+  "exact_next_safe_action": "Verify PR #537 offline final review exact-head Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures, merge certified head and continue TASK-0090 proof of final admission/rate and approval-stop races.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #536 human-session-only append-only approval recorder and independent read-back with full exact-head Foundation, PostgreSQL, PHP 8.3, browser E2E, Security and AI governance; repair and merge, then continue TASK-0090 last-boundary and rate policy."
+  "exact_next_action": "Verify PR #537 offline final review exact-head Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures, merge certified head and continue TASK-0090 proof of final admission/rate and approval-stop races."
 }

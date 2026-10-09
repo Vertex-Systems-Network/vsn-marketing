@@ -20,7 +20,9 @@ AI-native, provider-agnostic marketing operating system under active development
 Phase 15 [███░░░░░░░░░░░░░░░░░] 15.00%
 ```
 
-TASK-0089 delivery evidence: merged PRs #525/#526/#528 provide replay-safe offline receipts, source-gated evaluation and permission-checked operator previews. PR #529 extends these with typed monotonic lifecycle guards and persists operator proposal receipts; exact-head CI is not yet certified, and no external send, publish, spend or promotion is enabled. Current weighted progress remains unchanged until task acceptance.\n\nThe deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.
+TASK-0089 delivery evidence: merged PRs #525/#526/#528 provide replay-safe offline receipts, source-gated evaluation and permission-checked operator previews. PR #529 extends these with typed monotonic lifecycle guards and persists operator proposal receipts; exact-head CI is not yet certified, and no external send, publish, spend or promotion is enabled. Current weighted progress remains unchanged until task acceptance.
+
+The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.
 
 ### Phase / module progress
 

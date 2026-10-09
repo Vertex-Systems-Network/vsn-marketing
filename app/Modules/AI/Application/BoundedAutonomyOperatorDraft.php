@@ -21,7 +21,7 @@ final readonly class BoundedAutonomyOperatorDraft
         string $runId,
         DateTimeImmutable $at,
     ): array {
-        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $at);
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $runId, $at);
 
         return $policy->preview($actor, $runId, $goal, $actions, $at);
     }
@@ -35,7 +35,7 @@ final readonly class BoundedAutonomyOperatorDraft
         DateTimeImmutable $at,
         IdempotentExecutor $idempotency,
     ): array {
-        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $at);
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $runId, $at);
 
         return (new BoundedAutonomyOfflineReceipt($policy, $idempotency))->record(
             $actor, $runId, $goal, $actions, $at,
@@ -47,9 +47,11 @@ final readonly class BoundedAutonomyOperatorDraft
         array $authorizedReports,
         string $reportId,
         int $targetCount,
+        string $runId,
         DateTimeImmutable $at,
     ): array {
         if (preg_match('/^[a-f0-9-]{36}$/D', $reportId) !== 1
+            || preg_match('/^[a-f0-9-]{36}$/D', $runId) !== 1
             || $targetCount < 1 || $targetCount > 1000000) {
             throw new InvalidArgumentException('Offline autonomy draft bounds rejected.');
         }

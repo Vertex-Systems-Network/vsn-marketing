@@ -112,7 +112,8 @@ final readonly class AnalyticsOperatorController
                     && ($preview['tenant'] ?? null) === $actor->toArray()
                     && ($preview['execution_authorized'] ?? null) === false
                     && ($preview['stages']['execute'] ?? null) === 'disabled'
-                    && count($preview['actions'] ?? []) === 1
+                    && is_array($preview['actions'] ?? null)
+                    && count($preview['actions']) === 1
                     && ($preview['actions'][0]['tool_id'] ?? null) === 'analytics_read'
                     && ($preview['actions'][0]['effect'] ?? null) === 'read'
                     && ($preview['actions'][0]['source_ids'] ?? null) === [$report['id']]) {

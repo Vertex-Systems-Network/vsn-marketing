@@ -27,6 +27,10 @@ function humanApprovalFixture(): array
         'id' => $ws, 'organization_id' => $org, 'name' => 'Human approval workspace',
         'slug' => 'human-ai-'.Str::random(12), 'created_at' => now(), 'updated_at' => now(),
     ]);
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
     $requester = User::query()->create([
         'name' => 'Requester', 'email' => Str::random(12).'@example.test', 'password' => Str::random(24),
     ]);
@@ -129,4 +133,36 @@ it('the independent reader revalidates latest human approval and revocation afte
         ->where('permission', PermissionCatalog::AI_APPROVE)->delete();
     expect($reader->inspect($scope, $preview, $binding, $at)['reason_code'])
         ->toBe('independent_approval_unavailable');
+});
+
+it('serializes human approval decisions with global emergency stop and allows revocation during stop', function () {
+    [$requester, $approver, $scope, $preview, $binding, $at] = humanApprovalFixture();
+    $this->actingAs($approver);
+    $writer = app(BoundedAutonomyHumanApprovalRecorder::class);
+    $first = $writer->record($approver, $scope, $preview, $binding, 'approved', $at);
+    expect($first['status'])->toBe('decision_recorded_offline');
+
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')->update(['stopped' => true]);
+    expect(fn () => $writer->record($approver, $scope, $preview, $binding, 'approved', $at))
+        ->toThrow(InvalidArgumentException::class, 'Global autonomy stop');
+    $revoked = $writer->record($approver, $scope, $preview, $binding, 'revoked', $at);
+    expect($revoked['outcome'])->toBe('revoked')
+        ->and($revoked['execution_authorized'])->toBeFalse();
+
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')->delete();
+    expect(fn () => $writer->record($approver, $scope, $preview, $binding, 'approved', $at))
+        ->toThrow(InvalidArgumentException::class, 'Global autonomy stop');
+    expect(DB::table('ai_autonomy_offline_approval_decisions')->count())->toBe(2);
+});
+
+it('denies foreign organization approval decisions before mutation', function () {
+    [$requester, $approver, $scope, $preview, $binding, $at] = humanApprovalFixture();
+    $this->actingAs($approver);
+    $foreign = new TenantContext((string) Str::uuid(), $scope->workspaceId, $scope->brandId, $scope->actorId);
+    $forged = $preview;
+    $forged['tenant'] = $foreign->toArray();
+    expect(fn () => app(BoundedAutonomyHumanApprovalRecorder::class)
+        ->record($approver, $foreign, $forged, $binding, 'approved', $at))
+        ->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_offline_approval_decisions')->count())->toBe(0);
 });

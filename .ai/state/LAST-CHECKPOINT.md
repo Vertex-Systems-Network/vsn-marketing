@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T16:04:23.159+00:00`
-- Observed main: `0f416de15744f23c25d586a3a0fc1f0ec5608837`
+- Timestamp: `2026-10-09T16:16:20.104+00:00`
+- Observed main: `47fe9ed602f5985b93f22c16912910295aef66c1`
 - Active issue: `none`
-- Active PR: `550`
-- Active branch: `supervisor/task0091-human-session-proof-integrity-20261009`
+- Active PR: `551`
+- Active branch: `supervisor/task0091-provider-attempts-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `6581e3f2ddb05e3e01319e62d1cc35cdc9e472ee9dc5146f32d2f04aa28a3f99`
+- State fingerprint: `48b440c68aeaab610bcb5274149c7a1da540361637739b00e4039e1c543896bd`
 
 ## Completed / observed this session
 
-TASK-0091 PR #549 merged 0f416de15744f23c25d586a3a0fc1f0ec5608837; PR #550 historical human-session decision tamper rejection and adversarial replay tests passed original full application, PostgreSQL, PHP floor, E2E, Security gates. Corrected stale protected-main governance anchor without authorization changes or real provider actions.
+PR #550 historical human decision proof integrity exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance passed and merged 47fe9ed602f5985b93f22c16912910295aef66c1. PR #551 stages independent per-provider attempt manifests and dual-source offline rollback review, fail closed on incomplete/unknown/duplicate/late/irreversible/costly provider outcomes. No external provider, refund, retry, spend or promotion authority.
 
 ## Tests
 
-PR #550 previous exact head all application/PG/PHP/E2E/Security checks passed; Governance failed because previous merged PR #549 was not reflected in observed main. New exact-head tests pending.
+PR #550 exact-head full required controls passed; PR #551 code and adversarial unit tests staged, full exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #550 previous exact head all application/PG/PHP/E2E/Security checks passed; G
 
 ## Exact next action
 
-Certify TASK-0091 PR #550 current exact-head human-session replay integrity and all Foundation, PostgreSQL, PHP floor, E2E, Security and Governance checks, then merge and continue independent offline provider outcome provenance.
+Certify TASK-0091 PR #551 independent individually verified provider attempt provenance and dual-source conservative offline rollback review; run and repair exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance, merge only on green and continue remaining canary acceptance.

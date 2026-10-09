@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T13:00:54.238+00:00`
-- Observed main: `1a75895748675afef5a2102aab879932c45308ac`
+- Timestamp: `2026-10-09T13:19:04.052+00:00`
+- Observed main: `8eb88424da56916e53bb266b05d092ef034a7d12`
 - Active issue: `none`
-- Active PR: `542`
-- Active branch: `supervisor/task0091-durable-canary-evidence-20261009`
+- Active PR: `543`
+- Active branch: `supervisor/task0091-linked-outcome-review-certified-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `22ac9a57dd63820fc5a1c35b081218b39f288c1f956e93f59fa9ffa69623cab8`
+- State fingerprint: `731b911f012f82e195d7a354063bd23499dc1439ba6335f5b6a01cf09211964c`
 
 ## Completed / observed this session
 
-PR #541 exact-head Foundation, PostgreSQL integration, PHP 8.3, E2E, Security and Governance PASS; merged 1a75895748675afef5a2102aab879932c45308ac. TASK-0091 PR #542 stages immutable one-per-experiment offline cohort receipts, current experiment/approver permission checks and adversarial replay/foreign scope feature tests. No external actions.
+PR #542 exact head passed Foundation, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; merged as 8eb88424da56916e53bb266b05d092ef034a7d12. TASK-0091 PR #543 stages strict canonical cohort receipt, independent outcome join provenance and source-manifest match with adversarial permission/scope/replay tests. Zero external execution or promotion.
 
 ## Tests
 
-PR #541 required exact-head suite PASS before merge. PR #542 source and regression fixtures staged, full exact-head CI pending.
+PR #542 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance PASS before merge. PR #543 feature/adversarial tests staged, exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #541 required exact-head suite PASS before merge. PR #542 source and regressi
 
 ## Exact next action
 
-Certify PR #542 exact-head immutable offline cohort database receipts, replay/actor/scope safeguards, PHP 8.3, PostgreSQL, E2E, Security and Governance; then build separately verified cohort/outcome binding and operator-only promotion decisions.
+Certify PR #543 exact-head current permission and active immutable frozen cohort receipt to independent outcome join binding with negative fixtures; repair CI; merge verified head; continue TASK-0091 operator-only promotion/rollback evidence with no external effects.

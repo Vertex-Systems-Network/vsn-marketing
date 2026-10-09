@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #530 exact-head AI Continuity and Governance passed; TASK-0089 accepted into main 62514ecbb9c0c820c54a5a8fb033945955b7754f.",
-    "application_test_status": "PR #530 exact-head Foundation, PHP floor, PostgreSQL and E2E passed before merge.",
-    "security_supply_chain_status": "PR #530 exact-head Security Supply Chain passed before merge.",
+    "continuity_validation": "PR #531 exact head 76e9468126462350f81dfe9546ca9765767c67e7 AI Continuity and Governance PASS; merged as 26009a73d7d01c9541fc2e9100218c07d8bb6903.",
+    "application_test_status": "PR #531 exact head 76e9468126462350f81dfe9546ca9765767c67e7 Foundation, PostgreSQL, E2E and PHP floor PASS.",
+    "security_supply_chain_status": "PR #531 exact-head Security Supply Chain PASS before main 26009a73d7d01c9541fc2e9100218c07d8bb6903.",
     "release_integrity_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe release-integrity check passed.",
     "scorecard_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe scorecard check passed."
   },
-  "observed_main_sha": "62514ecbb9c0c820c54a5a8fb033945955b7754f",
+  "observed_main_sha": "26009a73d7d01c9541fc2e9100218c07d8bb6903",
   "active_issue": null,
-  "active_pr": 531,
-  "active_branch": "supervisor/task0090-offline-safety-enforcement-20261009",
+  "active_pr": 532,
+  "active_branch": "supervisor/task0090-approval-binding-review-20261009",
   "current_milestone": "TASK-0090-PHASE15-SAFETY-GATES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0089 offline bounded goal-plan-propose-observe-evaluate acceptance via PRs #525/#526/#528/#529 exact-head and resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe full controls.",
-  "exact_next_safe_action": "Run full exact-head PR #531 unit/adversarial, Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures and merge; then implement TASK-0090 independent durable reservation and approval/stop policy.",
+  "exact_next_safe_action": "Certify exact-head PR #532 offline approval review tests and full required CI; repair and merge when green; then implement DB-backed independent approvals, atomic quota reservation, and stop reconciliation for TASK-0090.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Run full exact-head PR #531 unit/adversarial, Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures and merge; then implement TASK-0090 independent durable reservation and approval/stop policy."
+  "exact_next_action": "Certify exact-head PR #532 offline approval review tests and full required CI; repair and merge when green; then implement DB-backed independent approvals, atomic quota reservation, and stop reconciliation for TASK-0090."
 }

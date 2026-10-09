@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T12:48:14.731+00:00`
-- Observed main: `a05d7f8abb745f522786743c3e23f40d90f1c7d2`
+- Timestamp: `2026-10-09T13:00:54.238+00:00`
+- Observed main: `1a75895748675afef5a2102aab879932c45308ac`
 - Active issue: `none`
-- Active PR: `541`
-- Active branch: `supervisor/task0091-offline-canary-holdout-evaluation-20261009`
+- Active PR: `542`
+- Active branch: `supervisor/task0091-durable-canary-evidence-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `3408a5a1af2092d17623a4c9e2a7800269fa6874647c31b3849528cc7eb94820`
+- State fingerprint: `22ac9a57dd63820fc5a1c35b081218b39f288c1f956e93f59fa9ffa69623cab8`
 
 ## Completed / observed this session
 
-PR #540 exact-head Foundation, PHP 8.3, PostgreSQL integration, E2E, Security and Governance PASS, merged a05d7f8abb745f522786743c3e23f40d90f1c7d2; TASK-0090 AC1..3 certified. TASK-0091 PR #541 stages independently sourced frozen canaries/holdout denominator checks, fixed-horizon review-only score, and conservative late/duplicate rollback evidence with adversarial fixtures. No external effects authorized.
+PR #541 exact-head Foundation, PostgreSQL integration, PHP 8.3, E2E, Security and Governance PASS; merged 1a75895748675afef5a2102aab879932c45308ac. TASK-0091 PR #542 stages immutable one-per-experiment offline cohort receipts, current experiment/approver permission checks and adversarial replay/foreign scope feature tests. No external actions.
 
 ## Tests
 
-PR #540 full exact-head required suite passed. PR #541 source/negative fixtures pushed, exact-head CI pending.
+PR #541 required exact-head suite PASS before merge. PR #542 source and regression fixtures staged, full exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #540 full exact-head required suite passed. PR #541 source/negative fixtures 
 
 ## Exact next action
 
-Certify PR #541 exact-head frozen canary/holdout, independent fixed-horizon scoring, late/duplicate/irreversible rollback tests, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; repair failures and merge, then implement independent durable cohort/outcome sources.
+Certify PR #542 exact-head immutable offline cohort database receipts, replay/actor/scope safeguards, PHP 8.3, PostgreSQL, E2E, Security and Governance; then build separately verified cohort/outcome binding and operator-only promotion decisions.

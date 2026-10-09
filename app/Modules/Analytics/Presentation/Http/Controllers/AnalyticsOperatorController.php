@@ -3,6 +3,7 @@
 namespace App\Modules\Analytics\Presentation\Http\Controllers;
 
 use App\Modules\AI\Application\BoundedAutonomyOperatorDraft;
+use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
 use App\Modules\Analytics\Application\AnalyticsExplanationGateway;
 use App\Modules\Analytics\Application\AnalyticsInsights;
 use App\Modules\Analytics\Application\AnalyticsQuality;
@@ -135,10 +136,19 @@ final readonly class AnalyticsOperatorController
             $reports = $this->reports->recent($actor);
             $runId = (string) Str::uuid();
             $issuedAt = $this->clock->now();
-            (new BoundedAutonomyOperatorDraft)->create(
+            $draftService = new BoundedAutonomyOperatorDraft;
+            $preview = $draftService->create(
                 $actor, $reports['reports'], $input['report_id'],
                 (int) $input['target_count'], $runId, $issuedAt,
             );
+            $receipt = $draftService->record(
+                $actor, $reports['reports'], $input['report_id'],
+                (int) $input['target_count'], $runId, $issuedAt, app(IdempotentExecutor::class),
+            );
+            if ($receipt['snapshot_sha256'] !== $preview['snapshot_sha256']
+                || $receipt['execution_authorized'] !== false) {
+                throw new InvalidArgumentException('Offline autonomy receipt mismatch.');
+            }
 
             return back()->with('offline_autonomy_draft', [
                 'workspace_id' => $actor->workspaceId,

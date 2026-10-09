@@ -2,14 +2,14 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
 /**
- * Creates a read-only operator preview from the caller's currently authorized
- * analytics snapshot list. A client cannot register its own evidence source,
- * tool, policy version, tenant, permission, or external side effect.
+ * Derives both preview and durable offline receipt from the same trusted
+ * analytics evidence, with no external tool or AI-generated authorization.
  */
 final readonly class BoundedAutonomyOperatorDraft
 {
@@ -21,8 +21,35 @@ final readonly class BoundedAutonomyOperatorDraft
         string $runId,
         DateTimeImmutable $at,
     ): array {
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount);
+
+        return $policy->preview($actor, $runId, $goal, $actions, $at);
+    }
+
+    public function record(
+        TenantContext $actor,
+        array $authorizedReports,
+        string $reportId,
+        int $targetCount,
+        string $runId,
+        DateTimeImmutable $at,
+        IdempotentExecutor $idempotency,
+    ): array {
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount);
+
+        return (new BoundedAutonomyOfflineReceipt($policy, $idempotency))->record(
+            $actor, $runId, $goal, $actions, $at,
+        );
+    }
+
+    private function prepare(
+        TenantContext $actor,
+        array $authorizedReports,
+        string $reportId,
+        int $targetCount,
+        DateTimeImmutable $at,
+    ): array {
         if (preg_match('/^[a-f0-9-]{36}$/D', $reportId) !== 1
-            || preg_match('/^[a-f0-9-]{36}$/D', $runId) !== 1
             || $targetCount < 1 || $targetCount > 1000000) {
             throw new InvalidArgumentException('Offline autonomy draft bounds rejected.');
         }
@@ -50,12 +77,16 @@ final readonly class BoundedAutonomyOperatorDraft
             'reason_code' => 'metric_review',
         ]];
 
-        return (new BoundedAutonomyPreview(
+        $policy = new BoundedAutonomyPreview(
             ['analytics_read' => ['effect' => 'read', 'risk' => 'R0']],
             [$reportId],
             ['snapshot_review_count'],
             1,
-        ))->preview($actor, $runId, [
+        );
+
+        // The expiration is derived from the issuance time by the caller.
+        // prepare() intentionally does not trust a client-supplied expiry.
+        $goal = [
             'workspace_id' => $actor->workspaceId,
             'brand_id' => $actor->brandId,
             'policy_version' => 'v1',
@@ -63,6 +94,8 @@ final readonly class BoundedAutonomyOperatorDraft
             'metric_id' => 'snapshot_review_count',
             'target_count' => $targetCount,
             'expires_at_unix' => $at->getTimestamp() + 3600,
-        ], $actions, $at);
+        ];
+
+        return [$policy, $goal, $actions];
     }
 }

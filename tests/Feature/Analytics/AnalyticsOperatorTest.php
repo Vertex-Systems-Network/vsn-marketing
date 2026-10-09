@@ -108,6 +108,9 @@ it('issues only a permission-checked offline autonomy preview from current analy
         ->post($url.'/autonomy/preview', [
             'report_id' => $report['id'], 'target_count' => 12,
         ])->assertRedirect()->assertSessionHas('analytics_notice', 'autonomy_preview_ready');
+    expect(\Illuminate\Support\Facades\DB::table('idempotency_keys')
+        ->where('workspace_id', $f->actor->workspaceId)
+        ->where('scope', 'ai-offline-autonomy-preview:v1')->count())->toBe(1);
     $this->get($url)->assertOk()->assertInertia(fn (Assert $p) => $p
         ->where('autonomy_enabled', true)->where('offline_autonomy_preview.status', 'preview_ready')
         ->where('offline_autonomy_preview.execution_authorized', false)

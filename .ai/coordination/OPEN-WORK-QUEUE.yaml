@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "761abb5668dc3c726531e3f829f0bb9f88a2226c",
+  "reconciled_main_sha": "4add7fab04d7928b629517fcfc66c82c3ed84031",
   "active_work_path": {
     "kind": "pr",
-    "number": 537,
-    "title": "feat(phase15): recheck offline final admission, emergency stops and approval",
-    "branch": "supervisor/task0090-offline-final-review-20261009",
+    "number": 538,
+    "title": "feat(phase15): atomically limit offline autonomy attempts per minute",
+    "branch": "supervisor/task0090-atomic-minute-rate-20261009",
     "disposition": "active_task0090_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 538,
+      "title": "feat(phase15): atomically limit offline autonomy attempts per minute",
+      "branch": "supervisor/task0090-atomic-minute-rate-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 537,
       "title": "feat(phase15): recheck offline final admission, emergency stops and approval",
       "branch": "supervisor/task0090-offline-final-review-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4add7fab04d7928b629517fcfc66c82c3ed84031"
     },
     {
       "kind": "pr",

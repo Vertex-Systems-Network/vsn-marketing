@@ -100,6 +100,42 @@ final class DatabaseBoundedAutonomyOfflineReservation
                 return $this->result($preview, $review['reason_code']);
             }
 
+            // Same transaction and lock order as the durable quota claim:
+            // global stop -> workspace quota -> rate window -> reservation.
+            // A missing/stale policy blocks new work; never infer a rate grant.
+            $rate = DB::table('ai_autonomy_workspace_rate_windows')
+                ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
+                ->lockForUpdate()->first();
+            if ($rate === null) {
+                return $this->result($preview, 'rate_policy_unconfigured');
+            }
+            if ($rate->policy_version !== $preview['policy_version']) {
+                return $this->result($preview, 'rate_policy_changed');
+            }
+            $maximum = (int) $rate->max_attempts_per_minute;
+            $used = (int) $rate->window_used_attempts;
+            $minute = intdiv($at->getTimestamp(), 60) * 60;
+            $previousMinute = (int) $rate->window_started_unix;
+            if ($maximum < 1 || $maximum > 100000 || $used < 0 || $used > $maximum
+                || $minute < 0 || $previousMinute < 0) {
+                throw new InvalidArgumentException('Untrusted offline rate policy counters.');
+            }
+            if ($previousMinute > $minute) {
+                return $this->result($preview, 'rate_clock_regressed');
+            }
+            $currentUsed = $previousMinute === $minute ? $used : 0;
+            if ($estimate['attempts'] > $maximum - $currentUsed) {
+                return $this->result($preview, 'rate_limit_reached');
+            }
+
+            DB::table('ai_autonomy_workspace_rate_windows')
+                ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
+                ->update([
+                    'window_started_unix' => $minute,
+                    'window_used_attempts' => $currentUsed + $estimate['attempts'],
+                    'updated_at' => now(),
+                ]);
+
             DB::table('ai_autonomy_workspace_quotas')
                 ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
                 ->update([

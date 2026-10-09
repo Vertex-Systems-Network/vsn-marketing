@@ -100,8 +100,6 @@ final class DatabaseBoundedAutonomyOfflineReservation
                 return $this->result($preview, $review['reason_code']);
             }
 
-
-
             DB::table('ai_autonomy_workspace_quotas')
                 ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
                 ->update([

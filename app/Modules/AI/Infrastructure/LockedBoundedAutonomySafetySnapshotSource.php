@@ -12,8 +12,11 @@ use DateTimeImmutable;
  */
 final readonly class LockedBoundedAutonomySafetySnapshotSource implements BoundedAutonomySafetySnapshotSource
 {
-    public function __construct(private array $snapshot)
+    private array $snapshot;
+
+    public function __construct(array $snapshot)
     {
+        $this->snapshot = $snapshot;
     }
 
     public function current(TenantContext $scope, DateTimeImmutable $at): array

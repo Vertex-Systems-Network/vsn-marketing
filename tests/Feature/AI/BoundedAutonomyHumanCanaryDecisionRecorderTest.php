@@ -245,6 +245,15 @@ it('records independently joined human review only, never promoting or triggerin
         ->and($recorded['execution_authorized'])->toBeFalse()
         ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
 
+    // Same human, immutable plan and independently recomputed outcome
+    // cannot create a second positive decision under retries.
+    $replayed = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'approved', $at);
+    expect($replayed['status'])->toBe('human_decision_replayed_offline')
+        ->and($replayed['decision_id'])->toBe($recorded['decision_id'])
+        ->and($replayed['execution_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+
     $source = new DatabaseBoundedAutonomyCanaryHumanDecisionSource(app(WorkspaceAuthorizer::class));
     $fact = $source->latest($f['scope'], $f['plan']->id, $at);
     expect($fact['outcome'])->toBe('approved')

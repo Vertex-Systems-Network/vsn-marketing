@@ -145,6 +145,29 @@ final readonly class BoundedAutonomyHumanCanaryDecisionRecorder
                 ];
             }
 
+            // Repeated independent approval of the same frozen evidence
+            // is an idempotent readback, not a second positive decision.
+            // This is evaluated AFTER current session/RBAC, stop, quota and
+            // independent outcome evidence have all been revalidated.
+            if ($outcome === 'approved' && $last !== null
+                && $last->outcome === 'approved'
+                && $last->deciding_actor_id === $approverId
+                && $last->plan_sha256 === $experiment->fingerprint()
+                && $last->analysis_sha256 === $analysis->fingerprint()
+                && $last->cohort_receipt_id === $binding['cohort_receipt_id']
+                && $last->outcome_manifest_sha256 === $binding['outcome_manifest_sha256']
+                && $last->policy_version === 'v1'
+                && (int) $last->observed_at_unix <= $at->getTimestamp()
+                && (int) $last->expires_at_unix > $at->getTimestamp()) {
+                return [
+                    'status' => 'human_decision_replayed_offline',
+                    'decision_id' => $last->decision_id,
+                    'outcome' => 'approved',
+                    'execution_authorized' => false,
+                    'promotion_authorized' => false,
+                ];
+            }
+
             $id = (string) Str::uuid();
             $record = [
                 'decision_id' => $id,

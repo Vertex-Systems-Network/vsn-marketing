@@ -32,6 +32,12 @@ The preplan exists so future AI sessions do not invent the product direction fro
 
 Machine-readable task files and exact acceptance criteria are materialized/reconciled through the canonical continuity process before work becomes active. No reserved future task is executable merely because it appears in the long-horizon document.
 
+## Email engagement tracking — unweighted future scope
+
+The six requested email observability capabilities (observed opens/near-real-time alerts; device/browser; coarse geographic indicators; open count/timeline; self-open/bot filtering; safe link-click tracking) are specified in [EMAIL-ENGAGEMENT-TRACKING-EXTENSION.md](EMAIL-ENGAGEMENT-TRACKING-EXTENSION.md). This cross-module scope reuses existing provider, event, delivery, privacy, analytics, campaign, journey and AI guardrails, but is **not covered as a certified live end-to-end feature** by earlier completed phases.
+
+`TASK-0101` through `TASK-0108` are unmaterialized candidate work packages after the PHASE-00..16 baseline, **not an active PHASE-14/15/16 task or a new weighted phase**. The established 100-point baseline and its current percentage stay unchanged; before implementing the extension, perform research-first scope reconciliation, explicit roadmap weight/phase treatment, dependency checks and guarded machine-state activation. The AI-Native Supervisor must use the canonical preplanned plan and this extension when continuing the accepted roadmap, without bypassing current active tasks or treating provider telemetry as verified human reading.
+
 ## Research-first extension rule
 
 Every applicable new subsystem/provider/channel/API/AI capability must follow `.ai/11-RESEARCH-FIRST-STANDARD.md` before implementation.

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8eb88424da56916e53bb266b05d092ef034a7d12",
+  "reconciled_main_sha": "a9601b79a59cec7ef51a43a5a775852f72c7b8b4",
   "active_work_path": {
     "kind": "pr",
-    "number": 543,
-    "title": "feat(phase15): bind offline canary outcomes to frozen cohort receipts",
-    "branch": "supervisor/task0091-linked-outcome-review-certified-20261009",
+    "number": 544,
+    "title": "feat(phase15): preserve offline rollback incident history under replay",
+    "branch": "supervisor/task0091-append-only-rollback-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 544,
+      "title": "feat(phase15): preserve offline rollback incident history under replay",
+      "branch": "supervisor/task0091-append-only-rollback-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 543,
       "title": "feat(phase15): bind offline canary outcomes to frozen cohort receipts",
       "branch": "supervisor/task0091-linked-outcome-review-certified-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "a9601b79a59cec7ef51a43a5a775852f72c7b8b4"
     },
     {
       "kind": "pr",

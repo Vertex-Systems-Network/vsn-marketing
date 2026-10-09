@@ -123,6 +123,21 @@ it('enforces workspace stop, atomic quota accounting, duplicate replay and exhau
 
     $repeat = $service->reserve($scope, $preview, $estimate, autonomyOfflineDbTime());
     expect($repeat['reason_code'])->toBe('run_already_recorded');
+
+    // A known run does not allow a second actor to replay its reservation.
+    expect(fn () => $service->reserve(
+        new TenantContext($scope->organizationId, $scope->workspaceId, null, 'imposter'),
+        $preview, $estimate, autonomyOfflineDbTime(),
+    ))->toThrow(InvalidArgumentException::class, 'Conflicting offline reservation replay');
+
+    // Lower token demand stays within the token allowance, but the aggregate
+    // cost reservation must independently deny the second claim.
+    $costOnly = array_replace($estimate, ['tokens' => 10]);
+    $costDenied = $service->reserve(
+        $scope, autonomyOfflineDbPreview($scope, 'offline-cost'), $costOnly, autonomyOfflineDbTime(),
+    );
+    expect($costDenied['reason_code'])->toBe('cost_limit_reached');
+
     $overLimit = $service->reserve($scope, autonomyOfflineDbPreview($scope, 'offline-b'), $estimate, autonomyOfflineDbTime());
     expect($overLimit['status'])->toBe('held_offline')
         ->and($overLimit['reason_code'])->toBe('tokens_limit_reached');

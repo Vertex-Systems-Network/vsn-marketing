@@ -26,6 +26,7 @@ final class BoundedAutonomyOfflineApprovalReviewTest extends TestCase
     private function preview(): array
     {
         $at = $this->at();
+
         return (new BoundedAutonomyPreview(
             ['analytics_read' => ['effect' => 'read', 'risk' => 'R0']],
             ['source-1'], ['count'],

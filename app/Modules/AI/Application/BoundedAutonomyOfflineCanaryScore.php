@@ -18,7 +18,7 @@ final readonly class BoundedAutonomyOfflineCanaryScore
 {
     private const array KEYS = [
         'tenant', 'experiment_id', 'plan_sha256', 'analysis_sha256',
-        'source_manifest_sha256', 'observed_at_unix', 'expires_at_unix',
+        'source_manifest_sha256', 'assignment_manifest_sha256', 'observed_at_unix', 'expires_at_unix',
         'verified_independent_source', 'assigned', 'exposed', 'outcomes',
         'quarantined', 'crossovers', 'low_trust_count',
     ];
@@ -51,6 +51,7 @@ final readonly class BoundedAutonomyOfflineCanaryScore
             || $facts['plan_sha256'] !== $experiment->fingerprint()
             || $facts['analysis_sha256'] !== $analysis->fingerprint()
             || ! self::digest($facts['source_manifest_sha256'])
+            || ! self::digest($facts['assignment_manifest_sha256'])
             || ! is_int($facts['observed_at_unix'])
             || ! is_int($facts['expires_at_unix'])
             || $facts['observed_at_unix'] > $at->getTimestamp()
@@ -113,6 +114,9 @@ final readonly class BoundedAutonomyOfflineCanaryScore
             'experiment_id' => $experiment->id,
             'plan_sha256' => $experiment->fingerprint(),
             'source_manifest_sha256' => $facts['source_manifest_sha256'],
+            'assignment_manifest_sha256' => $facts['assignment_manifest_sha256'],
+            'assigned_denominator' => array_sum($facts['assigned']),
+            'holdout_denominator' => $facts['assigned'][$experiment->holdout],
             'statistical_status' => $stats['status'],
             'promotion_authorized' => false,
             'execution_authorized' => false,
@@ -128,6 +132,9 @@ final readonly class BoundedAutonomyOfflineCanaryScore
             'experiment_id' => $experiment->id,
             'plan_sha256' => $experiment->fingerprint(),
             'source_manifest_sha256' => null,
+            'assignment_manifest_sha256' => null,
+            'assigned_denominator' => null,
+            'holdout_denominator' => null,
             'statistical_status' => 'not_evaluated',
             'promotion_authorized' => false,
             'execution_authorized' => false,

@@ -53,6 +53,7 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
             'plan_sha256' => $this->plan()->fingerprint(),
             'analysis_sha256' => $this->analysisPlan()->fingerprint(),
             'source_manifest_sha256' => str_repeat('a', 64),
+            'assignment_manifest_sha256' => str_repeat('b', 64),
             'observed_at_unix' => $this->at()->getTimestamp(),
             'expires_at_unix' => $this->at()->getTimestamp() + 300,
             'verified_independent_source' => true,

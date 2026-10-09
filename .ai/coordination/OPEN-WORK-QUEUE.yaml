@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1a75895748675afef5a2102aab879932c45308ac",
+  "reconciled_main_sha": "8eb88424da56916e53bb266b05d092ef034a7d12",
   "active_work_path": {
     "kind": "pr",
-    "number": 542,
-    "title": "feat(phase15): persist immutable offline canary evidence receipts",
-    "branch": "supervisor/task0091-durable-canary-evidence-20261009",
+    "number": 543,
+    "title": "feat(phase15): bind offline canary outcomes to frozen cohort receipts",
+    "branch": "supervisor/task0091-linked-outcome-review-certified-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 543,
+      "title": "feat(phase15): bind offline canary outcomes to frozen cohort receipts",
+      "branch": "supervisor/task0091-linked-outcome-review-certified-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 542,
       "title": "feat(phase15): persist immutable offline canary evidence receipts",
       "branch": "supervisor/task0091-durable-canary-evidence-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "8eb88424da56916e53bb266b05d092ef034a7d12"
     },
     {
       "kind": "pr",

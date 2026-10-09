@@ -112,6 +112,7 @@ final class BoundedAutonomyPreview
             'actions' => $normalized,
             'mode' => 'offline_proposal_only',
         ];
+
         return [
             'status' => 'preview_ready',
             'execution_authorized' => false,

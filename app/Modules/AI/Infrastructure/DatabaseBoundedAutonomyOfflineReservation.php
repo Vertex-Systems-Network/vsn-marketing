@@ -81,6 +81,26 @@ final class DatabaseBoundedAutonomyOfflineReservation
                 }
             };
 
+            // Always check an already-recorded run before evaluating *remaining*
+            // budget. A replay never creates a second reservation, even when
+            // the original claim exhausted the available quota.
+            $recorded = is_string($preview['run_id'] ?? null)
+                ? DB::table('ai_autonomy_offline_reservations')
+                    ->where('workspace_id', $actor->workspaceId)
+                    ->where('run_id', $preview['run_id'])->first()
+                : null;
+            if ($recorded !== null) {
+                if ($recorded->actor_id !== $actor->actorId
+                    || $recorded->brand_id !== $actor->brandId
+                    || $recorded->snapshot_sha256 !== ($preview['snapshot_sha256'] ?? null)
+                    || $recorded->policy_version !== ($preview['policy_version'] ?? null)
+                    || ($preview['execution_authorized'] ?? null) !== false) {
+                    throw new InvalidArgumentException('Conflicting offline reservation replay rejected.');
+                }
+
+                return $this->result($preview, 'run_already_recorded');
+            }
+
             $review = (new BoundedAutonomyOfflineSafetyGate($source))->assess(
                 $actor, $preview, $estimate, $at,
             );
@@ -89,11 +109,7 @@ final class DatabaseBoundedAutonomyOfflineReservation
                 return $this->result($preview, $review['reason_code']);
             }
 
-            // Workspace quota parent lock serializes duplicate/replay attempts.
-            if (DB::table('ai_autonomy_offline_reservations')->where('workspace_id', $actor->workspaceId)
-                ->where('run_id', $preview['run_id'])->exists()) {
-                return $this->result($preview, 'run_already_recorded');
-            }
+
 
             DB::table('ai_autonomy_workspace_quotas')
                 ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)

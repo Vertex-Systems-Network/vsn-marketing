@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "26009a73d7d01c9541fc2e9100218c07d8bb6903",
+  "reconciled_main_sha": "9c4bd7974cccf0db6f5dfd9cb55e3f83fb3cdd5f",
   "active_work_path": {
     "kind": "pr",
-    "number": 532,
-    "title": "feat(phase15): verify immutable offline approval bindings",
-    "branch": "supervisor/task0090-approval-binding-review-20261009",
+    "number": 533,
+    "title": "feat(phase15): atomically reserve offline autonomy resources",
+    "branch": "supervisor/task0090-atomic-offline-quotas-20261009",
     "disposition": "active_task0090_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 533,
+      "title": "feat(phase15): atomically reserve offline autonomy resources",
+      "branch": "supervisor/task0090-atomic-offline-quotas-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 532,
       "title": "feat(phase15): verify immutable offline approval bindings",
       "branch": "supervisor/task0090-approval-binding-review-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "9c4bd7974cccf0db6f5dfd9cb55e3f83fb3cdd5f"
     },
     {
       "kind": "pr",

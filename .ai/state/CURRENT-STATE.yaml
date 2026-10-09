@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #543 exact head 23ed3a66b1351feb496d0cc59db10411a16177e1 passed AI Continuity/Governance; merged as a9601b79a59cec7ef51a43a5a775852f72c7b8b4.",
-    "application_test_status": "PR #543 exact head 23ed3a66b1351feb496d0cc59db10411a16177e1 passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
-    "security_supply_chain_status": "PR #543 exact head 23ed3a66b1351feb496d0cc59db10411a16177e1 passed Security Supply Chain.",
+    "continuity_validation": "PR #544 exact head 5ee408e269619c15c3d9e82cb589d9c6e5a4d6ce passed governance; merged 14ae5006cf388a992d5a20963eac9dcdbfa9f548.",
+    "application_test_status": "PR #544 exact head 5ee408e269619c15c3d9e82cb589d9c6e5a4d6ce passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
+    "security_supply_chain_status": "PR #544 exact head 5ee408e269619c15c3d9e82cb589d9c6e5a4d6ce passed Security Supply Chain.",
     "release_integrity_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 release-integrity passed.",
     "scorecard_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 scorecard passed."
   },
-  "observed_main_sha": "a9601b79a59cec7ef51a43a5a775852f72c7b8b4",
+  "observed_main_sha": "14ae5006cf388a992d5a20963eac9dcdbfa9f548",
   "active_issue": null,
-  "active_pr": 544,
-  "active_branch": "supervisor/task0091-append-only-rollback-20261009",
+  "active_pr": 545,
+  "active_branch": "supervisor/task0091-rollback-postgres-replay-20261009",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #544 exact-head append-only offline rollback incident replay/uncertainty tests and PostgreSQL, PHP 8.3, E2E, Security and AI Continuity; repair and merge verified head; continue TASK-0091 external evidence/consent/reconciliation gates.",
+  "exact_next_safe_action": "Certify PR #545 exact-head PostgreSQL two-worker rollback incident replay, Foundation, PHP 8.3, E2E, Security and Governance; repair any failure and merge; continue TASK-0091 independent provider outcome provenance and human promotion/rollback boundaries.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #544 exact-head append-only offline rollback incident replay/uncertainty tests and PostgreSQL, PHP 8.3, E2E, Security and AI Continuity; repair and merge verified head; continue TASK-0091 external evidence/consent/reconciliation gates."
+  "exact_next_action": "Certify PR #545 exact-head PostgreSQL two-worker rollback incident replay, Foundation, PHP 8.3, E2E, Security and Governance; repair any failure and merge; continue TASK-0091 independent provider outcome provenance and human promotion/rollback boundaries."
 }

@@ -9,7 +9,6 @@ use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyExpectedProviderOperationsSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyVerifiedProviderAttemptSource;
-use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyExpectedProviderOperationsSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
 use InvalidArgumentException;

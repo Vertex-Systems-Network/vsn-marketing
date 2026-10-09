@@ -3,7 +3,6 @@
 namespace App\Modules\Analytics\Presentation\Http\Controllers;
 
 use App\Modules\AI\Application\BoundedAutonomyOperatorDraft;
-use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
 use App\Modules\Analytics\Application\AnalyticsExplanationGateway;
 use App\Modules\Analytics\Application\AnalyticsInsights;
 use App\Modules\Analytics\Application\AnalyticsQuality;
@@ -14,6 +13,7 @@ use App\Modules\Analytics\Domain\AnalyticsAccess;
 use App\Modules\Analytics\Domain\AnalyticsExplanation;
 use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Analytics\Domain\ReportCatalog;
+use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
 use App\Modules\Core\Domain\Contracts\Clock;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;

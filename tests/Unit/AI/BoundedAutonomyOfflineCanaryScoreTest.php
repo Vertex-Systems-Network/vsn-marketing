@@ -106,6 +106,7 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
             ['outcomes' => ['control' => 6000, 'treatment' => 2000, 'holdout' => 0]],
             ['outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 1]],
             ['assigned' => ['control' => 30, 'treatment' => 30, 'holdout' => 10]],
+            ['outcomes' => ['control' => 2000, 'treatment' => 500, 'holdout' => 0]],
         ] as $patch) {
             $data->value = array_replace($this->facts(), $patch);
             $r = $reviewer->inspect($this->scope(), $this->plan(), $this->analysisPlan(), $this->at());

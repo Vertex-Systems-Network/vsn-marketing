@@ -95,11 +95,14 @@ final readonly class BoundedAutonomyOfflineCanaryScore
             $analysis, $facts['assigned'], $facts['exposed'], $facts['outcomes'],
             $facts['quarantined'], $facts['crossovers'], $at,
         );
-        $candidate = false;
-        if ($stats['status'] === 'offline_signal') {
+        // A candidate needs a prespecified practical uplift AND a positive
+        // conservative interval for every treatment. A negative-arm signal
+        // cannot be used to cherry-pick a favorable treatment for promotion.
+        $candidate = $stats['status'] === 'offline_signal' && $stats['effects'] !== [];
+        if ($candidate) {
             foreach ($stats['effects'] as $effect) {
-                if ($effect['interval'][0] > 0) {
-                    $candidate = true;
+                if ($effect['interval'][0] <= 0 || $effect['absolute_difference'] < 0.05) {
+                    $candidate = false;
                 }
             }
         }

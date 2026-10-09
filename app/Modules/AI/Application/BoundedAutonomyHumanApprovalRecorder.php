@@ -80,6 +80,22 @@ final readonly class BoundedAutonomyHumanApprovalRecorder
         }
 
         return DB::transaction(function () use ($approverId, $requester, $preview, $binding, $outcome, $at): array {
+            if (! DB::table('workspaces')->where('id', $requester->workspaceId)
+                ->where('organization_id', $requester->organizationId)->exists()) {
+                throw new InvalidArgumentException('Foreign organization workspace rejected.');
+            }
+
+            // The final review also locks the global stop first; serializing
+            // human decision appends on this same row prevents a new revoke
+            // from racing its read of the latest approval decision.
+            $global = DB::table('ai_autonomy_global_stops')->where('id', 'global')
+                ->lockForUpdate()->first();
+            if ($outcome === 'approved' && ($global === null || (int) $global->stopped !== 0)) {
+                throw new InvalidArgumentException('Global autonomy stop denies new approvals.');
+            }
+            // Rejection and revocation remain allowed while stopped so humans
+            // can withdraw existing approval evidence without external effects.
+
             // No approval may invent a predecessor to revoke. A current
             // authorized reviewer must still validate the *latest* decision.
             if ($outcome === 'revoked' && ! DB::table('ai_autonomy_offline_approval_decisions')

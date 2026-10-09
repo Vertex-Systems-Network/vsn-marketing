@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4add7fab04d7928b629517fcfc66c82c3ed84031",
+  "reconciled_main_sha": "accbbe606dba2147c56c568d7571e21d6cf55f88",
   "active_work_path": {
     "kind": "pr",
-    "number": 538,
-    "title": "feat(phase15): atomically limit offline autonomy attempts per minute",
-    "branch": "supervisor/task0090-atomic-minute-rate-20261009",
+    "number": 539,
+    "title": "feat(phase15): serialize offline rate, approval and emergency-stop review",
+    "branch": "supervisor/task0090-final-rate-approval-stop-20261009",
     "disposition": "active_task0090_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 539,
+      "title": "feat(phase15): serialize offline rate, approval and emergency-stop review",
+      "branch": "supervisor/task0090-final-rate-approval-stop-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 538,
       "title": "feat(phase15): atomically limit offline autonomy attempts per minute",
       "branch": "supervisor/task0090-atomic-minute-rate-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "accbbe606dba2147c56c568d7571e21d6cf55f88"
     },
     {
       "kind": "pr",

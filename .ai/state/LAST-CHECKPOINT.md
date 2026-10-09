@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T11:05:51.509+00:00`
-- Observed main: `761abb5668dc3c726531e3f829f0bb9f88a2226c`
+- Timestamp: `2026-10-09T11:36:23.669+00:00`
+- Observed main: `4add7fab04d7928b629517fcfc66c82c3ed84031`
 - Active issue: `none`
-- Active PR: `537`
-- Active branch: `supervisor/task0090-offline-final-review-20261009`
+- Active PR: `538`
+- Active branch: `supervisor/task0090-atomic-minute-rate-20261009`
 - Current milestone: `TASK-0090-PHASE15-SAFETY-GATES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0090`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `46bc4492e3b3d78a065fb9ab4727583acb2aa0312990ddbbc76d29f9e2eb5cde`
+- State fingerprint: `e4bfec92eb23a326e6b1daf34b7bd4c25434b630588c61d6d4b81e28222b5833`
 
 ## Completed / observed this session
 
-PR #536 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance passed and merged as 761abb5668dc3c726531e3f829f0bb9f88a2226c. TASK-0090 PR #537 stages locked offline final review checking current emergency stops, exact reservation, policy and independently sourced approval with adversarial tenant, revocation and budget tests. No live external execution, spend or promotion enabled.
+PR #537 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance passed and merged as 4add7fab04d7928b629517fcfc66c82c3ed84031. TASK-0090 PR #538 stages deny-by-default per-minute rate limits, atomic quota reservations and tenant/clock/policy adversarial tests. Live external execution disabled.
 
 ## Tests
 
-PR #536 exact-head required suite PASS, merged; PR #537 offline final review/adversarial fixtures staged, exact-head CI pending.
+PR #537 full required exact-head gates PASSED. PR #538 code and adversarial fixture staged; CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #536 exact-head required suite PASS, merged; PR #537 offline final review/adv
 
 ## Exact next action
 
-Verify PR #537 offline final review exact-head Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures, merge certified head and continue TASK-0090 proof of final admission/rate and approval-stop races.
+Verify PR #538 exact-head rate-window quota claims with Foundation, PHP floor, PostgreSQL integration, E2E, Security and Governance; fix failures and merge certified head; continue TASK-0090 final admission/rate and approval-stop race evidence.

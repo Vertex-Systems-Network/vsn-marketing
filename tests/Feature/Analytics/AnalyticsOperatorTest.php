@@ -6,6 +6,8 @@ use App\Modules\Analytics\Application\AnalyticsReports;
 use App\Modules\Analytics\Domain\MetricDefinition;
 use App\Modules\Analytics\Domain\ReportCatalog;
 use App\Modules\Consent\Domain\ConsentDecision;
+use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -96,6 +98,7 @@ it('displays authorized quality checks and hides receipt lineage and unapproved 
 it('issues only a permission-checked offline autonomy preview from current analytics evidence', function () {
     $this->withoutVite();
     $f = new AnalyticsFixture;
+    app(WorkspaceRoleManager::class)->grantPermission($f->role, PermissionCatalog::AI_EXECUTE);
     $facts = app(AnalyticsFacts::class);
     $facts->project($f->actor, $f->event());
     $report = $facts->snapshot($f->actor, new MetricDefinition('product.viewed'),

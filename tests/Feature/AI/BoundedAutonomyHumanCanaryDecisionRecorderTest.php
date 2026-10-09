@@ -1,0 +1,196 @@
+<?php
+
+use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
+use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
+use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeJoinSource;
+use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeSource;
+use App\Modules\Experiments\Domain\ExperimentAccess;
+use App\Modules\Experiments\Domain\ExperimentAnalysisPlan;
+use App\Modules\Experiments\Domain\ExperimentPlan;
+use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
+use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
+use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Domain\Identity\User;
+use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+uses(RefreshDatabase::class);
+
+function humanCanaryWriterFixture(): array
+{
+    $org = (string) Str::uuid();
+    $ws = (string) Str::uuid();
+    DB::table('organizations')->insert([
+        'id' => $org, 'name' => 'Human promotion recorder',
+        'slug' => 'human-recorder-'.Str::random(8), 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    DB::table('workspaces')->insert([
+        'id' => $ws, 'organization_id' => $org, 'name' => 'Human recorder workspace',
+        'slug' => 'human-recorder-'.Str::random(8), 'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    $requester = User::query()->create([
+        'name' => 'Canary requester', 'email' => Str::random(10).'@example.org',
+        'password' => Str::random(25),
+    ]);
+    $approver = User::query()->create([
+        'name' => 'Human canary approver', 'email' => Str::random(10).'@example.org',
+        'password' => Str::random(25),
+    ]);
+    $roles = app(WorkspaceRoleManager::class);
+    $membership = $roles->addMember($approver, $ws);
+    $role = $roles->createRole($ws, 'human-canary-owner', 'Independent canary approver');
+    $roles->assignRole($membership, $role);
+
+    $scope = new TenantContext($org, $ws, null, (string) $requester->getKey());
+    $plan = new ExperimentPlan((string) Str::uuid(), $ws, null, 'offline_human_review',
+        'company', ['control' => 4500, 'treatment' => 4500, 'holdout' => 1000], 'control', 'holdout');
+    $analysis = new ExperimentAnalysisPlan((string) Str::uuid(), 'company',
+        ['control' => 4500, 'treatment' => 4500, 'holdout' => 1000],
+        'control', 'holdout', 0.05, 0.8, 0.2, 0.15,
+        new DateTimeImmutable('2026-10-08T09:00:00+00:00'));
+
+    DB::table('experiments')->insert([
+        'id' => $plan->id, 'workspace_id' => $ws, 'brand_id' => null,
+        'layer' => $plan->layer, 'unit_kind' => $plan->unitKind,
+        'control_variant' => $plan->control, 'holdout_variant' => $plan->holdout,
+        'allocation' => json_encode($plan->canonical()['weights'], JSON_THROW_ON_ERROR),
+        'plan_hash' => $plan->fingerprint(), 'key_fingerprint' => str_repeat('a', 64),
+        'status' => 'active', 'created_by_actor_id' => 'creator',
+        'approved_by_actor_id' => 'separate-human', 'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    return compact('scope', 'plan', 'analysis', 'requester', 'approver', 'role');
+}
+
+function humanCanaryWriterService(): BoundedAutonomyHumanCanaryDecisionRecorder
+{
+    $access = new class implements ExperimentAccess
+    {
+        public function allows(TenantContext $actor, string $permission): bool
+        {
+            return $permission === PermissionCatalog::CAMPAIGN_READ;
+        }
+    };
+
+    return new BoundedAutonomyHumanCanaryDecisionRecorder(
+        app(WorkspaceAuthorizer::class),
+        new BoundedAutonomyOfflineOutcomeJoinReview(
+            new DenyingBoundedAutonomyCanaryOutcomeJoinSource,
+            new DenyingBoundedAutonomyCanaryOutcomeSource,
+            $access,
+        ),
+    );
+}
+
+function humanCanaryGrantBoth(array $f): void
+{
+    $roles = app(WorkspaceRoleManager::class);
+    $roles->grantPermission($f['role'], PermissionCatalog::AI_APPROVE);
+    $roles->grantPermission($f['role'], PermissionCatalog::CAMPAIGN_APPROVE);
+}
+
+function humanCanaryAt(): DateTimeImmutable
+{
+    return new DateTimeImmutable('2026-10-09T09:00:00+00:00');
+}
+
+it('refuses model-level approvals, absent human session and missing workspace permissions', function () {
+    $f = humanCanaryWriterFixture();
+    $writer = humanCanaryWriterService();
+    expect(fn () => $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+
+    $this->actingAs($f['approver']);
+    expect(fn () => $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+
+    humanCanaryGrantBoth($f);
+    $held = $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt());
+    expect($held['reason_code'])->toBe('global_stop_unconfigured');
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    $stopped = $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt());
+    expect($stopped['reason_code'])->toBe('workspace_emergency_stop')
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+});
+
+it('holds independent provider evidence gaps even with current human session and budget authority', function () {
+    $f = humanCanaryWriterFixture();
+    humanCanaryGrantBoth($f);
+    $this->actingAs($f['approver']);
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    DB::table('ai_autonomy_workspace_quotas')->insert([
+        'workspace_id' => $f['scope']->workspaceId,
+        'period_utc' => humanCanaryAt()->format('Y-m-d'), 'policy_version' => 'v1',
+        'workspace_stopped' => false, 'max_actions' => 1, 'max_tokens' => 100,
+        'max_volume' => 100, 'max_cost_minor' => 100, 'max_attempts' => 1,
+        'policy_expires_at' => humanCanaryAt()->modify('+1 hour')->format('Y-m-d H:i:s'),
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+    $r = humanCanaryWriterService()->record(
+        $f['approver'], $f['scope'], $f['plan'], $f['analysis'], 'approved', humanCanaryAt(),
+    );
+    expect($r['status'])->toBe('held_offline')
+        ->and($r['reason_code'])->toBe('independent_outcome_join_not_eligible')
+        ->and($r['promotion_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+});
+
+it('allows human revocation while global stop is active and never repeats evidence', function () {
+    $f = humanCanaryWriterFixture();
+    humanCanaryGrantBoth($f);
+    $this->actingAs($f['approver']);
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => true, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    $id = (string) Str::uuid();
+    DB::table('ai_autonomy_canary_human_decisions')->insert([
+        'decision_id' => $id,
+        'workspace_id' => $f['scope']->workspaceId, 'brand_id' => null,
+        'experiment_id' => $f['plan']->id, 'sequence' => 1,
+        'plan_sha256' => $f['plan']->fingerprint(),
+        'analysis_sha256' => $f['analysis']->fingerprint(),
+        'cohort_receipt_id' => (string) Str::uuid(),
+        'outcome_manifest_sha256' => str_repeat('a', 64),
+        'deciding_actor_id' => (string) $f['approver']->getKey(),
+        'outcome' => 'approved', 'policy_version' => 'v1',
+        'human_session_verified' => true,
+        'session_proof_sha256' => str_repeat('b', 64),
+        'observed_at_unix' => humanCanaryAt()->getTimestamp(),
+        'expires_at_unix' => humanCanaryAt()->getTimestamp() + 300,
+        'created_at' => now(),
+    ]);
+
+    $writer = humanCanaryWriterService();
+    $r = $writer->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'revoked', humanCanaryAt());
+    expect($r['status'])->toBe('human_decision_recorded_offline')
+        ->and($r['outcome'])->toBe('revoked')
+        ->and($r['promotion_authorized'])->toBeFalse();
+    $again = $writer->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'revoked', humanCanaryAt());
+    expect($again['status'])->toBe('human_decision_replayed_offline')
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(2);
+});
+
+it('denies self approval and unknown decisions without touching offline evidence', function () {
+    $f = humanCanaryWriterFixture();
+    humanCanaryGrantBoth($f);
+    $this->actingAs($f['approver']);
+    $self = new TenantContext($f['scope']->organizationId,
+        $f['scope']->workspaceId, null, (string) $f['approver']->getKey());
+    $writer = humanCanaryWriterService();
+    expect(fn () => $writer->record($f['approver'], $self, $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+    expect(fn () => $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'automatic_publish', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+});

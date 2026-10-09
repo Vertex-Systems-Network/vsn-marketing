@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4f9e2dc271cbba62abe3e1fba4da261c687605f5",
+  "reconciled_main_sha": "958802931456feae57a7226eaaec878323d7727b",
   "active_work_path": {
     "kind": "pr",
-    "number": 552,
-    "title": "feat(phase15): require canonical provider-operation coverage for rollback review",
-    "branch": "supervisor/task0091-expected-operation-coverage-20261010",
+    "number": 553,
+    "title": "fix(phase15): reject stale provider rollback timestamps",
+    "branch": "supervisor/task0091-stale-provider-evidence-certification-20261010",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 553,
+      "title": "fix(phase15): reject stale provider rollback timestamps",
+      "branch": "supervisor/task0091-stale-provider-evidence-certification-20261010",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 552,
       "title": "feat(phase15): require canonical provider-operation coverage for rollback review",
       "branch": "supervisor/task0091-expected-operation-coverage-20261010",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "958802931456feae57a7226eaaec878323d7727b"
     },
     {
       "kind": "pr",

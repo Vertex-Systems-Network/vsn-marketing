@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #552 exact-head canonical expected-operation coverage against independently verified provider outcome manifests, with Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; repair failure, merge only verified green PR, continue TASK-0091 acceptance."
+  "exact_next_action": "Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work."
 }

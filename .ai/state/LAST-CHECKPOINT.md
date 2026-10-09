@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T19:52:01.686+00:00`
-- Observed main: `4f9e2dc271cbba62abe3e1fba4da261c687605f5`
+- Timestamp: `2026-10-09T20:07:05.571+00:00`
+- Observed main: `958802931456feae57a7226eaaec878323d7727b`
 - Active issue: `none`
-- Active PR: `552`
-- Active branch: `supervisor/task0091-expected-operation-coverage-20261010`
+- Active PR: `553`
+- Active branch: `supervisor/task0091-stale-provider-evidence-certification-20261010`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `503655a3f10b4e827cdf4b4c2687b494129a91f6d0c0d78c42ce261fc7c56e24`
+- State fingerprint: `9235ad54c38a4f2486615e48e28b547ed43369db1b170d5bf96bf66569f2a544`
 
 ## Completed / observed this session
 
-PR #551 independently verified provider attempts and aggregate/per-attempt offline rollback review passed exact-head Foundation, PostgreSQL, PHP, E2E, Security and Governance and merged 4f9e2dc271cbba62abe3e1fba4da261c687605f5. PR #552 stages independent canonical expected operation-set proof, deny-all absent source, exact ID/idempotency binding, duplicate/incomplete provider attempt tests. No provider action or rollback claimed.
+PR #552 verified canonical expected provider operation coverage passed exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance and merged 958802931456feae57a7226eaaec878323d7727b. PR #553 adds strict stale and nonpositive attempted-at provider evidence rejection, adversarial regressions and truthful TASK-0091 offline acceptance matrix; no production rollback, refund, sending or promotion authority.
 
 ## Tests
 
-PR #551 full exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance passed. PR #552 new operations coverage tests staged, exact-head CI pending.
+PR #552 full exact-head required gates passed before merge. PR #553 new timestamp tests staged; exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #551 full exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Gov
 
 ## Exact next action
 
-Certify PR #552 exact-head canonical expected-operation coverage against independently verified provider outcome manifests, with Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; repair failure, merge only verified green PR, continue TASK-0091 acceptance.
+Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work.

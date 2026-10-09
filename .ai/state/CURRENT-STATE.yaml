@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #551 exact head 9e0ea7c343d07f8bad6ef63005378e8413629df7 passed Governance; merged protected main 4f9e2dc271cbba62abe3e1fba4da261c687605f5.",
-    "application_test_status": "PR #551 exact head 9e0ea7c343d07f8bad6ef63005378e8413629df7 passed Foundation, PostgreSQL, PHP 8.3 and browser E2E.",
-    "security_supply_chain_status": "PR #551 exact head 9e0ea7c343d07f8bad6ef63005378e8413629df7 passed Security Supply Chain.",
+    "continuity_validation": "PR #552 head 584fb7837fb28f4731e49187bfd4b1fac2c9baec full exact-head Governance PASS; merged 958802931456feae57a7226eaaec878323d7727b.",
+    "application_test_status": "PR #552 head 584fb7837fb28f4731e49187bfd4b1fac2c9baec Foundation, PHP floor, PostgreSQL integration and browser E2E PASS.",
+    "security_supply_chain_status": "PR #552 head 584fb7837fb28f4731e49187bfd4b1fac2c9baec Security Supply Chain PASS.",
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "4f9e2dc271cbba62abe3e1fba4da261c687605f5",
+  "observed_main_sha": "958802931456feae57a7226eaaec878323d7727b",
   "active_issue": null,
-  "active_pr": 552,
-  "active_branch": "supervisor/task0091-expected-operation-coverage-20261010",
+  "active_pr": 553,
+  "active_branch": "supervisor/task0091-stale-provider-evidence-certification-20261010",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #552 exact-head canonical expected-operation coverage against independently verified provider outcome manifests, with Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; repair failure, merge only verified green PR, continue TASK-0091 acceptance.",
+  "exact_next_safe_action": "Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #552 exact-head canonical expected-operation coverage against independently verified provider outcome manifests, with Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; repair failure, merge only verified green PR, continue TASK-0091 acceptance."
+  "exact_next_action": "Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work."
 }

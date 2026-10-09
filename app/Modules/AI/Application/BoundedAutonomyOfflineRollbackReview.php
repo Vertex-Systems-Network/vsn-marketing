@@ -47,6 +47,7 @@ final readonly class BoundedAutonomyOfflineRollbackReview
             || $record['observed_at_unix'] > $at->getTimestamp()
             || $record['observed_at_unix'] < $at->getTimestamp() - 3600
             || $record['attempted_at_unix'] > $record['observed_at_unix']
+            || $record['attempted_at_unix'] < $record['observed_at_unix'] - 3600
             || ! is_int($record['callback_count']) || $record['callback_count'] < 0
             || $record['callback_count'] > 100000
             || ! is_int($record['external_cost_minor'])

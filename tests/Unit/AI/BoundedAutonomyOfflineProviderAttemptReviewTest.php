@@ -57,6 +57,8 @@ final class BoundedAutonomyOfflineProviderAttemptReviewTest extends TestCase
             'tenant' => $data['tenant'], 'run_id' => $data['run_id'],
             'snapshot_sha256' => $data['snapshot_sha256'],
             'captured_at_unix' => $data['captured_at_unix'],
+            'expires_at_unix' => $data['expires_at_unix'],
+            'complete' => $data['complete'],
             'attempts' => $data['attempts'],
         ], JSON_THROW_ON_ERROR));
 
@@ -128,6 +130,8 @@ final class BoundedAutonomyOfflineProviderAttemptReviewTest extends TestCase
         $attempt = $this->attempt();
         $invalid = [
             array_replace($good, ['source_manifest_sha256' => str_repeat('f', 64)]),
+            array_replace($good, ['complete' => false]),
+            array_replace($good, ['expires_at_unix' => $this->at()->getTimestamp() + 120]),
             $this->rebind(array_replace($good, ['tenant' => $this->scope('other')->toArray()])),
             $this->rebind(array_replace($good, ['run_id' => 'wrong-run'])),
             $this->rebind(array_replace($good, ['snapshot_sha256' => str_repeat('f', 64)])),

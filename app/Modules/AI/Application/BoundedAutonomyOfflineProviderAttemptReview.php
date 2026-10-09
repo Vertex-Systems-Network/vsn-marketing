@@ -115,6 +115,8 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             'run_id' => $runId,
             'snapshot_sha256' => $snapshotSha256,
             'captured_at_unix' => $envelope['captured_at_unix'],
+            'expires_at_unix' => $envelope['expires_at_unix'],
+            'complete' => $envelope['complete'],
             'attempts' => $envelope['attempts'],
         ], JSON_THROW_ON_ERROR));
         if (! hash_equals($expected, $envelope['source_manifest_sha256'])) {

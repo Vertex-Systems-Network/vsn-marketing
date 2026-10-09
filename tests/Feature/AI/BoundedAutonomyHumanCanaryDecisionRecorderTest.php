@@ -2,10 +2,10 @@
 
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
 use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
+use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyCanaryHumanDecisionSource;
-use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeSource;
 use App\Modules\Experiments\Domain\ExperimentAccess;

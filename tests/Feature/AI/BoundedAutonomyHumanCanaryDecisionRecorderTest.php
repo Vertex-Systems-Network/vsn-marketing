@@ -1,6 +1,10 @@
 <?php
 
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
+use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
+use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
+use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
+use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyCanaryHumanDecisionSource;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeSource;
@@ -65,8 +69,10 @@ function humanCanaryWriterFixture(): array
     return compact('scope', 'plan', 'analysis', 'requester', 'approver', 'role');
 }
 
-function humanCanaryWriterService(): BoundedAutonomyHumanCanaryDecisionRecorder
-{
+function humanCanaryWriterService(
+    ?object $joinedFacts = null,
+    ?object $outcomeFacts = null,
+): BoundedAutonomyHumanCanaryDecisionRecorder {
     $access = new class implements ExperimentAccess
     {
         public function allows(TenantContext $actor, string $permission): bool
@@ -74,14 +80,30 @@ function humanCanaryWriterService(): BoundedAutonomyHumanCanaryDecisionRecorder
             return $permission === PermissionCatalog::CAMPAIGN_READ;
         }
     };
+    $joins = $joinedFacts === null ? new DenyingBoundedAutonomyCanaryOutcomeJoinSource
+        : new class($joinedFacts) implements BoundedAutonomyCanaryOutcomeJoinSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function latest(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        };
+    $outcomes = $outcomeFacts === null ? new DenyingBoundedAutonomyCanaryOutcomeSource
+        : new class($outcomeFacts) implements BoundedAutonomyCanaryOutcomeSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function snapshot(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        };
 
     return new BoundedAutonomyHumanCanaryDecisionRecorder(
         app(WorkspaceAuthorizer::class),
-        new BoundedAutonomyOfflineOutcomeJoinReview(
-            new DenyingBoundedAutonomyCanaryOutcomeJoinSource,
-            new DenyingBoundedAutonomyCanaryOutcomeSource,
-            $access,
-        ),
+        new BoundedAutonomyOfflineOutcomeJoinReview($joins, $outcomes, $access),
     );
 }
 
@@ -151,6 +173,116 @@ it('holds independent provider evidence gaps even with current human session and
     );
     expect($expired['reason_code'])->toBe('workspace_policy_expired')
         ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+});
+
+it('records independently joined human review only, never promoting or triggering provider side effects', function () {
+    $f = humanCanaryWriterFixture();
+    humanCanaryGrantBoth($f);
+    $this->actingAs($f['approver']);
+    $at = humanCanaryAt();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    DB::table('ai_autonomy_workspace_quotas')->insert([
+        'workspace_id' => $f['scope']->workspaceId,
+        'period_utc' => $at->format('Y-m-d'), 'policy_version' => 'v1',
+        'workspace_stopped' => false, 'max_actions' => 1, 'max_tokens' => 100,
+        'max_volume' => 100, 'max_cost_minor' => 100, 'max_attempts' => 1,
+        'policy_expires_at' => $at->modify('+1 hour')->format('Y-m-d H:i:s'),
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    $receiptId = (string) Str::uuid();
+    DB::table('ai_autonomy_offline_canary_reviews')->insert([
+        'id' => $receiptId,
+        'workspace_id' => $f['scope']->workspaceId,
+        'experiment_id' => $f['plan']->id,
+        'brand_id' => null,
+        'plan_sha256' => $f['plan']->fingerprint(),
+        'assignment_manifest_sha256' => str_repeat('b', 64),
+        'assigned_denominator' => 11000,
+        'holdout_denominator' => 1000,
+        'status' => 'offline_review_only',
+        'recorded_by_actor_id' => $f['scope']->actorId,
+        'created_at' => now(),
+    ]);
+
+    $joined = (object) ['value' => [
+        'tenant' => $f['scope']->toArray(),
+        'experiment_id' => $f['plan']->id,
+        'plan_sha256' => $f['plan']->fingerprint(),
+        'analysis_sha256' => $f['analysis']->fingerprint(),
+        'cohort_receipt_id' => $receiptId,
+        'cohort_manifest_sha256' => str_repeat('b', 64),
+        'outcome_manifest_sha256' => str_repeat('c', 64),
+        'observed_at_unix' => $at->getTimestamp(),
+        'expires_at_unix' => $at->getTimestamp() + 300,
+        'verified_independent_join' => true,
+        'consent_verified' => true,
+        'quarantined' => 0,
+        'crossovers' => 0,
+        'duplicate_events' => 0,
+    ]];
+    $outcomes = (object) ['value' => [
+        'tenant' => $f['scope']->toArray(),
+        'experiment_id' => $f['plan']->id,
+        'plan_sha256' => $f['plan']->fingerprint(),
+        'analysis_sha256' => $f['analysis']->fingerprint(),
+        'source_manifest_sha256' => str_repeat('c', 64),
+        'observed_at_unix' => $at->getTimestamp(),
+        'expires_at_unix' => $at->getTimestamp() + 300,
+        'verified_independent_source' => true,
+        'assigned' => ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000],
+        'exposed' => ['control' => 5000, 'treatment' => 5000, 'holdout' => 0],
+        'outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 0],
+        'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
+    ]];
+    $service = humanCanaryWriterService($joined, $outcomes);
+    $recorded = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'approved', $at);
+    expect($recorded['status'])->toBe('human_decision_recorded_offline')
+        ->and($recorded['promotion_authorized'])->toBeFalse()
+        ->and($recorded['execution_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+
+    $source = new DatabaseBoundedAutonomyCanaryHumanDecisionSource(app(WorkspaceAuthorizer::class));
+    $fact = $source->latest($f['scope'], $f['plan']->id, $at);
+    expect($fact['outcome'])->toBe('approved')
+        ->and($fact['authenticated_human'])->toBeTrue();
+    // Even a positive independent score and human review grants NO action.
+    $score = (new BoundedAutonomyOfflineOutcomeJoinReview(
+        new class($joined) implements BoundedAutonomyCanaryOutcomeJoinSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function latest(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        },
+        new class($outcomes) implements BoundedAutonomyCanaryOutcomeSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function snapshot(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        },
+        new class implements ExperimentAccess
+        {
+            public function allows(TenantContext $actor, string $permission): bool
+            {
+                return $permission === PermissionCatalog::CAMPAIGN_READ;
+            }
+        },
+    ))->inspect($f['scope'], $f['plan'], $f['analysis'], $at);
+    $review = (new BoundedAutonomyOfflineHumanPromotionReview($source))
+        ->inspect($f['scope'], $f['plan'], $f['analysis'], $score, $at);
+    expect($review['status'])->toBe('offline_human_review_evidence_ready')
+        ->and($review['promotion_authorized'])->toBeFalse()
+        ->and($review['execution_authorized'])->toBeFalse()
+        ->and($review['external_outcome_proven'])->toBeFalse();
 });
 
 it('allows human revocation while global stop is active and never repeats evidence', function () {

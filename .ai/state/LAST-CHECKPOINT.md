@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T10:13:04.257+00:00`
-- Observed main: `1112bb913f0f093174282a8fe10d592ec2be9d2e`
+- Timestamp: `2026-10-09T10:25:57.610+00:00`
+- Observed main: `e29e48dedc40a5b12108032632db9c1249c9302d`
 - Active issue: `none`
-- Active PR: `534`
-- Active branch: `supervisor/task0090-db-approval-authority-20261009`
+- Active PR: `535`
+- Active branch: `supervisor/task0090-stop-reconciliation-20261009`
 - Current milestone: `TASK-0090-PHASE15-SAFETY-GATES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0090`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `6e029da7be4f598d148f926b295eed2e8aab14b42cead6bcd0f03c1fda5a524a`
+- State fingerprint: `e85256e59e6c9fe3912104d3ce105faa71e436d37f4b3be7e007b0487e39c33d`
 
 ## Completed / observed this session
 
-PR #533 exact head passed PostgreSQL fork contention, Foundation, PHP 8.3, E2E, Security and Governance and merged as 1112bb913f0f093174282a8fe10d592ec2be9d2e. PR #534 adds durable append-only offline approval decision schema, source-backed current workspace AI_APPROVE role verification and negative feature tests for permission revoke, latest decision invalidation, self-approval and material changes. Sending, spend and promotion remain disabled.
+PR #534 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance passed and merged as e29e48dedc40a5b12108032632db9c1249c9302d. PR #535 adds idempotent global/workspace emergency-stop reconciliation for offline resource reservations, preserves counters, and refuses to infer cancellation or refunds from unknown external outcomes. TASK-0090 remains IN_PROGRESS; no live external effects.
 
 ## Tests
 
-PR #533 full required exact-head suite passed. PR #534 implementation and adversarial integration tests staged; full exact-head CI still pending.
+PR #534 required exact-head suite PASS. PR #535 code and negative fixtures staged; exact-head CI not yet certified.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #533 full required exact-head suite passed. PR #534 implementation and advers
 
 ## Exact next action
 
-Certify PR #534 independent database-backed approval authority on exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; fix failures and merge; continue TASK-0090 offline stop reconciliation and final-side-effect denial evidence.
+Certify exact-head PR #535 conservative offline stop and unknown-outcome reconciliation with Laravel tests, Foundation, PostgreSQL, PHP floor, browser E2E, Security and governance; then continue TASK-0090 final admission/irreversible-outcome gates.

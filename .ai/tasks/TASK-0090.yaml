@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Implement independent budgets, approvals, risk tiers and emergency stop",
   "weight": 20,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0089"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Do not activate until TASK-0089 is complete."
+  "exact_next_action": "Implement independently gated offline-only budgets, approval bindings and global/workspace emergency-stop contracts; preserve zero external send, spend, publish and billing permission; start with adversarial tests."
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Analytics\Presentation\Http\Controllers;
 
+use App\Modules\AI\Application\BoundedAutonomyOperatorDraft;
 use App\Modules\Analytics\Application\AnalyticsExplanationGateway;
 use App\Modules\Analytics\Application\AnalyticsInsights;
 use App\Modules\Analytics\Application\AnalyticsQuality;
@@ -70,6 +71,31 @@ final readonly class AnalyticsOperatorController
                 $insight = null;
             }
         }
+        // Cached session input is never an authority grant; revalidate owner,
+        // current analytics purpose, snapshot evidence and AI permission.
+        $autonomyEnabled = $state === 'ready' && $this->access->allows($actor, PermissionCatalog::AI_EXECUTE);
+        $autonomyPreview = null;
+        $draft = $request->session()->get('offline_autonomy_draft');
+        $nowUnix = $this->clock->now()->getTimestamp();
+        if ($autonomyEnabled && is_array($draft)
+            && ($draft['workspace_id'] ?? null) === $actor->workspaceId
+            && ($draft['brand_id'] ?? null) === $actor->brandId
+            && ($draft['actor_id'] ?? null) === $actor->actorId
+            && is_string($draft['report_id'] ?? null)
+            && is_string($draft['run_id'] ?? null)
+            && is_int($draft['target_count'] ?? null)
+            && is_int($draft['issued_at_unix'] ?? null)
+            && $draft['issued_at_unix'] <= $nowUnix
+            && $draft['issued_at_unix'] >= $nowUnix - 3600) {
+            try {
+                $autonomyPreview = (new BoundedAutonomyOperatorDraft)->create(
+                    $actor, $recent['reports'], $draft['report_id'],
+                    $draft['target_count'], $draft['run_id'], new DateTimeImmutable('@'.$draft['issued_at_unix']),
+                );
+            } catch (InvalidArgumentException) {
+                $autonomyPreview = null;
+            }
+        }
         $policy = new AnalyticsExplanation;
         $items = array_map(fn (array $r): array => ['id' => $r['id'], 'fingerprint' => $r['fingerprint'],
             'definition' => $r['definition'], 'definition_hash' => $r['definition_hash'],
@@ -87,9 +113,45 @@ final readonly class AnalyticsOperatorController
             'default_start' => $today->modify('-1 day')->format('Y-m-d'), 'default_end' => $today->format('Y-m-d'),
             'notice' => $request->session()->get('analytics_notice'), 'insight' => $insight,
             'explanation_available' => $state === 'ready' && app()->bound(AnalyticsExplanationGateway::class) && $this->access->allows($actor, PermissionCatalog::AI_EXECUTE),
+            'autonomy_enabled' => $autonomyEnabled, 'offline_autonomy_preview' => $autonomyPreview,
             'actions' => ['generate' => route('analytics.generate', ['workspace' => $actor->workspaceId]),
                 'schedules' => route('analytics.schedules', ['workspace' => $actor->workspaceId]),
-                'base' => '/workspaces/'.$actor->workspaceId.'/analytics']]);
+                'base' => '/workspaces/'.$actor->workspaceId.'/analytics',
+                'autonomy_preview' => route('analytics.autonomy.preview', ['workspace' => $actor->workspaceId])]]);
+    }
+
+    public function autonomyPreview(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'report_id' => 'required|uuid',
+            'target_count' => 'required|integer|min:1|max:1000000',
+        ]);
+        $actor = $this->scope($request);
+        if (! $this->access->allows($actor, PermissionCatalog::AI_EXECUTE)) {
+            throw new AuthorizationException('AI preview permission required.');
+        }
+
+        try {
+            $reports = $this->reports->recent($actor);
+            $runId = (string) Str::uuid();
+            $issuedAt = $this->clock->now();
+            (new BoundedAutonomyOperatorDraft)->create(
+                $actor, $reports['reports'], $input['report_id'],
+                (int) $input['target_count'], $runId, $issuedAt,
+            );
+
+            return back()->with('offline_autonomy_draft', [
+                'workspace_id' => $actor->workspaceId,
+                'brand_id' => $actor->brandId,
+                'actor_id' => $actor->actorId,
+                'report_id' => $input['report_id'],
+                'target_count' => (int) $input['target_count'],
+                'run_id' => $runId,
+                'issued_at_unix' => $issuedAt->getTimestamp(),
+            ])->with('analytics_notice', 'autonomy_preview_ready');
+        } catch (AuthorizationException|InvalidArgumentException|RuntimeException) {
+            return back()->with('analytics_notice', 'autonomy_preview_denied');
+        }
     }
 
     public function quality(Request $request): RedirectResponse

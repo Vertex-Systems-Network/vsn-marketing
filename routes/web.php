@@ -87,6 +87,9 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
         Route::post('/workspaces/{workspace}/analytics/schedules', [$controller, 'schedule'])->name('analytics.schedules');
         Route::post('/workspaces/{workspace}/analytics/schedules/{schedule}/disable', [$controller, 'disable'])->name('analytics.schedule.disable');
         Route::post('/workspaces/{workspace}/analytics/anomaly', [$controller, 'anomaly'])->name('analytics.anomaly');
+        Route::post('/workspaces/{workspace}/analytics/autonomy/preview', [$controller, 'autonomyPreview'])
+            ->middleware(['workspace.permission:'.PermissionCatalog::AI_EXECUTE, 'throttle:30,1'])
+            ->name('analytics.autonomy.preview');
         Route::post('/workspaces/{workspace}/analytics/explain', [$controller, 'explain'])
             ->middleware('workspace.permission:'.PermissionCatalog::AI_EXECUTE)->name('analytics.explain');
     });

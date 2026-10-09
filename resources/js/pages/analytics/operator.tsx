@@ -19,11 +19,12 @@ type Quality = { id: string; fingerprint: string; source_hash: string; event_typ
     max_receipt_lag_seconds: number; affected_metric_versions: { snapshot_id: string; definition_hash: string; version: number }[] };
 type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; provider_engagement?: ProviderEngagement[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
     report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
-    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean; offline_autonomy_preview?: OfflineAutonomyPreview | null;
-    actions: { generate: string; schedules: string; base: string } };
+    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean; autonomy_enabled?: boolean; offline_autonomy_preview?: OfflineAutonomyPreview | null;
+    actions: { generate: string; schedules: string; base: string; autonomy_preview?: string } };
 const notices: Record<string, string> = { quality_created: 'Immutable source quality check created.', quality_denied: 'Quality check denied. Review scope, dates and observation bounds.', report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
     schedule_created: 'Daily UTC schedule created. Reports stay inside this workspace.', schedule_denied: 'Schedule could not be created.',
-    schedule_disabled: 'Schedule disabled.', explanation_unavailable: 'No approved explanation route is configured.', insight_denied: 'Insight evidence could not be validated.' };
+    schedule_disabled: 'Schedule disabled.', explanation_unavailable: 'No approved explanation route is configured.', insight_denied: 'Insight evidence could not be validated.',
+    autonomy_preview_ready: 'Offline AI preview generated from currently authorized analytics evidence.', autonomy_preview_denied: 'Offline AI preview denied: evidence, consent or permissions are unavailable.' };
 const control = 'mt-2 w-full rounded-xl border border-white/20 bg-neutral-900 px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300';
 const button = 'rounded-xl bg-sky-300 px-4 py-2 font-semibold text-neutral-950 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300';
 export default function AnalyticsOperator(p: Props) {
@@ -36,6 +37,8 @@ export default function AnalyticsOperator(p: Props) {
     const [selected, setSelected] = useState('');
     const [baseline, setBaseline] = useState<string[]>([]);
     const [error, setError] = useState('');
+    const [autonomyReport, setAutonomyReport] = useState(p.reports[0]?.id ?? '');
+    const [autonomyTarget, setAutonomyTarget] = useState('10');
     const post = (url: string, data: Record<string, string | string[]>) => {
         if (busy) return;
         setBusy(true); setError('');
@@ -48,7 +51,25 @@ export default function AnalyticsOperator(p: Props) {
             <header><p className="text-sm font-semibold text-sky-300">VSN Marketing · Analytics</p>
                 <h1 className="mt-2 text-3xl font-semibold">Analytics reports</h1>
                 <p className="mt-3 max-w-3xl text-neutral-300">Review admitted events, funnels, retention and revenue in UTC. Reports disclose their definition and receipt cutoff. Source coverage remains unknown; attribution describes credit and does not prove causal lift.</p></header>
-            {p.offline_autonomy_preview !== undefined && <div className="mt-6"><OfflineAutonomyPreviewPanel preview={p.offline_autonomy_preview} /></div>}
+            <section aria-labelledby="autonomy-preview-create" className="mt-6 rounded-2xl border border-white/15 p-5">
+                <h2 id="autonomy-preview-create" className="text-xl font-semibold">Create bounded AI preview</h2>
+                <p className="mt-2 text-sm text-neutral-300">Choose an already-authorized immutable analytics report. This creates a draft for offline review, not an AI execution approval or verified conversion claim.</p>
+                <form className="mt-4 grid gap-4 sm:grid-cols-3" onSubmit={(e) => { e.preventDefault();
+                    if (p.actions.autonomy_preview) post(p.actions.autonomy_preview, { report_id: autonomyReport, target_count: autonomyTarget });
+                }}>
+                    <label>Analytics evidence report<select className={control} value={autonomyReport} onChange={(e) => setAutonomyReport(e.target.value)} required>
+                        {p.reports.length === 0 && <option value="">No authorized reports</option>}
+                        {p.reports.map((r) => <option key={r.id} value={r.id}>{String(r.definition.kind ?? r.definition.event_type ?? 'report')} · {r.id.slice(0, 8)}</option>)}
+                    </select></label>
+                    <label>Review target (count)<input className={control} type="number" min="1" max="1000000" step="1" value={autonomyTarget}
+                        onChange={(e) => setAutonomyTarget(e.target.value)} required /></label>
+                    <div className="flex items-end"><button className={button} disabled={busy || unavailable || !p.autonomy_enabled
+                        || !p.actions.autonomy_preview || !autonomyReport || !Number.isInteger(Number(autonomyTarget))
+                        || Number(autonomyTarget) < 1 || Number(autonomyTarget) > 1000000}>Create offline preview</button></div>
+                </form>
+                {!p.autonomy_enabled && <p role="status" className="mt-3 text-amber-200">AI preview permission or analytics purpose is unavailable.</p>}
+            </section>
+                        {p.offline_autonomy_preview !== undefined && <div className="mt-6"><OfflineAutonomyPreviewPanel preview={p.offline_autonomy_preview} /></div>}
             {unavailable && <p role="alert" className="mt-6 rounded-xl border border-amber-300 p-4">Analytics purpose or retention approval is unavailable. Reports and schedules cannot be generated.</p>}
             <div role="status" aria-live="polite" className="mt-4 text-sky-200">{busy ? 'Working…' : p.notice ? notices[p.notice] ?? 'Request finished.' : ''}</div>
             {error && <p role="alert" className="mt-3 text-amber-200">{error}</p>}

@@ -1,11 +1,11 @@
 <?php
 
 use App\Modules\AI\Application\BoundedAutonomyHumanApprovalRecorder;
-use App\Modules\AI\Application\BoundedAutonomyPreview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineApprovalReview;
+use App\Modules\AI\Application\BoundedAutonomyPreview;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyApprovalSource;
-use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
 use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
+use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;

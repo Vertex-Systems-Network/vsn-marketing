@@ -897,7 +897,7 @@
       "phase": "PHASE-15",
       "title": "Implement independent budgets, approvals, risk tiers and emergency stop",
       "weight": 20,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0089"
       ]

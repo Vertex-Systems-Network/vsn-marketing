@@ -907,7 +907,7 @@
       "phase": "PHASE-15",
       "title": "Implement offline canaries, holdouts, promotion thresholds and rollback",
       "weight": 15,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0090"
       ]

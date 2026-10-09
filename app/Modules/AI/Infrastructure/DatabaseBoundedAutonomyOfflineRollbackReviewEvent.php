@@ -89,7 +89,8 @@ final readonly class DatabaseBoundedAutonomyOfflineRollbackReviewEvent
                 ->where('run_id', $runId)
                 ->orderByDesc('sequence')->first();
             if ($previous !== null && ($previous->snapshot_sha256 !== $snapshotSha256
-                || $previous->brand_id !== $actor->brandId)) {
+                || $previous->brand_id !== $actor->brandId
+                || $previous->actor_id !== $actor->actorId)) {
                 throw new InvalidArgumentException('Rollback review cannot silently change run identity.');
             }
 

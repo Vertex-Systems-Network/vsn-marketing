@@ -871,6 +871,66 @@
       "dependencies": [
         "TASK-0086"
       ]
+    },
+    {
+      "id": "TASK-0088",
+      "phase": "PHASE-15",
+      "title": "Research current agent autonomy safety, marketing optimization, regulation and incident patterns",
+      "weight": 15,
+      "status": "in_progress",
+      "dependencies": [
+        "TASK-0087"
+      ]
+    },
+    {
+      "id": "TASK-0089",
+      "phase": "PHASE-15",
+      "title": "Implement typed bounded goal-to-observe autonomous loop",
+      "weight": 25,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0088"
+      ]
+    },
+    {
+      "id": "TASK-0090",
+      "phase": "PHASE-15",
+      "title": "Implement independent budgets, approvals, risk tiers and emergency stop",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0089"
+      ]
+    },
+    {
+      "id": "TASK-0091",
+      "phase": "PHASE-15",
+      "title": "Implement offline canaries, holdouts, promotion thresholds and rollback",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0090"
+      ]
+    },
+    {
+      "id": "TASK-0092",
+      "phase": "PHASE-15",
+      "title": "Implement autonomy red-team and incident monitoring",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0091"
+      ]
+    },
+    {
+      "id": "TASK-0093",
+      "phase": "PHASE-15",
+      "title": "Certify Phase 15 bounded autonomous marketing",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0092"
+      ]
     }
   ]
 }

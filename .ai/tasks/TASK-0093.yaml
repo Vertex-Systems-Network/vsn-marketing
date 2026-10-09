@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0093",
+  "phase": "PHASE-15",
+  "title": "Certify Phase 15 bounded autonomous marketing",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0092"
+  ],
+  "objective": "Certify offline bounded autonomous marketing against required gates",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Task-by-task source, policy and adverse test matrix is complete and reproducible",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Unsupported production authority remains disabled and explicitly uncertified",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Required exact-head and resulting-main application, security, continuity, E2E and integration gates pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Do not activate until TASK-0092 is complete."
+}

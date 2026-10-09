@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0088",
+  "phase": "PHASE-15",
+  "title": "Research current agent autonomy safety, marketing optimization, regulation and incident patterns",
+  "weight": 15,
+  "status": "in_progress",
+  "dependencies": [
+    "TASK-0087"
+  ],
+  "objective": "Research the current safety, privacy, advertising and agent security boundaries before coding autonomous marketing loops",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Dated official NIST, OWASP, ICO, FTC and EU guidance with source provenance and regional uncertainty",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Threat model covers prompt injection, runaway send/spend, metric gaming, tenant leaks, privilege escalation and irreversible actions",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Research reconciles deterministic policy, approvals, budget, kill switch and test requirements without granting live execution",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Verify dated official TASK-0088 research and complete required exact-head CI before acceptance.",
+  "research_pack": ".ai/research/PHASE-15/TASK-0088-RESEARCH.md"
+}

@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #537 exact head 5a2ce47746405f6a9571c5c587f1a02a6bbe28f9 passed AI Continuity and Governance; merged 4add7fab04d7928b629517fcfc66c82c3ed84031.",
-    "application_test_status": "PR #537 exact head 5a2ce47746405f6a9571c5c587f1a02a6bbe28f9 passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
-    "security_supply_chain_status": "PR #537 exact head 5a2ce47746405f6a9571c5c587f1a02a6bbe28f9 passed Security Supply Chain.",
+    "continuity_validation": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed AI Continuity and Governance; merged accbbe606dba2147c56c568d7571e21d6cf55f88.",
+    "application_test_status": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
+    "security_supply_chain_status": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed Security Supply Chain.",
     "release_integrity_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe release-integrity check passed.",
     "scorecard_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe scorecard check passed."
   },
-  "observed_main_sha": "4add7fab04d7928b629517fcfc66c82c3ed84031",
+  "observed_main_sha": "accbbe606dba2147c56c568d7571e21d6cf55f88",
   "active_issue": null,
-  "active_pr": 538,
-  "active_branch": "supervisor/task0090-atomic-minute-rate-20261009",
+  "active_pr": 539,
+  "active_branch": "supervisor/task0090-final-rate-approval-stop-20261009",
   "current_milestone": "TASK-0090-PHASE15-SAFETY-GATES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0089 offline bounded goal-plan-propose-observe-evaluate acceptance via PRs #525/#526/#528/#529 exact-head and resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe full controls.",
-  "exact_next_safe_action": "Verify PR #538 exact-head rate-window quota claims with Foundation, PHP floor, PostgreSQL integration, E2E, Security and Governance; fix failures and merge certified head; continue TASK-0090 final admission/rate and approval-stop race evidence.",
+  "exact_next_safe_action": "Certify PR #539 exact-head offline final rate and human approval/stop serialisation, cross-org reconciliation and PostgreSQL global-stop versus reservation race; repair failures, merge and evaluate TASK-0090 acceptance evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #538 exact-head rate-window quota claims with Foundation, PHP floor, PostgreSQL integration, E2E, Security and Governance; fix failures and merge certified head; continue TASK-0090 final admission/rate and approval-stop race evidence."
+  "exact_next_action": "Certify PR #539 exact-head offline final rate and human approval/stop serialisation, cross-org reconciliation and PostgreSQL global-stop versus reservation race; repair failures, merge and evaluate TASK-0090 acceptance evidence."
 }

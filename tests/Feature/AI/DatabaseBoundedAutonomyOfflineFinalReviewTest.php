@@ -48,6 +48,12 @@ function offlineFinalReviewFixture(): array
         'policy_expires_at' => '2026-10-09 12:00:00',
         'created_at' => now(), 'updated_at' => now(),
     ]);
+    DB::table('ai_autonomy_workspace_rate_windows')->insert([
+        'workspace_id' => $ws, 'period_utc' => '2026-10-09',
+        'policy_version' => 'v1', 'max_attempts_per_minute' => 2,
+        'window_started_unix' => $at->getTimestamp(), 'window_used_attempts' => 1,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
     DB::table('ai_autonomy_offline_reservations')->insert([
         'workspace_id' => $ws, 'period_utc' => '2026-10-09', 'run_id' => 'run-a',
         'brand_id' => null, 'actor_id' => 'operator',
@@ -184,4 +190,33 @@ it('denies forged actors, changed reservation, invalid estimates and insufficien
         ->update(['snapshot_sha256' => str_repeat('f', 64)]);
     expect(fn () => $gate->inspect($scope, $preview, $binding, $estimate, $at))
         ->toThrow(InvalidArgumentException::class);
+});
+
+it('requires the same current rate policy at offline final review, without granting execution', function () {
+    [$scope, $preview, $binding, $at, $decision, $estimate] = offlineFinalReviewFixture();
+    $service = offlineFinalSource((object) ['value' => $decision]);
+
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)->delete();
+    $missing = $service->inspect($scope, $preview, $binding, $estimate, $at);
+    expect($missing['reason_code'])->toBe('rate_policy_unconfigured')
+        ->and($missing['execution_authorized'])->toBeFalse();
+
+    DB::table('ai_autonomy_workspace_rate_windows')->insert([
+        'workspace_id' => $scope->workspaceId, 'period_utc' => '2026-10-09',
+        'policy_version' => 'v2', 'max_attempts_per_minute' => 1,
+        'window_started_unix' => $at->getTimestamp(), 'window_used_attempts' => 0,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+    expect($service->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('rate_policy_changed');
+
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)
+        ->update(['policy_version' => 'v1', 'window_used_attempts' => 2]);
+    expect($service->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('rate_policy_counters_invalid');
+
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)
+        ->update(['window_used_attempts' => 1, 'window_started_unix' => $at->getTimestamp() + 60]);
+    expect($service->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('rate_clock_regressed');
 });

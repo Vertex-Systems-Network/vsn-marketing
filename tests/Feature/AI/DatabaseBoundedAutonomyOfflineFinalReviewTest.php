@@ -108,6 +108,9 @@ it('rechecks reservation and independently sourced approval but never authorizes
 
     $source->value['outcome'] = 'revoked';
     expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])->toBe('approval_revoked');
+    $source->value = null;
+    expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('independent_approval_unavailable');
     expect(DB::table('ai_autonomy_offline_reservations')->where('run_id', 'run-a')->value('status'))
         ->toBe('offline_reserved');
 });
@@ -132,6 +135,10 @@ it('refuses global/workspace stops, unknown outcomes, expired policy and exhaust
 
     DB::table('ai_autonomy_workspace_quotas')->where('workspace_id', $scope->workspaceId)
         ->update(['policy_expires_at' => '2026-10-09 12:00:00']);
+    DB::table('ai_autonomy_offline_reservations')->where('run_id', 'run-a')
+        ->update(['status' => 'held_by_emergency_stop']);
+    expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('reservation_not_active');
     DB::table('ai_autonomy_offline_reservations')->where('run_id', 'run-a')
         ->update(['status' => 'external_unconfirmed']);
     expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])

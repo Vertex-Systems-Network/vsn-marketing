@@ -137,9 +137,16 @@ final readonly class BoundedAutonomyOfflineSafetyGate
         }
         foreach (self::LIMITS as $dimension => $maximum) {
             $limit = $state['max_'.$dimension];
+            if (! is_int($limit) || $limit < 0 || $limit > $maximum) {
+                throw new InvalidArgumentException('Untrusted autonomy resource ceilings rejected.');
+            }
+            // Cost is tracked through reserved + spent, never a fake used_cost
+            // counter. Validate the two ledgers independently below.
+            if ($dimension === 'cost_minor') {
+                continue;
+            }
             $used = $state['used_'.$dimension];
-            if (! is_int($limit) || ! is_int($used) || $limit < 0 || $limit > $maximum
-                || $used < 0 || $used > $limit) {
+            if (! is_int($used) || $used < 0 || $used > $limit) {
                 throw new InvalidArgumentException('Untrusted autonomy resource counters rejected.');
             }
         }

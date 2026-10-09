@@ -80,6 +80,13 @@ final readonly class DatabaseBoundedAutonomyOfflineFinalReview
 
         return DB::transaction(function () use ($actor, $preview, $binding, $estimate, $at): array {
             $runId = $preview['run_id'];
+            // TenantContext cannot self-assert a foreign organization's
+            // workspace even when a caller presents an otherwise matching ID.
+            if (! DB::table('workspaces')->where('id', $actor->workspaceId)
+                ->where('organization_id', $actor->organizationId)->exists()) {
+                throw new InvalidArgumentException('Foreign organization workspace rejected.');
+            }
+
             $global = DB::table('ai_autonomy_global_stops')->where('id', 'global')
                 ->lockForUpdate()->first();
             if ($global === null || (int) $global->stopped !== 0) {

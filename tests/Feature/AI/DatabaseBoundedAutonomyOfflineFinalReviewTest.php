@@ -144,6 +144,11 @@ it('denies forged actors, changed reservation, invalid estimates and insufficien
 
     expect(fn () => $gate->inspect(new TenantContext($scope->organizationId, $scope->workspaceId, null, 'other'), $preview, $binding, $estimate, $at))
         ->toThrow(InvalidArgumentException::class);
+    $otherOrg = new TenantContext((string) Str::uuid(), $scope->workspaceId, null, $scope->actorId);
+    $forged = $preview;
+    $forged['tenant'] = $otherOrg->toArray();
+    expect(fn () => $gate->inspect($otherOrg, $forged, $binding, $estimate, $at))
+        ->toThrow(InvalidArgumentException::class);
     expect(fn () => $gate->inspect($scope, $preview, $binding, array_replace($estimate, ['send' => 1]), $at))
         ->toThrow(InvalidArgumentException::class);
     expect(fn () => $gate->inspect($scope, array_replace($preview, ['actions' => []]), $binding, $estimate, $at))

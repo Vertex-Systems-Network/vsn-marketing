@@ -42,6 +42,8 @@ final readonly class BoundedAutonomyHumanCanaryDecisionRecorder
             || $approverId === $requester->actorId
             || ! in_array($outcome, ['approved', 'rejected', 'revoked'], true)
             || $requester->actorId === ''
+            || ! DB::table('workspaces')->where('id', $requester->workspaceId)
+                ->where('organization_id', $requester->organizationId)->exists()
             || $experiment->workspaceId !== $requester->workspaceId
             || $experiment->brandId !== $requester->brandId
             || $experiment->weights !== $analysis->weights

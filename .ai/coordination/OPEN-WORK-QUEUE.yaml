@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "84e6aaafa86310e9ade73b4a28ab0d7552d80fd4",
+  "reconciled_main_sha": "339a5a367a12a977e7ba04814d2d01aa3b7deec1",
   "active_work_path": {
     "kind": "pr",
-    "number": 524,
-    "title": "chore(phase15): accept TASK-0088 research and activate TASK-0089",
-    "branch": "supervisor/phase15-task0088-research-acceptance",
+    "number": 525,
+    "title": "feat(phase15): durable tenant-bound autonomy preview receipts",
+    "branch": "supervisor/task0089-offline-replay-20261009",
     "disposition": "active_task0089_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 525,
+      "title": "feat(phase15): durable tenant-bound autonomy preview receipts",
+      "branch": "supervisor/task0089-offline-replay-20261009",
+      "disposition": "active_task0089_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 524,
       "title": "chore(phase15): accept TASK-0088 research and activate TASK-0089",
       "branch": "supervisor/phase15-task0088-research-acceptance",
-      "disposition": "active_task0089_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "339a5a367a12a977e7ba04814d2d01aa3b7deec1"
     },
     {
       "kind": "pr",

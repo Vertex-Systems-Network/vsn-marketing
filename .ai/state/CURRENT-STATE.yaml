@@ -6,7 +6,7 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "in_progress",
     "current_phase": "PHASE-15",
     "active_task": "TASK-0089",
     "last_completed_task": "TASK-0088",
@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "84e6aaafa86310e9ade73b4a28ab0d7552d80fd4",
+  "observed_main_sha": "339a5a367a12a977e7ba04814d2d01aa3b7deec1",
   "active_issue": null,
-  "active_pr": 524,
-  "active_branch": "supervisor/phase15-task0088-research-acceptance",
+  "active_pr": 525,
+  "active_branch": "supervisor/task0089-offline-replay-20261009",
   "current_milestone": "TASK-0089-PHASE15-BOUNDED-LOOP",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0088 dated research accepted from PR #523 full exact-head and resulting-main Application, PHP floor, PostgreSQL, browser E2E, Security and AI Continuity checks.",
-  "exact_next_safe_action": "Verify PR #524 canonical TASK-0088 research acceptance and TASK-0089 activation on exact head; merge green and implement offline bounded goal-plan-propose-execute-observe-evaluate contracts.",
+  "exact_next_safe_action": "Validate PR #525 exact-head AI Continuity, Security and full Application (including PostgreSQL integration and E2E) for the TASK-0089 offline receipt replay slice; repair failures, merge only when green, then continue the remaining bounded state-machine and observation contracts.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #524 canonical TASK-0088 research acceptance and TASK-0089 activation on exact head; merge green and implement offline bounded goal-plan-propose-execute-observe-evaluate contracts."
+  "exact_next_action": "Validate PR #525 exact-head AI Continuity, Security and full Application (including PostgreSQL integration and E2E) for the TASK-0089 offline receipt replay slice; repair failures, merge only when green, then continue the remaining bounded state-machine and observation contracts."
 }

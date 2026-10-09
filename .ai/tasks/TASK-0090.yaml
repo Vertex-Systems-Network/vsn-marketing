@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0090",
+  "phase": "PHASE-15",
+  "title": "Implement independent budgets, approvals, risk tiers and emergency stop",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0089"
+  ],
+  "objective": "Enforce deterministic budgets, race-safe reservations, owner approvals and workspace/global emergency stop",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Budgets, rate, volume, token and risk limits verified at admission and last side-effect gate under concurrency",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Immutable approvals bind exact plan/audience/content/cost policy; AI cannot raise limits or self-approve",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Global and workspace kill switches refuse new work, reconcile irreversible outcomes and pass failure tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Do not activate until TASK-0089 is complete."
+}

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "72244949f279e3744747b3c3935104e558ff18c6",
+  "reconciled_main_sha": "8795eb0c871428ac4829c289e87ca674ddd6a465",
   "active_work_path": {
     "kind": "pr",
-    "number": 522,
-    "title": "plan(email): align six engagement tracking features with AI-Native roadmap",
-    "branch": "supervisor/plan-email-engagement-tracking-aligned-20261009",
-    "disposition": "active_task0087_carrier"
+    "number": 523,
+    "title": "plan(phase15): activate bounded autonomous marketing research frontier",
+    "branch": "supervisor/phase15-research-activation-20261009",
+    "disposition": "active_task0088_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 523,
+      "title": "plan(phase15): activate bounded autonomous marketing research frontier",
+      "branch": "supervisor/phase15-research-activation-20261009",
+      "disposition": "active_task0088_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 522,
       "title": "plan(email): align six engagement tracking features with AI-Native roadmap",
       "branch": "supervisor/plan-email-engagement-tracking-aligned-20261009",
-      "disposition": "active_task0087_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "8795eb0c871428ac4829c289e87ca674ddd6a465"
     },
     {
       "kind": "pr",

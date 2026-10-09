@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0091",
+  "phase": "PHASE-15",
+  "title": "Implement offline canaries, holdouts, promotion thresholds and rollback",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0090"
+  ],
+  "objective": "Introduce governed experimentation and external promotion/rollback decisions",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Canary and holdout assignment is frozen, consent safe and measurable using valid denominators",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "External deterministic scoring gates any promotion; low-trust or spoofed engagement cannot self-promote",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Rollback reconciles late, duplicated and irreversible provider outcomes without false success claims",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Do not activate until TASK-0090 is complete."
+}

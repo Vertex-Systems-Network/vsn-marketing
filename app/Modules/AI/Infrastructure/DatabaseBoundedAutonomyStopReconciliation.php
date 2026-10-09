@@ -20,6 +20,13 @@ final class DatabaseBoundedAutonomyStopReconciliation
         }
 
         return DB::transaction(function () use ($scope, $runId, $snapshotSha256): array {
+            // Scope fields alone are not evidence that the claimed
+            // organization owns the workspace being reconciled.
+            if (! DB::table('workspaces')->where('id', $scope->workspaceId)
+                ->where('organization_id', $scope->organizationId)->exists()) {
+                throw new InvalidArgumentException('Foreign organization workspace rejected.');
+            }
+
             // Exact lock order matches reservation admission.
             $global = DB::table('ai_autonomy_global_stops')->where('id', 'global')
                 ->lockForUpdate()->first();

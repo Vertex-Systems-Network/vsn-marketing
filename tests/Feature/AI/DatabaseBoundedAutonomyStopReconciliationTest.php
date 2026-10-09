@@ -80,6 +80,9 @@ it('holds unknown outcomes and rejects different actors or evidence', function (
     ))->toThrow(InvalidArgumentException::class);
     expect(fn () => $s->reconcile($scope, 'run-1', str_repeat('b', 64)))
         ->toThrow(InvalidArgumentException::class);
+    expect(fn () => $s->reconcile(
+        new TenantContext((string) Str::uuid(), $scope->workspaceId, null, $scope->actorId), 'run-1', $sha,
+    ))->toThrow(InvalidArgumentException::class, 'Foreign organization workspace');
 
     DB::table('ai_autonomy_offline_reservations')->where('workspace_id', $scope->workspaceId)
         ->update(['status' => 'external_unconfirmed']);

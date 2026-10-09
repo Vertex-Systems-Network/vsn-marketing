@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #533 atomic offline autonomy quota reservations on exact-head PHP/PG/E2E/Security/Governance; repair failures and merge, then implement independent DB-backed approver authority, policy stop and recovery evidence for TASK-0090."
+  "exact_next_action": "Certify PR #534 independent database-backed approval authority on exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; fix failures and merge; continue TASK-0090 offline stop reconciliation and final-side-effect denial evidence."
 }

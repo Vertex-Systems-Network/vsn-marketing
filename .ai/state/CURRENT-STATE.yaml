@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #532 exact head b32788dd99e7c9e8c4b7423ec3532f067969ea0a passed AI Continuity and Governance, merged 9c4bd7974cccf0db6f5dfd9cb55e3f83fb3cdd5f.",
-    "application_test_status": "PR #532 exact head b32788dd99e7c9e8c4b7423ec3532f067969ea0a passed Foundation, PostgreSQL integration, PHP floor and E2E.",
-    "security_supply_chain_status": "PR #532 exact head b32788dd99e7c9e8c4b7423ec3532f067969ea0a passed Security Supply Chain.",
+    "continuity_validation": "PR #533 exact head a315555b96c81eddd18bc0c0ae8d559a176c5306 passed AI Continuity and Governance before merge into 1112bb913f0f093174282a8fe10d592ec2be9d2e.",
+    "application_test_status": "PR #533 exact head a315555b96c81eddd18bc0c0ae8d559a176c5306 passed Foundation, PostgreSQL integration, PHP 8.3 and E2E before merge.",
+    "security_supply_chain_status": "PR #533 exact head a315555b96c81eddd18bc0c0ae8d559a176c5306 passed Security Supply Chain.",
     "release_integrity_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe release-integrity check passed.",
     "scorecard_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe scorecard check passed."
   },
-  "observed_main_sha": "9c4bd7974cccf0db6f5dfd9cb55e3f83fb3cdd5f",
+  "observed_main_sha": "1112bb913f0f093174282a8fe10d592ec2be9d2e",
   "active_issue": null,
-  "active_pr": 533,
-  "active_branch": "supervisor/task0090-atomic-offline-quotas-20261009",
+  "active_pr": 534,
+  "active_branch": "supervisor/task0090-db-approval-authority-20261009",
   "current_milestone": "TASK-0090-PHASE15-SAFETY-GATES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0089 offline bounded goal-plan-propose-observe-evaluate acceptance via PRs #525/#526/#528/#529 exact-head and resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe full controls.",
-  "exact_next_safe_action": "Certify PR #533 atomic offline autonomy quota reservations on exact-head PHP/PG/E2E/Security/Governance; repair failures and merge, then implement independent DB-backed approver authority, policy stop and recovery evidence for TASK-0090.",
+  "exact_next_safe_action": "Certify PR #534 independent database-backed approval authority on exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; fix failures and merge; continue TASK-0090 offline stop reconciliation and final-side-effect denial evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #533 atomic offline autonomy quota reservations on exact-head PHP/PG/E2E/Security/Governance; repair failures and merge, then implement independent DB-backed approver authority, policy stop and recovery evidence for TASK-0090."
+  "exact_next_action": "Certify PR #534 independent database-backed approval authority on exact-head Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; fix failures and merge; continue TASK-0090 offline stop reconciliation and final-side-effect denial evidence."
 }

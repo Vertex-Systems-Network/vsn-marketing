@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates."
+  "exact_next_action": "Certify PR #552 exact-head canonical expected-operation coverage against independently verified provider outcome manifests, with Foundation, PostgreSQL, PHP floor, E2E, Security and Governance; repair failure, merge only verified green PR, continue TASK-0091 acceptance."
 }

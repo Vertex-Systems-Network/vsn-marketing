@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T01:44:19+00:00`
-- Observed main: `c5027d289c6659bc466fcb339d136618339a2a4f`
+- Timestamp: `2026-10-09T02:07:07+00:00`
+- Observed main: `b8a8993abcb077fc838a4a875c9c2ddd7dec42b5`
 - Active issue: `none`
-- Active PR: `526`
-- Active branch: `supervisor/task0089-verified-offline-observation-20261009`
+- Active PR: `528`
+- Active branch: `supervisor/task0089-authorized-preview-20261009`
 - Current milestone: `TASK-0089-PHASE15-BOUNDED-LOOP`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0089`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `b2bed97f51c1ab8d0a6c112c16e78ccf26dafd81e254fbcab2b131d1396c3abc`
+- State fingerprint: `503e6e5efeb490ec0f4e7c1af499a926bc24a4bfe5eff0cb3d96c475cb0eaf75`
 
 ## Completed / observed this session
 
-PR #525 exact-head governance, Security, Application Foundation, PHP 8.3, PostgreSQL infrastructure integration and browser E2E all passed and merged as c5027d289c6659bc466fcb339d136618339a2a4f. PR #526 implements separately sourced tenant-scoped offline metric observation with replay-safe immutable review-only outcomes and negative evidence tests; no live-provider adapter, sending or automatic promotion.
+PR #526 exact-head application, security, E2E, PHP 8.3 and PostgreSQL integration green and merged to protected main b8a8993abcb077fc838a4a875c9c2ddd7dec42b5. TASK-0089 PR #528 adds server-issued, current-evidence-bound read-only preview route, actor/permission/session revalidation, operator form and regression tests. No production execution authority.
 
 ## Tests
 
-PR #525 full exact-head gates passed including real database-backed replay isolation. PR #526 tests, static analysis and full exact-head gates pending.
+PR #526 full required exact-head checks passed. PR #528 new backend, frontend and integration exact-head checks pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #525 full exact-head gates passed including real database-backed replay isola
 
 ## Exact next action
 
-Validate PR #526 exact-head Application Foundation, PHP 8.3, PostgreSQL integration, browser E2E, AI Continuity and Security; repair failures, merge only when green, then implement accessible operator preview and remaining TASK-0089 lifecycle certification.
+Run full exact-head PR #528 Application Foundation, PHP 8.3, PostgreSQL integration, E2E, Security, AI Continuity and governance for authorized offline operator preview; repair failures and merge verified head; then continue TASK-0089 bounded workflow.

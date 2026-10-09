@@ -52,7 +52,7 @@ final readonly class BoundedAutonomyOfflineEvaluation
                 'promotion_authorized' => false,
             ];
         }
-        if (! is_array($fact) || array_diff(array_keys($fact), [
+        if (is_array($fact) === false || array_diff(array_keys($fact), [
             'workspace_id', 'brand_id', 'source_id', 'metric_id', 'count', 'observed_at_unix', 'evidence_sha256',
         ]) !== [] || count($fact) !== 7
             || ($fact['workspace_id'] ?? null) !== $scope->workspaceId

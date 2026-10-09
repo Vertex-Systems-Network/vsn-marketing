@@ -1,0 +1,152 @@
+<?php
+
+namespace App\Modules\AI\Infrastructure;
+
+use App\Modules\AI\Application\BoundedAutonomyOfflineSafetyGate;
+use App\Modules\AI\Domain\Contracts\BoundedAutonomySafetySnapshotSource;
+use App\Modules\Identity\Domain\Tenancy\TenantContext;
+use DateTimeImmutable;
+use DateTimeZone;
+use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
+
+/**
+ * Atomic, workspace-scoped OFFLINE reservation only.
+ *
+ * Global/workspace stop rows and quota counters are locked in one transaction.
+ * A missing authority row, stale policy, forged preview or oversubscription
+ * cannot claim a resource. This service has no provider/queue adapter and
+ * never authorizes sending, publishing, billing or promotion.
+ */
+final class DatabaseBoundedAutonomyOfflineReservation
+{
+    public function reserve(TenantContext $actor, array $preview, array $estimate, DateTimeImmutable $at): array
+    {
+        if ($actor->workspaceId === '' || $actor->actorId === '' || strlen($actor->actorId) > 64) {
+            throw new InvalidArgumentException('Canonical offline reservation actor required.');
+        }
+
+        return DB::transaction(function () use ($actor, $preview, $estimate, $at): array {
+            $global = DB::table('ai_autonomy_global_stops')->where('id', 'global')
+                ->lockForUpdate()->first();
+
+            if ($global === null) {
+                return $this->result($preview, 'global_stop_unconfigured');
+            }
+
+            if ((int) $global->stopped !== 0) {
+                return $this->result($preview, 'global_emergency_stop');
+            }
+
+            $period = $at->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d');
+            $quota = DB::table('ai_autonomy_workspace_quotas')
+                ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
+                ->lockForUpdate()->first();
+
+            if ($quota === null) {
+                return $this->result($preview, 'workspace_quota_unconfigured');
+            }
+
+            $expiry = (new DateTimeImmutable($quota->policy_expires_at, new DateTimeZone('UTC')))->getTimestamp();
+            $snapshot = [
+                'workspace_id' => $actor->workspaceId,
+                'brand_id' => $actor->brandId,
+                'policy_version' => $quota->policy_version,
+                'observed_at_unix' => $at->getTimestamp(),
+                'expires_at_unix' => min($expiry, $at->getTimestamp() + 3600),
+                'global_stopped' => (int) $global->stopped !== 0,
+                'workspace_stopped' => (int) $quota->workspace_stopped !== 0,
+                'max_actions' => (int) $quota->max_actions,
+                'max_tokens' => (int) $quota->max_tokens,
+                'max_volume' => (int) $quota->max_volume,
+                'max_cost_minor' => (int) $quota->max_cost_minor,
+                'max_attempts' => (int) $quota->max_attempts,
+                'used_actions' => (int) $quota->used_actions,
+                'used_tokens' => (int) $quota->used_tokens,
+                'used_volume' => (int) $quota->used_volume,
+                'reserved_cost_minor' => (int) $quota->reserved_cost_minor,
+                'spent_cost_minor' => (int) $quota->spent_cost_minor,
+                'used_attempts' => (int) $quota->used_attempts,
+            ];
+
+            // The source is generated solely from the row-locked database
+            // snapshot, never supplied by a caller, prompt or adapter.
+            $source = new class($snapshot) implements BoundedAutonomySafetySnapshotSource
+            {
+                public function __construct(private readonly array $snapshot) {}
+
+                public function current(TenantContext $scope, DateTimeImmutable $at): ?array
+                {
+                    return $this->snapshot;
+                }
+            };
+
+            $review = (new BoundedAutonomyOfflineSafetyGate($source))->assess(
+                $actor, $preview, $estimate, $at,
+            );
+
+            if ($review['status'] !== 'offline_preflight_passed') {
+                return $this->result($preview, $review['reason_code']);
+            }
+
+            // Workspace quota parent lock serializes duplicate/replay attempts.
+            if (DB::table('ai_autonomy_offline_reservations')->where('workspace_id', $actor->workspaceId)
+                ->where('run_id', $preview['run_id'])->exists()) {
+                return $this->result($preview, 'run_already_recorded');
+            }
+
+            DB::table('ai_autonomy_workspace_quotas')
+                ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
+                ->update([
+                    'used_actions' => (int) $quota->used_actions + $estimate['actions'],
+                    'used_tokens' => (int) $quota->used_tokens + $estimate['tokens'],
+                    'used_volume' => (int) $quota->used_volume + $estimate['volume'],
+                    'reserved_cost_minor' => (int) $quota->reserved_cost_minor + $estimate['cost_minor'],
+                    'used_attempts' => (int) $quota->used_attempts + $estimate['attempts'],
+                    'updated_at' => now(),
+                ]);
+
+            DB::table('ai_autonomy_offline_reservations')->insert([
+                'workspace_id' => $actor->workspaceId,
+                'period_utc' => $period,
+                'run_id' => $preview['run_id'],
+                'brand_id' => $actor->brandId,
+                'actor_id' => $actor->actorId,
+                'snapshot_sha256' => $preview['snapshot_sha256'],
+                'policy_version' => $preview['policy_version'],
+                'actions' => $estimate['actions'],
+                'tokens' => $estimate['tokens'],
+                'volume' => $estimate['volume'],
+                'cost_minor' => $estimate['cost_minor'],
+                'attempts' => $estimate['attempts'],
+                'status' => 'offline_reserved',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return [
+                'status' => 'reserved_offline',
+                'reason_code' => 'requires_independent_approval_and_final_admission',
+                'run_id' => $preview['run_id'],
+                'snapshot_sha256' => $preview['snapshot_sha256'],
+                'offline_resource_reservation_recorded' => true,
+                'execution_authorized' => false,
+                'promotion_authorized' => false,
+            ];
+        }, 3);
+    }
+
+    private function result(array $preview, string $reason): array
+    {
+        return [
+            'status' => 'held_offline',
+            'reason_code' => $reason,
+            'run_id' => is_string($preview['run_id'] ?? null) ? $preview['run_id'] : null,
+            'snapshot_sha256' => is_string($preview['snapshot_sha256'] ?? null)
+                ? $preview['snapshot_sha256'] : null,
+            'offline_resource_reservation_recorded' => false,
+            'execution_authorized' => false,
+            'promotion_authorized' => false,
+        ];
+    }
+}

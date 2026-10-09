@@ -122,10 +122,10 @@ final class BoundedAutonomyOfflineSafetyGateTest extends TestCase
     public function test_each_budget_dimension_and_combined_reserved_spend_is_checked(): void
     {
         foreach ([
-            ['actions' => 8],
-            ['tokens' => 1000],
-            ['volume' => 50],
-            ['attempts' => 4],
+            ['used_actions' => 8],
+            ['used_tokens' => 1000],
+            ['used_volume' => 50],
+            ['used_attempts' => 4],
             ['reserved_cost_minor' => 66],
         ] as $patch) {
             $facts = (object) ['value' => array_replace($this->snapshot(), $patch)];

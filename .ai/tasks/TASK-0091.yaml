@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #547 exact-head current-workspace human canary decision schema/readback with Foundation, PHP floor, PostgreSQL, E2E, Security and Governance. Fix failures/merge only on all-green verified head, then continue TASK-0091 offline authenticated decision writer and provider-outcome provenance gates."
+  "exact_next_action": "Certify TASK-0091 PR #548 authenticated offline canary decision writer on exact head: fix any failing backend, PHP 8.3, PostgreSQL, E2E, Security or Governance; merge only fully green. Continue TASK-0091 independent provider-outcome/rollback evidence gates without live promotion."
 }

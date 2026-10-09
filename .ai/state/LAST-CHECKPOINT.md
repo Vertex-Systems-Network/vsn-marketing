@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-09T12:35:23.118+00:00`
-- Observed main: `c8f3ea3dd849565b228fc92b5a1aeaa203a64062`
+- Timestamp: `2026-10-09T12:48:14.731+00:00`
+- Observed main: `a05d7f8abb745f522786743c3e23f40d90f1c7d2`
 - Active issue: `none`
-- Active PR: `540`
-- Active branch: `supervisor/task0090-acceptance-phase15-frontier-20261009`
+- Active PR: `541`
+- Active branch: `supervisor/task0091-offline-canary-holdout-evaluation-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
-- Milestone status: `READY`
+- Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
 - Next task: `TASK-0092`
 - Current phase: `PHASE-15`
-- Execution status: `ready`
+- Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `8431a61d4586adfa4c7a785cb0529609f359a159b22f6abbf37ee14e61c9d1a3`
+- State fingerprint: `3408a5a1af2092d17623a4c9e2a7800269fa6874647c31b3849528cc7eb94820`
 
 ## Completed / observed this session
 
-TASK-0090 AC-1..3 validated from PR #531 through #539, with exact-head Foundation, PHP, PostgreSQL integration, E2E, Security and Governance all passing, and resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 release-integrity, Foundation, Security, Governance and scorecard PASS. Promoted TASK-0091 READY for offline-only canaries, preserving denied external send/spend.
+PR #540 exact-head Foundation, PHP 8.3, PostgreSQL integration, E2E, Security and Governance PASS, merged a05d7f8abb745f522786743c3e23f40d90f1c7d2; TASK-0090 AC1..3 certified. TASK-0091 PR #541 stages independently sourced frozen canaries/holdout denominator checks, fixed-horizon review-only score, and conservative late/duplicate rollback evidence with adversarial fixtures. No external effects authorized.
 
 ## Tests
 
-TASK-0090 PR #539 exact-head full Application, PHP 8.3, PostgreSQL integration, E2E, Security, Governance passed; resulting protected main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 Foundation, Security, Governance, release-integrity and scorecard passed. PR #540 task-acceptance carrier requires its own exact-head CI.
+PR #540 full exact-head required suite passed. PR #541 source/negative fixtures pushed, exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ TASK-0090 PR #539 exact-head full Application, PHP 8.3, PostgreSQL integration, 
 
 ## Exact next action
 
-Start TASK-0091 fail-closed offline canary/holdout assignment, independent outcome eligibility and rollback reconciliation with adversarial fixtures; forbid external send/spend/promotion; certify exact-head Foundation, PHP, PostgreSQL, E2E, Security and AI Governance.
+Certify PR #541 exact-head frozen canary/holdout, independent fixed-horizon scoring, late/duplicate/irreversible rollback tests, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; repair failures and merge, then implement independent durable cohort/outcome sources.

@@ -887,7 +887,7 @@
       "phase": "PHASE-15",
       "title": "Implement typed bounded goal-to-observe autonomous loop",
       "weight": 25,
-      "status": "ready",
+      "status": "in_progress",
       "dependencies": [
         "TASK-0088"
       ]

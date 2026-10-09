@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Implement typed bounded goal-to-observe autonomous loop",
   "weight": 25,
-  "status": "ready",
+  "status": "in_progress",
   "dependencies": [
     "TASK-0088"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Do not activate until TASK-0088 is complete."
+  "exact_next_action": "TASK-0089 offline preview and durable receipt evidence staged on PR #525. Implement offline evaluation/observation transitions and certify replay/tenant isolation before acceptance."
 }

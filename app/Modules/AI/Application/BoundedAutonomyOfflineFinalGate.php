@@ -70,6 +70,10 @@ final readonly class BoundedAutonomyOfflineFinalGate
                 || $reservation->policy_version !== $preview['policy_version']) {
                 throw new InvalidArgumentException('Offline final-gate reservation scope mismatch.');
             }
+            if (! is_int($binding['max_cost_minor'] ?? null)
+                || ! is_int($binding['max_volume'] ?? null)) {
+                return $this->hold($preview, 'untrusted_approval_budget');
+            }
             if ((int) $quota->used_actions > (int) $quota->max_actions
                 || (int) $quota->used_tokens > (int) $quota->max_tokens
                 || (int) $quota->used_volume > (int) $quota->max_volume

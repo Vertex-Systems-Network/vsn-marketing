@@ -25,7 +25,7 @@ final class BoundedAutonomyOperatorDraftTest extends TestCase
         return [['id' => '11111111-1111-4111-8111-111111111111', 'fingerprint' => str_repeat('a', 64)]];
     }
 
-    private function run(array $reports, int $target = 12, string $workspace = 'workspace'): array
+    private function draft(array $reports, int $target = 12, string $workspace = 'workspace'): array
     {
         return (new BoundedAutonomyOperatorDraft)->create(
             $this->actor($workspace), $reports,
@@ -36,7 +36,7 @@ final class BoundedAutonomyOperatorDraftTest extends TestCase
 
     public function test_issues_tenant_bound_read_only_offline_preview_from_registered_evidence(): void
     {
-        $a = $this->run($this->reports());
+        $a = $this->draft($this->reports());
         self::assertSame('preview_ready', $a['status']);
         self::assertSame('analytics_read', $a['actions'][0]['tool_id']);
         self::assertSame('read', $a['actions'][0]['effect']);
@@ -44,9 +44,9 @@ final class BoundedAutonomyOperatorDraftTest extends TestCase
         self::assertSame(['11111111-1111-4111-8111-111111111111'], $a['actions'][0]['source_ids']);
         self::assertFalse($a['execution_authorized']);
         self::assertSame('disabled', $a['stages']['execute']);
-        self::assertSame($a, $this->run($this->reports()));
-        self::assertNotSame($a['snapshot_sha256'], $this->run($this->reports(), 13)['snapshot_sha256']);
-        self::assertNotSame($a['snapshot_sha256'], $this->run($this->reports(), 12, 'another-workspace')['snapshot_sha256']);
+        self::assertSame($a, $this->draft($this->reports()));
+        self::assertNotSame($a['snapshot_sha256'], $this->draft($this->reports(), 13)['snapshot_sha256']);
+        self::assertNotSame($a['snapshot_sha256'], $this->draft($this->reports(), 12, 'another-workspace')['snapshot_sha256']);
     }
 
     public function test_missing_foreign_or_invalid_evidence_and_target_rejected(): void
@@ -56,7 +56,7 @@ final class BoundedAutonomyOperatorDraftTest extends TestCase
             [['id' => '11111111-1111-4111-8111-111111111111', 'fingerprint' => null]]];
         foreach ($invalid as $reports) {
             try {
-                $this->run($reports);
+                $this->draft($reports);
                 self::fail('Unapproved analytics source accepted.');
             } catch (InvalidArgumentException) {
                 self::assertTrue(true);
@@ -64,7 +64,7 @@ final class BoundedAutonomyOperatorDraftTest extends TestCase
         }
         foreach ([0, 1000001] as $target) {
             try {
-                $this->run($this->reports(), $target);
+                $this->draft($this->reports(), $target);
                 self::fail('Invalid target accepted.');
             } catch (InvalidArgumentException) {
                 self::assertTrue(true);

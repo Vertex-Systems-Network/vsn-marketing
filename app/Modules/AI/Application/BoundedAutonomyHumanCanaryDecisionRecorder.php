@@ -97,6 +97,10 @@ final readonly class BoundedAutonomyHumanCanaryDecisionRecorder
                 if ($quota === null || (int) $quota->workspace_stopped !== 0) {
                     return $this->hold('workspace_emergency_stop');
                 }
+                if ((new DateTimeImmutable($quota->policy_expires_at, new DateTimeZone('UTC')))
+                    <= $at) {
+                    return $this->hold('workspace_policy_expired');
+                }
 
                 // Recompute independent join facts inside the transaction; no
                 // model-supplied scoring payload can create a positive decision.

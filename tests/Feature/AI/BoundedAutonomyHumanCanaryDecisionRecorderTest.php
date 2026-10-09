@@ -142,6 +142,15 @@ it('holds independent provider evidence gaps even with current human session and
         ->and($r['reason_code'])->toBe('independent_outcome_join_not_eligible')
         ->and($r['promotion_authorized'])->toBeFalse()
         ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+
+    DB::table('ai_autonomy_workspace_quotas')
+        ->where('workspace_id', $f['scope']->workspaceId)
+        ->update(['policy_expires_at' => humanCanaryAt()->modify('-1 minute')->format('Y-m-d H:i:s')]);
+    $expired = humanCanaryWriterService()->record(
+        $f['approver'], $f['scope'], $f['plan'], $f['analysis'], 'approved', humanCanaryAt(),
+    );
+    expect($expired['reason_code'])->toBe('workspace_policy_expired')
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
 });
 
 it('allows human revocation while global stop is active and never repeats evidence', function () {

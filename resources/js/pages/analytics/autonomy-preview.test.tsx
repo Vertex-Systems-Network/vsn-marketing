@@ -39,7 +39,7 @@ test('rejects fabricated execution authority and unregistered write effects in p
     const { rerender } = render(<OfflineAutonomyPreviewPanel preview={unsafe} />);
     expect(screen.getByRole('status')).toHaveTextContent('All autonomous actions remain disabled');
     rerender(<OfflineAutonomyPreviewPanel preview={{ ...fixture, actions: [{
-        ...fixture.actions[0], effect: 'send' as 'read',
+        ...fixture.actions[0], effect: 'send' as unknown as 'read',
     }] }} />);
     expect(screen.getByRole('status')).toHaveTextContent('All autonomous actions remain disabled');
     expect(screen.getByRole('button', { name: 'Promote campaign (unavailable)' })).toBeDisabled();

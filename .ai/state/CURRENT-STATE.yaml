@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #547 verified and merged protected-main 41662f896c33d393ddbce206b0224a452e28a2a5 (human canary decision source + current RBAC).",
-    "application_test_status": "PR #547 verified exact-head Foundation, PHP floor, PostgreSQL and E2E before merge as 41662f896c33d393ddbce206b0224a452e28a2a5.",
-    "security_supply_chain_status": "PR #547 verified exact-head Security Supply Chain before merge as 41662f896c33d393ddbce206b0224a452e28a2a5.",
+    "continuity_validation": "PR #548 exact head 01e1b51b1729df6b986cc04a25b1cf527cd4f6fc governance PASS before merge 0877950447d262720922c31c5c205df10e82bfab.",
+    "application_test_status": "PR #548 exact head 01e1b51b1729df6b986cc04a25b1cf527cd4f6fc Foundation, PostgreSQL, PHP floor and E2E PASS.",
+    "security_supply_chain_status": "PR #548 exact head 01e1b51b1729df6b986cc04a25b1cf527cd4f6fc Security Supply Chain PASS.",
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "41662f896c33d393ddbce206b0224a452e28a2a5",
+  "observed_main_sha": "0877950447d262720922c31c5c205df10e82bfab",
   "active_issue": null,
-  "active_pr": 548,
-  "active_branch": "supervisor/task0091-human-session-decision-writer-20261009",
+  "active_pr": 549,
+  "active_branch": "supervisor/task0091-human-approval-replay-20261009",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify TASK-0091 PR #548 authenticated offline canary decision writer on exact head: fix any failing backend, PHP 8.3, PostgreSQL, E2E, Security or Governance; merge only fully green. Continue TASK-0091 independent provider-outcome/rollback evidence gates without live promotion.",
+  "exact_next_safe_action": "Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify TASK-0091 PR #548 authenticated offline canary decision writer on exact head: fix any failing backend, PHP 8.3, PostgreSQL, E2E, Security or Governance; merge only fully green. Continue TASK-0091 independent provider-outcome/rollback evidence gates without live promotion."
+  "exact_next_action": "Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates."
 }

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T15:15:53.530+00:00`
-- Observed main: `41662f896c33d393ddbce206b0224a452e28a2a5`
+- Timestamp: `2026-10-09T15:32:14.335+00:00`
+- Observed main: `0877950447d262720922c31c5c205df10e82bfab`
 - Active issue: `none`
-- Active PR: `548`
-- Active branch: `supervisor/task0091-human-session-decision-writer-20261009`
+- Active PR: `549`
+- Active branch: `supervisor/task0091-human-approval-replay-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `e7ef84a5cb6b6b5ef7440d4112653c8d439fce9a2a96edc85e06a345566deb37`
+- State fingerprint: `c4b02ec5540712d1ee9961845acad427f4809abbeb08b875175f13acd84c67e6`
 
 ## Completed / observed this session
 
-PR #547 verified and merged to protected main 41662f896c33d393ddbce206b0224a452e28a2a5. PR #548 fixes current organization-boundary validation before any global-stop hold in human canary decision writer; preserves independent RBAC/current policy rechecks and offline-only authority. Exact-head full CI pending.
+TASK-0091 PR #548 certified full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance and merged 0877950447d262720922c31c5c205df10e82bfab. PR #549 stages current human approval duplicate-replay idempotency, stop-flip and revoked-role adversarial tests; no promotion, provider send, billing, spend or external action.
 
 ## Tests
 
-PR #547 exact-head required application, PostgreSQL, E2E, PHP floor, Security and Governance checks verified before merge. PR #548 fixes are staged; exact-head CI not yet certified.
+PR #548 complete exact-head required gates PASS before merge. PR #549 code and targeted adversarial fixtures staged; its own exact-head CI not yet certified.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #547 exact-head required application, PostgreSQL, E2E, PHP floor, Security an
 
 ## Exact next action
 
-Certify TASK-0091 PR #548 authenticated offline canary decision writer on exact head: fix any failing backend, PHP 8.3, PostgreSQL, E2E, Security or Governance; merge only fully green. Continue TASK-0091 independent provider-outcome/rollback evidence gates without live promotion.
+Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates.

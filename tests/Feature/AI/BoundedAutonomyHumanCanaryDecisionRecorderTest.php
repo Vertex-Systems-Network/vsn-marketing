@@ -245,6 +245,34 @@ it('records independently joined human review only, never promoting or triggerin
         ->and($recorded['execution_authorized'])->toBeFalse()
         ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
 
+    // Same human, immutable plan and independently recomputed outcome
+    // cannot create a second positive decision under retries.
+    $replayed = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'approved', $at);
+    expect($replayed['status'])->toBe('human_decision_replayed_offline')
+        ->and($replayed['decision_id'])->toBe($recorded['decision_id'])
+        ->and($replayed['execution_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')
+        ->update(['stopped' => true]);
+    $halted = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'approved', $at);
+    expect($halted['status'])->toBe('held_offline')
+        ->and($halted['reason_code'])->toBe('global_emergency_stop')
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')
+        ->update(['stopped' => false]);
+
+    // A replay cannot outlive current human RBAC. Restoring the permission
+    // re-enables only the offline evidence review, not any provider effect.
+    DB::table('workspace_role_permissions')->where('workspace_role_id', $f['role'])
+        ->where('permission', PermissionCatalog::AI_APPROVE)->delete();
+    expect(fn () => $service->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', $at))->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+    app(WorkspaceRoleManager::class)->grantPermission($f['role'], PermissionCatalog::AI_APPROVE);
+
     $source = new DatabaseBoundedAutonomyCanaryHumanDecisionSource(app(WorkspaceAuthorizer::class));
     $fact = $source->latest($f['scope'], $f['plan']->id, $at);
     expect($fact['outcome'])->toBe('approved')

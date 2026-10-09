@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify TASK-0091 PR #548 authenticated offline canary decision writer on exact head: fix any failing backend, PHP 8.3, PostgreSQL, E2E, Security or Governance; merge only fully green. Continue TASK-0091 independent provider-outcome/rollback evidence gates without live promotion."
+  "exact_next_action": "Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates."
 }

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "47fe9ed602f5985b93f22c16912910295aef66c1",
+  "reconciled_main_sha": "4f9e2dc271cbba62abe3e1fba4da261c687605f5",
   "active_work_path": {
     "kind": "pr",
-    "number": 551,
-    "title": "feat(phase15): independently verify provider attempts before offline rollback review",
-    "branch": "supervisor/task0091-provider-attempts-20261009",
+    "number": 552,
+    "title": "feat(phase15): require canonical provider-operation coverage for rollback review",
+    "branch": "supervisor/task0091-expected-operation-coverage-20261010",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 552,
+      "title": "feat(phase15): require canonical provider-operation coverage for rollback review",
+      "branch": "supervisor/task0091-expected-operation-coverage-20261010",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 551,
       "title": "feat(phase15): independently verify provider attempts before offline rollback review",
       "branch": "supervisor/task0091-provider-attempts-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4f9e2dc271cbba62abe3e1fba4da261c687605f5"
     },
     {
       "kind": "pr",

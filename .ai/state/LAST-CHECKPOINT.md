@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T09:08:21.345+00:00`
-- Observed main: `62514ecbb9c0c820c54a5a8fb033945955b7754f`
+- Timestamp: `2026-10-09T09:23:51.775+00:00`
+- Observed main: `26009a73d7d01c9541fc2e9100218c07d8bb6903`
 - Active issue: `none`
-- Active PR: `531`
-- Active branch: `supervisor/task0090-offline-safety-enforcement-20261009`
+- Active PR: `532`
+- Active branch: `supervisor/task0090-approval-binding-review-20261009`
 - Current milestone: `TASK-0090-PHASE15-SAFETY-GATES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0090`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `05e0a44b0a685b633dfa5f98ee05faaad8f04819416281aac2670dc746080833`
+- State fingerprint: `835d379d943cd7d3444300e894a36481377b348e8843364b5385b53e667efce2`
 
 ## Completed / observed this session
 
-PR #530 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance green; TASK-0089 accepted and merged as 62514ecbb9c0c820c54a5a8fb033945955b7754f. Activated TASK-0090 IN_PROGRESS on PR #531 with fail-closed offline policy source, deterministic resource preflights and emergency stop negative tests. No external execution or spending.
+PR #531 full exact-head app, PostgreSQL, PHP, E2E, Security and Governance green and merged 26009a73d7d01c9541fc2e9100218c07d8bb6903. PR #532 independently sourced offline approval binding to immutable plan/audience/content/destination/cost/time with negative self-approval/revocation tests. External execution remains disabled.
 
 ## Tests
 
-TASK-0089 certification exact-head and prior protected-main gates passed. TASK-0090 PR #531 staged independent offline preflight and adversarial unit tests; exact-head CI pending.
+PR #531 exact-head Foundation, PostgreSQL, PHP 8.3, E2E, Security and Governance PASSED. PR #532 checks pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ TASK-0089 certification exact-head and prior protected-main gates passed. TASK-0
 
 ## Exact next action
 
-Run full exact-head PR #531 unit/adversarial, Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures and merge; then implement TASK-0090 independent durable reservation and approval/stop policy.
+Certify exact-head PR #532 offline approval review tests and full required CI; repair and merge when green; then implement DB-backed independent approvals, atomic quota reservation, and stop reconciliation for TASK-0090.

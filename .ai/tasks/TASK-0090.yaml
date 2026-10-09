@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Run full exact-head PR #531 unit/adversarial, Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures and merge; then implement TASK-0090 independent durable reservation and approval/stop policy."
+  "exact_next_action": "Certify exact-head PR #532 offline approval review tests and full required CI; repair and merge when green; then implement DB-backed independent approvals, atomic quota reservation, and stop reconciliation for TASK-0090."
 }

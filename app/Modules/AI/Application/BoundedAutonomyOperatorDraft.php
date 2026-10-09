@@ -21,7 +21,7 @@ final readonly class BoundedAutonomyOperatorDraft
         string $runId,
         DateTimeImmutable $at,
     ): array {
-        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount);
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $at);
 
         return $policy->preview($actor, $runId, $goal, $actions, $at);
     }
@@ -35,7 +35,7 @@ final readonly class BoundedAutonomyOperatorDraft
         DateTimeImmutable $at,
         IdempotentExecutor $idempotency,
     ): array {
-        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount);
+        [$policy, $goal, $actions] = $this->prepare($actor, $authorizedReports, $reportId, $targetCount, $at);
 
         return (new BoundedAutonomyOfflineReceipt($policy, $idempotency))->record(
             $actor, $runId, $goal, $actions, $at,

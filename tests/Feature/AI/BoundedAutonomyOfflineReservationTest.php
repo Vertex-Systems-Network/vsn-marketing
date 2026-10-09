@@ -238,8 +238,12 @@ it('atomically rejects a second claim at the per-minute limit and resets only at
     expect((int) $row->window_used_attempts)->toBe(1)
         ->and((int) $row->window_started_unix)->toBe($at->getTimestamp() + 60);
 
-    $regressed = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-clock-back'), $estimate, $at);
-    expect($regressed['reason_code'])->toBe('attempts_limit_reached');
+    // Raise the action ceiling only; the independent daily attempts budget
+    // must still deny another claim regardless of minute rollover.
+    DB::table('ai_autonomy_workspace_quotas')->where('workspace_id', $scope->workspaceId)
+        ->update(['max_actions' => 8]);
+    $exhausted = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-daily-exhausted'), $estimate, $at);
+    expect($exhausted['reason_code'])->toBe('attempts_limit_reached');
 });
 
 it('holds rate-policy revisions and clock regression without incrementing counters', function () {

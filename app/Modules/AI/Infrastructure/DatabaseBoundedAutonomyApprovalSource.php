@@ -41,8 +41,9 @@ final readonly class DatabaseBoundedAutonomyApprovalSource implements BoundedAut
         $record = DB::table('ai_autonomy_approval_decisions')
             ->where('workspace_id', $scope->workspaceId)
             ->where('run_id', $runId)
-            ->orderByDesc('approved_at_unix')
-            ->orderByDesc('id')->first();
+            // The database-assigned append order is authoritative: a revoked
+            // decision must not lose to an earlier approval with a tied clock.
+            ->orderByDesc('decision_sequence')->first();
 
         if ($record === null) {
             return null;

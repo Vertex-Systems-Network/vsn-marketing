@@ -12,7 +12,8 @@ return new class extends Migration
         // No approvals or permission grants are seeded. Only separately
         // authenticated domain services may eventually append decisions.
         Schema::create('ai_autonomy_approval_decisions', function (Blueprint $table): void {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('decision_sequence');
+            $table->uuid('id')->unique();
             $table->uuid('workspace_id');
             $table->uuid('brand_id')->nullable();
             $table->string('run_id', 64);

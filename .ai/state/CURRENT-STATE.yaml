@@ -18,20 +18,20 @@
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #540 exact head 1173b4873aa5367cb6d7a640050c50c10f75d24d AI Continuity and Governance PASS; merged a05d7f8abb745f522786743c3e23f40d90f1c7d2.",
-    "application_test_status": "PR #540 exact head Foundation, PHP 8.3, PostgreSQL integration, E2E PASS; merged a05d7f8abb745f522786743c3e23f40d90f1c7d2.",
-    "security_supply_chain_status": "PR #540 exact head Security Supply Chain PASS; merged a05d7f8abb745f522786743c3e23f40d90f1c7d2.",
+    "continuity_validation": "PR #541 exact head 0860c51589452d9048b1b080ef73ffd979c8b337 passed AI Continuity and Governance, merged 1a75895748675afef5a2102aab879932c45308ac.",
+    "application_test_status": "PR #541 exact head 0860c51589452d9048b1b080ef73ffd979c8b337 passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
+    "security_supply_chain_status": "PR #541 exact head 0860c51589452d9048b1b080ef73ffd979c8b337 passed Security Supply Chain.",
     "release_integrity_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 release-integrity passed.",
     "scorecard_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 scorecard passed."
   },
-  "observed_main_sha": "a05d7f8abb745f522786743c3e23f40d90f1c7d2",
+  "observed_main_sha": "1a75895748675afef5a2102aab879932c45308ac",
   "active_issue": null,
-  "active_pr": 541,
-  "active_branch": "supervisor/task0091-offline-canary-holdout-evaluation-20261009",
+  "active_pr": 542,
+  "active_branch": "supervisor/task0091-durable-canary-evidence-20261009",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #541 exact-head frozen canary/holdout, independent fixed-horizon scoring, late/duplicate/irreversible rollback tests, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; repair failures and merge, then implement independent durable cohort/outcome sources.",
+  "exact_next_safe_action": "Certify PR #542 exact-head immutable offline cohort database receipts, replay/actor/scope safeguards, PHP 8.3, PostgreSQL, E2E, Security and Governance; then build separately verified cohort/outcome binding and operator-only promotion decisions.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #541 exact-head frozen canary/holdout, independent fixed-horizon scoring, late/duplicate/irreversible rollback tests, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; repair failures and merge, then implement independent durable cohort/outcome sources."
+  "exact_next_action": "Certify PR #542 exact-head immutable offline cohort database receipts, replay/actor/scope safeguards, PHP 8.3, PostgreSQL, E2E, Security and Governance; then build separately verified cohort/outcome binding and operator-only promotion decisions."
 }

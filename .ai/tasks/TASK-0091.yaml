@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #541 exact-head frozen canary/holdout, independent fixed-horizon scoring, late/duplicate/irreversible rollback tests, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; repair failures and merge, then implement independent durable cohort/outcome sources."
+  "exact_next_action": "Certify PR #542 exact-head immutable offline cohort database receipts, replay/actor/scope safeguards, PHP 8.3, PostgreSQL, E2E, Security and Governance; then build separately verified cohort/outcome binding and operator-only promotion decisions."
 }

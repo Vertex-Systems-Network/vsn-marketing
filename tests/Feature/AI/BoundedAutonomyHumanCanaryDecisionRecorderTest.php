@@ -273,6 +273,18 @@ it('records independently joined human review only, never promoting or triggerin
     expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
     app(WorkspaceRoleManager::class)->grantPermission($f['role'], PermissionCatalog::AI_APPROVE);
 
+    $originalProof = DB::table('ai_autonomy_canary_human_decisions')
+        ->where('decision_id', $recorded['decision_id'])->value('session_proof_sha256');
+    DB::table('ai_autonomy_canary_human_decisions')
+        ->where('decision_id', $recorded['decision_id'])
+        ->update(['session_proof_sha256' => str_repeat('0', 64)]);
+    expect(fn () => $service->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', $at))->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+    DB::table('ai_autonomy_canary_human_decisions')
+        ->where('decision_id', $recorded['decision_id'])
+        ->update(['session_proof_sha256' => $originalProof]);
+
     $source = new DatabaseBoundedAutonomyCanaryHumanDecisionSource(app(WorkspaceAuthorizer::class));
     $fact = $source->latest($f['scope'], $f['plan']->id, $at);
     expect($fact['outcome'])->toBe('approved')

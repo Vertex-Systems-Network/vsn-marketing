@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T15:32:14.335+00:00`
-- Observed main: `0877950447d262720922c31c5c205df10e82bfab`
+- Timestamp: `2026-10-09T16:04:23.159+00:00`
+- Observed main: `0f416de15744f23c25d586a3a0fc1f0ec5608837`
 - Active issue: `none`
-- Active PR: `549`
-- Active branch: `supervisor/task0091-human-approval-replay-20261009`
+- Active PR: `550`
+- Active branch: `supervisor/task0091-human-session-proof-integrity-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `c4b02ec5540712d1ee9961845acad427f4809abbeb08b875175f13acd84c67e6`
+- State fingerprint: `6581e3f2ddb05e3e01319e62d1cc35cdc9e472ee9dc5146f32d2f04aa28a3f99`
 
 ## Completed / observed this session
 
-TASK-0091 PR #548 certified full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance and merged 0877950447d262720922c31c5c205df10e82bfab. PR #549 stages current human approval duplicate-replay idempotency, stop-flip and revoked-role adversarial tests; no promotion, provider send, billing, spend or external action.
+TASK-0091 PR #549 merged 0f416de15744f23c25d586a3a0fc1f0ec5608837; PR #550 historical human-session decision tamper rejection and adversarial replay tests passed original full application, PostgreSQL, PHP floor, E2E, Security gates. Corrected stale protected-main governance anchor without authorization changes or real provider actions.
 
 ## Tests
 
-PR #548 complete exact-head required gates PASS before merge. PR #549 code and targeted adversarial fixtures staged; its own exact-head CI not yet certified.
+PR #550 previous exact head all application/PG/PHP/E2E/Security checks passed; Governance failed because previous merged PR #549 was not reflected in observed main. New exact-head tests pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #548 complete exact-head required gates PASS before merge. PR #549 code and t
 
 ## Exact next action
 
-Certify TASK-0091 PR #549 current-human repeat approval idempotency and global stop/RBAC revocation regressions on full exact-head Foundation, PostgreSQL, E2E, PHP floor, Security and Governance. Repair and merge green head; then continue independent offline provider outcome provenance gates.
+Certify TASK-0091 PR #550 current exact-head human-session replay integrity and all Foundation, PostgreSQL, PHP floor, E2E, Security and Governance checks, then merge and continue independent offline provider outcome provenance.

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "8795eb0c871428ac4829c289e87ca674ddd6a465",
+  "reconciled_main_sha": "84e6aaafa86310e9ade73b4a28ab0d7552d80fd4",
   "active_work_path": {
     "kind": "pr",
-    "number": 523,
-    "title": "plan(phase15): activate bounded autonomous marketing research frontier",
-    "branch": "supervisor/phase15-research-activation-20261009",
-    "disposition": "active_task0088_carrier"
+    "number": 524,
+    "title": "chore(phase15): accept TASK-0088 research and activate TASK-0089",
+    "branch": "supervisor/phase15-task0088-research-acceptance",
+    "disposition": "active_task0089_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 524,
+      "title": "chore(phase15): accept TASK-0088 research and activate TASK-0089",
+      "branch": "supervisor/phase15-task0088-research-acceptance",
+      "disposition": "active_task0089_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 523,
       "title": "plan(phase15): activate bounded autonomous marketing research frontier",
       "branch": "supervisor/phase15-research-activation-20261009",
-      "disposition": "active_task0088_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "84e6aaafa86310e9ade73b4a28ab0d7552d80fd4"
     },
     {
       "kind": "pr",

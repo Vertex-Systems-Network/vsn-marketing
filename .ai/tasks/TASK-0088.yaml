@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Research current agent autonomy safety, marketing optimization, regulation and incident patterns",
   "weight": 15,
-  "status": "in_progress",
+  "status": "completed",
   "dependencies": [
     "TASK-0087"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Dated official NIST, OWASP, ICO, FTC and EU guidance with source provenance and regional uncertainty",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Threat model covers prompt injection, runaway send/spend, metric gaming, tenant leaks, privilege escalation and irreversible actions",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Research reconciles deterministic policy, approvals, budget, kill switch and test requirements without granting live execution",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [
@@ -30,6 +30,6 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Verify dated official TASK-0088 research and complete required exact-head CI before acceptance.",
+  "exact_next_action": "TASK-0088 research accepted with the exact-head/full and resulting-main evidence cited in TASK-0088-ACCEPTANCE.md; implement TASK-0089 offline bounded loops.",
   "research_pack": ".ai/research/PHASE-15/TASK-0088-RESEARCH.md"
 }

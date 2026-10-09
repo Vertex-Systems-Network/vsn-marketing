@@ -24,14 +24,14 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "c5027d289c6659bc466fcb339d136618339a2a4f",
+  "observed_main_sha": "b8a8993abcb077fc838a4a875c9c2ddd7dec42b5",
   "active_issue": null,
-  "active_pr": 526,
-  "active_branch": "supervisor/task0089-verified-offline-observation-20261009",
+  "active_pr": 527,
+  "active_branch": "supervisor/task0089-operator-issued-preview-20261009",
   "current_milestone": "TASK-0089-PHASE15-BOUNDED-LOOP",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0088 dated research accepted from PR #523 full exact-head and resulting-main Application, PHP floor, PostgreSQL, browser E2E, Security and AI Continuity checks.",
-  "exact_next_safe_action": "Validate PR #526 exact-head Application Foundation, PHP 8.3, PostgreSQL integration, browser E2E, AI Continuity and Security; repair failures, merge only when green, then implement accessible operator preview and remaining TASK-0089 lifecycle certification.",
+  "exact_next_safe_action": "Validate PR #527 exact-head canonical permission, privacy, offline preview, Application Foundation, PHP 8.3, E2E, PostgreSQL integration, Security and continuity; repair failures, merge only when green, then certify remaining TASK-0089 lifecycle evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Validate PR #526 exact-head Application Foundation, PHP 8.3, PostgreSQL integration, browser E2E, AI Continuity and Security; repair failures, merge only when green, then implement accessible operator preview and remaining TASK-0089 lifecycle certification."
+  "exact_next_action": "Validate PR #527 exact-head canonical permission, privacy, offline preview, Application Foundation, PHP 8.3, E2E, PostgreSQL integration, Security and continuity; repair failures, merge only when green, then certify remaining TASK-0089 lifecycle evidence."
 }

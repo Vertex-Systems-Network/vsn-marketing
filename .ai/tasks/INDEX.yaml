@@ -867,7 +867,7 @@
       "phase": "PHASE-14",
       "title": "Certify Phase 14 AI Connector Factory",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0086"
       ]

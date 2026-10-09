@@ -2,7 +2,7 @@
 
 Certification scope: repository-side, offline connector planning, candidate generation, review, sandbox validation, compatibility and lifecycle controls.
 
-Status: **evidence matrix compiled; exact-head and resulting-main certification gates are being verified.**
+Status: **Certified on protected main.** PR #519 exact head passed the full certification gate set; merge `406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c` passed resulting-main Supervisor reconciliation. Product-bearing resulting-main release gates are recorded below.
 
 This certification does not grant or claim provider credentials, external provider approval, live API polling, production connector activation, successful live rollback, deployment/release authority, production-scale SLOs, or source completeness.
 
@@ -15,7 +15,7 @@ This certification does not grant or claim provider credentials, external provid
 | TASK-0084 | Deterministic generated adapter/test candidates with pinned provenance and candidate-only status | TASK-0082 research; generated output stays in an allowlisted candidate workspace, with no implicit dependency, workflow or runtime authority | `Task0084ConnectorCandidateGeneratorTest`: deterministic output, malicious operation names, credential-bearing URLs, shell payloads, path traversal, invalid toolchain, hidden workflow/runtime commands, dependency injection and non-executable candidate output | Accepted, PR #504 |
 | TASK-0085 | Static, contract, sandbox, security and independent approval gates; canary disabled by default | TASK-0082 research; generated code cannot self-approve; canary policy is bounded and reversible, with external activation authority kept separate | `Task0085ConnectorCandidateReviewTest`, `Task0085ConnectorCandidateSandboxExecutionTest`, `ConnectorContractsTest`, `ReferenceConnectorCertificationTest`: evidence tampering, insecure generated output, approval bypass, untrusted reviewer, network/secrets/write escape, read-only root, resource bounds and disabled-by-default canary | Accepted, PR #505 |
 | TASK-0086 | Versioned compatibility scoring, dated deprecation provenance, deterministic disable/rollback decisions and tenant-scoped lifecycle evidence | [TASK-0086-RESEARCH.md](TASK-0086-RESEARCH.md); OpenAPI version/deprecation semantics, RFC 9745 Deprecation, RFC 8594 Sunset and OWASP API inventory/version management | `Task0086ConnectorLifecycleTest`, `Task0086CompatibilityEvidenceBindingTest`, `Task0086ConnectorLifecyclePersistenceTest`: unknown/breaking capability changes fail closed, no automatic upgrade, exact assessment/evidence binding, explicit rollback candidate, tenant isolation, idempotent failure reconciliation, evidence-hash integrity and refusal to discard persisted evidence | Accepted after PR #517 |
-| TASK-0087 | Cross-task certification and exact-head/resulting-main evidence | This matrix plus the project charter, AI rules, security rules, quality gates and task/source packs above | Acceptance requires all referenced adversarial tests, unsupported paths and external-authority boundaries to remain explicit; exact-head and resulting-main gates are tracked below | In progress |
+| TASK-0087 | Cross-task certification and exact-head/resulting-main evidence | This matrix plus the project charter, AI rules, security rules, quality gates and task/source packs above | Acceptance requires all referenced adversarial tests, unsupported paths and external-authority boundaries to remain explicit; exact-head and resulting-main gates are recorded below | Accepted on PR #519 |
 
 ## Unsupported and external-authority paths
 
@@ -41,14 +41,19 @@ This certification does not grant or claim provider credentials, external provid
 - Resulting main `6d6d6a92e6beab287d490143db91a3fe0e72b98e` passed Application Foundation, PostgreSQL 18 integration/browser parity, PHP 8.3 floor, E2E, Security Supply Chain, AI Continuity, governance and release-integrity checks.
 - PR #518's full exact-head rerun passed Application Foundation, PostgreSQL integration/browser parity, PHP 8.3 floor, E2E, Security Supply Chain, AI Continuity and governance. The PHP-floor first attempt hit a 10-second Docker readiness timeout; the targeted retry passed with 929 tests and 6,089 assertions.
 
-### TASK-0087 certification carrier
+### TASK-0087 certification carrier — PR #519
 
-The current certification carrier's exact-head gate results and protected-main results will be recorded here before terminal task closure. Certification remains pending until full Application Foundation (including PHP 8.3 and PostgreSQL integration/browser parity), Security Supply Chain and AI Continuity exact-head gates pass and the resulting-main/release-relevant evidence is reconciled.
+- Exact head: `dd7d09decbbb29ce0177ae8c3f4941638a2b487f`; merged to protected main as `406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c`.
+- Application Foundation CI run `37829213644` passed `foundation`, PHP 8.3 compatibility floor, PostgreSQL infrastructure integration/browser parity, and E2E.
+- Security Supply Chain CI run `37829213597` passed all component gates: action integrity, CodeQL Actions, reproducible SBOM, secret scan, CodeQL JS/TS, dependency audit, PHP SAST, container scan, and aggregate security gates.
+- AI Continuity Guard and governance run `37829213527` passed; default-branch-only governance publication was skipped as expected for a PR run.
+- Resulting-main Supervisor reconciliation run `37834154711` completed successfully on merge SHA `406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c`.
+- Product-bearing resulting main `6d6d6a92e6beab287d490143db91a3fe0e72b98e` passed Application Foundation, PostgreSQL integration/browser parity, PHP 8.3 floor, E2E, Security Supply Chain, AI Continuity, governance, release-integrity, and scorecard. The later certification commits are docs/control-only and do not claim a new product release or production activation.
 
-The resulting-main release-integrity and scorecard evidence for the merged TASK-0086 product head is recorded above. Documentation/state-only certification commits do not independently claim a new product release or production activation.
+
 
 ## Acceptance status
 
-- **AC-1 — matrix:** requirements, official-source packs, deterministic policy, tests, unsupported cases and authority boundaries are mapped above.
-- **AC-2 — adversarial tests:** represented by the listed connector ingestion, code-generation, contract, sandbox, approval, compatibility, rollback and persistence suites; final certification carrier gates remain required.
-- **AC-3 — exact head and resulting main:** pending the certification carrier and its resulting-main gate observations.
+- **AC-1 — matrix:** accepted; requirements, official-source packs, deterministic policy, tests, unsupported cases and authority boundaries are mapped above.
+- **AC-2 — adversarial tests:** accepted; connector ingestion, code-generation, contract, sandbox, approval, compatibility, rollback and persistence suites passed on previously accepted implementation heads; the certification carrier full gate set passed.
+- **AC-3 — exact head and resulting main:** accepted; PR #519 exact-head full gates and resulting-main reconciliation passed, with product-bearing release gates recorded above.

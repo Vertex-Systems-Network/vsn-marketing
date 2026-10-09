@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "ready",
+    "status": "needs_reconciliation",
     "current_phase": "PHASE-14",
     "active_task": "TASK-0087",
-    "last_completed_task": "TASK-0086",
+    "last_completed_task": "TASK-0087",
     "next_task": null
   },
   "progress": {
-    "roadmap_percent": 91.5,
-    "phase_percent": 90.0,
+    "roadmap_percent": 92.0,
+    "phase_percent": 100.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,26 +24,30 @@
     "release_integrity_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964681.",
     "scorecard_status": "Resulting main c2278638788958bb9875bbc465f5bdb8c52a92a3 passed run 36253964656."
   },
-  "observed_main_sha": "b5df5a34c07beb9c25ab9e590b4d4a381afcf4f1",
+  "observed_main_sha": "406f1dfd8fb3635fb8ec7872d5f33b1bbddacc8c",
   "active_issue": null,
-  "active_pr": 519,
-  "active_branch": "supervisor/task0087-phase14-certification",
+  "active_pr": 520,
+  "active_branch": "supervisor/task0087-phase14-terminal-closure",
   "current_milestone": "TASK-0087-PHASE14-CERTIFICATION",
-  "milestone_status": "IN_PROGRESS",
+  "milestone_status": "COMPLETE",
   "last_completed_milestone": "TASK-0085 connector validation, sandbox/security evidence and fail-closed canary activation gates accepted from merged PR #505.",
-  "exact_next_safe_action": "Observe and repair PR #519 exact-head Application Foundation, infrastructure integration, PHP 8.3, E2E, Security Supply Chain, AI Continuity and governance gates; then verify resulting main before closing TASK-0087.",
+  "exact_next_safe_action": "Observe PR #520 exact-head full Application Foundation, PHP 8.3, PostgreSQL integration/browser parity, E2E, Security Supply Chain, AI Continuity and governance; after merge verify resulting main and reconcile terminal state.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
     "RBT-052"
   ],
-  "blockers": [],
-  "current_blockers": [],
+  "blockers": [
+    "No successor task is registered after TASK-0087; explicit roadmap staging is required before further implementation."
+  ],
+  "current_blockers": [
+    "No successor task is registered after TASK-0087; explicit roadmap staging is required before further implementation."
+  ],
   "timeout_control": {
     "default_ci_status_refreshes_per_milestone": 4,
     "max_ci_status_refreshes_with_recorded_exception": 12,
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Observe and repair PR #519 exact-head Application Foundation, infrastructure integration, PHP 8.3, E2E, Security Supply Chain, AI Continuity and governance gates; then verify resulting main before closing TASK-0087."
+  "exact_next_action": "Observe PR #520 exact-head full Application Foundation, PHP 8.3, PostgreSQL integration/browser parity, E2E, Security Supply Chain, AI Continuity and governance; after merge verify resulting main and reconcile terminal state."
 }

@@ -3,7 +3,7 @@
   "phase": "PHASE-14",
   "title": "Certify Phase 14 AI Connector Factory",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0086"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Requirements, source, policy and test matrix covers TASK-0082 through TASK-0086 plus unsupported and external-authority paths",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Malicious-document, insecure-codegen, contract, sandbox, approval, compatibility and rollback adversarial tests pass",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Exact-head and resulting-main application, security, continuity and release-relevant gates pass without production activation claims",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

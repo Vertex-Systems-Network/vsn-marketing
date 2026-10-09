@@ -105,6 +105,29 @@ final readonly class DatabaseBoundedAutonomyOfflineFinalReview
                 return $this->held($preview, 'workspace_policy_changed_or_expired');
             }
 
+            // Final offline review rechecks the independently configured
+            // rate authority under the same global -> quota -> rate lock order
+            // as atomic admission. Passing still grants NO external authority.
+            $rate = DB::table('ai_autonomy_workspace_rate_windows')
+                ->where('workspace_id', $actor->workspaceId)->where('period_utc', $period)
+                ->lockForUpdate()->first();
+            if ($rate === null) {
+                return $this->held($preview, 'rate_policy_unconfigured');
+            }
+            if ($rate->policy_version !== $preview['policy_version']) {
+                return $this->held($preview, 'rate_policy_changed');
+            }
+            $maxRate = (int) $rate->max_attempts_per_minute;
+            $usedRate = (int) $rate->window_used_attempts;
+            $window = (int) $rate->window_started_unix;
+            if ($maxRate < 1 || $maxRate > 100000 || $usedRate < 0
+                || $usedRate > $maxRate || $window < 0) {
+                return $this->held($preview, 'rate_policy_counters_invalid');
+            }
+            if ($window > intdiv($at->getTimestamp(), 60) * 60) {
+                return $this->held($preview, 'rate_clock_regressed');
+            }
+
             $record = DB::table('ai_autonomy_offline_reservations')
                 ->where('workspace_id', $actor->workspaceId)
                 ->where('run_id', $runId)->lockForUpdate()->first();

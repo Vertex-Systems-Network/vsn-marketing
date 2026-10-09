@@ -41,6 +41,11 @@ it('serializes two competing offline claims without exceeding workspace tokens, 
         'policy_expires_at' => $at->modify('+30 minutes')->format('Y-m-d H:i:s'),
         'created_at' => now(), 'updated_at' => now(),
     ]);
+    DB::table('ai_autonomy_workspace_rate_windows')->insert([
+        'workspace_id' => $workspace, 'period_utc' => $at->format('Y-m-d'),
+        'policy_version' => 'v1', 'max_attempts_per_minute' => 1,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
 
     $scope = new TenantContext($org, $workspace, null, 'operator');
     $preview = new BoundedAutonomyPreview(
@@ -119,6 +124,7 @@ it('serializes two competing offline claims without exceeding workspace tokens, 
             pcntl_waitpid($pid, $status);
         }
         DB::table('ai_autonomy_offline_reservations')->where('workspace_id', $workspace)->delete();
+        DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $workspace)->delete();
         DB::table('ai_autonomy_workspace_quotas')->where('workspace_id', $workspace)->delete();
         DB::table('ai_autonomy_global_stops')->where('id', 'global')->delete();
         DB::table('workspaces')->where('id', $workspace)->delete();

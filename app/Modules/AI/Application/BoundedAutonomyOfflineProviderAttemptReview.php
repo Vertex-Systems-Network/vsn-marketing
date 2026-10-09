@@ -65,6 +65,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
 
         $operations = [];
         $idempotency = [];
+        $identities = [];
         $flag = null;
         foreach ($envelope['attempts'] as $attempt) {
             if (! is_array($attempt)) {
@@ -95,6 +96,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             }
             $operations[$operation] = true;
             $idempotency[$key] = true;
+            $identities[] = ['operation_id' => $operation, 'idempotency_key' => $key];
 
             if (! $attempt['verified_independently'] || $attempt['outcome'] === 'unknown') {
                 $flag ??= 'unverified_provider_attempt';
@@ -130,6 +132,9 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             return $this->hold($runId, $snapshotSha256, $flag);
         }
 
+        usort($identities, static fn (array $left, array $right): int => [$left['operation_id'], $left['idempotency_key']] <=> [$right['operation_id'], $right['idempotency_key']]);
+        $operationSetSha256 = hash('sha256', json_encode($identities, JSON_THROW_ON_ERROR));
+
         return [
             'status' => 'offline_no_effect_reconciliation_candidate',
             'reason_code' => 'human_recovery_and_final_authority_required',
@@ -137,6 +142,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             'snapshot_sha256' => $snapshotSha256,
             'source_manifest_sha256' => $envelope['source_manifest_sha256'],
             'verified_attempt_count' => count($envelope['attempts']),
+            'operation_set_sha256' => $operationSetSha256,
             'rollback_performed' => false,
             'refund_authorized' => false,
             'retry_authorized' => false,
@@ -154,6 +160,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             'snapshot_sha256' => $snapshotSha256,
             'source_manifest_sha256' => null,
             'verified_attempt_count' => 0,
+            'operation_set_sha256' => null,
             'rollback_performed' => false,
             'refund_authorized' => false,
             'retry_authorized' => false,

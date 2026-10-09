@@ -70,3 +70,23 @@ test('renders offline-only autonomy proposal without enabling outbound execution
     expect(screen.getByRole('button', { name: 'Execute actions (unavailable)' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Promote campaign (unavailable)' })).toBeDisabled();
 });
+
+test('posts selected analytics report only to the authorized offline preview endpoint', () => {
+    const report = { id: '11111111-1111-4111-8111-111111111111', fingerprint: 'a'.repeat(64),
+        definition_hash: 'def', definition: { kind: 'counts', version: 1 },
+        start_utc: 'start', end_utc: 'end', receipt_cutoff_utc: 'cutoff', latest_receipt_utc: null,
+        source_completeness: 'unknown', excluded: 0, lineage_count: 1, metrics: { count: 4 },
+        quality: {}, censored_subjects: null };
+    render(<Operator {...props} reports={[report]} autonomy_enabled
+        actions={{ ...props.actions, autonomy_preview: '/workspaces/workspace/analytics/autonomy/preview' }} />);
+    fireEvent.change(screen.getByLabelText('Review target (count)'), { target: { value: '15' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Create offline preview' }));
+    expect(post).toHaveBeenCalledWith('/workspaces/workspace/analytics/autonomy/preview',
+        { report_id: report.id, target_count: '15' }, expect.anything());
+});
+
+test('disables offline preview submission when no authorized report or permission exists', () => {
+    render(<Operator {...props} />);
+    expect(screen.getByRole('button', { name: 'Create offline preview' })).toBeDisabled();
+    expect(screen.getByText('AI preview permission or analytics purpose is unavailable.')).toBeInTheDocument();
+});

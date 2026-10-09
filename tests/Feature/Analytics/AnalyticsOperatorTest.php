@@ -92,3 +92,30 @@ it('displays authorized quality checks and hides receipt lineage and unapproved 
     config(['analytics.purpose_approved' => false]);
     $this->get('/workspaces/'.$f->actor->workspaceId.'/analytics')->assertInertia(fn (Assert $p) => $p->where('quality_reports', []));
 });
+
+it('issues only a permission-checked offline autonomy preview from current analytics evidence', function () {
+    $this->withoutVite();
+    $f = new AnalyticsFixture;
+    $facts = app(AnalyticsFacts::class);
+    $facts->project($f->actor, $f->event());
+    $report = $facts->snapshot($f->actor, new MetricDefinition('product.viewed'),
+        new DateTimeImmutable('2026-10-02Z'), new DateTimeImmutable('2026-10-03Z'), $f->now());
+    $url = '/workspaces/'.$f->actor->workspaceId.'/analytics';
+    $this->actingAs(User::findOrFail($f->actor->actorId))->withHeader('X-Brand-Id', $f->actor->brandId)
+        ->post($url.'/autonomy/preview', [
+            'report_id' => $report['id'], 'target_count' => 12,
+        ])->assertRedirect()->assertSessionHas('analytics_notice', 'autonomy_preview_ready');
+    $this->get($url)->assertOk()->assertInertia(fn (Assert $p) => $p
+        ->where('autonomy_enabled', true)->where('offline_autonomy_preview.status', 'preview_ready')
+        ->where('offline_autonomy_preview.execution_authorized', false)
+        ->where('offline_autonomy_preview.stages.execute', 'disabled')
+        ->where('offline_autonomy_preview.actions.0.effect', 'read')
+        ->where('offline_autonomy_preview.actions.0.source_ids.0', $report['id']));
+
+    $this->post($url.'/autonomy/preview', [
+        'report_id' => '11111111-1111-4111-8111-111111111111', 'target_count' => 12,
+    ])->assertRedirect()->assertSessionHas('analytics_notice', 'autonomy_preview_denied');
+    config(['analytics.purpose_approved' => false]);
+    $this->get($url)->assertOk()->assertInertia(fn (Assert $p) => $p
+        ->where('autonomy_enabled', false)->where('offline_autonomy_preview', null));
+});

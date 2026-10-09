@@ -26,6 +26,13 @@ final class DatabaseBoundedAutonomyOfflineReservation
         }
 
         return DB::transaction(function () use ($actor, $preview, $estimate, $at): array {
+            // TenantContext is input data, not proof that this actor's
+            // claimed organization owns the selected workspace.
+            if (! DB::table('workspaces')->where('id', $actor->workspaceId)
+                ->where('organization_id', $actor->organizationId)->exists()) {
+                throw new InvalidArgumentException('Foreign organization workspace rejected.');
+            }
+
             $global = DB::table('ai_autonomy_global_stops')->where('id', 'global')
                 ->lockForUpdate()->first();
 

@@ -264,3 +264,17 @@ it('holds rate-policy revisions and clock regression without incrementing counte
     expect($r['reason_code'])->toBe('rate_clock_regressed')
         ->and(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0);
 });
+
+it('rejects a forged organization even when the caller regenerates a matching preview', function () {
+    $legitimate = autonomyOfflineDbScope();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    autonomyOfflineDbLimits($legitimate);
+    $forged = new TenantContext((string) Str::uuid(), $legitimate->workspaceId, null, 'operator');
+    expect(fn () => (new DatabaseBoundedAutonomyOfflineReservation)->reserve(
+        $forged, autonomyOfflineDbPreview($forged, 'cross-org-rate'),
+        autonomyOfflineDbEstimate(), autonomyOfflineDbTime(),
+    ))->toThrow(InvalidArgumentException::class, 'Foreign organization workspace');
+    expect(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0);
+});

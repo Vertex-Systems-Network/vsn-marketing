@@ -135,8 +135,18 @@ final readonly class DatabaseBoundedAutonomyOfflineFinalReview
                 return $this->held($preview, 'current_budget_exceeded');
             }
 
-            // Re-check independent latest decision and current approver role;
-            // this is NOT a lock on future human revocation writes.
+            // All app-level human approval writers take this same
+            // workspace row lock before appending decisions. Re-check latest
+            // approval while holding it, after the global/quota locks.
+            // This only serializes OFFLINE decisions and reviews; a future
+            // provider outbox would need the identical final lock contract.
+            $lockedWorkspace = DB::table('workspaces')
+                ->where('id', $actor->workspaceId)
+                ->where('organization_id', $actor->organizationId)
+                ->lockForUpdate()->first();
+            if ($lockedWorkspace === null) {
+                throw new InvalidArgumentException('Workspace authority changed during final review.');
+            }
             $approval = (new BoundedAutonomyOfflineApprovalReview($this->approvals))
                 ->inspect($actor, $preview, $binding, $at);
             if ($approval['status'] !== 'approval_matched_offline') {

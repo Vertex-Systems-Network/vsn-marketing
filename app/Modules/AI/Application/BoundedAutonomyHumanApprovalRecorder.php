@@ -80,6 +80,17 @@ final readonly class BoundedAutonomyHumanApprovalRecorder
         }
 
         return DB::transaction(function () use ($approverId, $requester, $preview, $binding, $outcome, $at): array {
+            // A final offline review takes this same workspace lock before
+            // reading the latest decision, so a new revocation cannot be
+            // appended midway through that review's locked evidence snapshot.
+            $workspace = DB::table('workspaces')
+                ->where('id', $requester->workspaceId)
+                ->where('organization_id', $requester->organizationId)
+                ->lockForUpdate()->first();
+            if ($workspace === null) {
+                throw new InvalidArgumentException('Workspace authority changed before approval recording.');
+            }
+
             // No approval may invent a predecessor to revoke. A current
             // authorized reviewer must still validate the *latest* decision.
             if ($outcome === 'revoked' && ! DB::table('ai_autonomy_offline_approval_decisions')

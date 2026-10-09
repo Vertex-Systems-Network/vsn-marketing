@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "14ae5006cf388a992d5a20963eac9dcdbfa9f548",
+  "reconciled_main_sha": "4d191ddc6ebc957309c3431160e2eed4b6cfbbad",
   "active_work_path": {
     "kind": "pr",
-    "number": 545,
-    "title": "test(phase15): certify concurrent rollback-review replay on PostgreSQL",
-    "branch": "supervisor/task0091-rollback-postgres-replay-20261009",
+    "number": 546,
+    "title": "feat(phase15): independently gate offline canary human promotion review",
+    "branch": "supervisor/task0091-independent-human-promotion-review-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 546,
+      "title": "feat(phase15): independently gate offline canary human promotion review",
+      "branch": "supervisor/task0091-independent-human-promotion-review-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 545,
       "title": "test(phase15): certify concurrent rollback-review replay on PostgreSQL",
       "branch": "supervisor/task0091-rollback-postgres-replay-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4d191ddc6ebc957309c3431160e2eed4b6cfbbad"
     },
     {
       "kind": "pr",

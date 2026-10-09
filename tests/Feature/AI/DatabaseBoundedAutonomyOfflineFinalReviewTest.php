@@ -77,6 +77,7 @@ function offlineFinalReviewFixture(): array
         'approved_at_unix' => $at->getTimestamp() - 30,
         'approver_id' => 'human-owner', 'outcome' => 'approved',
     ];
+
     return [$actor, $preview, $binding, $at, $decision,
         ['actions' => 1, 'tokens' => 20, 'volume' => 3, 'cost_minor' => 12, 'attempts' => 1]];
 }

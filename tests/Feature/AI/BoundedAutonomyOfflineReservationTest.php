@@ -72,6 +72,14 @@ function autonomyOfflineDbLimits(TenantContext $scope, bool $stopped = false): v
         'created_at' => now(),
         'updated_at' => now(),
     ]);
+    DB::table('ai_autonomy_workspace_rate_windows')->insert([
+        'workspace_id' => $scope->workspaceId,
+        'period_utc' => $at->format('Y-m-d'),
+        'policy_version' => 'v1',
+        'max_attempts_per_minute' => 2,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 }
 
 function autonomyOfflineDbEstimate(): array
@@ -177,4 +185,96 @@ it('rejects actor spoofing, forged execution and stale policy with no quota muta
     expect(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0)
         ->and((int) DB::table('ai_autonomy_workspace_quotas')
             ->where('workspace_id', $scope->workspaceId)->value('used_tokens'))->toBe(0);
+});
+
+it('requires a separately configured rate policy even if quota and global stop allow the claim', function () {
+    $scope = autonomyOfflineDbScope();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    autonomyOfflineDbLimits($scope);
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)->delete();
+
+    $r = (new DatabaseBoundedAutonomyOfflineReservation)->reserve(
+        $scope, autonomyOfflineDbPreview($scope, 'unconfigured-rate'), autonomyOfflineDbEstimate(),
+        autonomyOfflineDbTime(),
+    );
+    expect($r['reason_code'])->toBe('rate_policy_unconfigured')
+        ->and($r['execution_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0)
+        ->and((int) DB::table('ai_autonomy_workspace_quotas')
+            ->where('workspace_id', $scope->workspaceId)->value('used_attempts'))->toBe(0);
+});
+
+it('atomically rejects a second claim at the per-minute limit and resets only at next trusted minute', function () {
+    $scope = autonomyOfflineDbScope();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    autonomyOfflineDbLimits($scope);
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)
+        ->update(['max_attempts_per_minute' => 1]);
+    $svc = new DatabaseBoundedAutonomyOfflineReservation;
+    $estimate = ['actions' => 1, 'tokens' => 5, 'volume' => 1, 'cost_minor' => 2, 'attempts' => 1];
+    $at = autonomyOfflineDbTime();
+
+    $first = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-first'), $estimate, $at);
+    expect($first['status'])->toBe('reserved_offline')
+        ->and($first['execution_authorized'])->toBeFalse();
+
+    $again = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-second'), $estimate, $at);
+    expect($again['reason_code'])->toBe('rate_limit_reached')
+        ->and(DB::table('ai_autonomy_offline_reservations')->count())->toBe(1);
+
+    $replay = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-first'), $estimate, $at);
+    expect($replay['reason_code'])->toBe('run_already_recorded');
+
+    $next = $svc->reserve(
+        $scope, autonomyOfflineDbPreview($scope, 'rate-next-minute'), $estimate, $at->modify('+1 minute'),
+    );
+    expect($next['status'])->toBe('reserved_offline')
+        ->and(DB::table('ai_autonomy_offline_reservations')->count())->toBe(2);
+    $row = DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)->first();
+    expect((int) $row->window_used_attempts)->toBe(1)
+        ->and((int) $row->window_started_unix)->toBe($at->getTimestamp() + 60);
+
+    $regressed = $svc->reserve($scope, autonomyOfflineDbPreview($scope, 'rate-clock-back'), $estimate, $at);
+    expect($regressed['reason_code'])->toBe('attempts_limit_reached');
+});
+
+it('holds rate-policy revisions and clock regression without incrementing counters', function () {
+    $scope = autonomyOfflineDbScope();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    autonomyOfflineDbLimits($scope);
+    $svc = new DatabaseBoundedAutonomyOfflineReservation;
+    $preview = autonomyOfflineDbPreview($scope, 'rate-revision');
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)
+        ->update(['policy_version' => 'v2']);
+    $r = $svc->reserve($scope, $preview, autonomyOfflineDbEstimate(), autonomyOfflineDbTime());
+    expect($r['reason_code'])->toBe('rate_policy_changed');
+
+    DB::table('ai_autonomy_workspace_rate_windows')->where('workspace_id', $scope->workspaceId)
+        ->update([
+            'policy_version' => 'v1',
+            'window_started_unix' => autonomyOfflineDbTime()->getTimestamp() + 60,
+        ]);
+    $r = $svc->reserve($scope, $preview, autonomyOfflineDbEstimate(), autonomyOfflineDbTime());
+    expect($r['reason_code'])->toBe('rate_clock_regressed')
+        ->and(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0);
+});
+
+it('rejects a forged organization even when the caller regenerates a matching preview', function () {
+    $legitimate = autonomyOfflineDbScope();
+    DB::table('ai_autonomy_global_stops')->insert([
+        'id' => 'global', 'stopped' => false, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    autonomyOfflineDbLimits($legitimate);
+    $forged = new TenantContext((string) Str::uuid(), $legitimate->workspaceId, null, 'operator');
+    expect(fn () => (new DatabaseBoundedAutonomyOfflineReservation)->reserve(
+        $forged, autonomyOfflineDbPreview($forged, 'cross-org-rate'),
+        autonomyOfflineDbEstimate(), autonomyOfflineDbTime(),
+    ))->toThrow(InvalidArgumentException::class, 'Foreign organization workspace');
+    expect(DB::table('ai_autonomy_offline_reservations')->count())->toBe(0);
 });

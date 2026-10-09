@@ -38,7 +38,18 @@ final readonly class DatabaseBoundedAutonomyOfflineFinalReview
             || ! is_string($preview['policy_version'] ?? null)
             || preg_match('/^[a-zA-Z0-9_-]{1,64}$/D', $preview['policy_version']) !== 1
             || ! is_string($preview['snapshot_sha256'] ?? null)
-            || preg_match('/^[a-f0-9]{64}$/D', $preview['snapshot_sha256']) !== 1) {
+            || preg_match('/^[a-f0-9]{64}$/D', $preview['snapshot_sha256']) !== 1
+            || ! is_array($preview['actions'] ?? null)
+            || ! array_is_list($preview['actions'])
+            || $preview['actions'] === [] || count($preview['actions']) > 8
+            || ($preview['stages'] ?? null) !== [
+                'goal' => 'validated',
+                'plan' => 'validated',
+                'propose' => 'offline_preview',
+                'execute' => 'disabled',
+                'observe' => 'unavailable',
+                'evaluate' => 'not_run',
+            ]) {
             throw new InvalidArgumentException('Trusted offline tenant preview is required.');
         }
 
@@ -51,6 +62,16 @@ final readonly class DatabaseBoundedAutonomyOfflineFinalReview
         foreach ($keys as $key) {
             if (! is_int($estimate[$key]) || $estimate[$key] < 0 || $estimate[$key] > 1000000000) {
                 throw new InvalidArgumentException('Invalid final-review resource amount.');
+            }
+        }
+        if ($estimate['actions'] !== count($preview['actions'])) {
+            throw new InvalidArgumentException('Final-review estimate does not match trusted action count.');
+        }
+        foreach ($preview['actions'] as $action) {
+            if (! is_array($action)
+                || ! in_array($action['effect'] ?? null, ['read', 'proposal'], true)
+                || ! in_array($action['risk'] ?? null, ['R0', 'R1'], true)) {
+                throw new InvalidArgumentException('Final-review unregistered action effect or risk.');
             }
         }
         if ($estimate['actions'] < 1 || $estimate['actions'] > 8 || $estimate['attempts'] < 1) {

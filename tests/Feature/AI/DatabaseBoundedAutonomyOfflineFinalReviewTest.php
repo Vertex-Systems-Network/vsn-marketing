@@ -146,6 +146,12 @@ it('denies forged actors, changed reservation, invalid estimates and insufficien
         ->toThrow(InvalidArgumentException::class);
     expect(fn () => $gate->inspect($scope, $preview, $binding, array_replace($estimate, ['send' => 1]), $at))
         ->toThrow(InvalidArgumentException::class);
+    expect(fn () => $gate->inspect($scope, array_replace($preview, ['actions' => []]), $binding, $estimate, $at))
+        ->toThrow(InvalidArgumentException::class);
+    $escalated = $preview;
+    $escalated['actions'][0]['effect'] = 'send';
+    expect(fn () => $gate->inspect($scope, $escalated, $binding, $estimate, $at))
+        ->toThrow(InvalidArgumentException::class);
 
     $small = array_replace($binding, ['max_cost_minor' => 10]);
     expect($gate->inspect($scope, $preview, $small, $estimate, $at)['status'])

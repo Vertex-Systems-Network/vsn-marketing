@@ -137,9 +137,10 @@ it('latest decision cannot be bypassed by old approval, foreign organization or 
     $source = new DatabaseBoundedAutonomyApprovalSource(app(WorkspaceAuthorizer::class));
     $reviewer = new BoundedAutonomyOfflineApprovalReview($source);
 
-    // Newer negative decision overrides any previously accepted approval.
+    // Database append order must dominate a tied clock: a later revoked
+    // decision cannot be bypassed by an older approved decision.
     offlineApprovalDbInsert($f, $preview, [
-        'approved_at_unix' => offlineApprovalDbAt()->getTimestamp() - 1,
+        'approved_at_unix' => offlineApprovalDbAt()->getTimestamp() - 30,
         'outcome' => 'revoked',
     ]);
     $latest = $reviewer->inspect($scope, $preview, offlineApprovalDbBinding(), offlineApprovalDbAt());

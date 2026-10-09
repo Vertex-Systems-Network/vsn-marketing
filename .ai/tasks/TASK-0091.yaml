@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #544 exact-head append-only offline rollback incident replay/uncertainty tests and PostgreSQL, PHP 8.3, E2E, Security and AI Continuity; repair and merge verified head; continue TASK-0091 external evidence/consent/reconciliation gates."
+  "exact_next_action": "Certify PR #545 exact-head PostgreSQL two-worker rollback incident replay, Foundation, PHP 8.3, E2E, Security and Governance; repair any failure and merge; continue TASK-0091 independent provider outcome provenance and human promotion/rollback boundaries."
 }

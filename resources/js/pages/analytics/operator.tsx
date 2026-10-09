@@ -19,15 +19,17 @@ type Quality = { id: string; fingerprint: string; source_hash: string; event_typ
     max_receipt_lag_seconds: number; affected_metric_versions: { snapshot_id: string; definition_hash: string; version: number }[] };
 type Props = { state: string; reports: Report[]; quality_reports?: Quality[]; provider_engagement?: ProviderEngagement[]; quality_event_types?: string[]; schedules: Schedule[]; invalidated_reports: number;
     report_kinds: string[]; default_start: string; default_end: string; notice: string | null;
-    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean; offline_autonomy_preview?: OfflineAutonomyPreview | null;
-    actions: { generate: string; schedules: string; base: string } };
-const notices: Record<string, string> = { quality_created: 'Immutable source quality check created.', quality_denied: 'Quality check denied. Review scope, dates and observation bounds.', report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
+    insight: { status?: string; baseline_n?: number; z_score?: number; output?: { facts: { metric: string; value: number }[]; inferences: string[] } } | null; explanation_available: boolean; offline_autonomy_preview?: OfflineAutonomyPreview | null; autonomy_report_options?: { id: string; label: string }[];
+    actions: { generate: string; schedules: string; base: string; autonomy_preview?: string } };
+const notices: Record<string, string> = { autonomy_preview_created: 'Server-issued offline preview recorded. Sending and promotion remain disabled.', autonomy_preview_denied: 'Offline preview request denied. Check report access, permission and purpose.', quality_created: 'Immutable source quality check created.', quality_denied: 'Quality check denied. Review scope, dates and observation bounds.', report_created: 'Immutable report created.', report_denied: 'Report could not be generated. Check dates, purpose, permissions and observation bounds.',
     schedule_created: 'Daily UTC schedule created. Reports stay inside this workspace.', schedule_denied: 'Schedule could not be created.',
     schedule_disabled: 'Schedule disabled.', explanation_unavailable: 'No approved explanation route is configured.', insight_denied: 'Insight evidence could not be validated.' };
 const control = 'mt-2 w-full rounded-xl border border-white/20 bg-neutral-900 px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300';
 const button = 'rounded-xl bg-sky-300 px-4 py-2 font-semibold text-neutral-950 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300';
 export default function AnalyticsOperator(p: Props) {
     const [source, setSource] = useState('');
+    const [autonomyReport, setAutonomyReport] = useState(p.autonomy_report_options?.[0]?.id ?? '');
+    const [autonomyTarget, setAutonomyTarget] = useState('10');
     const [qualityType, setQualityType] = useState('product.viewed');
     const [kind, setKind] = useState('counts');
     const [start, setStart] = useState(p.default_start);
@@ -48,6 +50,27 @@ export default function AnalyticsOperator(p: Props) {
             <header><p className="text-sm font-semibold text-sky-300">VSN Marketing · Analytics</p>
                 <h1 className="mt-2 text-3xl font-semibold">Analytics reports</h1>
                 <p className="mt-3 max-w-3xl text-neutral-300">Review admitted events, funnels, retention and revenue in UTC. Reports disclose their definition and receipt cutoff. Source coverage remains unknown; attribution describes credit and does not prove causal lift.</p></header>
+            {p.actions.autonomy_preview && <section aria-labelledby="autonomy-preview-form" className="mt-6 rounded-2xl border border-white/15 p-5" aria-busy={busy}>
+                <h2 id="autonomy-preview-form" className="text-xl font-semibold">Create a read-only AI marketing preview</h2>
+                <p className="mt-2 text-sm text-neutral-300">Choose an already-authorized measured counts report. This only records a bounded, offline analytics-review proposal, not a campaign, message, AI provider call or verified uplift.</p>
+                <form className="mt-4 grid gap-4 sm:grid-cols-3" onSubmit={(e) => { e.preventDefault();
+                    if (p.actions.autonomy_preview) post(p.actions.autonomy_preview, { report_id: autonomyReport, target_count: autonomyTarget });
+                }}>
+                    <label>Measured counts report
+                        <select className={control} value={autonomyReport} required onChange={(e) => setAutonomyReport(e.target.value)}>
+                            {(p.autonomy_report_options ?? []).map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+                        </select>
+                    </label>
+                    <label>Review target count
+                        <input className={control} type="number" min={1} max={1000000} step={1} required value={autonomyTarget} onChange={(e) => setAutonomyTarget(e.target.value)} />
+                    </label>
+                    <div className="flex items-end"><button className={button} disabled={busy || unavailable || !autonomyReport
+                        || !Number.isInteger(Number(autonomyTarget)) || Number(autonomyTarget) < 1 || Number(autonomyTarget) > 1000000}>
+                        {busy ? 'Working…' : 'Create offline preview'}
+                    </button></div>
+                </form>
+                {(p.autonomy_report_options ?? []).length === 0 && <p className="mt-3 text-amber-200">No authorized measured counts report is available for preview.</p>}
+            </section>}
             {p.offline_autonomy_preview !== undefined && <div className="mt-6"><OfflineAutonomyPreviewPanel preview={p.offline_autonomy_preview} /></div>}
             {unavailable && <p role="alert" className="mt-6 rounded-xl border border-amber-300 p-4">Analytics purpose or retention approval is unavailable. Reports and schedules cannot be generated.</p>}
             <div role="status" aria-live="polite" className="mt-4 text-sky-200">{busy ? 'Working…' : p.notice ? notices[p.notice] ?? 'Request finished.' : ''}</div>

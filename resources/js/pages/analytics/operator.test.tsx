@@ -70,3 +70,19 @@ test('renders offline-only autonomy proposal without enabling outbound execution
     expect(screen.getByRole('button', { name: 'Execute actions (unavailable)' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Promote campaign (unavailable)' })).toBeDisabled();
 });
+
+test('issues only a bounded read-only preview using an authorized measured report', () => {
+    render(<Operator {...props} autonomy_report_options={[{ id: 'report-1', label: 'Measured counts report' }]}
+        actions={{ ...props.actions, autonomy_preview: '/offline-preview' }} />);
+    expect(screen.getByLabelText('Measured counts report')).toHaveValue('report-1');
+    expect(screen.getByLabelText('Review target count')).toHaveValue(10);
+    fireEvent.click(screen.getByRole('button', { name: 'Create offline preview' }));
+    expect(post).toHaveBeenCalledWith('/offline-preview',
+        { report_id: 'report-1', target_count: '10' }, expect.any(Object));
+});
+test('denies offline preview submission without an authorized report', () => {
+    render(<Operator {...props} autonomy_report_options={[]}
+        actions={{ ...props.actions, autonomy_preview: '/offline-preview' }} />);
+    expect(screen.getByRole('button', { name: 'Create offline preview' })).toBeDisabled();
+    expect(screen.getByText('No authorized measured counts report is available for preview.')).toBeInTheDocument();
+});

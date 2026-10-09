@@ -36,6 +36,10 @@ final class DatabaseBoundedAutonomyOfflineReservation
             if ((bool) $quota->workspace_stopped) {
                 return $this->held($preview, 'workspace_emergency_stop');
             }
+            if ((new DateTimeImmutable((string) $quota->policy_expires_at, new DateTimeZone('UTC')))
+                ->getTimestamp() <= $at->getTimestamp()) {
+                return $this->held($preview, 'policy_expired');
+            }
             if ((string) $quota->policy_version !== $preview['policy_version']) {
                 return $this->held($preview, 'policy_revision_mismatch');
             }
@@ -104,7 +108,10 @@ final class DatabaseBoundedAutonomyOfflineReservation
 
     public function recheckHeld(TenantContext $scope, array $preview, DateTimeImmutable $at): array
     {
-        if (($preview['tenant'] ?? null) !== $scope->toArray()
+        if (($preview['status'] ?? null) !== 'preview_ready'
+            || ($preview['tenant'] ?? null) !== $scope->toArray()
+            || ($preview['execution_authorized'] ?? null) !== false
+            || ($preview['stages']['execute'] ?? null) !== 'disabled'
             || ! is_string($preview['run_id'] ?? null)
             || ! is_string($preview['snapshot_sha256'] ?? null)) {
             throw new InvalidArgumentException('Invalid autonomy reservation recheck scope.');
@@ -124,9 +131,17 @@ final class DatabaseBoundedAutonomyOfflineReservation
             if ((bool) $quota->workspace_stopped) {
                 return $this->held($preview, 'workspace_emergency_stop');
             }
+            if ((new DateTimeImmutable((string) $quota->policy_expires_at, new DateTimeZone('UTC')))
+                ->getTimestamp() <= $at->getTimestamp()) {
+                return $this->held($preview, 'policy_expired');
+            }
+            if ((string) $quota->policy_version !== ($preview['policy_version'] ?? null)) {
+                return $this->held($preview, 'policy_revision_mismatch');
+            }
             $row = DB::table('ai_autonomy_offline_reservations')->where('workspace_id', $scope->workspaceId)
                 ->where('run_id', $preview['run_id'])->lockForUpdate()->first();
-            if ($row === null || $row->brand_id !== $scope->brandId
+            if ($row === null || (string) $row->period_utc !== $at->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d')
+                || $row->brand_id !== $scope->brandId
                 || $row->actor_id !== $scope->actorId
                 || $row->snapshot_sha256 !== $preview['snapshot_sha256']
                 || $row->policy_version !== $preview['policy_version']

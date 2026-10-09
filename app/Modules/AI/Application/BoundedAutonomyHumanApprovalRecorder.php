@@ -79,7 +79,7 @@ final readonly class BoundedAutonomyHumanApprovalRecorder
             throw new InvalidArgumentException('Current independent workspace approval authority missing.');
         }
 
-        return DB::transaction(function () use ($approverId, $requester, $preview, $binding, $outcome, $at): array {
+        return DB::transaction(function () use ($approver, $approverId, $approverScope, $requester, $preview, $binding, $outcome, $at): array {
             // A final offline review takes this same workspace lock before
             // reading the latest decision, so a new revocation cannot be
             // appended midway through that review's locked evidence snapshot.
@@ -87,8 +87,9 @@ final readonly class BoundedAutonomyHumanApprovalRecorder
                 ->where('id', $requester->workspaceId)
                 ->where('organization_id', $requester->organizationId)
                 ->lockForUpdate()->first();
-            if ($workspace === null) {
-                throw new InvalidArgumentException('Workspace authority changed before approval recording.');
+            if ($workspace === null
+                || ! $this->authorizer->allows($approver, $approverScope, PermissionCatalog::AI_APPROVE)) {
+                throw new InvalidArgumentException('Current workspace approval authority changed before recording.');
             }
 
             // No approval may invent a predecessor to revoke. A current

@@ -145,6 +145,22 @@ final readonly class BoundedAutonomyHumanCanaryDecisionRecorder
                 ];
             }
 
+            // A historical positive record must carry an exact integrity
+            // binding to the original authenticated server-side writer.
+            // This checksum is not itself identity proof: the current human
+            // session and independently authorized roles were checked above.
+            if ($outcome === 'approved' && $last !== null && $last->outcome === 'approved') {
+                $proof = hash('sha256', implode(':', [
+                    $last->deciding_actor_id, $requester->workspaceId, $experiment->id,
+                    $last->decision_id, (string) $last->observed_at_unix,
+                ]));
+                if ((int) $last->human_session_verified !== 1
+                    || ! is_string($last->session_proof_sha256)
+                    || ! hash_equals($proof, $last->session_proof_sha256)) {
+                    throw new InvalidArgumentException('Historical human approval session evidence changed.');
+                }
+            }
+
             // Repeated independent approval of the same frozen evidence
             // is an idempotent readback, not a second positive decision.
             // This is evaluated AFTER current session/RBAC, stop, quota and

@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T10:25:57.610+00:00`
-- Observed main: `e29e48dedc40a5b12108032632db9c1249c9302d`
+- Timestamp: `2026-10-09T10:36:36.610+00:00`
+- Observed main: `7ceab9e78d64f61d23571ca82df752fa992e91d0`
 - Active issue: `none`
-- Active PR: `535`
-- Active branch: `supervisor/task0090-stop-reconciliation-20261009`
+- Active PR: `536`
+- Active branch: `supervisor/task0090-human-approval-recording-20261009`
 - Current milestone: `TASK-0090-PHASE15-SAFETY-GATES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0090`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `e85256e59e6c9fe3912104d3ce105faa71e436d37f4b3be7e007b0487e39c33d`
+- State fingerprint: `1b28ab5e0f9891e72148ee040c6d400746a880d0d2a031a4e6a78fddc94c9140`
 
 ## Completed / observed this session
 
-PR #534 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance passed and merged as e29e48dedc40a5b12108032632db9c1249c9302d. PR #535 adds idempotent global/workspace emergency-stop reconciliation for offline resource reservations, preserves counters, and refuses to infer cancellation or refunds from unknown external outcomes. TASK-0090 remains IN_PROGRESS; no live external effects.
+PR #535 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance passed, merged as 7ceab9e78d64f61d23571ca82df752fa992e91d0. PR #536 adds human-session-only AI_APPROVE permission-checked offline decision writer and read-back/revocation negative feature tests. All external send, billing and promotion remain disabled.
 
 ## Tests
 
-PR #534 required exact-head suite PASS. PR #535 code and negative fixtures staged; exact-head CI not yet certified.
+PR #535 full exact-head required CI passed. PR #536 implementation and adversarial feature fixtures staged; exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #534 required exact-head suite PASS. PR #535 code and negative fixtures stage
 
 ## Exact next action
 
-Certify exact-head PR #535 conservative offline stop and unknown-outcome reconciliation with Laravel tests, Foundation, PostgreSQL, PHP floor, browser E2E, Security and governance; then continue TASK-0090 final admission/irreversible-outcome gates.
+Certify PR #536 human-session-only append-only approval recorder and independent read-back with full exact-head Foundation, PostgreSQL, PHP 8.3, browser E2E, Security and AI governance; repair and merge, then continue TASK-0090 last-boundary and rate policy.

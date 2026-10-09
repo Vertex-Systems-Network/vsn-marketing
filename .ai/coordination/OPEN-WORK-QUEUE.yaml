@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e29e48dedc40a5b12108032632db9c1249c9302d",
+  "reconciled_main_sha": "7ceab9e78d64f61d23571ca82df752fa992e91d0",
   "active_work_path": {
     "kind": "pr",
-    "number": 535,
-    "title": "feat(phase15): reconcile offline emergency stops without inferring external outcomes",
-    "branch": "supervisor/task0090-stop-reconciliation-20261009",
+    "number": 536,
+    "title": "feat(phase15): record independently authenticated offline human approvals",
+    "branch": "supervisor/task0090-human-approval-recording-20261009",
     "disposition": "active_task0090_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 536,
+      "title": "feat(phase15): record independently authenticated offline human approvals",
+      "branch": "supervisor/task0090-human-approval-recording-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 535,
       "title": "feat(phase15): reconcile offline emergency stops without inferring external outcomes",
       "branch": "supervisor/task0090-stop-reconciliation-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "7ceab9e78d64f61d23571ca82df752fa992e91d0"
     },
     {
       "kind": "pr",

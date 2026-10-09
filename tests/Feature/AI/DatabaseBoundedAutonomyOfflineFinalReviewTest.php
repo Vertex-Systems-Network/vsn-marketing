@@ -81,19 +81,14 @@ function offlineFinalReviewFixture(): array
         ['actions' => 1, 'tokens' => 20, 'volume' => 3, 'cost_minor' => 12, 'attempts' => 1]];
 }
 
-final class OfflineFinalApprovalSourceFixture implements BoundedAutonomyApprovalSource
-{
-    public function __construct(private readonly object $decision) {}
-
-    public function latest(TenantContext $scope, string $runId, DateTimeImmutable $at): ?array
-    {
-        return $this->decision->value;
-    }
-}
-
 function offlineFinalSource(object $state): DatabaseBoundedAutonomyOfflineFinalReview
 {
-    return new DatabaseBoundedAutonomyOfflineFinalReview(new OfflineFinalApprovalSourceFixture($state));
+    $source = Mockery::mock(BoundedAutonomyApprovalSource::class);
+    $source->shouldReceive('latest')->andReturnUsing(
+        static fn (TenantContext $scope, string $runId, DateTimeImmutable $at): ?array => $state->value,
+    );
+
+    return new DatabaseBoundedAutonomyOfflineFinalReview($source);
 }
 
 it('rechecks reservation and independently sourced approval but never authorizes side effects', function () {

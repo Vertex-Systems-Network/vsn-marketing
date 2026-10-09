@@ -77,6 +77,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
                 || ! self::digest($attempt['receipt_sha256'])
                 || ! is_int($attempt['attempted_at_unix'])
                 || $attempt['attempted_at_unix'] > $envelope['captured_at_unix']
+                || $attempt['attempted_at_unix'] < $envelope['captured_at_unix'] - 3600
                 || $attempt['attempted_at_unix'] > $at->getTimestamp()
                 || ! in_array($attempt['outcome'], ['unknown', 'confirmed_applied', 'confirmed_not_applied'], true)
                 || ! is_bool($attempt['verified_independently'])

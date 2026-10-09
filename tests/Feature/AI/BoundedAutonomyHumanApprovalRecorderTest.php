@@ -2,7 +2,10 @@
 
 use App\Modules\AI\Application\BoundedAutonomyHumanApprovalRecorder;
 use App\Modules\AI\Application\BoundedAutonomyPreview;
+use App\Modules\AI\Application\BoundedAutonomyOfflineApprovalReview;
+use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyApprovalSource;
 use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
+use App\Modules\Identity\Application\Authorization\WorkspaceAuthorizer;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -105,4 +108,25 @@ it('rejects revocation without evidence or unknown verdicts', function () {
         ->toThrow(InvalidArgumentException::class);
     expect(fn () => $s->record($approver, $scope, $preview, $binding, 'send_now', $at))
         ->toThrow(InvalidArgumentException::class);
+});
+
+it('the independent reader revalidates latest human approval and revocation after recording', function () {
+    [$requester, $approver, $scope, $preview, $binding, $at, $role] = humanApprovalFixture();
+    $this->actingAs($approver);
+    $writer = app(BoundedAutonomyHumanApprovalRecorder::class);
+    $reader = new BoundedAutonomyOfflineApprovalReview(
+        new DatabaseBoundedAutonomyApprovalSource(app(WorkspaceAuthorizer::class)),
+    );
+    $writer->record($approver, $scope, $preview, $binding, 'approved', $at);
+    $matched = $reader->inspect($scope, $preview, $binding, $at);
+    expect($matched['status'])->toBe('approval_matched_offline')
+        ->and($matched['execution_authorized'])->toBeFalse();
+
+    $writer->record($approver, $scope, $preview, $binding, 'revoked', $at);
+    expect($reader->inspect($scope, $preview, $binding, $at)['reason_code'])->toBe('approval_revoked');
+
+    DB::table('workspace_role_permissions')->where('workspace_role_id', $role)
+        ->where('permission', PermissionCatalog::AI_APPROVE)->delete();
+    expect($reader->inspect($scope, $preview, $binding, $at)['reason_code'])
+        ->toBe('independent_approval_unavailable');
 });

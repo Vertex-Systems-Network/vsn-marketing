@@ -51,34 +51,16 @@ final class BoundedAutonomyOfflineReceiptTest extends TestCase
 
             public function fail(string $workspaceId, string $scope, string $key, string $error): void {}
         };
-        $events = new class implements AuditEventRepository
-        {
-            public array $stored = [];
-
-            public function store(AuditEvent $event): void
-            {
-                $this->stored[] = $event;
-            }
-        };
-        $audit = new AuditRecorder(
-            new class implements Clock
-            {
-                public function now(): DateTimeImmutable
-                {
-                    return new DateTimeImmutable('2026-10-09T00:00:00+00:00');
-                }
-            },
-            new class implements IdentifierGenerator
-            {
-                private int $sequence = 0;
-
-                public function next(): string
-                {
-                    return 'event-'.++$this->sequence;
-                }
-            },
-            $events,
-        );
+        $events = (object) ['stored' => []];
+        $auditRepository = $this->createMock(AuditEventRepository::class);
+        $auditRepository->method('store')->willReturnCallback(static function (AuditEvent $event) use ($events): void {
+            $events->stored[] = $event;
+        });
+        $clock = $this->createMock(Clock::class);
+        $clock->method('now')->willReturn(new DateTimeImmutable('2026-10-09T00:00:00+00:00'));
+        $identifiers = $this->createMock(IdentifierGenerator::class);
+        $identifiers->method('next')->willReturn('event-1');
+        $audit = new AuditRecorder($clock, $identifiers, $auditRepository);
         $previews = new BoundedAutonomyPreview(
             ['analytics_read' => ['effect' => 'read', 'risk' => 'R0']],
             ['trusted-source'],

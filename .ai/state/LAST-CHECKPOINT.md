@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-09T13:19:04.052+00:00`
-- Observed main: `8eb88424da56916e53bb266b05d092ef034a7d12`
+- Timestamp: `2026-10-09T14:02:05.727+00:00`
+- Observed main: `a9601b79a59cec7ef51a43a5a775852f72c7b8b4`
 - Active issue: `none`
-- Active PR: `543`
-- Active branch: `supervisor/task0091-linked-outcome-review-certified-20261009`
+- Active PR: `544`
+- Active branch: `supervisor/task0091-append-only-rollback-20261009`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `731b911f012f82e195d7a354063bd23499dc1439ba6335f5b6a01cf09211964c`
+- State fingerprint: `4b8e7da63d9235a44a3b0161fc595248fe5bfd1e52eb99b75d973c241e3937e5`
 
 ## Completed / observed this session
 
-PR #542 exact head passed Foundation, PHP 8.3, PostgreSQL integration, E2E, Security and Governance; merged as 8eb88424da56916e53bb266b05d092ef034a7d12. TASK-0091 PR #543 stages strict canonical cohort receipt, independent outcome join provenance and source-manifest match with adversarial permission/scope/replay tests. Zero external execution or promotion.
+PR #543 exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance PASS and merged a9601b79a59cec7ef51a43a5a775852f72c7b8b4. TASK-0091 PR #544 stages immutable offline rollback review event ledger with per-run replay detection, serialized evidence and prior-uncertain provider outcome denial. No refund, provider send or promotion authority.
 
 ## Tests
 
-PR #542 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance PASS before merge. PR #543 feature/adversarial tests staged, exact-head CI pending.
+PR #543 full required exact-head checks passed. PR #544 code and targeted adversarial tests staged; exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #542 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Gover
 
 ## Exact next action
 
-Certify PR #543 exact-head current permission and active immutable frozen cohort receipt to independent outcome join binding with negative fixtures; repair CI; merge verified head; continue TASK-0091 operator-only promotion/rollback evidence with no external effects.
+Certify PR #544 exact-head append-only offline rollback incident replay/uncertainty tests and PostgreSQL, PHP 8.3, E2E, Security and AI Continuity; repair and merge verified head; continue TASK-0091 external evidence/consent/reconciliation gates.

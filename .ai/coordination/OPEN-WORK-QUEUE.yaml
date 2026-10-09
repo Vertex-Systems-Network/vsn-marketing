@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "41662f896c33d393ddbce206b0224a452e28a2a5",
+  "reconciled_main_sha": "0877950447d262720922c31c5c205df10e82bfab",
   "active_work_path": {
     "kind": "pr",
-    "number": 548,
-    "title": "feat(phase15): authenticate and record offline human canary decisions",
-    "branch": "supervisor/task0091-human-session-decision-writer-20261009",
+    "number": 549,
+    "title": "feat(phase15): prevent duplicate offline human canary approval replays",
+    "branch": "supervisor/task0091-human-approval-replay-20261009",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 549,
+      "title": "feat(phase15): prevent duplicate offline human canary approval replays",
+      "branch": "supervisor/task0091-human-approval-replay-20261009",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 548,
       "title": "feat(phase15): authenticate and record offline human canary decisions",
       "branch": "supervisor/task0091-human-session-decision-writer-20261009",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "0877950447d262720922c31c5c205df10e82bfab"
     },
     {
       "kind": "pr",

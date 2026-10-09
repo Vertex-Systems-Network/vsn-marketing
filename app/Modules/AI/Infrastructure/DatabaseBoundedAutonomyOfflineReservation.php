@@ -54,7 +54,7 @@ final class DatabaseBoundedAutonomyOfflineReservation
                 'policy_version' => $quota->policy_version,
                 'observed_at_unix' => $at->getTimestamp(),
                 'expires_at_unix' => min($expiry, $at->getTimestamp() + 3600),
-                'global_stopped' => (int) $global->stopped !== 0,
+                'global_stopped' => false, // The preceding locked gate already denied any stopped value.
                 'workspace_stopped' => (int) $quota->workspace_stopped !== 0,
                 'max_actions' => (int) $quota->max_actions,
                 'max_tokens' => (int) $quota->max_tokens,
@@ -75,7 +75,7 @@ final class DatabaseBoundedAutonomyOfflineReservation
             {
                 public function __construct(private readonly array $snapshot) {}
 
-                public function current(TenantContext $scope, DateTimeImmutable $at): ?array
+                public function current(TenantContext $scope, DateTimeImmutable $at): array
                 {
                     return $this->snapshot;
                 }

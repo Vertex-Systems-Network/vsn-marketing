@@ -59,6 +59,8 @@ final readonly class BoundedAutonomyOfflineReceipt
             throw new InvalidArgumentException('Conflicting autonomy replay or altered offline receipt rejected.');
         }
 
+        (new BoundedAutonomyOfflineLifecycle)->assertTransition($scope, $preview, $receipt);
+
         return $receipt;
     }
 }

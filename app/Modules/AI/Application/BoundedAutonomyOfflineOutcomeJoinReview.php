@@ -117,6 +117,9 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
             $score = (new BoundedAutonomyOfflineCanaryScore($this->outcomes))->inspect(
                 $actor, $experiment, $analysis, $at,
             );
+            if ($score['source_manifest_sha256'] === null) {
+                return $this->hold($experiment, $score['reason_code']);
+            }
             if ($score['source_manifest_sha256'] !== $join['outcome_manifest_sha256']) {
                 return $this->hold($experiment, 'outcome_source_manifest_drift');
             }

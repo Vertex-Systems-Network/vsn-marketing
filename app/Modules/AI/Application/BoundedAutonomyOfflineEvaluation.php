@@ -44,13 +44,18 @@ final readonly class BoundedAutonomyOfflineEvaluation
 
         $fact = $this->source->verifiedCount($scope, $sourceId, $goal['metric_id'], $at);
         if ($fact === null) {
-            return [
+            $held = [
                 'status' => 'awaiting_verified_observation',
+                'run_id' => $runId,
+                'tenant' => $scope->toArray(),
                 'snapshot_sha256' => $proposal['snapshot_sha256'],
                 'reason_code' => 'no_independently_verified_evidence',
                 'execution_authorized' => false,
                 'promotion_authorized' => false,
             ];
+            (new BoundedAutonomyOfflineLifecycle)->assertTransition($scope, $proposal, $held);
+
+            return $held;
         }
         if (array_diff(array_keys($fact), [
             'workspace_id', 'brand_id', 'source_id', 'metric_id', 'count', 'observed_at_unix', 'evidence_sha256',
@@ -107,6 +112,8 @@ final readonly class BoundedAutonomyOfflineEvaluation
             || ($outcome['promotion_authorized'] ?? null) !== false) {
             throw new InvalidArgumentException('Conflicting or tampered autonomy observation replay rejected.');
         }
+
+        (new BoundedAutonomyOfflineLifecycle)->assertTransition($scope, $proposal, $outcome);
 
         return $outcome;
     }

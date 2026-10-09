@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b8a8993abcb077fc838a4a875c9c2ddd7dec42b5",
+  "reconciled_main_sha": "c01c7554afde3db0dffc6572626e12ddb41146ec",
   "active_work_path": {
     "kind": "pr",
-    "number": 528,
-    "title": "feat(phase15): authorize server-issued offline marketing preview from analytics evidence",
-    "branch": "supervisor/task0089-authorized-preview-20261009",
+    "number": 529,
+    "title": "feat(phase15): guard offline autonomy lifecycle and persist operator receipts",
+    "branch": "supervisor/task0089-typed-offline-lifecycle-20261009",
     "disposition": "active_task0089_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 529,
+      "title": "feat(phase15): guard offline autonomy lifecycle and persist operator receipts",
+      "branch": "supervisor/task0089-typed-offline-lifecycle-20261009",
+      "disposition": "active_task0089_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 528,
       "title": "feat(phase15): authorize server-issued offline marketing preview from analytics evidence",
       "branch": "supervisor/task0089-authorized-preview-20261009",
-      "disposition": "active_task0089_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c01c7554afde3db0dffc6572626e12ddb41146ec"
     },
     {
       "kind": "pr",

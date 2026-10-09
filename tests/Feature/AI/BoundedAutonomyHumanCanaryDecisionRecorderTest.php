@@ -254,6 +254,16 @@ it('records independently joined human review only, never promoting or triggerin
         ->and($replayed['execution_authorized'])->toBeFalse()
         ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
 
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')
+        ->update(['stopped' => true]);
+    $halted = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
+        'approved', $at);
+    expect($halted['status'])->toBe('held_offline')
+        ->and($halted['reason_code'])->toBe('global_emergency_stop')
+        ->and(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(1);
+    DB::table('ai_autonomy_global_stops')->where('id', 'global')
+        ->update(['stopped' => false]);
+
     $source = new DatabaseBoundedAutonomyCanaryHumanDecisionSource(app(WorkspaceAuthorizer::class));
     $fact = $source->latest($f['scope'], $f['plan']->id, $at);
     expect($fact['outcome'])->toBe('approved')

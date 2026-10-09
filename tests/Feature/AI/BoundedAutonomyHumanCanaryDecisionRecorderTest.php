@@ -334,4 +334,15 @@ it('denies self approval and unknown decisions without touching offline evidence
     expect(fn () => $writer->record($f['approver'], $f['scope'], $f['plan'],
         $f['analysis'], 'automatic_publish', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
     expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
+
+    $foreign = new TenantContext((string) Str::uuid(), $f['scope']->workspaceId,
+        null, $f['scope']->actorId);
+    expect(fn () => $writer->record($f['approver'], $foreign, $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+
+    DB::table('workspace_role_permissions')->where('workspace_role_id', $f['role'])
+        ->where('permission', PermissionCatalog::CAMPAIGN_APPROVE)->delete();
+    expect(fn () => $writer->record($f['approver'], $f['scope'], $f['plan'],
+        $f['analysis'], 'approved', humanCanaryAt()))->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_canary_human_decisions')->count())->toBe(0);
 });

@@ -48,7 +48,12 @@ final readonly class DatabaseBoundedAutonomyCanaryHumanDecisionSource implements
         if ($row === null || (int) $row->human_session_verified !== 1
             || ! is_string($row->session_proof_sha256)
             || preg_match('/^[a-f0-9]{64}$/D', $row->session_proof_sha256) !== 1
-            || $row->plan_sha256 !== $experiment->plan_hash) {
+            || $row->plan_sha256 !== $experiment->plan_hash
+            || $row->policy_version !== 'v1'
+            || (int) $row->observed_at_unix > $at->getTimestamp()
+            || (int) $row->observed_at_unix < $at->getTimestamp() - 300
+            || (int) $row->expires_at_unix <= $at->getTimestamp()
+            || (int) $row->expires_at_unix > $at->getTimestamp() + 3600) {
             return null;
         }
 

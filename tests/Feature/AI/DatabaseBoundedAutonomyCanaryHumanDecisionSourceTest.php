@@ -120,6 +120,15 @@ it('rejects foreign organization, forged session evidence and invalid canonical 
     $foreign = new TenantContext((string) Str::uuid(), $f['scope']->workspaceId, null, $f['scope']->actorId);
     expect($source->latest($foreign, $f['plan']->id, $at))->toBeNull();
 
+    DB::table('ai_autonomy_canary_human_decisions')->where('experiment_id', $f['plan']->id)
+        ->update(['observed_at_unix' => $at->getTimestamp() + 1]);
+    expect($source->latest($f['scope'], $f['plan']->id, $at))->toBeNull();
+    DB::table('ai_autonomy_canary_human_decisions')->where('experiment_id', $f['plan']->id)
+        ->update(['observed_at_unix' => $at->getTimestamp(), 'expires_at_unix' => $at->getTimestamp()]);
+    expect($source->latest($f['scope'], $f['plan']->id, $at))->toBeNull();
+    DB::table('ai_autonomy_canary_human_decisions')->where('experiment_id', $f['plan']->id)
+        ->update(['expires_at_unix' => $at->getTimestamp() + 300]);
+
     DB::table('experiments')->where('id', $f['plan']->id)->update(['status' => 'draft']);
     expect($source->latest($f['scope'], $f['plan']->id, $at))->toBeNull();
 });

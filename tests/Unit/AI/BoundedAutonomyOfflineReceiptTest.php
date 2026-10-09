@@ -22,35 +22,23 @@ final class BoundedAutonomyOfflineReceiptTest extends TestCase
 {
     private function fixture(): array
     {
-        $repository = new class implements IdempotencyRepository
-        {
-            public array $receipts = [];
-
-            public bool $concurrent = false;
-
-            public int $acquisitions = 0;
-
-            public function claim(string $workspaceId, string $scope, string $key): IdempotencyClaim
-            {
-                $identity = $workspaceId.':'.$scope.':'.$key;
-                if ($this->concurrent) {
-                    return new IdempotencyClaim(IdempotencyClaim::IN_PROGRESS);
-                }
-                if (isset($this->receipts[$identity])) {
-                    return new IdempotencyClaim(IdempotencyClaim::COMPLETED, $this->receipts[$identity]);
-                }
-                $this->acquisitions++;
-
-                return new IdempotencyClaim(IdempotencyClaim::ACQUIRED);
+        $state = (object) ['receipts' => [], 'concurrent' => false, 'acquisitions' => 0];
+        $repository = $this->createMock(IdempotencyRepository::class);
+        $repository->method('claim')->willReturnCallback(static function (string $workspaceId, string $scope, string $key) use ($state): IdempotencyClaim {
+            $identity = $workspaceId.':'.$scope.':'.$key;
+            if ($state->concurrent) {
+                return new IdempotencyClaim(IdempotencyClaim::IN_PROGRESS);
             }
-
-            public function complete(string $workspaceId, string $scope, string $key, array $result): void
-            {
-                $this->receipts[$workspaceId.':'.$scope.':'.$key] = $result;
+            if (isset($state->receipts[$identity])) {
+                return new IdempotencyClaim(IdempotencyClaim::COMPLETED, $state->receipts[$identity]);
             }
+            $state->acquisitions++;
 
-            public function fail(string $workspaceId, string $scope, string $key, string $error): void {}
-        };
+            return new IdempotencyClaim(IdempotencyClaim::ACQUIRED);
+        });
+        $repository->method('complete')->willReturnCallback(static function (string $workspaceId, string $scope, string $key, array $result) use ($state): void {
+            $state->receipts[$workspaceId.':'.$scope.':'.$key] = $result;
+        });
         $events = (object) ['stored' => []];
         $auditRepository = $this->createMock(AuditEventRepository::class);
         $auditRepository->method('store')->willReturnCallback(static function (AuditEvent $event) use ($events): void {
@@ -67,7 +55,7 @@ final class BoundedAutonomyOfflineReceiptTest extends TestCase
             ['conversion_count'],
         );
 
-        return [new BoundedAutonomyOfflineReceipt($previews, new IdempotentExecutor($repository, $audit)), $repository, $events];
+        return [new BoundedAutonomyOfflineReceipt($previews, new IdempotentExecutor($repository, $audit)), $state, $events];
     }
 
     private function scope(string $workspace = 'workspace', string $actor = 'operator'): TenantContext

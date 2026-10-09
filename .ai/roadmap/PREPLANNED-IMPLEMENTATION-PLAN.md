@@ -193,6 +193,15 @@ Purpose: make the platform deployable for enterprise, agencies, regulated custom
 - **TASK-0099 — Implement backup/restore, RPO/RTO, disaster recovery, business continuity, release rollback, and recovery exercises.** Restore-tested evidence mandatory.
 - **TASK-0100 — Certify enterprise production readiness.** Security/privacy/supply-chain/accessibility/performance/reliability/DR/AI-governance/tenant-isolation and exact-head acceptance matrix.
 
+# Planned email engagement observability extension — EM-01..EM-06 (unweighted, not active)
+
+In response to the explicit VSN Marketing email-tracking product requirement, reserve a **research-first follow-on product track** covering real-time observed opens/receipts, device/browser, approximate geography, open count/timeline, self-open/bot filtering and safe link-click tracking. Detailed work packages are `TASK-0101`–`TASK-0108` (candidate IDs only) in [EMAIL-ENGAGEMENT-TRACKING-EXTENSION.md](EMAIL-ENGAGEMENT-TRACKING-EXTENSION.md).
+
+- **Existing foundations:** reuse PHASE-03 provider/webhooks, PHASE-04 delivery, PHASE-05 consent/suppression, PHASE-07 campaigns, PHASE-09 journeys, PHASE-12 analytics, PHASE-13 engagement and PHASE-14 provider capabilities; do not reopen historical certifications or add parallel canonical event stores.
+- **PHASE-15 interaction:** bounded AI marketing loops cannot assume observed email opens prove real reading, or use unsupported/proxy-contaminated signals for autonomous follow-ups. The new track must certify reliable, consent-eligible observations before live AI optimization consumes them.
+- **Sequencing:** the baseline PHASE-00..16 task ordering is unchanged. Before activating post-baseline TASK-0101+, perform official research, dependency and approval checks, machine-task materialization and explicit phase/weight rebaseline/ADR where applicable. No numeric progress change or activation is implied by this preplan amendment.
+- **Readiness:** all six features are **planned**, not asserted operational or production-authorized. The track must honor provider-specific support, email privacy protections, data minimization, transparent uncertainty, retention/erasure, secure click redirection, tenant boundaries and adversarial certification.
+
 ---
 
 # Explicit audit-to-plan mapping
@@ -221,6 +230,7 @@ By the end of the preplanned roadmap, VSN Marketing is intended to provide a coh
 - Customer 360/CDP-style identity, consent, events and lifecycle data;
 - lists, tags and dynamic segments;
 - email marketing and transactional messaging;
+- planned consent-safe email engagement observability (open indications/alerts, device/browser, coarse geography, timeline/count, self-open classification, link clicks); see the unweighted post-baseline tracking extension and its reliability boundaries;
 - SMS, WhatsApp, RCS, push and in-app channels where provider research supports them;
 - social publishing across prioritized supported networks;
 - unified editorial/campaign calendar;

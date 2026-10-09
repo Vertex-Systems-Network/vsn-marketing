@@ -32,7 +32,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (DB::table('ai_autonomy_offline_canary_reviews')->exists()) {
+        if (Schema::hasTable('ai_autonomy_offline_canary_reviews')
+            && DB::table('ai_autonomy_offline_canary_reviews')->exists()) {
             throw new RuntimeException('Refusing to delete offline canary evidence without approved restore/export.');
         }
 

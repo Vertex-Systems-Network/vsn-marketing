@@ -131,3 +131,42 @@ it('does not record foreign organization or revoked independent plan authority',
     expect($held['status'])->toBe('held_offline')
         ->and(DB::table('ai_autonomy_offline_canary_reviews')->count())->toBe(0);
 });
+
+it('holds changed denominators and revoked approval after a receipt without changing its immutable evidence', function () {
+    [$actor, $plan] = canaryReceiptFixture();
+    $at = new DateTimeImmutable('2026-10-09T09:00:00+00:00');
+    $facts = (object) ['value' => canaryReceiptFacts($actor, $plan, $at)];
+    $service = canaryReceiptService($facts);
+    $first = $service->record($actor, $plan, $at);
+    expect($first['offline_receipt_recorded'])->toBeTrue();
+    $original = (array) DB::table('ai_autonomy_offline_canary_reviews')
+        ->where('experiment_id', $plan->id)->first();
+
+    $facts->value['counts']['control']['assigned'] = 449;
+    expect(fn () => $service->record($actor, $plan, $at))
+        ->toThrow(InvalidArgumentException::class);
+    expect((array) DB::table('ai_autonomy_offline_canary_reviews')
+        ->where('experiment_id', $plan->id)->first())->toBe($original);
+
+    $facts->value = canaryReceiptFacts($actor, $plan, $at);
+    DB::table('experiments')->where('id', $plan->id)
+        ->update(['approved_by_actor_id' => 'creator']);
+    $held = $service->record($actor, $plan, $at);
+    expect($held['status'])->toBe('held_offline')
+        ->and($held['offline_receipt_recorded'])->toBeFalse()
+        ->and((array) DB::table('ai_autonomy_offline_canary_reviews')
+            ->where('experiment_id', $plan->id)->first())->toBe($original);
+});
+
+it('refuses existing-receipt readback when current operator permission was revoked', function () {
+    [$actor, $plan] = canaryReceiptFixture();
+    $at = new DateTimeImmutable('2026-10-09T09:00:00+00:00');
+    $facts = (object) ['value' => canaryReceiptFacts($actor, $plan, $at)];
+    $saved = canaryReceiptService($facts)->record($actor, $plan, $at);
+    expect($saved['offline_receipt_recorded'])->toBeTrue();
+
+    expect(fn () => canaryReceiptService($facts, false)->record($actor, $plan, $at))
+        ->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_offline_canary_reviews')
+        ->where('experiment_id', $plan->id)->count())->toBe(1);
+});

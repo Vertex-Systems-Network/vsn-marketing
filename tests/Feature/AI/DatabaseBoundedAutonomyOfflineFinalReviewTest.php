@@ -145,6 +145,21 @@ it('refuses global/workspace stops, unknown outcomes, expired policy and exhaust
         ->toBe('reservation_not_active');
 });
 
+it('holds when concurrent offline reservations have pushed trusted quota counters over their ceiling', function () {
+    [$scope, $preview, $binding, $at, $decision, $estimate] = offlineFinalReviewFixture();
+    $gate = offlineFinalSource((object) ['value' => $decision]);
+
+    DB::table('ai_autonomy_workspace_quotas')->where('workspace_id', $scope->workspaceId)
+        ->update(['reserved_cost_minor' => 31]);
+    expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('current_budget_exceeded');
+
+    DB::table('ai_autonomy_workspace_quotas')->where('workspace_id', $scope->workspaceId)
+        ->update(['reserved_cost_minor' => 12, 'used_tokens' => 101]);
+    expect($gate->inspect($scope, $preview, $binding, $estimate, $at)['reason_code'])
+        ->toBe('current_budget_exceeded');
+});
+
 it('denies forged actors, changed reservation, invalid estimates and insufficient approval budgets', function () {
     [$scope, $preview, $binding, $at, $decision, $estimate] = offlineFinalReviewFixture();
     $gate = offlineFinalSource((object) ['value' => $decision]);

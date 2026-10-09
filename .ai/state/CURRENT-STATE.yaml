@@ -6,32 +6,32 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-15",
-    "active_task": "TASK-0090",
-    "last_completed_task": "TASK-0089",
-    "next_task": "TASK-0091"
+    "active_task": "TASK-0091",
+    "last_completed_task": "TASK-0090",
+    "next_task": "TASK-0092"
   },
   "progress": {
-    "roadmap_percent": 93.6,
-    "phase_percent": 40.0,
+    "roadmap_percent": 94.4,
+    "phase_percent": 60.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
-    "continuity_validation": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed AI Continuity and Governance; merged accbbe606dba2147c56c568d7571e21d6cf55f88.",
-    "application_test_status": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed Foundation, PHP 8.3, PostgreSQL integration and E2E.",
-    "security_supply_chain_status": "PR #538 exact head 74cd8072cb0020de401713a472d3cf755536dc12 passed Security Supply Chain.",
-    "release_integrity_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe release-integrity check passed.",
-    "scorecard_status": "Resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe scorecard check passed."
+    "continuity_validation": "PR #539 exact head 57a13bc0d03764516424f3d3ffabd7242aac5581 and protected main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 passed AI Continuity and Governance.",
+    "application_test_status": "PR #539 exact head passed Foundation, PHP 8.3, PostgreSQL integration, browser E2E; resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 Foundation passed.",
+    "security_supply_chain_status": "PR #539 exact-head and protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 Security Supply Chain passed.",
+    "release_integrity_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 release-integrity passed.",
+    "scorecard_status": "Protected resulting main c8f3ea3dd849565b228fc92b5a1aeaa203a64062 scorecard passed."
   },
-  "observed_main_sha": "accbbe606dba2147c56c568d7571e21d6cf55f88",
+  "observed_main_sha": "c8f3ea3dd849565b228fc92b5a1aeaa203a64062",
   "active_issue": null,
-  "active_pr": 539,
-  "active_branch": "supervisor/task0090-final-rate-approval-stop-20261009",
-  "current_milestone": "TASK-0090-PHASE15-SAFETY-GATES",
-  "milestone_status": "IN_PROGRESS",
-  "last_completed_milestone": "TASK-0089 offline bounded goal-plan-propose-observe-evaluate acceptance via PRs #525/#526/#528/#529 exact-head and resulting main 7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe full controls.",
-  "exact_next_safe_action": "Certify PR #539 exact-head offline final rate and human approval/stop serialisation, cross-org reconciliation and PostgreSQL global-stop versus reservation race; repair failures, merge and evaluate TASK-0090 acceptance evidence.",
+  "active_pr": 540,
+  "active_branch": "supervisor/task0090-acceptance-phase15-frontier-20261009",
+  "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
+  "milestone_status": "READY",
+  "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
+  "exact_next_safe_action": "Start TASK-0091 fail-closed offline canary/holdout assignment, independent outcome eligibility and rollback reconciliation with adversarial fixtures; forbid external send/spend/promotion; certify exact-head Foundation, PHP, PostgreSQL, E2E, Security and AI Governance.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #539 exact-head offline final rate and human approval/stop serialisation, cross-org reconciliation and PostgreSQL global-stop versus reservation race; repair failures, merge and evaluate TASK-0090 acceptance evidence."
+  "exact_next_action": "Start TASK-0091 fail-closed offline canary/holdout assignment, independent outcome eligibility and rollback reconciliation with adversarial fixtures; forbid external send/spend/promotion; certify exact-head Foundation, PHP, PostgreSQL, E2E, Security and AI Governance."
 }

@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Implement offline canaries, holdouts, promotion thresholds and rollback",
   "weight": 15,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0090"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Do not activate until TASK-0090 is complete."
+  "exact_next_action": "Start TASK-0091 fail-closed offline canary/holdout assignment, independent outcome eligibility and rollback reconciliation with adversarial fixtures; forbid external send/spend/promotion; certify exact-head Foundation, PHP, PostgreSQL, E2E, Security and AI Governance."
 }

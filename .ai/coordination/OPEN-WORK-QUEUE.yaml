@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "accbbe606dba2147c56c568d7571e21d6cf55f88",
+  "reconciled_main_sha": "c8f3ea3dd849565b228fc92b5a1aeaa203a64062",
   "active_work_path": {
     "kind": "pr",
-    "number": 539,
-    "title": "feat(phase15): serialize offline rate, approval and emergency-stop review",
-    "branch": "supervisor/task0090-final-rate-approval-stop-20261009",
-    "disposition": "active_task0090_carrier"
+    "number": 540,
+    "title": "chore(phase15): certify TASK-0090 and unlock TASK-0091",
+    "branch": "supervisor/task0090-acceptance-phase15-frontier-20261009",
+    "disposition": "active_task0091_transition"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 540,
+      "title": "chore(phase15): certify TASK-0090 and unlock TASK-0091",
+      "branch": "supervisor/task0090-acceptance-phase15-frontier-20261009",
+      "disposition": "active_task0091_transition",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 539,
       "title": "feat(phase15): serialize offline rate, approval and emergency-stop review",
       "branch": "supervisor/task0090-final-rate-approval-stop-20261009",
-      "disposition": "active_task0090_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "c8f3ea3dd849565b228fc92b5a1aeaa203a64062"
     },
     {
       "kind": "pr",

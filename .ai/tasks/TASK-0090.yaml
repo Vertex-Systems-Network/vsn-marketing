@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Implement independent budgets, approvals, risk tiers and emergency stop",
   "weight": 20,
-  "status": "ready",
+  "status": "in_progress",
   "dependencies": [
     "TASK-0089"
   ],
@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Implement independently gated offline-only budgets, approval bindings and global/workspace emergency-stop contracts; preserve zero external send, spend, publish and billing permission; start with adversarial tests."
+  "exact_next_action": "Run full exact-head PR #531 unit/adversarial, Foundation, PHP floor, PostgreSQL integration, E2E, Security and AI Continuity; repair failures and merge; then implement TASK-0090 independent durable reservation and approval/stop policy."
 }

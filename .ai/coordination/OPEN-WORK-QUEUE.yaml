@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "7432dbfd3b3a6d30d5509875a4c4ae655c2cbdbe",
+  "reconciled_main_sha": "62514ecbb9c0c820c54a5a8fb033945955b7754f",
   "active_work_path": {
     "kind": "pr",
-    "number": 530,
-    "title": "chore(phase15): certify TASK-0089 and activate TASK-0090 safety frontier",
-    "branch": "supervisor/task0089-acceptance-phase15-task0090-frontier",
-    "disposition": "active_task0090_transition"
+    "number": 531,
+    "title": "feat(phase15): establish fail-closed offline autonomy safety limits",
+    "branch": "supervisor/task0090-offline-safety-enforcement-20261009",
+    "disposition": "active_task0090_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 531,
+      "title": "feat(phase15): establish fail-closed offline autonomy safety limits",
+      "branch": "supervisor/task0090-offline-safety-enforcement-20261009",
+      "disposition": "active_task0090_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 530,
       "title": "chore(phase15): certify TASK-0089 and activate TASK-0090 safety frontier",
       "branch": "supervisor/task0089-acceptance-phase15-task0090-frontier",
-      "disposition": "active_task0090_transition",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "62514ecbb9c0c820c54a5a8fb033945955b7754f"
     },
     {
       "kind": "pr",

@@ -3,8 +3,8 @@
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
 use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
-use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;

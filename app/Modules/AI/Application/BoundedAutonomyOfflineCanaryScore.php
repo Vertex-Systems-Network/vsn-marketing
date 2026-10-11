@@ -2,6 +2,7 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\Experiments\Domain\ExperimentAnalysisPlan;
 use App\Modules\Experiments\Domain\ExperimentPlan;
@@ -87,6 +88,15 @@ final readonly class BoundedAutonomyOfflineCanaryScore
                     throw new InvalidArgumentException('Invalid independent canary outcome count.');
                 }
             }
+        }
+
+        // Matching an opaque digest across two adapters does not bind the
+        // assignment/exposure/conversion data the statistics actually score.
+        // Recompute the full independently sourced snapshot commitment before
+        // a statistical signal can become an offline operator candidate.
+        $manifest = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($facts);
+        if (! hash_equals($manifest, $facts['source_manifest_sha256'])) {
+            throw new InvalidArgumentException('Canary outcome manifest does not bind scored evidence.');
         }
 
         // Delegates data-quality, sample-ratio mismatch, fixed horizon,

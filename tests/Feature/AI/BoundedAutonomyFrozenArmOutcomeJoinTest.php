@@ -2,6 +2,7 @@
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
 use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
@@ -79,6 +80,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
         'outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 0],
         'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
     ];
+    $scores['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($scores);
+    $joined['outcome_manifest_sha256'] = $scores['source_manifest_sha256'];
     $cohort = [
         'tenant' => $actor->toArray(), 'plan_sha256' => $plan->fingerprint(),
         'assignment_manifest_sha256' => str_repeat('b', 64),
@@ -187,6 +190,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
     // The same total and holdout can mask moved units between treatment/control.
     $outcome->facts['assigned'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 1000];
     $outcome->facts['exposed'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 0];
+    $outcome->facts['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($outcome->facts);
+    $join->facts['outcome_manifest_sha256'] = $outcome->facts['source_manifest_sha256'];
     $mismatch = $reviewer->inspect($actor, $plan, $analysis, $at);
     expect($mismatch['status'])->toBe('held_offline')
         ->and($mismatch['reason_code'])->toBe('cohort_outcome_arm_denominator_mismatch')

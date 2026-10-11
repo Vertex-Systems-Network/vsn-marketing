@@ -3,6 +3,7 @@
 namespace Tests\Unit\AI;
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineCanaryScore;
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeSource;
 use App\Modules\Experiments\Domain\ExperimentAnalysisPlan;
@@ -47,7 +48,7 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
 
     private function facts(): array
     {
-        return [
+        return $this->signed([
             'tenant' => $this->scope()->toArray(),
             'experiment_id' => $this->plan()->id,
             'plan_sha256' => $this->plan()->fingerprint(),
@@ -60,7 +61,14 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
             'exposed' => ['control' => 5000, 'treatment' => 5000, 'holdout' => 0],
             'outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 0],
             'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
-        ];
+        ]);
+    }
+
+    private function signed(array $facts): array
+    {
+        $facts['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($facts);
+
+        return $facts;
     }
 
     private function reviewer(object $data): BoundedAutonomyOfflineCanaryScore
@@ -112,10 +120,36 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
             ['assigned' => ['control' => 30, 'treatment' => 30, 'holdout' => 10]],
             ['outcomes' => ['control' => 2000, 'treatment' => 500, 'holdout' => 0]],
         ] as $patch) {
-            $data->value = array_replace($this->facts(), $patch);
+            $data->value = $this->signed(array_replace($this->facts(), $patch));
             $r = $reviewer->inspect($this->scope(), $this->plan(), $this->analysisPlan(), $this->at());
             self::assertSame('held_offline', $r['status']);
             self::assertFalse($r['promotion_authorized']);
+        }
+    }
+
+    public function test_unchanged_manifest_cannot_launder_changed_conversion_or_sample_counts(): void
+    {
+        $data = (object) ['value' => $this->facts()];
+        $reviewer = $this->reviewer($data);
+        self::assertSame('offline_operator_review_candidate', $reviewer->inspect(
+            $this->scope(), $this->plan(), $this->analysisPlan(), $this->at(),
+        )['status']);
+
+        foreach ([
+            ['outcomes' => ['control' => 900, 'treatment' => 2000, 'holdout' => 0]],
+            ['assigned' => ['control' => 5100, 'treatment' => 4900, 'holdout' => 1000]],
+            ['exposed' => ['control' => 4999, 'treatment' => 5000, 'holdout' => 0]],
+            ['observed_at_unix' => $this->at()->getTimestamp() - 1],
+        ] as $tamper) {
+            // Preserve the old valid digest: every otherwise plausible
+            // mutation must be rejected before publishing any scored signal.
+            $data->value = array_replace($this->facts(), $tamper);
+            try {
+                $reviewer->inspect($this->scope(), $this->plan(), $this->analysisPlan(), $this->at());
+                self::fail('Stale source manifest accepted changed canary outcome evidence.');
+            } catch (InvalidArgumentException) {
+                self::assertTrue(true);
+            }
         }
     }
 

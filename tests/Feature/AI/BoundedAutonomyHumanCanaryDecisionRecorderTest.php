@@ -343,6 +343,15 @@ it('records independently joined human review only, never promoting or triggerin
                 return $permission === PermissionCatalog::CAMPAIGN_READ;
             }
         },
+        new class($cohorts) implements BoundedAutonomyCanaryCohortSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function snapshot(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        },
     ))->inspect($f['scope'], $f['plan'], $f['analysis'], $at);
     $review = (new BoundedAutonomyOfflineHumanPromotionReview($source))
         ->inspect($f['scope'], $f['plan'], $f['analysis'], $score, $at);

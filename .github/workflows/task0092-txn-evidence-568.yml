@@ -1,0 +1,78 @@
+name: Temporary TASK-0092 Transaction Evidence 568
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  task0092-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0092-tool-failure-20261012'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout exact PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Update TASK-0092 descriptive frontier
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('.ai/tasks/TASK-0092.yaml')
+          task=json.loads(p.read_text())
+          assert task['id']=='TASK-0092' and task['status']=='ready'
+          assert 'PR #567' in task['exact_next_action']
+          task['exact_next_action']='Certify PR #568 independent typed-tool approval, provider-like queue errors, fake secret redaction and rollback failure human hold with exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 queue and recovery certification.'
+          p.write_text(json.dumps(task,indent=2)+'\n')
+          PY
+      - name: Produce official continuity checkpoint
+        run: |
+          python tools/ai_journal.py compact
+          python tools/ai_txn.py checkpoint \
+            --active-pr 568 \
+            --active-branch supervisor/task0092-tool-failure-20261012 \
+            --observed-main de86a0ddd432340665001a20b17bf4f8b5d82512 \
+            --carrier-title 'test(phase15): red-team tool failure and rollback-error redaction' \
+            --completed-pr 567 \
+            --completion-sha de86a0ddd432340665001a20b17bf4f8b5d82512 \
+            --summary 'PR #567 four-worker offline quota/rate stress passed all exact-head Foundation, PHP 8.3, PostgreSQL, browser E2E, Security, Governance and squash-merged on de86a0ddd; resulting-main CI is pending. PR #568 stages typed-tool failure and secret-redaction adversarial fixtures.' \
+            --tests 'PR #567 exact-head full application, PostgreSQL, E2E, Security and Governance PASS; protected-main de86a0ddd post-merge CI pending. PR #568 full exact-head CI pending.' \
+            --next 'Certify PR #568 independent typed-tool approval, provider-like queue errors, fake secret redaction and rollback failure human hold with exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 queue and recovery certification.'
+      - name: Validate generated transaction
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/supervisor_contract.py validate
+          python tools/supervisor_contract.py validate-main-observation --current-main de86a0ddd432340665001a20b17bf4f8b5d82512
+      - name: Export exact generated artifacts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from subprocess import check_output
+          import base64
+          changes=set(check_output(['git','diff','--name-only'],text=True).splitlines())
+          archives=set(check_output(['git','ls-files','--others','--exclude-standard','.ai/state/archive'],text=True).splitlines())
+          paths=sorted(changes|archives)
+          required={'.ai/state/CURRENT-STATE.yaml','.ai/state/LAST-CHECKPOINT.md','.ai/state/EXECUTION-JOURNAL.jsonl','.ai/coordination/OPEN-WORK-QUEUE.yaml','.ai/tasks/TASK-0092.yaml'}
+          if not required.issubset(paths):
+              raise SystemExit(f'Missing official transaction evidence: {sorted(required-set(paths))}')
+          if any(p not in required and not p.startswith('.ai/state/archive/EXECUTION-JOURNAL-') for p in paths):
+              raise SystemExit(f'Unexpected generated path: {paths}')
+          for path in paths:
+              print(f'VSN_EVIDENCE_BEGIN::{path}')
+              data=base64.b64encode(Path(path).read_bytes()).decode('ascii')
+              for i in range(0,len(data),160):
+                  print('VSN_EVIDENCE_CHUNK::'+data[i:i+160])
+              print(f'VSN_EVIDENCE_END::{path}')
+          PY

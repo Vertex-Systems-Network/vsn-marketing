@@ -125,6 +125,11 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
             if ($score['source_manifest_sha256'] !== $join['outcome_manifest_sha256']) {
                 return $this->hold($experiment, 'outcome_source_manifest_drift');
             }
+            if ($score['status'] === 'offline_operator_review_candidate'
+                && (! is_int($score['observed_at_unix'] ?? null)
+                    || $join['observed_at_unix'] < $score['observed_at_unix'])) {
+                return $this->hold($experiment, 'outcome_join_predates_scored_snapshot');
+            }
             // An authenticated join to an immutable cohort receipt cannot
             // substitute a different population when scoring conversions.
             // Bind at least the durable total and hidden holdout denominators

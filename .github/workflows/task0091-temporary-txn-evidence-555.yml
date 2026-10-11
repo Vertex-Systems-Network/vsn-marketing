@@ -1,0 +1,54 @@
+name: Temporary TASK-0091 Transactional Evidence 555
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  transactional-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0091-provider-temporal-causality-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Transactionally reconcile merged previous carrier
+        run: |
+          python tools/ai_txn.py checkpoint \
+            --active-pr 555 \
+            --active-branch supervisor/task0091-provider-temporal-causality-20261011 \
+            --observed-main 86d789c2c4bff7b13deb89c65103b71ab58948a8 \
+            --carrier-title 'fix(phase15): hold rollback when aggregate evidence predates provider attempt' \
+            --completed-pr 554 \
+            --completion-sha 86d789c2c4bff7b13deb89c65103b71ab58948a8 \
+            --summary 'PR #554 evaluation-clock freshness passed exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merged 86d789c2c4bff7b13deb89c65103b71ab58948a8. PR #555 stages cross-source causal chronology guard and adversarial fixtures; no real provider action.' \
+            --tests 'PR #554 full exact-head gates PASS; resulting-main release integrity and scorecard PASS. PR #555 exact-head full CI pending.' \
+            --next 'Verify PR #555 exact-head causal rollback evidence Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair and merge guarded when green, then continue TASK-0091 safe acceptance.'
+      - name: Export exact transaction artifacts as scoped evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          for name in (
+              '.ai/state/CURRENT-STATE.yaml',
+              '.ai/state/LAST-CHECKPOINT.md',
+              '.ai/state/EXECUTION-JOURNAL.jsonl',
+              '.ai/coordination/OPEN-WORK-QUEUE.yaml',
+          ):
+              print(f'VSN_EVIDENCE_BEGIN::{name}')
+              data = base64.b64encode(Path(name).read_bytes()).decode('ascii')
+              for i in range(0, len(data), 160):
+                  print('VSN_EVIDENCE_CHUNK::' + data[i:i+160])
+              print(f'VSN_EVIDENCE_END::{name}')
+          PY

@@ -56,6 +56,15 @@ final readonly class BoundedAutonomyOfflineJointRollbackReview
             return $this->held($runId, $snapshotSha256, 'individual_provider_attempts_unresolved');
         }
 
+        // Aggregate non-effect evidence cannot predate an individually
+        // observed provider attempt, even when each source is independently
+        // within its own allowed freshness window.
+        if (! is_int($summary['observed_at_unix'] ?? null)
+            || ! is_int($detail['latest_attempted_at_unix'] ?? null)
+            || $summary['observed_at_unix'] < $detail['latest_attempted_at_unix']) {
+            return $this->held($runId, $snapshotSha256, 'aggregate_review_predates_provider_attempt');
+        }
+
         return [
             'status' => 'offline_joint_rollback_review_ready',
             'reason_code' => 'independent_human_recovery_gate_required',

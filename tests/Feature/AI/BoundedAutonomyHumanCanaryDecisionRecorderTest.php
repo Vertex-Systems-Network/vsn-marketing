@@ -3,6 +3,7 @@
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
 use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
+use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
@@ -213,6 +214,9 @@ it('records independently joined human review only, never promoting or triggerin
         'brand_id' => null,
         'plan_sha256' => $f['plan']->fingerprint(),
         'assignment_manifest_sha256' => str_repeat('b', 64),
+        'assignment_arm_set_sha256' => BoundedAutonomyArmEvidenceDigest::sha256(
+            $f['plan']->fingerprint(), ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000],
+        ),
         'assigned_denominator' => 11000,
         'holdout_denominator' => 1000,
         'status' => 'offline_review_only',

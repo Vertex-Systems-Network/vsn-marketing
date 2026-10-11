@@ -3,6 +3,7 @@
 namespace App\Modules\AI\Infrastructure;
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineCanaryReview;
+use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Experiments\Domain\ExperimentPlan;
@@ -57,6 +58,9 @@ final readonly class DatabaseBoundedAutonomyCanaryReviewReceipt
                 return $review + ['offline_receipt_recorded' => false];
             }
 
+            $armDigest = BoundedAutonomyArmEvidenceDigest::sha256(
+                $plan->fingerprint(), $review['assigned_by_arm'],
+            );
             $id = (string) Str::uuid();
             DB::table('ai_autonomy_offline_canary_reviews')->insertOrIgnore([
                 'id' => $id,
@@ -65,6 +69,7 @@ final readonly class DatabaseBoundedAutonomyCanaryReviewReceipt
                 'brand_id' => $actor->brandId,
                 'plan_sha256' => $plan->fingerprint(),
                 'assignment_manifest_sha256' => $review['assignment_manifest_sha256'],
+                'assignment_arm_set_sha256' => $armDigest,
                 'assigned_denominator' => $review['assigned_denominator'],
                 'holdout_denominator' => $review['holdout_denominator'],
                 'status' => 'offline_review_only',
@@ -77,6 +82,8 @@ final readonly class DatabaseBoundedAutonomyCanaryReviewReceipt
             if ($receipt === null
                 || $receipt->plan_sha256 !== $plan->fingerprint()
                 || $receipt->assignment_manifest_sha256 !== $review['assignment_manifest_sha256']
+                || ! is_string($receipt->assignment_arm_set_sha256)
+                || ! hash_equals($armDigest, $receipt->assignment_arm_set_sha256)
                 || (int) $receipt->assigned_denominator !== $review['assigned_denominator']
                 || (int) $receipt->holdout_denominator !== $review['holdout_denominator']
                 || $receipt->brand_id !== $actor->brandId
@@ -86,6 +93,7 @@ final readonly class DatabaseBoundedAutonomyCanaryReviewReceipt
 
             return $review + [
                 'receipt_id' => $receipt->id,
+                'assignment_arm_set_sha256' => $armDigest,
                 'offline_receipt_recorded' => true,
                 'execution_authorized' => false,
                 'promotion_authorized' => false,

@@ -52,11 +52,19 @@ final class BoundedAutonomyCanaryOutcomeEvidenceDigestTest extends TestCase
         }
     }
 
-    public function test_incomplete_and_untyped_arm_manifests_are_rejected(): void
+    public function test_incomplete_manifest_is_rejected(): void
     {
         $missing = $this->facts();
         unset($missing['outcomes']);
         $this->expectException(InvalidArgumentException::class);
         BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($missing);
+    }
+
+    public function test_untyped_arm_manifest_is_rejected(): void
+    {
+        $bad = $this->facts();
+        $bad['assigned'] = 'untrusted-counts';
+        $this->expectException(InvalidArgumentException::class);
+        BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($bad);
     }
 }

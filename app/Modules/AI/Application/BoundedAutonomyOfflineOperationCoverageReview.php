@@ -2,6 +2,7 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\AI\Domain\BoundedAutonomyOperationInventoryDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyExpectedProviderOperationsSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
@@ -19,6 +20,7 @@ final readonly class BoundedAutonomyOfflineOperationCoverageReview
     private const array FIELDS = [
         'tenant', 'run_id', 'snapshot_sha256', 'observed_at_unix',
         'expires_at_unix', 'complete', 'operations', 'operation_set_sha256',
+        'inventory_manifest_sha256',
     ];
 
     private const array OPERATION_FIELDS = ['operation_id', 'idempotency_key'];
@@ -63,7 +65,8 @@ final readonly class BoundedAutonomyOfflineOperationCoverageReview
             || ! is_array($inventory['operations'])
             || ! array_is_list($inventory['operations'])
             || count($inventory['operations']) > 128
-            || ! self::digest($inventory['operation_set_sha256'])) {
+            || ! self::digest($inventory['operation_set_sha256'])
+            || ! self::digest($inventory['inventory_manifest_sha256'])) {
             throw new InvalidArgumentException('Canonical operation inventory provenance rejected.');
         }
 
@@ -92,6 +95,13 @@ final readonly class BoundedAutonomyOfflineOperationCoverageReview
         $digest = hash('sha256', json_encode($identities, JSON_THROW_ON_ERROR));
         if (! hash_equals($inventory['operation_set_sha256'], $digest)) {
             throw new InvalidArgumentException('Canonical operation inventory checksum mismatch.');
+        }
+        // The sorted operation-set digest alone cannot distinguish an
+        // incomplete inventory from a self-declared "complete" one, nor
+        // detect altered observation/expiry time with unchanged identities.
+        $manifest = BoundedAutonomyOperationInventoryDigest::sha256($inventory);
+        if (! hash_equals($manifest, $inventory['inventory_manifest_sha256'])) {
+            throw new InvalidArgumentException('Canonical operation inventory manifest does not bind completeness or provenance.');
         }
         if (! $inventory['complete'] || $identities === []) {
             return $this->held($runId, $snapshotSha256, 'canonical_operation_inventory_incomplete');

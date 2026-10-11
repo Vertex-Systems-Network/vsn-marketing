@@ -88,22 +88,33 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
     ];
     $join = new class($joined) implements BoundedAutonomyCanaryOutcomeJoinSource {
         public function __construct(public array $facts) {}
+
         public function latest(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
-        { return $this->facts; }
+        {
+            return $this->facts;
+        }
     };
     $outcome = new class($scores) implements BoundedAutonomyCanaryOutcomeSource {
         public function __construct(public array $facts) {}
+
         public function snapshot(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
-        { return $this->facts; }
+        {
+            return $this->facts;
+        }
     };
     $cohorts = new class($cohort) implements BoundedAutonomyCanaryCohortSource {
         public function __construct(public array $facts) {}
+
         public function snapshot(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
-        { return $this->facts; }
+        {
+            return $this->facts;
+        }
     };
     $access = new class implements ExperimentAccess {
         public function allows(TenantContext $actor, string $permission): bool
-        { return $permission === PermissionCatalog::CAMPAIGN_READ; }
+        {
+            return $permission === PermissionCatalog::CAMPAIGN_READ;
+        }
     };
     $withoutReadback = (new BoundedAutonomyOfflineOutcomeJoinReview($join, $outcome, $access))
         ->inspect($actor, $plan, $analysis, $at);

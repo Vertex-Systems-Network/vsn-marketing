@@ -6,6 +6,7 @@ use App\Modules\AI\Application\BoundedAutonomyOfflineJointRollbackReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOperationCoverageReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineProviderAttemptReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
+use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyExpectedProviderOperationsSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyVerifiedProviderAttemptSource;
@@ -87,7 +88,7 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
 
     private function aggregate(): array
     {
-        return [
+        $facts = [
             'tenant' => $this->actor()->toArray(),
             'run_id' => 'run-1',
             'snapshot_sha256' => str_repeat('a', 64),
@@ -100,6 +101,9 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
             'late_callback' => false, 'duplicate_callback' => false,
             'external_cost_minor' => 0,
         ];
+        $facts['source_sha256'] = BoundedAutonomyRollbackEvidenceDigest::sha256($facts);
+
+        return $facts;
     }
 
     private function reviewer(?array $inventory, ?array $provider = null): BoundedAutonomyOfflineOperationCoverageReview

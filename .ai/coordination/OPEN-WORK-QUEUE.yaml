@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "aa35ba246a7335e1a68047c610bb83a415135c37",
+  "reconciled_main_sha": "ac8a2628ecb4f1d0b266178995c6c72aa9ac67c4",
   "active_work_path": {
     "kind": "pr",
-    "number": 560,
-    "title": "fix(phase15): stale positive rollback replay cannot override newer hold",
-    "branch": "supervisor/task0091-ledger-stale-positive-replay-20261011",
+    "number": 561,
+    "title": "fix(phase15): bind aggregate provider outcome to canonical source manifest",
+    "branch": "supervisor/task0091-aggregate-provider-manifest-20261011",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 561,
+      "title": "fix(phase15): bind aggregate provider outcome to canonical source manifest",
+      "branch": "supervisor/task0091-aggregate-provider-manifest-20261011",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 560,
       "title": "fix(phase15): stale positive rollback replay cannot override newer hold",
       "branch": "supervisor/task0091-ledger-stale-positive-replay-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "ac8a2628ecb4f1d0b266178995c6c72aa9ac67c4"
     },
     {
       "kind": "pr",

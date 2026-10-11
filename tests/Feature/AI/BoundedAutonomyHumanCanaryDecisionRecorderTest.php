@@ -3,6 +3,7 @@
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
 use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
@@ -254,6 +255,8 @@ it('records independently joined human review only, never promoting or triggerin
         'outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 0],
         'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
     ]];
+    $outcomes->value['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($outcomes->value);
+    $joined->value['outcome_manifest_sha256'] = $outcomes->value['source_manifest_sha256'];
     $cohorts = (object) ['value' => [
         'tenant' => $f['scope']->toArray(),
         'plan_sha256' => $f['plan']->fingerprint(),

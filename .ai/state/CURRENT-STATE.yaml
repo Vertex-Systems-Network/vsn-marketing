@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "d5030edd11c2c2293be8563f3e74c2aedd13bb94",
+  "observed_main_sha": "0d2f858483ea1f652d575fb0d270c424515d04d9",
   "active_issue": null,
-  "active_pr": 564,
-  "active_branch": "supervisor/task0091-certification-20261012",
+  "active_pr": 565,
+  "active_branch": "supervisor/task0092-offline-redteam-incidents-20261012",
   "current_milestone": "TASK-0092-PHASE15-REDTEAM",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Start TASK-0092 offline autonomy red-team and incident-monitoring tests after PR #564 guarded merge and main verification. Do not authorize external sending, promotion, spending or rollback.",
+  "exact_next_safe_action": "Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Start TASK-0092 offline autonomy red-team and incident-monitoring tests after PR #564 guarded merge and main verification. Do not authorize external sending, promotion, spending or rollback."
+  "exact_next_action": "Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled."
 }

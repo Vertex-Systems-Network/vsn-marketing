@@ -82,6 +82,7 @@ final readonly class BoundedAutonomyOfflineRollbackReview
             'run_id' => $runId,
             'snapshot_sha256' => $snapshotSha256,
             'external_outcome_verified' => true,
+            'observed_at_unix' => $record['observed_at_unix'],
             'rollback_performed' => false,
             'refund_authorized' => false,
             'retry_authorized' => false,

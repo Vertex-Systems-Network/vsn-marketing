@@ -158,6 +158,47 @@ final class BoundedAutonomyOfflineJointRollbackReviewTest extends TestCase
         self::assertFalse($review['promotion_authorized']);
     }
 
+    public function test_aggregate_non_effect_must_not_precede_later_provider_snapshot_capture(): void
+    {
+        $now = $this->at()->getTimestamp();
+        // Both independently signed sources are otherwise valid and each
+        // individual attempt predates the aggregate. Only the provider's
+        // later capture makes the aggregate review stale.
+        $aggregate = $this->signedAggregate(array_replace($this->aggregateFact(), [
+            'observed_at_unix' => $now - 60,
+            'attempted_at_unix' => $now - 200,
+        ]));
+        $detail = $this->perAttemptFact();
+        $detail['captured_at_unix'] = $now - 30;
+        $detail['source_manifest_sha256'] = hash('sha256', json_encode([
+            'tenant' => $detail['tenant'],
+            'run_id' => $detail['run_id'],
+            'snapshot_sha256' => $detail['snapshot_sha256'],
+            'captured_at_unix' => $detail['captured_at_unix'],
+            'expires_at_unix' => $detail['expires_at_unix'],
+            'complete' => $detail['complete'],
+            'attempts' => $detail['attempts'],
+        ], JSON_THROW_ON_ERROR));
+
+        $stale = $this->inspect($this->reviewer($aggregate, $detail));
+        self::assertSame('held_offline', $stale['status']);
+        self::assertSame('aggregate_review_predates_provider_capture', $stale['reason_code']);
+        self::assertFalse($stale['rollback_performed']);
+        self::assertFalse($stale['refund_authorized']);
+        self::assertFalse($stale['retry_authorized']);
+        self::assertFalse($stale['execution_authorized']);
+        self::assertFalse($stale['promotion_authorized']);
+
+        // Re-observing the same aggregate after the provider readback
+        // restores only an OFFLINE human-review candidate, not authority.
+        $fresh = $this->signedAggregate(array_replace($aggregate, [
+            'observed_at_unix' => $now,
+        ]));
+        $candidate = $this->inspect($this->reviewer($fresh, $detail));
+        self::assertSame('offline_joint_rollback_review_ready', $candidate['status']);
+        self::assertFalse($candidate['rollback_performed']);
+    }
+
     public function test_applied_aggregate_or_provider_attempt_never_returns_positive_joint_review(): void
     {
         $external = $this->inspect($this->reviewer($this->aggregateFact('confirmed_applied'), $this->perAttemptFact()));

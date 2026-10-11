@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "958802931456feae57a7226eaaec878323d7727b",
+  "observed_main_sha": "6cf6894961271c47467738b949e9fd51020f2181",
   "active_issue": null,
-  "active_pr": 553,
-  "active_branch": "supervisor/task0091-stale-provider-evidence-certification-20261010",
+  "active_pr": 554,
+  "active_branch": "supervisor/task0091-clock-window-failclosed-20261011",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work.",
+  "exact_next_safe_action": "Certify PR #554 evaluation-clock provider attempt bounds on exact-head and protected-main gates, then continue TASK-0091 acceptance work.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #553 provider rollback attempted-at freshness adversarial cases and offline TASK-0091 acceptance matrix via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; repair and merge verified head, then complete remaining TASK-0091 safe acceptance work."
+  "exact_next_action": "Certify PR #554 evaluation-clock provider attempt bounds on exact-head and protected-main gates, then continue TASK-0091 acceptance work."
 }

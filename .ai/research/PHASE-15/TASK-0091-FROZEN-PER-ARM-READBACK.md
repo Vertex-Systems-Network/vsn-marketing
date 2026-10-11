@@ -17,6 +17,6 @@ The existing independent outcome source still has to match the outcome join mani
 
 ## Regression
 
-A full feature fixture demonstrates a positive statistical signal for a frozen 5000/5000/1000 cohort still requires independent source readback. It then changes scored assignment to 4900/5100/1000 without changing overall assigned or holdout totals and requires the join to hold. All effects remain explicitly unauthorized.
+A full feature fixture demonstrates a positive statistical signal for a frozen 5000/5000/1000 cohort still requires independent source readback. It then changes scored assignment to 4999/5001/1000 without changing overall assigned or holdout totals and requires the join to hold. All effects remain explicitly unauthorized.
 
 This is a **readback contract**, not proof of production source signatures. Actual trusted provider/assignment adapters remain deny-by-default unless explicitly installed with independent attestation. TASK-0091 remains IN_PROGRESS pending exact-head, resulting-main gates and holistic acceptance.

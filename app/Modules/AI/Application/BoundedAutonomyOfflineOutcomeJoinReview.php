@@ -161,6 +161,21 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
                 if ($expectedArms !== $scoredArms) {
                     return $this->hold($experiment, 'cohort_outcome_arm_denominator_mismatch');
                 }
+                if (! is_int($frozen['observed_at_unix'] ?? null)
+                    || $frozen['observed_at_unix'] < $join['observed_at_unix']
+                    || $frozen['observed_at_unix'] < $score['observed_at_unix']) {
+                    return $this->hold($experiment, 'cohort_consent_readback_predates_outcomes');
+                }
+                $expectedExposures = $frozen['exposed_by_arm'] ?? null;
+                $scoredExposures = $score['exposed_by_arm'] ?? null;
+                if (! is_array($expectedExposures) || ! is_array($scoredExposures)) {
+                    return $this->hold($experiment, 'cohort_outcome_exposure_unavailable');
+                }
+                ksort($expectedExposures);
+                ksort($scoredExposures);
+                if ($expectedExposures !== $scoredExposures) {
+                    return $this->hold($experiment, 'cohort_outcome_exposure_mismatch');
+                }
             }
 
             return [

@@ -80,6 +80,7 @@ final class BoundedAutonomyOfflineCanaryReviewTest extends TestCase
         $x = (object) ['facts' => $this->facts()];
         $res = $this->reviewer($x)->inspect($this->scope(), $this->plan(), $this->at());
         self::assertSame('offline_cohort_review_ready', $res['status']);
+        self::assertSame(['control' => 450, 'holdout' => 100, 'treatment' => 450], $res['assigned_by_arm']);
         self::assertSame(1000, $res['assigned_denominator']);
         self::assertSame(100, $res['holdout_denominator']);
         self::assertFalse($res['exposure_authorized']);

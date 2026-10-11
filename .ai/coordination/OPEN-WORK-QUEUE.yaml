@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "92be7d541f4ee65fb941d643ffda7914fffa94c6",
+  "reconciled_main_sha": "62bfc8ffcf489f06b6eebd3a32af76f2784cc578",
   "active_work_path": {
     "kind": "pr",
-    "number": 556,
-    "title": "fix(phase15): bind scored outcome denominators to frozen cohort receipt",
-    "branch": "supervisor/task0091-denominator-join-20261011",
+    "number": 557,
+    "title": "fix(phase15): reverify frozen per-arm counts before offline canary review",
+    "branch": "supervisor/task0091-per-arm-denominator-readback-20261011",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 557,
+      "title": "fix(phase15): reverify frozen per-arm counts before offline canary review",
+      "branch": "supervisor/task0091-per-arm-denominator-readback-20261011",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 556,
       "title": "fix(phase15): bind scored outcome denominators to frozen cohort receipt",
       "branch": "supervisor/task0091-denominator-join-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "62bfc8ffcf489f06b6eebd3a32af76f2784cc578"
     },
     {
       "kind": "pr",

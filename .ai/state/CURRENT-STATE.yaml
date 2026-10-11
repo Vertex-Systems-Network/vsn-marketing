@@ -6,15 +6,15 @@
     "product_version": "0.0.0"
   },
   "execution": {
-    "status": "in_progress",
+    "status": "ready",
     "current_phase": "PHASE-15",
-    "active_task": "TASK-0091",
-    "last_completed_task": "TASK-0090",
-    "next_task": "TASK-0092"
+    "active_task": "TASK-0092",
+    "last_completed_task": "TASK-0091",
+    "next_task": "TASK-0093"
   },
   "progress": {
-    "roadmap_percent": 94.4,
-    "phase_percent": 60.0,
+    "roadmap_percent": 95.0,
+    "phase_percent": 75.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "01b65fd0370bd8bfd79bdbfc7d4762e3d3ae79f4",
+  "observed_main_sha": "d5030edd11c2c2293be8563f3e74c2aedd13bb94",
   "active_issue": null,
-  "active_pr": 563,
-  "active_branch": "supervisor/task0091-rollback-capture-order-20261012",
-  "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
+  "active_pr": 564,
+  "active_branch": "supervisor/task0091-certification-20261012",
+  "current_milestone": "TASK-0092-PHASE15-REDTEAM",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #563 provider capture chronology regressions with full exact-head CI; guarded merge and protected-main validation, then continue TASK-0091 AC-1..3 acceptance.",
+  "exact_next_safe_action": "Start TASK-0092 offline autonomy red-team and incident-monitoring tests after PR #564 guarded merge and main verification. Do not authorize external sending, promotion, spending or rollback.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #563 provider capture chronology regressions with full exact-head CI; guarded merge and protected-main validation, then continue TASK-0091 AC-1..3 acceptance."
+  "exact_next_action": "Start TASK-0092 offline autonomy red-team and incident-monitoring tests after PR #564 guarded merge and main verification. Do not authorize external sending, promotion, spending or rollback."
 }

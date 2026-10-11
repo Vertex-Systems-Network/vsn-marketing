@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "62bfc8ffcf489f06b6eebd3a32af76f2784cc578",
+  "observed_main_sha": "0f28b6079b523ec231ff75d585a0c094e22f23c1",
   "active_issue": null,
-  "active_pr": 557,
-  "active_branch": "supervisor/task0091-per-arm-denominator-readback-20261011",
+  "active_pr": 558,
+  "active_branch": "supervisor/task0091-exposure-consent-chronology-20261011",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Verify PR #557 frozen per-arm source re-read, exact receipt binding and tampered control/treatment counts using full CI; repair and merge if green, continue TASK-0091 acceptance.",
+  "exact_next_safe_action": "Certify PR #558 exact-head exposure parity and temporal outcome/consent consistency with Foundation, PHP floor, PostgreSQL, E2E, Security and Governance, then merge guarded if green.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #557 frozen per-arm source re-read, exact receipt binding and tampered control/treatment counts using full CI; repair and merge if green, continue TASK-0091 acceptance."
+  "exact_next_action": "Certify PR #558 exact-head exposure parity and temporal outcome/consent consistency with Foundation, PHP floor, PostgreSQL, E2E, Security and Governance, then merge guarded if green."
 }

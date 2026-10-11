@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "62bfc8ffcf489f06b6eebd3a32af76f2784cc578",
+  "reconciled_main_sha": "0f28b6079b523ec231ff75d585a0c094e22f23c1",
   "active_work_path": {
     "kind": "pr",
-    "number": 557,
-    "title": "fix(phase15): reverify frozen per-arm counts before offline canary review",
-    "branch": "supervisor/task0091-per-arm-denominator-readback-20261011",
+    "number": 558,
+    "title": "fix(phase15): bind canary exposures and consent observation order to outcome proof",
+    "branch": "supervisor/task0091-exposure-consent-chronology-20261011",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 558,
+      "title": "fix(phase15): bind canary exposures and consent observation order to outcome proof",
+      "branch": "supervisor/task0091-exposure-consent-chronology-20261011",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 557,
       "title": "fix(phase15): reverify frozen per-arm counts before offline canary review",
       "branch": "supervisor/task0091-per-arm-denominator-readback-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "0f28b6079b523ec231ff75d585a0c094e22f23c1"
     },
     {
       "kind": "pr",

@@ -73,6 +73,7 @@ final readonly class BoundedAutonomyOfflineCanaryReview
         }
 
         $assigned = [];
+        $exposed = [];
         foreach ($facts['counts'] as $variant => $row) {
             if (! is_array($row)) {
                 throw new InvalidArgumentException('Invalid canary cohort metric row.');
@@ -91,9 +92,11 @@ final readonly class BoundedAutonomyOfflineCanaryReview
                 return $this->held($plan, 'insufficient_independent_cohort');
             }
             $assigned[$variant] = $row['assigned'];
+            $exposed[$variant] = $row['exposed'];
         }
 
         ksort($assigned);
+        ksort($exposed);
         $weights = $plan->weights;
         ksort($weights);
         $expected = array_sum($assigned);
@@ -112,7 +115,9 @@ final readonly class BoundedAutonomyOfflineCanaryReview
             'experiment_id' => $plan->id,
             'plan_sha256' => $plan->fingerprint(),
             'assignment_manifest_sha256' => $facts['assignment_manifest_sha256'],
+            'observed_at_unix' => $facts['observed_at_unix'],
             'assigned_by_arm' => $assigned,
+            'exposed_by_arm' => $exposed,
             'assigned_denominator' => array_sum($assigned),
             'holdout_denominator' => $assigned[$plan->holdout],
             'exposure_authorized' => false,

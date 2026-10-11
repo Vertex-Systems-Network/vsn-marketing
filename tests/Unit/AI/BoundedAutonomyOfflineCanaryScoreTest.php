@@ -89,6 +89,8 @@ final class BoundedAutonomyOfflineCanaryScoreTest extends TestCase
         $r = $this->reviewer($data)->inspect($this->scope(), $this->plan(), $this->analysisPlan(), $this->at());
         self::assertSame('offline_operator_review_candidate', $r['status']);
         self::assertSame('offline_signal', $r['statistical_status']);
+        self::assertSame(11000, $r['assigned_denominator']);
+        self::assertSame(1000, $r['holdout_denominator']);
         self::assertFalse($r['promotion_authorized']);
         self::assertFalse($r['execution_authorized']);
         self::assertFalse($r['external_outcome_proven']);

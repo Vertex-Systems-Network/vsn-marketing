@@ -20,6 +20,22 @@ Receipt creation writes this hash atomically beside the frozen source manifest a
 - `down()` refuses to discard the field while **any** immutable canary review receipt exists, requiring explicit archive/restore review before destructive rollback
 - Unit and SQLite feature fixtures test canonical hash ordering, changed same-total allocation, tampered/legacy receipt refusal, replay integrity and guarded migration rollback. PostgreSQL integration and exact-head CI are required before promotion to `main`
 
+## Migration release/recovery review
+
+| Dimension | Review result |
+| --- | --- |
+| Idempotency | The migration checks the existing table and column; rerunning an already-applied schema step is a no-op |
+| Transactions | Single additive nullable schema change, with no data writes or assumption that provider-specific DDL is transactionally reversible |
+| Apply-marker recovery | Column-created/ledger-not-recorded state can be retried without re-adding a column |
+| Retry | Existing column returns safely; invalid missing parent table fails without creating synthetic evidence |
+| Rollback and restore | An empty receipt table permits column removal; any retained immutable evidence blocks `down()` until a separate approved export/restore plan |
+| Destructive recovery | No destructive `up()`; deletion of evidence is explicitly out of scope |
+| Concurrency | Deployment must use one serialized migration runner; duplicate concurrent DDL fails closed and must be retried under that runner |
+| Partial execution | New column has no data backfill; interrupted apply preserves existing rows and may re-enter `up()` |
+| Backup and snapshot | No backup is taken here and no production migration is executed; verify a current backup/snapshot before a later authorized production apply |
+
+This is a code-review signoff on the nine dimensions, **not** proof that any production backup has been taken, production migration applied, or live database restore tested.
+
 ## Limitations
 
 This is an internal tamper-evident checksum, **not a digital signature, independent provider attestation, proof of current consent, causal uplift, or production rollback**. Trustworthy independent sources are still deny-by-default unless separately configured with validated provenance and current authority. Live sending, ad spend, publication, refunds, retries and automatic promotion remain forbidden. TASK-0091 acceptance criteria remain NOT DONE pending holistic evidence and guarded transition.

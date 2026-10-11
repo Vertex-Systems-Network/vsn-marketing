@@ -168,6 +168,19 @@ it('never replays an earlier synthetic pass over a later unresolved safety hold'
         ->and($replay['replayed'])->toBeTrue()
         ->and(DB::table('audit_events')->where('workspace_id', $actor->workspaceId)
             ->where('action', 'ai.autonomy.redteam.offline.review')->count())->toBe(3);
+
+    // Timestamps may collide under database precision; explicit per-run
+    // sequences, not UUID sort order, define immutable event chronology.
+    $history = DB::table('audit_events')->where('workspace_id', $actor->workspaceId)
+        ->where('action', 'ai.autonomy.redteam.offline.review')
+        ->get()
+        ->map(static fn ($row): array => json_decode($row->evidence, true, flags: JSON_THROW_ON_ERROR))
+        ->sortBy('sequence')->values();
+    expect($history->pluck('sequence')->all())->toBe([1, 2, 3])
+        ->and($history[0]['previous_review_fingerprint'])->toBeNull()
+        ->and($history[1]['previous_review_fingerprint'])->toBe($history[0]['review_fingerprint'])
+        ->and($history[2]['previous_review_fingerprint'])->toBe($history[1]['review_fingerprint'])
+        ->and($history[2]['recorded_status'])->toBe('held_offline');
 });
 
 it('refuses spoofed synthetic provenance and raw payload fields before durable audit', function () {

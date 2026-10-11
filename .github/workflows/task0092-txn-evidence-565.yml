@@ -1,0 +1,78 @@
+name: Temporary TASK-0092 Transaction Evidence 565
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  task0092-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0092-offline-redteam-incidents-20261012'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout exact PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Update descriptive ready task frontier
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('.ai/tasks/TASK-0092.yaml')
+          t=json.loads(p.read_text())
+          assert t['id']=='TASK-0092' and t['status']=='ready'
+          assert t['exact_next_action']=='Do not activate until TASK-0091 is complete.'
+          t['exact_next_action']='Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled.'
+          p.write_text(json.dumps(t,indent=2)+'\n')
+          PY
+      - name: Produce official TASK-0092 continuity checkpoint
+        run: |
+          python tools/ai_journal.py compact
+          python tools/ai_txn.py checkpoint \
+            --active-pr 565 \
+            --active-branch supervisor/task0092-offline-redteam-incidents-20261012 \
+            --observed-main 0d2f858483ea1f652d575fb0d270c424515d04d9 \
+            --carrier-title 'feat(phase15): start TASK-0092 fail-closed red-team incident triage' \
+            --completed-pr 564 \
+            --completion-sha 0d2f858483ea1f652d575fb0d270c424515d04d9 \
+            --summary 'PR #564 officially certified TASK-0091 offline AC-1/AC-2/AC-3 on exact-head and resulting-main Foundation, Security and AI Governance; TASK-0092 first red-team incident read-only slice is staged in PR #565.' \
+            --tests 'PR #564 exact-head full Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance PASS, resulting protected main 0d2f858483ea1f652d575fb0d270c424515d04d9 Foundation, Security and Governance PASS. PR #565 CI pending.' \
+            --next 'Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled.'
+      - name: Validate official continuity checkpoint
+        run: |
+          python tools/ai_txn.py validate
+          python tools/ai_state.py validate
+          python tools/ai_journal.py validate
+          python tools/supervisor_contract.py validate
+          python tools/supervisor_contract.py validate-main-observation --current-main 0d2f858483ea1f652d575fb0d270c424515d04d9
+      - name: Export exact derived continuity evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from subprocess import check_output
+          import base64
+          changed=set(check_output(['git','diff','--name-only'],text=True).splitlines())
+          added=set(check_output(['git','ls-files','--others','--exclude-standard','.ai/state/archive'],text=True).splitlines())
+          paths=sorted(changed|added)
+          required={'.ai/state/CURRENT-STATE.yaml','.ai/state/LAST-CHECKPOINT.md','.ai/state/EXECUTION-JOURNAL.jsonl','.ai/coordination/OPEN-WORK-QUEUE.yaml','.ai/tasks/TASK-0092.yaml'}
+          if not required.issubset(paths):
+              raise SystemExit(f'Missing canonical evidence: {sorted(required-set(paths))}')
+          if any(p not in required and not p.startswith('.ai/state/archive/EXECUTION-JOURNAL-') for p in paths):
+              raise SystemExit(f'Unexpected changes: {paths}')
+          for name in paths:
+              print(f'VSN_EVIDENCE_BEGIN::{name}')
+              value=base64.b64encode(Path(name).read_bytes()).decode('ascii')
+              for i in range(0,len(value),160):
+                  print('VSN_EVIDENCE_CHUNK::'+value[i:i+160])
+              print(f'VSN_EVIDENCE_END::{name}')
+          PY

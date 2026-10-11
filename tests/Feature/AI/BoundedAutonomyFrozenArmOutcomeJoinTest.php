@@ -117,8 +117,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
         ->and($matched['execution_authorized'])->toBeFalse();
 
     // The same total and holdout can mask moved units between treatment/control.
-    $outcome->facts['assigned'] = ['control' => 4900, 'treatment' => 5100, 'holdout' => 1000];
-    $outcome->facts['exposed'] = ['control' => 4900, 'treatment' => 5100, 'holdout' => 0];
+    $outcome->facts['assigned'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 1000];
+    $outcome->facts['exposed'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 0];
     $mismatch = $reviewer->inspect($actor, $plan, $analysis, $at);
     expect($mismatch['status'])->toBe('held_offline')
         ->and($mismatch['reason_code'])->toBe('cohort_outcome_arm_denominator_mismatch')

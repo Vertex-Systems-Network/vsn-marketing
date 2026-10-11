@@ -1,0 +1,54 @@
+name: Temporary TASK-0091 Transaction Evidence 557
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  transactional-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0091-per-arm-denominator-readback-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Reconcile official TASK-0091 checkpoint
+        run: |
+          python tools/ai_txn.py checkpoint \
+            --active-pr 557 \
+            --active-branch supervisor/task0091-per-arm-denominator-readback-20261011 \
+            --observed-main 62bfc8ffcf489f06b6eebd3a32af76f2784cc578 \
+            --carrier-title 'fix(phase15): reverify frozen per-arm counts before offline canary review' \
+            --completed-pr 556 \
+            --completion-sha 62bfc8ffcf489f06b6eebd3a32af76f2784cc578 \
+            --summary 'PR #556 frozen total and holdout denominator review passed exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance and merged 62bfc8ffcf489f06b6eebd3a32af76f2784cc578. PR #557 stages frozen per-arm re-verification and adversarial feature tests; offline-only.' \
+            --tests 'PR #556 full exact-head required checks PASS; resulting-main verification independent. PR #557 full exact-head CI pending.' \
+            --next 'Verify PR #557 frozen per-arm source re-read, exact receipt binding and tampered control/treatment counts using full CI; repair and merge if green, continue TASK-0091 acceptance.'
+      - name: Export exact transaction artifacts as scoped evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          for name in (
+              '.ai/state/CURRENT-STATE.yaml',
+              '.ai/state/LAST-CHECKPOINT.md',
+              '.ai/state/EXECUTION-JOURNAL.jsonl',
+              '.ai/coordination/OPEN-WORK-QUEUE.yaml',
+          ):
+              print(f'VSN_EVIDENCE_BEGIN::{name}')
+              data = base64.b64encode(Path(name).read_bytes()).decode('ascii')
+              for i in range(0, len(data), 160):
+                  print('VSN_EVIDENCE_CHUNK::' + data[i:i+160])
+              print(f'VSN_EVIDENCE_END::{name}')
+          PY

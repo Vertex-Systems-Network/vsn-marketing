@@ -62,35 +62,55 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamHumanTriage
                 throw new InvalidArgumentException('Current independent incident-triage authority missing.');
             }
 
-            $source = DB::table('audit_events')
-                ->where('id', $sourceEventId)
+            // Never acknowledge an old positive snapshot after a newer
+            // unresolved hold. Audit timestamps may tie, so replay the
+            // per-run hash chain under the tenant's workspace lock.
+            $sources = DB::table('audit_events')
                 ->where('workspace_id', $requester->workspaceId)
                 ->where('action', self::SOURCE_ACTION)
                 ->where('subject_type', 'offline_redteam_run')
                 ->where('subject_id', $runId)
-                ->first();
-            if ($source === null || $source->actor_id !== $requester->actorId
-                || $source->brand_id !== $requester->brandId) {
-                throw new InvalidArgumentException('Untrusted or cross-actor incident source.');
+                ->get();
+            if ($sources->count() === 0 || $sources->count() > 1024) {
+                throw new InvalidArgumentException('Synthetic red-team source history unavailable or unbounded.');
             }
-
-            $sourceFacts = json_decode($source->evidence, true, flags: JSON_THROW_ON_ERROR);
-            if (! is_array($sourceFacts)
-                || ($sourceFacts['run_id'] ?? null) !== $runId
-                || ! is_int($sourceFacts['sequence'] ?? null)
-                || $sourceFacts['sequence'] < 1
-                || ! is_string($sourceFacts['review_fingerprint'] ?? null)
-                || preg_match('/^[a-f0-9]{64}$/D', $sourceFacts['review_fingerprint']) !== 1
-                || ! in_array($sourceFacts['recorded_status'] ?? null, [
-                    'held_offline', 'offline_redteam_review_ready',
-                ], true)
-                || ($sourceFacts['synthetic_evidence_only'] ?? null) !== true
-                || ($sourceFacts['production_incident_verified'] ?? null) !== false
-                || ($sourceFacts['recovery_performed'] ?? null) !== false
-                || ! is_int($sourceFacts['case_count'] ?? null)
-                || $sourceFacts['case_count'] < 0 || $sourceFacts['case_count'] > 128) {
-                throw new InvalidArgumentException('Untrusted synthetic offline incident source facts.');
+            $indexed = [];
+            foreach ($sources as $source) {
+                $sourceFacts = json_decode($source->evidence, true, flags: JSON_THROW_ON_ERROR);
+                $sequence = is_array($sourceFacts) ? ($sourceFacts['sequence'] ?? null) : null;
+                if ($source->actor_id !== $requester->actorId
+                    || $source->brand_id !== $requester->brandId
+                    || ! is_int($sequence) || $sequence < 1 || $sequence > 1024
+                    || isset($indexed[$sequence])
+                    || ($sourceFacts['run_id'] ?? null) !== $runId
+                    || ! is_string($sourceFacts['review_fingerprint'] ?? null)
+                    || preg_match('/^[a-f0-9]{64}$/D', $sourceFacts['review_fingerprint']) !== 1
+                    || ! in_array($sourceFacts['recorded_status'] ?? null, [
+                        'held_offline', 'offline_redteam_review_ready',
+                    ], true)
+                    || ($sourceFacts['synthetic_evidence_only'] ?? null) !== true
+                    || ($sourceFacts['production_incident_verified'] ?? null) !== false
+                    || ($sourceFacts['recovery_performed'] ?? null) !== false
+                    || ! is_int($sourceFacts['case_count'] ?? null)
+                    || $sourceFacts['case_count'] < 0 || $sourceFacts['case_count'] > 128) {
+                    throw new InvalidArgumentException('Untrusted synthetic offline incident source facts.');
+                }
+                $indexed[$sequence] = ['row' => $source, 'evidence' => $sourceFacts];
             }
+            $previousFingerprint = null;
+            for ($sequence = 1; $sequence <= count($indexed); $sequence++) {
+                $entry = $indexed[$sequence] ?? null;
+                if ($entry === null
+                    || ($entry['evidence']['previous_review_fingerprint'] ?? null) !== $previousFingerprint) {
+                    throw new InvalidArgumentException('Synthetic incident source chain broken.');
+                }
+                $previousFingerprint = $entry['evidence']['review_fingerprint'];
+            }
+            $latest = $indexed[count($indexed)];
+            if ($latest['row']->id !== $sourceEventId) {
+                throw new InvalidArgumentException('Stale synthetic incident evidence cannot be acknowledged.');
+            }
+            $sourceFacts = $latest['evidence'];
 
             $history = DB::table('audit_events')
                 ->where('workspace_id', $requester->workspaceId)
@@ -104,13 +124,23 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamHumanTriage
             foreach ($history as $event) {
                 $fact = json_decode($event->evidence, true, flags: JSON_THROW_ON_ERROR);
                 if (! is_array($fact)
-                    || ($fact['source_event_id'] ?? null) !== $sourceEventId
-                    || ($fact['triage_decision'] ?? null) !== $decision
-                    || $event->actor_id !== $humanId) {
-                    continue;
+                    || $event->brand_id !== $requester->brandId
+                    || ($fact['run_id'] ?? null) !== $runId
+                    || ! is_string($fact['source_event_id'] ?? null)
+                    || ! is_string($fact['source_review_fingerprint'] ?? null)
+                    || preg_match('/^[a-f0-9]{64}$/D', $fact['source_review_fingerprint']) !== 1
+                    || ! in_array($fact['triage_decision'] ?? null, self::DECISIONS, true)
+                    || ($fact['synthetic_evidence_only'] ?? null) !== true
+                    || ($fact['production_incident_verified'] ?? null) !== false
+                    || ($fact['incident_resolved'] ?? null) !== false
+                    || ($fact['recovery_performed'] ?? null) !== false) {
+                    throw new InvalidArgumentException('Prior synthetic triage audit history is corrupt.');
                 }
-
-                return self::result($runId, $event->id, $decision, true);
+                if ($fact['source_event_id'] === $sourceEventId
+                    && $fact['triage_decision'] === $decision
+                    && $event->actor_id === $humanId) {
+                    return self::result($runId, $event->id, $decision, true);
+                }
             }
 
             $event = $this->audit->record(

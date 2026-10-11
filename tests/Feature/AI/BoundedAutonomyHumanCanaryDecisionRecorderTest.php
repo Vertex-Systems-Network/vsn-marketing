@@ -3,6 +3,7 @@
 use App\Modules\AI\Application\BoundedAutonomyHumanCanaryDecisionRecorder;
 use App\Modules\AI\Application\BoundedAutonomyOfflineHumanPromotionReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
+use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyCanaryHumanDecisionSource;
@@ -72,6 +73,7 @@ function humanCanaryWriterFixture(): array
 function humanCanaryWriterService(
     ?object $joinedFacts = null,
     ?object $outcomeFacts = null,
+    ?object $cohortFacts = null,
 ): BoundedAutonomyHumanCanaryDecisionRecorder {
     $access = new class implements ExperimentAccess
     {
@@ -101,9 +103,20 @@ function humanCanaryWriterService(
             }
         };
 
+    $cohorts = $cohortFacts === null ? null
+        : new class($cohortFacts) implements BoundedAutonomyCanaryCohortSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function snapshot(TenantContext $actor, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        };
+
     return new BoundedAutonomyHumanCanaryDecisionRecorder(
         app(WorkspaceAuthorizer::class),
-        new BoundedAutonomyOfflineOutcomeJoinReview($joins, $outcomes, $access),
+        new BoundedAutonomyOfflineOutcomeJoinReview($joins, $outcomes, $access, $cohorts),
     );
 }
 
@@ -237,7 +250,21 @@ it('records independently joined human review only, never promoting or triggerin
         'outcomes' => ['control' => 500, 'treatment' => 2000, 'holdout' => 0],
         'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
     ]];
-    $service = humanCanaryWriterService($joined, $outcomes);
+    $cohorts = (object) ['value' => [
+        'tenant' => $f['scope']->toArray(),
+        'plan_sha256' => $f['plan']->fingerprint(),
+        'assignment_manifest_sha256' => str_repeat('b', 64),
+        'observed_at_unix' => $at->getTimestamp(),
+        'expires_at_unix' => $at->getTimestamp() + 300,
+        'frozen' => true, 'consent_verified' => true,
+        'quarantined' => 0, 'crossovers' => 0,
+        'counts' => [
+            'control' => ['eligible' => 5000, 'assigned' => 5000, 'exposed' => 5000],
+            'treatment' => ['eligible' => 5000, 'assigned' => 5000, 'exposed' => 5000],
+            'holdout' => ['eligible' => 1000, 'assigned' => 1000, 'exposed' => 0],
+        ],
+    ]];
+    $service = humanCanaryWriterService($joined, $outcomes, $cohorts);
     $recorded = $service->record($f['approver'], $f['scope'], $f['plan'], $f['analysis'],
         'approved', $at);
     expect($recorded['status'])->toBe('human_decision_recorded_offline')

@@ -2,6 +2,7 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\Experiments\Domain\ExperimentAccess;

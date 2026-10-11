@@ -92,6 +92,7 @@ final class BoundedAutonomyOfflineProviderAttemptReviewTest extends TestCase
 
         self::assertSame('offline_no_effect_reconciliation_candidate', $r['status']);
         self::assertSame(2, $r['verified_attempt_count']);
+        self::assertSame($this->at()->getTimestamp(), $r['captured_at_unix']);
         self::assertFalse($r['rollback_performed']);
         self::assertFalse($r['refund_authorized']);
         self::assertFalse($r['retry_authorized']);

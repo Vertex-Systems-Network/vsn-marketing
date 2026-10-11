@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "d5030edd11c2c2293be8563f3e74c2aedd13bb94",
+  "reconciled_main_sha": "0d2f858483ea1f652d575fb0d270c424515d04d9",
   "active_work_path": {
     "kind": "pr",
-    "number": 564,
-    "title": "chore(phase15): certify TASK-0091 offline canary safety and unlock red-team",
-    "branch": "supervisor/task0091-certification-20261012",
-    "disposition": "active_task0091_carrier"
+    "number": 565,
+    "title": "feat(phase15): start TASK-0092 fail-closed red-team incident triage",
+    "branch": "supervisor/task0092-offline-redteam-incidents-20261012",
+    "disposition": "active_task0092_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 565,
+      "title": "feat(phase15): start TASK-0092 fail-closed red-team incident triage",
+      "branch": "supervisor/task0092-offline-redteam-incidents-20261012",
+      "disposition": "active_task0092_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 564,
       "title": "chore(phase15): certify TASK-0091 offline canary safety and unlock red-team",
       "branch": "supervisor/task0091-certification-20261012",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "0d2f858483ea1f652d575fb0d270c424515d04d9"
     },
     {
       "kind": "pr",

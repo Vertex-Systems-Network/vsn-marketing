@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Do not activate until TASK-0091 is complete."
+  "exact_next_action": "Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled."
 }

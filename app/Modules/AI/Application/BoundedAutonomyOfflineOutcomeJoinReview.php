@@ -2,6 +2,7 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
@@ -142,6 +143,11 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
             }
 
             if ($score['status'] === 'offline_operator_review_candidate') {
+                // Existing pre-migration receipts remain immutable; no source
+                // may retroactively infer their absent per-arm commitments.
+                if (! self::digest($receipt->assignment_arm_set_sha256 ?? null)) {
+                    return $this->hold($experiment, 'frozen_cohort_arm_commitment_unavailable');
+                }
                 if ($this->cohorts === null) {
                     return $this->hold($experiment, 'independent_cohort_arm_readback_unavailable');
                 }
@@ -160,6 +166,12 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
                 ksort($scoredArms);
                 if ($expectedArms !== $scoredArms) {
                     return $this->hold($experiment, 'cohort_outcome_arm_denominator_mismatch');
+                }
+                $currentCommitment = BoundedAutonomyArmEvidenceDigest::sha256(
+                    $experiment->fingerprint(), $expectedArms,
+                );
+                if (! hash_equals($receipt->assignment_arm_set_sha256, $currentCommitment)) {
+                    return $this->hold($experiment, 'frozen_cohort_arm_commitment_mismatch');
                 }
                 if (! is_int($frozen['observed_at_unix'] ?? null)
                     || $frozen['observed_at_unix'] < $join['observed_at_unix']

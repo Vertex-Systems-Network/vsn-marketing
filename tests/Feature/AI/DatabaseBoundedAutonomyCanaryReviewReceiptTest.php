@@ -10,6 +10,7 @@ use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
@@ -142,6 +143,39 @@ it('refuses same-total and same-holdout arm reassignment without overwriting the
         ->toThrow(InvalidArgumentException::class);
     expect((array) DB::table('ai_autonomy_offline_canary_reviews')
         ->where('experiment_id', $plan->id)->first())->toBe($original);
+});
+
+it('preserves legacy null arm commitments and rejects migration rollback with receipts', function () {
+    [$actor, $plan] = canaryReceiptFixture();
+    $receiptId = (string) Str::uuid();
+    DB::table('ai_autonomy_offline_canary_reviews')->insert([
+        'id' => $receiptId,
+        'workspace_id' => $actor->workspaceId,
+        'experiment_id' => $plan->id,
+        'brand_id' => null,
+        'plan_sha256' => $plan->fingerprint(),
+        'assignment_manifest_sha256' => str_repeat('b', 64),
+        'assigned_denominator' => 1000,
+        'holdout_denominator' => 100,
+        'status' => 'offline_review_only',
+        'recorded_by_actor_id' => $actor->actorId,
+        'created_at' => now(),
+    ]);
+    $migration = require base_path('database/migrations/2026_10_11_000001_add_canary_assignment_arm_commitment.php');
+    $migration->up();
+    expect(Schema::hasColumn('ai_autonomy_offline_canary_reviews', 'assignment_arm_set_sha256'))->toBeTrue()
+        ->and(DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)
+            ->value('assignment_arm_set_sha256'))->toBeNull();
+    expect(fn () => $migration->down())->toThrow(RuntimeException::class);
+    expect(DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)->count())->toBe(1);
+
+    // A legacy receipt is never silently backfilled on replay.
+    $at = new DateTimeImmutable('2026-10-09T09:00:00+00:00');
+    $facts = (object) ['value' => canaryReceiptFacts($actor, $plan, $at)];
+    expect(fn () => canaryReceiptService($facts)->record($actor, $plan, $at))
+        ->toThrow(InvalidArgumentException::class);
+    expect(DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)
+        ->value('assignment_arm_set_sha256'))->toBeNull();
 });
 
 it('does not record foreign organization or revoked independent plan authority', function () {

@@ -6,6 +6,7 @@ use App\Modules\AI\Application\BoundedAutonomyOfflineJointRollbackReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineOperationCoverageReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineProviderAttemptReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
+use App\Modules\AI\Domain\BoundedAutonomyOperationInventoryDigest;
 use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyExpectedProviderOperationsSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
@@ -40,7 +41,7 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
         $sorted = $identities;
         usort($sorted, static fn (array $a, array $b): int => [$a['operation_id'], $a['idempotency_key']] <=> [$b['operation_id'], $b['idempotency_key']]);
 
-        return [
+        $facts = [
             'tenant' => $this->actor()->toArray(),
             'run_id' => 'run-1',
             'snapshot_sha256' => str_repeat('a', 64),
@@ -50,6 +51,9 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
             'operations' => $identities,
             'operation_set_sha256' => hash('sha256', json_encode($sorted, JSON_THROW_ON_ERROR)),
         ];
+        $facts['inventory_manifest_sha256'] = BoundedAutonomyOperationInventoryDigest::sha256($facts);
+
+        return $facts;
     }
 
     private function attempts(): array
@@ -181,6 +185,22 @@ final class BoundedAutonomyOfflineOperationCoverageReviewTest extends TestCase
                 self::assertTrue(true);
             }
         }
+    }
+
+    public function test_incomplete_inventory_cannot_claim_complete_with_unchanged_manifest(): void
+    {
+        $incomplete = $this->inventory($this->identities(), false);
+        $incomplete['complete'] = true;
+        $this->expectException(InvalidArgumentException::class);
+        $this->inspect($this->reviewer($incomplete));
+    }
+
+    public function test_inventory_provenance_timestamp_cannot_change_under_original_manifest(): void
+    {
+        $original = $this->inventory($this->identities());
+        $original['observed_at_unix']--;
+        $this->expectException(InvalidArgumentException::class);
+        $this->inspect($this->reviewer($original));
     }
 
     public function test_unresolved_provider_attempt_blocks_even_a_complete_expected_inventory(): void

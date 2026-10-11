@@ -73,6 +73,7 @@ final readonly class BoundedAutonomyOfflineCanaryReview
         }
 
         $assigned = [];
+        $exposed = [];
         foreach ($facts['counts'] as $variant => $row) {
             if (! is_array($row)) {
                 throw new InvalidArgumentException('Invalid canary cohort metric row.');

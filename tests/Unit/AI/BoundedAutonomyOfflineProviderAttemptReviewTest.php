@@ -140,6 +140,8 @@ final class BoundedAutonomyOfflineProviderAttemptReviewTest extends TestCase
             $this->rebind(array_replace($good, ['expires_at_unix' => $this->at()->getTimestamp()])),
             $this->evidence([array_replace($attempt, ['receipt_sha256' => 'invalid'])]),
             $this->evidence([array_replace($attempt, ['callback_count' => -1])]),
+            $this->evidence([array_replace($attempt, ['attempted_at_unix' => $this->at()->getTimestamp() - 3601])]),
+            $this->evidence([array_replace($attempt, ['attempted_at_unix' => -1])]),
             $this->evidence([array_replace($attempt, ['promote_now' => true])]),
         ];
         foreach ($invalid as $record) {

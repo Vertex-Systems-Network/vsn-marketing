@@ -102,6 +102,8 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
             ['snapshot_sha256' => str_repeat('c', 64)],
             ['source_sha256' => 'invalid'],
             ['observed_at_unix' => $this->at()->getTimestamp() + 1],
+            ['attempted_at_unix' => $this->at()->getTimestamp() - 3601],
+            ['attempted_at_unix' => -1],
             ['callback_count' => 'one'],
             ['send_authorized' => true],
         ] as $change) {

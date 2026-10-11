@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "0f28b6079b523ec231ff75d585a0c094e22f23c1",
+  "reconciled_main_sha": "45d538deeaac8c69de12e1565c61cffe3e54c2ad",
   "active_work_path": {
     "kind": "pr",
-    "number": 558,
-    "title": "fix(phase15): bind canary exposures and consent observation order to outcome proof",
-    "branch": "supervisor/task0091-exposure-consent-chronology-20261011",
+    "number": 559,
+    "title": "feat(phase15): persist frozen per-arm assignment checksum in offline receipt",
+    "branch": "supervisor/task0091-durable-arm-commitment-20261011",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 559,
+      "title": "feat(phase15): persist frozen per-arm assignment checksum in offline receipt",
+      "branch": "supervisor/task0091-durable-arm-commitment-20261011",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 558,
       "title": "fix(phase15): bind canary exposures and consent observation order to outcome proof",
       "branch": "supervisor/task0091-exposure-consent-chronology-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "45d538deeaac8c69de12e1565c61cffe3e54c2ad"
     },
     {
       "kind": "pr",

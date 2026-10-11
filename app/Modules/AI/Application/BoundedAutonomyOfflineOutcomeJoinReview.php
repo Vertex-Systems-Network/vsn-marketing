@@ -123,6 +123,16 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
             if ($score['source_manifest_sha256'] !== $join['outcome_manifest_sha256']) {
                 return $this->hold($experiment, 'outcome_source_manifest_drift');
             }
+            // An authenticated join to an immutable cohort receipt cannot
+            // substitute a different population when scoring conversions.
+            // Bind at least the durable total and hidden holdout denominators
+            // before any (still offline-only) operator review candidate.
+            if (! is_int($score['assigned_denominator'] ?? null)
+                || ! is_int($score['holdout_denominator'] ?? null)
+                || $score['assigned_denominator'] !== (int) $receipt->assigned_denominator
+                || $score['holdout_denominator'] !== (int) $receipt->holdout_denominator) {
+                return $this->hold($experiment, 'cohort_outcome_denominator_mismatch');
+            }
 
             return [
                 'status' => $score['status'] === 'offline_operator_review_candidate'

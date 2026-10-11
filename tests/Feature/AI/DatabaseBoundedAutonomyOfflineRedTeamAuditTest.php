@@ -196,7 +196,6 @@ it('refuses spoofed synthetic provenance and raw payload fields before durable a
             ->where('action', 'ai.autonomy.redteam.offline.review')->count())->toBe(0);
 });
 
-
 function redteamAuditMonitor(object $access): DatabaseBoundedAutonomyOfflineRedTeamMonitor
 {
     $permission = new class($access) implements ExperimentAccess

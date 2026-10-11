@@ -33,6 +33,7 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
         private BoundedAutonomyCanaryOutcomeJoinSource $joins,
         private BoundedAutonomyCanaryOutcomeSource $outcomes,
         private ExperimentAccess $access,
+        private ?BoundedAutonomyCanaryCohortSource $cohorts = null,
     ) {}
 
     public function inspect(

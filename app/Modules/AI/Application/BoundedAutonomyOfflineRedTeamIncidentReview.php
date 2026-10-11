@@ -92,8 +92,8 @@ final readonly class BoundedAutonomyOfflineRedTeamIncidentReview
             }
 
             $ids[$finding['case_id']] = true;
-            ++$severityCounts[$finding['severity']];
-            ++$categoryCounts[$finding['category']];
+            $severityCounts[$finding['severity']]++;
+            $categoryCounts[$finding['category']]++;
             $unresolved = $unresolved || $finding['outcome'] === 'unresolved';
         }
 

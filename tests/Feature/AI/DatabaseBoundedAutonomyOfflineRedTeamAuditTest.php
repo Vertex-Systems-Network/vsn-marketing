@@ -3,7 +3,6 @@
 use App\Modules\AI\Application\BoundedAutonomyOfflineRedTeamIncidentReview;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRedTeamEvidenceSource;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyOfflineRedTeamAudit;
-use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyRedTeamEvidenceSource;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Experiments\Domain\ExperimentAccess;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;

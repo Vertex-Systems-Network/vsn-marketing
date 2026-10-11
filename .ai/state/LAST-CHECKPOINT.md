@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-11T20:52:55+00:00`
-- Observed main: `01b65fd0370bd8bfd79bdbfc7d4762e3d3ae79f4`
+- Timestamp: `2026-10-11T21:25:34+00:00`
+- Observed main: `d5030edd11c2c2293be8563f3e74c2aedd13bb94`
 - Active issue: `none`
-- Active PR: `563`
-- Active branch: `supervisor/task0091-rollback-capture-order-20261012`
-- Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
+- Active PR: `564`
+- Active branch: `supervisor/task0091-certification-20261012`
+- Current milestone: `TASK-0092-PHASE15-REDTEAM`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0091`
-- Next task: `TASK-0092`
+- Active task: `TASK-0092`
+- Next task: `TASK-0093`
 - Current phase: `PHASE-15`
-- Execution status: `in_progress`
+- Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `795f7480757a65b1ff59137817002a63f9e20a626771ba527b89626060a65410`
+- State fingerprint: `461087b1369edaedb0d8bb5f22762faf36f35789ae46eae033b338a3e6d15565`
 
 ## Completed / observed this session
 
-PR #562 complete on 01b65fd with full exact-head and resulting-main CI. PR #563 stages conservative provider-capture chronology under TASK-0091 AC-3, offline only.
+TASK-0091 AC-1/2/3 accepted as OFFLINE deterministic contracts; TASK-0092 staged READY for red-team and incident monitoring. PR #564 is pending its own exact-head/protected-main CI.
 
 ## Tests
 
-PR #562 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security, Governance and resulting-main checks PASS; PR #563 exact-head CI pending.
+TASK-0091 implementation PRs #541-#563 tested and protected-main green through d5030edd; PR #564 full certification validation pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #562 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security, Governan
 
 ## Exact next action
 
-Certify PR #563 provider capture chronology regressions with full exact-head CI; guarded merge and protected-main validation, then continue TASK-0091 AC-1..3 acceptance.
+Start TASK-0092 offline autonomy red-team and incident-monitoring tests after PR #564 guarded merge and main verification. Do not authorize external sending, promotion, spending or rollback.

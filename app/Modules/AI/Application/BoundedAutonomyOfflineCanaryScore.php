@@ -113,6 +113,7 @@ final readonly class BoundedAutonomyOfflineCanaryScore
             'experiment_id' => $experiment->id,
             'plan_sha256' => $experiment->fingerprint(),
             'source_manifest_sha256' => $facts['source_manifest_sha256'],
+            'assigned_by_arm' => $facts['assigned'],
             'assigned_denominator' => array_sum($facts['assigned']),
             'holdout_denominator' => $facts['assigned'][$experiment->holdout],
             'statistical_status' => $stats['status'],

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "9508a7a55b682ceaf14b1165331b9a583a890ee8",
+  "reconciled_main_sha": "43b8f3215089174442eec58de695e3f8228c7c67",
   "active_work_path": {
     "kind": "pr",
-    "number": 566,
-    "title": "feat(phase15): audit synthetic red-team evidence with replay-safe holds",
-    "branch": "supervisor/task0092-offline-redteam-audit-20261012",
+    "number": 567,
+    "title": "test(phase15): stress four offline autonomy workers against quota and rate caps",
+    "branch": "supervisor/task0092-quota-rate-4worker-20261012",
     "disposition": "active_task0092_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 567,
+      "title": "test(phase15): stress four offline autonomy workers against quota and rate caps",
+      "branch": "supervisor/task0092-quota-rate-4worker-20261012",
+      "disposition": "active_task0092_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 566,
       "title": "feat(phase15): audit synthetic red-team evidence with replay-safe holds",
       "branch": "supervisor/task0092-offline-redteam-audit-20261012",
-      "disposition": "active_task0092_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "43b8f3215089174442eec58de695e3f8228c7c67"
     },
     {
       "kind": "pr",

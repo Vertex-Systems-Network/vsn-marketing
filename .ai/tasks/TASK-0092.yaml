@@ -30,5 +30,5 @@
     "ai-continuity-and-policy",
     "exact-head-protected-main-gates"
   ],
-  "exact_next_action": "Certify PR #566 synthetic red-team append-only audit, replay holds, actor/tenant authorization, no incident/recovery authority via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 quota/stop race stress and human incident workflows."
+  "exact_next_action": "Certify PR #567 four-worker PostgreSQL quota/rate stress with one offline claim and three fail-closed holds via full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 provider/queue failure and incident recovery adversarial work."
 }

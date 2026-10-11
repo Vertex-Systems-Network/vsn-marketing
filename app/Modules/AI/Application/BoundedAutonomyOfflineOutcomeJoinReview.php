@@ -136,6 +136,28 @@ final readonly class BoundedAutonomyOfflineOutcomeJoinReview
                 return $this->hold($experiment, 'cohort_outcome_denominator_mismatch');
             }
 
+            if ($score['status'] === 'offline_operator_review_candidate') {
+                if ($this->cohorts === null) {
+                    return $this->hold($experiment, 'independent_cohort_arm_readback_unavailable');
+                }
+                $frozen = (new BoundedAutonomyOfflineCanaryReview($this->cohorts))->inspect(
+                    $actor, $experiment, $at,
+                );
+                if ($frozen['status'] !== 'offline_cohort_review_ready'
+                    || $frozen['assignment_manifest_sha256'] !== $receipt->assignment_manifest_sha256
+                    || $frozen['assigned_denominator'] !== (int) $receipt->assigned_denominator
+                    || $frozen['holdout_denominator'] !== (int) $receipt->holdout_denominator) {
+                    return $this->hold($experiment, 'independent_cohort_arm_readback_unverified');
+                }
+                $expectedArms = $frozen['assigned_by_arm'];
+                $scoredArms = $score['assigned_by_arm'];
+                ksort($expectedArms);
+                ksort($scoredArms);
+                if ($expectedArms !== $scoredArms) {
+                    return $this->hold($experiment, 'cohort_outcome_arm_denominator_mismatch');
+                }
+            }
+
             return [
                 'status' => $score['status'] === 'offline_operator_review_candidate'
                     ? 'offline_joined_operator_review_candidate' : 'held_offline',

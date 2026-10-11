@@ -121,6 +121,35 @@ final class BoundedAutonomyOfflineJointRollbackReviewTest extends TestCase
         self::assertFalse($r['promotion_authorized']);
     }
 
+    public function test_aggregate_non_effect_cannot_precede_latest_provider_attempt(): void
+    {
+        $now = $this->at()->getTimestamp();
+        $aggregate = array_replace($this->aggregateFact(), [
+            'observed_at_unix' => $now - 100,
+            'attempted_at_unix' => $now - 200,
+        ]);
+        $detail = $this->perAttemptFact();
+        $detail['attempts'][0]['attempted_at_unix'] = $now - 50;
+        $detail['source_manifest_sha256'] = hash('sha256', json_encode([
+            'tenant' => $detail['tenant'],
+            'run_id' => $detail['run_id'],
+            'snapshot_sha256' => $detail['snapshot_sha256'],
+            'captured_at_unix' => $detail['captured_at_unix'],
+            'expires_at_unix' => $detail['expires_at_unix'],
+            'complete' => $detail['complete'],
+            'attempts' => $detail['attempts'],
+        ], JSON_THROW_ON_ERROR));
+
+        $review = $this->inspect($this->reviewer($aggregate, $detail));
+        self::assertSame('held_offline', $review['status']);
+        self::assertSame('aggregate_review_predates_provider_attempt', $review['reason_code']);
+        self::assertFalse($review['rollback_performed']);
+        self::assertFalse($review['refund_authorized']);
+        self::assertFalse($review['retry_authorized']);
+        self::assertFalse($review['execution_authorized']);
+        self::assertFalse($review['promotion_authorized']);
+    }
+
     public function test_applied_aggregate_or_provider_attempt_never_returns_positive_joint_review(): void
     {
         $external = $this->inspect($this->reviewer($this->aggregateFact('confirmed_applied'), $this->perAttemptFact()));

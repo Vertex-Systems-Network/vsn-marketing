@@ -18,7 +18,7 @@ Negative obligations: positive AI narrative alone, low-trust/duplicate events, s
 
 Evidence carriers: PRs #544-#545 durable append-only offline rollback history and concurrency; PR #551 independent per-provider attempt readback combined with aggregate outcome; PR #552 independently sourced expected canonical operations set (merged with full exact-head gates); PR #553 relative-to-capture/observation timestamp bounds (merged, resulting-main CI verification separate). Evaluation-clock absolute freshness is staged separately and not certified.
 
-Negative obligations: missing/fake provider source, unknown/late/duplicate/irreversible/costly attempt, insufficient attempt inventory, same-count different operation IDs, changed idempotency, stale timestamps and conflicting history must not claim rollback performed, refund/retry permission or verified no effect.
+Negative obligations: missing/fake provider source, unknown/late/duplicate/irreversible/costly attempt, insufficient attempt inventory, same-count different operation IDs, changed idempotency, stale timestamps, aggregate non-effect observations that precede a later provider attempt and conflicting history must not claim rollback performed, refund/retry permission or verified no effect. The independent cross-source chronology hardening is staged after PR #554.
 
 ## Completion / scope
 

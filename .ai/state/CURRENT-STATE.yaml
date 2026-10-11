@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "de86a0ddd432340665001a20b17bf4f8b5d82512",
+  "observed_main_sha": "9d2934dac293675c05f9c5a9edf382834019d46e",
   "active_issue": null,
-  "active_pr": 568,
-  "active_branch": "supervisor/task0092-tool-failure-20261012",
+  "active_pr": 569,
+  "active_branch": "supervisor/task0092-operator-audit-monitor-20261012",
   "current_milestone": "TASK-0092-PHASE15-REDTEAM",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #568 independent typed-tool approval, provider-like queue errors, fake secret redaction and rollback failure human hold with exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 queue and recovery certification.",
+  "exact_next_safe_action": "Certify PR #569 read-only synthetic incident operator monitor, tenant/brand permission checks and hold-preserving audit chain via full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 human incident and provider-failure red-team evidence.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #568 independent typed-tool approval, provider-like queue errors, fake secret redaction and rollback failure human hold with exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 queue and recovery certification."
+  "exact_next_action": "Certify PR #569 read-only synthetic incident operator monitor, tenant/brand permission checks and hold-preserving audit chain via full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 human incident and provider-failure red-team evidence."
 }

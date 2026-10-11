@@ -135,6 +135,27 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
         ->and($matched['promotion_authorized'])->toBeFalse()
         ->and($matched['execution_authorized'])->toBeFalse();
 
+    // Historical pre-migration receipts retain their evidence but cannot
+    // fabricate a per-arm commitment at the time of an operator review.
+    DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)
+        ->update(['assignment_arm_set_sha256' => null]);
+    $legacy = $reviewer->inspect($actor, $plan, $analysis, $at);
+    expect($legacy['status'])->toBe('held_offline')
+        ->and($legacy['reason_code'])->toBe('frozen_cohort_arm_commitment_unavailable')
+        ->and($legacy['promotion_authorized'])->toBeFalse();
+
+    DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)
+        ->update(['assignment_arm_set_sha256' => str_repeat('0', 64)]);
+    $tampered = $reviewer->inspect($actor, $plan, $analysis, $at);
+    expect($tampered['status'])->toBe('held_offline')
+        ->and($tampered['reason_code'])->toBe('frozen_cohort_arm_commitment_mismatch')
+        ->and($tampered['execution_authorized'])->toBeFalse();
+
+    DB::table('ai_autonomy_offline_canary_reviews')->where('id', $receiptId)
+        ->update(['assignment_arm_set_sha256' => BoundedAutonomyArmEvidenceDigest::sha256(
+            $plan->fingerprint(), ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000],
+        )]);
+
     // The independent outcome provider reports full exposures while the
     // frozen consent cohort says one assignment was not exposed.
     $cohorts->facts['counts']['control']['exposed'] = 4999;

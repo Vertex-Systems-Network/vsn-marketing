@@ -2,6 +2,7 @@
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
+use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeSource;
 use App\Modules\Experiments\Domain\ExperimentAccess;
@@ -82,7 +83,7 @@ function offlineOutcomeJoinFacts(
     ];
 }
 
-function offlineOutcomeJoinService(?object $facts, bool $allowed = true): BoundedAutonomyOfflineOutcomeJoinReview
+function offlineOutcomeJoinService(?object $facts, bool $allowed = true, ?object $outcomeFacts = null): BoundedAutonomyOfflineOutcomeJoinReview
 {
     $source = $facts === null ? new DenyingBoundedAutonomyCanaryOutcomeJoinSource
         : new class($facts) implements BoundedAutonomyCanaryOutcomeJoinSource
@@ -105,9 +106,18 @@ function offlineOutcomeJoinService(?object $facts, bool $allowed = true): Bounde
         }
     };
 
-    return new BoundedAutonomyOfflineOutcomeJoinReview(
-        $source, new DenyingBoundedAutonomyCanaryOutcomeSource, $access,
-    );
+    $outcomes = $outcomeFacts === null ? new DenyingBoundedAutonomyCanaryOutcomeSource
+        : new class($outcomeFacts) implements BoundedAutonomyCanaryOutcomeSource
+        {
+            public function __construct(private object $facts) {}
+
+            public function snapshot(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
+            {
+                return $this->facts->value;
+            }
+        };
+
+    return new BoundedAutonomyOfflineOutcomeJoinReview($source, $outcomes, $access);
 }
 
 it('requires a durable frozen cohort receipt before an independent outcome join is considered', function () {
@@ -127,6 +137,51 @@ it('requires a durable frozen cohort receipt before an independent outcome join 
     expect($joinedButNoOutcome['status'])->toBe('held_offline')
         ->and($joinedButNoOutcome['reason_code'])->toBe('independent_outcome_unavailable')
         ->and($joinedButNoOutcome['external_outcome_proven'])->toBeFalse();
+});
+
+it('holds outcome denominators that disagree with the frozen receipt', function () {
+    [$actor, $plan, $analysis, $at, $receipt] = offlineOutcomeJoinFixture();
+    offlineOutcomeJoinRecord($actor, $plan, $receipt);
+    $join = (object) ['value' => offlineOutcomeJoinFacts($actor, $plan, $analysis, $at, $receipt)];
+
+    $source = (object) ['value' => [
+        'tenant' => $actor->toArray(),
+        'experiment_id' => $plan->id,
+        'plan_sha256' => $plan->fingerprint(),
+        'analysis_sha256' => $analysis->fingerprint(),
+        'source_manifest_sha256' => str_repeat('c', 64),
+        'observed_at_unix' => $at->getTimestamp(),
+        'expires_at_unix' => $at->getTimestamp() + 300,
+        'verified_independent_source' => true,
+        'assigned' => ['control' => 450, 'treatment' => 450, 'holdout' => 100],
+        'exposed' => ['control' => 450, 'treatment' => 450, 'holdout' => 0],
+        'outcomes' => ['control' => 45, 'treatment' => 90, 'holdout' => 0],
+        'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
+    ]];
+
+    $service = offlineOutcomeJoinService($join, true, $source);
+    $matching = $service->inspect($actor, $plan, $analysis, $at);
+    expect($matching['reason_code'])->toBe('fixed_horizon')
+        ->and($matching['promotion_authorized'])->toBeFalse();
+
+    // A plausible independently hashed outcome source with more sample units
+    // must never override the accepted immutable cohort receipt denominator.
+    $source->value['assigned'] = ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000];
+    $source->value['exposed'] = ['control' => 5000, 'treatment' => 5000, 'holdout' => 0];
+    $source->value['outcomes'] = ['control' => 500, 'treatment' => 2000, 'holdout' => 0];
+    $inflated = $service->inspect($actor, $plan, $analysis, $at);
+    expect($inflated['status'])->toBe('held_offline')
+        ->and($inflated['reason_code'])->toBe('cohort_outcome_denominator_mismatch')
+        ->and($inflated['promotion_authorized'])->toBeFalse()
+        ->and($inflated['execution_authorized'])->toBeFalse();
+
+    // The holdout alone is also an independently frozen denominator.
+    $source->value['assigned'] = ['control' => 400, 'treatment' => 400, 'holdout' => 200];
+    $source->value['exposed'] = ['control' => 400, 'treatment' => 400, 'holdout' => 0];
+    $source->value['outcomes'] = ['control' => 40, 'treatment' => 100, 'holdout' => 0];
+    $changedHoldout = $service->inspect($actor, $plan, $analysis, $at);
+    expect($changedHoldout['reason_code'])->toBe('cohort_outcome_denominator_mismatch')
+        ->and($changedHoldout['promotion_authorized'])->toBeFalse();
 });
 
 it('rejects fabricated cohort receipt IDs and mismatched outcome joins', function () {

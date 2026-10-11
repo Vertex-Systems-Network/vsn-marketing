@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "6cf6894961271c47467738b949e9fd51020f2181",
+  "reconciled_main_sha": "86d789c2c4bff7b13deb89c65103b71ab58948a8",
   "active_work_path": {
     "kind": "pr",
-    "number": 554,
-    "title": "fix(phase15): enforce provider attempt freshness against review clock",
-    "branch": "supervisor/task0091-clock-window-failclosed-20261011",
+    "number": 555,
+    "title": "fix(phase15): hold rollback when aggregate evidence predates provider attempt",
+    "branch": "supervisor/task0091-provider-temporal-causality-20261011",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 555,
+      "title": "fix(phase15): hold rollback when aggregate evidence predates provider attempt",
+      "branch": "supervisor/task0091-provider-temporal-causality-20261011",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 554,
       "title": "fix(phase15): enforce provider attempt freshness against review clock",
       "branch": "supervisor/task0091-clock-window-failclosed-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "86d789c2c4bff7b13deb89c65103b71ab58948a8"
     },
     {
       "kind": "pr",

@@ -5,6 +5,7 @@ namespace Tests\Unit\AI;
 use App\Modules\AI\Application\BoundedAutonomyOfflineJointRollbackReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineProviderAttemptReview;
 use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
+use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyVerifiedProviderAttemptSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -25,7 +26,7 @@ final class BoundedAutonomyOfflineJointRollbackReviewTest extends TestCase
 
     private function aggregateFact(string $outcome = 'confirmed_not_applied'): array
     {
-        return [
+        return $this->signedAggregate([
             'tenant' => $this->actor()->toArray(),
             'run_id' => 'run-1',
             'snapshot_sha256' => str_repeat('a', 64),
@@ -38,7 +39,14 @@ final class BoundedAutonomyOfflineJointRollbackReviewTest extends TestCase
             'late_callback' => false,
             'duplicate_callback' => false,
             'external_cost_minor' => 0,
-        ];
+        ]);
+    }
+
+    private function signedAggregate(array $facts): array
+    {
+        $facts['source_sha256'] = BoundedAutonomyRollbackEvidenceDigest::sha256($facts);
+
+        return $facts;
     }
 
     private function perAttemptFact(string $outcome = 'confirmed_not_applied'): array
@@ -124,10 +132,10 @@ final class BoundedAutonomyOfflineJointRollbackReviewTest extends TestCase
     public function test_aggregate_non_effect_cannot_precede_latest_provider_attempt(): void
     {
         $now = $this->at()->getTimestamp();
-        $aggregate = array_replace($this->aggregateFact(), [
+        $aggregate = $this->signedAggregate(array_replace($this->aggregateFact(), [
             'observed_at_unix' => $now - 100,
             'attempted_at_unix' => $now - 200,
-        ]);
+        ]));
         $detail = $this->perAttemptFact();
         $detail['attempts'][0]['attempted_at_unix'] = $now - 50;
         $detail['source_manifest_sha256'] = hash('sha256', json_encode([

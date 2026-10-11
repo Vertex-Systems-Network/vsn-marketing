@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\AI\Domain\BoundedAutonomyArmEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryCohortSource;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyCanaryReviewReceipt;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryCohortSource;
@@ -108,6 +109,9 @@ it('records one immutable independently witnessed offline cohort and denies alte
     $facts = (object) ['value' => canaryReceiptFacts($actor, $plan, $at)];
     $service = canaryReceiptService($facts);
     $first = $service->record($actor, $plan, $at);
+    expect($first['assignment_arm_set_sha256'])->toBe(BoundedAutonomyArmEvidenceDigest::sha256(
+        $plan->fingerprint(), ['control' => 450, 'treatment' => 450, 'holdout' => 100],
+    ));
     expect($first['status'])->toBe('offline_cohort_review_ready')
         ->and($first['offline_receipt_recorded'])->toBeTrue()
         ->and($first['promotion_authorized'])->toBeFalse()
@@ -117,6 +121,27 @@ it('records one immutable independently witnessed offline cohort and denies alte
     expect(fn () => $service->record($actor, $plan, $at))
         ->toThrow(InvalidArgumentException::class);
     expect(DB::table('ai_autonomy_offline_canary_reviews')->count())->toBe(1);
+});
+
+it('refuses same-total and same-holdout arm reassignment without overwriting the receipt', function () {
+    [$actor, $plan] = canaryReceiptFixture();
+    $at = new DateTimeImmutable('2026-10-09T09:00:00+00:00');
+    $facts = (object) ['value' => canaryReceiptFacts($actor, $plan, $at)];
+    $service = canaryReceiptService($facts);
+    $first = $service->record($actor, $plan, $at);
+    expect($first['offline_receipt_recorded'])->toBeTrue();
+    $original = (array) DB::table('ai_autonomy_offline_canary_reviews')
+        ->where('experiment_id', $plan->id)->first();
+
+    // Reallocate 1 control unit to treatment while keeping 1000 total,
+    // 100 holdout and the same self-declared source manifest.
+    $facts->value['counts']['control']['assigned'] = 449;
+    $facts->value['counts']['treatment']['eligible'] = 451;
+    $facts->value['counts']['treatment']['assigned'] = 451;
+    expect(fn () => $service->record($actor, $plan, $at))
+        ->toThrow(InvalidArgumentException::class);
+    expect((array) DB::table('ai_autonomy_offline_canary_reviews')
+        ->where('experiment_id', $plan->id)->first())->toBe($original);
 });
 
 it('does not record foreign organization or revoked independent plan authority', function () {

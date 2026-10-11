@@ -52,6 +52,9 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
         'id' => $receiptId, 'workspace_id' => $workspace, 'experiment_id' => $experimentId,
         'brand_id' => null, 'plan_sha256' => $plan->fingerprint(),
         'assignment_manifest_sha256' => str_repeat('b', 64),
+        'assignment_arm_set_sha256' => BoundedAutonomyArmEvidenceDigest::sha256(
+            $plan->fingerprint(), ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000],
+        ),
         'assigned_denominator' => 11000, 'holdout_denominator' => 1000,
         'status' => 'offline_review_only', 'recorded_by_actor_id' => 'operator',
         'created_at' => now(),

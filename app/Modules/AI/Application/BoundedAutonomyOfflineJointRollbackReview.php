@@ -65,6 +65,16 @@ final readonly class BoundedAutonomyOfflineJointRollbackReview
             return $this->held($runId, $snapshotSha256, 'aggregate_review_predates_provider_attempt');
         }
 
+        // A later independently captured provider readback can contain new
+        // callbacks or cost evidence which an older aggregate non-effect
+        // observation could not have reconciled. Positive dual-source review
+        // requires the aggregate to be at least as recent as that capture,
+        // not merely newer than each historical attempt timestamp.
+        if (! is_int($detail['captured_at_unix'] ?? null)
+            || $summary['observed_at_unix'] < $detail['captured_at_unix']) {
+            return $this->held($runId, $snapshotSha256, 'aggregate_review_predates_provider_capture');
+        }
+
         return [
             'status' => 'offline_joint_rollback_review_ready',
             'reason_code' => 'independent_human_recovery_gate_required',

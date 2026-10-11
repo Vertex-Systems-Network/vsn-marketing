@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-11T06:02:38+00:00`
-- Observed main: `45d538deeaac8c69de12e1565c61cffe3e54c2ad`
+- Timestamp: `2026-10-11T17:17:31+00:00`
+- Observed main: `aa35ba246a7335e1a68047c610bb83a415135c37`
 - Active issue: `none`
-- Active PR: `559`
-- Active branch: `supervisor/task0091-durable-arm-commitment-20261011`
+- Active PR: `560`
+- Active branch: `supervisor/task0091-ledger-stale-positive-replay-20261011`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `627564be00d8421e7a1e03131318ad86d22ba882cd897be7fddbd9c622f979d8`
+- State fingerprint: `a72a2abf650038d343ef421be57c5d3f800ba21095e6e524da4d2a3cac80b5d7`
 
 ## Completed / observed this session
 
-PR #558 exposure and consent observation chronology passed exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance, merged 45d538deeaac8c69de12e1565c61cffe3e54c2ad. PR #559 stages nullable additive durable arm checksum, immutable replay/legacy safety and migration tests without external authority.
+PR #559 durable frozen per-arm commitment passed exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; merged aa35ba246a7335e1a68047c610bb83a415135c37. PR #560 hardens rollback ledger against replaying a historical positive after a later irreversible hold, with feature regressions.
 
 ## Tests
 
-PR #558 full exact-head checks passed, protected-main follow-up separate. PR #559 full CI pending.
+PR #559 full exact-head checks PASS. Protected-main CI independently verified/pending. PR #560 exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #558 full exact-head checks passed, protected-main follow-up separate. PR #55
 
 ## Exact next action
 
-Certify PR #559 frozen per-arm receipt checksum migration, exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair and merge guarded when green, then continue TASK-0091 acceptance.
+Certify PR #560 stale positive replay test, exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge on pass, continue TASK-0091 holistic acceptance.

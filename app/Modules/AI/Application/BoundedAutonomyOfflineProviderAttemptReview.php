@@ -144,6 +144,7 @@ final readonly class BoundedAutonomyOfflineProviderAttemptReview
             'snapshot_sha256' => $snapshotSha256,
             'source_manifest_sha256' => $envelope['source_manifest_sha256'],
             'verified_attempt_count' => count($envelope['attempts']),
+            'captured_at_unix' => $envelope['captured_at_unix'],
             'latest_attempted_at_unix' => max(array_column($envelope['attempts'], 'attempted_at_unix')),
             'operation_set_sha256' => $operationSetSha256,
             'rollback_performed' => false,

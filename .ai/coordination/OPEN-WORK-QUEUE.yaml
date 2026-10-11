@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "444516eedcaddb431cf2d593d713324be9b4cb94",
+  "reconciled_main_sha": "01b65fd0370bd8bfd79bdbfc7d4762e3d3ae79f4",
   "active_work_path": {
     "kind": "pr",
-    "number": 562,
-    "title": "fix(phase15): bind scored canary evidence to outcome source manifest",
-    "branch": "supervisor/task0091-canary-score-manifest-20261011",
+    "number": 563,
+    "title": "fix(phase15): hold stale aggregate rollback when provider evidence was captured later",
+    "branch": "supervisor/task0091-rollback-capture-order-20261012",
     "disposition": "active_task0091_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 563,
+      "title": "fix(phase15): hold stale aggregate rollback when provider evidence was captured later",
+      "branch": "supervisor/task0091-rollback-capture-order-20261012",
+      "disposition": "active_task0091_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 562,
       "title": "fix(phase15): bind scored canary evidence to outcome source manifest",
       "branch": "supervisor/task0091-canary-score-manifest-20261011",
-      "disposition": "active_task0091_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "01b65fd0370bd8bfd79bdbfc7d4762e3d3ae79f4"
     },
     {
       "kind": "pr",

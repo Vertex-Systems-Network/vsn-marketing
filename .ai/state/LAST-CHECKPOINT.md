@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-11T17:46:57+00:00`
-- Observed main: `444516eedcaddb431cf2d593d713324be9b4cb94`
+- Timestamp: `2026-10-11T20:52:55+00:00`
+- Observed main: `01b65fd0370bd8bfd79bdbfc7d4762e3d3ae79f4`
 - Active issue: `none`
-- Active PR: `562`
-- Active branch: `supervisor/task0091-canary-score-manifest-20261011`
+- Active PR: `563`
+- Active branch: `supervisor/task0091-rollback-capture-order-20261012`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `18f85891bbffaa6c4efd311addde2c410d081a2560e36fa915b8ee127e16f99f`
+- State fingerprint: `795f7480757a65b1ff59137817002a63f9e20a626771ba527b89626060a65410`
 
 ## Completed / observed this session
 
-PR #561 canonical aggregate provider manifest completed with full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance and merged 444516eedcaddb431cf2d593d713324be9b4cb94. PR #562 stages scored canary source manifest binding, negative tamper tests and truthful README/frontier reconciliation; no live effects.
+PR #562 complete on 01b65fd with full exact-head and resulting-main CI. PR #563 stages conservative provider-capture chronology under TASK-0091 AC-3, offline only.
 
 ## Tests
 
-PR #561 full exact-head required checks passed. PR #562 exact-head full CI pending; resulting-main follow-up distinct.
+PR #562 full exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security, Governance and resulting-main checks PASS; PR #563 exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #561 full exact-head required checks passed. PR #562 exact-head full CI pendi
 
 ## Exact next action
 
-Certify PR #562 canary source manifest and adversarial denominators/conversion tests using Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair and merge verified head only, continue TASK-0091 safe work.
+Certify PR #563 provider capture chronology regressions with full exact-head CI; guarded merge and protected-main validation, then continue TASK-0091 AC-1..3 acceptance.

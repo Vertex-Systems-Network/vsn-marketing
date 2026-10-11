@@ -69,32 +69,55 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamAudit
                 'run_id' => $runId,
                 'review' => $review,
             ], JSON_THROW_ON_ERROR));
-            $previous = DB::table('audit_events')
+            // Database timestamp precision can collapse multiple audit
+            // appends into the same second; UUID ordering is not chronology.
+            // Use an explicitly chained per-run sequence under the workspace
+            // lock, fail closed on missing/duplicate/corrupt history.
+            $history = DB::table('audit_events')
                 ->where('workspace_id', $actor->workspaceId)
                 ->where('action', self::ACTION)
                 ->where('subject_type', 'offline_redteam_run')
                 ->where('subject_id', $runId)
-                ->orderByDesc('created_at')
-                ->orderByDesc('id')
-                ->first();
+                ->get();
+            if ($history->count() > 1024) {
+                throw new InvalidArgumentException('Offline red-team audit history exceeds review bounds.');
+            }
 
-            $priorEvidence = null;
-            if ($previous !== null) {
-                if ($previous->actor_id !== $actor->actorId || $previous->brand_id !== $actor->brandId) {
+            $sequenced = [];
+            foreach ($history as $entry) {
+                if ($entry->actor_id !== $actor->actorId || $entry->brand_id !== $actor->brandId) {
                     throw new InvalidArgumentException('Changed-actor red-team audit replay rejected.');
                 }
-                $priorEvidence = json_decode($previous->evidence, true, flags: JSON_THROW_ON_ERROR);
-                if (! is_array($priorEvidence)
-                    || ! is_string($priorEvidence['review_fingerprint'] ?? null)
-                    || ! in_array($priorEvidence['recorded_status'] ?? null, ['held_offline', 'offline_redteam_review_ready'], true)) {
+                $fact = json_decode($entry->evidence, true, flags: JSON_THROW_ON_ERROR);
+                $sequence = is_array($fact) ? ($fact['sequence'] ?? null) : null;
+                if (! is_int($sequence) || $sequence < 1 || $sequence > 1024
+                    || isset($sequenced[$sequence])
+                    || ! is_string($fact['review_fingerprint'] ?? null)
+                    || preg_match('/^[a-f0-9]{64}$/D', $fact['review_fingerprint']) !== 1
+                    || ! is_string($fact['recorded_reason'] ?? null)
+                    || ! in_array($fact['recorded_status'] ?? null, ['held_offline', 'offline_redteam_review_ready'], true)) {
                     throw new InvalidArgumentException('Prior red-team audit record is corrupt.');
                 }
-                if (hash_equals($priorEvidence['review_fingerprint'], $fingerprint)) {
-                    return self::result(
-                        $runId, $previous->id, $priorEvidence['recorded_status'],
-                        $priorEvidence['recorded_reason'], true,
-                    );
+                $sequenced[$sequence] = ['row' => $entry, 'evidence' => $fact];
+            }
+
+            $previousFingerprint = null;
+            for ($sequence = 1; $sequence <= count($sequenced); $sequence++) {
+                $entry = $sequenced[$sequence] ?? null;
+                if ($entry === null
+                    || ($entry['evidence']['previous_review_fingerprint'] ?? null) !== $previousFingerprint) {
+                    throw new InvalidArgumentException('Red-team audit evidence sequence or fingerprint chain broken.');
                 }
+                $previousFingerprint = $entry['evidence']['review_fingerprint'];
+            }
+            $lastSequence = count($sequenced);
+            $previous = $lastSequence === 0 ? null : $sequenced[$lastSequence]['row'];
+            $priorEvidence = $lastSequence === 0 ? null : $sequenced[$lastSequence]['evidence'];
+            if ($previous !== null && hash_equals($priorEvidence['review_fingerprint'], $fingerprint)) {
+                return self::result(
+                    $runId, $previous->id, $priorEvidence['recorded_status'],
+                    $priorEvidence['recorded_reason'], true,
+                );
             }
 
             $status = $review['status'];
@@ -113,6 +136,8 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamAudit
                 action: self::ACTION,
                 evidence: [
                     'run_id' => $runId,
+                    'sequence' => $lastSequence + 1,
+                    'previous_review_fingerprint' => $priorEvidence['review_fingerprint'] ?? null,
                     'review_fingerprint' => $fingerprint,
                     'source_manifest_sha256' => $review['source_manifest_sha256'],
                     'recorded_status' => $status,

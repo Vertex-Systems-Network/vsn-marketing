@@ -158,3 +158,62 @@ it('rejects foreign-organization, source-event and actor forgeries before any tr
     expect(DB::table('audit_events')->where('workspace_id', $scope->workspaceId)
         ->where('action', 'ai.autonomy.redteam.offline.triage')->count())->toBe(0);
 });
+
+it('refuses a stale source after a newer held review even when event timestamps collide', function () {
+    [$requester, $human, $scope, $sourceId] = syntheticHumanTriageFixture();
+    $this->actingAs($human);
+    $audit = app(AuditRecorder::class);
+    $new = $audit->record(
+        workspaceId: $scope->workspaceId,
+        action: 'ai.autonomy.redteam.offline.review',
+        evidence: [
+            'run_id' => 'attack-run',
+            'sequence' => 2,
+            'previous_review_fingerprint' => str_repeat('a', 64),
+            'review_fingerprint' => str_repeat('b', 64),
+            'recorded_status' => 'held_offline',
+            'recorded_reason' => 'unresolved_redteam_safety_case',
+            'case_count' => 0,
+            'synthetic_evidence_only' => true,
+            'production_incident_verified' => false,
+            'recovery_performed' => false,
+        ],
+        actorId: $scope->actorId,
+        subjectType: 'offline_redteam_run',
+        subjectId: 'attack-run',
+        correlationId: 'attack-run',
+    );
+    $service = app(DatabaseBoundedAutonomyOfflineRedTeamHumanTriage::class);
+    expect(fn () => $service->record($human, $scope, 'attack-run', $sourceId, 'acknowledged'))
+        ->toThrow(InvalidArgumentException::class);
+
+    $triage = $service->record($human, $scope, 'attack-run', $new->id, 'escalated');
+    expect($triage['human_triage_audit_recorded'])->toBeTrue()
+        ->and($triage['incident_resolved'])->toBeFalse()
+        ->and($triage['recovery_performed'])->toBeFalse()
+        ->and($triage['execution_authorized'])->toBeFalse();
+});
+
+it('rejects corrupt triage replay history instead of silently skipping malformed events', function () {
+    [$requester, $human, $scope, $sourceId] = syntheticHumanTriageFixture();
+    $this->actingAs($human);
+    app(AuditRecorder::class)->record(
+        workspaceId: $scope->workspaceId,
+        action: 'ai.autonomy.redteam.offline.triage',
+        evidence: [
+            'run_id' => 'attack-run',
+            'source_event_id' => $sourceId,
+            'triage_decision' => 'escalated',
+            'synthetic_evidence_only' => false,
+        ],
+        actorId: (string) $human->getKey(),
+        subjectType: 'offline_redteam_run',
+        subjectId: 'attack-run',
+        correlationId: 'attack-run',
+    );
+    $service = app(DatabaseBoundedAutonomyOfflineRedTeamHumanTriage::class);
+    expect(fn () => $service->record($human, $scope, 'attack-run', $sourceId, 'acknowledged'))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(DB::table('audit_events')->where('workspace_id', $scope->workspaceId)
+            ->where('action', 'ai.autonomy.redteam.offline.triage')->count())->toBe(1);
+});

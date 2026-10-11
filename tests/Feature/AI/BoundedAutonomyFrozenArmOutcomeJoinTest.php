@@ -86,7 +86,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
             'holdout' => ['eligible' => 1000, 'assigned' => 1000, 'exposed' => 0],
         ],
     ];
-    $join = new class($joined) implements BoundedAutonomyCanaryOutcomeJoinSource {
+    $join = new class($joined) implements BoundedAutonomyCanaryOutcomeJoinSource
+    {
         public function __construct(public array $facts) {}
 
         public function latest(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
@@ -94,7 +95,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
             return $this->facts;
         }
     };
-    $outcome = new class($scores) implements BoundedAutonomyCanaryOutcomeSource {
+    $outcome = new class($scores) implements BoundedAutonomyCanaryOutcomeSource
+    {
         public function __construct(public array $facts) {}
 
         public function snapshot(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
@@ -102,7 +104,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
             return $this->facts;
         }
     };
-    $cohorts = new class($cohort) implements BoundedAutonomyCanaryCohortSource {
+    $cohorts = new class($cohort) implements BoundedAutonomyCanaryCohortSource
+    {
         public function __construct(public array $facts) {}
 
         public function snapshot(TenantContext $scope, string $experimentId, DateTimeImmutable $at): ?array
@@ -110,7 +113,8 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
             return $this->facts;
         }
     };
-    $access = new class implements ExperimentAccess {
+    $access = new class implements ExperimentAccess
+    {
         public function allows(TenantContext $actor, string $permission): bool
         {
             return $permission === PermissionCatalog::CAMPAIGN_READ;

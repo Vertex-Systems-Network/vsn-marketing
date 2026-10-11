@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "6cf6894961271c47467738b949e9fd51020f2181",
+  "observed_main_sha": "86d789c2c4bff7b13deb89c65103b71ab58948a8",
   "active_issue": null,
-  "active_pr": 554,
-  "active_branch": "supervisor/task0091-clock-window-failclosed-20261011",
+  "active_pr": 555,
+  "active_branch": "supervisor/task0091-provider-temporal-causality-20261011",
   "current_milestone": "TASK-0091-PHASE15-OFFLINE-CANARIES",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #554 evaluation-clock provider attempt bounds on exact-head and protected-main gates, then continue TASK-0091 acceptance work.",
+  "exact_next_safe_action": "Verify PR #555 exact-head causal rollback evidence Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair and merge guarded when green, then continue TASK-0091 safe acceptance.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #554 evaluation-clock provider attempt bounds on exact-head and protected-main gates, then continue TASK-0091 acceptance work."
+  "exact_next_action": "Verify PR #555 exact-head causal rollback evidence Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair and merge guarded when green, then continue TASK-0091 safe acceptance."
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
+use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\AI\Infrastructure\DatabaseBoundedAutonomyOfflineRollbackReviewEvent;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyRollbackOutcomeSource;
@@ -39,7 +40,7 @@ function offlineRollbackLedgerAt(): DateTimeImmutable
 
 function offlineRollbackLedgerFacts(TenantContext $actor): array
 {
-    return [
+    return signedOfflineRollbackLedgerFacts([
         'tenant' => $actor->toArray(),
         'run_id' => 'run-1',
         'snapshot_sha256' => str_repeat('a', 64),
@@ -52,7 +53,14 @@ function offlineRollbackLedgerFacts(TenantContext $actor): array
         'late_callback' => false,
         'duplicate_callback' => false,
         'external_cost_minor' => 0,
-    ];
+    ]);
+}
+
+function signedOfflineRollbackLedgerFacts(array $record): array
+{
+    $record['source_sha256'] = BoundedAutonomyRollbackEvidenceDigest::sha256($record);
+
+    return $record;
 }
 
 function offlineRollbackLedgerService(?object $facts, object $access): DatabaseBoundedAutonomyOfflineRollbackReviewEvent
@@ -97,9 +105,9 @@ it('records unknown evidence exactly once and conservatively preserves later irr
         ->and($repeat['sequence'])->toBe(1)
         ->and($repeat['replayed'])->toBeTrue();
 
-    $facts = (object) ['value' => array_replace(offlineRollbackLedgerFacts($actor), [
+    $facts = (object) ['value' => signedOfflineRollbackLedgerFacts(array_replace(offlineRollbackLedgerFacts($actor), [
         'outcome' => 'confirmed_applied',
-    ])];
+    ]))];
     $verified = offlineRollbackLedgerService($facts, $access);
     $second = $verified->record($actor, 'run-1', $digest, offlineRollbackLedgerAt());
     expect($second['status'])->toBe('held_offline')
@@ -145,6 +153,7 @@ it('never replays an old positive review after a newer irreversible or uncertain
         ->and($initial['sequence'])->toBe(1);
 
     $facts->value['outcome'] = 'confirmed_applied';
+    $facts->value = signedOfflineRollbackLedgerFacts($facts->value);
     $uncertain = $service->record($actor, 'run-1', $digest, $at);
     expect($uncertain['status'])->toBe('held_offline')
         ->and($uncertain['sequence'])->toBe(2)

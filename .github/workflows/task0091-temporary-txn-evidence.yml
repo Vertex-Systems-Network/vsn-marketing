@@ -1,0 +1,54 @@
+name: Temporary TASK-0091 Transaction Checkpoint Evidence
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  transactional-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0091-clock-window-failclosed-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact PR branch without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Generate scoped transactional checkpoint in ephemeral runner
+        run: |
+          python tools/ai_txn.py checkpoint \
+            --active-pr 554 \
+            --active-branch supervisor/task0091-clock-window-failclosed-20261011 \
+            --observed-main 6cf6894961271c47467738b949e9fd51020f2181 \
+            --carrier-title 'fix(phase15): enforce provider attempt freshness against review clock' \
+            --completed-pr 553 \
+            --completion-sha 6cf6894961271c47467738b949e9fd51020f2181 \
+            --summary 'PR #553 timestamp hardening passed exact-head gates and merged 6cf6894961271c47467738b949e9fd51020f2181. PR #554 stages independent evaluation-clock freshness and adversarial tests; offline only.' \
+            --tests 'PR #553 full exact-head gates passed; resulting-main release and scorecard passed. PR #554 pending complete CI.' \
+            --next 'Certify PR #554 evaluation-clock provider attempt bounds on exact-head and protected-main gates, then continue TASK-0091 acceptance work.'
+      - name: Export transactional state evidence for authoritative GitHub carrier
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          for name in (
+              '.ai/state/CURRENT-STATE.yaml',
+              '.ai/state/LAST-CHECKPOINT.md',
+              '.ai/state/EXECUTION-JOURNAL.jsonl',
+              '.ai/coordination/OPEN-WORK-QUEUE.yaml',
+          ):
+              print(f'VSN_EVIDENCE_BEGIN::{name}')
+              data = base64.b64encode(Path(name).read_bytes()).decode('ascii')
+              for i in range(0, len(data), 160):
+                  print('VSN_EVIDENCE_CHUNK::' + data[i:i+160])
+              print(f'VSN_EVIDENCE_END::{name}')
+          PY

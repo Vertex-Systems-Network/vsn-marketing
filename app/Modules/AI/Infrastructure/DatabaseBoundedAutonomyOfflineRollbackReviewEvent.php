@@ -70,6 +70,19 @@ final readonly class DatabaseBoundedAutonomyOfflineRollbackReviewEvent
                 'review' => $review,
             ], JSON_THROW_ON_ERROR));
 
+            // A historical positive fingerprint must not bypass a newer
+            // provider uncertainty just because its original row still
+            // exists. Check the latest durable outcome before deduplication.
+            $previous = DB::table('ai_autonomy_offline_rollback_events')
+                ->where('workspace_id', $actor->workspaceId)
+                ->where('run_id', $runId)
+                ->orderByDesc('sequence')->first();
+            if ($previous !== null && ($previous->snapshot_sha256 !== $snapshotSha256
+                || $previous->brand_id !== $actor->brandId
+                || $previous->actor_id !== $actor->actorId)) {
+                throw new InvalidArgumentException('Rollback review cannot silently change run identity.');
+            }
+
             $existing = DB::table('ai_autonomy_offline_rollback_events')
                 ->where('workspace_id', $actor->workspaceId)
                 ->where('run_id', $runId)
@@ -81,17 +94,16 @@ final readonly class DatabaseBoundedAutonomyOfflineRollbackReviewEvent
                     throw new InvalidArgumentException('Cross-actor or changed-plan rollback replay rejected.');
                 }
 
-                return $this->result($existing, true);
-            }
+                if ($existing->status === 'offline_rollback_review_ready'
+                    && $previous !== null
+                    && (int) $previous->sequence > (int) $existing->sequence
+                    && $previous->status === 'held_offline') {
+                    // Read back the newer hold without rewriting either
+                    // immutable receipt or granting external rollback rights.
+                    return $this->result($previous, true);
+                }
 
-            $previous = DB::table('ai_autonomy_offline_rollback_events')
-                ->where('workspace_id', $actor->workspaceId)
-                ->where('run_id', $runId)
-                ->orderByDesc('sequence')->first();
-            if ($previous !== null && ($previous->snapshot_sha256 !== $snapshotSha256
-                || $previous->brand_id !== $actor->brandId
-                || $previous->actor_id !== $actor->actorId)) {
-                throw new InvalidArgumentException('Rollback review cannot silently change run identity.');
+                return $this->result($existing, true);
             }
 
             $status = $review['status'];

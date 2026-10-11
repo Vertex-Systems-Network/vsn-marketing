@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineOutcomeJoinReview;
+use App\Modules\AI\Domain\BoundedAutonomyCanaryOutcomeEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeJoinSource;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyCanaryOutcomeSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyCanaryOutcomeJoinSource;
@@ -158,6 +159,8 @@ it('holds outcome denominators that disagree with the frozen receipt', function 
         'outcomes' => ['control' => 45, 'treatment' => 90, 'holdout' => 0],
         'quarantined' => 0, 'crossovers' => 0, 'low_trust_count' => 0,
     ]];
+    $source->value['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($source->value);
+    $join->value['outcome_manifest_sha256'] = $source->value['source_manifest_sha256'];
 
     $service = offlineOutcomeJoinService($join, true, $source);
     $matching = $service->inspect($actor, $plan, $analysis, $at);
@@ -169,6 +172,8 @@ it('holds outcome denominators that disagree with the frozen receipt', function 
     $source->value['assigned'] = ['control' => 5000, 'treatment' => 5000, 'holdout' => 1000];
     $source->value['exposed'] = ['control' => 5000, 'treatment' => 5000, 'holdout' => 0];
     $source->value['outcomes'] = ['control' => 500, 'treatment' => 2000, 'holdout' => 0];
+    $source->value['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($source->value);
+    $join->value['outcome_manifest_sha256'] = $source->value['source_manifest_sha256'];
     $inflated = $service->inspect($actor, $plan, $analysis, $at);
     expect($inflated['status'])->toBe('held_offline')
         ->and($inflated['reason_code'])->toBe('cohort_outcome_denominator_mismatch')
@@ -179,6 +184,8 @@ it('holds outcome denominators that disagree with the frozen receipt', function 
     $source->value['assigned'] = ['control' => 400, 'treatment' => 400, 'holdout' => 200];
     $source->value['exposed'] = ['control' => 400, 'treatment' => 400, 'holdout' => 0];
     $source->value['outcomes'] = ['control' => 40, 'treatment' => 100, 'holdout' => 0];
+    $source->value['source_manifest_sha256'] = BoundedAutonomyCanaryOutcomeEvidenceDigest::sha256($source->value);
+    $join->value['outcome_manifest_sha256'] = $source->value['source_manifest_sha256'];
     $changedHoldout = $service->inspect($actor, $plan, $analysis, $at);
     expect($changedHoldout['reason_code'])->toBe('cohort_outcome_denominator_mismatch')
         ->and($changedHoldout['promotion_authorized'])->toBeFalse();

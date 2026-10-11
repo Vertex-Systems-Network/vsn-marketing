@@ -92,6 +92,27 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
         }
     }
 
+    public function test_aggregate_attempt_freshness_is_bounded_by_review_time(): void
+    {
+        $now = $this->at()->getTimestamp();
+        $state = (object) ['current' => array_replace($this->record(), [
+            'observed_at_unix' => $now - 3300,
+            'attempted_at_unix' => $now - 3600,
+        ])];
+        $reviewer = $this->reviewer($state);
+        $fresh = $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
+        self::assertSame('offline_rollback_review_ready', $fresh['status']);
+        self::assertFalse($fresh['rollback_performed']);
+
+        // A fresh-enough observation cannot launder an older provider attempt.
+        $state->current = array_replace($this->record(), [
+            'observed_at_unix' => $now - 3300,
+            'attempted_at_unix' => $now - 4000,
+        ]);
+        $this->expectException(InvalidArgumentException::class);
+        $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
+    }
+
     public function test_cross_tenant_future_callback_spoofed_evidence_fail_closed(): void
     {
         $state = (object) ['current' => $this->record()];

@@ -124,6 +124,29 @@ final class BoundedAutonomyOfflineProviderAttemptReviewTest extends TestCase
         }
     }
 
+    public function test_attempt_freshness_is_bounded_by_review_time_not_just_capture_time(): void
+    {
+        $now = $this->at()->getTimestamp();
+        $freshAttempt = array_replace($this->attempt(), ['attempted_at_unix' => $now - 3600]);
+        $fresh = $this->rebind(array_replace(
+            $this->evidence([$freshAttempt]),
+            ['captured_at_unix' => $now - 3300],
+        ));
+        $candidate = $this->review($fresh);
+        self::assertSame('offline_no_effect_reconciliation_candidate', $candidate['status']);
+        self::assertFalse($candidate['rollback_performed']);
+
+        // A source captured 55 minutes ago must not allow an attempt older
+        // than the review window simply because the capture is recent enough.
+        $staleAttempt = array_replace($this->attempt(), ['attempted_at_unix' => $now - 4000]);
+        $stale = $this->rebind(array_replace(
+            $this->evidence([$staleAttempt]),
+            ['captured_at_unix' => $now - 3300],
+        ));
+        $this->expectException(InvalidArgumentException::class);
+        $this->review($stale);
+    }
+
     public function test_source_manifest_scope_and_unsupported_fields_cannot_be_forged(): void
     {
         $good = $this->evidence([$this->attempt()]);

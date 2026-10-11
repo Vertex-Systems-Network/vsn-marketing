@@ -16,7 +16,7 @@ Negative obligations: positive AI narrative alone, low-trust/duplicate events, s
 
 ## AC-3: Provider outcome reconciliation and irreversible-effect honesty
 
-Evidence carriers: PRs #544-#545 durable append-only offline rollback history and concurrency; PR #551 independent per-provider attempt readback combined with aggregate outcome; PR #552 independently sourced expected canonical operations set (pending exact-head certification). Follow-up stale-provider timestamp bounds are staged, not certified.
+Evidence carriers: PRs #544-#545 durable append-only offline rollback history and concurrency; PR #551 independent per-provider attempt readback combined with aggregate outcome; PR #552 independently sourced expected canonical operations set (merged with full exact-head gates); PR #553 relative-to-capture/observation timestamp bounds (merged, resulting-main CI verification separate). Evaluation-clock absolute freshness is staged separately and not certified.
 
 Negative obligations: missing/fake provider source, unknown/late/duplicate/irreversible/costly attempt, insufficient attempt inventory, same-count different operation IDs, changed idempotency, stale timestamps and conflicting history must not claim rollback performed, refund/retry permission or verified no effect.
 

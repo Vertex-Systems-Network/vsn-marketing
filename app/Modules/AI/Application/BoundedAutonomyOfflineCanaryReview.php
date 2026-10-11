@@ -92,9 +92,11 @@ final readonly class BoundedAutonomyOfflineCanaryReview
                 return $this->held($plan, 'insufficient_independent_cohort');
             }
             $assigned[$variant] = $row['assigned'];
+            $exposed[$variant] = $row['exposed'];
         }
 
         ksort($assigned);
+        ksort($exposed);
         $weights = $plan->weights;
         ksort($weights);
         $expected = array_sum($assigned);

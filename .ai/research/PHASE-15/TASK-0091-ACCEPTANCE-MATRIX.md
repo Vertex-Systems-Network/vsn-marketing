@@ -6,7 +6,7 @@ Status: **in progress, not certified**. The matrix distinguishes executable offl
 
 Evidence carriers: PR #541 independent frozen-cohort review and ExperimentStatistics; PR #542 durable, tenant/actor-bound cohort receipts; PR #543 canonical frozen-cohort receipt to independently sourced outcome manifest. Certified lower-level implementation includes `ExperimentAssignments`, `BoundedAutonomyOfflineCanaryReview`, `DatabaseBoundedAutonomyCanaryReviewReceipt` and `BoundedAutonomyOfflineOutcomeJoinReview`.
 
-Negative obligations: cross-workspace/brand or stale provenance, active-source absence, unconsented/unfrozen cohorts, exposed holdouts, sample-ratio mismatch, poisoned outcome joins, untrusted denominator and replay must hold. Total assigned/holdout comparisons across frozen receipt and independently scored outcomes are now staged; a full per-arm denominator vector is not yet stored in the current receipt and remains outside this slice. Real outcome attestation adapters remain deny-by-default.
+Negative obligations: cross-workspace/brand or stale provenance, active-source absence, unconsented/unfrozen cohorts, exposed holdouts, sample-ratio mismatch, poisoned outcome joins, untrusted denominator and replay must hold. Total assigned/holdout comparisons across frozen receipt and independently scored outcomes are now staged; the current receipt still stores only total and holdout; this follow-up stages an independently re-verified frozen per-arm readback for positive operator candidates. The source remains default-deny and no actual provider signature is certified. Real outcome attestation adapters remain deny-by-default.
 
 ## AC-2: Independent, deterministic scoring and human promotion
 

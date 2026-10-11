@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-11T17:17:31+00:00`
-- Observed main: `aa35ba246a7335e1a68047c610bb83a415135c37`
+- Timestamp: `2026-10-11T17:30:38+00:00`
+- Observed main: `ac8a2628ecb4f1d0b266178995c6c72aa9ac67c4`
 - Active issue: `none`
-- Active PR: `560`
-- Active branch: `supervisor/task0091-ledger-stale-positive-replay-20261011`
+- Active PR: `561`
+- Active branch: `supervisor/task0091-aggregate-provider-manifest-20261011`
 - Current milestone: `TASK-0091-PHASE15-OFFLINE-CANARIES`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0091`
@@ -15,15 +15,15 @@
 - Execution status: `in_progress`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `a72a2abf650038d343ef421be57c5d3f800ba21095e6e524da4d2a3cac80b5d7`
+- State fingerprint: `d2a53c43379809850675f1b60675a5f79fd4187f1f173553a0451f3b8124abf6`
 
 ## Completed / observed this session
 
-PR #559 durable frozen per-arm commitment passed exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; merged aa35ba246a7335e1a68047c610bb83a415135c37. PR #560 hardens rollback ledger against replaying a historical positive after a later irreversible hold, with feature regressions.
+PR #560 fixed stale-positive rollback review replay, passed exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; merged ac8a2628ecb4f1d0b266178995c6c72aa9ac67c4 with resulting-main required gates. PR #561 binds aggregate provider outcome to its canonical checksum, still offline-only.
 
 ## Tests
 
-PR #559 full exact-head checks PASS. Protected-main CI independently verified/pending. PR #560 exact-head CI pending.
+PR #560 exact-head and resulting-main required checks PASS. PR #561 full exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR #559 full exact-head checks PASS. Protected-main CI independently verified/pe
 
 ## Exact next action
 
-Certify PR #560 stale positive replay test, exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge on pass, continue TASK-0091 holistic acceptance.
+Certify PR #561 aggregate provider source manifest tampering regressions on Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; repair, guarded merge and continue TASK-0091 acceptance.

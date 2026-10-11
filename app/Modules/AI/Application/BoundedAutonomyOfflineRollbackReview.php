@@ -2,6 +2,7 @@
 
 namespace App\Modules\AI\Application;
 
+use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use DateTimeImmutable;
@@ -59,6 +60,14 @@ final readonly class BoundedAutonomyOfflineRollbackReview
             || ! is_bool($record['outcome_verified_independently'])
             || ! in_array($record['outcome'], ['unknown', 'confirmed_not_applied', 'confirmed_applied'], true)) {
             throw new InvalidArgumentException('Untrusted rollback provenance or mutable provider outcome.');
+        }
+
+        // The provider's opaque source digest must commit to the exact
+        // independently reviewed outcome, timestamps, callbacks and costs.
+        // A digest of the right length is not integrity evidence.
+        $expected = BoundedAutonomyRollbackEvidenceDigest::sha256($record);
+        if (! hash_equals($expected, $record['source_sha256'])) {
+            throw new InvalidArgumentException('Aggregate provider outcome manifest does not bind reviewed evidence.');
         }
 
         if (! $record['outcome_verified_independently'] || $record['outcome'] === 'unknown') {

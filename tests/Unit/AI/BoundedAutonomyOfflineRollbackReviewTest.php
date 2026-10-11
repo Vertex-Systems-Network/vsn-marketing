@@ -3,6 +3,7 @@
 namespace Tests\Unit\AI;
 
 use App\Modules\AI\Application\BoundedAutonomyOfflineRollbackReview;
+use App\Modules\AI\Domain\BoundedAutonomyRollbackEvidenceDigest;
 use App\Modules\AI\Domain\Contracts\BoundedAutonomyRollbackOutcomeSource;
 use App\Modules\AI\Infrastructure\DenyingBoundedAutonomyRollbackOutcomeSource;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
@@ -24,7 +25,7 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
 
     private function record(): array
     {
-        return [
+        return $this->signed([
             'tenant' => $this->scope()->toArray(),
             'run_id' => 'run-1',
             'snapshot_sha256' => str_repeat('a', 64),
@@ -37,7 +38,14 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
             'late_callback' => false,
             'duplicate_callback' => false,
             'external_cost_minor' => 0,
-        ];
+        ]);
+    }
+
+    private function signed(array $facts): array
+    {
+        $facts['source_sha256'] = BoundedAutonomyRollbackEvidenceDigest::sha256($facts);
+
+        return $facts;
     }
 
     private function reviewer(object $data): BoundedAutonomyOfflineRollbackReview
@@ -85,7 +93,7 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
             ['callback_count' => 2],
             ['external_cost_minor' => 10],
         ] as $change) {
-            $state->current = array_replace($this->record(), $change);
+            $state->current = $this->signed(array_replace($this->record(), $change));
             $r = $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
             self::assertSame('held_offline', $r['status']);
             self::assertFalse($r['refund_authorized']);
@@ -95,10 +103,10 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
     public function test_aggregate_attempt_freshness_is_bounded_by_review_time(): void
     {
         $now = $this->at()->getTimestamp();
-        $state = (object) ['current' => array_replace($this->record(), [
+        $state = (object) ['current' => $this->signed(array_replace($this->record(), [
             'observed_at_unix' => $now - 3300,
             'attempted_at_unix' => $now - 3600,
-        ])];
+        ]))];
         $reviewer = $this->reviewer($state);
         $fresh = $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
         self::assertSame('offline_rollback_review_ready', $fresh['status']);
@@ -111,6 +119,33 @@ final class BoundedAutonomyOfflineRollbackReviewTest extends TestCase
         ]);
         $this->expectException(InvalidArgumentException::class);
         $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
+    }
+
+    public function test_valid_digest_cannot_be_reused_after_a_positive_provider_outcome_is_changed(): void
+    {
+        $source = (object) ['current' => $this->record()];
+        $reviewer = $this->reviewer($source);
+        self::assertSame('offline_rollback_review_ready', $reviewer->inspect(
+            $this->scope(), 'run-1', str_repeat('a', 64), $this->at(),
+        )['status']);
+
+        foreach ([
+            ['outcome' => 'confirmed_applied'],
+            ['outcome_verified_independently' => false],
+            ['attempted_at_unix' => $this->at()->getTimestamp() - 601],
+            ['callback_count' => 2],
+            ['external_cost_minor' => 10],
+        ] as $mutation) {
+            // Each mutation keeps the *previous* source hash to simulate
+            // swapping an aggregate callback under a stale manifest.
+            $source->current = array_replace($this->record(), $mutation);
+            try {
+                $reviewer->inspect($this->scope(), 'run-1', str_repeat('a', 64), $this->at());
+                self::fail('Tampered provider rollback aggregate was accepted.');
+            } catch (InvalidArgumentException) {
+                self::assertTrue(true);
+            }
+        }
     }
 
     public function test_cross_tenant_future_callback_spoofed_evidence_fail_closed(): void

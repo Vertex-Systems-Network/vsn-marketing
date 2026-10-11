@@ -112,6 +112,7 @@ final readonly class BoundedAutonomyOfflineCanaryReview
             'experiment_id' => $plan->id,
             'plan_sha256' => $plan->fingerprint(),
             'assignment_manifest_sha256' => $facts['assignment_manifest_sha256'],
+            'assigned_by_arm' => $assigned,
             'assigned_denominator' => array_sum($assigned),
             'holdout_denominator' => $assigned[$plan->holdout],
             'exposure_authorized' => false,

@@ -133,6 +133,45 @@ it('allows an initial independently verified non-effect only as an offline revie
         ->and($review['execution_authorized'])->toBeFalse();
 });
 
+it('never replays an old positive review after a newer irreversible or uncertain outcome', function () {
+    $actor = offlineRollbackLedgerScope();
+    $at = offlineRollbackLedgerAt();
+    $digest = str_repeat('a', 64);
+    $facts = (object) ['value' => offlineRollbackLedgerFacts($actor)];
+    $service = offlineRollbackLedgerService($facts, (object) ['allowed' => true]);
+
+    $initial = $service->record($actor, 'run-1', $digest, $at);
+    expect($initial['status'])->toBe('offline_rollback_review_ready')
+        ->and($initial['sequence'])->toBe(1);
+
+    $facts->value['outcome'] = 'confirmed_applied';
+    $uncertain = $service->record($actor, 'run-1', $digest, $at);
+    expect($uncertain['status'])->toBe('held_offline')
+        ->and($uncertain['sequence'])->toBe(2)
+        ->and($uncertain['rollback_performed'])->toBeFalse();
+
+    // A provider's old positive evidence may be replayed verbatim, but a
+    // newer immutable negative fact must remain the authoritative readback.
+    $facts->value = offlineRollbackLedgerFacts($actor);
+    $replay = $service->record($actor, 'run-1', $digest, $at);
+    expect($replay['status'])->toBe('held_offline')
+        ->and($replay['id'])->toBe($uncertain['id'])
+        ->and($replay['sequence'])->toBe(2)
+        ->and($replay['replayed'])->toBeTrue()
+        ->and($replay['rollback_performed'])->toBeFalse()
+        ->and($replay['refund_authorized'])->toBeFalse()
+        ->and($replay['retry_authorized'])->toBeFalse()
+        ->and($replay['execution_authorized'])->toBeFalse()
+        ->and($replay['promotion_authorized'])->toBeFalse()
+        ->and(DB::table('ai_autonomy_offline_rollback_events')
+            ->where('workspace_id', $actor->workspaceId)->count())->toBe(2);
+
+    $immutablePositive = DB::table('ai_autonomy_offline_rollback_events')->where('id', $initial['id'])->first();
+    expect($immutablePositive->status)->toBe('offline_rollback_review_ready');
+    $latest = DB::table('ai_autonomy_offline_rollback_events')->where('id', $uncertain['id'])->first();
+    expect($latest->status)->toBe('held_offline');
+});
+
 it('rechecks read permission, actor, org, fingerprint and rejects forged provider success with no writes', function () {
     $actor = offlineRollbackLedgerScope();
     $access = (object) ['allowed' => true];

@@ -1,0 +1,54 @@
+name: Temporary TASK-0091 Transactional Evidence 556
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  transactional-checkpoint-evidence:
+    if: github.head_ref == 'supervisor/task0091-denominator-join-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.13'
+      - name: Transactionally reconcile merged PR 555
+        run: |
+          python tools/ai_txn.py checkpoint \
+            --active-pr 556 \
+            --active-branch supervisor/task0091-denominator-join-20261011 \
+            --observed-main 92be7d541f4ee65fb941d643ffda7914fffa94c6 \
+            --carrier-title 'fix(phase15): bind scored outcome denominators to frozen cohort receipt' \
+            --completed-pr 555 \
+            --completion-sha 92be7d541f4ee65fb941d643ffda7914fffa94c6 \
+            --summary 'PR #555 cross-source chronology guard passed exact-head application, PostgreSQL, PHP floor, E2E, Security and Governance, merged 92be7d541f4ee65fb941d643ffda7914fffa94c6 with resulting-main gates. PR #556 stages cohort receipt-to-outcome total/holdout denominator guard and negative tests; offline-only.' \
+            --tests 'PR #555 exact-head and protected main full CI PASS. PR #556 exact-head verification pending.' \
+            --next 'Certify PR #556 frozen-cohort-to-scored-outcome denominators via Foundation, PHP floor, PostgreSQL integration, E2E, Security and Governance; merge guarded if green, continue TASK-0091 per-arm provenance work.'
+      - name: Export exact transaction artifacts as scoped evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          for name in (
+              '.ai/state/CURRENT-STATE.yaml',
+              '.ai/state/LAST-CHECKPOINT.md',
+              '.ai/state/EXECUTION-JOURNAL.jsonl',
+              '.ai/coordination/OPEN-WORK-QUEUE.yaml',
+          ):
+              print(f'VSN_EVIDENCE_BEGIN::{name}')
+              data = base64.b64encode(Path(name).read_bytes()).decode('ascii')
+              for i in range(0, len(data), 160):
+                  print('VSN_EVIDENCE_CHUNK::' + data[i:i+160])
+              print(f'VSN_EVIDENCE_END::{name}')
+          PY

@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "0d2f858483ea1f652d575fb0d270c424515d04d9",
+  "observed_main_sha": "9508a7a55b682ceaf14b1165331b9a583a890ee8",
   "active_issue": null,
-  "active_pr": 565,
-  "active_branch": "supervisor/task0092-offline-redteam-incidents-20261012",
+  "active_pr": 566,
+  "active_branch": "supervisor/task0092-offline-redteam-audit-20261012",
   "current_milestone": "TASK-0092-PHASE15-REDTEAM",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled.",
+  "exact_next_safe_action": "Certify PR #566 synthetic red-team append-only audit, replay holds, actor/tenant authorization, no incident/recovery authority via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 quota/stop race stress and human incident workflows.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Certify PR #565 synthetic red-team incident review, prompt/tool misuse and cross-tenant adversarial fixtures through full exact-head Foundation, PHP floor, PostgreSQL, E2E, Security and Governance; merge guarded, then proceed to TASK-0092 quota/stop races and durable incident audit. Live effects remain disabled."
+  "exact_next_action": "Certify PR #566 synthetic red-team append-only audit, replay holds, actor/tenant authorization, no incident/recovery authority via exact-head Foundation, PHP 8.3, PostgreSQL, E2E, Security and Governance; guarded merge, then continue TASK-0092 quota/stop race stress and human incident workflows."
 }

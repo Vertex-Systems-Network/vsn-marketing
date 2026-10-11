@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "0d2f858483ea1f652d575fb0d270c424515d04d9",
+  "reconciled_main_sha": "9508a7a55b682ceaf14b1165331b9a583a890ee8",
   "active_work_path": {
     "kind": "pr",
-    "number": 565,
-    "title": "feat(phase15): start TASK-0092 fail-closed red-team incident triage",
-    "branch": "supervisor/task0092-offline-redteam-incidents-20261012",
+    "number": 566,
+    "title": "feat(phase15): audit synthetic red-team evidence with replay-safe holds",
+    "branch": "supervisor/task0092-offline-redteam-audit-20261012",
     "disposition": "active_task0092_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 566,
+      "title": "feat(phase15): audit synthetic red-team evidence with replay-safe holds",
+      "branch": "supervisor/task0092-offline-redteam-audit-20261012",
+      "disposition": "active_task0092_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 565,
       "title": "feat(phase15): start TASK-0092 fail-closed red-team incident triage",
       "branch": "supervisor/task0092-offline-redteam-incidents-20261012",
-      "disposition": "active_task0092_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "9508a7a55b682ceaf14b1165331b9a583a890ee8"
     },
     {
       "kind": "pr",

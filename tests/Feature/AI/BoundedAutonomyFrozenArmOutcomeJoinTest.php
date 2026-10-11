@@ -131,6 +131,34 @@ it('refuses a positive offline cohort review unless independently frozen arm cou
         ->and($matched['promotion_authorized'])->toBeFalse()
         ->and($matched['execution_authorized'])->toBeFalse();
 
+    // The independent outcome provider reports full exposures while the
+    // frozen consent cohort says one assignment was not exposed.
+    $cohorts->facts['counts']['control']['exposed'] = 4999;
+    $exposureMismatch = $reviewer->inspect($actor, $plan, $analysis, $at);
+    expect($exposureMismatch['status'])->toBe('held_offline')
+        ->and($exposureMismatch['reason_code'])->toBe('cohort_outcome_exposure_mismatch')
+        ->and($exposureMismatch['promotion_authorized'])->toBeFalse()
+        ->and($exposureMismatch['execution_authorized'])->toBeFalse();
+    $cohorts->facts['counts']['control']['exposed'] = 5000;
+
+    // Even two fresh sources cannot use a cohort consent observation from
+    // before the independent scored-outcome observation as current consent.
+    $cohorts->facts['observed_at_unix'] = $at->getTimestamp() - 1;
+    $olderConsent = $reviewer->inspect($actor, $plan, $analysis, $at);
+    expect($olderConsent['status'])->toBe('held_offline')
+        ->and($olderConsent['reason_code'])->toBe('cohort_consent_readback_predates_outcomes')
+        ->and($olderConsent['promotion_authorized'])->toBeFalse();
+    $cohorts->facts['observed_at_unix'] = $at->getTimestamp();
+
+    // A join observation before the independently scored snapshot also
+    // cannot be called an independently verified joined review.
+    $join->facts['observed_at_unix'] = $at->getTimestamp() - 1;
+    $olderJoin = $reviewer->inspect($actor, $plan, $analysis, $at);
+    expect($olderJoin['status'])->toBe('held_offline')
+        ->and($olderJoin['reason_code'])->toBe('outcome_join_predates_scored_snapshot')
+        ->and($olderJoin['execution_authorized'])->toBeFalse();
+    $join->facts['observed_at_unix'] = $at->getTimestamp();
+
     // The same total and holdout can mask moved units between treatment/control.
     $outcome->facts['assigned'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 1000];
     $outcome->facts['exposed'] = ['control' => 4999, 'treatment' => 5001, 'holdout' => 0];

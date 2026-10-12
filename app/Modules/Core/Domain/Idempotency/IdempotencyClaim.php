@@ -12,11 +12,13 @@ final readonly class IdempotencyClaim
 
     public const string IN_PROGRESS = 'in_progress';
 
+    public const string HELD = 'held';
+
     public function __construct(
         public string $state,
         public ?array $result = null,
     ) {
-        if (! in_array($this->state, [self::ACQUIRED, self::COMPLETED, self::IN_PROGRESS], true)) {
+        if (! in_array($this->state, [self::ACQUIRED, self::COMPLETED, self::IN_PROGRESS, self::HELD], true)) {
             throw new InvalidArgumentException("Invalid idempotency claim state: {$this->state}");
         }
     }

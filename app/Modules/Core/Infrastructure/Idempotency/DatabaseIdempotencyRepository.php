@@ -55,6 +55,10 @@ final readonly class DatabaseIdempotencyRepository implements IdempotencyReposit
                 return new IdempotencyClaim(IdempotencyClaim::IN_PROGRESS);
             }
 
+            if ($row->status === 'held') {
+                return new IdempotencyClaim(IdempotencyClaim::HELD);
+            }
+
             if ($row->status !== 'failed') {
                 throw new RuntimeException("Unknown idempotency status: {$row->status}");
             }
@@ -107,6 +111,53 @@ final readonly class DatabaseIdempotencyRepository implements IdempotencyReposit
         if ($updated !== 1) {
             throw new RuntimeException('Cannot fail an idempotency key that is not processing.');
         }
+    }
+
+    public function hold(string $workspaceId, string $scope, string $key, string $reason): void
+    {
+        $now = $this->clock->now();
+        $connection = $this->database->connection();
+        $inserted = $connection->table('idempotency_keys')->insertOrIgnore([
+            'workspace_id' => $workspaceId,
+            'scope' => $scope,
+            'idempotency_key' => $key,
+            'status' => 'held',
+            'result' => null,
+            'attempts' => 1,
+            'last_error' => mb_substr($reason, 0, 2000),
+            'completed_at' => null,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        if ($inserted === 1) {
+            return;
+        }
+
+        $connection->table('idempotency_keys')
+            ->where('workspace_id', $workspaceId)
+            ->where('scope', $scope)
+            ->where('idempotency_key', $key)
+            ->whereIn('status', ['processing', 'failed'])
+            ->update([
+                'status' => 'held',
+                'last_error' => mb_substr($reason, 0, 2000),
+                'updated_at' => $now,
+            ]);
+
+        if (! $this->isHeld($workspaceId, $scope, $key)) {
+            throw new RuntimeException('Cannot hold an idempotency key that already completed.');
+        }
+    }
+
+    public function isHeld(string $workspaceId, string $scope, string $key): bool
+    {
+        return $this->database->connection()->table('idempotency_keys')
+            ->where('workspace_id', $workspaceId)
+            ->where('scope', $scope)
+            ->where('idempotency_key', $key)
+            ->where('status', 'held')
+            ->exists();
     }
 
     /**

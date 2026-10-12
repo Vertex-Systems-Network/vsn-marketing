@@ -160,13 +160,14 @@ final readonly class DatabaseDeliveryFailoverEligibilityRepository implements De
             ->orderBy('id')
             ->lockForUpdate()
             ->get();
+        $quotas = ProviderQuotaObservations::latest($quotas);
 
-        if ($quotas->isEmpty()) {
+        if ($quotas === []) {
             return false;
         }
 
         foreach ($quotas as $quota) {
-            if (! $quota instanceof stdClass || ! $this->isFresh($quota->fresh_until, $observedAt)) {
+            if (! $this->isFresh($quota->fresh_until, $observedAt)) {
                 return false;
             }
 

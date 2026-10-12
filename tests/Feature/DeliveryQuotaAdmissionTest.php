@@ -370,3 +370,47 @@ it('rejects admission through a context from another workspace', function () {
         ->toThrow(AuthorizationException::class)
         ->and(DB::table('delivery_operation_quota_consumptions')->count())->toBe(0);
 });
+
+it('admits against the newest quota observation instead of superseded append-only history', function () {
+    $fixture = quotaAdmissionTenant('superseded');
+    $route = quotaAdmissionProvider(
+        $fixture,
+        'superseded',
+        '1',
+        '00000000-0000-4000-8000-000000000001',
+    );
+    $now = now();
+
+    // The original observation's window has reset and it carried no freshness bound,
+    // so on its own it reads as stale evidence for every later admission.
+    DB::table('provider_quotas')->where('id', $route['quotaId'])->update([
+        'observed_at' => $now->copy()->subHours(2),
+        'resets_at' => $now->copy()->subHour(),
+        'fresh_until' => null,
+    ]);
+    $stale = quotaAdmissionOperation($fixture, 'quota-superseded-stale');
+    $blocked = app(AdmitDeliveryOperation::class)->handle($fixture['context'], $stale);
+
+    expect($blocked->admitted)->toBeFalse()
+        ->and($blocked->backpressureReason)->toBe('quota_evidence_stale');
+
+    $newerQuotaId = (string) Str::uuid();
+    $original = (array) DB::table('provider_quotas')->where('id', $route['quotaId'])->first();
+    DB::table('provider_quotas')->insert(array_merge($original, [
+        'id' => $newerQuotaId,
+        'remaining_value' => '5',
+        'resets_at' => $now->copy()->addMinute(),
+        'observed_at' => $now,
+        'fresh_until' => $now->copy()->addMinute(),
+        'created_at' => $now,
+        'updated_at' => $now,
+    ]));
+
+    $operation = quotaAdmissionOperation($fixture, 'quota-superseded-1');
+    $result = app(AdmitDeliveryOperation::class)->handle($fixture['context'], $operation);
+
+    expect($result->admitted)->toBeTrue()
+        ->and($result->providerConnectionId)->toBe($route['connectionId'])
+        ->and(DB::table('delivery_operation_quota_consumptions')->where('quota_id', $newerQuotaId)->count())->toBe(1)
+        ->and(DB::table('delivery_operation_quota_consumptions')->where('quota_id', $route['quotaId'])->count())->toBe(0);
+});

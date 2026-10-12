@@ -142,7 +142,7 @@ def readme_progress_pr_errors(changed: set[str], base: str, head: str) -> list[s
 
 def git_changed_files(base: str, head: str) -> set[str]:
     proc = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=ACMRTUXB", base, head],
+        ["git", "diff", "--name-only", "--no-renames", base, head],
         cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
     if proc.returncode != 0:

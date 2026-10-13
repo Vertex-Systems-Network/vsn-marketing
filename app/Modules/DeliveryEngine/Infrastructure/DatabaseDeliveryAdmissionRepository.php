@@ -148,15 +148,17 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
                 ->where('provider_id', $providerId)
                 ->where('connection_id', $connectionId)
                 ->where('operation', $providerOperation)
-                ->where(function ($query) use ($now): void {
-                    $query->whereNull('fresh_until')
-                        ->orWhere('fresh_until', '>=', $now);
-                })
                 ->orderBy('id')
                 ->lockForUpdate()
                 ->get();
 
-            if ($quotas->isEmpty()) {
+            $quotas = array_values(array_filter(
+                ProviderQuotaObservations::latest($quotas),
+                static fn (stdClass $quota): bool => $quota->fresh_until === null
+                    || new DateTimeImmutable((string) $quota->fresh_until) >= $now,
+            ));
+
+            if ($quotas === []) {
                 continue;
             }
 
@@ -164,10 +166,6 @@ final readonly class DatabaseDeliveryAdmissionRepository implements DeliveryAdmi
             $quotaRequiredUnits = [];
             $blocked = false;
             foreach ($quotas as $quota) {
-                if (! $quota instanceof stdClass) {
-                    continue;
-                }
-
                 if ($quota->resets_at !== null && new DateTimeImmutable((string) $quota->resets_at) <= $now) {
                     $lastReason = 'quota_evidence_stale';
                     $blocked = true;

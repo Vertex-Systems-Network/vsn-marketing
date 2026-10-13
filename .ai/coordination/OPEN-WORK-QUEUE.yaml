@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "9d2934dac293675c05f9c5a9edf382834019d46e",
+  "reconciled_main_sha": "4599693d5f74799d8a13a14918f71262029ef3a8",
   "active_work_path": {
     "kind": "pr",
     "number": 569,
@@ -16,6 +16,15 @@
       "branch": "supervisor/task0092-operator-audit-monitor-20261012",
       "disposition": "active_task0092_carrier",
       "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 570,
+      "title": "fix: close CI classification, quota supersession and rollback-hold gaps",
+      "branch": "claude/blissful-feynman-w6ap8x",
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4599693d5f74799d8a13a14918f71262029ef3a8"
     },
     {
       "kind": "pr",

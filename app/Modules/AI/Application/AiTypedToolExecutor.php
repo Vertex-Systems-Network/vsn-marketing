@@ -9,6 +9,7 @@ use App\Modules\AI\Domain\Contracts\AiToolApproval;
 use App\Modules\AI\Domain\Contracts\AiToolHandler;
 use App\Modules\Audit\Application\AuditRecorder;
 use App\Modules\Core\Application\Idempotency\IdempotentExecutor;
+use App\Modules\Core\Domain\Idempotency\IdempotencyHoldRequired;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Tenancy\TenantContext;
 use InvalidArgumentException;
@@ -62,38 +63,56 @@ final class AiTypedToolExecutor
             && ! $this->approvals->approved($scope, $toolId, $fingerprint, $approvalReference)) {
             throw new InvalidArgumentException('AI tool independent approval required.');
         }
+        // An atomic guard claim serializes equivalent arguments across keys
+        // and actors, then becomes a durable hold if rollback fails.
+        $holdScope = 'ai-tool-hold:'.$toolId.':'.$definition['version'];
+        $holdKey = hash('sha256', json_encode([$scope->workspaceId, $scope->brandId, $toolId,
+            $definition['version'], $arguments], JSON_THROW_ON_ERROR));
         $this->audit->record($scope->workspaceId, 'ai.tool.authorized',
             ['tool_id' => $toolId, 'version' => $definition['version'], 'arguments_sha256' => $fingerprint, 'risk' => $risk],
             brandId: $scope->brandId, actorId: $scope->actorId);
-        $result = $this->idempotency->run($scope->workspaceId, 'ai-tool:'.$toolId.':'.$definition['version'], $key,
-            function () use ($scope, $arguments, $definition, $fingerprint): array {
-                $handler = $definition['handler'];
-                if ($handler instanceof AiReversibleToolHandler && ! $handler->preflight($scope, $arguments)) {
-                    throw new RuntimeException('AI tool preflight denied.');
-                }
-                try {
-                    $output = $handler->execute($scope, $arguments);
-                    $this->schemas->validate($output, $definition['result_schema']);
-                    if ($handler instanceof AiReversibleToolHandler && ! $handler->postcondition($scope, $arguments, $output)) {
-                        throw new RuntimeException('AI tool postcondition failed.');
-                    }
-                } catch (Throwable) {
-                    if ($handler instanceof AiReversibleToolHandler) {
-                        try {
-                            $handler->rollback($scope, $arguments);
-                        } catch (Throwable) {
-                            throw new RuntimeException('AI tool rollback requires operator recovery.');
-                        }
-                    }
-                    throw new RuntimeException('AI tool execution or validation failed.');
-                }
-
-                return ['status' => 'executed', 'arguments_sha256' => $fingerprint, 'output' => $output];
-            }, $scope->actorId);
+        $result = $this->idempotency->runGuarded(
+            $scope->workspaceId, 'ai-tool:'.$toolId.':'.$definition['version'], $key,
+            $holdScope, $holdKey,
+            fn (): array => $this->invoke($scope, $arguments, $definition, $fingerprint), $scope->actorId,
+        );
         if (($result['arguments_sha256'] ?? null) !== $fingerprint) {
             throw new InvalidArgumentException('AI tool replay arguments or actor changed.');
         }
 
         return $result;
+    }
+
+    private function invoke(TenantContext $scope, array $arguments, array $definition, string $fingerprint): array
+    {
+        $handler = $definition['handler'];
+        if ($handler instanceof AiReversibleToolHandler) {
+            try {
+                $allowed = $handler->preflight($scope, $arguments);
+            } catch (Throwable) {
+                throw new RuntimeException('AI tool preflight failed.');
+            }
+            if (! $allowed) {
+                throw new RuntimeException('AI tool preflight denied.');
+            }
+        }
+        try {
+            $output = $handler->execute($scope, $arguments);
+            $this->schemas->validate($output, $definition['result_schema']);
+            if ($handler instanceof AiReversibleToolHandler && ! $handler->postcondition($scope, $arguments, $output)) {
+                throw new RuntimeException('AI tool postcondition failed.');
+            }
+        } catch (Throwable) {
+            if ($handler instanceof AiReversibleToolHandler) {
+                try {
+                    $handler->rollback($scope, $arguments);
+                } catch (Throwable) {
+                    throw new IdempotencyHoldRequired('AI tool rollback requires operator recovery.');
+                }
+            }
+            throw new RuntimeException('AI tool execution or validation failed.');
+        }
+
+        return ['status' => 'executed', 'arguments_sha256' => $fingerprint, 'output' => $output];
     }
 }

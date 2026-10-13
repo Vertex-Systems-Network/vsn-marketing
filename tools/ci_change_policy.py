@@ -20,6 +20,11 @@ CONTROL_PREFIXES = (
     ".ai/",
     "docs/",
 )
+# Control-plane paths the application loads at runtime (AiAgentCatalog,
+# AiCreativeCatalog, AI tests); changes here alter product behaviour.
+RUNTIME_PREFIXES = (
+    ".ai/ai/",
+)
 
 
 def normalize_path(path: str) -> str:
@@ -31,6 +36,8 @@ def normalize_path(path: str) -> str:
 
 def is_control_only_path(path: str) -> bool:
     value = normalize_path(path)
+    if any(value.startswith(prefix) for prefix in RUNTIME_PREFIXES):
+        return False
     return value in CONTROL_EXACT or any(value.startswith(prefix) for prefix in CONTROL_PREFIXES)
 
 
@@ -99,7 +106,9 @@ def resolve_base(base: str, head: str) -> str:
 
 def changed_paths(base: str, head: str) -> list[str]:
     resolved = resolve_base(base, head)
-    proc = git("diff", "--name-only", "--diff-filter=ACMRTUXB", resolved, head)
+    # --no-renames reports both sides of a move and deletions are kept, so
+    # removing or relocating application code can never ride control-only CI.
+    proc = git("diff", "--name-only", "--no-renames", resolved, head)
     if proc.returncode != 0:
         raise ValueError(f"git diff failed: {proc.stderr.strip()}")
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]

@@ -55,6 +55,7 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamMonitor
             ->where('action', self::ACTION)
             ->where('subject_type', 'offline_redteam_run')
             ->where('subject_id', $runId)
+            ->limit(1025)
             ->get();
 
         if ($rows->count() > 1024) {
@@ -101,7 +102,8 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamMonitor
             $reason = $evidence['recorded_reason'];
             $ready = $status === 'offline_redteam_review_ready'
                 && $reason === 'human_incident_triage_required'
-                && $evidence['case_count'] > 0
+                && $evidence['case_count'] >= count(self::CATEGORIES)
+                && min($evidence['category_counts']) > 0
                 && self::digest($evidence['source_manifest_sha256']);
             $held = $status === 'held_offline'
                 && (

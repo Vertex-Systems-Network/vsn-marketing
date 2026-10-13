@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Certify Phase 15 bounded autonomous marketing",
   "weight": 10,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0092"
   ],

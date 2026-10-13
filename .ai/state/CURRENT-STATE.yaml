@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-15",
-    "active_task": "TASK-0092",
-    "last_completed_task": "TASK-0091",
-    "next_task": "TASK-0093"
+    "active_task": "TASK-0093",
+    "last_completed_task": "TASK-0092",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 95.0,
-    "phase_percent": 75.0,
+    "roadmap_percent": 95.6,
+    "phase_percent": 90.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -28,10 +28,10 @@
   "active_issue": null,
   "active_pr": 569,
   "active_branch": "supervisor/task0092-operator-audit-monitor-20261012",
-  "current_milestone": "TASK-0092-PHASE15-REDTEAM",
+  "current_milestone": "TASK-0093-PHASE15-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Submit PR #569 exact local carrier, run full exact-head and resulting-main checks, transition TASK-0092 then certify TASK-0093; stop before PHASE-16",
+  "exact_next_safe_action": "Complete TASK-0093 certification matrix, run local governance checks, publish full-CI PR, verify resulting-main gates and close Phase 15",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Submit PR #569 exact local carrier, run full exact-head and resulting-main checks, transition TASK-0092 then certify TASK-0093; stop before PHASE-16"
+  "exact_next_action": "Complete TASK-0093 certification matrix, run local governance checks, publish full-CI PR, verify resulting-main gates and close Phase 15"
 }

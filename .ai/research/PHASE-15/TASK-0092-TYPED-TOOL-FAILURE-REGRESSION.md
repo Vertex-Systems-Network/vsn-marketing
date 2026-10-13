@@ -11,6 +11,8 @@ Test the safety contract:
 - If the simulated rollback also throws with a second fake secret, the executor must report only the generic `AI tool rollback requires operator recovery.` condition. It **must not** record provider recovery, a verified external side effect, or a successful rollback.
 - The audit stream remains workspace-scoped and contains only normalized and bounded failure information. No real secrets are used in fixtures.
 
-This demonstrates deterministic error redaction and operator escalation in a self-contained stub; it does not certify durable production provider retries, queue re-delivery, partial remote effects, fraud/legal compliance, global stop timing, multi-worker rate limit, or real recovery success. Those remain separately scoped tasks and human/provider evidence requirements. Require full exact-head and resulting-main CI before any promotion.
+This demonstrates deterministic error redaction and operator escalation in a self-contained stub; it does not certify durable production provider retries, real queue transport re-delivery, partial remote effects, fraud/legal compliance, global stop timing, multi-worker rate limit, or real recovery success. Those remain separately scoped tasks and human/provider evidence requirements. Require full exact-head and resulting-main CI before any promotion.
+
+A separate queue-like same-key re-delivery fixture now proves a safely failed local operation can retry once, then a completed receipt replays without executing its handler again. A failed rollback remains durably held for both same and fresh keys. This is a deterministic idempotency regression, not a real queue transport, provider side-effect or settlement observation.
 
 No production sending, publishing, campaign billing, provider action, external rollback, or auto-promotion is authorized.

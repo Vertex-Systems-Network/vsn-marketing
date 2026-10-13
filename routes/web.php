@@ -1,5 +1,7 @@
 <?php
 
+use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamIncidentController;
+use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamTriageController;
 use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorController;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
@@ -10,6 +12,19 @@ use App\Modules\Segmentation\Presentation\Http\Controllers\SegmentProposalContro
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
+    ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)
+    ->name('autonomy.offline-incidents.show');
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
+    ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}/review', [OfflineRedTeamIncidentController::class, 'page'])
+    ->name('autonomy.offline-incidents.review');
+
+Route::middleware([
+    'auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ,
+    'workspace.permission:'.PermissionCatalog::CAMPAIGN_APPROVE, 'throttle:10,1',
+])->post('/workspaces/{workspace}/autonomy/offline-incidents/{run}/triage', OfflineRedTeamTriageController::class)
+    ->name('autonomy.offline-incidents.triage');
 
 Route::middleware(['guest', 'throttle:login'])
     ->post('/auth/login', [SessionController::class, 'store'])

@@ -78,8 +78,9 @@ final readonly class DatabaseBoundedAutonomyOfflineRedTeamAudit
                 ->where('action', self::ACTION)
                 ->where('subject_type', 'offline_redteam_run')
                 ->where('subject_id', $runId)
+                ->limit(1025)
                 ->get();
-            if ($history->count() > 1024) {
+            if ($history->count() >= 1024) {
                 throw new InvalidArgumentException('Offline red-team audit history exceeds review bounds.');
             }
 

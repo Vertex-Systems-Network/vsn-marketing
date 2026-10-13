@@ -24,4 +24,8 @@ Status: **AC-1/AC-3 first implementation slice; not task completion**. This pack
 - **AC-3 not yet complete:** append-only tenant-scoped incident audit, durable evidence retention/size bounds, investigation status and human recovery workflow. The current reviewer is *read-only* and explicitly returns `incident_recorded=false` and `recovery_performed=false`.
 - Only separately authorized, trusted provider telemetry could justify a future production-monitoring claim. Do not infer production sending, money spent, breach, refund, rollback, incident closure or recovery from any fixture.
 
+## Local coverage hardening after PR #570
+
+An incoming synthetic envelope's `complete=true` is insufficient by itself. A review-ready result now requires at least one validated, non-unresolved finding in each of the nine registered adversarial categories. Missing categories produce `held_offline/redteam_coverage_incomplete` with zero reportable case counts. This checks fixture coverage only; it does not certify that each attack was effectively resisted, that provider/queue races were exercised, or that real incidents were recovered. The existing permanent audit hold remains in force after a prior incomplete or unresolved record.
+
 Require exact-head Application/PHP/PostgreSQL/E2E/Security/Governance and protected-main verification for this carrier. This file does **not** mark any TASK-0092 acceptance flag done or alter the canonical progress percentage.

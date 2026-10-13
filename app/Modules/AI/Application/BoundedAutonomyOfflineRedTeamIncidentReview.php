@@ -118,6 +118,11 @@ final readonly class BoundedAutonomyOfflineRedTeamIncidentReview
         if ($unresolved) {
             return self::held($runId, 'unresolved_redteam_safety_case');
         }
+        // A source's `complete` flag cannot certify a run that skipped an
+        // adversarial class. Every registered class needs an observed case.
+        if (in_array(0, $categoryCounts, true)) {
+            return self::held($runId, 'redteam_coverage_incomplete');
+        }
 
         // Counts only: no raw payload, prompt, secret, email, provider outcome
         // or falsely recorded production incident can escape this boundary.

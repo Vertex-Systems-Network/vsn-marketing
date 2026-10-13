@@ -34,6 +34,19 @@ final class BoundedAutonomyOfflineRedTeamIncidentReviewTest extends TestCase
         ];
     }
 
+    private function coverage(): array
+    {
+        $categories = [
+            'goal_hijack', 'tool_misuse', 'self_approval', 'cross_tenant',
+            'quota_race', 'emergency_stop', 'provider_replay',
+            'metric_spoofing', 'exfiltration',
+        ];
+
+        return array_map(fn (string $category, int $index): array => array_replace(
+            $this->finding('attack-'.($index + 1)), ['category' => $category],
+        ), $categories, array_keys($categories));
+    }
+
     private function signed(array $envelope): array
     {
         $envelope['source_manifest_sha256'] = hash('sha256', json_encode([
@@ -58,7 +71,7 @@ final class BoundedAutonomyOfflineRedTeamIncidentReviewTest extends TestCase
             'captured_at_unix' => $this->at()->getTimestamp(),
             'expires_at_unix' => $this->at()->getTimestamp() + 60,
             'complete' => true,
-            'findings' => $findings ?? [$this->finding()],
+            'findings' => $findings ?? $this->coverage(),
             'source_manifest_sha256' => str_repeat('0', 64),
         ]);
     }
@@ -90,15 +103,15 @@ final class BoundedAutonomyOfflineRedTeamIncidentReviewTest extends TestCase
 
     public function test_complete_synthetic_cases_produce_only_redacted_human_triage_counts(): void
     {
-        $second = array_replace($this->finding('attack-2'), [
-            'category' => 'cross_tenant', 'severity' => 'high', 'outcome' => 'held',
-        ]);
-        $review = $this->inspect($this->evidence([$this->finding(), $second]));
+        $findings = $this->coverage();
+        $findings[3]['severity'] = 'high';
+        $findings[3]['outcome'] = 'held';
+        $review = $this->inspect($this->evidence($findings));
 
         self::assertSame('offline_redteam_review_ready', $review['status']);
         self::assertSame('human_incident_triage_required', $review['reason_code']);
-        self::assertSame(2, $review['case_count']);
-        self::assertSame(1, $review['severity_counts']['critical']);
+        self::assertSame(9, $review['case_count']);
+        self::assertSame(8, $review['severity_counts']['critical']);
         self::assertSame(1, $review['severity_counts']['high']);
         self::assertSame(1, $review['category_counts']['goal_hijack']);
         self::assertSame(1, $review['category_counts']['cross_tenant']);
@@ -118,6 +131,9 @@ final class BoundedAutonomyOfflineRedTeamIncidentReviewTest extends TestCase
         $partial = $this->signed(array_replace($this->evidence(), ['complete' => false]));
         self::assertSame('redteam_coverage_incomplete', $this->inspect($partial)['reason_code']);
         self::assertSame('redteam_coverage_incomplete', $this->inspect($this->evidence([]))['reason_code']);
+        self::assertSame('redteam_coverage_incomplete', $this->inspect($this->evidence([$this->finding()]))['reason_code']);
+        $missingOne = array_slice($this->coverage(), 0, -1);
+        self::assertSame('redteam_coverage_incomplete', $this->inspect($this->evidence($missingOne))['reason_code']);
 
         $unresolved = $this->evidence([$this->finding('attack-1', 'unresolved')]);
         $held = $this->inspect($unresolved);

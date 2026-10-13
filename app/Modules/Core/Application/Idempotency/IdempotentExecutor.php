@@ -89,6 +89,44 @@ final readonly class IdempotentExecutor
         $this->idempotency->hold($workspaceId, $scope, $key, $reason);
     }
 
+    /**
+     * Serialize equivalent writes across distinct operation keys. A crashed
+     * guard stays processing and fails closed until operator reconciliation.
+     */
+    public function runGuarded(
+        string $workspaceId,
+        string $scope,
+        string $key,
+        string $guardScope,
+        string $guardKey,
+        callable $operation,
+        ?string $actorId = null,
+    ): array {
+        $guard = $this->idempotency->claim($workspaceId, $guardScope, $guardKey);
+        if ($guard->state === IdempotencyClaim::HELD) {
+            throw new IdempotencyHoldRequired('AI tool is held for operator recovery.');
+        }
+        if ($guard->state !== IdempotencyClaim::ACQUIRED) {
+            throw new RuntimeException('Equivalent AI tool operation is already in progress.');
+        }
+
+        try {
+            $result = $this->run($workspaceId, $scope, $key, $operation, $actorId);
+        } catch (IdempotencyHoldRequired $exception) {
+            $this->idempotency->hold($workspaceId, $guardScope, $guardKey, $exception->getMessage());
+
+            throw $exception;
+        } catch (Throwable $exception) {
+            $this->idempotency->fail($workspaceId, $guardScope, $guardKey, 'Guard released after safe failure.');
+
+            throw $exception;
+        }
+
+        $this->idempotency->fail($workspaceId, $guardScope, $guardKey, 'Guard released after completion.');
+
+        return $result;
+    }
+
     public function isHeld(string $workspaceId, string $scope, string $key): bool
     {
         return $this->idempotency->isHeld($workspaceId, $scope, $key);

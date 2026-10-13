@@ -63,24 +63,19 @@ final class AiTypedToolExecutor
             && ! $this->approvals->approved($scope, $toolId, $fingerprint, $approvalReference)) {
             throw new InvalidArgumentException('AI tool independent approval required.');
         }
-        // A failed rollback holds the tool for these arguments across every key and actor until an operator recovers it.
+        // An atomic guard claim serializes equivalent arguments across keys
+        // and actors, then becomes a durable hold if rollback fails.
         $holdScope = 'ai-tool-hold:'.$toolId.':'.$definition['version'];
         $holdKey = hash('sha256', json_encode([$scope->workspaceId, $scope->brandId, $toolId,
             $definition['version'], $arguments], JSON_THROW_ON_ERROR));
-        if ($this->idempotency->isHeld($scope->workspaceId, $holdScope, $holdKey)) {
-            throw new IdempotencyHoldRequired('AI tool is held for operator recovery.');
-        }
         $this->audit->record($scope->workspaceId, 'ai.tool.authorized',
             ['tool_id' => $toolId, 'version' => $definition['version'], 'arguments_sha256' => $fingerprint, 'risk' => $risk],
             brandId: $scope->brandId, actorId: $scope->actorId);
-        try {
-            $result = $this->idempotency->run($scope->workspaceId, 'ai-tool:'.$toolId.':'.$definition['version'], $key,
-                fn (): array => $this->invoke($scope, $arguments, $definition, $fingerprint), $scope->actorId);
-        } catch (IdempotencyHoldRequired $exception) {
-            $this->idempotency->hold($scope->workspaceId, $holdScope, $holdKey, $exception->getMessage());
-
-            throw $exception;
-        }
+        $result = $this->idempotency->runGuarded(
+            $scope->workspaceId, 'ai-tool:'.$toolId.':'.$definition['version'], $key,
+            $holdScope, $holdKey,
+            fn (): array => $this->invoke($scope, $arguments, $definition, $fingerprint), $scope->actorId,
+        );
         if (($result['arguments_sha256'] ?? null) !== $fingerprint) {
             throw new InvalidArgumentException('AI tool replay arguments or actor changed.');
         }

@@ -3,7 +3,7 @@
   "phase": "PHASE-15",
   "title": "Implement autonomy red-team and incident monitoring",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0091"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Attacks test goal hijack, untrusted data, tool misuse, self-approval and cross-tenant access",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Stress tests exercise quota races, kill-switch timing, replay and provider/queue failure",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Operator incident monitoring, audit and recovery are recorded without invented production evidence",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

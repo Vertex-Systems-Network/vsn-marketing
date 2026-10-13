@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-15",
-    "active_task": "TASK-0092",
-    "last_completed_task": "TASK-0091",
-    "next_task": "TASK-0093"
+    "active_task": "TASK-0093",
+    "last_completed_task": "TASK-0092",
+    "next_task": null
   },
   "progress": {
-    "roadmap_percent": 95.0,
-    "phase_percent": 75.0,
+    "roadmap_percent": 95.6,
+    "phase_percent": 90.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "4599693d5f74799d8a13a14918f71262029ef3a8",
+  "observed_main_sha": "1b2149863dae2a2d6d73fb1b408f01e17a0ff61c",
   "active_issue": null,
-  "active_pr": 569,
-  "active_branch": "supervisor/task0092-operator-audit-monitor-20261012",
-  "current_milestone": "TASK-0092-PHASE15-REDTEAM",
+  "active_pr": 571,
+  "active_branch": "supervisor/task0093-phase15-certification-20261013",
+  "current_milestone": "TASK-0093-PHASE15-CERTIFICATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Submit PR #569 exact local carrier, run full exact-head and resulting-main checks, transition TASK-0092 then certify TASK-0093; stop before PHASE-16",
+  "exact_next_safe_action": "Verify PR #571 full exact-head checks, merge green head, verify protected-main gates, then close TASK-0093 and Phase 15",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Submit PR #569 exact local carrier, run full exact-head and resulting-main checks, transition TASK-0092 then certify TASK-0093; stop before PHASE-16"
+  "exact_next_action": "Verify PR #571 full exact-head checks, merge green head, verify protected-main gates, then close TASK-0093 and Phase 15"
 }

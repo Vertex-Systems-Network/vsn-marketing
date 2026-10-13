@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4599693d5f74799d8a13a14918f71262029ef3a8",
+  "reconciled_main_sha": "1b2149863dae2a2d6d73fb1b408f01e17a0ff61c",
   "active_work_path": {
     "kind": "pr",
-    "number": 569,
-    "title": "feat(phase15): expose redacted read-only synthetic incident monitoring",
-    "branch": "supervisor/task0092-operator-audit-monitor-20261012",
-    "disposition": "active_task0092_carrier"
+    "number": 571,
+    "title": "Certify Phase 15 offline autonomous marketing task chain",
+    "branch": "supervisor/task0093-phase15-certification-20261013",
+    "disposition": "active_task0093_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 571,
+      "title": "Certify Phase 15 offline autonomous marketing task chain",
+      "branch": "supervisor/task0093-phase15-certification-20261013",
+      "disposition": "active_task0093_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 569,
       "title": "feat(phase15): expose redacted read-only synthetic incident monitoring",
       "branch": "supervisor/task0092-operator-audit-monitor-20261012",
-      "disposition": "active_task0092_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "1b2149863dae2a2d6d73fb1b408f01e17a0ff61c"
     },
     {
       "kind": "pr",

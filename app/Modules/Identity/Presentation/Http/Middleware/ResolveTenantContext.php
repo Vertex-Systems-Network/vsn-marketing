@@ -38,8 +38,8 @@ final class ResolveTenantContext
             brandId: is_string($brandId) && $brandId !== '' ? $brandId : null,
         );
 
-        if (! $this->sessions->permits((string) $user->getKey(), $context->workspaceId,
-            $request->session()->get('identity_session_generation'))) {
+        $generation = $request->hasSession() ? $request->session()->get('identity_session_generation') : null;
+        if (! $this->sessions->permits((string) $user->getKey(), $context->workspaceId, $generation)) {
             throw new \Illuminate\Auth\Access\AuthorizationException('Workspace session was revoked. Sign in again.');
         }
 

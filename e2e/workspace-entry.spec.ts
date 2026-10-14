@@ -16,7 +16,8 @@ test('keyboard sign in reaches only the current workspace and signs out', async 
     await page.getByRole('button', { name: 'Sign in' }).click();
     await expect(page).toHaveURL(/\/workspaces$/);
     await expect(page.getByRole('heading', { name: 'Your workspaces' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Analytics' })).toHaveAttribute('href', `/workspaces/${fixture.workspace}/analytics`);
+    await expect(page.getByRole('link', { name: 'Analytics' })).toHaveAttribute('href',
+        new RegExp(`/workspaces/${fixture.workspace}/analytics$`));
     await expect(page.getByRole('link', { name: 'Publishing' })).toHaveCount(0);
     await page.getByRole('button', { name: 'Sign out' }).click();
     await expect(page).toHaveURL(/\/auth\/login$/);

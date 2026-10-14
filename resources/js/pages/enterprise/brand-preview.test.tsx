@@ -40,7 +40,7 @@ test('saves only appearance fields with a session token and preserves the existi
     expect(request).toMatchObject({ method: 'POST', credentials: 'same-origin',
         headers: { 'X-CSRF-TOKEN': 'test-session-token' } });
     expect(JSON.parse(request!.body as string)).toEqual({
-        display_name: 'Edited brand', accent_color: '#225588', logo_asset_id: 'logo-id',
+        display_name: 'Edited brand', accent_color: '#225588', logo_asset_id: 'logo-id', expected_revision: 2,
     });
     fetchMock.mockRestore();
     meta.remove();

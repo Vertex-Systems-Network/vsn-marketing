@@ -24,7 +24,7 @@ it('writes only authorized in-workspace brand appearance through the operator ro
     $role = $roles->createRole((string) $first->getKey(), 'brand', 'Brand');
     $path = '/workspaces/'.$first->getKey().'/brands/'.$brand->getKey().'/appearance';
     $foreignPath = '/workspaces/'.$first->getKey().'/brands/'.$foreign->getKey().'/appearance';
-    $settings = ['display_name' => 'Client Brand', 'accent_color' => '#225588'];
+    $settings = ['display_name' => 'Client Brand', 'accent_color' => '#225588', 'expected_revision' => 0];
 
     $this->postJson($path, $settings)->assertUnauthorized();
     $this->withoutVite();
@@ -39,7 +39,8 @@ it('writes only authorized in-workspace brand appearance through the operator ro
     $this->get($path)->assertOk()->assertInertia(fn (Assert $page) => $page
         ->where('display_name', 'Main')->where('logo_asset_id', null)->where('revision', 0));
     $this->postJson($path, $settings)->assertOk()->assertJsonPath('revision', 1);
-    $this->postJson($path, [...$settings, 'logo_asset_id' => null])->assertOk()->assertJsonPath('revision', 2);
+    $this->postJson($path, $settings)->assertStatus(409);
+    $this->postJson($path, [...$settings, 'expected_revision' => 1, 'logo_asset_id' => null])->assertOk()->assertJsonPath('revision', 2);
     $this->get($path)->assertOk()->assertInertia(fn (Assert $page) => $page
         ->component('enterprise/brand-preview')
         ->where('display_name', 'Client Brand')

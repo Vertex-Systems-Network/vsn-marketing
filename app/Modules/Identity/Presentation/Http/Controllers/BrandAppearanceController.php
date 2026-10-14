@@ -21,7 +21,7 @@ final readonly class BrandAppearanceController
             throw new AuthenticationException;
         }
 
-        if (array_diff(array_keys($request->all()), ['display_name', 'accent_color', 'logo_asset_id']) !== []) {
+        if (array_diff(array_keys($request->all()), ['display_name', 'accent_color', 'logo_asset_id', 'expected_revision']) !== []) {
             throw ValidationException::withMessages(['appearance' => ['Unsupported appearance field.']]);
         }
 
@@ -29,10 +29,14 @@ final readonly class BrandAppearanceController
             'display_name' => ['required', 'string', 'max:80'],
             'accent_color' => ['required', 'string', 'size:7'],
             'logo_asset_id' => ['nullable', 'uuid'],
+            'expected_revision' => ['required', 'integer', 'min:0'],
         ]);
 
+        $expectedRevision = (int) $settings['expected_revision'];
+        unset($settings['expected_revision']);
+
         return response()->json(['revision' => $this->configure->apply(
-            $actor, $this->tenant->require(), $brand, $settings,
+            $actor, $this->tenant->require(), $brand, $settings, $expectedRevision,
         )]);
     }
 }

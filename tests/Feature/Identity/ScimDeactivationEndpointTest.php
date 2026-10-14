@@ -37,6 +37,9 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
     $send($foreignPath, $body, $token)->assertForbidden();
     $send($path, ['schemas' => $body['schemas'], 'Operations' => [['op' => 'replace', 'path' => 'roles', 'value' => ['admin']]]], $token)
         ->assertStatus(400);
+    foreach ([null, false, 17, 'invalid', [], ['invalid'], [['op' => 'replace']]] as $operations) {
+        $send($path, ['schemas' => $body['schemas'], 'Operations' => $operations], $token)->assertStatus(400);
+    }
     $send($path, $body, $token)->assertNoContent();
     $send($path, $body, $token)->assertNoContent();
 

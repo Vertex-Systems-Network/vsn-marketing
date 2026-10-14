@@ -35,7 +35,8 @@ final readonly class ScimDeactivationController
         }
 
         $body = $request->json()->all();
-        $operation = $body['Operations'][0] ?? null;
+        $operations = $body['Operations'] ?? null;
+        $operation = is_array($operations) ? ($operations[0] ?? null) : null;
         if (strtolower(trim(explode(';', (string) $request->header('Content-Type'))[0])) !== 'application/scim+json'
             || count($body) !== 2 || ! array_key_exists('schemas', $body) || ! array_key_exists('Operations', $body)
             || $body['schemas'] !== ['urn:ietf:params:scim:api:messages:2.0:PatchOp']

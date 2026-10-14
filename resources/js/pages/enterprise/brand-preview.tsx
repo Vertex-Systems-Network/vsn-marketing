@@ -23,8 +23,9 @@ export default function BrandPreview({ display_name, accent_color, logo_asset_id
             const response = await fetch(window.location.pathname, {
                 method: 'POST', credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': csrf },
-                body: JSON.stringify({ display_name: name, accent_color: color, logo_asset_id: logoId }),
+                body: JSON.stringify({ display_name: name, accent_color: color, logo_asset_id: logoId, expected_revision: savedRevision }),
             });
+            if (response.status === 409) throw new Error('Appearance changed in another session. Reload before saving.');
             if (!response.ok) throw new Error('Appearance could not be saved. Check the name, color and permissions.');
             const result: { revision: number } = await response.json();
             setSavedRevision(result.revision);

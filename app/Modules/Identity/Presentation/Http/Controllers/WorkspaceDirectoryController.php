@@ -2,6 +2,7 @@
 
 namespace App\Modules\Identity\Presentation\Http\Controllers;
 
+use App\Modules\Identity\Application\Sessions\WorkspaceSessionPolicy;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Domain\Identity\User;
 use Illuminate\Auth\AuthenticationException;
@@ -12,6 +13,8 @@ use Inertia\Response;
 
 final class WorkspaceDirectoryController
 {
+    public function __construct(private readonly WorkspaceSessionPolicy $sessions) {}
+
     public function __invoke(Request $request): Response
     {
         $user = $request->user();
@@ -48,16 +51,18 @@ final class WorkspaceDirectoryController
         ];
 
         return Inertia::render('auth/workspaces', [
-            'workspaces' => $visible->map(function ($workspace) use ($permissions, $modules): array {
+            'workspaces' => $visible->map(function ($workspace) use ($permissions, $modules, $request, $user): array {
+                $reauth = ! $this->sessions->permits((string) $user->getKey(), (string) $workspace->id,
+                    $request->session()->get('identity_session_generation'));
                 $granted = $permissions->get($workspace->id, collect())->pluck('permission')->all();
                 $links = [];
                 foreach ($modules as $permission => $module) {
-                    if (in_array($permission, $granted, true)) {
+                    if (! $reauth && in_array($permission, $granted, true)) {
                         $links[] = ['name' => $module['name'], 'url' => route($module['route'], ['workspace' => $workspace->id])];
                     }
                 }
 
-                return ['name' => $workspace->name, 'links' => $links];
+                return ['name' => $workspace->name, 'links' => $links, 'reauth_required' => $reauth];
             })->values()->all(),
             'previous_url' => $number > 1 ? route('workspaces.directory', ['page' => $number - 1]) : null,
             'next_url' => $rows->count() > 25 ? route('workspaces.directory', ['page' => $number + 1]) : null,

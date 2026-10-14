@@ -2,6 +2,7 @@
 
 namespace App\Modules\Identity\Presentation\Http\Middleware;
 
+use App\Modules\Identity\Application\Sessions\WorkspaceSessionPolicy;
 use App\Modules\Identity\Application\Tenancy\TenantContextResolver;
 use App\Modules\Identity\Application\Tenancy\TenantContextStore;
 use App\Modules\Identity\Domain\Identity\User;
@@ -15,6 +16,7 @@ final class ResolveTenantContext
     public function __construct(
         private readonly TenantContextResolver $resolver,
         private readonly TenantContextStore $store,
+        private readonly WorkspaceSessionPolicy $sessions,
     ) {}
 
     public function handle(Request $request, Closure $next): Response
@@ -35,6 +37,11 @@ final class ResolveTenantContext
             workspaceId: is_string($workspaceId) ? $workspaceId : '',
             brandId: is_string($brandId) && $brandId !== '' ? $brandId : null,
         );
+
+        if (! $this->sessions->permits((string) $user->getKey(), $context->workspaceId,
+            $request->session()->get('identity_session_generation'))) {
+            throw new \Illuminate\Auth\Access\AuthorizationException('Workspace session was revoked. Sign in again.');
+        }
 
         $this->store->set($context);
         $request->attributes->set('tenant_context', $context);

@@ -3,18 +3,20 @@
 namespace App\Modules\Identity\Application\Provisioning;
 
 use App\Modules\Audit\Application\AuditRecorder;
+use App\Modules\Identity\Application\Sessions\WorkspaceSessionPolicy;
 use App\Modules\Identity\Domain\Provisioning\ScimProvisioningAdmission;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Offline provisioning boundary; no SCIM endpoint or token verifier is wired.
+ * Workspace-scoped provisioning boundary. The narrow SCIM adapter is disabled by default.
  */
 final readonly class DeactivateWorkspaceMember
 {
     public function __construct(
         private ScimProvisioningAdmission $admission,
         private AuditRecorder $audit,
+        private WorkspaceSessionPolicy $sessions,
     ) {}
 
     public function execute(
@@ -38,6 +40,7 @@ final readonly class DeactivateWorkspaceMember
         }
 
         return DB::transaction(function () use ($workspaceId, $userId, $principalReference): bool {
+            DB::table('users')->where('id', $userId)->lockForUpdate()->firstOrFail();
             $membership = DB::table('workspace_memberships')
                 ->where('workspace_id', $workspaceId)
                 ->where('user_id', $userId)
@@ -48,6 +51,7 @@ final readonly class DeactivateWorkspaceMember
                 return false;
             }
 
+            $this->sessions->recordRevocation($workspaceId, $userId, null);
             DB::table('workspace_memberships')->where('id', $membership->id)->delete();
 
             $this->audit->record(

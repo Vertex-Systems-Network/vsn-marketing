@@ -40,6 +40,11 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
     foreach ([null, false, 17, 'invalid', [], ['invalid'], [['op' => 'replace']]] as $operations) {
         $send($path, ['schemas' => $body['schemas'], 'Operations' => $operations], $token)->assertStatus(400);
     }
+    foreach (['not-json', 'null', '17', '[]', '"invalid"'] as $rawBody) {
+        $this->call('PATCH', $path, [], [], [], [
+            'CONTENT_TYPE' => 'application/scim+json', 'HTTP_AUTHORIZATION' => 'Bearer '.$token,
+        ], $rawBody)->assertStatus(400);
+    }
     $send($path, $body, $token)->assertNoContent();
     $send($path, $body, $token)->assertNoContent();
 

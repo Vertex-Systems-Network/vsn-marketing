@@ -1,13 +1,13 @@
-# TASK-0094 — Research acceptance matrix (local draft)
+# TASK-0094 research acceptance matrix
 
-Status: **LOCAL / NOT ACCEPTED**. The task remains active. Exact-head and resulting-main gates have not run on the Phase 16 carrier.
+Status: RESEARCH ACCEPTED. PR574 exact head06d4e68c passed all six protected checks; merge7f7ce662 has identical tree3541bbea and resulting-main Application/Security/Continuity workflows passed. TASK0094 AC1/2/3 are complete; TASK0095 is the guarded successor. Later candidate code in PR573 remains unaccepted.
 
-Publication sequence boundary: the active task requires exact-head and resulting-main gates before TASK-0095 can be canonically activated. The current user instruction holds Git publication until all of Phase 16 is complete. Both conditions cannot be met in that order; retain TASK-0094 as active and do not claim completion or silently bypass the required task gate. The local identity work is an unaccepted draft until this sequence is resolved.
-
-| Criterion | Local evidence | Remaining gate |
+| Criterion | Prepared evidence | Acceptance gate |
 | --- | --- | --- |
-| AC-1: current primary sources | `TASK-0094-RESEARCH.md` cites NIST SP 800-63-4, RFC 7643/7644, OIDC, OASIS SAML, W3C WCAG 2.2, GDPR, PCI SSC, NIST SP 800-34/53 and Microsoft/Okta provisioning behavior, reviewed 2026-10-13 | Confirm source claims during exact-head review; review provider-specific contracts before any adapter implementation |
-| AC-2: supported claims | No supported payment processor, IdP, production region, legal determination, RPO/RTO or live activation inferred; offline-only boundary retained | Confirm no live-capable route or authority is introduced by later implementation |
-| AC-3: threats and plan | Tenant confusion, untrusted IdP role mapping, replay, session staleness, cross-region copies, billing duplication and failed restore mapped to TASK-0095..0100; local Identity source inventory complete | Record task-focused adverse evidence and full exact-head/protected-main CI before marking the task complete |
+| AC-1 | TASK0094-RESEARCH dated2026-10-14 records primary standards, publisher version/access, NIST800-34 corrected revision, NIST800-53 release5.2.0, and explicit GDPR/RFC9967 retrieval limitations | Full exact-head and resulting-main governance/application/security gates before transition |
+| AC-2 | No selected IdP/payment/backup provider, supported region, legal determination, RPO/RTO, live activation or enterprise readiness claim; all missing evidence is an activation prerequisite | Confirm carrier has no product/runtime/migration changes |
+| AC-3 | Threats, market/admin workflow, source-level data inventory and recovery plan map to registered TASK0095..0100 without weakening dependencies; ADR0005 proposed only | Governance, index/roadmap/checkpoint and append-only journal checks |
 
-Local checks: `python tools/ai_state.py validate`, `python tools/ai_journal.py validate`, `python tools/ai_policy.py`, `python tools/ai_parallel.py validate` and `python tools/supervisor_contract.py validate` pass. The earlier identity suite passes (13 tests, 76 assertions); the earlier full PHP suite passes (1,079 tests, 154 infrastructure skips, 7,280 assertions). A later portable audit-failure rollback test passes with its focused suite (3 tests, 16 assertions); the full suite has not been rerun since that addition. Focused PHPStan and Pint pass. Offline policy, scoped member removal and redacted audit metadata export are initial TASK-0095-oriented slices. They do not prove SCIM interoperability, SSO, complete session termination or enterprise production certification.
+The earlier PHP/frontend test counts belong to preserved PR573 candidates, not new research acceptance. This research-only carrier has no application source or migration changes. Exact-head full CI is intentionally required by the PR body. Unsupported legal/provider/region/restore claims remain disabled and are rechecked in their implementation task. Research completion does not certify any later task.
+
+Exact-head evidence: Governance115899063574, Foundation115899372317, PHP floor115900620376, PostgreSQL18/Redis8 integration115900619529, E2E115900619586, Security115900443755. Resulting-main runs: Continuity38579398528, Application38579398004, Security38579398152. Full PR head and resulting-main tree equality establishes the same source snapshot; main push used normal control-only change classification. No skipped main job is described as independently executed.

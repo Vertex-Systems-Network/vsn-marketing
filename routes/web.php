@@ -5,11 +5,9 @@ use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamTriageController;
 use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorController;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
-use App\Modules\Identity\Presentation\Http\Controllers\BillingEntitlementReviewController;
-use App\Modules\Identity\Presentation\Http\Controllers\BrandAppearanceController;
-use App\Modules\Identity\Presentation\Http\Controllers\BrandAppearancePreviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\WorkspaceDirectoryController;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
 use App\Modules\Journeys\Presentation\Http\Controllers\JourneyOperatorController;
 use App\Modules\Publishing\Presentation\Http\Controllers\PublishingBulkApprovalController;
@@ -18,10 +16,8 @@ use App\Modules\Segmentation\Presentation\Http\Controllers\SegmentProposalContro
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
-
-Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
-    ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)
-    ->name('autonomy.offline-incidents.show');
+Route::middleware('guest')->get('/auth/login', fn () => Inertia\Inertia::render('auth/login'))->name('login');
+Route::middleware(['auth', 'throttle:60,1'])->get('/workspaces', WorkspaceDirectoryController::class)->name('workspaces.directory');
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::AUDIT_EXPORT, 'throttle:10,1'])
     ->get('/workspaces/{workspace}/audit/export', AuditExportController::class)
@@ -29,12 +25,6 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::AUDIT_EXPORT])
     ->get('/workspaces/{workspace}/enterprise', EnterpriseOverviewController::class)
     ->name('workspace.enterprise.overview');
-Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::BRAND_MANAGE, 'throttle:10,1'])
-    ->post('/workspaces/{workspace}/brands/{brand}/appearance', BrandAppearanceController::class)
-    ->name('workspace.brand.appearance');
-Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::BRAND_MANAGE, 'throttle:30,1'])
-    ->get('/workspaces/{workspace}/brands/{brand}/appearance', BrandAppearancePreviewController::class)
-    ->name('workspace.brand.appearance.preview');
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
     ->group(function (): void {
         $controller = RoleAssignmentReviewController::class;
@@ -42,16 +32,10 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/approve', [$controller, 'approve']);
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/apply', [$controller, 'apply']);
     });
-Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::BILLING_MANAGE, 'throttle:10,1'])
-    ->group(function (): void {
-        $controller = BillingEntitlementReviewController::class;
-        Route::post('/workspaces/{workspace}/billing/meter-proposals', [$controller, 'propose']);
-        Route::post('/workspaces/{workspace}/billing/meter-proposals/{proposal}/approve', [$controller, 'approve']);
-        Route::post('/workspaces/{workspace}/billing/meter-proposals/{proposal}/apply', [$controller, 'apply']);
-    });
-Route::middleware(['auth', 'agency.audit', 'throttle:10,1'])
-    ->get('/workspaces/{workspace}/agency/{agency}/audit/export', AuditExportController::class)
-    ->name('agency.audit.export');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
+    ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)
+    ->name('autonomy.offline-incidents.show');
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
     ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}/review', [OfflineRedTeamIncidentController::class, 'page'])
     ->name('autonomy.offline-incidents.review');

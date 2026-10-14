@@ -1,6 +1,6 @@
 # Phase 16 local development ledger — 2026-10-13
 
-Status: **IN PROGRESS / LOCAL ONLY**. This ledger records working code, not task completion, enterprise certification, live support or authorization to publish. The user's publication instruction is to finish local development before deciding on Git publication. TASK-0094 remains the active canonical task pending exact-head and resulting-main gates; later slices are unaccepted local work.
+Status: **IN PROGRESS / LOCAL ONLY**. This ledger records working code, not task completion, enterprise certification, live support or authorization to publish. The 2026-10-14 user instruction authorizes local development followed by GitHub PR and merge; the existing draft PR #573 is the carrier. TASK-0094 remains the active canonical task pending exact-head and resulting-main gates; later slices are unaccepted local work.
 
 | Task | Local working evidence | Outstanding acceptance work |
 | --- | --- | --- |
@@ -21,3 +21,7 @@ The seven `2026_10_13` migrations create new tables and indexes only. They do no
 ## Local verification
 
 Last verified PHP 8.3 full suite before the current backend changes: **1,098 passed, 154 infrastructure skips, 7,475 assertions**. The current changes have PHP feature tests added but cannot be run in this resumed environment because PHP is absent. Frontend TypeScript, **50 Vitest tests**, Vite build and the 10-page/zero-test manifest check pass on the current head. Re-run PHP tests, Pint and PHPStan on the current head before accepting this slice. PostgreSQL, Redis, browser, production region, external provider and protected-main gates remain unverified.
+
+## 2026-10-14 local audit
+
+PHP 8.3.6 and locked dependencies installed. SQLite local migrations applied. Full PHP suite: 1,098 passed, 154 infrastructure skips, 7,492 assertions; PHPStan: no errors; Pint: passed; architecture: 4 passed, 3,669 assertions. TypeScript, 50 Vitest tests and Vite production build pass. Brand saves now submit an expected revision and reject stale writes with HTTP 409; a parent brand lock serializes first creation. Malformed SCIM Operations values return HTTP 400 without mutation. PostgreSQL18/Redis8 and browser acceptance remain mandatory exact-head CI gates. Local PostgreSQL cannot start under the single-root-UID runtime; Chromium launch needs runtime recovery. No existing task or production capability is certified by these local checks.

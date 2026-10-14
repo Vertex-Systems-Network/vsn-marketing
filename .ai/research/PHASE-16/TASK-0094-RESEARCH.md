@@ -1,6 +1,6 @@
-# TASK-0094 — Enterprise readiness research (working draft)
+# TASK-0094 — Enterprise readiness research
 
-- researched_at: 2026-10-13T16:50:00Z
+- researched_at: 2026-10-14T14:00:00Z
 - task: TASK-0094
 - phase: PHASE-16
 - researcher: VSN Marketing Supervisor
@@ -17,7 +17,7 @@
 | RFC 9967, https://www.rfc-editor.org/rfc/rfc9967.html | Optional asynchronous SCIM security-event profile; do not infer that the current synchronous prototype supports SET events. |
 | WCAG 2.2, https://www.w3.org/TR/WCAG22/ | Target testable AA success criteria for enterprise admin, provisioning, billing and recovery flows; test keyboard, focus, labels, error recovery and status messaging. |
 | EU GDPR, https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng | Map access, erasure, portability, retention and international-transfer decisions to actual controller/processor roles and jurisdictions. Legal hold can restrict deletion; never claim universal erasure or residency. |
-| NIST SP 800-34 Rev. 1, https://csrc.nist.gov/pubs/sp/800/34/r1/final | Document recovery objectives from an approved impact analysis and prove restore exercises; backups alone cannot establish RPO/RTO. |
+| NIST SP 800-34 Rev. 1, https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final | Document recovery objectives from an approved impact analysis and prove restore exercises; backups alone cannot establish RPO/RTO. |
 | OpenID Connect Core 1.0, https://openid.net/specs/openid-connect-core-1_0.html | Check issuer, audience, nonce, expiry, signature and tenant binding for each federation assertion; federation does not determine workspace authorization. |
 | OASIS SAML 2.0 Technical Overview, https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html | If SAML is selected, validate signed assertions, recipient, in-response-to and replay cache; do not treat XML attributes as trusted local roles. |
 | NIST SP 800-53 Rev. 5, https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final | Use access control, audit/accountability, privacy and contingency families as control mapping, without making a compliance certification claim. |
@@ -67,3 +67,26 @@ Record bounded SCIM burst/rate tests, concurrent deprovision/login races, audit 
 ## Research-to-plan reconciliation and freshness
 
 `CONFIRMS_PLAN`: TASK-0094..0100 match the preplanned sequence. `NEW_ACCEPTANCE_CRITERION`: explicit session revocation after SCIM deactivation, sibling-client isolation, downstream-copy residency map, idempotent billing evidence and measured restore are recorded in staged task criteria. `BLOCKER` for any production claims: no selected provider/region/payment contract, approved RPO/RTO, legal interpretation or restore exercise. No task needs an ADR solely from this research; a new architecture choice must get a proposed ADR before coding. Revalidate source versions and selected provider APIs at each implementation gate. GDPR requirements depend on actual processing role, geography and data category; this document is a technical mapping, not legal advice.
+
+## 2026-10-14 bounded revalidation
+
+Primary-source NIST SP800-63-4, RFC7644/RFC7643 and W3C WCAG2.2 pages rechecked on 2026-10-14. Federation remains separate from local authorization; SCIM remains an identity provisioning protocol; WCAG2.2 remains the stated accessibility baseline. This bounded check confirms existing admission and input-validation assumptions; no live IdP, SCIM interoperability, region, payment, legal or recovery certification is inferred. Other provider/region/payment claims require task-specific revalidation before implementation.
+
+## Current-session provenance and corrections — 2026-10-14
+
+| Primary publisher/source | Version / access result | Implementation impact |
+| --- | --- | --- |
+| NIST SP800-63C-4 | Final 2025 suite, publisher page fetched | Require audience restriction, replay and assertion validation; local RBAC remains separate. No assurance-level certificate inferred. |
+| OpenID Connect Core | Final incorporating errata set 2, fetched | Verify exact issuer, audience, signature, expiry and nonce before account linking. |
+| RFC7643/7644 and RFC9865 | Publisher pages fetched; RFC9865 October2025 | Stable tenant identifiers, protocol errors, explicit inactive state; optional cursor extension does not imply interoperability. |
+| RFC9967 | Direct fetch failed; official RFC index confirms security-event extension | No async SET compatibility claim; defer adapter-specific detailed profile until selected. |
+| Okta SCIM and Microsoft Entra provisioning | Publisher guidance fetched | Deactivation is an access boundary; Okta deactivation does not imply later DELETE. Provider-specific interoperability tests required. |
+| W3C WCAG2.2 | Publisher recommendation fetched | Admin workflows need keyboard/focus/status/error and contrast evidence, not only a semantic markup test. |
+| NIST SP800-34 Rev1 | Corrected to November2010 update1 publisher page | Original May2010 URL is superseded. Use updated contingency-planning guidance; require measured restore and approved objectives. |
+| NIST SP800-53 Rev5 | Publisher page fetched; current page notes release5.2.0 dated2025-08-27 | Control mapping must include current supply-chain/integrity revisions; mapping is not certification. |
+| PCI SSC | Current document library lists PCI DSS4.0.1 | Determine actual payment-data scope before claiming compliance; no processor selected. |
+| EDPB Recommendations01/2020 | Publisher page fetched | Transfers need a supported processing map and safeguards; residency label alone is insufficient. |
+| EU GDPR text | EUR-Lex full-text endpoints returned anti-bot wall; official indexed excerpts available | No article-level implementation/legal interpretation certified from this session. Revalidate full official text and responsible legal owner's applicability before region-specific export/erasure/transfer activation. |
+| Stripe webhooks/idempotency | Publisher pages fetched, illustrative only | Signed events, retry and reconciliation are required if Stripe is ever selected; no selection or live billing authority inferred. |
+
+Research confirms the canonical TASK0094..0100 sequence. New adverse-test requirements remain explicit session deprovisioning, immutable privilege review, sibling-client export isolation, all-copy inventory, idempotent billing and measured recovery. Unsupported sources/regions/providers remain unresolved activation prerequisites, not fabricated compatibility. Later code in PR573 is a preserved unaccepted candidate; this carrier changes no product source, dependencies, migrations or runtime policy. ADR0005 remains PROPOSED. No roadmap requirements are removed.

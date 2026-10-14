@@ -29,7 +29,7 @@ it('shows an honest workspace governance state to audit-authorized operators onl
         ->where('workspace_id', (string) $workspace->getKey())
         ->where('capabilities.1.status', 'Not configured')
         ->where('capabilities.2.status', 'Disabled until integration approval')
-        ->where('capabilities.4.status', 'Offline metering only; live charges unavailable')
-        ->where('capabilities.5.status', 'Synthetic offline exercise only')
+        ->where('capabilities.4.status', 'Not configured')
+        ->where('capabilities.5.status', 'Not implemented')
         ->where('audit_export_url', route('workspace.audit.export', ['workspace' => $workspace->getKey()])));
 });

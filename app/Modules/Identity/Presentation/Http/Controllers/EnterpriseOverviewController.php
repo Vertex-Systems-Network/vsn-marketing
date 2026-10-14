@@ -22,9 +22,9 @@ final readonly class EnterpriseOverviewController
                 ['name' => 'Federated sign-in', 'status' => 'Not configured'],
                 ['name' => 'SCIM deactivation', 'status' => config('enterprise.scim_deactivation_enabled')
                     ? 'Limited adapter enabled; provider compatibility unverified' : 'Disabled until integration approval'],
-                ['name' => 'Residency and subject requests', 'status' => 'Manual review only'],
-                ['name' => 'Billing', 'status' => 'Offline metering only; live charges unavailable'],
-                ['name' => 'Recovery', 'status' => 'Synthetic offline exercise only'],
+                ['name' => 'Residency and subject requests', 'status' => 'Not implemented'],
+                ['name' => 'Billing', 'status' => 'Not configured'],
+                ['name' => 'Recovery', 'status' => 'Not implemented'],
             ],
         ]);
     }

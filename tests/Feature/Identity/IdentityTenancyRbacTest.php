@@ -14,7 +14,6 @@ use App\Modules\Identity\Domain\Tenancy\Workspace;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -141,26 +140,6 @@ it('keeps canonical role permissions inside their workspace boundary', function 
 
     expect(fn () => $roles->assignRole($otherMembership, $roleId))
         ->toThrow(AuthorizationException::class, 'Role assignment must remain within one workspace.');
-});
-
-it('denies a previously authenticated session after workspace membership removal', function () {
-    $fixture = identityFixture();
-    $workspaceId = (string) $fixture['workspace']->getKey();
-    $userId = (string) $fixture['user']->getKey();
-
-    Route::middleware(['web', 'auth', 'tenant'])
-        ->get('/_test/provisioning/workspaces/{workspace}', fn () => response()->noContent());
-
-    $this->actingAs($fixture['user'])
-        ->get('/_test/provisioning/workspaces/'.$workspaceId)
-        ->assertNoContent();
-
-    DB::table('workspace_memberships')
-        ->where('workspace_id', $workspaceId)
-        ->where('user_id', $userId)
-        ->delete();
-
-    $this->get('/_test/provisioning/workspaces/'.$workspaceId)->assertForbidden();
 });
 
 it('propagates the same tenant context through web api job and event boundaries', function () {

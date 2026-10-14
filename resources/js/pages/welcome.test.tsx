@@ -8,11 +8,12 @@ vi.mock('@inertiajs/react', () => ({
     Head: () => null,
 }));
 
-test('renders the phase-one foundation message', () => {
+test('renders the product entry and sign in link', () => {
     render(<Welcome />);
 
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(
         'Provider-agnostic marketing infrastructure, built on deterministic guardrails.',
     );
-    expect(screen.getByText(/PHASE-01 foundation runtime is active/)).toBeTruthy();
+    expect(screen.getByText(/Workspace publishing, journeys, segments, and analytics/)).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Sign in' }).getAttribute('href')).toBe('/auth/login');
 });

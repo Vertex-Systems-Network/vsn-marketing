@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Research enterprise identity, privacy, residency, audit, retention, accessibility, procurement and compliance",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0093"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Dated official standards and guidance mapped to identity, SCIM, privacy, accessibility, billing and recovery constraints",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Supported-region and provider assumptions separated from unverified legal, residency and production claims",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Threat model, research-to-plan reconciliation and acceptance evidence for TASK-0095 through TASK-0100",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

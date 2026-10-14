@@ -6,6 +6,7 @@ use App\Modules\Identity\Application\Provisioning\DeactivateWorkspaceMember;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 
 /** Default-disabled, narrow SCIM PATCH active=false adapter. */
@@ -34,7 +35,14 @@ final readonly class ScimDeactivationController
             throw new AuthorizationException('Provisioning credential denied.');
         }
 
-        $body = $request->json()->all();
+        try {
+            $body = json_decode($request->getContent(), true, 64, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            $body = null;
+        }
+        if (! is_array($body) || array_is_list($body)) {
+            return $this->unsupportedOperation();
+        }
         $operations = $body['Operations'] ?? null;
         $operation = is_array($operations) ? ($operations[0] ?? null) : null;
         if (strtolower(trim(explode(';', (string) $request->header('Content-Type'))[0])) !== 'application/scim+json'
@@ -44,10 +52,7 @@ final readonly class ScimDeactivationController
             || ! is_array($operation) || count($operation) !== 3
             || ($operation['op'] ?? null) !== 'replace' || ($operation['path'] ?? null) !== 'active'
             || ! array_key_exists('value', $operation) || $operation['value'] !== false) {
-            return response()->json([
-                'schemas' => ['urn:ietf:params:scim:api:messages:2.0:Error'],
-                'detail' => 'Unsupported provisioning operation.', 'status' => '400',
-            ], 400, ['Content-Type' => 'application/scim+json']);
+            return $this->unsupportedOperation();
         }
 
         $this->deactivation->execute(
@@ -61,5 +66,13 @@ final readonly class ScimDeactivationController
         );
 
         return response()->noContent();
+    }
+
+    private function unsupportedOperation(): Response
+    {
+        return response()->json([
+            'schemas' => ['urn:ietf:params:scim:api:messages:2.0:Error'],
+            'detail' => 'Unsupported provisioning operation.', 'status' => '400',
+        ], 400, ['Content-Type' => 'application/scim+json']);
     }
 }

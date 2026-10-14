@@ -32,6 +32,7 @@ it('exports only authorized workspace audit metadata with stable bounded paginat
     $this->getJson($path)->assertUnauthorized();
     $this->actingAs($user)->getJson($path.'?limit=1')
         ->assertOk()->assertJsonCount(1, 'items')
+        ->assertHeader('Cache-Control', 'no-store, private')
         ->assertJsonPath('items.0.id', $newer->id)
         ->assertJsonPath('next_cursor', $newer->id)
         ->assertDontSee('never-export');
@@ -41,4 +42,10 @@ it('exports only authorized workspace audit metadata with stable bounded paginat
     $this->getJson($path.'?before='.$foreign->id)->assertNotFound();
     $this->getJson('/workspaces/'.$second->getKey().'/audit/export')->assertForbidden();
     $this->getJson($path.'?limit=101')->assertUnprocessable();
+    expect(DB::table('audit_events')->where('workspace_id', $first->getKey())
+        ->where('action', 'identity.audit.metadata_exported')->count())->toBe(2);
+    $exportAudit = DB::table('audit_events')->where('workspace_id', $first->getKey())
+        ->where('action', 'identity.audit.metadata_exported')->first();
+    expect($exportAudit->actor_id)->toBe($user->getKey())
+        ->and((string) $exportAudit->evidence)->not->toContain('never-export');
 });

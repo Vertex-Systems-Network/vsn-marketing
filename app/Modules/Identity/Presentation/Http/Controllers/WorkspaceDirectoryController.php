@@ -3,6 +3,8 @@
 namespace App\Modules\Identity\Presentation\Http\Controllers;
 
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Domain\Identity\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -12,11 +14,15 @@ final class WorkspaceDirectoryController
 {
     public function __invoke(Request $request): Response
     {
+        $user = $request->user();
+        if (! $user instanceof User) {
+            throw new AuthenticationException('Authentication is required.');
+        }
         $page = $request->validate(['page' => ['sometimes', 'integer', 'min:1', 'max:10000']]);
         $number = (int) ($page['page'] ?? 1);
         $rows = DB::table('workspace_memberships as memberships')
             ->join('workspaces', 'workspaces.id', '=', 'memberships.workspace_id')
-            ->where('memberships.user_id', $request->user()->getAuthIdentifier())
+            ->where('memberships.user_id', $user->getKey())
             ->orderBy('workspaces.name')->orderBy('workspaces.id')
             ->offset(($number - 1) * 25)->limit(26)
             ->get(['workspaces.id', 'workspaces.name', 'memberships.id as membership_id']);

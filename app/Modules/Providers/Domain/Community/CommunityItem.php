@@ -20,8 +20,10 @@ final readonly class CommunityItem
                 throw new InvalidArgumentException('Community items require non-empty identity and body fields.');
             }
         }
-        if (! str_starts_with($this->provenanceUrl, 'https://')) {
-            throw new InvalidArgumentException('Community provenance must be HTTPS.');
+        if (! str_starts_with($this->provenanceUrl, 'https://')
+            || filter_var($this->provenanceUrl, FILTER_VALIDATE_URL) === false
+            || preg_match('/[\x00-\x20\x7f]/', $this->provenanceUrl) === 1) {
+            throw new InvalidArgumentException('Community provenance must be a valid HTTPS URL.');
         }
     }
 }

@@ -1,21 +1,30 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b",
+  "reconciled_main_sha": "7f7ce662ef8a92e300b77c199da15aac5401fae9",
   "active_work_path": {
     "kind": "pr",
-    "number": 574,
-    "title": "Phase16 research and current-source acceptance boundaries",
-    "branch": "supervisor/task0094-research-audit-20261014",
-    "disposition": "active_task0094_carrier"
+    "number": 575,
+    "title": "Community boundary audit and enterprise research acceptance",
+    "branch": "supervisor/community-boundary-audit-20261014",
+    "disposition": "active_task0095_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 575,
+      "title": "Community boundary audit and enterprise research acceptance",
+      "branch": "supervisor/community-boundary-audit-20261014",
+      "disposition": "active_task0095_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 574,
       "title": "Phase16 research and current-source acceptance boundaries",
       "branch": "supervisor/task0094-research-audit-20261014",
-      "disposition": "active_task0094_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "7f7ce662ef8a92e300b77c199da15aac5401fae9"
     },
     {
       "kind": "pr",

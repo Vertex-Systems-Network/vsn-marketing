@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-16",
-    "active_task": "TASK-0094",
-    "last_completed_task": "TASK-0093",
-    "next_task": "TASK-0095"
+    "active_task": "TASK-0095",
+    "last_completed_task": "TASK-0094",
+    "next_task": "TASK-0096"
   },
   "progress": {
-    "roadmap_percent": 96.0,
-    "phase_percent": 0.0,
+    "roadmap_percent": 96.4,
+    "phase_percent": 10.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b",
+  "observed_main_sha": "7f7ce662ef8a92e300b77c199da15aac5401fae9",
   "active_issue": null,
-  "active_pr": 574,
-  "active_branch": "supervisor/task0094-research-audit-20261014",
-  "current_milestone": "TASK-0094-RESEARCH",
+  "active_pr": 575,
+  "active_branch": "supervisor/community-boundary-audit-20261014",
+  "current_milestone": "TASK-0095-IDENTITY-FOUNDATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Verify PR574 full exact-head and merge green research carrier, confirm resulting-main checks, then accept TASK0094 and resume TASK0095.",
+  "exact_next_safe_action": "Verify and merge PR575 exact-head audit repair and TASK0094 acceptance handoff; then scope PR573 to dependency-ready TASK0095 identity/governance work and verify before merge.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR574 full exact-head and merge green research carrier, confirm resulting-main checks, then accept TASK0094 and resume TASK0095."
+  "exact_next_action": "Verify and merge PR575 exact-head audit repair and TASK0094 acceptance handoff; then scope PR573 to dependency-ready TASK0095 identity/governance work and verify before merge."
 }

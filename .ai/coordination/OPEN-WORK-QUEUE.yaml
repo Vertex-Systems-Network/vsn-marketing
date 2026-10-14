@@ -1,14 +1,22 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1142aa9fce0b83b4c0449a8b6ad3ea86deb7a23c",
+  "reconciled_main_sha": "3e44cb69356d6d2e660391887b99f5755219140d",
   "active_work_path": {
     "kind": "pr",
-    "number": 573,
-    "title": "TASK-0095 identity and governance foundation",
-    "branch": "supervisor/phase16-research-20261013",
+    "number": 576,
+    "title": "TASK-0095 workspace session revocation and admin control",
+    "branch": "supervisor/task0095-session-revision-20261014",
     "disposition": "active_task0095_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 576,
+      "title": "TASK-0095 workspace session revocation and admin control",
+      "branch": "supervisor/task0095-session-revision-20261014",
+      "disposition": "active_task0095_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 575,
@@ -32,8 +40,9 @@
       "number": 573,
       "title": "TASK-0095 identity and governance foundation",
       "branch": "supervisor/phase16-research-20261013",
-      "disposition": "active_task0095_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "3e44cb69356d6d2e660391887b99f5755219140d"
     },
     {
       "kind": "pr",

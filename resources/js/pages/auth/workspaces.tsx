@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
-type Workspace = { name: string; links: { name: string; url: string }[] };
+type Workspace = { name: string; links: { name: string; url: string }[]; reauth_required?: boolean };
 type Props = { workspaces: Workspace[]; previous_url: string | null; next_url: string | null };
 
 export default function Workspaces({ workspaces, previous_url, next_url }: Props) {
@@ -22,7 +22,8 @@ export default function Workspaces({ workspaces, previous_url, next_url }: Props
         {workspaces.length === 0 && <p>No workspaces on this page.</p>}
         <ul className="space-y-5">{workspaces.map((workspace, index) => <li key={`${workspace.name}-${index}`} className="rounded border border-neutral-700 p-5">
             <h2 className="text-xl font-medium">{workspace.name}</h2>
-            {workspace.links.length === 0 ? <p className="mt-2 text-neutral-300">No module access assigned.</p> :
+            {workspace.reauth_required ? <p className="mt-2 text-amber-200">Workspace session revoked. Sign out, then sign in again.</p> :
+                workspace.links.length === 0 ? <p className="mt-2 text-neutral-300">No module access assigned.</p> :
                 <ul className="mt-3 flex flex-wrap gap-3">{workspace.links.map(link => <li key={link.url}><a className="text-sky-300 underline focus-visible:outline-2" href={link.url}>{link.name}</a></li>)}</ul>}
         </li>)}</ul>
         <nav aria-label="Workspace pages" className="flex gap-4">{previous_url && <a href={previous_url}>Previous</a>}{next_url && <a href={next_url}>Next</a>}</nav>

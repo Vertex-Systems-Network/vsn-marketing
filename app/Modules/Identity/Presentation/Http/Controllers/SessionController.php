@@ -2,6 +2,7 @@
 
 namespace App\Modules\Identity\Presentation\Http\Controllers;
 
+use App\Modules\Identity\Application\Sessions\WorkspaceSessionPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -9,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SessionController
 {
+    public function __construct(private readonly WorkspaceSessionPolicy $sessions) {}
+
     public function store(Request $request): Response
     {
         $credentials = $request->validate([
@@ -23,6 +26,7 @@ final class SessionController
         }
 
         $request->session()->regenerate();
+        $request->session()->put('identity_session_generation', $this->sessions->issue((string) Auth::id()));
 
         return response()->noContent();
     }

@@ -6,6 +6,7 @@ use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorControl
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\RevokeWorkspaceSessionsController;
 use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
 use App\Modules\Identity\Presentation\Http\Controllers\WorkspaceDirectoryController;
@@ -32,6 +33,9 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/approve', [$controller, 'approve']);
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/apply', [$controller, 'apply']);
     });
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
+    ->post('/workspaces/{workspace}/identity/members/{user}/revoke-sessions', RevokeWorkspaceSessionsController::class)
+    ->name('workspace.identity.sessions.revoke');
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
     ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)

@@ -27,7 +27,7 @@ it('issues once, rotates atomically and revokes only a workspace-bound provision
     $this->actingAs($reader)->post($path)->assertForbidden();
     $this->actingAs($admin)->post('/workspaces/'.$two->getKey().'/identity/provisioning-credentials')->assertForbidden();
 
-    $first = $this->post($path)->assertCreated()->assertHeader('Cache-Control', 'no-store')->json();
+    $first = $this->post($path)->assertCreated()->assertHeader('Cache-Control', 'no-store, private')->json();
     expect(strlen($first['token']))->toBe(64)
         ->and(DB::table('workspace_provisioning_credentials')->where('id', $first['id'])->value('secret_hash'))
         ->toBe(hash('sha256', $first['token']));

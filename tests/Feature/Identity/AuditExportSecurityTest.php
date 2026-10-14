@@ -48,4 +48,5 @@ it('exports only authorized workspace audit metadata with stable bounded paginat
         ->where('action', 'identity.audit.metadata_exported')->first();
     expect($exportAudit->actor_id)->toBe($user->getKey())
         ->and((string) $exportAudit->evidence)->not->toContain('never-export');
+    $this->getJson($path.'?before='.$exportAudit->id)->assertNotFound();
 });

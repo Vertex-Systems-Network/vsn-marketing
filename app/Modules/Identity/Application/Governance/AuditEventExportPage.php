@@ -17,13 +17,17 @@ final class AuditEventExportPage
         $cursor = null;
         if ($beforeId !== null) {
             $cursor = DB::table('audit_events')->where('workspace_id', $workspaceId)
+                ->where('action', '!=', 'identity.audit.metadata_exported')
                 ->where('id', $beforeId)->first(['id', 'occurred_at']);
             if ($cursor === null) {
                 throw new NotFoundHttpException;
             }
         }
 
-        $query = DB::table('audit_events')->where('workspace_id', $workspaceId);
+        // Export access is audited separately; including those newly written
+        // access records here would change the next page while it is read.
+        $query = DB::table('audit_events')->where('workspace_id', $workspaceId)
+            ->where('action', '!=', 'identity.audit.metadata_exported');
         if ($cursor !== null) {
             $query->where(function ($query) use ($cursor): void {
                 $query->where('occurred_at', '<', $cursor->occurred_at)

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0095",
+  "phase": "PHASE-16",
+  "title": "Implement enterprise identity and governance",
+  "weight": 18,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0094"
+  ],
+  "objective": "Add tenant-bound SSO, SCIM, advanced authorization, session controls and redacted audit export",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Federation and provisioning reject replay, cross-tenant identity confusion and unauthorized privilege changes",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Role, session and administrative controls enforce least privilege with revocation and recoverable audit",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Adversarial integration and accessible operator flow tests pass with unsupported providers disabled",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0095 acceptance evidence and full gates before advancing to TASK-0096."
+}

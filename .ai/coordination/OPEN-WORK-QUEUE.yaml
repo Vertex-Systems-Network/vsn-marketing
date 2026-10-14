@@ -3,19 +3,27 @@
   "reconciled_main_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b",
   "active_work_path": {
     "kind": "pr",
-    "number": 573,
-    "title": "Phase16 local audit and guarded foundation",
-    "branch": "supervisor/phase16-research-20261013",
+    "number": 574,
+    "title": "Phase16 research and current-source acceptance boundaries",
+    "branch": "supervisor/task0094-research-audit-20261014",
     "disposition": "active_task0094_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 574,
+      "title": "Phase16 research and current-source acceptance boundaries",
+      "branch": "supervisor/task0094-research-audit-20261014",
+      "disposition": "active_task0094_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 573,
       "title": "Phase16 local audit and guarded foundation",
       "branch": "supervisor/phase16-research-20261013",
       "disposition": "active_task0094_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

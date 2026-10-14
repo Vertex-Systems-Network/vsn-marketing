@@ -26,12 +26,12 @@
   },
   "observed_main_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b",
   "active_issue": null,
-  "active_pr": 573,
+  "active_pr": 574,
   "active_branch": "supervisor/task0094-research-audit-20261014",
   "current_milestone": "TASK-0094-RESEARCH",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Publish research-only TASK0094 carrier, run full exact-head/resulting-main gates, accept research, then resume identity/governance implementation on the preserved code baseline.",
+  "exact_next_safe_action": "Verify PR574 full exact-head and merge green research carrier, confirm resulting-main checks, then accept TASK0094 and resume TASK0095.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish research-only TASK0094 carrier, run full exact-head/resulting-main gates, accept research, then resume identity/governance implementation on the preserved code baseline."
+  "exact_next_action": "Verify PR574 full exact-head and merge green research carrier, confirm resulting-main checks, then accept TASK0094 and resume TASK0095."
 }

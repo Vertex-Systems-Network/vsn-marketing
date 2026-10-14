@@ -32,9 +32,11 @@ it('validates a pinned signed token and fails closed on altered identity and key
         expect(fn () => $check(signedIdentityToken($badHeader, $claims, $private)))->toThrow(AuthorizationException::class);
     }
     foreach ([['iss' => 'https://other.test'], ['aud' => 'other'], ['sub' => ''], ['iat' => 1051],
-        ['exp' => 1050], ['exp' => 5000], ['aud' => ['client', 'other']], ['nonce' => 'other']] as $change) {
+        ['exp' => 1050], ['exp' => 5000], ['aud' => ['client', 'other']], ['azp' => 'other'],
+        ['azp' => 7], ['nonce' => 'other']] as $change) {
         expect(fn () => $check(signedIdentityToken($header, array_replace($claims, $change), $private)))->toThrow(AuthorizationException::class);
     }
     $multi = array_replace($claims, ['aud' => ['client', 'other'], 'azp' => 'client']);
     expect($check(signedIdentityToken($header, $multi, $private))['audience'])->toBe('client');
+    expect($check(signedIdentityToken($header, array_replace($claims, ['azp' => 'client']), $private))['audience'])->toBe('client');
 });

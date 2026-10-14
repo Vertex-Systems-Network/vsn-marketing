@@ -52,7 +52,8 @@ final class PinnedOidcTokenVerifier
             (is_array($aud) && count($aud) > 0 && count($aud) <= 8 && count($aud) === count(array_unique($aud, SORT_REGULAR)) &&
                 count(array_filter($aud, 'is_string')) === count($aud) && in_array($clientId, $aud, true));
         if (! is_string($claims->iss ?? null) || ! hash_equals($issuer, $claims->iss) || ! $audienceMatches ||
-            (is_array($aud) && count($aud) > 1 && (! is_string($claims->azp ?? null) || ! hash_equals($clientId, $claims->azp))) ||
+            (property_exists($claims, 'azp') && (! is_string($claims->azp) || ! hash_equals($clientId, $claims->azp))) ||
+            (is_array($aud) && count($aud) > 1 && ! property_exists($claims, 'azp')) ||
             ! is_string($claims->nonce ?? null) || ! hash_equals($nonce, $claims->nonce) ||
             ! is_string($claims->sub ?? null) || trim($claims->sub) === '' || strlen($claims->sub) > 255 ||
             ! is_int($claims->iat ?? null) || ! is_int($claims->exp ?? null) ||

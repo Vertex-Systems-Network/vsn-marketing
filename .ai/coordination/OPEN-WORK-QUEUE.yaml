@@ -1,21 +1,38 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2ac6feb5e4eca023773cb1cfce39af711954e005",
+  "reconciled_main_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b",
   "active_work_path": {
     "kind": "pr",
-    "number": 572,
-    "title": "Close Phase 15 offline certification",
-    "branch": "supervisor/task0093-phase15-closure-20261013",
-    "disposition": "active_task0093_carrier"
+    "number": 574,
+    "title": "Phase16 research and current-source acceptance boundaries",
+    "branch": "supervisor/task0094-research-audit-20261014",
+    "disposition": "active_task0094_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 574,
+      "title": "Phase16 research and current-source acceptance boundaries",
+      "branch": "supervisor/task0094-research-audit-20261014",
+      "disposition": "active_task0094_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
+      "number": 573,
+      "title": "Phase16 local audit and guarded foundation",
+      "branch": "supervisor/phase16-research-20261013",
+      "disposition": "active_task0094_carrier",
+      "accepted_actionable": false
+    },
     {
       "kind": "pr",
       "number": 572,
       "title": "Close Phase 15 offline certification",
       "branch": "supervisor/task0093-phase15-closure-20261013",
-      "disposition": "active_task0093_carrier",
-      "accepted_actionable": true
+      "disposition": "terminal_merged_reconciled",
+      "accepted_actionable": false,
+      "merge_sha": "4bf8b56bc2ac7ce6486d26d715487fd55ed4828b"
     },
     {
       "kind": "pr",

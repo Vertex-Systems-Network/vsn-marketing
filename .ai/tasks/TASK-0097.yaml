@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0097",
+  "phase": "PHASE-16",
+  "title": "Implement white-label agency and client hierarchy",
+  "weight": 12,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0096"
+  ],
+  "objective": "Support delegated administration and brand customization while preserving tenant boundaries",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Agency and client hierarchy enforce permission inheritance and sibling-client isolation on every resource",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Brand customization cannot spoof security origin, consent, ownership or billing disclosures",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Delegated-administration, cross-client and accessibility tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0097 acceptance evidence and full gates before advancing to TASK-0098."
+}

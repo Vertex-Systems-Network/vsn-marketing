@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0099",
+  "phase": "PHASE-16",
+  "title": "Implement backup, restore and disaster recovery",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0098"
+  ],
+  "objective": "Deliver documented backup, restore, continuity and rollback procedures with measured exercises",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Encrypted tenant-separated backup and restore preserve integrity and canonical audit linkage",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Measured recovery exercise records actual data loss and elapsed restore time against approved objectives",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Partial restore, lost key, queue replay and external-effect reconciliation tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0099 acceptance evidence and full gates before advancing to TASK-0100."
+}

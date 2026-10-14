@@ -1,0 +1,35 @@
+{
+  "id": "TASK-0094",
+  "phase": "PHASE-16",
+  "title": "Research enterprise identity, privacy, residency, audit, retention, accessibility, procurement and compliance",
+  "weight": 10,
+  "status": "completed",
+  "dependencies": [
+    "TASK-0093"
+  ],
+  "objective": "Produce dated primary-source research and a tenant-aware threat model before enterprise implementation",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Dated official standards and guidance mapped to identity, SCIM, privacy, accessibility, billing and recovery constraints",
+      "done": true
+    },
+    {
+      "id": "AC-2",
+      "text": "Supported-region and provider assumptions separated from unverified legal, residency and production claims",
+      "done": true
+    },
+    {
+      "id": "AC-3",
+      "text": "Threat model, research-to-plan reconciliation and acceptance evidence for TASK-0095 through TASK-0100",
+      "done": true
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0094 acceptance evidence and full gates before advancing to TASK-0095.",
+  "research_pack": ".ai/research/PHASE-16/TASK-0094-RESEARCH.md"
+}

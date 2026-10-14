@@ -931,6 +931,76 @@
       "dependencies": [
         "TASK-0092"
       ]
+    },
+    {
+      "id": "TASK-0094",
+      "phase": "PHASE-16",
+      "title": "Research enterprise identity, privacy, residency, audit, retention, accessibility, procurement and compliance",
+      "weight": 10,
+      "status": "completed",
+      "dependencies": [
+        "TASK-0093"
+      ]
+    },
+    {
+      "id": "TASK-0095",
+      "phase": "PHASE-16",
+      "title": "Implement enterprise identity and governance",
+      "weight": 18,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0094"
+      ]
+    },
+    {
+      "id": "TASK-0096",
+      "phase": "PHASE-16",
+      "title": "Implement residency, retention and data subject controls",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0095"
+      ]
+    },
+    {
+      "id": "TASK-0097",
+      "phase": "PHASE-16",
+      "title": "Implement white-label agency and client hierarchy",
+      "weight": 12,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0096"
+      ]
+    },
+    {
+      "id": "TASK-0098",
+      "phase": "PHASE-16",
+      "title": "Implement deterministic billing and entitlements",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0097"
+      ]
+    },
+    {
+      "id": "TASK-0099",
+      "phase": "PHASE-16",
+      "title": "Implement backup, restore and disaster recovery",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0098"
+      ]
+    },
+    {
+      "id": "TASK-0100",
+      "phase": "PHASE-16",
+      "title": "Certify enterprise production readiness",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0099"
+      ]
     }
   ]
 }

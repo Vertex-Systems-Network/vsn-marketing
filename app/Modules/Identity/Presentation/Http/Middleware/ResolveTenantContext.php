@@ -7,6 +7,7 @@ use App\Modules\Identity\Application\Tenancy\TenantContextResolver;
 use App\Modules\Identity\Application\Tenancy\TenantContextStore;
 use App\Modules\Identity\Domain\Identity\User;
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +41,7 @@ final class ResolveTenantContext
 
         $generation = $request->hasSession() ? $request->session()->get('identity_session_generation') : null;
         if (! $this->sessions->permits((string) $user->getKey(), $context->workspaceId, $generation)) {
-            throw new \Illuminate\Auth\Access\AuthorizationException('Workspace session was revoked. Sign in again.');
+            throw new AuthorizationException('Workspace session was revoked. Sign in again.');
         }
 
         $this->store->set($context);

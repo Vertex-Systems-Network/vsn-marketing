@@ -9,6 +9,7 @@ use App\Modules\Identity\Domain\Tenancy\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
@@ -40,7 +41,7 @@ it('revokes only the selected workspace for old sessions and permits a fresh log
     $this->actingAs($admin)->post('/workspaces/'.$one->getKey().'/identity/members/'.$member->getKey().'/revoke-sessions')->assertNoContent();
     $this->actingAs($member)->get($onePath)->assertForbidden();
     $this->get($twoPath)->assertOk();
-    $this->get('/workspaces')->assertOk()->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+    $this->get('/workspaces')->assertOk()->assertInertia(fn (Assert $page) => $page
         ->where('workspaces.0.reauth_required', true)->where('workspaces.0.links', [])
         ->where('workspaces.1.reauth_required', false));
 

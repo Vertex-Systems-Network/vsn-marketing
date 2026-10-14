@@ -24,14 +24,13 @@ final readonly class ScimDeactivationController
         if (! is_string($secret) || strlen($secret) < 32 || strlen($secret) > 256) {
             throw new AuthorizationException('Provisioning credential denied.');
         }
-
-        $credential = DB::table('workspace_provisioning_credentials')
+        // Authenticate before returning operation details. Admission is checked
+        // again under the workspace lock immediately before the mutation.
+        if (! DB::table('workspace_provisioning_credentials')
             ->where('secret_hash', hash('sha256', $secret))
             ->where('workspace_id', $workspace)
             ->where('enabled', true)
-            ->where('expires_at', '>', now())
-            ->first(['id', 'workspace_id']);
-        if ($credential === null) {
+            ->where('expires_at', '>', now())->exists()) {
             throw new AuthorizationException('Provisioning credential denied.');
         }
 
@@ -55,15 +54,26 @@ final readonly class ScimDeactivationController
             return $this->unsupportedOperation();
         }
 
-        $this->deactivation->execute(
-            (string) $credential->workspace_id,
-            $workspace,
-            $user,
-            true,
-            true,
-            ['user.deactivate'],
-            (string) $credential->id,
-        );
+        DB::transaction(function () use ($workspace, $user, $secret): void {
+            // Credential rotation/revocation takes this same workspace lock. Keep
+            // admission and the member mutation in one transaction so a stale
+            // credential cannot be used after a concurrent revoke commits.
+            DB::table('workspaces')->where('id', $workspace)->lockForUpdate()->firstOrFail();
+            $credential = DB::table('workspace_provisioning_credentials')
+                ->where('secret_hash', hash('sha256', $secret))
+                ->where('workspace_id', $workspace)
+                ->where('enabled', true)
+                ->where('expires_at', '>', now())
+                ->first(['id', 'workspace_id']);
+            if ($credential === null) {
+                throw new AuthorizationException('Provisioning credential denied.');
+            }
+
+            $this->deactivation->execute(
+                (string) $credential->workspace_id, $workspace, $user,
+                true, true, ['user.deactivate'], (string) $credential->id,
+            );
+        });
 
         return response()->noContent();
     }

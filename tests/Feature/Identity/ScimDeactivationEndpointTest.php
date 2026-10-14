@@ -57,4 +57,5 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
     DB::table('workspace_provisioning_credentials')->where('workspace_id', $workspace->getKey())
         ->update(['expires_at' => now()->subMinute()]);
     $send($path, $body, $token)->assertForbidden();
+    $send($path, ['schemas' => $body['schemas'], 'Operations' => []], $token)->assertForbidden();
 });

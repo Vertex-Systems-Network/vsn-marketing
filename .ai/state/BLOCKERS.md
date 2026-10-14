@@ -1,5 +1,13 @@
 # Blockers
 
+## PHASE-16 — Enterprise acceptance evidence unavailable
+
+- Timestamp: `2026-10-14T23:25:00+00:00`
+- Current execution boundary: TASK-0095 remains active. Draft PR #579 contains offline identity hardening; its exact-head integration gate is pending. No Phase 16 completion or production-readiness claim is made.
+- TASK-0095 external inputs: select an enterprise IdP and provide a non-production tenant/application, trusted issuer/client configuration, key custody and rotation policy, and authorized test identities. An independently approved subject-linking process and provider interoperability exercise are needed before live SSO/SCIM acceptance. The default-disabled narrow SCIM adapter is not full SCIM support.
+- Downstream Phase 16 inputs: approved actual processing regions and transfer/provider inventory across database, queues, files, logs, backups, analytics, AI and delivery; an approved billing provider and human financial authority before live charges; an isolated backup/restore environment with key custody and human-approved RPO/RTO objectives. These are prerequisites to TASK-0096 through TASK-0100 acceptance, not permission to bypass their dependencies.
+- Safe resume: finish PR #579 exact-head CI, continue TASK-0095 implementation against the selected provider in a non-production environment, complete its adversarial and accessible operator-flow gates, then transition tasks in canonical order. Record measured restore and resulting-main evidence before certifying Phase 16.
+
 ## TASK-0024 — AC-4 production-representative benchmark evidence and Delivery-owner threshold approval
 
 - Timestamp: `2026-09-14T10:37:05+00:00`

@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-14T23:13:50+00:00`
+- Timestamp: `2026-10-14T23:30:49+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
 - Active branch: `supervisor/task0095-continuation-20261015`
-- Current milestone: `TASK-0095-OIDC-CLAIM-VALIDATION`
-- Milestone status: `IN_PROGRESS`
+- Current milestone: `TASK-0095-EXTERNAL-INTEROPERABILITY`
+- Milestone status: `BLOCKED`
 - Active task: `TASK-0095`
 - Next task: `TASK-0096`
 - Current phase: `PHASE-16`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `f8154dbb789cc7ad2c6d38b1a94f5cd460ee2633706bef49f35ee872a124ace4`
+- State fingerprint: `3ad59b5d5e21dd5f5d74a7cb03102eb78c32017555dbc60ff14e2e87bfe68c3a`
 
 ## Completed / observed this session
 
-PR578 merged on main df40b412; draft PR579 opened with OIDC azp claim validation
+PR579 code head 7945fde3 passed foundation, PHP 8.3, PostgreSQL/Redis integration, browser E2E, security and continuity; Phase16 acceptance remains blocked on external provider, residency and recovery evidence
 
 ## Tests
 
-Continuity, policy and supervisor validators pass locally; PHP runtime unavailable; PR579 exact-head CI pending
+Six exact-head required PR gates pass for code head 7945fde3619165ec56d788ff2b6569c3a971aa0b; local continuity/policy validators pass
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Continuity, policy and supervisor validators pass locally; PHP runtime unavailab
 
 ## Exact next action
 
-Review PR579 CI, continue TASK-0095 federation and provisioning acceptance on same PR
+Obtain selected non-production IdP and approved subject-linking process; continue TASK-0095 provider interoperability on PR579, then sequential Phase16 tasks and measured restore

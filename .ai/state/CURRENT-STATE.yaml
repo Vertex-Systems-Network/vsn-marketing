@@ -28,10 +28,10 @@
   "active_issue": null,
   "active_pr": 579,
   "active_branch": "supervisor/task0095-continuation-20261015",
-  "current_milestone": "TASK-0095-OIDC-CLAIM-VALIDATION",
-  "milestone_status": "IN_PROGRESS",
+  "current_milestone": "TASK-0095-EXTERNAL-INTEROPERABILITY",
+  "milestone_status": "BLOCKED",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Review PR579 CI, continue TASK-0095 federation and provisioning acceptance on same PR",
+  "exact_next_safe_action": "Obtain selected non-production IdP and approved subject-linking process; continue TASK-0095 provider interoperability on PR579, then sequential Phase16 tasks and measured restore",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review PR579 CI, continue TASK-0095 federation and provisioning acceptance on same PR"
+  "exact_next_action": "Obtain selected non-production IdP and approved subject-linking process; continue TASK-0095 provider interoperability on PR579, then sequential Phase16 tasks and measured restore"
 }

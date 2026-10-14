@@ -6,6 +6,7 @@ use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorControl
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\ProvisioningCredentialController;
 use App\Modules\Identity\Presentation\Http\Controllers\RevokeWorkspaceSessionsController;
 use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
@@ -36,6 +37,13 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
     ->post('/workspaces/{workspace}/identity/members/{user}/revoke-sessions', RevokeWorkspaceSessionsController::class)
     ->name('workspace.identity.sessions.revoke');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
+    ->group(function (): void {
+        Route::post('/workspaces/{workspace}/identity/provisioning-credentials', [ProvisioningCredentialController::class, 'issue']);
+        Route::post('/workspaces/{workspace}/identity/provisioning-credentials/{credential}/rotate', [ProvisioningCredentialController::class, 'rotate']);
+        Route::delete('/workspaces/{workspace}/identity/provisioning-credentials/{credential}', [ProvisioningCredentialController::class, 'revoke']);
+    });
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
     ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)

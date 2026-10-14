@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-14T17:14:59+00:00`
-- Observed main: `3e44cb69356d6d2e660391887b99f5755219140d`
+- Timestamp: `2026-10-14T22:28:31+00:00`
+- Observed main: `086be4d4e281e57377e5d3cde3716c8d1c769729`
 - Active issue: `none`
-- Active PR: `576`
-- Active branch: `supervisor/task0095-session-revision-20261014`
+- Active PR: `577`
+- Active branch: `supervisor/task0095-pinned-assertion-20261014`
 - Current milestone: `TASK-0095-SESSION-REVOCATION`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0095`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `e7ab34df44b4853d9943ccaac96ea4a04942ef5bb7b2b39c2dc63b5c0e664bbe`
+- State fingerprint: `4010848747b2a330c166bbb24fe363aea48a3d8d49b565d664889c2d784c3442`
 
 ## Completed / observed this session
 
-PR573 identity foundation merged at 3e44cb69 after six exact-head gates; resulting main continuity, release and security succeeded. TASK0095 session revocation slice on draft PR576.
+PR576 merged main 086be4d4; PR577 pinned offline OIDC token verification submitted for exact-head CI
 
 ## Tests
 
-PR573 head 50e9ce9 foundation, php-floor, integration, e2e, security-gates, governance all passed; local next slice 51 frontend tests, TypeScript and build passed; PHP/DB exact-head PR576 gates pending.
+Local continuity and supervisor validators passed; PHP unavailable locally, PR577 exact-head gates pending
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR573 head 50e9ce9 foundation, php-floor, integration, e2e, security-gates, gove
 
 ## Exact next action
 
-Verify PR576 session issuance/revocation PHP and PostgreSQL behavior; repair same PR, then merge only if six exact-head gates pass and resulting main is checked.
+Review PR577 exact-head six gates; repair same branch and merge verified green head

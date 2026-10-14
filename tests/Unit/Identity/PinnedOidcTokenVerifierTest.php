@@ -26,7 +26,9 @@ it('validates a pinned signed token and fails closed on altered identity and key
     expect($check($token)['replayId'])->toBe(hash('sha256', $token));
     expect(fn () => $check($token, openssl_pkey_get_details($other)['key']))->toThrow(AuthorizationException::class);
     expect(fn () => $check($token, $public, 'different'))->toThrow(AuthorizationException::class);
-    expect(fn () => $check(substr($token, 0, -1).'A'))->toThrow(AuthorizationException::class);
+    [$encodedHeader, $encodedClaims, $encodedSignature] = explode('.', $token);
+    $tamperedSignature = ($encodedSignature[0] === 'A' ? 'B' : 'A').substr($encodedSignature, 1);
+    expect(fn () => $check($encodedHeader.'.'.$encodedClaims.'.'.$tamperedSignature))->toThrow(AuthorizationException::class);
     foreach ([['alg' => 'none'], ['alg' => 'HS256'], ['alg' => 'RS256', 'jku' => 'https://evil.test/key'],
         ['alg' => 'RS256', 'x5u' => 'https://evil.test/key'], ['alg' => 'RS256', 'kid' => 'attacker']] as $badHeader) {
         expect(fn () => $check(signedIdentityToken($badHeader, $claims, $private)))->toThrow(AuthorizationException::class);

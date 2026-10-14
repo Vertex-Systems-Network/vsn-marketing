@@ -1,6 +1,6 @@
 # TASK-0093 — PHASE-15 Offline Certification Matrix
 
-Status: **TASK-0093 active; phase certification pending**. TASK-0092 passed exact-head/protected-main gates and its canonical transition. This matrix grants no production authority.
+Status: **TASK-0093 complete; PHASE-15 offline certification accepted**. TASK-0092 passed exact-head/protected-main gates and its canonical transition. This matrix grants no production authority.
 
 | Dependency | Source and adverse-case evidence | Accepted scope and unresolved gate |
 | --- | --- | --- |
@@ -31,4 +31,4 @@ The `DenyingBoundedAutonomy*Source` defaults in `app/Modules/AI/Infrastructure/`
 1. Recheck every task source against its accepted revision; verify no default adapter gains send, publish, ad spend, provider retry, rollback, refund or promotion authority. Any unknown remote effect remains on human hold.
 2. Submit TASK-0093 certification with standalone `CI-Mode: full`; require exact-head and resulting-main gates for the phase carrier. Only then record AC-1/2/3 and PHASE-15 completion through the transactional continuity tool. Stop without activating PHASE-16.
 
-No production incident, external effect, live campaign, recovered provider operation or business uplift is inferred from synthetic fixtures. TASK-0093 AC-3 remains false until its own exact-head and resulting-main certification carrier passes.
+No production incident, external effect, live campaign, recovered provider operation or business uplift is inferred from synthetic fixtures. TASK-0093 AC-3 is recorded complete after PR #571 exact-head `c550065e44ea5ec42ef446c34ffe225e024a4507` passed full Application Foundation, PHP 8.3, PostgreSQL integration, browser E2E, Security and AI Continuity; protected resulting main `2ac6feb5e4eca023773cb1cfce39af711954e005` passed Application Foundation, Security and AI Continuity. The push classifier skipped its E2E/integration jobs; those passed on the exact PR head.

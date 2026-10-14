@@ -5,6 +5,7 @@ use App\Http\Middleware\SecurityHeaders;
 use App\Modules\Core\Presentation\Http\Middleware\ObserveRequest;
 use App\Modules\Core\Presentation\Http\Middleware\RequireOperationsToken;
 use App\Modules\Identity\Presentation\Http\Middleware\RequireWorkspacePermission;
+use App\Modules\Identity\Presentation\Http\Middleware\ResolveAgencyAuditContext;
 use App\Modules\Identity\Presentation\Http\Middleware\ResolveTenantContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -31,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'operations.auth' => RequireOperationsToken::class,
             'tenant' => ResolveTenantContext::class,
+            'agency.audit' => ResolveAgencyAuditContext::class,
             'workspace.permission' => RequireWorkspacePermission::class,
         ]);
     })

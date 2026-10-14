@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0098",
+  "phase": "PHASE-16",
+  "title": "Implement deterministic billing and entitlements",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0097"
+  ],
+  "objective": "Add plans, metering, quotas and cost controls without model-controlled financial authority",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Metering and entitlements are tenant-scoped, idempotent and fail closed on stale or duplicated evidence",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Plan and spending changes require independent policy and authorized human control",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Webhook replay, cross-tenant and concurrency tests pass; live charges remain disabled without provider approval",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0098 acceptance evidence and full gates before advancing to TASK-0099."
+}

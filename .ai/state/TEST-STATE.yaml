@@ -109,5 +109,16 @@
     "pull_request": 484,
     "status": "pending",
     "scope": "No exact-head run on conflicting predecessor73de0c5; repaired carrier requires full checks before acceptance."
+  },
+  "phase16_local_verification": {
+    "task": "TASK-0094 active; TASK-0095..0099 local unaccepted drafts",
+    "status": "pending-php-runtime",
+    "php_tests_passed": 1098,
+    "php_assertions": 7475,
+    "infrastructure_skips": 154,
+    "runtime": "PHP 8.3",
+    "static_analysis": "Current frontend TypeScript, 50 Vitest tests and Vite build pass; manifest has 10 pages and zero test modules. PHPStan/Pint pending PHP runtime.",
+    "limits": "No PostgreSQL/Redis, provider interoperability, actual restore, browser accessibility, exact-head or resulting-main evidence for Phase 16",
+    "notes": "Last PHP 1098/7475 baseline predates stale-approver and brand editor backend changes. New backend tests unrun: PHP executable absent and automatic review blocked runtime installation due account usage limit. Frontend brand editor checks CSRF-bearing same-origin save and logo preservation."
   }
 }

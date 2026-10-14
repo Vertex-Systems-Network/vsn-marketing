@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\DB;
 
 final class TenantContextResolver
 {
+    public function resolveDelegated(User $user, string $workspaceId, string $agencyWorkspaceId, ?string $brandId = null): TenantContext
+    {
+        if ($workspaceId === '' || $agencyWorkspaceId === '' || $workspaceId === $agencyWorkspaceId
+            || ! DB::table('agency_client_delegations')->where('client_workspace_id', $workspaceId)
+                ->where('agency_workspace_id', $agencyWorkspaceId)->where('user_id', $user->getKey())->exists()) {
+            throw new AuthorizationException('Delegated workspace access denied.');
+        }
+
+        $workspace = DB::table('workspaces')->where('id', $workspaceId)->first(['id', 'organization_id']);
+        if ($workspace === null || ($brandId !== null && ! DB::table('brands')
+            ->where('id', $brandId)->where('workspace_id', $workspaceId)->exists())) {
+            throw new AuthorizationException('Delegated workspace or brand access denied.');
+        }
+
+        return new TenantContext(
+            (string) $workspace->organization_id, (string) $workspace->id, $brandId, (string) $user->getKey(),
+        );
+    }
+
     public function resolve(User $user, string $workspaceId, ?string $brandId = null): TenantContext
     {
         if ($workspaceId === '') {

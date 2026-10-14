@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "7f7ce662ef8a92e300b77c199da15aac5401fae9",
+  "observed_main_sha": "1142aa9fce0b83b4c0449a8b6ad3ea86deb7a23c",
   "active_issue": null,
-  "active_pr": 575,
-  "active_branch": "supervisor/community-boundary-audit-20261014",
+  "active_pr": 573,
+  "active_branch": "supervisor/phase16-research-20261013",
   "current_milestone": "TASK-0095-IDENTITY-FOUNDATION",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Verify and merge PR575 exact-head audit repair and TASK0094 acceptance handoff; then scope PR573 to dependency-ready TASK0095 identity/governance work and verify before merge.",
+  "exact_next_safe_action": "Publish scoped TASK0095 foundation to PR573, inspect exact-head six required checks, repair failures on the same PR, and merge only green head.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify and merge PR575 exact-head audit repair and TASK0094 acceptance handoff; then scope PR573 to dependency-ready TASK0095 identity/governance work and verify before merge."
+  "exact_next_action": "Publish scoped TASK0095 foundation to PR573, inspect exact-head six required checks, repair failures on the same PR, and merge only green head."
 }

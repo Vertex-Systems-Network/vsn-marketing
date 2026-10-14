@@ -4,7 +4,11 @@ use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamIncidentControlle
 use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamTriageController;
 use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorController;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
+use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
+use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\SessionController;
+use App\Modules\Identity\Presentation\Http\Controllers\WorkspaceDirectoryController;
 use App\Modules\Journeys\Presentation\Http\Controllers\JourneyOperatorController;
 use App\Modules\Publishing\Presentation\Http\Controllers\PublishingBulkApprovalController;
 use App\Modules\Publishing\Presentation\Http\Controllers\PublishingOperatorController;
@@ -12,6 +16,22 @@ use App\Modules\Segmentation\Presentation\Http\Controllers\SegmentProposalContro
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
+Route::middleware('guest')->get('/auth/login', fn () => Inertia\Inertia::render('auth/login'))->name('login');
+Route::middleware(['auth', 'throttle:60,1'])->get('/workspaces', WorkspaceDirectoryController::class)->name('workspaces.directory');
+
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::AUDIT_EXPORT, 'throttle:10,1'])
+    ->get('/workspaces/{workspace}/audit/export', AuditExportController::class)
+    ->name('workspace.audit.export');
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::AUDIT_EXPORT])
+    ->get('/workspaces/{workspace}/enterprise', EnterpriseOverviewController::class)
+    ->name('workspace.enterprise.overview');
+Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
+    ->group(function (): void {
+        $controller = RoleAssignmentReviewController::class;
+        Route::post('/workspaces/{workspace}/identity/role-proposals', [$controller, 'propose']);
+        Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/approve', [$controller, 'approve']);
+        Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/apply', [$controller, 'apply']);
+    });
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ, 'throttle:30,1'])
     ->get('/workspaces/{workspace}/autonomy/offline-incidents/{run}', OfflineRedTeamIncidentController::class)

@@ -40,6 +40,10 @@ final class PermissionCatalog
 
     public const BILLING_MANAGE = 'billing.manage';
 
+    public const AUDIT_EXPORT = 'audit.export';
+
+    public const IDENTITY_MANAGE = 'identity.manage';
+
     public static function all(): array
     {
         return [
@@ -61,6 +65,8 @@ final class PermissionCatalog
             self::AI_APPROVE,
             self::ANALYTICS_READ,
             self::BILLING_MANAGE,
+            self::AUDIT_EXPORT,
+            self::IDENTITY_MANAGE,
         ];
     }
 

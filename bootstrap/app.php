@@ -20,6 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo('/auth/login');
+        $middleware->redirectUsersTo('/workspaces');
         $middleware->append(ObserveRequest::class);
         $middleware->append(SecurityHeaders::class);
 

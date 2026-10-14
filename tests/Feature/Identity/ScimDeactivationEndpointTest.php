@@ -24,6 +24,11 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
         'user_id' => $user->getKey(), 'issuer' => 'https://idp.example.test',
         'subject' => 'stable-subject', 'created_at' => now(), 'updated_at' => now(),
     ]);
+    DB::table('federation_subject_bindings')->insert([
+        'id' => (string) Str::uuid(), 'workspace_id' => $other->getKey(),
+        'user_id' => $user->getKey(), 'issuer' => 'https://idp.example.test',
+        'subject' => 'stable-subject', 'created_at' => now(), 'updated_at' => now(),
+    ]);
     $token = str_repeat('a', 48);
     DB::table('workspace_provisioning_credentials')->insert([
         'id' => (string) Str::uuid(), 'workspace_id' => $workspace->getKey(),
@@ -57,6 +62,7 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
 
     expect(DB::table('workspace_memberships')->where('workspace_id', $workspace->getKey())->count())->toBe(0)
         ->and(DB::table('federation_subject_bindings')->where('workspace_id', $workspace->getKey())->count())->toBe(0)
+        ->and(DB::table('federation_subject_bindings')->where('workspace_id', $other->getKey())->count())->toBe(1)
         ->and(DB::table('workspace_memberships')->where('workspace_id', $other->getKey())->count())->toBe(1)
         ->and(DB::table('audit_events')->where('action', 'identity.provisioning.member_deactivated')->count())->toBe(1);
     $event = DB::table('audit_events')->where('action', 'identity.provisioning.member_deactivated')->first();

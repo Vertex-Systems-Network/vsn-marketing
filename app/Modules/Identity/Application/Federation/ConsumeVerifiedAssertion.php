@@ -43,6 +43,18 @@ final readonly class ConsumeVerifiedAssertion
         }
 
         return DB::transaction(function () use ($workspaceId, $configuredIssuer, $subject, $assertionId, $expiresAt): string {
+            $candidate = DB::table('federation_subject_bindings')
+                ->where('workspace_id', $workspaceId)
+                ->where('issuer', $configuredIssuer)
+                ->where('subject', $subject)
+                ->value('user_id');
+            if ($candidate === null) {
+                throw new AuthorizationException('Federation identity is not linked to an active workspace member.');
+            }
+
+            // Deactivation locks the user before deleting membership and subject
+            // bindings. Serialize against it, then recheck both rows under lock.
+            DB::table('users')->where('id', $candidate)->lockForUpdate()->firstOrFail();
             $binding = DB::table('federation_subject_bindings')
                 ->join('workspace_memberships', function ($join): void {
                     $join->on('workspace_memberships.workspace_id', '=', 'federation_subject_bindings.workspace_id')
@@ -51,6 +63,7 @@ final readonly class ConsumeVerifiedAssertion
                 ->where('federation_subject_bindings.workspace_id', $workspaceId)
                 ->where('federation_subject_bindings.issuer', $configuredIssuer)
                 ->where('federation_subject_bindings.subject', $subject)
+                ->where('federation_subject_bindings.user_id', $candidate)
                 ->value('federation_subject_bindings.user_id');
 
             if ($binding === null) {

@@ -52,6 +52,10 @@ final readonly class DeactivateWorkspaceMember
             }
 
             $this->sessions->recordRevocation($workspaceId, $userId, null);
+            DB::table('federation_subject_bindings')
+                ->where('workspace_id', $workspaceId)
+                ->where('user_id', $userId)
+                ->delete();
             DB::table('workspace_memberships')->where('id', $membership->id)->delete();
 
             $this->audit->record(

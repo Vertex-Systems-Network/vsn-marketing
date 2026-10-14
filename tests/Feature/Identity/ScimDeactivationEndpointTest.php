@@ -1,9 +1,11 @@
 <?php
 
 use App\Modules\Identity\Application\Authorization\WorkspaceRoleManager;
+use App\Modules\Identity\Application\Federation\ConsumeVerifiedAssertion;
 use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,6 +19,11 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
     $user = User::query()->create(['name' => 'Member', 'email' => 'member@example.test', 'password' => 'unused']);
     app(WorkspaceRoleManager::class)->addMember($user, (string) $workspace->getKey());
     app(WorkspaceRoleManager::class)->addMember($user, (string) $other->getKey());
+    DB::table('federation_subject_bindings')->insert([
+        'id' => (string) Str::uuid(), 'workspace_id' => $workspace->getKey(),
+        'user_id' => $user->getKey(), 'issuer' => 'https://idp.example.test',
+        'subject' => 'stable-subject', 'created_at' => now(), 'updated_at' => now(),
+    ]);
     $token = str_repeat('a', 48);
     DB::table('workspace_provisioning_credentials')->insert([
         'id' => (string) Str::uuid(), 'workspace_id' => $workspace->getKey(),
@@ -49,10 +56,18 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
     $send($path, $body, $token)->assertNoContent();
 
     expect(DB::table('workspace_memberships')->where('workspace_id', $workspace->getKey())->count())->toBe(0)
+        ->and(DB::table('federation_subject_bindings')->where('workspace_id', $workspace->getKey())->count())->toBe(0)
         ->and(DB::table('workspace_memberships')->where('workspace_id', $other->getKey())->count())->toBe(1)
         ->and(DB::table('audit_events')->where('action', 'identity.provisioning.member_deactivated')->count())->toBe(1);
     $event = DB::table('audit_events')->where('action', 'identity.provisioning.member_deactivated')->first();
     expect((string) $event->evidence)->not->toContain($token);
+
+    app(WorkspaceRoleManager::class)->addMember($user, (string) $workspace->getKey());
+    expect(fn () => app(ConsumeVerifiedAssertion::class)->execute(
+        true, (string) $workspace->getKey(), (string) $workspace->getKey(),
+        'https://idp.example.test', 'https://idp.example.test', 'client', 'client',
+        'stable-subject', 'new-assertion', 1000, 1100, 1050,
+    ))->toThrow(AuthorizationException::class);
 
     DB::table('workspace_provisioning_credentials')->where('workspace_id', $workspace->getKey())
         ->update(['expires_at' => now()->subMinute()]);

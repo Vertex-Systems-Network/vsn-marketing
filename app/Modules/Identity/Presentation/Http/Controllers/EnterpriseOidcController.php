@@ -6,11 +6,11 @@ use App\Modules\Identity\Application\Federation\ConsumePinnedOidcToken;
 use App\Modules\Identity\Application\Sessions\WorkspaceSessionPolicy;
 use App\Modules\Identity\Domain\Identity\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\ConnectionException;
 
 /** A single configured workspace and pinned provider. Disabled unless explicitly configured. */
 final readonly class EnterpriseOidcController

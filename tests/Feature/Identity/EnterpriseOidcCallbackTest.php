@@ -5,6 +5,7 @@ use App\Modules\Identity\Domain\Identity\User;
 use App\Modules\Identity\Domain\Tenancy\Organization;
 use App\Modules\Identity\Domain\Tenancy\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -30,7 +31,7 @@ it('stays disabled by default and rejects a foreign workspace without an outboun
 
 it('binds code exchange to session state, a pinned assertion and an existing workspace member', function (): void {
     $this->withoutVite();
-    $this->withoutMiddleware(\Illuminate\Routing\Middleware\ThrottleRequests::class);
+    $this->withoutMiddleware(ThrottleRequests::class);
     URL::forceRootUrl('https://vsn.example.test');
     URL::forceScheme('https');
     $this->withServerVariables(['HTTP_HOST' => 'vsn.example.test', 'HTTPS' => 'on']);

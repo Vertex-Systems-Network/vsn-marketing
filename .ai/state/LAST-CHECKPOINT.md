@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-15T13:29:59+00:00`
+- Timestamp: `2026-10-15T13:35:32+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `c9767ca59c2b0f8d726cdbc616787b349c0ea084d7720bab4b7806f993f09359`
+- State fingerprint: `0ffbdc325f31ba623095d9b1f35db4cdeac29cd96c3a945ff7e816c1a4c97639`
 
 ## Completed / observed this session
 
-Remove wildcard HTTP fake masking OIDC token response in feature test
+Reordered OIDC imports and replaced fully qualified middleware test reference after Pint gate
 
 ## Tests
 
-Exact-head backend 1094 passed, one OIDC callback test returned 403; HTTP fake precedence diagnosed
+Backend, architecture and PHPStan passed on 1061df9; Pint reported controller and test style issues
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Exact-head backend 1094 passed, one OIDC callback test returned 403; HTTP fake p
 
 ## Exact next action
 
-Publish test repair and verify exact-head application, security and continuity CI
+Publish style repair, inspect exact-head CI and repair any remaining formatter delta

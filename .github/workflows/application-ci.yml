@@ -78,6 +78,11 @@ jobs:
       - name: Run backend tests
         if: steps.classify.outputs.application_required == 'true'
         run: php artisan test --fail-on-warning --display-warnings
+      - name: Capture refreshed offline AI fixture after lock update
+        if: ${{ failure() && steps.classify.outputs.application_required == 'true' }}
+        run: |
+          php tools/ai_offline_certification.php > /tmp/vsn-offline-measurements.json
+          python3 -c 'import base64,gzip; print("OFFLINE_EVIDENCE_BASE64:" + base64.b64encode(gzip.compress(open("/tmp/vsn-offline-measurements.json","rb").read())).decode())'
       - name: Run architecture tests
         if: steps.classify.outputs.application_required == 'true'
         run: php artisan test tests/Architecture --fail-on-warning --display-warnings

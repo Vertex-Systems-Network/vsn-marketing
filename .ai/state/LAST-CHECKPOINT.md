@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-15T02:27:38+00:00`
+- Timestamp: `2026-10-15T13:22:18+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `4fd05c36e7829078d8c5210b0d64df01036146583f9ac94cd0d05d60ca535c1a`
+- State fingerprint: `a613b8390af98d05b78a0f7dd9ad570e7647b08c4bff6b2d060eccdcff57d27f`
 
 ## Completed / observed this session
 
-Auth0 development tenant observed; pinned kid verifier compatibility and research added; live callback remains unimplemented and disabled
+Added disabled enterprise OIDC browser transaction and callback route with state nonce PKCE pinned key and explicit subject binding
 
 ## Tests
 
-git diff --check passed; PHP runtime unavailable locally; exact-head CI required
+git diff --check passed; PHP unavailable locally; exact-head PR application and security CI required
 
 ## Blockers
 
@@ -31,4 +31,4 @@ git diff --check passed; PHP runtime unavailable locally; exact-head CI required
 
 ## Exact next action
 
-Publish verifier slice to draft PR #579; observe gates; implement disabled Auth0 code-flow callback with exact deployed origin and approved subject linking
+Publish callback slice to draft PR #579; repair exact-head CI; obtain reachable non-production origin and approved binding for Auth0 exercise

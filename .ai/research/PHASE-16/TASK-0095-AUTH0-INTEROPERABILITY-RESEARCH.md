@@ -10,6 +10,8 @@ The operator's application currently has empty Application URI fields. There is 
 
 Classification: TASK-0095 prerequisite and acceptance work. ADR-0005 remains PROPOSED. The pin-compatible verifier change is an offline slice, not provider certification or activation.
 
+Implementation contract: VSN exposes `/auth/enterprise/{workspace}/login` and `/auth/enterprise/{workspace}/callback` behind `ENTERPRISE_OIDC_ENABLED=false`. The configured redirect URI must equal the route's absolute HTTPS URL, including the selected workspace UUID, at the actual application origin. The browser transaction stores a one-use state, nonce and PKCE verifier in its server session for at most five minutes; the callback exchanges a code with the server-side client secret, verifies the pinned RS256 key ID and PEM, consumes the signed assertion once, and admits only an explicitly bound active member. Configuration of a fixed PEM means key rotation requires an operator-managed update; this is not automatic JWKS rotation or provider interoperability certification. Secrets remain in an environment secret store, not Auth0 screenshots, source or research documents.
+
 Official sources (retrieved 2026-10-15):
 
 - https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/add-login-auth-code-flow

@@ -31,7 +31,7 @@
   "current_milestone": "TASK-0095-EXTERNAL-INTEROPERABILITY",
   "milestone_status": "BLOCKED",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Verify PR #579 exact-head gates; obtain non-production IdP tenant and approved subject-linking process for TASK-0095.",
+  "exact_next_safe_action": "Verify PR #579 exact-head gates, then obtain non-production IdP tenant and approved subject-linking process.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Verify PR #579 exact-head gates; obtain non-production IdP tenant and approved subject-linking process for TASK-0095."
+  "exact_next_action": "Verify PR #579 exact-head gates, then obtain non-production IdP tenant and approved subject-linking process."
 }

@@ -24,3 +24,9 @@ Official sources (retrieved 2026-10-15):
 - https://auth0.com/docs/get-started/tenant-settings/signing-keys/rotate-signing-keys
 
 Security gate follow-up (2026-10-15): exact-head dependency audit identified Symfony http-foundation CVE-2026-108082 and yaml CVE-2026-109413 in locked 7.4.17. The CI Composer resolver selected 7.4.21 for both. The lock records only these two package updates, whose require constraints remain compatible with the existing polyfill versions. The diagnostic CI workflow change was removed. Protected exact-head dependency audit, Composer install and application tests remain the acceptance evidence for this lock repair.
+
+## Loopback development follow-up (2026-10-15)
+
+Auth0's PHP Regular Web Application quickstart documents an HTTP localhost callback for development. VSN previously required HTTPS for all callbacks. For local interoperability, an explicit `ENTERPRISE_OIDC_LOCAL_HTTP_CALLBACK=true` opt-in permits an exact `http://127.0.0.1:8000/auth/enterprise/<workspace UUID>/callback` (or localhost equivalent) only when `APP_ENV=local`; all other environments continue to reject HTTP. The callback must still match the generated route, and all issuer, client, signed-token, nonce, state, PKCE and subject-binding rules remain unchanged. This enables an operator-owned development machine running VSN and a browser to perform the test without a staging deployment. It does not assert that a live Auth0 exchange has been performed in this execution environment.
+
+Official source (retrieved 2026-10-15): https://auth0.com/docs/quickstart/webapp/php/interactive

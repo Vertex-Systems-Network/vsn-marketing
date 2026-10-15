@@ -106,12 +106,29 @@ final readonly class EnterpriseOidcController
             ! is_string($config['key_id'] ?? null) || $config['key_id'] === '' ||
             ! is_string($config['public_key_pem'] ?? null) || $config['public_key_pem'] === '' ||
             ! is_string($config['redirect_uri'] ?? null) ||
-            ! str_starts_with($config['redirect_uri'], 'https://') ||
+            ! $this->permittedRedirectScheme($config) ||
             $config['redirect_uri'] !== route('enterprise.oidc.callback', ['workspace' => $workspace])) {
             throw new AuthorizationException('Federation login is unavailable.');
         }
 
         return $config;
+    }
+
+    /** HTTP is confined to the development loopback address and explicit opt-in. */
+    private function permittedRedirectScheme(array $config): bool
+    {
+        $redirect = $config['redirect_uri'];
+        if (str_starts_with($redirect, 'https://')) {
+            return true;
+        }
+
+        $parts = parse_url($redirect);
+
+        return app()->environment('local') && ($config['local_http_callback'] ?? false) === true &&
+            is_array($parts) && ($parts['scheme'] ?? null) === 'http' &&
+            in_array($parts['host'] ?? null, ['127.0.0.1', 'localhost'], true) &&
+            ! isset($parts['user']) && ! isset($parts['pass']) && ! isset($parts['fragment']) &&
+            ! isset($parts['query']);
     }
 
     private function random(): string

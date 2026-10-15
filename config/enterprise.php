@@ -9,6 +9,7 @@ return [
         'client_id' => env('ENTERPRISE_OIDC_CLIENT_ID', ''),
         'client_secret' => env('ENTERPRISE_OIDC_CLIENT_SECRET', ''),
         'redirect_uri' => env('ENTERPRISE_OIDC_REDIRECT_URI', ''),
+        'local_http_callback' => env('ENTERPRISE_OIDC_LOCAL_HTTP_CALLBACK', false),
         'key_id' => env('ENTERPRISE_OIDC_KEY_ID', ''),
         'public_key_pem' => base64_decode((string) env('ENTERPRISE_OIDC_PUBLIC_KEY_PEM_BASE64', ''), true),
     ],

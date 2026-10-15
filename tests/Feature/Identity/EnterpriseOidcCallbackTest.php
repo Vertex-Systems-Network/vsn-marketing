@@ -29,6 +29,34 @@ it('stays disabled by default and rejects a foreign workspace without an outboun
     Http::assertNothingSent();
 });
 
+it('allows an explicitly opted-in local loopback callback and rejects HTTP in production', function (): void {
+    $this->withoutMiddleware(ThrottleRequests::class);
+    URL::forceRootUrl('http://127.0.0.1:8000');
+    URL::forceScheme('http');
+    $this->withServerVariables(['HTTP_HOST' => '127.0.0.1:8000']);
+    $workspace = (string) Str::uuid();
+    $callback = route('enterprise.oidc.callback', ['workspace' => $workspace]);
+    config(['enterprise.oidc' => [
+        'enabled' => true, 'workspace_id' => $workspace,
+        'issuer' => 'https://idp.example.test/', 'client_id' => 'client', 'client_secret' => 'test-secret',
+        'redirect_uri' => $callback, 'key_id' => 'test-key', 'public_key_pem' => 'test-public-key',
+        'local_http_callback' => true,
+    ]]);
+
+    $path = '/auth/enterprise/'.$workspace.'/login';
+    $this->get($path)->assertForbidden();
+    app()->detectEnvironment(fn (): string => 'local');
+    $this->get($path)->assertRedirect();
+    config()->set('enterprise.oidc.local_http_callback', false);
+    $this->get($path)->assertForbidden();
+    config()->set('enterprise.oidc.local_http_callback', true);
+    config()->set('enterprise.oidc.redirect_uri', 'http://attacker.example.test/auth/enterprise/'.$workspace.'/callback');
+    $this->get($path)->assertForbidden();
+    config()->set('enterprise.oidc.redirect_uri', $callback);
+    app()->detectEnvironment(fn (): string => 'production');
+    $this->get($path)->assertForbidden();
+});
+
 it('binds code exchange to session state, a pinned assertion and an existing workspace member', function (): void {
     $this->withoutVite();
     $this->withoutMiddleware(ThrottleRequests::class);

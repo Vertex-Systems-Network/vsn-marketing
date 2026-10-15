@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 final class PinnedOidcTokenVerifier
 {
     /** @return array{issuer: string, audience: string, subject: string, issuedAt: int, expiresAt: int, replayId: string} */
-    public function verify(string $token, string $issuer, string $clientId, string $nonce, string $publicKeyPem, int $now): array
+    public function verify(string $token, string $issuer, string $clientId, string $nonce, string $publicKeyPem, int $now, ?string $expectedKeyId = null): array
     {
         $deny = static function (): never {
             throw new AuthorizationException('Federation assertion denied.');
@@ -38,7 +38,10 @@ final class PinnedOidcTokenVerifier
             (isset($header->typ) && ! in_array($header->typ, ['JWT', 'application/oidc-id-token'], true)) ||
             property_exists($header, 'jku') || property_exists($header, 'x5u') ||
             property_exists($header, 'jwk') || property_exists($header, 'x5c') ||
-            isset($header->crit) || isset($header->enc) || isset($header->zip) || isset($header->kid)) {
+            isset($header->crit) || isset($header->enc) || isset($header->zip) ||
+            ($expectedKeyId === null ? property_exists($header, 'kid') :
+                ($expectedKeyId === '' || strlen($expectedKeyId) > 255 || ! is_string($header->kid ?? null) ||
+                    ! hash_equals($expectedKeyId, $header->kid)))) {
             $deny();
         }
         $key = openssl_pkey_get_public($publicKeyPem);

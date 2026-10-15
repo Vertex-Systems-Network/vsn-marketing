@@ -41,4 +41,9 @@ it('validates a pinned signed token and fails closed on altered identity and key
     $multi = array_replace($claims, ['aud' => ['client', 'other'], 'azp' => 'client']);
     expect($check(signedIdentityToken($header, $multi, $private))['audience'])->toBe('client');
     expect($check(signedIdentityToken($header, array_replace($claims, ['azp' => 'client']), $private))['audience'])->toBe('client');
+    $keyedToken = signedIdentityToken([...$header, 'kid' => 'trusted-key-1'], $claims, $private);
+    expect($verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'trusted-key-1')['subject'])->toBe('stable-subject');
+    expect(fn () => $verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'other-key'))->toThrow(AuthorizationException::class);
+    expect(fn () => $verify->verify($token, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'trusted-key-1'))->toThrow(AuthorizationException::class);
+    expect(fn () => $verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', openssl_pkey_get_details($other)['key'], 1050, 'trusted-key-1'))->toThrow(AuthorizationException::class);
 });

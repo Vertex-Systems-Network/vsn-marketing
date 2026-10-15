@@ -8,6 +8,10 @@
 - Downstream Phase 16 inputs: approved actual processing regions and transfer/provider inventory across database, queues, files, logs, backups, analytics, AI and delivery; an approved billing provider and human financial authority before live charges; an isolated backup/restore environment with key custody and human-approved RPO/RTO objectives. These are prerequisites to TASK-0096 through TASK-0100 acceptance, not permission to bypass their dependencies.
 - Safe resume: verify the latest PR #579 exact-head CI, continue TASK-0095 implementation against the selected provider in a non-production environment, complete its adversarial and accessible operator-flow gates, then transition tasks in canonical order. Record measured restore and resulting-main evidence before certifying Phase 16.
 
+### 2026-10-15 Auth0 development tenant update
+
+The operator has created an Auth0 Development tenant and a Regular Web Application for testing. This supplies a candidate non-production application, but its Application URI fields are empty and VSN has no live OIDC callback route. No secret was received or committed. The remaining TASK-0095 acceptance inputs are an exact reachable callback origin, approved test identities and subject-linking decision, trusted key custody/rotation, and a live provider interoperability exercise. Keep SSO disabled and the milestone blocked until these are verified. The original “no selected IdP” wording above is superseded for this test candidate only.
+
 ## TASK-0024 — AC-4 production-representative benchmark evidence and Delivery-owner threshold approval
 
 - Timestamp: `2026-09-14T10:37:05+00:00`

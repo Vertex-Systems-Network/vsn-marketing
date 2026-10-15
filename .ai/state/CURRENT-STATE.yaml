@@ -31,7 +31,7 @@
   "current_milestone": "TASK-0095-EXTERNAL-INTEROPERABILITY",
   "milestone_status": "BLOCKED",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Publish refreshed evidence and verify all exact-head PR gates before external Auth0 interoperability",
+  "exact_next_safe_action": "Verify PR #579 exact-head CI and repair failures; obtain reachable non-production HTTPS callback origin, workspace ID, reviewed IdP subject mapping and key custody for live Auth0 interoperability.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Publish refreshed evidence and verify all exact-head PR gates before external Auth0 interoperability"
+  "exact_next_action": "Verify PR #579 exact-head CI and repair failures; obtain reachable non-production HTTPS callback origin, workspace ID, reviewed IdP subject mapping and key custody for live Auth0 interoperability."
 }

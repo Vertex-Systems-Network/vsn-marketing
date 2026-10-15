@@ -39,8 +39,11 @@ final readonly class EnterpriseOidcController
             'code_challenge' => $challenge, 'code_challenge_method' => 'S256',
         ], '', '&', PHP_QUERY_RFC3986);
 
-        return redirect()->away($config['issuer'].'authorize?'.$query)
-            ->withHeaders(['Cache-Control' => 'no-store', 'Referrer-Policy' => 'no-referrer']);
+        $redirect = redirect()->away($config['issuer'].'authorize?'.$query);
+        $redirect->headers->set('Cache-Control', 'no-store');
+        $redirect->headers->set('Referrer-Policy', 'no-referrer');
+
+        return $redirect;
     }
 
     public function callback(Request $request, string $workspace): RedirectResponse
@@ -83,7 +86,10 @@ final readonly class EnterpriseOidcController
         $request->session()->regenerate();
         $request->session()->put('identity_session_generation', $this->sessions->issue($userId));
 
-        return redirect()->route('workspaces.directory')->withHeaders(['Cache-Control' => 'no-store']);
+        $redirect = redirect()->route('workspaces.directory');
+        $redirect->headers->set('Cache-Control', 'no-store');
+
+        return $redirect;
     }
 
     /** @return array{workspace_id: string, issuer: string, client_id: string, client_secret: string, redirect_uri: string, key_id: string, public_key_pem: string} */

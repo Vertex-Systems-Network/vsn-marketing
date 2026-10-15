@@ -30,6 +30,7 @@ it('stays disabled by default and rejects a foreign workspace without an outboun
 
 it('binds code exchange to session state, a pinned assertion and an existing workspace member', function (): void {
     $this->withoutVite();
+    $this->withoutMiddleware(\Illuminate\Routing\Middleware\ThrottleRequests::class);
     URL::forceRootUrl('https://vsn.example.test');
     URL::forceScheme('https');
     $this->withServerVariables(['HTTP_HOST' => 'vsn.example.test', 'HTTPS' => 'on']);
@@ -71,7 +72,7 @@ it('binds code exchange to session state, a pinned assertion and an existing wor
         'iss' => 'https://idp.example.test/', 'aud' => 'client', 'sub' => 'stable-subject',
         'nonce' => $transaction['nonce'], 'iat' => time() - 10, 'exp' => time() + 300,
     ], $private);
-    Http::fake(['idp.example.test/oauth/token' => Http::response(['id_token' => $token], 200)]);
+    Http::fake(['https://idp.example.test/oauth/token' => Http::response(['id_token' => $token], 200)]);
     $this->get($path.'?state='.$transaction['state'].'&code=good')->assertRedirect(route('workspaces.directory'));
     $this->assertAuthenticatedAs($user);
     expect(session('identity_session_generation'))->toBeInt();

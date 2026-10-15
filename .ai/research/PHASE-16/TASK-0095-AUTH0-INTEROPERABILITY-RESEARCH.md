@@ -10,6 +10,10 @@ The operator's application currently has empty Application URI fields. There is 
 
 Classification: TASK-0095 prerequisite and acceptance work. ADR-0005 remains PROPOSED. The pin-compatible verifier change is an offline slice, not provider certification or activation.
 
+## Controlled subject enrollment (2026-10-15)
+
+The existing `federation_subject_bindings` admission boundary needs a durable way to enroll a verified, opaque provider subject. A workspace identity administrator proposes the exact subject and local member ID under the server-configured workspace issuer. A second currently authorized administrator approves; the proposer applies after both permissions, issuer and membership are rechecked. Proposals and their transitions are audited without recording the subject in the audit payload. No email or domain claim is used as a linking key. This repository-side workflow still requires human verification of the IdP subject and member pairing before approval, and live interoperability evidence before enabling OIDC.
+
 Implementation contract: VSN exposes `/auth/enterprise/{workspace}/login` and `/auth/enterprise/{workspace}/callback` behind `ENTERPRISE_OIDC_ENABLED=false`. The configured redirect URI must equal the route's absolute HTTPS URL, including the selected workspace UUID, at the actual application origin. The browser transaction stores a one-use state, nonce and PKCE verifier in its server session for at most five minutes; the callback exchanges a code with the server-side client secret, verifies the pinned RS256 key ID and PEM, consumes the signed assertion once, and admits only an explicitly bound active member. Configuration of a fixed PEM means key rotation requires an operator-managed update; this is not automatic JWKS rotation or provider interoperability certification. Secrets remain in an environment secret store, not Auth0 screenshots, source or research documents.
 
 Official sources (retrieved 2026-10-15):

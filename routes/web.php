@@ -7,6 +7,7 @@ use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOidcController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\FederationBindingReviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\ProvisioningCredentialController;
 use App\Modules\Identity\Presentation\Http\Controllers\RevokeWorkspaceSessionsController;
 use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
@@ -34,6 +35,10 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
     ->name('workspace.enterprise.overview');
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
     ->group(function (): void {
+        $bindings = FederationBindingReviewController::class;
+        Route::post('/workspaces/{workspace}/identity/federation-bindings', [$bindings, 'propose']);
+        Route::post('/workspaces/{workspace}/identity/federation-bindings/{proposal}/approve', [$bindings, 'approve']);
+        Route::post('/workspaces/{workspace}/identity/federation-bindings/{proposal}/apply', [$bindings, 'apply']);
         $controller = RoleAssignmentReviewController::class;
         Route::post('/workspaces/{workspace}/identity/role-proposals', [$controller, 'propose']);
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/approve', [$controller, 'approve']);

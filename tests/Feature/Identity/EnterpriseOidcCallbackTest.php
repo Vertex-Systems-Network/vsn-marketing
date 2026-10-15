@@ -52,7 +52,6 @@ it('binds code exchange to session state, a pinned assertion and an existing wor
         'redirect_uri' => $callback, 'key_id' => 'test-key',
         'public_key_pem' => openssl_pkey_get_details($private)['key'],
     ]]);
-    Http::fake();
     $this->get('/auth/enterprise/'.$foreign->getKey().'/login')->assertForbidden();
     $start = $this->get('/auth/enterprise/'.$workspace->getKey().'/login');
     $start->assertRedirect();

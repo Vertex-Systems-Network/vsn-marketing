@@ -131,11 +131,6 @@ jobs:
           node-version: '24'
       - name: Audit locked Composer dependencies
         run: composer audit --locked --no-interaction --abandoned=report
-      - name: Diagnose patched Symfony lock
-        if: ${{ failure() }}
-        run: |
-          composer update symfony/http-foundation symfony/yaml --with-dependencies --no-scripts --no-interaction
-          python3 -c 'import json; p=json.load(open("composer.lock")); print("PATCHED_SYMFONY_START"); print(json.dumps([x for x in p["packages"] + p["packages-dev"] if x["name"] in ("symfony/http-foundation", "symfony/yaml")], separators=(",", ":"))); print("PATCHED_SYMFONY_END")'
       - name: Audit locked npm dependencies at moderate-or-higher severity
         run: npm audit --audit-level=moderate
 

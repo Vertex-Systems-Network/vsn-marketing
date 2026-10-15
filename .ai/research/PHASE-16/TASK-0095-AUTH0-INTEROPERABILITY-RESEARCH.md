@@ -18,3 +18,5 @@ Official sources (retrieved 2026-10-15):
 - https://auth0.com/docs/secure/tokens/id-tokens
 - https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets
 - https://auth0.com/docs/get-started/tenant-settings/signing-keys/rotate-signing-keys
+
+Security gate follow-up (2026-10-15): exact-head dependency audit identified Symfony http-foundation CVE-2026-108082 and yaml CVE-2026-109413 in locked 7.4.17. The CI Composer resolver selected 7.4.21 for both. The lock records only these two package updates, whose require constraints remain compatible with the existing polyfill versions. The diagnostic CI workflow change was removed. Protected exact-head dependency audit, Composer install and application tests remain the acceptance evidence for this lock repair.

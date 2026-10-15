@@ -34,8 +34,12 @@ final readonly class ScimDeactivationController
             throw new AuthorizationException('Provisioning credential denied.');
         }
 
+        $rawBody = $request->getContent();
+        if (strlen($rawBody) > 16384) {
+            return $this->unsupportedOperation();
+        }
         try {
-            $body = json_decode($request->getContent(), true, 64, JSON_THROW_ON_ERROR);
+            $body = json_decode($rawBody, true, 64, JSON_THROW_ON_ERROR);
         } catch (JsonException) {
             $body = null;
         }

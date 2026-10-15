@@ -57,6 +57,10 @@ it('keeps SCIM disabled by default and admits only tenant-bound authenticated de
             'CONTENT_TYPE' => 'application/scim+json', 'HTTP_AUTHORIZATION' => 'Bearer '.$token,
         ], $rawBody)->assertStatus(400);
     }
+    $this->call('PATCH', $path, [], [], [], [
+        'CONTENT_TYPE' => 'application/scim+json', 'HTTP_AUTHORIZATION' => 'Bearer '.$token,
+    ], json_encode($body).str_repeat(' ', 16384))->assertStatus(400);
+    expect(DB::table('workspace_memberships')->where('workspace_id', $workspace->getKey())->count())->toBe(1);
     $send($path, $body, $token)->assertNoContent();
     $send($path, $body, $token)->assertNoContent();
 

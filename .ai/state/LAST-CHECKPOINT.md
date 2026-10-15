@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-14T23:59:07+00:00`
+- Timestamp: `2026-10-15T00:13:48+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `089131052c610cf983e43ac54a5d61865bd90236e7a70bbe5c6660f0231a6cf5`
+- State fingerprint: `789efcc44030e838eef659a5c06b17b89c4cc6bf65c4e1eab63f1b6b3b6242e2`
 
 ## Completed / observed this session
 
-PR579 audit export access logging and no-store pagination hardening verified at exact head fa89a043; Phase16 external interoperability remains blocked
+Bound authenticated SCIM PATCH payload to 16 KiB and reject oversized requests before mutation; updated Phase 16 blocker with prior exact-head evidence. PR #579 remains draft and TASK-0095 blocked on external IdP interoperability.
 
 ## Tests
 
-PR579 head fa89a043a00be13e296fe57246fc29411f2ff925 six required exact-head gates passed; local continuity validators pass
+Local continuity, journal, policy, supervisor contract and diff checks passed; PHP unavailable locally. New exact-head CI pending.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ PR579 head fa89a043a00be13e296fe57246fc29411f2ff925 six required exact-head gate
 
 ## Exact next action
 
-Obtain selected non-production IdP and approved subject-linking process for TASK-0095; continue on PR579, then Phase16 tasks in dependency order
+Verify PR #579 latest exact-head gates; obtain selected non-production IdP and approved subject-linking process for TASK-0095.

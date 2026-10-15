@@ -12,6 +12,10 @@
 
 The operator has created an Auth0 Development tenant and a Regular Web Application for testing. This supplies a candidate non-production application, but its Application URI fields are empty and VSN has no live OIDC callback route. No secret was received or committed. The remaining TASK-0095 acceptance inputs are an exact reachable callback origin, approved test identities and subject-linking decision, trusted key custody/rotation, and a live provider interoperability exercise. Keep SSO disabled and the milestone blocked until these are verified. The original “no selected IdP” wording above is superseded for this test candidate only.
 
+### 2026-10-15 local loopback development update
+
+PR #579 now provides a disabled-by-default OIDC callback route and an explicit loopback HTTP opt-in confined to `APP_ENV=local`, together with an operator runbook at `docs/operations/TASK-0095-LOCAL-AUTH0.md`. Exact-head application, PHP 8.3, PostgreSQL/Redis integration, browser E2E, security and continuity gates passed on `d65a3b9da7663f8bd83eaa7b7ba8097c2c311a37`. The prior assertion that a deployed HTTPS origin is mandatory for development is superseded: an operator-owned local Docker/browser runtime may use an Auth0-registered loopback callback. This execution environment has no PHP or Docker runtime and holds no Auth0 application secret or approved member mapping, so a real Auth0 exchange was not performed. Require a trusted subject-to-member review, locally held secret and pinned signing key, and redacted live interoperability evidence before accepting TASK-0095. Downstream Phase 16 authority/evidence blockers remain.
+
 ## TASK-0024 — AC-4 production-representative benchmark evidence and Delivery-owner threshold approval
 
 - Timestamp: `2026-09-14T10:37:05+00:00`

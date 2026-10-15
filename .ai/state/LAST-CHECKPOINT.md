@@ -2,7 +2,7 @@
 
 ## State
 
-- Timestamp: `2026-10-15T14:46:53+00:00`
+- Timestamp: `2026-10-15T19:37:18+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `5d09989f83cb9f1904c2405538aa0840987a1734c98e4429c3ada9cf5c9add44`
+- State fingerprint: `e0cb4801f52038c39190563958388e0d2d72abfd2bcf4cca79f52e99fb6c8572`
 
 ## Completed / observed this session
 
-TASK-0095 Auth0 candidate: reviewed subject binding workflow published to draft PR #579; external interoperability and Phase 16 acceptance remain blocked.
+TASK-0095 local-only Auth0 loopback callback opt-in and runbook published on draft PR #579; live interoperability and Phase 16 acceptance remain blocked.
 
 ## Tests
 
-Local diff check and supervisor/policy validation passed; exact-head CI pending after PR migration review metadata correction.
+Exact-head d65a3b9da7663f8bd83eaa7b7ba8097c2c311a37: Application Foundation, PHP 8.3, PostgreSQL/Redis integration, browser E2E, Security Supply Chain, AI Continuity PASS; local PHP/Docker unavailable.
 
 ## Blockers
 
@@ -31,4 +31,4 @@ Local diff check and supervisor/policy validation passed; exact-head CI pending 
 
 ## Exact next action
 
-Verify PR #579 exact-head CI and repair failures; obtain reachable non-production HTTPS callback origin, workspace ID, reviewed IdP subject mapping and key custody for live Auth0 interoperability.
+On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order.

@@ -2,30 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-16T16:53:49+00:00`
-- Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
+- Timestamp: `2026-10-16T16:55:11+00:00`
+- Observed main: `4b7b5723f2ed208f5ca45be57ccd94405d340786`
 - Active issue: `none`
-- Active PR: `579`
-- Active branch: `supervisor/task0095-continuation-20261015`
-- Current milestone: `TASK-0095-EXTERNAL-INTEROPERABILITY`
-- Milestone status: `BLOCKED`
+- Active PR: `584`
+- Active branch: `claude/wizardly-einstein-ja5n9h`
+- Current milestone: `TASK-0096-RESIDENCY`
+- Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0096`
 - Next task: `TASK-0097`
 - Current phase: `PHASE-16`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `c22ec041975ac43b56f389c2ff74bdbd9b8346087f45772166a38ff5d273d2f5`
+- State fingerprint: `a1e16e53ff927f3f860a23bf4622ae655019c89bf31cd92263cbbaccfab10f20`
 
 ## Completed / observed this session
 
-Completed `TASK-0095` and activated `TASK-0096`.
-
-Transition evidence: ADR-0006 owner decision; PR579 merged green; local IdP adversarial interop test; acceptance matrix .ai/research/PHASE-16/TASK-0095-ACCEPTANCE-MATRIX.md
+TASK-0095 accepted under ADR-0006; PHASE-16 blockers resolved by owner decision; TASK-0096 active
 
 ## Tests
 
-Identity feature/unit suites, e2e enterprise operator flows, exact-head six protected gates on carrier PR
+PR584 exact-head gates pending
 
 ## Blockers
 
@@ -33,4 +31,4 @@ Identity feature/unit suites, e2e enterprise operator flows, exact-head six prot
 
 ## Exact next action
 
-Complete TASK-0096 acceptance evidence and full gates before advancing to TASK-0097.
+Merge PR584 when green; implement TASK-0096 EU-only residency, retention and data subject controls

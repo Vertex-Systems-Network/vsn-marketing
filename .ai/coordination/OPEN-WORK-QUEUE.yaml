@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "df40b41216d8d9d48616e82cf1e2b3cec2351656",
+  "reconciled_main_sha": "4b7b5723f2ed208f5ca45be57ccd94405d340786",
   "active_work_path": {
     "kind": "pr",
-    "number": 579,
-    "title": "TASK-0095: Continue enterprise identity acceptance",
-    "branch": "supervisor/task0095-continuation-20261015",
-    "disposition": "active_task0095_carrier"
+    "number": 584,
+    "title": "TASK-0095: Accept enterprise identity under owner decision ADR-0006",
+    "branch": "claude/wizardly-einstein-ja5n9h",
+    "disposition": "active_task0096_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 584,
+      "title": "TASK-0095: Accept enterprise identity under owner decision ADR-0006",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0096_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 579,
       "title": "TASK-0095: Continue enterprise identity acceptance",
       "branch": "supervisor/task0095-continuation-20261015",
       "disposition": "active_task0095_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

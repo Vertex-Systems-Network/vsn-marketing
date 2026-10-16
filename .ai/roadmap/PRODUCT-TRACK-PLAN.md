@@ -1,4 +1,4 @@
-# VSN Marketing Product Track — PHASE-17..PHASE-23 (planned)
+# VSN Marketing Product Track — PHASE-17..PHASE-24 (planned)
 
 Status: **PLANNED / NOT ACTIVE**. Owner request 2026-10-17 (repository owner, AI-only execution per ADR-0006). Baseline PHASE-00..16 is complete; this track turns the certified backend foundation into the sellable marketing product the owner specified. Activation requires the rebaseline in ADR-0007 (machine task materialization and phase-weight rebaseline). No progress percentage changes until then.
 
@@ -25,9 +25,30 @@ Status: **PLANNED / NOT ACTIVE**. Owner request 2026-10-17 (repository owner, AI
 | R17 | Buyer, admin, seller panels | No panels | P17 (+P22) |
 | R18 | Reports | Analytics backend + 1 screen (PHASE-12) | P23 |
 | R19 | Filters | Segments only | P23 |
-| R20 | Best visuals, fully featured, sales-booster UI (Next.js requested) | 11 basic screens | P17 + every phase |
+| R20 | Best visuals, fully featured, sales-booster UI on Next.js | 11 basic screens (Inertia React) | P17 + every phase |
+| R21 | Android and iOS apps | None | P24 |
 
-## 2. AI-native lifecycle applied to every phase
+## 2. Technology stack (owner decision 2026-10-17)
+
+Architecture: **one Laravel API backend, three clients** (Next.js web, Android, iOS) sharing one TypeScript API client and design tokens in a monorepo. The certified PHASE-00..16 backend is kept; only the presentation layer moves.
+
+| Layer | Technology | Why |
+|---|---|---|
+| Backend API | PHP 8.3+/Laravel (existing modules), versioned REST `/api/v1` + OpenAPI 3.1 spec, Laravel Sanctum (web cookie + mobile tokens), webhooks | Reuses all certified domain logic, tenancy, RBAC, billing, privacy |
+| Web app | Next.js (App Router, React 19, TypeScript, Server Components) | Owner choice; SEO marketing site + app in one, best React ecosystem |
+| Web UI | Tailwind CSS v4, shadcn/ui (Radix primitives), lucide icons, Framer Motion, Recharts/Tremor charts, TanStack Table, React Hook Form + Zod | Premium, accessible, sales-grade visuals |
+| Web data | TanStack Query, generated typed API client from OpenAPI, next-intl (i18n incl. Urdu/RTL) | Typed end-to-end, cache, offline-friendly |
+| Mobile apps | React Native + Expo (Android + iOS from one codebase), Expo Router, NativeWind, EAS Build/Submit, Expo Notifications | Shares TypeScript, API client and design tokens with web |
+| Monorepo | pnpm workspaces + Turborepo: `apps/web`, `apps/mobile`, `packages/api-client`, `packages/ui-tokens`, `packages/validation`; Laravel stays at repo root | One place, shared code, cached builds |
+| Data | PostgreSQL 18, Redis 8 (queues/cache), S3-compatible object storage | Existing, production-grade |
+| Queues/realtime | Laravel Horizon, Laravel Reverb (WebSockets) for live tracking/notifications | Live open/click/post status |
+| Search | PostgreSQL full-text first; Meilisearch if scale requires | Filters and global search (R19) |
+| AI | Existing AI gateway → OpenAI, Google Gemini, Anthropic Claude adapters | Provider-neutral (R15) |
+| Payments | Stripe Billing (web); Apple/Google in-app purchase only if store rules require for mobile | R16 |
+| Testing | Pest/PHPUnit, Vitest + Testing Library, Playwright (web E2E), Jest + Maestro/Detox (mobile E2E), axe accessibility | QA gates |
+| DevOps | Docker Compose (dev), GitHub Actions CI, Vercel or container hosting for Next.js, EAS for app stores, Sentry monitoring | Deploy and observe |
+
+## 3. AI-native lifecycle applied to every phase
 
 Each phase runs these stages in order, by AI, with repository evidence for each (the owner's requested flow):
 
@@ -42,11 +63,12 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 9. **QA** — unit, feature, adversarial, PostgreSQL/Redis integration, Playwright E2E, accessibility, performance.
 10. **Finalization** — certification matrix, exact-head + resulting-main gates, README/progress update.
 
-## 3. Phases
+## 4. Phases
 
 ### PHASE-17 — Product shell, design system and panels (R17, R20)
-- TASK-0102 Research: SaaS admin/panel patterns, competitor dashboards, design systems; decide UI stack (ADR-0007: keep Laravel + Inertia React, add shadcn/ui-style component system; Next.js only if a separate public site/app is later required).
-- TASK-0103 Design system and app shell: tokens, light/dark theme, sidebar/topbar navigation, dashboard, empty/loading/error states.
+- TASK-0102 Research: SaaS admin/panel patterns, competitor dashboards, design systems, Next.js + Expo monorepo practices; confirm stack in section 2 (ADR-0007).
+- TASK-0102A API layer: versioned `/api/v1`, Sanctum auth, OpenAPI spec and generated TypeScript client; existing Inertia screens stay until replaced.
+- TASK-0103 Monorepo + Next.js app shell: Turborepo, shared tokens, shadcn/ui design system, light/dark theme, sidebar/topbar, dashboard, marketing landing pages.
 - TASK-0104 Roles and access: default roles (Super Admin, Owner, Admin, Marketer, Viewer), role-management screen, team invites, signup/login polish.
 - TASK-0105 Panels: Super Admin (tenants, plans, usage, revenue), Customer/Buyer workspace, Seller/Reseller/Agency panel over TASK-0097 delegation.
 - TASK-0106 Developer runtime: demo seeder (`vsn:demo`), Docker fixes (PostgreSQL 18 volume, MinIO image, single composer install, Vite host).
@@ -94,14 +116,22 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 - TASK-0136 Performance, security, accessibility and visual QA; production deployment runbook.
 - TASK-0137 Certify product launch readiness.
 
-## 4. Decisions defaulted by AI (owner may override)
+### PHASE-24 — Android and iOS apps (R21)
+- TASK-0138 Research: Expo/React Native current releases, App Store and Play Store policies (privacy labels, in-app purchase rules, push), competitor mobile apps.
+- TASK-0139 Mobile foundation: Expo app in monorepo, auth, workspace switcher, shared API client and tokens, push notifications.
+- TASK-0140 Mobile features: dashboard, campaign and post approvals, social composer/scheduler, live email/post stats, AI writer, notifications.
+- TASK-0141 Store release pipeline: EAS builds, test tracks (TestFlight/Play internal), store listings.
+- TASK-0142 Certify PHASE-24 (device E2E, accessibility, store-readiness).
+
+## 5. Decisions
 
 | Decision | Default | Status |
 |---|---|---|
-| UI stack | Keep Laravel + Inertia React; premium component system; no Next.js rewrite | ADR-0007 PROPOSED |
+| Web UI | Next.js frontend over the Laravel API | Owner decision 2026-10-17 |
+| Mobile | React Native + Expo, Android + iOS | Owner decision 2026-10-17 |
 | "Seller panel" meaning | Reseller/agency selling the tool to its clients (not a goods marketplace) | Assumption, confirm |
-| Order | PHASE-17 first, then 18 → 23 | Default |
+| Order | PHASE-17 first, then 18 → 24 | Default |
 
-## 5. Owner-only external inputs (cannot be produced by AI)
+## 6. Owner-only external inputs (cannot be produced by AI)
 
-Provider accounts and API keys (SendGrid, Mailchimp, OpenAI, Gemini, Anthropic…); social developer apps and platform app-review approval; ad accounts and spend authority; Stripe live account; production server and domain. Each blocks only its feature; all other work proceeds with sandboxes/test modes.
+Provider accounts and API keys (SendGrid, Mailchimp, OpenAI, Gemini, Anthropic…); social developer apps and platform app-review approval; ad accounts and spend authority; Stripe live account; production server and domain; Apple Developer and Google Play developer accounts. Each blocks only its feature; all other work proceeds with sandboxes/test modes.

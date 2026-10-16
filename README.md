@@ -1,14 +1,12 @@
 # VSN Marketing
 
-AI-native, provider-agnostic marketing operating system under active development.
+AI-native, provider-agnostic, permission-based marketing operating system (modular Laravel monolith). All 16 roadmap phases are complete; live providers, live payments and production activation stay disabled until the owner explicitly enables them.
 
 ## Development progress
 
 <!-- AI_PROGRESS_SNAPSHOT roadmap=100 phase=100 current_phase=PHASE-16 active_task=TASK-0100 milestone=TASK-0100-CERTIFICATION status=COMPLETE -->
 
-> PHASE-08 and PHASE-09 tasks are complete. TASK-0051 AC-5 uses independently validated RBT-052 v6 raw evidence: Redis queue and PostgreSQL-backed pinned five-node graph with canonical consent/suppression gates and a synthetic no-op provider. The 200-job four-worker control completed in two passes with 2.774s p95 queue age; eight workers took five passes with 64.266s p95. These isolated-harness figures do not establish production limits or provider latency. PR #447 added scheduled bounded due-work recovery. PR #449 certified the accessible journey builder, simulator, lifecycle and timeline UX. PR #450 certified the PHASE-09 matrix on exact head and protected main. PR #451 terminal closure carrier passed exact-head and resulting-main checks. PHASE-10 TASK-0055 gateway contracts passed PostgreSQL contention and exact-head/main gates in PRs #453–#454. TASK-0056 context and TASK-0057 typed tools are accepted; PR #457 repaired PostgreSQL fork isolation and passed exact-head/main gates. TASK-0058 specialist candidate runtime is accepted via PR #458 and full exact-head/main gates. TASK-0059 creative drafts are accepted through PR #459 and full exact-head/main checks. TASK-0060 red-team is accepted through PR #460 and full exact-head/main gates. TASK-0061 certification is accepted through PR #461 and full exact-head/main checks. PHASE-10 offline architecture is complete; live provider routes remain disabled. PHASE-11 TASK-0063 offline assignment foundation passed PR #466 exact-head and resulting-main gates. TASK-0064 campaign matrix passed PR #467 exact-head and resulting-main gates. TASK-0065 offline optimization passed PR #468 exact-head and resulting-main gates. TASK-0066 offline statistical guardrails passed PR #469 exact-head and resulting-main gates. TASK-0067 offline certification passed PR #470 full exact-head and resulting-main gates; no experiment traffic is enrolled. PHASE-12 TASK-0068 research and TASK-0069 canonical fact/privacy foundation are accepted through PRs #472/#473; TASK-0070 behavior reports are accepted through PR #474 and full resulting-main gates; TASK-0071 revenue/attribution is accepted through PR #475 and full resulting-main gates; TASK-0072 operator reports, schedules and guarded explanations are accepted through PR #476 full exact-head and resulting-main gates; TASK-0073 source reconciliation is accepted through PR #477 full exact-head and resulting-main gates; TASK-0074 bounded analytics certification passed PR #478 and full protected-main gates; PHASE-12 is complete. The source verifier remains unbound and production readiness requires separate evidence. Source completeness, live effectiveness and production scale remain unproven.
-
-> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the required human-readable mirror when the canonical progress marker changes; evidence-only state updates do not force dashboard churn.
+> Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the human-readable mirror.
 
 **Overall roadmap progress: 100.00%**<br />
 **Current phase: PHASE-16 — 100.00%**<br />
@@ -16,13 +14,11 @@ AI-native, provider-agnostic marketing operating system under active development
 **Current milestone: TASK-0100-CERTIFICATION — COMPLETE**
 
 ```text
- Overall  [███████████████████░] 96.00%
-Phase 15 [████████████████████] 100.00%
+ Overall  [████████████████████] 100.00%
+Phase 16 [████████████████████] 100.00%
 ```
 
-TASK-0089 accepted: PRs #525/#526/#528/#529 passed full exact-head and resulting protected-main Application, PHP 8.3, PostgreSQL, E2E, Security, Governance, release-integrity and scorecard gates. Typed offline state machine, durable receipts, independently gated evaluation and accessible operator preview are certified as offline-only. TASK-0090 is COMPLETE (offline-only): PR #531 certified deny-by-default resource and emergency-stop preflights, PR #532 certified independent offline approval review, and PR #533 certified transactional offline quota reservations with PostgreSQL contention tests, while PR #534 certified permission-rechecked durable approval decisions and revocation tests; PR #535 certified conservative offline emergency-stop and unknown-outcome reconciliation; PR #536 certified human-session-only independent approval recording and negative read-back tests; PR #537 certified offline final admission rechecks; PR #538 certified fail-closed per-minute rate admission and PostgreSQL contention; PR #539 certified final rate-review, serialized human approval/stop checks, forged organization denial and PostgreSQL stop/admission race testing. TASK-0090 AC-1..3 accepted with exact-head and resulting-main checks; TASK-0091 offline canary/holdout work is IN PROGRESS: PR #541 certified frozen cohort, independent scoring and conservative rollback reviews; PR #542 certified immutable DB-backed review receipts with replay/foreign workspace and revocation tests; PR #543 certified exact cohort receipt-to-independently sourced outcome manifest binding and operator-only review; PR #544 certified append-only conservative rollback incident history, actor-bound replay and unknown/late/irreversible provider outcome tests; PR #545 certified PostgreSQL concurrent same-run rollback replay on exact-head and protected main. PR #546 certified independent exact-bound human canary review with full exact-head gates; PRs #547/#548 certified current human permission and DB revocation evidence; PR #549 certified current-human idempotent approval replay; PR #550 certified historical human decision-proof integrity and anti-tampering on full exact-head gates; PR #551 certified independently verified provider-attempt provenance and conservative dual-source offline rollback review on full exact-head CI; PR #552 certified canonical expected-operation inventory matching against provider attempt identities with full exact-head CI; PRs #553-#555 certified provider-evidence timestamp and aggregate/attempt ordering guards; PRs #556-#559 certified frozen cohort denominators, per-arm assignments, exposure/consent chronology and a non-backfilled durable per-arm commitment with migration recovery tests; PR #560 certified immutable rollback ledger replay protection, and PR #561 certified aggregate provider outcome manifest binding. PR #562 certified independently scored canary outcome manifests and PR #563 certified conservative provider capture chronology with full exact-head/protected-main CI. TASK-0091 AC-1..3 are accepted as OFFLINE ONLY through the guarded PR #564 certification carrier; TASK-0092 offline red-team and incident monitoring passed PR #569 exact-head and protected-main gates; TASK-0093 offline Phase 15 certification passed PR #571 full exact-head and resulting-main Application, Security and AI Continuity gates; PHASE-15 is complete. No external provider authentication or execution authority is inferred. No live sending, publishing, spending or promotion is enabled.
-
-The deterministic roadmap percentage is calculated from completed task weights. PHASE-07 is certified by TASK-0041 final acceptance / PR #405. TASK-0042 remains an unmaterialized ID gap; PHASE-08 starts at TASK-0043; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 has TASK-0048 through TASK-0053 complete.
+No successor task is registered after TASK-0100. New work must first be added to the roadmap (see `.ai/state/BLOCKERS.md`).
 
 ### Phase / module progress
 
@@ -46,21 +42,6 @@ The deterministic roadmap percentage is calculated from completed task weights. 
 | PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ✅ TASK-0093 offline phase certification complete; no production authority | 100% |
 | PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | PRs #579, #584–#589: identity, residency, agency, Stripe test billing, DR and certification within ADR-0006 boundaries — complete | 100% |
 
-### PHASE-07 closeout evidence (historical)
-
-PR #402 exact head `34b1a0a2632218cd87ae070547f16a20dc76ba5a` passed AI Continuity Guard, Application Foundation CI, Security Supply Chain CI and all applicable E2E/integration checks before merging as `ed7644bddabfe9eea4128a3c607e9cb2c9d1a20e`; it staged the exclusive TASK-0041 Operator UX lane.
-
-PR #403 merged exact worker head `391f43b3e7ee720be878294009a5993c163da685` into `ship/week-1` as `7f43eda18cc95ab90ea0b56207e67476e7433fab`. Its exact worker Shipping Fast Gate passed. Product-bearing integration Application Foundation CI passed backend tests, infrastructure integration, architecture checks, PHP static analysis/formatting, frontend typecheck/unit tests/build, PHP 8.3 compatibility, and Playwright smoke.
-
-The integration push correctly exposed a missing global continuity-ledger handoff. PR #404 synchronized PR #402's current Lane-4 authority, appended the hash-chained checkpoint, and passed its exact Shipping Fast Gate. Resulting integration head `0733c40eead4038e2c1d7f19a50df23b88aaac6a` passed Continuity, Application Foundation and Shipping Fast Gate. Product/test files are unchanged from the fully tested `7f43eda` snapshot.
-
-TASK-0041 AC-1..AC-8 were accepted by PR #405. Its exact head passed Continuity, Application Foundation and Security Supply Chain before merging as `87e65b1d458a79f925376d4cf49792d3771ef192`; resulting-main gates passed and were reconciled at `6d0269bfe9b44b0623fbe1eb0e4d59fd1462e115`.
-
-The stale preplanned TASK-0042 reservation remains an unmaterialized identifier gap because PR #405 completed PHASE-07 certification. TASK-0043 begins PHASE-08; TASK-0043 through TASK-0047 and PHASE-08 are complete. PHASE-09 tasks TASK-0048 through TASK-0053 are complete.
-
-### Current execution snapshot
-
-PHASE-08 research and TASK-0042 plan-drift reconciliation are recorded in `.ai/research/PHASE-08/TASK-0043-RESEARCH.md`. TASK-0044 AST/compiler, TASK-0045 natural-language proposal compiler, TASK-0046 bounded preview/count UX, and TASK-0047 certification are complete. PHASE-14 is complete; PHASE-15 TASK-0088 research accepted; TASK-0089 completed; TASK-0090 completed; TASK-0083 connector planning and TASK-0084 generated candidates are accepted. TASK-0085 validation and fail-closed canary-promotion gates were accepted from merged PR #505. TASK-0086 compatibility scoring, dated deprecation provenance, rollback/disable and tenant-scoped lifecycle evidence were implemented in PR #517 and passed exact-head and resulting-main gates; provider or production activation is not claimed. TASK-0087 certified PHASE-14 on PR #519 with full exact-head and resulting-main reconciliation gates; production activation remains outside scope. PHASE-14 is complete and deterministic roadmap progress is 94.40%. PHASE-15 TASK-0088 is complete; TASK-0089 is complete; TASK-0090 is complete; TASK-0091 and TASK-0092 are complete for offline-only contracts; TASK-0093 offline phase certification is complete through PR #571. Email engagement tracking remains an unweighted inactive extension. PHASE-10 TASK-0054 research and TASK-0055 gateway are complete; TASK-0056 context and TASK-0057 typed tools are accepted. TASK-0058 specialist candidate runtime is accepted. TASK-0059 creative drafts are accepted. TASK-0060 red-team is accepted. TASK-0061 certification is accepted. PHASE-10 offline architecture is certified100%; PHASE-11 TASK-0062 research is accepted on PR #465 full exact-head and resulting-main control gates; TASK-0063 offline assignment foundation passed full exact-head and resulting-main gates in PR #466. TASK-0064 campaign matrix passed exact-head and resulting-main gates in PR #467. TASK-0065 offline optimization passed PR #468 exact-head and resulting-main gates. TASK-0066 statistical guardrails passed PR #469 exact-head and resulting-main gates. TASK-0067 offline certification passed PR #470 full exact-head and resulting-main gates; production enrollment remains disabled. See [.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md](.ai/research/PHASE-10/PHASE-10-CERTIFICATION.md) for the source/test/run matrix and pending live activation gates.
 
 ### README progress-sync contract
 
@@ -147,6 +128,59 @@ Dynamic agent/slot assignments update orchestration state but do not require a R
 
 The active task, exact next action, progress, blockers, tests, roadmap, architecture rules, last checkpoint, workstreams, leases, and merge protocol live under [`.ai/`](.ai/).
 
+## Product overview
+
+### Tech stack
+
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8.3+ (CI on 8.3 and 8.5), Laravel, modular monolith under `app/Modules/*` |
+| Frontend | React 19 + TypeScript, Inertia.js v3, Tailwind CSS v4, Vite 8 |
+| Data | PostgreSQL (production), SQLite (fast tests), Redis (queues/cache) |
+| Tests | Pest/PHPUnit, Vitest + Testing Library, Playwright E2E, PostgreSQL/Redis integration suite |
+| Quality & security | Pint, PHPStan (Larastan), CodeQL, secret scan, dependency audit, container scan, SBOM, SHA-pinned Actions |
+
+### Modules
+
+Core, Identity (tenancy, RBAC, SSO/SCIM, sessions, governance, agency, billing, recovery), Audit, Contacts, Consent, Events, Providers, DeliveryEngine, Templates, Content, Assets, Publishing, Segmentation, Journeys, Experiments, Analytics, AI.
+
+### Roles and permissions
+
+There are no hard-coded role panels. Each workspace defines its own roles and grants them permissions from a fixed catalog of 22 (`app/Modules/Identity/Domain/Authorization/PermissionCatalog.php`): contact read/write, campaign read/create/approve/send, journey create/read/publish/replay, template create/publish, provider create and credential management, AI execute/approve, analytics read, billing, audit export, identity, privacy and agency management. Agencies receive only the permissions a client explicitly delegates; billing, identity, provider credentials, privacy, audit export and re-delegation are never delegable.
+
+### User interface screens
+
+| Area | Screens (`resources/js/pages`) |
+|---|---|
+| Access | `auth/login`, `auth/workspaces` |
+| Enterprise | `enterprise/overview` (capabilities, audit metadata review) |
+| Operators | `journeys/operator`, `segmentation/operator`, `segmentation/rule-builder`, `publishing/operator`, `analytics/operator`, `analytics/autonomy-preview`, `ai/offline-incident` |
+| Public | `welcome` |
+
+Known UI gaps: no shared app layout/navigation, no role-management screen, and backend-only features (contacts, campaigns, templates, billing, privacy, agency branding, backup) do not have operator screens yet.
+
+### Phase 16 enterprise controls (ADR-0006)
+
+| Area | What exists | Boundary |
+|---|---|---|
+| Identity | Pinned OIDC login with PKCE, replay protection, governed subject binding, SCIM deactivation, session revocation | SSO/SCIM disabled by default |
+| Residency | Eight data surfaces must be attested `eu`; legal holds, export, anonymizing erasure, retention | Unset surfaces fail closed |
+| Agency | Delegated administration, sibling-client isolation, spoof-proof branding | — |
+| Billing | Idempotent metering, entitlements, two-person plan changes, verified Stripe test webhooks | Live charges hard-disabled |
+| Recovery | Encrypted tenant backup/restore, measured RPO 24h / RTO 4h exercise | Exercised in CI, no production target |
+
+### Getting started
+
+```bash
+composer install && npm ci
+cp .env.example .env && php artisan key:generate
+php artisan migrate
+php artisan serve          # backend, in one terminal
+npm run dev                # Vite frontend, in another terminal
+composer test && composer lint:check && composer analyse
+npm run typecheck && npm run test && npm run test:e2e
+```
+
 ## Architectural direction
 
 - Modular monolith first; event-driven boundaries.
@@ -158,4 +192,3 @@ The active task, exact next action, progress, blockers, tests, roadmap, architec
 
 Implementation sequence is defined in [`.ai/roadmap/MASTER-ROADMAP.md`](.ai/roadmap/MASTER-ROADMAP.md).
 
-Phase 11 terminal closure PR #471 merged after full exact-head gates. Phase 12 tasks TASK-0068–0074 are certified. Phase 13 tasks TASK-0075–0081 are registered; TASK-0075 research passed PR #480; TASK-0076 guarded offline messaging is the accepted dependency; TASK-0077 social publishing is active.

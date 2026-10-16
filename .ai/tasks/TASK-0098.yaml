@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Implement deterministic billing and entitlements",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0097"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Metering and entitlements are tenant-scoped, idempotent and fail closed on stale or duplicated evidence",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Plan and spending changes require independent policy and authorized human control",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Webhook replay, cross-tenant and concurrency tests pass; live charges remain disabled without provider approval",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

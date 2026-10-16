@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Implement white-label agency and client hierarchy",
   "weight": 12,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0096"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Agency and client hierarchy enforce permission inheritance and sibling-client isolation on every resource",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Brand customization cannot spoof security origin, consent, ownership or billing disclosures",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Delegated-administration, cross-client and accessibility tests pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

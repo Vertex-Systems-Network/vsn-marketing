@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0137",
+  "phase": "PHASE-23",
+  "title": "Implement global search and filters",
+  "weight": 25,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0136"
+  ],
+  "objective": "Search and saved filters on every list",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Search respects permissions",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Filters are consistent",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Performance budget met",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0137 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

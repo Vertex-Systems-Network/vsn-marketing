@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0134",
+  "phase": "PHASE-22",
+  "title": "Implement marketplace",
+  "weight": 30,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0133"
+  ],
+  "objective": "Seller onboarding, listings (templates, recipes, prompt packs, integrations, services), reviews, checkout, Stripe Connect payouts, refunds and moderation",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Listings install into buyer workspace safely",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Payouts and refunds reconcile",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Moderation and fraud tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0134 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0143",
+  "phase": "PHASE-24",
+  "title": "Implement store release pipeline",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0142"
+  ],
+  "objective": "EAS builds, TestFlight/Play internal tracks, listings",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Builds publish to test tracks",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Store metadata complete",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Release is reproducible",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0143 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -3,88 +3,128 @@
   "phases": [
     {
       "id": "PHASE-00",
-      "weight": 4,
+      "weight": 2.0,
       "status": "completed"
     },
     {
       "id": "PHASE-01",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-02",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-03",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-04",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-05",
-      "weight": 6,
+      "weight": 3.0,
       "status": "completed"
     },
     {
       "id": "PHASE-06",
-      "weight": 6,
+      "weight": 3.0,
       "status": "completed"
     },
     {
       "id": "PHASE-07",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-08",
-      "weight": 5,
+      "weight": 2.5,
       "status": "completed"
     },
     {
       "id": "PHASE-09",
-      "weight": 7,
+      "weight": 3.5,
       "status": "completed"
     },
     {
       "id": "PHASE-10",
-      "weight": 8,
+      "weight": 4.0,
       "status": "completed"
     },
     {
       "id": "PHASE-11",
-      "weight": 5,
+      "weight": 2.5,
       "status": "completed"
     },
     {
       "id": "PHASE-12",
-      "weight": 6,
+      "weight": 3.0,
       "status": "completed"
     },
     {
       "id": "PHASE-13",
-      "weight": 5,
+      "weight": 2.5,
       "status": "completed"
     },
     {
       "id": "PHASE-14",
-      "weight": 5,
+      "weight": 2.5,
       "status": "completed"
     },
     {
       "id": "PHASE-15",
-      "weight": 4,
+      "weight": 2.0,
       "status": "completed"
     },
     {
       "id": "PHASE-16",
-      "weight": 4,
+      "weight": 2.0,
       "status": "completed"
+    },
+    {
+      "id": "PHASE-17",
+      "weight": 8,
+      "status": "in_progress"
+    },
+    {
+      "id": "PHASE-18",
+      "weight": 10,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-19",
+      "weight": 8,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-20",
+      "weight": 5,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-21",
+      "weight": 5,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-22",
+      "weight": 6,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-23",
+      "weight": 4,
+      "status": "planned"
+    },
+    {
+      "id": "PHASE-24",
+      "weight": 4,
+      "status": "planned"
     }
   ]
 }

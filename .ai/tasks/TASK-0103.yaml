@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0103",
+  "phase": "PHASE-17",
+  "title": "Implement versioned API layer and OpenAPI client",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0102"
+  ],
+  "objective": "Expose existing modules through /api/v1 with Sanctum auth, OpenAPI 3.1 spec and generated TypeScript client",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Tenant-scoped /api/v1 endpoints reuse existing authorization",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "OpenAPI spec is generated and validated in CI",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Generated client is consumed by tests",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0103 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

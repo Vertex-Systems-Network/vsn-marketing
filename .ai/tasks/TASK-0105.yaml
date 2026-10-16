@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0105",
+  "phase": "PHASE-17",
+  "title": "Implement default roles, role management, invites and signup",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0104"
+  ],
+  "objective": "Ship default roles, role screen, team invites and signup on the existing permission catalog",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Default roles Super Admin, Owner, Admin, Marketer, Viewer exist",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Role and invite screens enforce least privilege",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Adversarial privilege-escalation tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0105 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

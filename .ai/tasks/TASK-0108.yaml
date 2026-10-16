@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0108",
+  "phase": "PHASE-17",
+  "title": "Certify PHASE-17",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0107"
+  ],
+  "objective": "Certify product shell, API and panels",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Certification matrix is complete",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Exact-head and resulting-main gates pass",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "No unsupported production claim",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0108 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

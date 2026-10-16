@@ -1001,6 +1001,436 @@
       "dependencies": [
         "TASK-0099"
       ]
+    },
+    {
+      "id": "TASK-0102",
+      "phase": "PHASE-17",
+      "title": "Research product shell, panels and Next.js/Expo monorepo stack",
+      "weight": 10,
+      "status": "ready",
+      "dependencies": [
+        "TASK-0100"
+      ]
+    },
+    {
+      "id": "TASK-0103",
+      "phase": "PHASE-17",
+      "title": "Implement versioned API layer and OpenAPI client",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0102"
+      ]
+    },
+    {
+      "id": "TASK-0104",
+      "phase": "PHASE-17",
+      "title": "Implement Next.js app shell and design system in monorepo",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0103"
+      ]
+    },
+    {
+      "id": "TASK-0105",
+      "phase": "PHASE-17",
+      "title": "Implement default roles, role management, invites and signup",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0104"
+      ]
+    },
+    {
+      "id": "TASK-0106",
+      "phase": "PHASE-17",
+      "title": "Implement Super Admin, Buyer and Seller panels",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0105"
+      ]
+    },
+    {
+      "id": "TASK-0107",
+      "phase": "PHASE-17",
+      "title": "Fix developer runtime and add demo seeder",
+      "weight": 5,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0106"
+      ]
+    },
+    {
+      "id": "TASK-0108",
+      "phase": "PHASE-17",
+      "title": "Certify PHASE-17",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0107"
+      ]
+    },
+    {
+      "id": "TASK-0109",
+      "phase": "PHASE-18",
+      "title": "Research email providers, limits, tracking and competitor email builders",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0108"
+      ]
+    },
+    {
+      "id": "TASK-0110",
+      "phase": "PHASE-18",
+      "title": "Implement live email provider connections, limits and failover",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0109"
+      ]
+    },
+    {
+      "id": "TASK-0111",
+      "phase": "PHASE-18",
+      "title": "Implement contacts and lists UI with health analysis",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0110"
+      ]
+    },
+    {
+      "id": "TASK-0112",
+      "phase": "PHASE-18",
+      "title": "Implement template studio and provider template import",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0111"
+      ]
+    },
+    {
+      "id": "TASK-0113",
+      "phase": "PHASE-18",
+      "title": "Implement campaign wizard and sending",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0112"
+      ]
+    },
+    {
+      "id": "TASK-0114",
+      "phase": "PHASE-18",
+      "title": "Implement email engagement tracking",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0113"
+      ]
+    },
+    {
+      "id": "TASK-0115",
+      "phase": "PHASE-18",
+      "title": "Implement email analytics, automation, A/B and deliverability screens",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0114"
+      ]
+    },
+    {
+      "id": "TASK-0116",
+      "phase": "PHASE-18",
+      "title": "Certify PHASE-18",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0115"
+      ]
+    },
+    {
+      "id": "TASK-0117",
+      "phase": "PHASE-19",
+      "title": "Research social network APIs, policies and competitor schedulers",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0116"
+      ]
+    },
+    {
+      "id": "TASK-0118",
+      "phase": "PHASE-19",
+      "title": "Implement social account connections",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0117"
+      ]
+    },
+    {
+      "id": "TASK-0119",
+      "phase": "PHASE-19",
+      "title": "Implement composer, calendar, scheduling and approvals",
+      "weight": 25,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0118"
+      ]
+    },
+    {
+      "id": "TASK-0120",
+      "phase": "PHASE-19",
+      "title": "Implement AI post assistant and duplicate detection",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0119"
+      ]
+    },
+    {
+      "id": "TASK-0121",
+      "phase": "PHASE-19",
+      "title": "Implement social account data controls, inbox and performance sync",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0120"
+      ]
+    },
+    {
+      "id": "TASK-0122",
+      "phase": "PHASE-19",
+      "title": "Certify PHASE-19",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0121"
+      ]
+    },
+    {
+      "id": "TASK-0123",
+      "phase": "PHASE-20",
+      "title": "Research OpenAI, Gemini and Claude APIs, pricing and data use",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0122"
+      ]
+    },
+    {
+      "id": "TASK-0124",
+      "phase": "PHASE-20",
+      "title": "Implement live AI provider adapters with BYOK and cost limits",
+      "weight": 35,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0123"
+      ]
+    },
+    {
+      "id": "TASK-0125",
+      "phase": "PHASE-20",
+      "title": "Implement AI writer and assistants",
+      "weight": 35,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0124"
+      ]
+    },
+    {
+      "id": "TASK-0126",
+      "phase": "PHASE-20",
+      "title": "Certify PHASE-20",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0125"
+      ]
+    },
+    {
+      "id": "TASK-0127",
+      "phase": "PHASE-21",
+      "title": "Research ads APIs and boost policies",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0126"
+      ]
+    },
+    {
+      "id": "TASK-0128",
+      "phase": "PHASE-21",
+      "title": "Implement ad accounts and boost-a-post with spend caps",
+      "weight": 40,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0127"
+      ]
+    },
+    {
+      "id": "TASK-0129",
+      "phase": "PHASE-21",
+      "title": "Implement ad results reporting",
+      "weight": 30,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0128"
+      ]
+    },
+    {
+      "id": "TASK-0130",
+      "phase": "PHASE-21",
+      "title": "Certify PHASE-21",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0129"
+      ]
+    },
+    {
+      "id": "TASK-0131",
+      "phase": "PHASE-22",
+      "title": "Research SaaS pricing, Stripe Billing/Connect, tax, reseller and marketplace models",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0130"
+      ]
+    },
+    {
+      "id": "TASK-0132",
+      "phase": "PHASE-22",
+      "title": "Implement plans, limits, trials and invoices",
+      "weight": 25,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0131"
+      ]
+    },
+    {
+      "id": "TASK-0133",
+      "phase": "PHASE-22",
+      "title": "Implement reseller commission and affiliate program",
+      "weight": 20,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0132"
+      ]
+    },
+    {
+      "id": "TASK-0134",
+      "phase": "PHASE-22",
+      "title": "Implement marketplace",
+      "weight": 30,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0133"
+      ]
+    },
+    {
+      "id": "TASK-0135",
+      "phase": "PHASE-22",
+      "title": "Certify PHASE-22",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0134"
+      ]
+    },
+    {
+      "id": "TASK-0136",
+      "phase": "PHASE-23",
+      "title": "Implement reports centre with export and schedules",
+      "weight": 30,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0135"
+      ]
+    },
+    {
+      "id": "TASK-0137",
+      "phase": "PHASE-23",
+      "title": "Implement global search and filters",
+      "weight": 25,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0136"
+      ]
+    },
+    {
+      "id": "TASK-0138",
+      "phase": "PHASE-23",
+      "title": "Run launch QA and deployment runbook",
+      "weight": 30,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0137"
+      ]
+    },
+    {
+      "id": "TASK-0139",
+      "phase": "PHASE-23",
+      "title": "Certify product launch readiness",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0138"
+      ]
+    },
+    {
+      "id": "TASK-0140",
+      "phase": "PHASE-24",
+      "title": "Research Expo, store policies and competitor mobile apps",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0139"
+      ]
+    },
+    {
+      "id": "TASK-0141",
+      "phase": "PHASE-24",
+      "title": "Implement mobile foundation",
+      "weight": 25,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0140"
+      ]
+    },
+    {
+      "id": "TASK-0142",
+      "phase": "PHASE-24",
+      "title": "Implement mobile features",
+      "weight": 30,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0141"
+      ]
+    },
+    {
+      "id": "TASK-0143",
+      "phase": "PHASE-24",
+      "title": "Implement store release pipeline",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0142"
+      ]
+    },
+    {
+      "id": "TASK-0144",
+      "phase": "PHASE-24",
+      "title": "Certify PHASE-24",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0143"
+      ]
     }
   ]
 }

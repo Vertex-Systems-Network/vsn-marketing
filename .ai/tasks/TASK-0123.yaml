@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0123",
+  "phase": "PHASE-20",
+  "title": "Research OpenAI, Gemini and Claude APIs, pricing and data use",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0122"
+  ],
+  "objective": "Verify current model APIs, pricing, data retention and regions",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Research, competitor comparison, data design, data flow, architecture and UI/UX decisions are recorded before engineering",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Data-use and region constraints are recorded",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Selected AI options are confirmed",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0123 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

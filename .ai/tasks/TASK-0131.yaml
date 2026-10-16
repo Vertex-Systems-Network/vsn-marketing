@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0131",
+  "phase": "PHASE-22",
+  "title": "Research SaaS pricing, Stripe Billing/Connect, tax, reseller and marketplace models",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0130"
+  ],
+  "objective": "Verify competitor pricing, Stripe Billing and Connect, tax and marketplace rules",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Research, competitor comparison, data design, data flow, architecture and UI/UX decisions are recorded before engineering",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Pricing bands are proposed from evidence",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Marketplace fee and payout model is recorded",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0131 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

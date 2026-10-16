@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0125",
+  "phase": "PHASE-20",
+  "title": "Implement AI writer and assistants",
+  "weight": 35,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0124"
+  ],
+  "objective": "Email copy, subjects, social posts, rewrite/translate incl. Urdu, brand voice",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Outputs use brand kit",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Human approval before publish",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Red-team tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0125 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0104",
+  "phase": "PHASE-17",
+  "title": "Implement Next.js app shell and design system in monorepo",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0103"
+  ],
+  "objective": "Create pnpm/Turborepo monorepo with Next.js web, shared tokens and shadcn/ui design system, navigation and dashboard",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Monorepo builds web and shared packages in CI",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Light/dark theme, sidebar, topbar and dashboard meet WCAG 2.2 AA",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Playwright E2E covers login and navigation",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0104 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0121",
+  "phase": "PHASE-19",
+  "title": "Implement social account data controls, inbox and performance sync",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0120"
+  ],
+  "objective": "Account data download/update/delete, inbox and post metrics",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Data export and deletion are tenant scoped and audited",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Metrics sync is idempotent",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Privacy tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0121 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

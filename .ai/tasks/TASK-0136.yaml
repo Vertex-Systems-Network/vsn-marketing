@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0136",
+  "phase": "PHASE-23",
+  "title": "Implement reports centre with export and schedules",
+  "weight": 30,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0135"
+  ],
+  "objective": "Cross-channel dashboards, scheduled reports, CSV/PDF export",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Reports are tenant scoped",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Exports are correct",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "E2E passes",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0136 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

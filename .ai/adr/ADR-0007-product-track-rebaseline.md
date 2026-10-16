@@ -1,6 +1,6 @@
 # ADR-0007 — Product track PHASE-17..24 and roadmap rebaseline
 
-Status: **PROPOSED**
+Status: **ACCEPTED** (owner decisions 2026-10-17: Next.js web, Expo Android/iOS, seller = reseller/agency + marketplace + affiliate)
 Date: 2026-10-17
 
 ## Context

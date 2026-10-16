@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0110",
+  "phase": "PHASE-18",
+  "title": "Implement live email provider connections, limits and failover",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0109"
+  ],
+  "objective": "Connect providers with credential vault, connection tests, limit meters and automatic failover",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Each provider connects and sends in sandbox/test mode",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Limits are displayed and enforced",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Failover and credential-isolation tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0110 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

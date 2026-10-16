@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0117",
+  "phase": "PHASE-19",
+  "title": "Research social network APIs, policies and competitor schedulers",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0116"
+  ],
+  "objective": "Verify Meta, LinkedIn, X, TikTok, YouTube, Pinterest APIs, app review and limits",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Research, competitor comparison, data design, data flow, architecture and UI/UX decisions are recorded before engineering",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Platform policies and app-review needs are recorded",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Selected social options are confirmed",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0117 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

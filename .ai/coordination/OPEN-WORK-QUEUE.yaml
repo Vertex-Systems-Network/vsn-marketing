@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "36b7e45d92b4bfff5fb9796cc10f6332dceee125",
+  "reconciled_main_sha": "ec7156963fe0ac01b8df1e6625af2c11ceda6741",
   "active_work_path": {
     "kind": "pr",
-    "number": 593,
-    "title": "Add tech stack and Android/iOS phase to product track",
+    "number": 594,
+    "title": "Add product-track Systems Bank and Options Bank",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0100_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 594,
+      "title": "Add product-track Systems Bank and Options Bank",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0100_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 593,
       "title": "Add tech stack and Android/iOS phase to product track",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0100_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

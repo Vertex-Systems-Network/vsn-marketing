@@ -44,6 +44,8 @@ final class PermissionCatalog
 
     public const IDENTITY_MANAGE = 'identity.manage';
 
+    public const PRIVACY_MANAGE = 'privacy.manage';
+
     public static function all(): array
     {
         return [
@@ -67,6 +69,7 @@ final class PermissionCatalog
             self::BILLING_MANAGE,
             self::AUDIT_EXPORT,
             self::IDENTITY_MANAGE,
+            self::PRIVACY_MANAGE,
         ];
     }
 

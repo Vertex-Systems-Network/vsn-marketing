@@ -78,3 +78,7 @@ This snapshot is diagnostic only; it does not replace the mandatory resume recon
 Only when the continuous batch ends under a proven canonical stop condition, report the durable result, exact canonical resume action, phase/module progress, and overall roadmap progress. For mutating development, do **not** present a next-action menu or ask the user to choose what to do next. Numbered/shuffled options remain limited to URL-only read-only entry or an explicit user request for choices.
 
 A progress/status update, pending CI, an open PR, a checkpoint, a recorded technical blocker, or a failed first repair attempt is not a handoff boundary while execution remains available. Continue through observation, repair, merge, reconciliation, fallback, or independent safe work until a documented stop condition is actually true.
+
+## Next product track (planned, not active)
+
+After PHASE-16, the next roadmap work is the owner's product track PHASE-17..PHASE-23 in `.ai/roadmap/PRODUCT-TRACK-PLAN.md` (ADR-0007 PROPOSED). Every phase runs the AI-native lifecycle: plan → search/research → market and competitor comparison → data design → data flow → architecture → UI/UX design → engineering → QA → finalization. Activation materializes TASK-0102..TASK-0137 and rebaselines phase weights through `tools/ai_txn.py`.

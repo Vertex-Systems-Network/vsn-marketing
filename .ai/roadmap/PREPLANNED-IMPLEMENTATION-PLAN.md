@@ -202,6 +202,10 @@ In response to the explicit VSN Marketing email-tracking product requirement, re
 - **Sequencing:** the baseline PHASE-00..16 task ordering is unchanged. Before activating post-baseline TASK-0101+, perform official research, dependency and approval checks, machine-task materialization and explicit phase/weight rebaseline/ADR where applicable. No numeric progress change or activation is implied by this preplan amendment.
 - **Readiness:** all six features are **planned**, not asserted operational or production-authorized. The track must honor provider-specific support, email privacy protections, data minimization, transparent uncertainty, retention/erasure, secure click redirection, tenant boundaries and adversarial certification.
 
+# Post-baseline product track — PHASE-17..PHASE-23 (planned, not active)
+
+The owner's product requirements R1–R20 (live email providers and tracking, social media management, AI providers, ads/boosting, panels, packages, reports/filters and a premium UI) are planned in [PRODUCT-TRACK-PLAN.md](PRODUCT-TRACK-PLAN.md) with ADR-0007 (PROPOSED). Tasks TASK-0102..TASK-0137 follow the AI-native lifecycle: plan, search/research, market and competitor comparison, data design, data flow, architecture, UI/UX design, engineering, QA and finalization. The email engagement extension above is absorbed into TASK-0113. Activation requires the ADR-0007 rebaseline; no progress change is implied by this entry.
+
 ---
 
 # Explicit audit-to-plan mapping

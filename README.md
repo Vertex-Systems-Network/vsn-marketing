@@ -18,7 +18,7 @@ AI-native, provider-agnostic, permission-based marketing operating system (modul
 Phase 16 [████████████████████] 100.00%
 ```
 
-No successor task is registered after TASK-0100. New work must first be added to the roadmap (see `.ai/state/BLOCKERS.md`).
+No successor task is registered after TASK-0100. The next planned work is the product track PHASE-17..PHASE-23 (panels and premium UI, live email providers and tracking, social media, AI providers, ads, packages, reports) in [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), pending ADR-0007 activation.
 
 ### Phase / module progress
 

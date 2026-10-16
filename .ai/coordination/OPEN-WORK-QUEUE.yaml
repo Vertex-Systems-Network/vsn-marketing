@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "cc0b49f3813e3a7cea0626062cd9277f48c5e06f",
+  "reconciled_main_sha": "36b7e45d92b4bfff5fb9796cc10f6332dceee125",
   "active_work_path": {
     "kind": "pr",
-    "number": 592,
-    "title": "Plan product track PHASE-17..23 from owner requirements",
+    "number": 593,
+    "title": "Add tech stack and Android/iOS phase to product track",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0100_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 593,
+      "title": "Add tech stack and Android/iOS phase to product track",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0100_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 592,
       "title": "Plan product track PHASE-17..23 from owner requirements",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0100_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

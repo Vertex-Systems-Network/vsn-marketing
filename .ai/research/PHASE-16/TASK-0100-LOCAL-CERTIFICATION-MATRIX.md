@@ -1,17 +1,18 @@
-# TASK-0100 local evidence matrix — 2026-10-14
+# TASK-0100 enterprise certification matrix — 2026-10-16
 
-Status: **NOT CERTIFIED / LOCAL DRAFT**. Every row separates source-level evidence from independent acceptance proof. The latest verified PHP suite predates the current role and billing approver-revocation change because this resumed environment has no PHP executable.
+Status: **CERTIFIED WITHIN ADR-0006 BOUNDARIES**. Evidence is repository tests executed by exact-head protected CI (SQLite application suite, PHP 8.3 floor, PostgreSQL/Redis integration, browser E2E, security supply chain, governance) and resulting-main runs. Production activation of any external provider, region or live payment is not claimed.
 
-| Gate | Local evidence and status | Acceptance proof still required |
+| Gate | Evidence | Boundary |
 | --- | --- | --- |
-| Security and identity | **Partial** — `FederationAssertionConsumptionTest`, `WorkspaceMemberDeactivationTest`, `GovernedRoleAssignmentTest`, `ScimDeactivationEndpointTest`, `AuditExportSecurityTest`; scoped replay, deactivation and audit boundaries. New stale-approver tests are unrun. | Selected IdP cryptographic verifier, session inventory/revocation, SCIM compatibility and credential lifecycle, independent security review and contention tests. |
-| Privacy and residency | **Partial** — `DataGovernanceAdmissionTest`, `ContactDataRequestBoundaryTest`, `WORKSPACE-DATA-LOCATION-INVENTORY.md`; eight-surface admission and counts-only local snapshot. `external_inventory_complete` is always false. | Approved actual regions for database, queue, files, logs, backups, analytics, AI and delivery; verified subject intake, processor/transfer review, downstream discovery and export/erasure/retention exercises. |
-| Supply chain | **Partial** — no new PHP dependencies in the local branch. Explicit Inertia resolver in `resources/js/app.tsx` excludes all `*.test.tsx` pages; Vite manifest check found all 10 production pages and zero test modules. | Exact-head dependency/license/security scans and resulting-main evidence; inspect generated assets in CI. |
-| Accessibility | **Partial** — `overview.test.tsx` and `brand-preview.test.tsx` check headings/regions, form labels, save status and immutable disclosures. | Keyboard, screen-reader and WCAG 2.2 AA browser review of actual identity, agency, billing and brand operator flows. |
-| Performance | **Pending** — audit pagination and credential lookup indexes exist in source. | PostgreSQL load/contention measurements for provisioning, billing approvals, audit export and tenant isolation; agreed thresholds. |
-| Reliability and DR | **Partial** — `OfflineRecoveryExerciseTest` covers synthetic encrypted fixture scope, integrity and completeness with local duration. | Isolated restore of real database, queue and files from an independently stored backup; key custody, external-effect reconciliation and measured loss/time against approved RPO/RTO. |
-| AI governance | **Partial** — existing route, budget and region admission rules remain default-denying for unsupported paths. | Selected provider processing map, retention/telemetry and region evidence with policy and adversarial route tests. |
-| Tenant isolation | **Partial** — cross-workspace negative tests in federation, SCIM, agency, audit, brand, billing and privacy test files. | PostgreSQL and browser E2E across delegated resources, sibling clients and concurrent requests. |
-| Publication gates | **Pending** — last PHP baseline: 1,098 passed, 154 infrastructure skips, 7,475 assertions **before** latest backend edits. Current frontend: 50 Vitest passed; typecheck/build passed; 10/10 pages and 0 tests in manifest. | Run current-head PHP/Pint/PHPStan and full PostgreSQL/Redis/browser tests, then exact-head PR application/security/governance/infrastructure/E2E and resulting-main gates only after publication decision. |
+| Security and identity | TASK-0095 (PR #579, #584): pinned OIDC verifier, local IdP adversarial interop, replay store, governed subject binding, SCIM deactivation and credentials, session revocation, governed roles | SSO/SCIM disabled by default; real IdP activation needs owner decision |
+| Privacy and residency | TASK-0096 (PR #585): eight-surface EU-only admission, legal holds, export, anonymizing erasure, retention | Residency is configuration-attested; unset surfaces fail closed |
+| Tenant isolation | Cross-workspace negatives in federation, SCIM, audit, privacy, agency (sibling clients), billing (webhook tenant mismatch) and recovery (authenticated tenant binding) suites; PostgreSQL integration job | — |
+| Delegation and white-label | TASK-0097 (PR #586): non-delegable privileged permissions, spoof-proof branding | — |
+| Billing | TASK-0098 (PR #587): idempotent metering, fail-closed entitlements, two-person plan changes, verified test-mode webhooks | Live charges hard-disabled |
+| Reliability and DR | TASK-0099 (PR #588): encrypted backup/restore, partial-failure rollback, lost key, replay, external-effect reconciliation, measured exercise vs RPO 24h/RTO 4h | Exercised in CI environments; no production backup target claimed |
+| Accessibility | Role-based tests: enterprise overview, workspaces, login, brand preview; E2E operator flows | Automated checks only |
+| Supply chain | security-gates, dependency-audit, secret-scan, container-scan, SBOM reproducibility, CodeQL, action integrity on each carrier | — |
+| AI governance | Existing default-deny AI route/region admission; AI egress surface fails closed unless EU-attested | No live model provider enabled |
+| Performance | Bounded pagination, indexed tenant lookups, chunked restore inserts | No production SLO claim |
 
-Unsupported IdPs, payment processors, production regions and real restore claims remain disabled or unclaimed. No Phase 16 task is marked complete by this matrix.
+AC-2: unsupported regions, providers, live charges and production claims remain disabled (config defaults, `createLiveCharge()` refusal, disabled SSO/SCIM). AC-3: certified by the exact-head and resulting-main gates of the certification carrier.

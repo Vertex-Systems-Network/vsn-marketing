@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "b006e6f6dd1bad483100971bce05d70684f4dad2",
+  "reconciled_main_sha": "747dc2e1963d0a5930f942b53784ed1f2081e404",
   "active_work_path": {
     "kind": "pr",
-    "number": 588,
-    "title": "TASK-0099: Encrypted tenant backup, restore and measured recovery",
+    "number": 589,
+    "title": "TASK-0100: Certify Phase 16 enterprise boundaries",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0100_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 589,
+      "title": "TASK-0100: Certify Phase 16 enterprise boundaries",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0100_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 588,
       "title": "TASK-0099: Encrypted tenant backup, restore and measured recovery",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0100_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

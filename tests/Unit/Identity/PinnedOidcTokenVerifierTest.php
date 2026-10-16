@@ -26,15 +26,24 @@ it('validates a pinned signed token and fails closed on altered identity and key
     expect($check($token)['replayId'])->toBe(hash('sha256', $token));
     expect(fn () => $check($token, openssl_pkey_get_details($other)['key']))->toThrow(AuthorizationException::class);
     expect(fn () => $check($token, $public, 'different'))->toThrow(AuthorizationException::class);
-    expect(fn () => $check(substr($token, 0, -1).'A'))->toThrow(AuthorizationException::class);
+    [$encodedHeader, $encodedClaims, $encodedSignature] = explode('.', $token);
+    $tamperedSignature = ($encodedSignature[0] === 'A' ? 'B' : 'A').substr($encodedSignature, 1);
+    expect(fn () => $check($encodedHeader.'.'.$encodedClaims.'.'.$tamperedSignature))->toThrow(AuthorizationException::class);
     foreach ([['alg' => 'none'], ['alg' => 'HS256'], ['alg' => 'RS256', 'jku' => 'https://evil.test/key'],
         ['alg' => 'RS256', 'x5u' => 'https://evil.test/key'], ['alg' => 'RS256', 'kid' => 'attacker']] as $badHeader) {
         expect(fn () => $check(signedIdentityToken($badHeader, $claims, $private)))->toThrow(AuthorizationException::class);
     }
     foreach ([['iss' => 'https://other.test'], ['aud' => 'other'], ['sub' => ''], ['iat' => 1051],
-        ['exp' => 1050], ['exp' => 5000], ['aud' => ['client', 'other']], ['nonce' => 'other']] as $change) {
+        ['exp' => 1050], ['exp' => 5000], ['aud' => ['client', 'other']], ['azp' => 'other'],
+        ['azp' => 7], ['nonce' => 'other']] as $change) {
         expect(fn () => $check(signedIdentityToken($header, array_replace($claims, $change), $private)))->toThrow(AuthorizationException::class);
     }
     $multi = array_replace($claims, ['aud' => ['client', 'other'], 'azp' => 'client']);
     expect($check(signedIdentityToken($header, $multi, $private))['audience'])->toBe('client');
+    expect($check(signedIdentityToken($header, array_replace($claims, ['azp' => 'client']), $private))['audience'])->toBe('client');
+    $keyedToken = signedIdentityToken([...$header, 'kid' => 'trusted-key-1'], $claims, $private);
+    expect($verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'trusted-key-1')['subject'])->toBe('stable-subject');
+    expect(fn () => $verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'other-key'))->toThrow(AuthorizationException::class);
+    expect(fn () => $verify->verify($token, 'https://idp.example.test', 'client', 'issued-nonce', $public, 1050, 'trusted-key-1'))->toThrow(AuthorizationException::class);
+    expect(fn () => $verify->verify($keyedToken, 'https://idp.example.test', 'client', 'issued-nonce', openssl_pkey_get_details($other)['key'], 1050, 'trusted-key-1'))->toThrow(AuthorizationException::class);
 });

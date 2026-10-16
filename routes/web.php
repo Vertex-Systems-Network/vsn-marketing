@@ -5,7 +5,9 @@ use App\Modules\AI\Presentation\Http\Controllers\OfflineRedTeamTriageController;
 use App\Modules\Analytics\Presentation\Http\Controllers\AnalyticsOperatorController;
 use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\AuditExportController;
+use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOidcController;
 use App\Modules\Identity\Presentation\Http\Controllers\EnterpriseOverviewController;
+use App\Modules\Identity\Presentation\Http\Controllers\FederationBindingReviewController;
 use App\Modules\Identity\Presentation\Http\Controllers\ProvisioningCredentialController;
 use App\Modules\Identity\Presentation\Http\Controllers\RevokeWorkspaceSessionsController;
 use App\Modules\Identity\Presentation\Http\Controllers\RoleAssignmentReviewController;
@@ -19,6 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 Route::middleware('guest')->get('/auth/login', fn () => Inertia\Inertia::render('auth/login'))->name('login');
+Route::middleware(['guest', 'throttle:login'])->group(function (): void {
+    Route::get('/auth/enterprise/{workspace}/login', [EnterpriseOidcController::class, 'start'])->name('enterprise.oidc.start');
+    Route::get('/auth/enterprise/{workspace}/callback', [EnterpriseOidcController::class, 'callback'])->name('enterprise.oidc.callback');
+});
 Route::middleware(['auth', 'throttle:60,1'])->get('/workspaces', WorkspaceDirectoryController::class)->name('workspaces.directory');
 
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::AUDIT_EXPORT, 'throttle:10,1'])
@@ -29,6 +35,10 @@ Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::
     ->name('workspace.enterprise.overview');
 Route::middleware(['auth', 'tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE, 'throttle:10,1'])
     ->group(function (): void {
+        $bindings = FederationBindingReviewController::class;
+        Route::post('/workspaces/{workspace}/identity/federation-bindings', [$bindings, 'propose']);
+        Route::post('/workspaces/{workspace}/identity/federation-bindings/{proposal}/approve', [$bindings, 'approve']);
+        Route::post('/workspaces/{workspace}/identity/federation-bindings/{proposal}/apply', [$bindings, 'apply']);
         $controller = RoleAssignmentReviewController::class;
         Route::post('/workspaces/{workspace}/identity/role-proposals', [$controller, 'propose']);
         Route::post('/workspaces/{workspace}/identity/role-proposals/{proposal}/approve', [$controller, 'approve']);

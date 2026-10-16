@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 final class PinnedOidcTokenVerifier
 {
     /** @return array{issuer: string, audience: string, subject: string, issuedAt: int, expiresAt: int, replayId: string} */
-    public function verify(string $token, string $issuer, string $clientId, string $nonce, string $publicKeyPem, int $now): array
+    public function verify(string $token, string $issuer, string $clientId, string $nonce, string $publicKeyPem, int $now, ?string $expectedKeyId = null): array
     {
         $deny = static function (): never {
             throw new AuthorizationException('Federation assertion denied.');
@@ -38,7 +38,10 @@ final class PinnedOidcTokenVerifier
             (isset($header->typ) && ! in_array($header->typ, ['JWT', 'application/oidc-id-token'], true)) ||
             property_exists($header, 'jku') || property_exists($header, 'x5u') ||
             property_exists($header, 'jwk') || property_exists($header, 'x5c') ||
-            isset($header->crit) || isset($header->enc) || isset($header->zip) || isset($header->kid)) {
+            isset($header->crit) || isset($header->enc) || isset($header->zip) ||
+            ($expectedKeyId === null ? property_exists($header, 'kid') :
+                ($expectedKeyId === '' || strlen($expectedKeyId) > 255 || ! is_string($header->kid ?? null) ||
+                    ! hash_equals($expectedKeyId, $header->kid)))) {
             $deny();
         }
         $key = openssl_pkey_get_public($publicKeyPem);
@@ -52,7 +55,8 @@ final class PinnedOidcTokenVerifier
             (is_array($aud) && count($aud) > 0 && count($aud) <= 8 && count($aud) === count(array_unique($aud, SORT_REGULAR)) &&
                 count(array_filter($aud, 'is_string')) === count($aud) && in_array($clientId, $aud, true));
         if (! is_string($claims->iss ?? null) || ! hash_equals($issuer, $claims->iss) || ! $audienceMatches ||
-            (is_array($aud) && count($aud) > 1 && (! is_string($claims->azp ?? null) || ! hash_equals($clientId, $claims->azp))) ||
+            (property_exists($claims, 'azp') && (! is_string($claims->azp) || ! hash_equals($clientId, $claims->azp))) ||
+            (is_array($aud) && count($aud) > 1 && ! property_exists($claims, 'azp')) ||
             ! is_string($claims->nonce ?? null) || ! hash_equals($nonce, $claims->nonce) ||
             ! is_string($claims->sub ?? null) || trim($claims->sub) === '' || strlen($claims->sub) > 255 ||
             ! is_int($claims->iat ?? null) || ! is_int($claims->exp ?? null) ||

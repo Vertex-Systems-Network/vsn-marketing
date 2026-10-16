@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "15a113d4399df55bbe1f9178713f38ddd13c8f55",
+  "observed_main_sha": "df40b41216d8d9d48616e82cf1e2b3cec2351656",
   "active_issue": null,
-  "active_pr": 578,
-  "active_branch": "supervisor/task0095-next-20261014",
-  "current_milestone": "TASK-0095-SESSION-REVOCATION",
-  "milestone_status": "IN_PROGRESS",
+  "active_pr": 579,
+  "active_branch": "supervisor/task0095-continuation-20261015",
+  "current_milestone": "TASK-0095-EXTERNAL-INTEROPERABILITY",
+  "milestone_status": "BLOCKED",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Review PR578 exact-head six gates, repair and merge green head; verify resulting main",
+  "exact_next_safe_action": "On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Review PR578 exact-head six gates, repair and merge green head; verify resulting main"
+  "exact_next_action": "On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order."
 }

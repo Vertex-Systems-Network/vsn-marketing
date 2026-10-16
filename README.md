@@ -4,25 +4,25 @@ AI-native, provider-agnostic, permission-based marketing operating system (modul
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=100 phase=100 current_phase=PHASE-16 active_task=TASK-0100 milestone=TASK-0100-CERTIFICATION status=COMPLETE -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=50 phase=0 current_phase=PHASE-17 active_task=TASK-0102 milestone=TASK-0102-RESEARCH status=IN_PROGRESS -->
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the human-readable mirror.
 
-**Overall roadmap progress: 100.00%**<br />
-**Current phase: PHASE-16 — 100.00%**<br />
+**Overall roadmap progress: 50.00%**<br />
+**Current phase: PHASE-17 — 0.00%**<br />
 **Last completed task: TASK-0100**<br />
-**Current milestone: TASK-0100-CERTIFICATION — COMPLETE**
+**Current milestone: TASK-0102-RESEARCH — IN_PROGRESS**
 
 ```text
- Overall  [████████████████████] 100.00%
-Phase 16 [████████████████████] 100.00%
+ Overall  [██████████░░░░░░░░░░] 50.00%
+Phase 17 [░░░░░░░░░░░░░░░░░░░░] 0.00%
 ```
 
-No successor task is registered after TASK-0100. The next planned work is the product track PHASE-17..PHASE-24 (Next.js web + Android/iOS apps, panels, live email providers and tracking, social media, AI providers, ads, packages, reports) in [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), pending ADR-0007 activation.
+The foundation (PHASE-00..16) is complete and now counts as 50% of the roadmap (ADR-0007). The product track PHASE-17..PHASE-24 — Next.js web and Android/iOS apps, panels (Super Admin, Buyer, Seller: reseller/agency, marketplace, affiliate), live email providers and tracking, social media, AI providers, ads, packages and reports — is active: see [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), [Systems Bank](.ai/research/PRODUCT-TRACK/SYSTEMS-BANK.md) and [Options Bank](.ai/research/PRODUCT-TRACK/OPTIONS-BANK.md).
 
 ### Phase / module progress
 
-| Phase | Weight | Main modules / capability | Status | Progress |
+| Phase | Weight (PHASE-00..16 halved by ADR-0007) | Main modules / capability | Status | Progress |
 |---|---:|---|---|---:|
 | PHASE-00 | 4% | Architecture, AI continuity, project governance | ✅ Complete | 100% |
 | PHASE-01 | 7% | Core, Identity, Tenancy, RBAC, Audit, Security foundation, queues/runtime | ✅ Complete | 100% |
@@ -41,6 +41,14 @@ No successor task is registered after TASK-0100. The next planned work is the pr
 | PHASE-14 | 5% | Connector Factory, generated adapter candidates, sandbox/security gates | ✅ TASK-0082–0087 bounded certification complete; production activation remains outside scope | 100% |
 | PHASE-15 | 4% | Bounded autonomous marketing loops, budgets, kill switch, canaries | ✅ TASK-0093 offline phase certification complete; no production authority | 100% |
 | PHASE-16 | 4% | Enterprise identity/governance, Billing, white-label, residency, DR | PRs #579, #584–#589: identity, residency, agency, Stripe test billing, DR and certification within ADR-0006 boundaries — complete | 100% |
+| PHASE-17 | 8% | API layer, Next.js shell, design system, roles, Super Admin/Buyer/Seller panels | 🔄 Active (TASK-0102 research) | 0% |
+| PHASE-18 | 10% | Live email providers, lists, template studio, campaigns, tracking | Planned | 0% |
+| PHASE-19 | 8% | Social accounts, composer, calendar, AI posts, duplicate check | Planned | 0% |
+| PHASE-20 | 5% | ChatGPT, Gemini, Claude live; AI writer | Planned | 0% |
+| PHASE-21 | 5% | Ads and boosting with spend caps | Planned | 0% |
+| PHASE-22 | 6% | Plans, billing, reseller/affiliate, marketplace | Planned | 0% |
+| PHASE-23 | 4% | Reports, search/filters, launch QA | Planned | 0% |
+| PHASE-24 | 4% | Android and iOS apps | Planned | 0% |
 
 
 ### README progress-sync contract

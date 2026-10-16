@@ -24,9 +24,9 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "88189a19c81b4cd70ac8b96a365828064ee3da53",
+  "observed_main_sha": "ee78b3fbd168d2e68df19ece257eacee03c80780",
   "active_issue": null,
-  "active_pr": 595,
+  "active_pr": 596,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
   "current_milestone": "TASK-0102-RESEARCH",
   "milestone_status": "IN_PROGRESS",

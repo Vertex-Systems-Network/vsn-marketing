@@ -15,7 +15,9 @@ final readonly class DataResidencyMap
     {
         $region = DB::table('workspace_data_policies')->where('workspace_id', $workspaceId)->value('region');
 
-        return is_string($region) ? $region : (string) config('residency.default_region');
+        $default = config('residency.default_region');
+
+        return is_string($region) ? $region : (is_string($default) ? $default : null);
     }
 
     /** @return array<string, array{destination: ?string, admitted: bool}> */

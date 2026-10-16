@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "747dc2e1963d0a5930f942b53784ed1f2081e404",
+  "reconciled_main_sha": "af42231fc9818558d6e256e6463e7a1c546a7803",
   "active_work_path": {
     "kind": "pr",
-    "number": 589,
-    "title": "TASK-0100: Certify Phase 16 enterprise boundaries",
+    "number": 590,
+    "title": "chore(deps): consolidate pending GitHub Actions bumps",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0100_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 590,
+      "title": "chore(deps): consolidate pending GitHub Actions bumps",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0100_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 589,
       "title": "TASK-0100: Certify Phase 16 enterprise boundaries",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0100_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

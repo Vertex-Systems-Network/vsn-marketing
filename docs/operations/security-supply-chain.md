@@ -48,9 +48,9 @@ Reviewed action pins introduced by TASK-0014 include:
 | `actions/setup-python` | `5fda3b95a4ea91299a34e894583c3862153e4b97` | v7 |
 | `actions/setup-node` | `249970729cb0ef3589644e2896645e5dc5ba9c38` | v6 |
 | `actions/github-script` | `f28e40c7f34bde8b3046d885e986cb6290c5673b` | v7 |
-| `shivammathur/setup-php` | `f3e473d116dcccaddc5834248c87452386958240` | v2 |
+| `shivammathur/setup-php` | `eb7c497e18156a6bbabfef1d3a82760b9eda3962` | v2 |
 | `github/codeql-action` | `db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28` | v4 |
-| `actions/upload-artifact` | `ea165f8d65b6e75b540449e92b4886f43607fa02` | v4 |
+| `actions/upload-artifact` | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` | v7 |
 | `actions/attest` | `1e69f48acb82d1966a394da916b4c1698aa569d6` | v4 |
 | `ossf/scorecard-action` | `4eaacf0543bb3f2c246792bd56e8cdeffafb205a` | v2.4.3 |
 

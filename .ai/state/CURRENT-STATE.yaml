@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "747dc2e1963d0a5930f942b53784ed1f2081e404",
+  "observed_main_sha": "af42231fc9818558d6e256e6463e7a1c546a7803",
   "active_issue": null,
-  "active_pr": 589,
+  "active_pr": 590,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
   "current_milestone": "TASK-0100-CERTIFICATION",
   "milestone_status": "COMPLETE",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Merge PR589 when green and verify resulting-main Application/Security/Continuity runs",
+  "exact_next_safe_action": "Merge PR590 when green and close superseded Dependabot PRs; register next roadmap work before further implementation",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -49,5 +49,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Merge PR589 when green and verify resulting-main Application/Security/Continuity runs"
+  "exact_next_action": "Merge PR590 when green and close superseded Dependabot PRs; register next roadmap work before further implementation"
 }

@@ -79,6 +79,8 @@ Only when the continuous batch ends under a proven canonical stop condition, rep
 
 A progress/status update, pending CI, an open PR, a checkpoint, a recorded technical blocker, or a failed first repair attempt is not a handoff boundary while execution remains available. Continue through observation, repair, merge, reconciliation, fallback, or independent safe work until a documented stop condition is actually true.
 
-## Next product track (planned, not active)
+## Product track (active)
 
 After PHASE-16, the next roadmap work is the owner's product track PHASE-17..PHASE-24 in `.ai/roadmap/PRODUCT-TRACK-PLAN.md` (ADR-0007 PROPOSED). Tech stack is in section 2 of that plan (Laravel API, Next.js web, React Native + Expo Android/iOS). Every phase runs the AI-native lifecycle: plan → search/research → market and competitor comparison → data design → data flow → architecture → UI/UX design → engineering → QA → finalization. Activation materializes TASK-0102..TASK-0142 and rebaselines phase weights through `tools/ai_txn.py`.
+
+The product track is fully AI-autonomous (no human development, review or approval steps). Agents must follow `.ai/roadmap/PRODUCT-STACK-INSTRUCTIONS.md` and build every screen in `.ai/roadmap/PRODUCT-SCREEN-MAP.md`. Only owner-supplied external accounts, keys, app-review submissions, payment/ad accounts, store accounts and hosting are outside AI authority; they block only their feature.

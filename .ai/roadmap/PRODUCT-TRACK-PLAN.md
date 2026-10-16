@@ -2,7 +2,15 @@
 
 Status: **PLANNED / NOT ACTIVE**. Owner request 2026-10-17 (repository owner, AI-only execution per ADR-0006). Baseline PHASE-00..16 is complete; this track turns the certified backend foundation into the sellable marketing product the owner specified. Activation requires the rebaseline in ADR-0007 (machine task materialization and phase-weight rebaseline). No progress percentage changes until then.
 
-## 0. Research banks
+## 0. AI-native autonomy (owner decision 2026-10-17)
+
+The product track is **fully AI-native**: AI agents plan, research, compare competitors, design data and flows, architect, design UI, engineer, test, review, merge and certify without human development, review or approval steps. AI makes all technical and product decisions inside this plan and records them as ADRs; owner decisions already given (ADR-0006, ADR-0007) are binding defaults. The only owner inputs are things AI cannot legally or physically create: third-party accounts and API keys, platform app-review submissions under the company identity, payment/ad spend accounts, app-store developer accounts, domain and hosting. Missing inputs block only that feature; AI continues with sandboxes/test modes and all other work.
+
+Companion documents:
+- [Stack operating instructions](PRODUCT-STACK-INSTRUCTIONS.md) — versions, runtime, CI and deployment rules so the stack works without breakage.
+- [Screen map](PRODUCT-SCREEN-MAP.md) — landing and public pages, roles, customer dashboard and sub-screens, Super Admin and Seller panels, mobile app screens.
+
+## 0.1 Research banks
 
 - [Systems Bank](../research/PRODUCT-TRACK/SYSTEMS-BANK.md): existing market systems, pricing signals, user complaints and gaps (2026-10-17).
 - [Options Bank](../research/PRODUCT-TRACK/OPTIONS-BANK.md): candidate features with priority, target phase and how VSN differs.

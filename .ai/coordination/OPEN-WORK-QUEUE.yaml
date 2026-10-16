@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "e183f50b2f5f296560b599da5f1a509825af9dd8",
+  "reconciled_main_sha": "b006e6f6dd1bad483100971bce05d70684f4dad2",
   "active_work_path": {
     "kind": "pr",
-    "number": 587,
-    "title": "TASK-0098: Deterministic Stripe test-mode billing and entitlements",
+    "number": 588,
+    "title": "TASK-0099: Encrypted tenant backup, restore and measured recovery",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0099_carrier"
+    "disposition": "active_task0100_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 588,
+      "title": "TASK-0099: Encrypted tenant backup, restore and measured recovery",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0100_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 587,
       "title": "TASK-0098: Deterministic Stripe test-mode billing and entitlements",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0099_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

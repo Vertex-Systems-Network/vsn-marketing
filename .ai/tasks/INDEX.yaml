@@ -987,7 +987,7 @@
       "phase": "PHASE-16",
       "title": "Implement backup, restore and disaster recovery",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0098"
       ]
@@ -997,7 +997,7 @@
       "phase": "PHASE-16",
       "title": "Certify enterprise production readiness",
       "weight": 15,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0099"
       ]

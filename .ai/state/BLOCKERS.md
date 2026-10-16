@@ -1,20 +1,10 @@
 # Blockers
 
-## PHASE-16 — Enterprise acceptance evidence unavailable
+## PHASE-16 — Resolved by owner decision ADR-0006
 
-- Timestamp: `2026-10-14T23:25:00+00:00`
-- Current execution boundary: TASK-0095 remains active. Draft PR #579 contains offline identity hardening; all six required gates passed on checkpoint head `ce99e169cf7808c15338b7c28038fb718d888fad`. Subsequent SCIM payload-bound changes require new exact-head CI. No Phase 16 completion or production-readiness claim is made.
-- TASK-0095 external inputs: select an enterprise IdP and provide a non-production tenant/application, trusted issuer/client configuration, key custody and rotation policy, and authorized test identities. An independently approved subject-linking process and provider interoperability exercise are needed before live SSO/SCIM acceptance. The default-disabled narrow SCIM adapter is not full SCIM support.
-- Downstream Phase 16 inputs: approved actual processing regions and transfer/provider inventory across database, queues, files, logs, backups, analytics, AI and delivery; an approved billing provider and human financial authority before live charges; an isolated backup/restore environment with key custody and human-approved RPO/RTO objectives. These are prerequisites to TASK-0096 through TASK-0100 acceptance, not permission to bypass their dependencies.
-- Safe resume: verify the latest PR #579 exact-head CI, continue TASK-0095 implementation against the selected provider in a non-production environment, complete its adversarial and accessible operator-flow gates, then transition tasks in canonical order. Record measured restore and resulting-main evidence before certifying Phase 16.
-
-### 2026-10-15 Auth0 development tenant update
-
-The operator has created an Auth0 Development tenant and a Regular Web Application for testing. This supplies a candidate non-production application, but its Application URI fields are empty and VSN has no live OIDC callback route. No secret was received or committed. The remaining TASK-0095 acceptance inputs are an exact reachable callback origin, approved test identities and subject-linking decision, trusted key custody/rotation, and a live provider interoperability exercise. Keep SSO disabled and the milestone blocked until these are verified. The original “no selected IdP” wording above is superseded for this test candidate only.
-
-### 2026-10-15 local loopback development update
-
-PR #579 now provides a disabled-by-default OIDC callback route and an explicit loopback HTTP opt-in confined to `APP_ENV=local`, together with an operator runbook at `docs/operations/TASK-0095-LOCAL-AUTH0.md`. Exact-head application, PHP 8.3, PostgreSQL/Redis integration, browser E2E, security and continuity gates passed on `d65a3b9da7663f8bd83eaa7b7ba8097c2c311a37`. The prior assertion that a deployed HTTPS origin is mandatory for development is superseded: an operator-owned local Docker/browser runtime may use an Auth0-registered loopback callback. This execution environment has no PHP or Docker runtime and holds no Auth0 application secret or approved member mapping, so a real Auth0 exchange was not performed. Require a trusted subject-to-member review, locally held secret and pinned signing key, and redacted live interoperability evidence before accepting TASK-0095. Downstream Phase 16 authority/evidence blockers remain.
+- Timestamp: `2026-10-16T00:00:00+00:00`
+- Status: RESOLVED for acceptance purposes. The repository owner explicitly decided (ADR-0006, 2026-10-16) that Phase 16 is executed by AI only: TASK-0095 provider interoperability uses the automated local OIDC IdP test; TASK-0096 residency is EU-only; TASK-0098 billing is Stripe test mode only with live charges disabled; TASK-0099 objectives are RPO 24h / RTO 4h exercised in CI/container environments.
+- Remaining non-blocking boundary: production activation of a real IdP, non-EU regions, Stripe live mode or a production backup target each needs a new owner decision. Acceptance criteria, adversarial tests and exact-head gates are unchanged.
 
 ## TASK-0024 — AC-4 production-representative benchmark evidence and Delivery-owner threshold approval
 

@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Implement enterprise identity and governance",
   "weight": 18,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0094"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Federation and provisioning reject replay, cross-tenant identity confusion and unauthorized privilege changes",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Role, session and administrative controls enforce least privilege with revocation and recoverable audit",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adversarial integration and accessible operator flow tests pass with unsupported providers disabled",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

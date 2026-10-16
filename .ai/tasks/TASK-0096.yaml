@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Implement residency, retention and data subject controls",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0095"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Data map covers database, queue, files, logs, backups and AI/provider egress with fail-closed routing",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Export, deletion, retention and legal-hold precedence are tenant-scoped and auditable",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Cross-region, partial-deletion and hold-conflict adverse tests pass without unsupported compliance claims",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

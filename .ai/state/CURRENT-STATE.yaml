@@ -8,13 +8,13 @@
   "execution": {
     "status": "ready",
     "current_phase": "PHASE-16",
-    "active_task": "TASK-0095",
-    "last_completed_task": "TASK-0094",
-    "next_task": "TASK-0096"
+    "active_task": "TASK-0096",
+    "last_completed_task": "TASK-0095",
+    "next_task": "TASK-0097"
   },
   "progress": {
-    "roadmap_percent": 96.4,
-    "phase_percent": 10.0,
+    "roadmap_percent": 97.12,
+    "phase_percent": 28.0,
     "calculation": "Calculated deterministically from task weights and completed task statuses."
   },
   "quality": {
@@ -31,7 +31,7 @@
   "current_milestone": "TASK-0095-EXTERNAL-INTEROPERABILITY",
   "milestone_status": "BLOCKED",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order.",
+  "exact_next_safe_action": "Complete TASK-0096 acceptance evidence and full gates before advancing to TASK-0097.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order."
+  "exact_next_action": "Complete TASK-0096 acceptance evidence and full gates before advancing to TASK-0097."
 }

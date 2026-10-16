@@ -2,28 +2,30 @@
 
 ## State
 
-- Timestamp: `2026-10-15T19:37:18+00:00`
+- Timestamp: `2026-10-16T16:53:49+00:00`
 - Observed main: `df40b41216d8d9d48616e82cf1e2b3cec2351656`
 - Active issue: `none`
 - Active PR: `579`
 - Active branch: `supervisor/task0095-continuation-20261015`
 - Current milestone: `TASK-0095-EXTERNAL-INTEROPERABILITY`
 - Milestone status: `BLOCKED`
-- Active task: `TASK-0095`
-- Next task: `TASK-0096`
+- Active task: `TASK-0096`
+- Next task: `TASK-0097`
 - Current phase: `PHASE-16`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `e0cb4801f52038c39190563958388e0d2d72abfd2bcf4cca79f52e99fb6c8572`
+- State fingerprint: `c22ec041975ac43b56f389c2ff74bdbd9b8346087f45772166a38ff5d273d2f5`
 
 ## Completed / observed this session
 
-TASK-0095 local-only Auth0 loopback callback opt-in and runbook published on draft PR #579; live interoperability and Phase 16 acceptance remain blocked.
+Completed `TASK-0095` and activated `TASK-0096`.
+
+Transition evidence: ADR-0006 owner decision; PR579 merged green; local IdP adversarial interop test; acceptance matrix .ai/research/PHASE-16/TASK-0095-ACCEPTANCE-MATRIX.md
 
 ## Tests
 
-Exact-head d65a3b9da7663f8bd83eaa7b7ba8097c2c311a37: Application Foundation, PHP 8.3, PostgreSQL/Redis integration, browser E2E, Security Supply Chain, AI Continuity PASS; local PHP/Docker unavailable.
+Identity feature/unit suites, e2e enterprise operator flows, exact-head six protected gates on carrier PR
 
 ## Blockers
 
@@ -31,4 +33,4 @@ Exact-head d65a3b9da7663f8bd83eaa7b7ba8097c2c311a37: Application Foundation, PHP
 
 ## Exact next action
 
-On an operator-owned Docker/browser runtime, register exact loopback callback in Auth0, configure locally held secret and pinned key, approve subject/member pairing, execute and redact live interoperability evidence; then finish TASK-0095 acceptance and subsequent Phase 16 tasks in canonical order.
+Complete TASK-0096 acceptance evidence and full gates before advancing to TASK-0097.

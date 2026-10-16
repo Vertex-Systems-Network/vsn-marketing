@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4b7b5723f2ed208f5ca45be57ccd94405d340786",
+  "reconciled_main_sha": "4207698fd7f1a097f1c5e354eeabc6dc600c775b",
   "active_work_path": {
     "kind": "pr",
-    "number": 584,
-    "title": "TASK-0095: Accept enterprise identity under owner decision ADR-0006",
+    "number": 585,
+    "title": "TASK-0096: EU residency, retention, legal hold and data subject controls",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0096_carrier"
+    "disposition": "active_task0097_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 585,
+      "title": "TASK-0096: EU residency, retention, legal hold and data subject controls",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0097_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 584,
       "title": "TASK-0095: Accept enterprise identity under owner decision ADR-0006",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0096_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
 
 uses(RefreshDatabase::class);
 
@@ -63,7 +64,7 @@ function localIdpScenario(): array
 }
 
 /** Starts a login and returns the callback outcome for an ID token built from the transaction. */
-function localIdpLogin(Workspace $workspace, callable $tokenFor): Illuminate\Testing\TestResponse
+function localIdpLogin(Workspace $workspace, callable $tokenFor): TestResponse
 {
     test()->get('/auth/enterprise/'.$workspace->getKey().'/login')->assertRedirect();
     $transaction = session('enterprise_oidc');

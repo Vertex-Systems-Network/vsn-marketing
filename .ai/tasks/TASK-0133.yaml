@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0133",
+  "phase": "PHASE-22",
+  "title": "Implement reseller commission and affiliate program",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0132"
+  ],
+  "objective": "Reseller/agency white-label billing, commissions and affiliate referral tracking",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Commissions are deterministic and auditable",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Referral attribution is tamper resistant",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0133 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

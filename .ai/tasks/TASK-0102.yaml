@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0102",
+  "phase": "PHASE-17",
+  "title": "Research product shell, panels and Next.js/Expo monorepo stack",
+  "weight": 10,
+  "status": "ready",
+  "dependencies": [
+    "TASK-0100"
+  ],
+  "objective": "Verify current Next.js, shadcn/ui, Expo and Turborepo practices and benchmark competitor dashboards and panels",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Dated research pack cites official docs and competitor dashboards from the Systems Bank",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Stack in PRODUCT-TRACK-PLAN section 2 is confirmed or amended by ADR",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Panel, navigation and design-system scope with data flow is recorded",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0102 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

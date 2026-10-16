@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0130",
+  "phase": "PHASE-21",
+  "title": "Certify PHASE-21",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0129"
+  ],
+  "objective": "Certify ads and boosting",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Certification matrix is complete",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Exact-head and resulting-main gates pass",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Live spend requires owner ad accounts",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0130 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0138",
+  "phase": "PHASE-23",
+  "title": "Run launch QA and deployment runbook",
+  "weight": 30,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0137"
+  ],
+  "objective": "Performance, security, accessibility and visual QA plus production deployment runbook",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Security and accessibility audits pass",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Load tests meet targets",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Runbook is documented",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0138 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

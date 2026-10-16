@@ -75,7 +75,7 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 - TASK-0102A API layer: versioned `/api/v1`, Sanctum auth, OpenAPI spec and generated TypeScript client; existing Inertia screens stay until replaced.
 - TASK-0103 Monorepo + Next.js app shell: Turborepo, shared tokens, shadcn/ui design system, light/dark theme, sidebar/topbar, dashboard, marketing landing pages.
 - TASK-0104 Roles and access: default roles (Super Admin, Owner, Admin, Marketer, Viewer), role-management screen, team invites, signup/login polish.
-- TASK-0105 Panels: Super Admin (tenants, plans, usage, revenue), Customer/Buyer workspace, Seller/Reseller/Agency panel over TASK-0097 delegation.
+- TASK-0105 Panels: Super Admin (tenants, plans, usage, revenue, marketplace moderation), Customer/Buyer workspace, Seller panel (reseller/agency clients, marketplace listings, orders, payouts, affiliate earnings) over TASK-0097 delegation.
 - TASK-0106 Developer runtime: demo seeder (`vsn:demo`), Docker fixes (PostgreSQL 18 volume, MinIO image, single composer install, Vite host).
 - TASK-0107 Certify PHASE-17.
 
@@ -112,7 +112,8 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 ### PHASE-22 — Packages, billing and reseller commerce (R16, R17)
 - TASK-0130 Research: SaaS pricing tiers of competitors, Stripe Billing, tax, reseller models.
 - TASK-0131 Plans and limits (Free/Starter/Pro/Agency), upgrade/downgrade, trials, invoices on the TASK-0098 engine.
-- TASK-0132 Reseller/seller commission and white-label billing.
+- TASK-0132 Reseller/agency commission and white-label billing; affiliate/referral program.
+- TASK-0132A Marketplace: seller onboarding and verification, listings (templates, automation recipes, AI prompt packs, integrations, done-for-you services), reviews/ratings, buyer checkout, seller payouts via Stripe Connect, platform fee, refunds/disputes and moderation.
 - TASK-0133 Certify PHASE-22 (Stripe live only after owner decision).
 
 ### PHASE-23 — Reports, filters and launch (R18, R19, R20)
@@ -134,7 +135,7 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 |---|---|---|
 | Web UI | Next.js frontend over the Laravel API | Owner decision 2026-10-17 |
 | Mobile | React Native + Expo, Android + iOS | Owner decision 2026-10-17 |
-| "Seller panel" meaning | Reseller/agency selling the tool to its clients (not a goods marketplace) | Assumption, confirm |
+| "Seller panel" meaning | All seller models: (1) reseller/agency white-label with client sub-accounts and commission, (2) marketplace where sellers list templates, automation recipes, AI prompt packs, integrations and done-for-you marketing services, buyers purchase and VSN takes a platform fee, (3) affiliate/referral partners | Owner decision 2026-10-17 |
 | Order | PHASE-17 first, then 18 → 24 | Default |
 
 ## 6. Owner-only external inputs (cannot be produced by AI)

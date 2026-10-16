@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0106",
+  "phase": "PHASE-17",
+  "title": "Implement Super Admin, Buyer and Seller panels",
+  "weight": 20,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0105"
+  ],
+  "objective": "Deliver the three panels with tenant isolation, reseller/agency client management and marketplace/affiliate placeholders",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Super Admin sees tenants, plans and usage only with platform permission",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Seller panel manages reseller clients via TASK-0097 delegation",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Cross-tenant and cross-panel isolation tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0106 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

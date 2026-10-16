@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0111",
+  "phase": "PHASE-18",
+  "title": "Implement contacts and lists UI with health analysis",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0110"
+  ],
+  "objective": "CSV import, dedupe, tags, lists and active/bounced/suppressed health screens",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Import is idempotent and tenant scoped",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Health score reflects suppression state",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Accessibility and E2E tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0111 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

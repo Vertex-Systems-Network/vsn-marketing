@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0112",
+  "phase": "PHASE-18",
+  "title": "Implement template studio and provider template import",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0111"
+  ],
+  "objective": "Drag-and-drop editor, own templates, provider template listing/import, preview and test send",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Templates render safely",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Provider templates list and import",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Editor E2E and XSS tests pass",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0112 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

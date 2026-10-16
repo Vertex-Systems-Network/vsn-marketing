@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0132",
+  "phase": "PHASE-22",
+  "title": "Implement plans, limits, trials and invoices",
+  "weight": 25,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0131"
+  ],
+  "objective": "Free/Starter/Pro/Agency plans on the TASK-0098 engine with self-serve upgrade and cancellation",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Limits enforce per plan",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Upgrade/downgrade/cancel are self-serve",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Billing tests pass in test mode",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0132 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

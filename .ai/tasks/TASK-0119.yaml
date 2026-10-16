@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0119",
+  "phase": "PHASE-19",
+  "title": "Implement composer, calendar, scheduling and approvals",
+  "weight": 25,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0118"
+  ],
+  "objective": "Per-network previews, shared calendar with email, queue and approvals",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Scheduling is timezone safe",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Approvals gate publishing",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "E2E passes",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0119 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0116",
+  "phase": "PHASE-18",
+  "title": "Certify PHASE-18",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0115"
+  ],
+  "objective": "Certify live email marketing",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Certification matrix is complete",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Exact-head and resulting-main gates pass",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Live sending requires owner-provided credentials",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0116 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

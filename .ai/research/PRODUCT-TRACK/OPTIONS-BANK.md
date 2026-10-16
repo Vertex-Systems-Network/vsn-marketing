@@ -73,6 +73,9 @@ Built from `SYSTEMS-BANK.md`. Each option: what it is, which market system shows
 | B3 | Reseller / agency white-label panel with client sub-accounts | GoHighLevel | Simpler setup, strict client isolation (TASK-0097) | P1 | 17/22 |
 | B4 | Easy self-serve cancellation and export | Users complain about others | Trust signal | P1 | 22 |
 | B5 | Default roles + custom roles screen | All | 22-permission model already built | P1 | 17 |
+| B6 | Marketplace: templates, automation recipes, AI prompt packs, integrations, done-for-you services | Mailchimp/Canva template galleries, Fiverr-style services, GoHighLevel snapshots | One-click install into the buyer's workspace; ratings; verified sellers | P2 | 22 |
+| B7 | Seller payouts, platform fee, refunds/disputes (Stripe Connect) | Marketplaces generally | Transparent fee, automated payouts | P2 | 22 |
+| B8 | Affiliate / referral program | Most SaaS | Tracked links and payouts in the seller panel | P2 | 22 |
 
 ## 7. Platform and UX
 

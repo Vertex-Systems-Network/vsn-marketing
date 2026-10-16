@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ec7156963fe0ac01b8df1e6625af2c11ceda6741",
+  "reconciled_main_sha": "88189a19c81b4cd70ac8b96a365828064ee3da53",
   "active_work_path": {
     "kind": "pr",
-    "number": 594,
-    "title": "Add product-track Systems Bank and Options Bank",
+    "number": 595,
+    "title": "Activate product track PHASE-17..24 (ADR-0007 accepted)",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0100_carrier"
+    "disposition": "active_task0102_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 595,
+      "title": "Activate product track PHASE-17..24 (ADR-0007 accepted)",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0102_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 594,
       "title": "Add product-track Systems Bank and Options Bank",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0100_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

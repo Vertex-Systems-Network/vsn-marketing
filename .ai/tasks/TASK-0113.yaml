@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0113",
+  "phase": "PHASE-18",
+  "title": "Implement campaign wizard and sending",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0112"
+  ],
+  "objective": "Audience, content, schedule, approval and send through selected provider",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Pre-send checklist enforces consent and limits",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Sends are idempotent",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Campaign E2E passes",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Follow the AI-native lifecycle for TASK-0113 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+}

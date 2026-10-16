@@ -967,7 +967,7 @@
       "phase": "PHASE-16",
       "title": "Implement white-label agency and client hierarchy",
       "weight": 12,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0096"
       ]
@@ -977,7 +977,7 @@
       "phase": "PHASE-16",
       "title": "Implement deterministic billing and entitlements",
       "weight": 15,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0097"
       ]

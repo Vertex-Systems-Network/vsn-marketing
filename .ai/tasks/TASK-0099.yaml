@@ -3,7 +3,7 @@
   "phase": "PHASE-16",
   "title": "Implement backup, restore and disaster recovery",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0098"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Encrypted tenant-separated backup and restore preserve integrity and canonical audit linkage",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Measured recovery exercise records actual data loss and elapsed restore time against approved objectives",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Partial restore, lost key, queue replay and external-effect reconciliation tests pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

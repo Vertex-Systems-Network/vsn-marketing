@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Write Software Requirements Specification (SRS)",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0102"
   ],
@@ -12,27 +12,27 @@
     {
       "id": "AC-1",
       "text": "SRS covers every requirement in PRODUCT-TRACK-PLAN and the screen map with traceable IDs",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Non-functional targets are measurable",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Requirements trace to tasks TASK-0103..TASK-0144",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "All 12 roles from the screen map have a permission matrix",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Multilingual (English and Urdu RTL) requirements are specified",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

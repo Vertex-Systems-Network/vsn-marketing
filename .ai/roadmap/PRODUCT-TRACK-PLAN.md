@@ -121,6 +121,7 @@ Architecture: **one Laravel API backend, three clients** (Next.js web, Android, 
 ## 2.1 Design source (owner decision 2026-10-17)
 
 - **Design workspace:** all new product designs (web dashboards, panels, mobile screens) are created in Figma team `1468195760558609504`, folder `637889245`. Product file: [VSN Marketing — Product App](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN) (variable collection `VSN Tokens`).
+- **Screens:** see `docs/product/DESIGN-INDEX.md`.
 - **Color/token source:** Figma file `JqukmwKhVyObh1SQ6gsKR0` ("VSN Website Redesign — 1920", page `🎨 Design System`). Tokens are copied from that file into the product file and into `packages/ui-tokens`; code never hard-codes hex values and uses token names only.
 
 | Token | Value |

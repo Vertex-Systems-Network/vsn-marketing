@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "ee78b3fbd168d2e68df19ece257eacee03c80780",
+  "observed_main_sha": "1903b024db0cd7facee28a032d07341e4bbb1cf3",
   "active_issue": null,
-  "active_pr": 596,
+  "active_pr": 597,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
   "current_milestone": "TASK-0102-RESEARCH",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Research product shell, panels and Next.js/Expo monorepo stack (TASK-0102) per PRODUCT-TRACK-PLAN, using the Systems and Options Banks.",
+  "exact_next_safe_action": "Research product shell, panels and Next.js/Expo monorepo stack (TASK-0102), then pre-development documents TASK-0145..0148.",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Research product shell, panels and Next.js/Expo monorepo stack (TASK-0102) per PRODUCT-TRACK-PLAN, using the Systems and Options Banks."
+  "exact_next_action": "Research product shell, panels and Next.js/Expo monorepo stack (TASK-0102), then pre-development documents TASK-0145..0148."
 }

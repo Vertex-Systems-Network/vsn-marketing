@@ -1047,7 +1047,7 @@
       "phase": "PHASE-17",
       "title": "Write engineering, QA, security and release guidelines",
       "weight": 10,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0147"
       ]
@@ -1057,7 +1057,7 @@
       "phase": "PHASE-17",
       "title": "Implement versioned API layer and OpenAPI client",
       "weight": 20,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0148"
       ]

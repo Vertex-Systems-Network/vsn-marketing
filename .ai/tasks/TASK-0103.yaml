@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Implement versioned API layer and OpenAPI client",
   "weight": 20,
-  "status": "planned",
+  "status": "ready",
   "dependencies": [
     "TASK-0148"
   ],

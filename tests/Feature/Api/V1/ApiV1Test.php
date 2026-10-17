@@ -160,3 +160,36 @@ it('AC-2 documents every api.v1 route in the OpenAPI document and keeps generate
 
     expect(Artisan::call('vsn:openapi', ['--check' => true]))->toBe(0, Artisan::output());
 });
+
+it('serves tenant-scoped lists, tags, segments and campaigns behind their permissions', function (): void {
+    [$user, $own, $foreign] = apiV1Fixture();
+    $now = now();
+    foreach ([$own, $foreign] as $workspace) {
+        DB::table('contact_lists')->insert(['id' => (string) Str::uuid(), 'workspace_id' => $workspace, 'name' => 'VIP '.$workspace, 'created_at' => $now, 'updated_at' => $now]);
+        DB::table('tags')->insert(['id' => (string) Str::uuid(), 'workspace_id' => $workspace, 'name' => 'vip', 'created_at' => $now, 'updated_at' => $now]);
+    }
+    $this->actingAs($user, 'sanctum')->withHeader('X-Workspace-Id', $own);
+
+    $this->getJson('/api/v1/lists')->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.name', 'VIP '.$own);
+    $this->getJson('/api/v1/tags')->assertOk()->assertJsonCount(1, 'data');
+    $this->getJson('/api/v1/segments')->assertOk()->assertJsonCount(0, 'data');
+    $this->getJson('/api/v1/lists?page[size]=500')->assertStatus(422)->assertJsonPath('code', 'validation_failed');
+
+    // campaign.read and identity.manage are not granted to this marketer role.
+    $this->getJson('/api/v1/campaigns')->assertForbidden();
+    $this->getJson('/api/v1/roles')->assertForbidden();
+});
+
+it('exposes the permission catalog and workspace roles to identity managers', function (): void {
+    [$user, $own] = apiV1Fixture();
+    $roles = app(WorkspaceRoleManager::class);
+    $admin = $roles->createRole($own, 'admin', 'Admin');
+    $roles->grantPermission($admin, PermissionCatalog::IDENTITY_MANAGE);
+    $membership = DB::table('workspace_memberships')->where('workspace_id', $own)->where('user_id', $user->getKey())->value('id');
+    $roles->assignRole((string) $membership, $admin);
+
+    $this->actingAs($user, 'sanctum')->getJson('/api/v1/permissions')
+        ->assertOk()->assertJsonFragment([PermissionCatalog::CONTACT_READ]);
+    $this->withHeader('X-Workspace-Id', $own)->getJson('/api/v1/roles')
+        ->assertOk()->assertJsonCount(2, 'data')->assertJsonPath('data.0.key', 'admin');
+});

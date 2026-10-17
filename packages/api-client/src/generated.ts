@@ -17,6 +17,20 @@ export type WorkspaceList = { data: Workspace[] };
 
 export type Contact = { id: string; brand_id?: string | null; company_id?: string | null; first_name?: string | null; last_name?: string | null; display_name?: string | null; created_at?: string | null; updated_at?: string | null };
 
+export type NamedItem = { id: string; name: string; created_at?: string | null; updated_at?: string | null };
+
+export type NamedItemList = { data: NamedItem[]; meta: { next_cursor?: string | null } };
+
+export type StatusItem = { id: string; name: string; status: string; created_at?: string | null; updated_at?: string | null };
+
+export type StatusItemList = { data: StatusItem[]; meta: { next_cursor?: string | null } };
+
+export type PermissionList = { data: string[] };
+
+export type Role = { id: string; key: string; name: string; permissions: string[] };
+
+export type RoleList = { data: Role[] };
+
 export type ContactResponse = { data: Contact };
 
 export type ContactList = { data: Contact[]; meta: { next_cursor?: string | null } };
@@ -54,6 +68,12 @@ export function createClient(options: ClientOptions = {}) {
   }
 
   return {
+    listContactLists: (query: { "page[size]"?: number; "page[cursor]"?: string; "filter[search]"?: string } = {}) => request<NamedItemList>('GET', `/lists`, query, undefined),
+    listTags: (query: { "page[size]"?: number; "page[cursor]"?: string; "filter[search]"?: string } = {}) => request<NamedItemList>('GET', `/tags`, query, undefined),
+    listSegments: (query: { "page[size]"?: number; "page[cursor]"?: string; "filter[search]"?: string } = {}) => request<StatusItemList>('GET', `/segments`, query, undefined),
+    listCampaigns: (query: { "page[size]"?: number; "page[cursor]"?: string; "filter[search]"?: string } = {}) => request<StatusItemList>('GET', `/campaigns`, query, undefined),
+    listPermissions: () => request<PermissionList>('GET', `/permissions`, undefined, undefined),
+    listRoles: () => request<RoleList>('GET', `/roles`, undefined, undefined),
     createAccessToken: (body: TokenRequest) => request<Token>('POST', `/auth/tokens`, undefined, body),
     revokeCurrentAccessToken: () => request<void>('DELETE', `/auth/tokens/current`, undefined, undefined),
     getMe: () => request<MeResponse>('GET', `/me`, undefined, undefined),

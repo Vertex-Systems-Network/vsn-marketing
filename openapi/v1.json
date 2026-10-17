@@ -19,6 +19,307 @@
         }
     ],
     "paths": {
+        "/lists": {
+            "get": {
+                "operationId": "listContactLists",
+                "tags": [
+                    "audience"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    },
+                    {
+                        "name": "page[size]",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    {
+                        "name": "page[cursor]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[search]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 120
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NamedItemList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/tags": {
+            "get": {
+                "operationId": "listTags",
+                "tags": [
+                    "audience"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    },
+                    {
+                        "name": "page[size]",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    {
+                        "name": "page[cursor]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[search]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 120
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NamedItemList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/segments": {
+            "get": {
+                "operationId": "listSegments",
+                "tags": [
+                    "audience"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    },
+                    {
+                        "name": "page[size]",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    {
+                        "name": "page[cursor]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[search]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 120
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusItemList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/campaigns": {
+            "get": {
+                "operationId": "listCampaigns",
+                "tags": [
+                    "email"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    },
+                    {
+                        "name": "page[size]",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    {
+                        "name": "page[cursor]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[search]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 120
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusItemList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/permissions": {
+            "get": {
+                "operationId": "listPermissions",
+                "tags": [
+                    "identity"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PermissionList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/roles": {
+            "get": {
+                "operationId": "listRoles",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RoleList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
         "/auth/tokens": {
             "post": {
                 "operationId": "createAccessToken",
@@ -463,6 +764,170 @@
                             "string",
                             "null"
                         ]
+                    }
+                }
+            },
+            "NamedItem": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
+            "NamedItemList": {
+                "type": "object",
+                "required": [
+                    "data",
+                    "meta"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NamedItem"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "next_cursor": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "StatusItem": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
+            "StatusItemList": {
+                "type": "object",
+                "required": [
+                    "data",
+                    "meta"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StatusItem"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "next_cursor": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "PermissionList": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Role": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "key",
+                    "name",
+                    "permissions"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "RoleList": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Role"
+                        }
                     }
                 }
             },

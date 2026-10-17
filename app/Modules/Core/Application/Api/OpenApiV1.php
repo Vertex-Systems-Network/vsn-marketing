@@ -43,7 +43,33 @@ final class OpenApiV1
     {
         $tenant = [['$ref' => '#/components/parameters/WorkspaceId'], ['$ref' => '#/components/parameters/BrandId']];
 
+        $list = fn (string $id, string $tag, string $schema): array => ['get' => [
+            'operationId' => $id,
+            'tags' => [$tag],
+            'parameters' => array_merge($tenant, self::pageParameters()),
+            'responses' => self::responses(200, $schema, [401, 403, 422]),
+        ]];
+
         return [
+            '/lists' => $list('listContactLists', 'audience', 'NamedItemList'),
+            '/tags' => $list('listTags', 'audience', 'NamedItemList'),
+            '/segments' => $list('listSegments', 'audience', 'StatusItemList'),
+            '/campaigns' => $list('listCampaigns', 'email', 'StatusItemList'),
+            '/permissions' => [
+                'get' => [
+                    'operationId' => 'listPermissions',
+                    'tags' => ['identity'],
+                    'responses' => self::responses(200, 'PermissionList', [401]),
+                ],
+            ],
+            '/roles' => [
+                'get' => [
+                    'operationId' => 'listRoles',
+                    'tags' => ['identity'],
+                    'parameters' => $tenant,
+                    'responses' => self::responses(200, 'RoleList', [401, 403]),
+                ],
+            ],
             '/auth/tokens' => [
                 'post' => [
                     'operationId' => 'createAccessToken',
@@ -78,11 +104,7 @@ final class OpenApiV1
                 'get' => [
                     'operationId' => 'listContacts',
                     'tags' => ['audience'],
-                    'parameters' => array_merge($tenant, [
-                        ['name' => 'page[size]', 'in' => 'query', 'schema' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100]],
-                        ['name' => 'page[cursor]', 'in' => 'query', 'schema' => ['type' => 'string']],
-                        ['name' => 'filter[search]', 'in' => 'query', 'schema' => ['type' => 'string', 'maxLength' => 120]],
-                    ]),
+                    'parameters' => array_merge($tenant, self::pageParameters()),
                     'responses' => self::responses(200, 'ContactList', [401, 403, 422]),
                 ],
             ],
@@ -96,6 +118,16 @@ final class OpenApiV1
                     'responses' => self::responses(200, 'ContactResponse', [401, 403, 404]),
                 ],
             ],
+        ];
+    }
+
+    /** @return list<array<string, mixed>> */
+    private static function pageParameters(): array
+    {
+        return [
+            ['name' => 'page[size]', 'in' => 'query', 'schema' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100]],
+            ['name' => 'page[cursor]', 'in' => 'query', 'schema' => ['type' => 'string']],
+            ['name' => 'filter[search]', 'in' => 'query', 'schema' => ['type' => 'string', 'maxLength' => 120]],
         ];
     }
 
@@ -188,14 +220,39 @@ final class OpenApiV1
                     'updated_at' => $nullableString,
                 ],
             ],
-            'ContactResponse' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['$ref' => '#/components/schemas/Contact']]],
-            'ContactList' => [
+            'NamedItem' => [
                 'type' => 'object',
-                'required' => ['data', 'meta'],
-                'properties' => [
-                    'data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/Contact']],
-                    'meta' => ['type' => 'object', 'properties' => ['next_cursor' => $nullableString]],
-                ],
+                'required' => ['id', 'name'],
+                'properties' => ['id' => ['type' => 'string'], 'name' => ['type' => 'string'], 'created_at' => $nullableString, 'updated_at' => $nullableString],
+            ],
+            'NamedItemList' => self::page('NamedItem'),
+            'StatusItem' => [
+                'type' => 'object',
+                'required' => ['id', 'name', 'status'],
+                'properties' => ['id' => ['type' => 'string'], 'name' => ['type' => 'string'], 'status' => ['type' => 'string'], 'created_at' => $nullableString, 'updated_at' => $nullableString],
+            ],
+            'StatusItemList' => self::page('StatusItem'),
+            'PermissionList' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'array', 'items' => ['type' => 'string']]]],
+            'Role' => [
+                'type' => 'object',
+                'required' => ['id', 'key', 'name', 'permissions'],
+                'properties' => ['id' => ['type' => 'string'], 'key' => ['type' => 'string'], 'name' => ['type' => 'string'], 'permissions' => ['type' => 'array', 'items' => ['type' => 'string']]],
+            ],
+            'RoleList' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/Role']]]],
+            'ContactResponse' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['$ref' => '#/components/schemas/Contact']]],
+            'ContactList' => self::page('Contact'),
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    private static function page(string $item): array
+    {
+        return [
+            'type' => 'object',
+            'required' => ['data', 'meta'],
+            'properties' => [
+                'data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/'.$item]],
+                'meta' => ['type' => 'object', 'properties' => ['next_cursor' => ['type' => ['string', 'null']]]],
             ],
         ];
     }

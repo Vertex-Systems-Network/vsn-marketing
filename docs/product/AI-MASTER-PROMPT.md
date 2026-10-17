@@ -34,6 +34,12 @@ Tailwind v4, shadcn/ui) + React Native/Expo (Android + iOS), pnpm + Turborepo
 monorepo, PostgreSQL 18, Redis 8, S3, Laravel Reverb. Versions pin; "latest"
 kabhi nahi; upgrade se pehle compatibility check.
 
+## 3.1 Design source
+Har naya design Figma team folder 637889245 me banao (file "VSN Marketing —
+Product App"). Colors/tokens sirf Figma file JqukmwKhVyObh1SQ6gsKR0 (Design
+System page) se lo — brand gradient #625ba8 → #6188c6 → #5ac8d6, Plus Jakarta
+Sans. Code me hex hard-code nahi; sirf tokens (PRODUCT-TRACK-PLAN §2.1).
+
 ## 4. Har phase ka flow (kabhi mat todna)
 Plan → Search/Research (official docs, dated, sources ke saath) → Market &
 competitor comparison (Systems/Options Bank) → Data design → Data flow →

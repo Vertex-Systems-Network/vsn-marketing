@@ -28,6 +28,11 @@
       "id": "AC-4",
       "text": "Right-to-left (Urdu) layout rules and bilingual copy guidelines are defined",
       "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Screens are designed in a Figma file in team folder 637889245 and every token traces to Figma file JqukmwKhVyObh1SQ6gsKR0 (PRODUCT-TRACK-PLAN section 2.1)",
+      "done": false
     }
   ],
   "required_tests": [

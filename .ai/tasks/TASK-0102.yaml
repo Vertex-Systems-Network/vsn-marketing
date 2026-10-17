@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Research product shell, panels and Next.js/Expo monorepo stack",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0100"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Dated research pack cites official docs and competitor dashboards from the Systems Bank",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Stack in PRODUCT-TRACK-PLAN section 2 is confirmed or amended by ADR",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Panel, navigation and design-system scope with data flow is recorded",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

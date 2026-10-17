@@ -18,6 +18,26 @@ packages/api-client (generated from OpenAPI)   packages/ui-tokens   packages/val
 - Shared packages contain no framework-specific code except where named.
 - The API client is regenerated from `openapi.yaml` on every API change; a stale client fails **[CI]**.
 
+## 2.1 Design source and tokens (owner decision 2026-10-17)
+
+- **Design workspace:** all new product designs (web dashboards, panels, mobile screens) are created in Figma team `1468195760558609504`, folder `637889245`. Product file: [VSN Marketing — Product App](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN) (variable collection `VSN Tokens`).
+- **Color/token source:** Figma file `JqukmwKhVyObh1SQ6gsKR0` ("VSN Website Redesign — 1920", page `🎨 Design System`). Tokens are copied from that file into the product file and into `packages/ui-tokens`; code never hard-codes hex values and uses token names only.
+
+| Token | Value |
+|---|---|
+| brand gradient | `#625ba8` → `#6188c6` (55%) → `#5ac8d6` |
+| gradient hover / pressed | `#544d96/#5277b4/#47b5c3` / `#47418a/#4a6ba3/#3e9fad` |
+| brand/white, brand/ink, brand/ink-2 | `#ffffff`, `#000000`, `#3f4245` |
+| text/muted | `#7e8083` |
+| surface/cloud, surface/field, surface/night | `#ebedf4`, `#f4f5f9`, `#1a1c20` |
+| line/light | `#e2e4eb` |
+| state/error | `#d14b5a` |
+| focus | 3px `#5ac8d6` (buttons); inputs 1.5px `#625ba8` + 4px ring `rgba(98,91,168,.18)` |
+| disabled | opacity .38 (buttons), .55 (fields) |
+| font | Plus Jakarta Sans (600 labels, 400 body), line-height 1.2 |
+| radius | pill 999px; field 14px |
+| button sizes | heights 58/48/40, label 16/15/14 |
+
 ## 3. Local runtime (must work on Windows, macOS, Linux)
 
 - `docker compose up -d` brings up postgres, redis, object storage, app, horizon, scheduler and web with no manual edits.

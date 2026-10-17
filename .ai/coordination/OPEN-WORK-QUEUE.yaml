@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "1704749e04c67f7f4f6278a7ecbf3d2a445d59a6",
+  "reconciled_main_sha": "b4a466938e4533ea0844a276dfbc465bdbb8322a",
   "active_work_path": {
     "kind": "pr",
-    "number": 600,
-    "title": "TASK-0102: shell research pack + Figma design-source rule and tokens",
+    "number": 601,
+    "title": "Design index: first Figma screen pass",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0145_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 601,
+      "title": "Design index: first Figma screen pass",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0145_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 600,
       "title": "TASK-0102: shell research pack + Figma design-source rule and tokens",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0145_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

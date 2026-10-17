@@ -5,7 +5,7 @@
   "weight": 20,
   "status": "planned",
   "dependencies": [
-    "TASK-0102"
+    "TASK-0148"
   ],
   "objective": "Expose existing modules through /api/v1 with Sanctum auth, OpenAPI 3.1 spec and generated TypeScript client",
   "acceptance_criteria": [

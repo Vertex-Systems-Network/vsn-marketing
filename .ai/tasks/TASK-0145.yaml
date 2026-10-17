@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0145",
+  "phase": "PHASE-17",
+  "title": "Write Software Requirements Specification (SRS)",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0102"
+  ],
+  "objective": "IEEE 29148-style SRS for the product track: scope, personas/roles, functional requirements R1-R21 with IDs, non-functional requirements (security, privacy, performance, accessibility, availability), external interfaces, constraints and acceptance criteria",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "SRS covers every requirement in PRODUCT-TRACK-PLAN and the screen map with traceable IDs",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Non-functional targets are measurable",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "Requirements trace to tasks TASK-0103..TASK-0144",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0145 per PRODUCT-TRACK-PLAN pre-development and execution rules."
+}

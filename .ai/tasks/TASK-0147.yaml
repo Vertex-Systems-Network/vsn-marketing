@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0147",
+  "phase": "PHASE-17",
+  "title": "Write UI/UX guidelines and screen specifications",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0146"
+  ],
+  "objective": "Design principles, tokens, component inventory, layout/navigation, accessibility rules, content tone (English and Urdu), and per-screen specs with states for every screen in PRODUCT-SCREEN-MAP",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Every screen in the screen map has a spec with states",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Design tokens and component list are defined",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "WCAG 2.2 AA rules are documented",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0147 per PRODUCT-TRACK-PLAN pre-development and execution rules."
+}

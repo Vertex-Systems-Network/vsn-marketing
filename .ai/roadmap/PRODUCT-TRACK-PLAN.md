@@ -10,7 +10,52 @@ Companion documents:
 - [Stack operating instructions](PRODUCT-STACK-INSTRUCTIONS.md) — versions, runtime, CI and deployment rules so the stack works without breakage.
 - [Screen map](PRODUCT-SCREEN-MAP.md) — landing and public pages, roles, customer dashboard and sub-screens, Super Admin and Seller panels, mobile app screens.
 
-## 0.1 Research banks
+## 0.2 Pre-development stage (before any product code)
+
+PHASE-17 starts with a mandatory pre-development stage. No product code task (TASK-0103 onward) may start until these are merged:
+
+| Task | Output |
+|---|---|
+| TASK-0102 | Research pack: stack, panels, competitor dashboards (uses Systems/Options Banks) |
+| TASK-0145 | **SRS** — requirements R1–R21 with IDs, roles, functional and measurable non-functional requirements, interfaces, acceptance criteria, traceability to tasks |
+| TASK-0146 | **Architecture docs** — context/container diagrams, ERD, data-flow and sequence diagrams, `/api/v1` design, integration catalogue, ADRs |
+| TASK-0147 | **UI/UX guidelines and screen specs** — tokens, components, navigation, accessibility, English/Urdu tone, spec for every screen in the screen map |
+| TASK-0148 | **Engineering, QA, security and release guidelines** — coding standards, Definition of Done, test strategy, security/privacy checklist, release/rollback, demo-data rules |
+
+Documents live under `docs/product/` (SRS, architecture, ux, guidelines) and are updated whenever later work changes them.
+
+## 0.3 Demo system
+
+TASK-0149 builds a full demo system: sandbox providers that never send, post, charge or spend; dummy data for every module and screen (contacts, lists, templates, campaigns with stats, social calendar and posts, AI drafts, analytics, plans, marketplace listings, reseller clients); demo users for every role; one-click reset; public "Try demo" login on the landing page. Every later phase extends the demo data for its new screens, and the demo is part of each phase certification.
+
+## 0.4 Non-stop execution policy (AI flow fixes)
+
+The product track runs continuously without asking the owner for routine consent. Agents merge green work, start the next dependency-ready task and only stop when all remaining work needs an owner-only external input.
+
+Issues seen in earlier AI flow and their fixes:
+
+| Issue seen | Fix (binding rule) |
+|---|---|
+| Every merge needed an extra checkpoint commit (observed-main drift), doubling CI runs | Open the PR first, then add exactly one checkpoint commit; never push state-only follow-up PRs |
+| One small PR per change consumed many CI runs | Bundle a full task (or several small docs tasks) per PR; docs-only PRs use lightweight control CI |
+| README progress marker went stale and failed governance | Run `python tools/readme_progress_sync.py` after every state change, before commit |
+| Journal append failed at size limit mid-transition | Run `python tools/ai_journal.py compact` before each transition when the journal is near its limit |
+| Stale blocker text (TASK-0024) contradicted completed state | When a task completes, reconcile `BLOCKERS.md` and related docs in the same PR |
+| Scheduled supervisor ran every 5 minutes (≈288 runner jobs/day) | Reduced to every 6 hours; PR/issue events still trigger it |
+| CI flake (Docker daemon timeout) | One re-run of failed jobs only; a second failure is treated as real |
+| Local environment could not install PHP packages | Rely on CI as the test runner; never claim local test runs that did not happen |
+| Asking the owner "continue/merge?" between tasks | Forbidden; continue automatically (AGENTS.md continuous mode) |
+
+## 0.5 GitHub runner budget
+
+- Verify locally first (validators, lint, PHP syntax, TypeScript) before pushing; push once per meaningful slice.
+- Workflows keep `concurrency: cancel-in-progress` so superseded runs stop.
+- Docs/plan-only PRs: lightweight control CI only (no `CI-Mode: full`) unless a certification requires full gates.
+- Full application + security CI on code PRs and phase certifications only.
+- Heavy jobs (benchmarks, mobile EAS builds, load tests) run only at phase certification or on manual dispatch.
+- Scheduled workflows are kept to the minimum frequency that still serves their purpose.
+
+## 0.6 Research banks
 
 - [Systems Bank](../research/PRODUCT-TRACK/SYSTEMS-BANK.md): existing market systems, pricing signals, user complaints and gaps (2026-10-17).
 - [Options Bank](../research/PRODUCT-TRACK/OPTIONS-BANK.md): candidate features with priority, target phase and how VSN differs.

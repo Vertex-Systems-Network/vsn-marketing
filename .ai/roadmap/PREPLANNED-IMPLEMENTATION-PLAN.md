@@ -204,7 +204,7 @@ In response to the explicit VSN Marketing email-tracking product requirement, re
 
 # Post-baseline product track — PHASE-17..PHASE-24 (planned, not active)
 
-The owner's product requirements R1–R21 (Next.js web, Android/iOS apps, live email providers and tracking, social media management, AI providers, ads/boosting, panels, packages, reports/filters and a premium UI) are planned in [PRODUCT-TRACK-PLAN.md](PRODUCT-TRACK-PLAN.md) with ADR-0007 (PROPOSED). Tasks TASK-0102..TASK-0142 follow the AI-native lifecycle: plan, search/research, market and competitor comparison, data design, data flow, architecture, UI/UX design, engineering, QA and finalization. The email engagement extension above is absorbed into TASK-0113. Activation requires the ADR-0007 rebaseline; no progress change is implied by this entry.
+The owner's product requirements R1–R21 (Next.js web, Android/iOS apps, live email providers and tracking, social media management, AI providers, ads/boosting, panels, packages, reports/filters and a premium UI) are planned in [PRODUCT-TRACK-PLAN.md](PRODUCT-TRACK-PLAN.md) with ADR-0007 (ACCEPTED 2026-10-17). Tasks TASK-0102..TASK-0142 follow the AI-native lifecycle: plan, search/research, market and competitor comparison, data design, data flow, architecture, UI/UX design, engineering, QA and finalization. The email engagement extension above is absorbed into TASK-0113. ADR-0007 is accepted and PHASE-17 is active; the rebaseline is applied.
 
 ---
 

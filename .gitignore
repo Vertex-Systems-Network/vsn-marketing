@@ -13,3 +13,6 @@
 npm-debug.log*
 yarn-error.log*
 .DS_Store
+
+# Claude Code Stop-hook session counters
+.claude/.continue-*

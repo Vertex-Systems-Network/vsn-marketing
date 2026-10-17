@@ -189,3 +189,12 @@ This is a permission-based marketing platform. Never design mechanisms whose pur
 Before every user-facing development handoff, read and follow `.ai/NEXT-ACTION-OPTIONS.md`.
 
 If the user sends only this repository's GitHub URL, perform the policy's read-only bootstrap and return shuffled numbered next-action options. A URL-only message never authorizes a repository mutation. A later numeric selection must revalidate live repository state before acting.
+
+## Non-stop enforcement for every AI agent
+
+The continuous-batch rules above apply identically to Claude, ChatGPT/Codex, Gemini and any other agent. They are enforced mechanically, not only by instruction:
+
+- **Before ending any turn**, run `python tools/ai_continue.py`. Exit code `0` means a ready, unblocked canonical task remains: do not end the turn, do not ask for confirmation; execute the printed instruction. Exit code `3` means a documented stop condition holds and a final handoff is allowed.
+- **Claude Code**: `.claude/settings.json` registers a Stop hook (`.claude/hooks/continue_batch.py`) that blocks ending the turn while `ai_continue.py` returns `0` (bounded by `AI_MAX_CONTINUATIONS`, default 40; `AI_ALLOW_STOP=1` disables it), plus a permission allowlist for routine repository commands.
+- **Any agent CLI (Codex/ChatGPT, Claude, Gemini…)**: `python tools/ai_autopilot.py --agent codex` (or `--agent claude`, or `--cmd '<cli> {prompt}'`) re-invokes the agent after each turn until `ai_continue.py` reports a stop condition, the 5-hour window ends or `--max-runs` is reached.
+- An agent's own turn ending, a context limit, a pending CI run, or a finished task is never a reason to ask the owner anything. Checkpoint via `tools/ai_txn.py` and let the next run continue.

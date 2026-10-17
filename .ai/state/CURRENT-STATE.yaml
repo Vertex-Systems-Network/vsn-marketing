@@ -24,10 +24,10 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "1903b024db0cd7facee28a032d07341e4bbb1cf3",
+  "observed_main_sha": "9adfa0859a69e0191369123f094661177c3d0377",
   "active_issue": null,
-  "active_pr": 597,
-  "active_branch": "claude/wizardly-einstein-ja5n9h",
+  "active_pr": 598,
+  "active_branch": "claude/epic-goodall-2qynqe",
   "current_milestone": "TASK-0102-RESEARCH",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",

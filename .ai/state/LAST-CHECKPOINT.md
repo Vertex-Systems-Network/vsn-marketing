@@ -2,11 +2,11 @@
 
 ## State
 
-- Timestamp: `2026-10-17T00:03:51+00:00`
-- Observed main: `1903b024db0cd7facee28a032d07341e4bbb1cf3`
+- Timestamp: `2026-10-17T09:45:27+00:00`
+- Observed main: `9adfa0859a69e0191369123f094661177c3d0377`
 - Active issue: `none`
-- Active PR: `597`
-- Active branch: `claude/wizardly-einstein-ja5n9h`
+- Active PR: `598`
+- Active branch: `claude/epic-goodall-2qynqe`
 - Current milestone: `TASK-0102-RESEARCH`
 - Milestone status: `IN_PROGRESS`
 - Active task: `TASK-0102`
@@ -15,15 +15,15 @@
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `90c7c82d427a9e05fbe5f678977aad7a884c875b7c9e22fdbec9515e58102f4b`
+- State fingerprint: `e589f68a2cfe906f7d3b1d0ebc6b1aa8bb7440b1a6f58de3e8e5d51546b124fd`
 
 ## Completed / observed this session
 
-PR596 merged; PR597 adds pre-development (TASK-0145..0148), demo system (TASK-0149), non-stop and runner-budget rules, supervisor cron 6h
+PR598 carrier: non-stop enforcement for any AI agent (ai_continue, Claude Stop hook, ai_autopilot); stale ADR-0007 text fixed
 
 ## Tests
 
-Validators pass locally; PR597 gates pending
+ai_state validate, ai_policy, ai_continue/hook/autopilot dry runs
 
 ## Blockers
 

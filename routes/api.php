@@ -10,6 +10,7 @@ use App\Modules\Identity\Domain\Authorization\PermissionCatalog;
 use App\Modules\Identity\Presentation\Http\Controllers\Api\V1\AccessControlController;
 use App\Modules\Identity\Presentation\Http\Controllers\Api\V1\AccessTokenController;
 use App\Modules\Identity\Presentation\Http\Controllers\Api\V1\MeController;
+use App\Modules\Identity\Presentation\Http\Controllers\Api\V1\TeamController;
 use App\Modules\Identity\Presentation\Http\Controllers\ScimDeactivationController;
 use App\Modules\Publishing\Presentation\Http\Controllers\Api\V1\CampaignController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::middleware(['operations.auth', 'throttle:operations'])->group(function ()
 // Product API v1 (docs/product/API-V1.md). Every route here must appear in openapi/v1.json.
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::middleware('throttle:login')->post('/auth/tokens', [AccessTokenController::class, 'store'])->name('auth.tokens.store');
+    Route::middleware('throttle:login')->post('/auth/register', [TeamController::class, 'register'])->name('auth.register');
 
     Route::middleware(['auth:sanctum', 'throttle:120,1'])->group(function (): void {
         Route::delete('/auth/tokens/current', [AccessTokenController::class, 'destroy'])->name('auth.tokens.destroy');
@@ -47,7 +49,14 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         });
         Route::middleware(['tenant', 'workspace.permission:'.PermissionCatalog::CAMPAIGN_READ])
             ->get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
-        Route::middleware(['tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE])
-            ->get('/roles', [AccessControlController::class, 'roles'])->name('roles.index');
+        Route::middleware('throttle:10,1')->post('/invites/{token}/accept', [TeamController::class, 'acceptInvite'])->name('invites.accept');
+        Route::middleware(['tenant', 'workspace.permission:'.PermissionCatalog::IDENTITY_MANAGE])->group(function (): void {
+            Route::get('/roles', [AccessControlController::class, 'roles'])->name('roles.index');
+            Route::middleware('throttle:30,1')->post('/roles', [TeamController::class, 'createRole'])->name('roles.store');
+            Route::get('/members', [TeamController::class, 'members'])->name('members.index');
+            Route::get('/invites', [TeamController::class, 'invites'])->name('invites.index');
+            Route::middleware('throttle:30,1')->post('/invites', [TeamController::class, 'invite'])->name('invites.store');
+            Route::delete('/invites/{invite}', [TeamController::class, 'revokeInvite'])->whereUuid('invite')->name('invites.destroy');
+        });
     });
 });

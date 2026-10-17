@@ -22,6 +22,7 @@ final class MeController
             'name' => (string) $user->getAttribute('name'),
             'email' => (string) $user->getAttribute('email'),
             'email_verified' => $user->getAttribute('email_verified_at') !== null,
+            'is_platform_admin' => DB::table('platform_admins')->where('user_id', $user->getKey())->exists(),
         ]]);
     }
 

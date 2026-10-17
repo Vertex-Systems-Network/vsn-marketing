@@ -318,6 +318,276 @@
                         "$ref": "#/components/responses/Problem"
                     }
                 }
+            },
+            "post": {
+                "operationId": "createRole",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RoleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IdResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/members": {
+            "get": {
+                "operationId": "listMembers",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/invites": {
+            "get": {
+                "operationId": "listInvites",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InviteList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createInvite",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InviteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InviteCreated"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/invites/{invite}": {
+            "delete": {
+                "operationId": "revokeInvite",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/WorkspaceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/BrandId"
+                    },
+                    {
+                        "name": "invite",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Revoked"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/invites/{token}/accept": {
+            "post": {
+                "operationId": "acceptInvite",
+                "tags": [
+                    "identity"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AcceptedInvite"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "operationId": "register",
+                "tags": [
+                    "auth"
+                ],
+                "security": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisteredToken"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Problem"
+                    }
+                }
             }
         },
         "/auth/tokens": {
@@ -660,6 +930,9 @@
                     },
                     "email_verified": {
                         "type": "boolean"
+                    },
+                    "is_platform_admin": {
+                        "type": "boolean"
                     }
                 }
             },
@@ -928,6 +1201,242 @@
                         "items": {
                             "$ref": "#/components/schemas/Role"
                         }
+                    }
+                }
+            },
+            "IdResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "required": [
+                            "id"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "RoleRequest": {
+                "type": "object",
+                "required": [
+                    "key",
+                    "name",
+                    "permissions"
+                ],
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]*$"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Member": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "roles"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "MemberList": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Member"
+                        }
+                    }
+                }
+            },
+            "Invite": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "email",
+                    "role",
+                    "expires_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "expires_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "InviteList": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Invite"
+                        }
+                    }
+                }
+            },
+            "InviteRequest": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "role_id"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "role_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            },
+            "InviteCreated": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "token",
+                            "expires_at"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "token": {
+                                "type": "string"
+                            },
+                            "expires_at": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "AcceptedInvite": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "required": [
+                            "workspace_id"
+                        ],
+                        "properties": {
+                            "workspace_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "RegisterRequest": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "workspace_name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 12
+                    },
+                    "workspace_name": {
+                        "type": "string"
+                    },
+                    "device_name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisteredToken": {
+                "type": "object",
+                "required": [
+                    "token",
+                    "token_type",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "const": "Bearer"
+                    },
+                    "expires_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "workspace_id": {
+                        "type": "string"
                     }
                 }
             },

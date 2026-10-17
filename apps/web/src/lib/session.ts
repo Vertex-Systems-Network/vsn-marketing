@@ -22,3 +22,10 @@ export async function currentUser() {
         throw error;
     }
 }
+
+/** The active workspace: the user's choice cookie when still a member, else the first membership. */
+export async function currentWorkspace() {
+    const workspaces = (await (await serverClient()).listMyWorkspaces()).data;
+    const chosen = (await cookies()).get('vsn_workspace')?.value;
+    return workspaces.find((w) => w.id === chosen) ?? workspaces[0] ?? null;
+}

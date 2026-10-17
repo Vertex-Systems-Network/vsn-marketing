@@ -1,5 +1,9 @@
 {
-    "app": { "name": "VSN Marketing", "skip": "Skip to content", "panel": "Northwind Co. · Pro plan" },
+    "app": {
+        "name": "VSN Marketing",
+        "skip": "Skip to content",
+        "panel": "Northwind Co. · Pro plan"
+    },
     "nav": {
         "label": "Main navigation",
         "dashboard": "Dashboard",
@@ -46,6 +50,38 @@
         "password": "Password",
         "submit": "Log in",
         "invalid": "The email or password is incorrect.",
+        "unavailable": "We could not reach the server. Try again in a moment.",
+        "noAccount": "New to VSN Marketing? Create an account"
+    },
+    "team": {
+        "title": "Team & roles",
+        "subtitle": "Invite people and control what each role can do",
+        "members": "Members",
+        "invites": "Pending invites",
+        "roles": "Roles",
+        "inviteTitle": "Invite a teammate",
+        "email": "Email",
+        "role": "Role",
+        "send": "Send invite",
+        "sent": "Invite sent to {email}.",
+        "revoke": "Revoke",
+        "none": "No pending invites.",
+        "privilegedNote": "Owner and Admin are granted after joining, with a second administrator's approval.",
+        "forbidden": "You can only invite with roles whose permissions you hold.",
+        "invalid": "Check the email and role.",
+        "unavailable": "We could not reach the server. Try again in a moment.",
+        "denied": "You need the “Manage team” permission to see this page.",
+        "expires": "Expires {date}",
+        "permissions": "{count} permissions"
+    },
+    "signup": {
+        "title": "Create your VSN Marketing account",
+        "name": "Full name",
+        "email": "Work email",
+        "password": "Password (at least 12 characters)",
+        "workspace": "Company or workspace name",
+        "submit": "Create account",
+        "haveAccount": "Already have an account? Log in",
         "unavailable": "We could not reach the server. Try again in a moment."
     }
 }

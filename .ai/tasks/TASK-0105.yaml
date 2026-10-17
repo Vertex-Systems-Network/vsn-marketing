@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Implement default roles, role management, invites and signup",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0104"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Default roles Super Admin, Owner, Admin, Marketer, Viewer exist",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Role and invite screens enforce least privilege",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Adversarial privilege-escalation tests pass",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

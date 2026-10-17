@@ -7,7 +7,7 @@ export type TokenRequest = { email: string; password: string; device_name: strin
 
 export type Token = { token: string; token_type: 'Bearer'; expires_at?: string | null };
 
-export type Me = { id: string; name: string; email: string; email_verified: boolean };
+export type Me = { id: string; name: string; email: string; email_verified: boolean; is_platform_admin?: boolean };
 
 export type MeResponse = { data: Me };
 
@@ -30,6 +30,28 @@ export type PermissionList = { data: string[] };
 export type Role = { id: string; key: string; name: string; permissions: string[] };
 
 export type RoleList = { data: Role[] };
+
+export type IdResponse = { data: { id: string } };
+
+export type RoleRequest = { key: string; name: string; permissions: string[] };
+
+export type Member = { id: string; name: string; email: string; roles: string[] };
+
+export type MemberList = { data: Member[] };
+
+export type Invite = { id: string; email: string; role: string; expires_at: string };
+
+export type InviteList = { data: Invite[] };
+
+export type InviteRequest = { email: string; role_id: string };
+
+export type InviteCreated = { data: { id: string; token: string; expires_at: string } };
+
+export type AcceptedInvite = { data: { workspace_id: string } };
+
+export type RegisterRequest = { name: string; email: string; password: string; workspace_name: string; device_name?: string };
+
+export type RegisteredToken = { token: string; token_type: 'Bearer'; expires_at?: string | null; workspace_id: string };
 
 export type ContactResponse = { data: Contact };
 
@@ -74,6 +96,13 @@ export function createClient(options: ClientOptions = {}) {
     listCampaigns: (query: { "page[size]"?: number; "page[cursor]"?: string; "filter[search]"?: string } = {}) => request<StatusItemList>('GET', `/campaigns`, query, undefined),
     listPermissions: () => request<PermissionList>('GET', `/permissions`, undefined, undefined),
     listRoles: () => request<RoleList>('GET', `/roles`, undefined, undefined),
+    createRole: (body: RoleRequest) => request<IdResponse>('POST', `/roles`, undefined, body),
+    listMembers: () => request<MemberList>('GET', `/members`, undefined, undefined),
+    listInvites: () => request<InviteList>('GET', `/invites`, undefined, undefined),
+    createInvite: (body: InviteRequest) => request<InviteCreated>('POST', `/invites`, undefined, body),
+    revokeInvite: (invite: string) => request<void>('DELETE', `/invites/${encodeURIComponent(invite)}`, undefined, undefined),
+    acceptInvite: (token: string) => request<AcceptedInvite>('POST', `/invites/${encodeURIComponent(token)}/accept`, undefined, undefined),
+    register: (body: RegisterRequest) => request<RegisteredToken>('POST', `/auth/register`, undefined, body),
     createAccessToken: (body: TokenRequest) => request<Token>('POST', `/auth/tokens`, undefined, body),
     revokeCurrentAccessToken: () => request<void>('DELETE', `/auth/tokens/current`, undefined, undefined),
     getMe: () => request<MeResponse>('GET', `/me`, undefined, undefined),

@@ -69,6 +69,61 @@ final class OpenApiV1
                     'parameters' => $tenant,
                     'responses' => self::responses(200, 'RoleList', [401, 403]),
                 ],
+                'post' => [
+                    'operationId' => 'createRole',
+                    'tags' => ['identity'],
+                    'parameters' => $tenant,
+                    'requestBody' => self::json('RoleRequest'),
+                    'responses' => self::responses(201, 'IdResponse', [401, 403, 422]),
+                ],
+            ],
+            '/members' => [
+                'get' => [
+                    'operationId' => 'listMembers',
+                    'tags' => ['identity'],
+                    'parameters' => $tenant,
+                    'responses' => self::responses(200, 'MemberList', [401, 403]),
+                ],
+            ],
+            '/invites' => [
+                'get' => [
+                    'operationId' => 'listInvites',
+                    'tags' => ['identity'],
+                    'parameters' => $tenant,
+                    'responses' => self::responses(200, 'InviteList', [401, 403]),
+                ],
+                'post' => [
+                    'operationId' => 'createInvite',
+                    'tags' => ['identity'],
+                    'parameters' => $tenant,
+                    'requestBody' => self::json('InviteRequest'),
+                    'responses' => self::responses(201, 'InviteCreated', [401, 403, 422]),
+                ],
+            ],
+            '/invites/{invite}' => [
+                'delete' => [
+                    'operationId' => 'revokeInvite',
+                    'tags' => ['identity'],
+                    'parameters' => array_merge($tenant, [['name' => 'invite', 'in' => 'path', 'required' => true, 'schema' => ['type' => 'string', 'format' => 'uuid']]]),
+                    'responses' => ['204' => ['description' => 'Revoked'], '401' => ['$ref' => '#/components/responses/Problem'], '403' => ['$ref' => '#/components/responses/Problem']],
+                ],
+            ],
+            '/invites/{token}/accept' => [
+                'post' => [
+                    'operationId' => 'acceptInvite',
+                    'tags' => ['identity'],
+                    'parameters' => [['name' => 'token', 'in' => 'path', 'required' => true, 'schema' => ['type' => 'string']]],
+                    'responses' => self::responses(200, 'AcceptedInvite', [401, 403, 429]),
+                ],
+            ],
+            '/auth/register' => [
+                'post' => [
+                    'operationId' => 'register',
+                    'tags' => ['auth'],
+                    'security' => [],
+                    'requestBody' => self::json('RegisterRequest'),
+                    'responses' => self::responses(201, 'RegisteredToken', [422, 429]),
+                ],
             ],
             '/auth/tokens' => [
                 'post' => [
@@ -119,6 +174,12 @@ final class OpenApiV1
                 ],
             ],
         ];
+    }
+
+    /** @return array<string, mixed> */
+    private static function json(string $schema): array
+    {
+        return ['required' => true, 'content' => ['application/json' => ['schema' => ['$ref' => '#/components/schemas/'.$schema]]]];
     }
 
     /** @return list<array<string, mixed>> */
@@ -192,6 +253,7 @@ final class OpenApiV1
                     'name' => ['type' => 'string'],
                     'email' => ['type' => 'string'],
                     'email_verified' => ['type' => 'boolean'],
+                    'is_platform_admin' => ['type' => 'boolean'],
                 ],
             ],
             'MeResponse' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['$ref' => '#/components/schemas/Me']]],
@@ -239,6 +301,41 @@ final class OpenApiV1
                 'properties' => ['id' => ['type' => 'string'], 'key' => ['type' => 'string'], 'name' => ['type' => 'string'], 'permissions' => ['type' => 'array', 'items' => ['type' => 'string']]],
             ],
             'RoleList' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/Role']]]],
+            'IdResponse' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'object', 'required' => ['id'], 'properties' => ['id' => ['type' => 'string']]]]],
+            'RoleRequest' => [
+                'type' => 'object',
+                'required' => ['key', 'name', 'permissions'],
+                'properties' => ['key' => ['type' => 'string', 'pattern' => '^[a-z][a-z0-9_]*$'], 'name' => ['type' => 'string'], 'permissions' => ['type' => 'array', 'items' => ['type' => 'string']]],
+            ],
+            'Member' => [
+                'type' => 'object',
+                'required' => ['id', 'name', 'email', 'roles'],
+                'properties' => ['id' => ['type' => 'string'], 'name' => ['type' => 'string'], 'email' => ['type' => 'string'], 'roles' => ['type' => 'array', 'items' => ['type' => 'string']]],
+            ],
+            'MemberList' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/Member']]]],
+            'Invite' => [
+                'type' => 'object',
+                'required' => ['id', 'email', 'role', 'expires_at'],
+                'properties' => ['id' => ['type' => 'string'], 'email' => ['type' => 'string'], 'role' => ['type' => 'string'], 'expires_at' => ['type' => 'string']],
+            ],
+            'InviteList' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'array', 'items' => ['$ref' => '#/components/schemas/Invite']]]],
+            'InviteRequest' => ['type' => 'object', 'required' => ['email', 'role_id'], 'properties' => ['email' => ['type' => 'string', 'format' => 'email'], 'role_id' => ['type' => 'string', 'format' => 'uuid']]],
+            'InviteCreated' => [
+                'type' => 'object',
+                'required' => ['data'],
+                'properties' => ['data' => ['type' => 'object', 'required' => ['id', 'token', 'expires_at'], 'properties' => ['id' => ['type' => 'string'], 'token' => ['type' => 'string'], 'expires_at' => ['type' => 'string']]]],
+            ],
+            'AcceptedInvite' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['type' => 'object', 'required' => ['workspace_id'], 'properties' => ['workspace_id' => ['type' => 'string']]]]],
+            'RegisterRequest' => [
+                'type' => 'object',
+                'required' => ['name', 'email', 'password', 'workspace_name'],
+                'properties' => ['name' => ['type' => 'string'], 'email' => ['type' => 'string', 'format' => 'email'], 'password' => ['type' => 'string', 'minLength' => 12], 'workspace_name' => ['type' => 'string'], 'device_name' => ['type' => 'string']],
+            ],
+            'RegisteredToken' => [
+                'type' => 'object',
+                'required' => ['token', 'token_type', 'workspace_id'],
+                'properties' => ['token' => ['type' => 'string'], 'token_type' => ['type' => 'string', 'const' => 'Bearer'], 'expires_at' => ['type' => ['string', 'null']], 'workspace_id' => ['type' => 'string']],
+            ],
             'ContactResponse' => ['type' => 'object', 'required' => ['data'], 'properties' => ['data' => ['$ref' => '#/components/schemas/Contact']]],
             'ContactList' => self::page('Contact'),
         ];

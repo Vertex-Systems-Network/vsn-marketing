@@ -70,3 +70,45 @@ test('login, navigation, sidebar collapse, theme and Urdu RTL (TASK-0104 AC-2, A
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/login$/);
 });
+
+test('signup creates a workspace and the owner invites with least privilege (TASK-0105 AC-2)', async ({ page }) => {
+    const email = `owner-${Date.now()}@example.test`;
+    await page.goto('/login');
+    await page.getByRole('link', { name: /Create an account/ }).click();
+    await expect(page).toHaveURL(/\/signup$/);
+
+    await page.getByLabel('Full name').fill('Amelia Hart');
+    await page.getByLabel('Work email').fill(email);
+    await page.getByLabel(/Password/).fill('short');
+    await page.getByLabel('Company or workspace name').fill('Northwind Co.');
+    await page.getByRole('button', { name: 'Create account' }).click();
+    await expect(page.getByText(/at least 12 characters/i).last()).toBeVisible();
+    await expect(page.getByLabel('Work email')).toHaveValue(email);
+
+    // React resets uncontrolled fields when the action settles; fill only after that.
+    await expect(page.getByLabel(/Password/)).toHaveValue('');
+    await page.getByLabel(/Password/).fill('correct-horse-battery');
+    await expect(page.getByLabel(/Password/)).toHaveValue('correct-horse-battery');
+    await page.getByRole('button', { name: 'Create account' }).click();
+    await expect(page).toHaveURL(/\/dashboard$/);
+
+    await page.getByRole('link', { name: 'Settings' }).click();
+    await expect(page).toHaveURL(/\/settings\/team$/);
+    await expect(page.getByRole('heading', { name: 'Team & roles' })).toBeVisible();
+    await expectAccessible(page);
+
+    // Least privilege: Owner and Admin are never offered as invite roles.
+    const options = await page.getByLabel('Role', { exact: true }).locator('option').allTextContents();
+    expect(options).toEqual(expect.arrayContaining(['Marketer', 'Viewer']));
+    expect(options).not.toContain('Owner');
+    expect(options).not.toContain('Admin');
+
+    await page.getByLabel('Email', { exact: true }).fill('lea@example.test');
+    await page.getByLabel('Role', { exact: true }).selectOption({ label: 'Viewer' });
+    await page.getByRole('button', { name: 'Send invite' }).click();
+    await expect(page.getByText('Invite sent to lea@example.test.')).toBeVisible();
+    const invite = page.getByRole('listitem').filter({ hasText: 'lea@example.test' });
+    await expect(invite).toContainText('viewer');
+    await invite.getByRole('button', { name: 'Revoke' }).click();
+    await expect(page.getByText('No pending invites.')).toBeVisible();
+});

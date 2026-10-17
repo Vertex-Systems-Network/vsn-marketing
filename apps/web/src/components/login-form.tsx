@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { login, type LoginState } from '@/lib/actions';
 
@@ -24,6 +25,9 @@ export function LoginForm() {
             >
                 {t('submit')}
             </button>
+            <Link href="/signup" className="text-center text-[13px] font-semibold text-brand underline-offset-2 hover:underline">
+                {t('noAccount')}
+            </Link>
         </form>
     );
 }

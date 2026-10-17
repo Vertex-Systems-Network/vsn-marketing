@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "2b378334ddb6653167c3414ebce52d12d558f5e1",
+  "observed_main_sha": "41c605677a47b027840646528471b50a75965cea",
   "active_issue": null,
-  "active_pr": 606,
+  "active_pr": 607,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
-  "current_milestone": "TASK-0148-ENG",
+  "current_milestone": "TASK-0103-API",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Follow the AI-native lifecycle for TASK-0103 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable.",
+  "exact_next_safe_action": "Merge PR 607, then TASK-0103 versioned API layer and OpenAPI client",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Follow the AI-native lifecycle for TASK-0103 per .ai/roadmap/PRODUCT-TRACK-PLAN.md, starting with research and competitor comparison where applicable."
+  "exact_next_action": "Merge PR 607, then TASK-0103 versioned API layer and OpenAPI client"
 }

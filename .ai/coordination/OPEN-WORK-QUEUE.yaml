@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "2b378334ddb6653167c3414ebce52d12d558f5e1",
+  "reconciled_main_sha": "41c605677a47b027840646528471b50a75965cea",
   "active_work_path": {
     "kind": "pr",
-    "number": 606,
-    "title": "TASK-0147: UI/UX guidelines and screen specifications",
+    "number": 607,
+    "title": "TASK-0148: Engineering, QA, security and release guidelines",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0148_carrier"
+    "disposition": "active_task0103_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 607,
+      "title": "TASK-0148: Engineering, QA, security and release guidelines",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0103_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 606,
       "title": "TASK-0147: UI/UX guidelines and screen specifications",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0148_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

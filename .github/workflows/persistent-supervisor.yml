@@ -2,7 +2,7 @@ name: Persistent Supervisor Control Plane
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '17 */6 * * *'
   workflow_dispatch:
   pull_request_target:
     types:

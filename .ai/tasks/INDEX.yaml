@@ -1013,13 +1013,53 @@
       ]
     },
     {
+      "id": "TASK-0145",
+      "phase": "PHASE-17",
+      "title": "Write Software Requirements Specification (SRS)",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0102"
+      ]
+    },
+    {
+      "id": "TASK-0146",
+      "phase": "PHASE-17",
+      "title": "Write architecture, data model, data flow and API documentation",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0145"
+      ]
+    },
+    {
+      "id": "TASK-0147",
+      "phase": "PHASE-17",
+      "title": "Write UI/UX guidelines and screen specifications",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0146"
+      ]
+    },
+    {
+      "id": "TASK-0148",
+      "phase": "PHASE-17",
+      "title": "Write engineering, QA, security and release guidelines",
+      "weight": 10,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0147"
+      ]
+    },
+    {
       "id": "TASK-0103",
       "phase": "PHASE-17",
       "title": "Implement versioned API layer and OpenAPI client",
       "weight": 20,
       "status": "planned",
       "dependencies": [
-        "TASK-0102"
+        "TASK-0148"
       ]
     },
     {
@@ -1063,13 +1103,23 @@
       ]
     },
     {
+      "id": "TASK-0149",
+      "phase": "PHASE-17",
+      "title": "Implement demo system with dummy data",
+      "weight": 15,
+      "status": "planned",
+      "dependencies": [
+        "TASK-0107"
+      ]
+    },
+    {
       "id": "TASK-0108",
       "phase": "PHASE-17",
       "title": "Certify PHASE-17",
       "weight": 10,
       "status": "planned",
       "dependencies": [
-        "TASK-0107"
+        "TASK-0149"
       ]
     },
     {

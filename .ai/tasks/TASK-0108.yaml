@@ -5,7 +5,7 @@
   "weight": 10,
   "status": "planned",
   "dependencies": [
-    "TASK-0107"
+    "TASK-0149"
   ],
   "objective": "Certify product shell, API and panels",
   "acceptance_criteria": [

@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0148",
+  "phase": "PHASE-17",
+  "title": "Write engineering, QA, security and release guidelines",
+  "weight": 10,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0147"
+  ],
+  "objective": "Coding standards for PHP/TypeScript, branching/PR rules, test strategy and Definition of Done, security and privacy checklist, release/rollback and demo-data rules, aligned with PRODUCT-STACK-INSTRUCTIONS",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Guidelines are referenced by AGENTS/product plan",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "Definition of Done is testable",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "QA strategy maps to CI gates",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0148 per PRODUCT-TRACK-PLAN pre-development and execution rules."
+}

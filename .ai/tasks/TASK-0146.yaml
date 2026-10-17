@@ -1,0 +1,34 @@
+{
+  "id": "TASK-0146",
+  "phase": "PHASE-17",
+  "title": "Write architecture, data model, data flow and API documentation",
+  "weight": 15,
+  "status": "planned",
+  "dependencies": [
+    "TASK-0145"
+  ],
+  "objective": "System context and container diagrams, module boundaries, ERD for new entities, data-flow and sequence diagrams for email, social, AI, ads, billing and marketplace, OpenAPI design and integration catalogue",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Diagrams and ERD cover all product-track modules",
+      "done": false
+    },
+    {
+      "id": "AC-2",
+      "text": "API design draft exists for /api/v1",
+      "done": false
+    },
+    {
+      "id": "AC-3",
+      "text": "ADRs record every architecture decision",
+      "done": false
+    }
+  ],
+  "required_tests": [
+    "task-focused-unit-and-adversarial",
+    "ai-continuity-and-policy",
+    "exact-head-protected-main-gates"
+  ],
+  "exact_next_action": "Complete TASK-0146 per PRODUCT-TRACK-PLAN pre-development and execution rules."
+}

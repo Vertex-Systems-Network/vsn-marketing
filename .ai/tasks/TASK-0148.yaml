@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Write engineering, QA, security and release guidelines",
   "weight": 10,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0147"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Guidelines are referenced by AGENTS/product plan",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Definition of Done is testable",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "QA strategy maps to CI gates",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

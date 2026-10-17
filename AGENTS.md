@@ -130,6 +130,8 @@ Every task must evaluate the applicable controls in `.ai/12-QUALITY-ENGINEERING-
 
 A phase cannot be certified merely because feature code exists.
 
+Product-track tasks (TASK-0103 onward) must also follow the pre-development documents in `docs/product/`: `SRS.md` (requirements and IDs), `ARCHITECTURE.md` and `API-V1.md` (design), `UX-GUIDELINES.md` and `SCREEN-SPECS.md` (UI), and `ENGINEERING-GUIDELINES.md` (coding standards, the testable Definition of Done, QA-to-CI gate map, security checklist, release/rollback and demo-data rules).
+
 ## Non-interactive blocker and error policy
 
 During an active continuous Workspace batch, routine development problems are never user questions. The Supervisor must diagnose and act on them autonomously within repository authority.

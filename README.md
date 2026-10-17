@@ -4,18 +4,18 @@ AI-native, provider-agnostic, permission-based marketing operating system (modul
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=52.59 phase=32.35 current_phase=PHASE-17 active_task=TASK-0148 milestone=TASK-0148-ENG status=IN_PROGRESS -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=53.06 phase=38.24 current_phase=PHASE-17 active_task=TASK-0103 milestone=TASK-0103-API status=IN_PROGRESS -->
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the human-readable mirror.
 
-**Overall roadmap progress: 52.59%**<br />
-**Current phase: PHASE-17 — 32.35%**<br />
+**Overall roadmap progress: 53.06%**<br />
+**Current phase: PHASE-17 — 38.24%**<br />
 **Last completed task: TASK-0100**<br />
-**Current milestone: TASK-0148-ENG — IN_PROGRESS**
+**Current milestone: TASK-0103-API — IN_PROGRESS**
 
 ```text
- Overall  [███████████░░░░░░░░░] 52.59%
-Phase 17 [██████░░░░░░░░░░░░░░] 32.35%
+ Overall  [███████████░░░░░░░░░] 53.06%
+Phase 17 [████████░░░░░░░░░░░░] 38.24%
 ```
 
 The foundation (PHASE-00..16) is complete and now counts as 50% of the roadmap (ADR-0007). The product track PHASE-17..PHASE-24 — Next.js web and Android/iOS apps, panels (Super Admin, Buyer, Seller: reseller/agency, marketplace, affiliate), live email providers and tracking, social media, AI providers, ads, packages and reports — is active: see [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), the [AI master prompt](docs/product/AI-MASTER-PROMPT.md), [Systems Bank](.ai/research/PRODUCT-TRACK/SYSTEMS-BANK.md) and [Options Bank](.ai/research/PRODUCT-TRACK/OPTIONS-BANK.md).

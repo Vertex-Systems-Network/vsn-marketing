@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "43370344f44343915180fa87688a7afa5b702e14",
+  "reconciled_main_sha": "bd15b7ee2769322258d9b09e6b2aaea297a0dbf6",
   "active_work_path": {
     "kind": "pr",
-    "number": 609,
-    "title": "TASK-0104: Next.js web shell, design tokens, themes and Urdu RTL",
+    "number": 610,
+    "title": "TASK-0105: Default roles, signup, invites and custom roles (least privilege)",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0105_carrier"
+    "disposition": "active_task0106_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 610,
+      "title": "TASK-0105: Default roles, signup, invites and custom roles (least privilege)",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0106_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 609,
       "title": "TASK-0104: Next.js web shell, design tokens, themes and Urdu RTL",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0105_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

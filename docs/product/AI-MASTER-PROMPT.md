@@ -30,7 +30,7 @@ AI-powered marketing SaaS (requirements R1–R24, PRODUCT-TRACK-PLAN §1):
 
 ## 3. Tech stack (fixed — PRODUCT-STACK-INSTRUCTIONS.md)
 Laravel API (/api/v1, OpenAPI, Sanctum) + Next.js web (React 19, TypeScript,
-Tailwind v4, shadcn/ui) + React Native/Expo (Android + iOS), pnpm + Turborepo
+Tailwind v4, shadcn/ui) + React Native/Expo (Android + iOS), npm workspaces (ADR-0009)
 monorepo, PostgreSQL 18, Redis 8, S3, Laravel Reverb. Versions pin; "latest"
 kabhi nahi; upgrade se pehle compatibility check.
 

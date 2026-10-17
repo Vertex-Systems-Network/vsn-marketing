@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Implement Next.js app shell and design system in monorepo",
   "weight": 20,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0103"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Monorepo builds web and shared packages in CI",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Light/dark theme, sidebar, topbar and dashboard meet WCAG 2.2 AA",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Playwright E2E covers login and navigation",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

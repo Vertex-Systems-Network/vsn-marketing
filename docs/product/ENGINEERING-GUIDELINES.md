@@ -73,7 +73,7 @@ A slice is done only when every applicable item below has evidence in the PR (CI
 | Contract | OpenAPI schema vs implementation; client freshness | spectator/openapi validator, `openapi-diff` | `api-contract` | Every code PR touching the API |
 | Integration | PostgreSQL 18 + Redis 8 behaviour, queues, locks, FTS | Pest on service containers | `integration` | Code PRs touching persistence or queues; certification |
 | Adversarial / security | Cross-tenant, privilege escalation, cap bypass, replayed webhooks, SSRF in URLs | Pest security suites | `security-gates` | Every code PR |
-| SAST / dependencies / secrets | Code scanning, vulnerable packages, leaked secrets | CodeQL, `composer audit`, `pnpm audit`, secret scan | `codeql-*`, `dependency-audit`, `secret-scan` | Code PRs; weekly schedule |
+| SAST / dependencies / secrets | Code scanning, vulnerable packages, leaked secrets | CodeQL, `composer audit`, `npm audit`, secret scan | `codeql-*`, `dependency-audit`, `secret-scan` | Code PRs; weekly schedule |
 | E2E web | Critical flows: sign up, onboarding, campaign send (sandbox), connect social, compose and schedule, checkout (Stripe test), RTL smoke | Playwright | `e2e` | Code PRs touching UI; certification |
 | Accessibility | axe on every E2E page; keyboard flows | @axe-core/playwright | `e2e` (a11y step) | Same as E2E |
 | Visual | LTR + RTL screenshots of panel templates | Playwright snapshots | `e2e` (visual step) | UI PRs |

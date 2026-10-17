@@ -1,0 +1,51 @@
+{
+    "app": { "name": "VSN Marketing", "skip": "Skip to content", "panel": "Northwind Co. · Pro plan" },
+    "nav": {
+        "label": "Main navigation",
+        "dashboard": "Dashboard",
+        "email": "Email campaigns",
+        "automations": "Automations",
+        "templates": "Templates",
+        "audience": "Audience",
+        "social": "Social",
+        "ads": "Ads & boosting",
+        "ai": "AI studio",
+        "analytics": "Analytics",
+        "marketplace": "Marketplace",
+        "settings": "Settings",
+        "collapse": "Collapse sidebar",
+        "expand": "Expand sidebar"
+    },
+    "top": {
+        "search": "Search…",
+        "notifications": "Notifications",
+        "help": "Help",
+        "themeDark": "Switch to dark theme",
+        "themeLight": "Switch to light theme",
+        "language": "اردو",
+        "languageLabel": "Switch language to Urdu",
+        "logout": "Log out"
+    },
+    "dashboard": {
+        "title": "Good morning, {name}",
+        "subtitle": "Here is how your marketing is doing this week",
+        "create": "Create campaign",
+        "kpis": "Key numbers",
+        "sent": "Emails sent",
+        "opens": "Real open rate",
+        "clicks": "Real clicks",
+        "followers": "New followers",
+        "demo": "Demo data — connect a provider to see your real numbers.",
+        "activity": "Recent activity",
+        "approvals": "Waiting for approval",
+        "empty": "Nothing waiting — you are all caught up."
+    },
+    "login": {
+        "title": "Log in to VSN Marketing",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Log in",
+        "invalid": "The email or password is incorrect.",
+        "unavailable": "We could not reach the server. Try again in a moment."
+    }
+}

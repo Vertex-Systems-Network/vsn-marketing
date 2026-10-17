@@ -2,28 +2,28 @@
 
 ## State
 
-- Timestamp: `2026-10-17T16:27:49+00:00`
-- Observed main: `470f707edd7375aa5cb1524b6836346be7e0264d`
+- Timestamp: `2026-10-17T16:39:20+00:00`
+- Observed main: `43370344f44343915180fa87688a7afa5b702e14`
 - Active issue: `none`
-- Active PR: `608`
+- Active PR: `609`
 - Active branch: `claude/wizardly-einstein-ja5n9h`
-- Current milestone: `TASK-0104-SHELL`
+- Current milestone: `TASK-0105-ROLES`
 - Milestone status: `IN_PROGRESS`
-- Active task: `TASK-0104`
-- Next task: `TASK-0105`
+- Active task: `TASK-0105`
+- Next task: `TASK-0106`
 - Current phase: `PHASE-17`
 - Execution status: `ready`
 - Pending Runner IDs: `none`
 - Blocked Runner IDs: `RBT-004, RBT-052`
-- State fingerprint: `3dad91253486c168375c4cdba324bb18840f71f56bab3c2d8f96c8fe61dd8048`
+- State fingerprint: `0ae4c7dda1efb95009f811d827bbd71292498d5d2d7286b9f81c67ef7a043ce5`
 
 ## Completed / observed this session
 
-TASK-0103 complete in PR 608; TASK-0104 ready
+TASK-0104 complete in PR 609 (Next.js shell, tokens, themes, RTL, web E2E); TASK-0105 ready
 
 ## Tests
 
-php artisan test 1155 pass; phpstan; pint; tsc; vitest; openapi check
+tsc; vitest 62; next build; web e2e; npm audit 0
 
 ## Blockers
 
@@ -31,4 +31,4 @@ php artisan test 1155 pass; phpstan; pint; tsc; vitest; openapi check
 
 ## Exact next action
 
-Merge PR 608 when CI green, then TASK-0104 Next.js monorepo shell
+Merge PR 609 when CI green, then TASK-0105 roles, invites and signup

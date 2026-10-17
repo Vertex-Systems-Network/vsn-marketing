@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+@import '@vsn/ui-tokens/tokens.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+    --color-ink: var(--vsn-brand-ink);
+    --color-ink-2: var(--vsn-brand-ink-2);
+    --color-muted: var(--vsn-text-muted);
+    --color-cloud: var(--vsn-surface-cloud);
+    --color-field: var(--vsn-surface-field);
+    --color-card: var(--vsn-surface-card);
+    --color-line: var(--vsn-line-light);
+    --color-line-strong: var(--vsn-line-strong);
+    --color-brand: var(--vsn-brand-gradient-start);
+    --color-brand-mid: var(--vsn-brand-gradient-mid);
+    --color-brand-end: var(--vsn-brand-gradient-end);
+    --color-error: var(--vsn-state-error);
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --radius-field: 12px;
+    --radius-card: 14px;
+}
+
+html {
+    background: var(--vsn-surface-cloud);
+    color: var(--vsn-brand-ink);
+}
+
+html[lang='ur'] body {
+    font-family: 'Noto Sans Arabic', var(--font-sans);
+    line-height: 1.6;
+}
+
+html[lang='ur'] h1,
+html[lang='ur'] h2 {
+    font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', serif;
+    line-height: 1.8;
+}
+
+/* UX-GUIDELINES §5 A-03: 3px visible focus; brand outline passes 3:1, cyan glow is decorative. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid var(--vsn-brand-gradient-start);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--vsn-focus) 35%, transparent);
+}
+
+.bg-brand-gradient {
+    background: var(--vsn-gradient);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0ms !important;
+        animation-duration: 0ms !important;
+    }
+}

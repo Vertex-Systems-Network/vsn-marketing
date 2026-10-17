@@ -1,0 +1,40 @@
+/* Generated from src/index.ts values; keep in sync (enforced by tests/tokens.test.ts). */
+:root,
+[data-theme='light'] {
+    --vsn-brand-gradient-start: #625ba8;
+    --vsn-brand-gradient-mid: #6188c6;
+    --vsn-brand-gradient-end: #5ac8d6;
+    --vsn-brand-white: #ffffff;
+    --vsn-brand-ink: #000000;
+    --vsn-brand-ink-2: #3f4245;
+    --vsn-text-muted: #636669;
+    --vsn-surface-cloud: #ebedf4;
+    --vsn-surface-field: #f4f5f9;
+    --vsn-surface-card: #ffffff;
+    --vsn-surface-night: #1a1c20;
+    --vsn-line-light: #eef0f5;
+    --vsn-line-strong: #dcdfe7;
+    --vsn-state-error: #d14b5a;
+    --vsn-focus: #5ac8d6;
+    --vsn-gradient: linear-gradient(90deg, var(--vsn-brand-gradient-start), var(--vsn-brand-gradient-mid) 55%, var(--vsn-brand-gradient-end));
+    color-scheme: light;
+}
+
+[data-theme='dark'] {
+    --vsn-brand-gradient-start: #8a84cf;
+    --vsn-brand-gradient-mid: #7fa3dc;
+    --vsn-brand-gradient-end: #6fd3df;
+    --vsn-brand-white: #ffffff;
+    --vsn-brand-ink: #f4f5f9;
+    --vsn-brand-ink-2: #d6d8de;
+    --vsn-text-muted: #a3a6ad;
+    --vsn-surface-cloud: #1a1c20;
+    --vsn-surface-field: #24272d;
+    --vsn-surface-card: #202328;
+    --vsn-surface-night: #111215;
+    --vsn-line-light: #2d3037;
+    --vsn-line-strong: #3a3e46;
+    --vsn-state-error: #ef7a87;
+    --vsn-focus: #6fd3df;
+    color-scheme: dark;
+}

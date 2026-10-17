@@ -109,7 +109,7 @@ Architecture: **one Laravel API backend, three clients** (Next.js web, Android, 
 | Web UI | Tailwind CSS v4, shadcn/ui (Radix primitives), lucide icons, Framer Motion, Recharts/Tremor charts, TanStack Table, React Hook Form + Zod | Premium, accessible, sales-grade visuals |
 | Web data | TanStack Query, generated typed API client from OpenAPI, next-intl (i18n incl. Urdu/RTL) | Typed end-to-end, cache, offline-friendly |
 | Mobile apps | React Native + Expo (Android + iOS from one codebase), Expo Router, NativeWind, EAS Build/Submit, Expo Notifications | Shares TypeScript, API client and design tokens with web |
-| Monorepo | pnpm workspaces + Turborepo: `apps/web`, `apps/mobile`, `packages/api-client`, `packages/ui-tokens`, `packages/validation`; Laravel stays at repo root | One place, shared code, cached builds |
+| Monorepo | npm workspaces (ADR-0009; Turborepo deferred): `apps/web`, `apps/mobile`, `packages/api-client`, `packages/ui-tokens`, `packages/validation`; Laravel stays at repo root | One place, shared code, cached builds |
 | Data | PostgreSQL 18, Redis 8 (queues/cache), S3-compatible object storage | Existing, production-grade |
 | Queues/realtime | Laravel Horizon, Laravel Reverb (WebSockets) for live tracking/notifications | Live open/click/post status |
 | Search | PostgreSQL full-text first; Meilisearch if scale requires | Filters and global search (R19) |

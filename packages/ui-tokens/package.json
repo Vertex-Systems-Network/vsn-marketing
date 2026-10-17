@@ -1,0 +1,13 @@
+{
+    "name": "@vsn/ui-tokens",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "Design tokens copied from Figma JqukmwKhVyObh1SQ6gsKR0 via the VSN Tokens collection (UX-GUIDELINES §2).",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "exports": {
+        ".": "./src/index.ts",
+        "./tokens.css": "./src/tokens.css"
+    }
+}

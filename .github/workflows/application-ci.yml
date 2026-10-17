@@ -101,6 +101,11 @@ jobs:
       - name: Build frontend
         if: steps.classify.outputs.application_required == 'true'
         run: npm run build
+      - name: Build Next.js web app and shared packages
+        if: steps.classify.outputs.application_required == 'true'
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: npm run build:web
 
   php-floor:
     needs: foundation
@@ -277,3 +282,9 @@ jobs:
         run: npm run test:e2e
       - name: Verify authorized analytics browser fixture
         run: npx playwright test --config=playwright.analytics.config.ts
+      - name: Build Next.js web app
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: npm run build:web
+      - name: Run Next.js web E2E (login, navigation, theme, RTL, axe)
+        run: npx playwright test --config=playwright.web.config.ts

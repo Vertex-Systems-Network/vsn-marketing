@@ -4,7 +4,7 @@ Binding for every AI agent working on the product track. Goal: the stack (Larave
 
 ## 1. Versions and compatibility
 
-1. Pin exact versions: `composer.lock`, `pnpm-lock.yaml`, `.nvmrc`/`engines` (Node 24 LTS), `packageManager` field (pnpm), PHP `^8.3` with CI on 8.3 and 8.5. **[CI]** fails on lockfile drift.
+1. Pin exact versions: `composer.lock`, `package-lock.json` (npm workspaces, ADR-0009), `.nvmrc`/`engines` (Node 24 LTS), PHP `^8.3` with CI on 8.3 and 8.5. **[CI]** fails on lockfile drift.
 2. Before adding or upgrading any package, check official release notes and peer-dependency compatibility (React 19 ↔ Next.js ↔ Expo SDK ↔ React Native). Expo SDK dictates the React/React Native versions for mobile; web and mobile may use different React minors only if the shared packages stay framework-agnostic.
 3. Docker images use explicit major tags (`postgres:18-alpine`, `redis:8-alpine`, `node:24-*`); never `latest`. Images must be pullable without login. **[CI]** compose config validation.
 4. Dependabot/renovate updates are grouped, verified by full CI and merged only when green.
@@ -41,7 +41,7 @@ packages/api-client (generated from OpenAPI)   packages/ui-tokens   packages/val
 ## 3. Local runtime (must work on Windows, macOS, Linux)
 
 - `docker compose up -d` brings up postgres, redis, object storage, app, horizon, scheduler and web with no manual edits.
-- PostgreSQL 18 volume mounts at `/var/lib/postgresql`; only one service runs `composer install`/`pnpm install`; others wait on it.
+- PostgreSQL 18 volume mounts at `/var/lib/postgresql`; only one service runs `composer install`/`npm ci`; others wait on it.
 - Host ports are configurable via `.env` (`APP_PORT`, `DB_PORT`, `REDIS_PORT`, `WEB_PORT`) with defaults that avoid common conflicts (Laragon/XAMPP).
 - Vite/Next dev servers bind to `0.0.0.0` inside containers but advertise `localhost` to browsers.
 - `php artisan vsn:demo` seeds demo tenant, roles and users; documented in README.

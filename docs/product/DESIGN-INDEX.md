@@ -8,24 +8,25 @@ Figma file: [VSN Marketing — Product App](https://www.figma.com/design/5lMnknd
   - Urdu headings: Noto Nastaliq Urdu.
 - **Data:** every screen uses dummy demo data only.
 
-Status (2026-10-17): full first pass, **204 screens and state frames** across 14 pages, plus 5 base components. Every screen in `.ai/roadmap/PRODUCT-SCREEN-MAP.md` §1–§6 has a design. Shared states (loading, empty, error, 403, offline, toasts, modals, command palette, menus, validation, banners) are designed once on **States & Overlays** and apply to every screen. RTL rules are shown on **Urdu RTL**.
+Status (2026-10-17): full first pass, **245 screens and state frames** across 16 pages, plus 5 base components. Every screen in `.ai/roadmap/PRODUCT-SCREEN-MAP.md` §1–§6 has a design. Shared states (loading, empty, error, 403, offline, toasts, modals, command palette, menus, validation, banners) are designed once on **States & Overlays** and apply to every screen. RTL rules are shown on **Urdu RTL**.
 
 These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and per-screen specs).
 
 ## Layout rules used everywhere
 - **Panels:** 1440 px desktop frame.
-- **Sidebar:** 264 px with role-filtered navigation.
+- **Sidebar:** 240 px with role-filtered navigation and a 18 px line icon on every item. It collapses to 72 px (icons only), and a tooltip appears on hover or keyboard focus. The collapse state is saved per user.
 - **Top bar:** workspace switcher, global search ⌘K, alerts and profile.
-- **Content:** 32 px padding.
-- **Cards:** 16–20 px radius, `line/light` border, `brand/white` surface on a `surface/cloud` page.
+- **Content:** 24 px padding. Page titles are 22 px and section titles 15 px; this compact scale is used everywhere.
+- **Cards:** 16–20 px radius, light `line/light` (#EEF0F5) border; outline buttons and inputs use `line/strong` (#DCDFE7), `brand/white` surface on a `surface/cloud` page.
 - **Primary action:** brand-gradient pill button, top right. Secondary actions use the Outline button.
 - **Tables:** title row with filter, sort and export chips; header row on `surface/field`; status badge in the last column; pagination footer.
 - **Safety in the UI:** spend, sends and posts always pass through approval and caps. Demo mode and impersonation always show a banner.
 - **RTL:** the sidebar moves to the right, text is right-aligned, rows are mirrored and numbers stay left-to-right.
-- **Mobile:** 390 × 844 frames, a 5-tab bar (Home, Approvals, Compose, Inbox, Me), cards with 20 px radius.
+- **Mobile:** 390 × 844 frames, a 5-tab bar with icons (Home, Approvals, Compose, Inbox, Me), a drawer menu for every module, cards with 18 px radius.
+- **Website:** every feature and solution page has an "Everything inside" section. Each option there is explained next to a real UI screenshot from the app, and the landing page has a 12-module product tour.
 
 
-## Components (5) — Design system
+## Components (7) — Design system
 
 | Screen | Node |
 |---|---|
@@ -34,6 +35,20 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 | KPI Card | [5:21](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=5-21) |
 | Badge | [5:25](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=5-25) |
 | Input | [5:27](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=5-27) |
+| Icons (39 icons) | [33:3](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=33-3) |
+| Tooltip | [33:212](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=33-212) |
+
+## Navigation & Menus (7) — Sidebar expand/collapse, tooltips, menus
+
+| Screen | Node |
+|---|---|
+| Sidebar expanded (240) | [36:3](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-3) |
+| Sidebar collapsed (72) + tooltip | [36:82](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-82) |
+| Workspace switcher | [36:271](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-271) |
+| User profile | [36:301](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-301) |
+| Notifications panel | [36:342](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-342) |
+| Quick create (+) | [36:372](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-372) |
+| Table filter | [36:411](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=36-411) |
 
 ## Website (34) — §1 Public website
 
@@ -194,6 +209,27 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 | Billing | [20:1251](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=20-1251) |
 | Audit log | [20:1416](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=20-1416) |
 
+## More screens (16) — §3–§5 detail screens
+
+| Screen | Node |
+|---|---|
+| Segments list | [39:3](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-3) |
+| Automation recipes | [39:164](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-164) |
+| Post detail | [39:365](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-365) |
+| Ad campaign detail | [39:527](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-527) |
+| Report builder | [39:690](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-690) |
+| Connect provider | [39:880](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-880) |
+| Change plan | [39:1052](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1052) |
+| Invoice detail | [39:1204](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1204) |
+| My profile | [39:1349](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1349) |
+| Getting started checklist | [39:1515](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1515) |
+| Create tenant | [39:1707](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1707) |
+| Plan editor | [39:1864](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-1864) |
+| User detail | [39:2044](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-2044) |
+| Role editor | [39:2210](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-2210) |
+| Client detail | [39:2375](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-2375) |
+| Order detail | [39:2507](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=39-2507) |
+
 ## Super Admin (29) — §4 Super Admin
 
 | Screen | Node |
@@ -254,7 +290,7 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 | Clicks & sign-ups | [24:1493](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=24-1493) |
 | Affiliate payouts | [24:1579](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=24-1579) |
 
-## Mobile App (20) — §6 Mobile
+## Mobile App (38) — §6 Mobile
 
 | Screen | Node |
 |---|---|
@@ -278,6 +314,24 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 | Profile & settings | [29:594](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=29-594) |
 | Help | [29:660](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=29-660) |
 | Seller mini-panel | [29:689](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=29-689) |
+| Onboarding 1 | [41:211](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-211) |
+| Onboarding 2 | [41:225](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-225) |
+| Onboarding 3 | [41:239](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-239) |
+| Drawer menu | [41:253](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-253) |
+| Search | [41:349](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-349) |
+| Contacts | [41:399](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-399) |
+| Contact detail | [41:469](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-469) |
+| Analytics | [41:526](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-526) |
+| Ad results | [41:613](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-613) |
+| New campaign | [41:679](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-679) |
+| Templates | [41:711](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-711) |
+| Social accounts | [41:770](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-770) |
+| Calendar month | [41:829](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-829) |
+| Approval detail | [41:903](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-903) |
+| Notification settings | [41:930](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-930) |
+| Workspace settings | [41:969](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-969) |
+| Admin mini-panel | [41:1017](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-1017) |
+| Offline | [41:1066](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=41-1066) |
 
 ## States & Overlays (16) — All screens (states)
 

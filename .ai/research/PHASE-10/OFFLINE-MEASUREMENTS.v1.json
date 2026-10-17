@@ -84,7 +84,7 @@
         "app/Modules/AI/Domain/Contracts/BoundedAutonomyRollbackOutcomeSource.php": "f418e112bfd8e07ce85b5d590972a0c6acd3f031ee65101c378ca8687ab9bd11",
         "app/Modules/AI/Domain/Contracts/BoundedAutonomySafetySnapshotSource.php": "1056e3aec7c0260d97a227c0a4d7f560733019f3b0c2f4016e452714c5c1aa1b",
         "app/Modules/AI/Domain/Contracts/BoundedAutonomyVerifiedProviderAttemptSource.php": "1b9c4e6c48c9223852ddc81944dcbc2fb9546e3cdc7f7e7dc6651f830cbfaa4e",
-        "composer.lock": "45babeb1d90576656833656fbcdab6f9dc46eb96169f31d175bcaa2ecf1fac88",
+        "composer.lock": "f2181117eea424b8ba56a31b03879d541c88d0f20158b2f6b3d9c979a2b76253",
         "resources/ai/evals/analytics.v1.json": "eb94add578a6b71bd6b8fb8cb9c38c57c3a20e7f9adac57b6ad951bb1c0d9482",
         "resources/ai/evals/audience.v1.json": "e7dd6962abd0a8427e0b84b8877aeadbc8190c1aade23df1ad41befccd447dc0",
         "resources/ai/evals/brand_guardian.v1.json": "d608a45bbea44b5d6ba336360fed98a568077bd6d9c7455292a8df04cc7131c4",

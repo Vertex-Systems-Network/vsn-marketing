@@ -10,6 +10,7 @@ use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ResolveTenantContext
@@ -40,6 +41,10 @@ final class ResolveTenantContext
         );
 
         $generation = $request->hasSession() ? $request->session()->get('identity_session_generation') : null;
+        $token = $user->currentAccessToken();
+        if ($generation === null && $token instanceof PersonalAccessToken) {
+            $generation = (int) $token->getAttribute('session_generation');
+        }
         if (! $this->sessions->permits((string) $user->getKey(), $context->workspaceId, $generation)) {
             throw new AuthorizationException('Workspace session was revoked. Sign in again.');
         }

@@ -19,6 +19,7 @@ use App\Modules\Core\Infrastructure\Messaging\DatabaseOutboxRepository;
 use App\Modules\Core\Infrastructure\Messaging\LaravelEventOutboxTransport;
 use App\Modules\Core\Infrastructure\Storage\LaravelObjectStore;
 use App\Modules\Core\Infrastructure\Time\SystemClock;
+use App\Modules\Core\Presentation\Console\GenerateOpenApi;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
@@ -49,6 +50,7 @@ final class CoreServiceProvider extends ServiceProvider
             $this->commands([
                 DispatchPendingOutbox::class,
                 ReplayDeadLetteredOutbox::class,
+                GenerateOpenApi::class,
             ]);
         }
     }

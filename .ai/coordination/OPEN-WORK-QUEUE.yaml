@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "41c605677a47b027840646528471b50a75965cea",
+  "reconciled_main_sha": "470f707edd7375aa5cb1524b6836346be7e0264d",
   "active_work_path": {
     "kind": "pr",
-    "number": 607,
-    "title": "TASK-0148: Engineering, QA, security and release guidelines",
+    "number": 608,
+    "title": "TASK-0103: /api/v1 foundation, Sanctum, OpenAPI and generated client",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0103_carrier"
+    "disposition": "active_task0104_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 608,
+      "title": "TASK-0103: /api/v1 foundation, Sanctum, OpenAPI and generated client",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0104_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 607,
       "title": "TASK-0148: Engineering, QA, security and release guidelines",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0103_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

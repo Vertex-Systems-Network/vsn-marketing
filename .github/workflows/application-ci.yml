@@ -78,6 +78,9 @@ jobs:
       - name: Run backend tests
         if: steps.classify.outputs.application_required == 'true'
         run: php artisan test --fail-on-warning --display-warnings
+      - name: Validate OpenAPI document and generated API client
+        if: steps.classify.outputs.application_required == 'true'
+        run: php artisan vsn:openapi --check
       - name: Run architecture tests
         if: steps.classify.outputs.application_required == 'true'
         run: php artisan test tests/Architecture --fail-on-warning --display-warnings

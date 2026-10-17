@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Implement versioned API layer and OpenAPI client",
   "weight": 20,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0148"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Tenant-scoped /api/v1 endpoints reuse existing authorization",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "OpenAPI spec is generated and validated in CI",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "Generated client is consumed by tests",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

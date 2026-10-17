@@ -1,0 +1,9 @@
+{
+    "name": "@vsn/api-client",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "Typed /api/v1 client generated from openapi/v1.json by `php artisan vsn:openapi`.",
+    "main": "src/generated.ts",
+    "types": "src/generated.ts"
+}

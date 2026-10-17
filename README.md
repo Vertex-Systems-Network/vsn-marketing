@@ -4,14 +4,14 @@ AI-native, provider-agnostic, permission-based marketing operating system (modul
 
 ## Development progress
 
-<!-- AI_PROGRESS_SNAPSHOT roadmap=51.88 phase=23.53 current_phase=PHASE-17 active_task=TASK-0147 milestone=TASK-0146-ARCH status=IN_PROGRESS -->
+<!-- AI_PROGRESS_SNAPSHOT roadmap=51.88 phase=23.53 current_phase=PHASE-17 active_task=TASK-0147 milestone=TASK-0147-UX status=IN_PROGRESS -->
 
 > Canonical progress comes from [`.ai/state/CURRENT-STATE.yaml`](.ai/state/CURRENT-STATE.yaml) and [`.ai/roadmap/ROADMAP.yaml`](.ai/roadmap/ROADMAP.yaml). README is the human-readable mirror.
 
 **Overall roadmap progress: 51.88%**<br />
 **Current phase: PHASE-17 — 23.53%**<br />
 **Last completed task: TASK-0100**<br />
-**Current milestone: TASK-0146-ARCH — IN_PROGRESS**
+**Current milestone: TASK-0147-UX — IN_PROGRESS**
 
 ```text
  Overall  [██████████░░░░░░░░░░] 51.88%

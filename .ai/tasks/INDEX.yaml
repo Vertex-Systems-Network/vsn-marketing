@@ -1027,7 +1027,7 @@
       "phase": "PHASE-17",
       "title": "Write architecture, data model, data flow and API documentation",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0145"
       ]
@@ -1037,7 +1037,7 @@
       "phase": "PHASE-17",
       "title": "Write UI/UX guidelines and screen specifications",
       "weight": 15,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0146"
       ]

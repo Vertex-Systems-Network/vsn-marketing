@@ -23,6 +23,11 @@
       "id": "AC-3",
       "text": "WCAG 2.2 AA rules are documented",
       "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "Right-to-left (Urdu) layout rules and bilingual copy guidelines are defined",
+      "done": false
     }
   ],
   "required_tests": [

@@ -81,7 +81,7 @@ A progress/status update, pending CI, an open PR, a checkpoint, a recorded techn
 
 ## Product track (active)
 
-After PHASE-16, the next roadmap work is the owner's product track PHASE-17..PHASE-24 in `.ai/roadmap/PRODUCT-TRACK-PLAN.md` (ADR-0007 PROPOSED). Tech stack is in section 2 of that plan (Laravel API, Next.js web, React Native + Expo Android/iOS). Every phase runs the AI-native lifecycle: plan → search/research → market and competitor comparison → data design → data flow → architecture → UI/UX design → engineering → QA → finalization. Activation materializes TASK-0102..TASK-0142 and rebaselines phase weights through `tools/ai_txn.py`.
+After PHASE-16, the next roadmap work is the owner's product track PHASE-17..PHASE-24 in `.ai/roadmap/PRODUCT-TRACK-PLAN.md` (ADR-0007 ACCEPTED, active). Tech stack is in section 2 of that plan (Laravel API, Next.js web, React Native + Expo Android/iOS). Every phase runs the AI-native lifecycle: plan → search/research → market and competitor comparison → data design → data flow → architecture → UI/UX design → engineering → QA → finalization. Activation materialized TASK-0102..TASK-0149 and rebaselines phase weights through `tools/ai_txn.py`.
 
 The product track is fully AI-autonomous (no human development, review or approval steps). Agents must follow `.ai/roadmap/PRODUCT-STACK-INSTRUCTIONS.md` and build every screen in `.ai/roadmap/PRODUCT-SCREEN-MAP.md`. Only owner-supplied external accounts, keys, app-review submissions, payment/ad accounts, store accounts and hosting are outside AI authority; they block only their feature.
 

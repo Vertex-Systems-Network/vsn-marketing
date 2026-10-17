@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "4636583f1cba5eb5d44f23a45f9e3dc24b3aa94a",
+  "observed_main_sha": "d43ff9f8a3d17470af134e29b5c6e59c5bab6da2",
   "active_issue": null,
-  "active_pr": 602,
+  "active_pr": 603,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
   "current_milestone": "TASK-0145-SRS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Merge PR 602, then TASK-0147 per-screen specs and TASK-0145 SRS",
+  "exact_next_safe_action": "Merge PR 603, then mobile connect/pay screens and TASK-0147 per-screen specs",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Merge PR 602, then TASK-0147 per-screen specs and TASK-0145 SRS"
+  "exact_next_action": "Merge PR 603, then mobile connect/pay screens and TASK-0147 per-screen specs"
 }

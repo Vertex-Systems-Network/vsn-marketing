@@ -23,7 +23,7 @@ PHASE-17 starts with a mandatory pre-development stage. No product code task (TA
 | TASK-0147 | **UI/UX guidelines and screen specs** — tokens, components, navigation, accessibility, English/Urdu tone, spec for every screen in the screen map |
 | TASK-0148 | **Engineering, QA, security and release guidelines** — coding standards, Definition of Done, test strategy, security/privacy checklist, release/rollback, demo-data rules |
 
-Documents live under `docs/product/` (SRS, architecture, ux, guidelines) and are updated whenever later work changes them.
+Documents live under `docs/product/` and are updated whenever later work changes them: [SRS](../../docs/product/SRS.md), [ARCHITECTURE](../../docs/product/ARCHITECTURE.md), [API-V1](../../docs/product/API-V1.md), [UX-GUIDELINES](../../docs/product/UX-GUIDELINES.md), [SCREEN-SPECS](../../docs/product/SCREEN-SPECS.md), [ENGINEERING-GUIDELINES](../../docs/product/ENGINEERING-GUIDELINES.md).
 
 ## 0.2 Demo system
 

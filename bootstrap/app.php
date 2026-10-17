@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SecurityHeaders;
+use App\Modules\Core\Presentation\Http\Api\ProblemDetails;
 use App\Modules\Core\Presentation\Http\Middleware\ObserveRequest;
 use App\Modules\Core\Presentation\Http\Middleware\RequireOperationsToken;
 use App\Modules\Identity\Presentation\Http\Middleware\RequireWorkspacePermission;
@@ -20,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo('/auth/login');
+        $middleware->redirectGuestsTo(fn (Request $request) => ProblemDetails::applies($request) ? null : '/auth/login');
+        $middleware->statefulApi();
         $middleware->redirectUsersTo('/workspaces');
         $middleware->append(ObserveRequest::class);
         $middleware->append(SecurityHeaders::class);
@@ -40,5 +42,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+        $exceptions->render(fn (Throwable $e, Request $request) => ProblemDetails::applies($request)
+            ? ProblemDetails::render($e, $request)
+            : null);
     })
     ->create();

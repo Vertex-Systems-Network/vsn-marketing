@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "4636583f1cba5eb5d44f23a45f9e3dc24b3aa94a",
+  "reconciled_main_sha": "d43ff9f8a3d17470af134e29b5c6e59c5bab6da2",
   "active_work_path": {
     "kind": "pr",
-    "number": 602,
-    "title": "Design: owner logo, AI image library, icons, no placeholders",
+    "number": 603,
+    "title": "Design: social connect wizard and payment flows",
     "branch": "claude/wizardly-einstein-ja5n9h",
     "disposition": "active_task0145_carrier"
   },
   "items": [
     {
       "kind": "pr",
+      "number": 603,
+      "title": "Design: social connect wizard and payment flows",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0145_carrier",
+      "accepted_actionable": true
+    },
+    {
+      "kind": "pr",
       "number": 602,
       "title": "Design: owner logo, AI image library, icons, no placeholders",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0145_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

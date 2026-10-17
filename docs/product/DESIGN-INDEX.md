@@ -412,3 +412,4 @@ The Figma page `Flows — Connect & Pay` (node 73:10) holds the end-to-end wizar
 - **Admin:** Payment detail with an event timeline.
 
 All payment screens represent Stripe test mode. No spend happens without approval and caps.
+- **Mobile (same page, row y=8000):** Connect social 1 Choose network, 2 Allow, 3 Pick pages, 4 Connected; Checkout; Payment successful; Payment failed; Ad wallet top-up (8 frames).

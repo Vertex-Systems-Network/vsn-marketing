@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Write UI/UX guidelines and screen specifications",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0146"
   ],
@@ -12,27 +12,27 @@
     {
       "id": "AC-1",
       "text": "Every screen in the screen map has a spec with states",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "Design tokens and component list are defined",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "WCAG 2.2 AA rules are documented",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-4",
       "text": "Right-to-left (Urdu) layout rules and bilingual copy guidelines are defined",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-5",
       "text": "Screens are designed in a Figma file in team folder 637889245 and every token traces to Figma file JqukmwKhVyObh1SQ6gsKR0 (PRODUCT-TRACK-PLAN section 2.1)",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

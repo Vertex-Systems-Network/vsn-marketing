@@ -1037,7 +1037,7 @@
       "phase": "PHASE-17",
       "title": "Write UI/UX guidelines and screen specifications",
       "weight": 15,
-      "status": "ready",
+      "status": "completed",
       "dependencies": [
         "TASK-0146"
       ]
@@ -1047,7 +1047,7 @@
       "phase": "PHASE-17",
       "title": "Write engineering, QA, security and release guidelines",
       "weight": 10,
-      "status": "planned",
+      "status": "ready",
       "dependencies": [
         "TASK-0147"
       ]

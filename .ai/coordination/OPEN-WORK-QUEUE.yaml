@@ -1,21 +1,29 @@
 {
   "schema_version": 1,
-  "reconciled_main_sha": "ceccbe54a8594184b6329877b0810e1440d6ba9c",
+  "reconciled_main_sha": "2b378334ddb6653167c3414ebce52d12d558f5e1",
   "active_work_path": {
     "kind": "pr",
-    "number": 605,
-    "title": "TASK-0146: Architecture, data model, data flows and API v1 draft",
+    "number": 606,
+    "title": "TASK-0147: UI/UX guidelines and screen specifications",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0147_carrier"
+    "disposition": "active_task0148_carrier"
   },
   "items": [
+    {
+      "kind": "pr",
+      "number": 606,
+      "title": "TASK-0147: UI/UX guidelines and screen specifications",
+      "branch": "claude/wizardly-einstein-ja5n9h",
+      "disposition": "active_task0148_carrier",
+      "accepted_actionable": true
+    },
     {
       "kind": "pr",
       "number": 605,
       "title": "TASK-0146: Architecture, data model, data flows and API v1 draft",
       "branch": "claude/wizardly-einstein-ja5n9h",
       "disposition": "active_task0147_carrier",
-      "accepted_actionable": true
+      "accepted_actionable": false
     },
     {
       "kind": "pr",

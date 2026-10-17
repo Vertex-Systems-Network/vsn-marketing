@@ -380,3 +380,35 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 - **Icons:** placeholder squares were replaced with `Icon/*` line icons on tinted tiles.
 - **Avatars:** person avatars use initials. List rows for things that are not people (alerts, steps, guides) use icons.
 - **Rule:** new screens must not use gradient placeholders. Use library images, UI screenshots, icons or initials.
+
+## Flows — Connect & Pay (2026-10-17)
+
+The Figma page `Flows — Connect & Pay` (node 73:10) holds the end-to-end wizards the owner reported as missing. It has 27 screens.
+
+- **Social connect wizard:**
+  1. Choose network
+  2. Sign in & allow (Meta consent and the permissions requested)
+  3. Pick pages & accounts
+  4. Posting rules
+  5. Connected
+  - Plus two support screens: Error — missing permission, and Reconnect — token expiring.
+- **Ads connect:** choose the ad account, then set a hard spend cap and an approver.
+- **Subscription checkout:**
+  1. Choose plan
+  2. Billing details
+  3. Payment method (card, SEPA, PayPal, bank transfer, coupon)
+  4. Bank verification (3-D Secure)
+  - Then: Processing, Payment successful, Payment failed.
+- **Billing:**
+  - Payment methods
+  - Add card
+  - Trial ending
+  - Past due (payment retry)
+  - Cancel subscription (reason → offer → confirm)
+  - Payment history
+- **Ad wallet:** Top up, Top-up successful.
+- **Marketplace:** Checkout, Purchase successful.
+- **Seller:** Payout setup through Stripe Connect.
+- **Admin:** Payment detail with an event timeline.
+
+All payment screens represent Stripe test mode. No spend happens without approval and caps.

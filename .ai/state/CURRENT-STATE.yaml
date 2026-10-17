@@ -31,7 +31,7 @@
   "current_milestone": "TASK-0145-SRS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Merge PR 601, then write SRS (TASK-0145) using the designs",
+  "exact_next_safe_action": "Merge PR 601, then write SRS (TASK-0145) from the designs",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Merge PR 601, then write SRS (TASK-0145) using the designs"
+  "exact_next_action": "Merge PR 601, then write SRS (TASK-0145) from the designs"
 }

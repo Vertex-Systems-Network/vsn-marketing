@@ -24,14 +24,14 @@
     "release_integrity_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad release-integrity PASS.",
     "scorecard_status": "Protected resulting main 4d191ddc6ebc957309c3431160e2eed4b6cfbbad scorecard PASS."
   },
-  "observed_main_sha": "9adfa0859a69e0191369123f094661177c3d0377",
+  "observed_main_sha": "1704749e04c67f7f4f6278a7ecbf3d2a445d59a6",
   "active_issue": null,
-  "active_pr": 599,
+  "active_pr": 600,
   "active_branch": "claude/wizardly-einstein-ja5n9h",
-  "current_milestone": "TASK-0102-RESEARCH",
+  "current_milestone": "TASK-0145-SRS",
   "milestone_status": "IN_PROGRESS",
   "last_completed_milestone": "TASK-0090 offline-only multi-resource quota, independent human approval, emergency stop, final review and race-certification from PRs #531-#539 with all required exact-head and resulting-main gates.",
-  "exact_next_safe_action": "Complete TASK-0145 per PRODUCT-TRACK-PLAN pre-development and execution rules.",
+  "exact_next_safe_action": "Merge PR 600, then write SRS (TASK-0145)",
   "pending_runner_ids": [],
   "blocked_runner_ids": [
     "RBT-004",
@@ -45,5 +45,5 @@
     "tight_polling_forbidden": true,
     "pending_ci_state_only_commit_forbidden": true
   },
-  "exact_next_action": "Complete TASK-0145 per PRODUCT-TRACK-PLAN pre-development and execution rules."
+  "exact_next_action": "Merge PR 600, then write SRS (TASK-0145)"
 }

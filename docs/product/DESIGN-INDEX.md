@@ -369,3 +369,14 @@ These designs are inputs to TASK-0145 (SRS) and TASK-0147 (UI/UX guidelines and 
 - Dark-surface variants.
 - Code Connect mapping once `packages/ui` exists.
 
+
+## Brand assets and the no-placeholder rule (2026-10-17)
+- **Logo:** the owner-supplied VSN mark is the `Logo/Mark` component ([47:10](https://www.figma.com/design/5lMnkndlKLHunSFGBJYhDN?node-id=47-10)). It is used in every sidebar, website header, auth screen, mobile app and RTL screen. On gradient brand panels it sits on a white rounded plate.
+- **Image library:** 16 Figma-AI images on the Components page, frame "Image library":
+  - Photos: fashion, sale banner, product launch, office, unboxing, café, gym, agency.
+  - Illustrations: email, social, AI, ads, 3 onboarding illustrations, blog cover.
+
+  Every former gradient placeholder now uses one of these images or a real UI screenshot.
+- **Icons:** placeholder squares were replaced with `Icon/*` line icons on tinted tiles.
+- **Avatars:** person avatars use initials. List rows for things that are not people (alerts, steps, guides) use icons.
+- **Rule:** new screens must not use gradient placeholders. Use library images, UI screenshots, icons or initials.

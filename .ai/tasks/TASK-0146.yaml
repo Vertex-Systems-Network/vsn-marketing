@@ -3,7 +3,7 @@
   "phase": "PHASE-17",
   "title": "Write architecture, data model, data flow and API documentation",
   "weight": 15,
-  "status": "ready",
+  "status": "completed",
   "dependencies": [
     "TASK-0145"
   ],
@@ -12,17 +12,17 @@
     {
       "id": "AC-1",
       "text": "Diagrams and ERD cover all product-track modules",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-2",
       "text": "API design draft exists for /api/v1",
-      "done": false
+      "done": true
     },
     {
       "id": "AC-3",
       "text": "ADRs record every architecture decision",
-      "done": false
+      "done": true
     }
   ],
   "required_tests": [

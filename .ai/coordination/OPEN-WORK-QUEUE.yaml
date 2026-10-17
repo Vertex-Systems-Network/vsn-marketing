@@ -6,7 +6,7 @@
     "number": 608,
     "title": "TASK-0103: /api/v1 foundation, Sanctum, OpenAPI and generated client",
     "branch": "claude/wizardly-einstein-ja5n9h",
-    "disposition": "active_task0103_carrier"
+    "disposition": "active_task0104_carrier"
   },
   "items": [
     {
@@ -14,7 +14,7 @@
       "number": 608,
       "title": "TASK-0103: /api/v1 foundation, Sanctum, OpenAPI and generated client",
       "branch": "claude/wizardly-einstein-ja5n9h",
-      "disposition": "active_task0103_carrier",
+      "disposition": "active_task0104_carrier",
       "accepted_actionable": true
     },
     {

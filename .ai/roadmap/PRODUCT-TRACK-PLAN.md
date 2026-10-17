@@ -1,16 +1,17 @@
-# VSN Marketing Product Track — PHASE-17..PHASE-24 (planned)
+# VSN Marketing Product Track — PHASE-17..PHASE-24 (active)
 
-Status: **PLANNED / NOT ACTIVE**. Owner request 2026-10-17 (repository owner, AI-only execution per ADR-0006). Baseline PHASE-00..16 is complete; this track turns the certified backend foundation into the sellable marketing product the owner specified. Activation requires the rebaseline in ADR-0007 (machine task materialization and phase-weight rebaseline). No progress percentage changes until then.
+Status: **ACTIVE** (ADR-0007 accepted 2026-10-17). Owner request 2026-10-17 (repository owner, AI-only execution per ADR-0006). Baseline PHASE-00..16 is complete; this track turns the certified backend foundation into the sellable marketing product the owner specified. Tasks are materialized in `.ai/tasks/` and weights rebaselined (foundation 50%, product track 50%).
 
 ## 0. AI-native autonomy (owner decision 2026-10-17)
 
 The product track is **fully AI-native**: AI agents plan, research, compare competitors, design data and flows, architect, design UI, engineer, test, review, merge and certify without human development, review or approval steps. AI makes all technical and product decisions inside this plan and records them as ADRs; owner decisions already given (ADR-0006, ADR-0007) are binding defaults. The only owner inputs are things AI cannot legally or physically create: third-party accounts and API keys, platform app-review submissions under the company identity, payment/ad spend accounts, app-store developer accounts, domain and hosting. Missing inputs block only that feature; AI continues with sandboxes/test modes and all other work.
 
 Companion documents:
+- [AI master prompt (Roman Urdu)](../../docs/product/AI-MASTER-PROMPT.md) — single prompt to start any AI session.
 - [Stack operating instructions](PRODUCT-STACK-INSTRUCTIONS.md) — versions, runtime, CI and deployment rules so the stack works without breakage.
 - [Screen map](PRODUCT-SCREEN-MAP.md) — landing and public pages, roles, customer dashboard and sub-screens, Super Admin and Seller panels, mobile app screens.
 
-## 0.2 Pre-development stage (before any product code)
+## 0.1 Pre-development stage (before any product code)
 
 PHASE-17 starts with a mandatory pre-development stage. No product code task (TASK-0103 onward) may start until these are merged:
 
@@ -24,11 +25,11 @@ PHASE-17 starts with a mandatory pre-development stage. No product code task (TA
 
 Documents live under `docs/product/` (SRS, architecture, ux, guidelines) and are updated whenever later work changes them.
 
-## 0.3 Demo system
+## 0.2 Demo system
 
 TASK-0149 builds a full demo system: sandbox providers that never send, post, charge or spend; dummy data for every module and screen (contacts, lists, templates, campaigns with stats, social calendar and posts, AI drafts, analytics, plans, marketplace listings, reseller clients); demo users for every role; one-click reset; public "Try demo" login on the landing page. Every later phase extends the demo data for its new screens, and the demo is part of each phase certification.
 
-## 0.4 Non-stop execution policy (AI flow fixes)
+## 0.3 Non-stop execution policy (AI flow fixes)
 
 The product track runs continuously without asking the owner for routine consent. Agents merge green work, start the next dependency-ready task and only stop when all remaining work needs an owner-only external input.
 
@@ -46,7 +47,15 @@ Issues seen in earlier AI flow and their fixes:
 | Local environment could not install PHP packages | Rely on CI as the test runner; never claim local test runs that did not happen |
 | Asking the owner "continue/merge?" between tasks | Forbidden; continue automatically (AGENTS.md continuous mode) |
 
-## 0.5 GitHub runner budget
+
+Additional binding rules (from the owner master prompt, `docs/product/AI-MASTER-PROMPT.md`):
+
+- **Stop only when** all executable work is done, or every remaining item waits on an owner-only external input (section 6). Re-check main, open PRs and CI before stopping.
+- **Report format:** short Roman Urdu summary — what merged (PR links), what was tested, what remains, and at most one clear owner request. Never claim "done" for work that did not run or failed.
+- **Safety:** no spam, consent/suppression bypass, provider-limit evasion, fake accounts or unauthorized scraping; secrets never committed or logged; strict tenant isolation; nothing is sent, posted or spent live without the customer's in-product approval; live money/ads/production only by owner decision.
+- **Precedence:** repository files (AGENTS.md, this plan, task registry) override the prompt when they differ; update the prompt when the plan changes.
+
+## 0.4 GitHub runner budget
 
 - Verify locally first (validators, lint, PHP syntax, TypeScript) before pushing; push once per meaningful slice.
 - Workflows keep `concurrency: cancel-in-progress` so superseded runs stop.
@@ -55,36 +64,39 @@ Issues seen in earlier AI flow and their fixes:
 - Heavy jobs (benchmarks, mobile EAS builds, load tests) run only at phase certification or on manual dispatch.
 - Scheduled workflows are kept to the minimum frequency that still serves their purpose.
 
-## 0.6 Research banks
+## 0.5 Research banks
 
 - [Systems Bank](../research/PRODUCT-TRACK/SYSTEMS-BANK.md): existing market systems, pricing signals, user complaints and gaps (2026-10-17).
 - [Options Bank](../research/PRODUCT-TRACK/OPTIONS-BANK.md): candidate features with priority, target phase and how VSN differs.
 
 ## 1. Owner requirements (source of truth)
 
-| # | Requirement | Current baseline evidence | Track phase |
-|---|---|---|---|
-| R1 | Send emails | Delivery engine (PHASE-04), live sending disabled | P18 |
-| R2 | Integrate SMTP, Google SMTP, SendGrid, Mailchimp and other free+paid providers | Provider/connector framework (PHASE-03/14), not live | P18 |
-| R3 | List provider templates | Provider template sync partial (TASK-0035) | P18 |
-| R4 | Show provider sending limits | Quota/rate controls (TASK-0021) | P18 |
-| R5 | Sent / delivered / opened / clicked status | Email engagement extension EM-01..06 unweighted, not built | P18 |
-| R6 | Build own templates | Template/content model (PHASE-06), no editor UI | P18 |
-| R7 | Manage email address lists | Contacts/lists/tags (PHASE-02), no UI | P18 |
-| R8 | Analyse active/disabled addresses | Suppression/deliverability (PHASE-05) | P18 |
-| R9 | Email tracking | as R5 | P18 |
-| R10 | Email-marketing sub-options (campaigns, automation, A/B, segments) | PHASE-07/08/09/11 backend | P18 |
-| R11 | Social media posting management | Social adapters offline (PHASE-13) | P19 |
-| R12 | Plan, schedule, post, AI-assisted posts, duplicate check across networks | Calendar/scheduler backend (PHASE-07) | P19 |
-| R13 | Integrate social ad/boost systems | Not built | P21 |
-| R14 | Social account data download/delete/update | Contact-only privacy controls (TASK-0096) | P19 |
-| R15 | ChatGPT, Gemini, Claude integration | AI gateway offline (PHASE-10) | P20 |
-| R16 | Package/plan system | Plans/metering, Stripe test mode (TASK-0098) | P22 |
-| R17 | Buyer, admin, seller panels | No panels | P17 (+P22) |
-| R18 | Reports | Analytics backend + 1 screen (PHASE-12) | P23 |
-| R19 | Filters | Segments only | P23 |
-| R20 | Best visuals, fully featured, sales-booster UI on Next.js | 11 basic screens (Inertia React) | P17 + every phase |
-| R21 | Android and iOS apps | None | P24 |
+| # | Requirement | Current baseline evidence | Track phase | Tasks |
+|---|---|---|---|---|
+| R1 | Send emails | Delivery engine (PHASE-04), live sending disabled | P18 | TASK-0110, TASK-0113 |
+| R2 | Integrate SMTP, Google SMTP, SendGrid, Mailchimp and other free+paid providers | Provider/connector framework (PHASE-03/14), not live | P18 | TASK-0109, TASK-0110 |
+| R3 | List provider templates | Provider template sync partial (TASK-0035) | P18 | TASK-0112 |
+| R4 | Show provider sending limits | Quota/rate controls (TASK-0021) | P18 | TASK-0110 |
+| R5 | Sent / delivered / opened / clicked status | Email engagement extension EM-01..06 unweighted, not built | P18 | TASK-0114 |
+| R6 | Build own templates | Template/content model (PHASE-06), no editor UI | P18 | TASK-0112 |
+| R7 | Manage email address lists | Contacts/lists/tags (PHASE-02), no UI | P18 | TASK-0111 |
+| R8 | Analyse active/disabled addresses | Suppression/deliverability (PHASE-05) | P18 | TASK-0111 |
+| R9 | Email tracking | as R5 | P18 | TASK-0114 |
+| R10 | Email-marketing sub-options (campaigns, automation, A/B, segments) | PHASE-07/08/09/11 backend | P18 | TASK-0113, TASK-0115 |
+| R11 | Social media posting management | Social adapters offline (PHASE-13) | P19 | TASK-0118, TASK-0119 |
+| R12 | Plan, schedule, post, AI-assisted posts, duplicate check across networks | Calendar/scheduler backend (PHASE-07) | P19 | TASK-0119, TASK-0120 |
+| R13 | Integrate social ad/boost systems | Not built | P21 | TASK-0128, TASK-0129 |
+| R14 | Social account data download/delete/update | Contact-only privacy controls (TASK-0096) | P19 | TASK-0121 |
+| R15 | ChatGPT, Gemini, Claude integration | AI gateway offline (PHASE-10) | P20 | TASK-0124, TASK-0125 |
+| R16 | Package/plan system | Plans/metering, Stripe test mode (TASK-0098) | P22 | TASK-0132 |
+| R17 | Buyer, admin, seller panels | No panels | P17 (+P22) | TASK-0105, TASK-0106, TASK-0133, TASK-0134 |
+| R18 | Reports | Analytics backend + 1 screen (PHASE-12) | P23 | TASK-0136 |
+| R19 | Filters | Segments only | P23 | TASK-0137 |
+| R20 | Best visuals, fully featured, sales-booster UI on Next.js | 11 basic screens (Inertia React) | P17 + every phase | TASK-0104, TASK-0138 |
+| R21 | Android and iOS apps | None | P24 | TASK-0141–0143 |
+| R22 | Multilingual UI incl. Urdu (RTL) | None | P17 + all | TASK-0145, TASK-0147, TASK-0104 |
+| R23 | Demo system with dummy data | Partial E2E seeders | P17 + all | TASK-0149 |
+| R24 | Pre-development SRS, architecture, UX and engineering docs | None | P17 | TASK-0145–0148 |
 
 ## 2. Technology stack (owner decision 2026-10-17)
 
@@ -121,66 +133,71 @@ Each phase runs these stages in order, by AI, with repository evidence for each 
 9. **QA** — unit, feature, adversarial, PostgreSQL/Redis integration, Playwright E2E, accessibility, performance.
 10. **Finalization** — certification matrix, exact-head + resulting-main gates, README/progress update.
 
-## 4. Phases
+## 4. Phases and tasks (generated from `.ai/tasks/INDEX.yaml`; registry is the source of truth)
 
-### PHASE-17 — Product shell, design system and panels (R17, R20)
-- TASK-0102 Research: SaaS admin/panel patterns, competitor dashboards, design systems, Next.js + Expo monorepo practices; confirm stack in section 2 (ADR-0007).
-- TASK-0102A API layer: versioned `/api/v1`, Sanctum auth, OpenAPI spec and generated TypeScript client; existing Inertia screens stay until replaced.
-- TASK-0103 Monorepo + Next.js app shell: Turborepo, shared tokens, shadcn/ui design system, light/dark theme, sidebar/topbar, dashboard, marketing landing pages.
-- TASK-0104 Roles and access: default roles (Super Admin, Owner, Admin, Marketer, Viewer), role-management screen, team invites, signup/login polish.
-- TASK-0105 Panels: Super Admin (tenants, plans, usage, revenue, marketplace moderation), Customer/Buyer workspace, Seller panel (reseller/agency clients, marketplace listings, orders, payouts, affiliate earnings) over TASK-0097 delegation.
-- TASK-0106 Developer runtime: demo seeder (`vsn:demo`), Docker fixes (PostgreSQL 18 volume, MinIO image, single composer install, Vite host).
-- TASK-0107 Certify PHASE-17.
+### PHASE-17 — Pre-development, API, Next.js shell, roles, panels, demo (R17, R20, R22, R23)
+- **TASK-0102** Research product shell, panels and Next.js/Expo monorepo stack _(after TASK-0100)_ — Verify current Next.js, shadcn/ui, Expo and Turborepo practices and benchmark competitor dashboards and panels.
+- **TASK-0145** Write Software Requirements Specification (SRS) _(after TASK-0102)_ — IEEE 29148-style SRS for the product track: scope, personas/roles, functional requirements R1-R21 with IDs, non-functional requirements (security, privacy, performance, accessibility, availability), external interfaces, constraints and acceptance criteria.
+- **TASK-0146** Write architecture, data model, data flow and API documentation _(after TASK-0145)_ — System context and container diagrams, module boundaries, ERD for new entities, data-flow and sequence diagrams for email, social, AI, ads, billing and marketplace, OpenAPI design and integration catalogue.
+- **TASK-0147** Write UI/UX guidelines and screen specifications _(after TASK-0146)_ — Design principles, tokens, component inventory, layout/navigation, accessibility rules, content tone (English and Urdu), and per-screen specs with states for every screen in PRODUCT-SCREEN-MAP.
+- **TASK-0148** Write engineering, QA, security and release guidelines _(after TASK-0147)_ — Coding standards for PHP/TypeScript, branching/PR rules, test strategy and Definition of Done, security and privacy checklist, release/rollback and demo-data rules, aligned with PRODUCT-STACK-INSTRUCTIONS.
+- **TASK-0103** Implement versioned API layer and OpenAPI client _(after TASK-0148)_ — Expose existing modules through /api/v1 with Sanctum auth, OpenAPI 3.1 spec and generated TypeScript client.
+- **TASK-0104** Implement Next.js app shell and design system in monorepo _(after TASK-0103)_ — Create pnpm/Turborepo monorepo with Next.js web, shared tokens and shadcn/ui design system, navigation and dashboard.
+- **TASK-0105** Implement default roles, role management, invites and signup _(after TASK-0104)_ — Ship default roles, role screen, team invites and signup on the existing permission catalog.
+- **TASK-0106** Implement Super Admin, Buyer and Seller panels _(after TASK-0105)_ — Deliver the three panels with tenant isolation, reseller/agency client management and marketplace/affiliate placeholders.
+- **TASK-0107** Fix developer runtime and add demo seeder _(after TASK-0106)_ — Fix Docker Compose (PostgreSQL 18 volume, MinIO image, single composer install, Vite host) and add vsn:demo seeder.
+- **TASK-0149** Implement demo system with dummy data _(after TASK-0107)_ — Demo mode with sandbox providers (no real sending/posting/spend), seeded dummy data for every module (contacts, lists, templates, campaigns with stats, social posts and calendar, AI drafts, analytics, billing plans, marketplace listings, reseller clients), demo users for every role, one-click reset, public demo login on the landing page.
+- **TASK-0108** Certify PHASE-17 _(after TASK-0149)_ — Certify product shell, API and panels.
 
 ### PHASE-18 — Email marketing live (R1–R10)
-- TASK-0108 Research: SMTP/Gmail SMTP (OAuth/app passwords), SendGrid, Mailchimp Transactional, Brevo, Mailgun, Amazon SES, Resend, Postmark — free tiers, limits, template and webhook APIs; competitor email builders.
-- TASK-0109 Provider connections live: credential vault, connection test, per-provider limit display and enforcement.
-- TASK-0110 Contacts and lists UI: import (CSV), dedupe, tags, active/disabled/suppressed analysis.
-- TASK-0111 Template studio: drag-and-drop editor, own templates, provider template listing/import, preview/test send.
-- TASK-0112 Campaign wizard and sending: audience, content, schedule, approvals, send through selected provider.
-- TASK-0113 Engagement tracking (absorbs EM-01..06): delivered/bounce/open/click/unsubscribe via provider webhooks, pixel and safe click redirect, bot/privacy-proxy flags.
-- TASK-0114 Email analytics dashboard and automation/A-B/segment screens.
-- TASK-0115 Certify PHASE-18.
+- **TASK-0109** Research email providers, limits, tracking and competitor email builders _(after TASK-0108)_ — Verify SMTP, Gmail, SendGrid, Mailchimp, Brevo, Mailgun, SES, Resend, Postmark, Mailjet APIs, free tiers, webhooks and competitor builders.
+- **TASK-0110** Implement live email provider connections, limits and failover _(after TASK-0109)_ — Connect providers with credential vault, connection tests, limit meters and automatic failover.
+- **TASK-0111** Implement contacts and lists UI with health analysis _(after TASK-0110)_ — CSV import, dedupe, tags, lists and active/bounced/suppressed health screens.
+- **TASK-0112** Implement template studio and provider template import _(after TASK-0111)_ — Drag-and-drop editor, own templates, provider template listing/import, preview and test send.
+- **TASK-0113** Implement campaign wizard and sending _(after TASK-0112)_ — Audience, content, schedule, approval and send through selected provider.
+- **TASK-0114** Implement email engagement tracking _(after TASK-0113)_ — Delivered, bounce, open, click, unsubscribe and complaint via webhooks, pixel and safe redirect with machine-open/bot-click separation.
+- **TASK-0115** Implement email analytics, automation, A/B and deliverability screens _(after TASK-0114)_ — Operator screens over existing journeys, experiments and deliverability modules.
+- **TASK-0116** Certify PHASE-18 _(after TASK-0115)_ — Certify live email marketing.
 
 ### PHASE-19 — Social media management (R11, R12, R14)
-- TASK-0116 Research: Meta (Facebook/Instagram), LinkedIn, X, TikTok, YouTube, Pinterest APIs, app-review, rate limits; competitor schedulers.
-- TASK-0117 Account connections: OAuth connect, token refresh, account health.
-- TASK-0118 Composer, content calendar, scheduling, approvals, per-network previews.
-- TASK-0119 AI post assistant and duplicate/near-duplicate detection across networks and history.
-- TASK-0120 Social account data download/update/delete and post performance sync.
-- TASK-0121 Certify PHASE-19.
+- **TASK-0117** Research social network APIs, policies and competitor schedulers _(after TASK-0116)_ — Verify Meta, LinkedIn, X, TikTok, YouTube, Pinterest APIs, app review and limits.
+- **TASK-0118** Implement social account connections _(after TASK-0117)_ — OAuth connect, token refresh and account health.
+- **TASK-0119** Implement composer, calendar, scheduling and approvals _(after TASK-0118)_ — Per-network previews, shared calendar with email, queue and approvals.
+- **TASK-0120** Implement AI post assistant and duplicate detection _(after TASK-0119)_ — AI post generation and near-duplicate detection across networks and history.
+- **TASK-0121** Implement social account data controls, inbox and performance sync _(after TASK-0120)_ — Account data download/update/delete, inbox and post metrics.
+- **TASK-0122** Certify PHASE-19 _(after TASK-0121)_ — Certify social media management.
 
 ### PHASE-20 — AI providers live (R15)
-- TASK-0122 Research: OpenAI, Google Gemini, Anthropic Claude APIs, pricing, data use, regions.
-- TASK-0123 Live provider adapters behind the existing AI gateway, platform key and bring-your-own-key, usage/cost limits.
-- TASK-0124 AI writer features: email copy, subject lines, social posts, rewrite/translate, brand voice.
-- TASK-0125 Certify PHASE-20.
+- **TASK-0123** Research OpenAI, Gemini and Claude APIs, pricing and data use _(after TASK-0122)_ — Verify current model APIs, pricing, data retention and regions.
+- **TASK-0124** Implement live AI provider adapters with BYOK and cost limits _(after TASK-0123)_ — Adapters behind the AI gateway, platform and bring-your-own keys, usage and cost caps.
+- **TASK-0125** Implement AI writer and assistants _(after TASK-0124)_ — Email copy, subjects, social posts, rewrite/translate incl. Urdu, brand voice.
+- **TASK-0126** Certify PHASE-20 _(after TASK-0125)_ — Certify live AI providers.
 
 ### PHASE-21 — Ads and boosting (R13)
-- TASK-0126 Research: Meta Marketing API, Google Ads, TikTok Ads, LinkedIn Ads — boost flows, review, spend controls.
-- TASK-0127 Ad account connections and boost-a-post with human-approved budgets and hard spend caps.
-- TASK-0128 Ad results reporting.
-- TASK-0129 Certify PHASE-21.
+- **TASK-0127** Research ads APIs and boost policies _(after TASK-0126)_ — Verify Meta Marketing, Google Ads, TikTok Ads, LinkedIn Ads APIs and review.
+- **TASK-0128** Implement ad accounts and boost-a-post with spend caps _(after TASK-0127)_ — Connect ad accounts and boost posts with human-approved budgets and hard caps.
+- **TASK-0129** Implement ad results reporting _(after TASK-0128)_ — Organic, paid and email results in one view.
+- **TASK-0130** Certify PHASE-21 _(after TASK-0129)_ — Certify ads and boosting.
 
-### PHASE-22 — Packages, billing and reseller commerce (R16, R17)
-- TASK-0130 Research: SaaS pricing tiers of competitors, Stripe Billing, tax, reseller models.
-- TASK-0131 Plans and limits (Free/Starter/Pro/Agency), upgrade/downgrade, trials, invoices on the TASK-0098 engine.
-- TASK-0132 Reseller/agency commission and white-label billing; affiliate/referral program.
-- TASK-0132A Marketplace: seller onboarding and verification, listings (templates, automation recipes, AI prompt packs, integrations, done-for-you services), reviews/ratings, buyer checkout, seller payouts via Stripe Connect, platform fee, refunds/disputes and moderation.
-- TASK-0133 Certify PHASE-22 (Stripe live only after owner decision).
+### PHASE-22 — Packages, billing, reseller, affiliate and marketplace (R16, R17)
+- **TASK-0131** Research SaaS pricing, Stripe Billing/Connect, tax, reseller and marketplace models _(after TASK-0130)_ — Verify competitor pricing, Stripe Billing and Connect, tax and marketplace rules.
+- **TASK-0132** Implement plans, limits, trials and invoices _(after TASK-0131)_ — Free/Starter/Pro/Agency plans on the TASK-0098 engine with self-serve upgrade and cancellation.
+- **TASK-0133** Implement reseller commission and affiliate program _(after TASK-0132)_ — Reseller/agency white-label billing, commissions and affiliate referral tracking.
+- **TASK-0134** Implement marketplace _(after TASK-0133)_ — Seller onboarding, listings (templates, recipes, prompt packs, integrations, services), reviews, checkout, Stripe Connect payouts, refunds and moderation.
+- **TASK-0135** Certify PHASE-22 _(after TASK-0134)_ — Certify packages, billing and marketplace.
 
 ### PHASE-23 — Reports, filters and launch (R18, R19, R20)
-- TASK-0134 Reports centre: cross-channel dashboards, scheduled reports, CSV/PDF export.
-- TASK-0135 Global search and filters on every list.
-- TASK-0136 Performance, security, accessibility and visual QA; production deployment runbook.
-- TASK-0137 Certify product launch readiness.
+- **TASK-0136** Implement reports centre with export and schedules _(after TASK-0135)_ — Cross-channel dashboards, scheduled reports, CSV/PDF export.
+- **TASK-0137** Implement global search and filters _(after TASK-0136)_ — Search and saved filters on every list.
+- **TASK-0138** Run launch QA and deployment runbook _(after TASK-0137)_ — Performance, security, accessibility and visual QA plus production deployment runbook.
+- **TASK-0139** Certify product launch readiness _(after TASK-0138)_ — Certify the web product.
 
 ### PHASE-24 — Android and iOS apps (R21)
-- TASK-0138 Research: Expo/React Native current releases, App Store and Play Store policies (privacy labels, in-app purchase rules, push), competitor mobile apps.
-- TASK-0139 Mobile foundation: Expo app in monorepo, auth, workspace switcher, shared API client and tokens, push notifications.
-- TASK-0140 Mobile features: dashboard, campaign and post approvals, social composer/scheduler, live email/post stats, AI writer, notifications.
-- TASK-0141 Store release pipeline: EAS builds, test tracks (TestFlight/Play internal), store listings.
-- TASK-0142 Certify PHASE-24 (device E2E, accessibility, store-readiness).
+- **TASK-0140** Research Expo, store policies and competitor mobile apps _(after TASK-0139)_ — Verify Expo/React Native releases, App Store and Play policies, in-app purchase and push rules.
+- **TASK-0141** Implement mobile foundation _(after TASK-0140)_ — Expo app in monorepo with auth, workspace switcher, shared API client and push.
+- **TASK-0142** Implement mobile features _(after TASK-0141)_ — Dashboard, approvals, composer/scheduler, live stats, AI writer, notifications.
+- **TASK-0143** Implement store release pipeline _(after TASK-0142)_ — EAS builds, TestFlight/Play internal tracks, listings.
+- **TASK-0144** Certify PHASE-24 _(after TASK-0143)_ — Certify mobile apps.
 
 ## 5. Decisions
 

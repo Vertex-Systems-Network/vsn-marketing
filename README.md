@@ -18,7 +18,7 @@ AI-native, provider-agnostic, permission-based marketing operating system (modul
 Phase 17 [░░░░░░░░░░░░░░░░░░░░] 0.00%
 ```
 
-The foundation (PHASE-00..16) is complete and now counts as 50% of the roadmap (ADR-0007). The product track PHASE-17..PHASE-24 — Next.js web and Android/iOS apps, panels (Super Admin, Buyer, Seller: reseller/agency, marketplace, affiliate), live email providers and tracking, social media, AI providers, ads, packages and reports — is active: see [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), [Systems Bank](.ai/research/PRODUCT-TRACK/SYSTEMS-BANK.md) and [Options Bank](.ai/research/PRODUCT-TRACK/OPTIONS-BANK.md).
+The foundation (PHASE-00..16) is complete and now counts as 50% of the roadmap (ADR-0007). The product track PHASE-17..PHASE-24 — Next.js web and Android/iOS apps, panels (Super Admin, Buyer, Seller: reseller/agency, marketplace, affiliate), live email providers and tracking, social media, AI providers, ads, packages and reports — is active: see [`.ai/roadmap/PRODUCT-TRACK-PLAN.md`](.ai/roadmap/PRODUCT-TRACK-PLAN.md), the [AI master prompt](docs/product/AI-MASTER-PROMPT.md), [Systems Bank](.ai/research/PRODUCT-TRACK/SYSTEMS-BANK.md) and [Options Bank](.ai/research/PRODUCT-TRACK/OPTIONS-BANK.md).
 
 ### Phase / module progress
 

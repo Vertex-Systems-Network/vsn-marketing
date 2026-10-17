@@ -23,6 +23,16 @@
       "id": "AC-3",
       "text": "Requirements trace to tasks TASK-0103..TASK-0144",
       "done": false
+    },
+    {
+      "id": "AC-4",
+      "text": "All 12 roles from the screen map have a permission matrix",
+      "done": false
+    },
+    {
+      "id": "AC-5",
+      "text": "Multilingual (English and Urdu RTL) requirements are specified",
+      "done": false
     }
   ],
   "required_tests": [
